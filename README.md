@@ -47,9 +47,9 @@ See [Related projects and reuse investigation](docs/related-projects.md) for add
 
 ## Driver findings
 
-The upstream AR62xx driver has code for active and standby frequency commands, channel conversion, response parsing, and CRC-16 with polynomial `0x8005`. Its frequency command carries both active and standby values, so a standby update must preserve the actual active value. Verify how the driver learns both values on startup and after reconnecting. [OpenSoar AR62xx driver source](https://github.com/August2111/OpenSoar/blob/master/src/Device/Driver/AR62xx.cpp)
+The upstream AR62xx driver has code for active and standby frequency commands, channel conversion, response parsing, and CRC-16 with polynomial `0x8005`. Its frequency command carries both active and standby values, so a standby update must preserve the actual active value. Verify how the driver learns both values on startup and after reconnecting. [OpenSoar AR62xx driver source](https://github.com/OpenSoaring/OpenSoar/blob/b2e745cfddfe0150f6ed7db467ac18c321b38d01/src/Device/Driver/AR62xx.cpp)
 
-In the inspected upstream source, `AR62xxDevice::Send()` sets its response to `ACK` immediately after writing. The code can therefore report success without a reply from the radio. Review whether the write preserves the entire binary frame and whether the receive path can distinguish acknowledgments from payload bytes when TCP reads are split or combined. These are source findings and review targets. Behavior on the installed OpenSoar build and radio remains unverified. [OpenSoar AR62xx driver source](https://github.com/August2111/OpenSoar/blob/master/src/Device/Driver/AR62xx.cpp)
+In the inspected upstream source, `AR62xxDevice::Send()` sets its response to `ACK` immediately after writing. The code can therefore report success without a reply from the radio. Review whether the write preserves the entire binary frame and whether the receive path can distinguish acknowledgments from payload bytes when TCP reads are split or combined. These are source findings and review targets. Behavior on the installed OpenSoar build and radio remains unverified. [OpenSoar AR62xx driver source](https://github.com/OpenSoaring/OpenSoar/blob/b2e745cfddfe0150f6ed7db467ac18c321b38d01/src/Device/Driver/AR62xx.cpp)
 
 ## Engineering constraints
 
