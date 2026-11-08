@@ -6,25 +6,20 @@ GPIO numbers refer to the candidate ESP32-DevKitC V4 with WROOM-32E. Equipment p
 
 ## Connection and routing diagram
 
-Solid arrows show the proposed receive paths and bidirectional radio path. Dotted arrows show reserved navigation return paths whose need is unknown. Signal IDs match the device tables below. Ground, shielding and power are described separately; they are not implied by the arrows.
+The diagram shows the proposed navigation receive paths and bidirectional radio path. Signal IDs match the device tables below. Ground, shielding and power are described separately.
 
 ```mermaid
 flowchart LR
     Z["Zander PC cable"] -->|Z1: pin 2| ZC["RS-232 converter"]
-    ZC -.->|Z2: pin 3, optional| Z
     F["FLARM: connector TBD"] -->|F1: TX pin TBD| FC["RS-232 converter"]
-    FC -.->|F2: RX pin TBD, optional| F
-    B["Becker J1: revision to verify"] -->|B1: TX2 pair 2 / 9| BC["Full-duplex RS-422 converter"]
-    BC -->|B2: RX2 pair 3 / 10| B
+    B["Becker J1: revision to verify"] <-->|B1 status: pins 2 / 9<br/>B2 commands: pins 3 / 10| BC["Full-duplex RS-422 converter"]
     subgraph ESP["One ESP32"]
         U0["UART0: RX32 / TX33 reserved"]
         U1["UART1: RX26 / TX27 reserved"]
         U2["UART2: RX16 / TX17"]
     end
     ZC -->|3.3 V data| U0
-    U0 -.->|Reserved return| ZC
     FC -->|3.3 V data| U1
-    U1 -.->|Reserved return| FC
     BC <-->|3.3 V data| U2
     subgraph OS["OpenSoar via Wi-Fi"]
         NZ["Zander device connection"]
@@ -32,11 +27,11 @@ flowchart LR
         RB["Becker TCP connection"]
     end
     U0 --> NZ
-    NZ -.->|If required| U0
     U1 --> NF
-    NF -.->|If required| U1
     U2 <--> RB
 ```
+
+If navigation return traffic is required, it would run from OpenSoar through the corresponding ESP32 UART TX and RS-232 converter to the device RX. The [Zander Z2](#zander-zs1) and [FLARM F2](#flarm) rows show the reserved paths.
 
 Separate device connections are proposed to avoid a new navigation multiplexer. Network port numbers, navigation transport and OpenSoar source priorities remain to be configured from the installation evidence. No navigation or diagnostic bytes may enter the Becker connection.
 
