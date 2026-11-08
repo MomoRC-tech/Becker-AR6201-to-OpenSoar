@@ -41,6 +41,10 @@ Give radio traffic its own bidirectional TCP endpoint and keep it separate from 
 
 The diagram shows logical paths. UART count, pin assignments, TCP ports, serial settings, and the radio connector depend on the hardware and firmware investigation. Prefer reusing the installed ESP32 if it can carry the radio traffic independently and preserve the navigation feeds. Otherwise, evaluate adapting an existing bridge before writing dedicated firmware.
 
+## Related projects
+
+See [Related projects and reuse investigation](docs/related-projects.md) for additional Becker drivers, historical XCSoar work, and ESP32 bridge candidates.
+
 ## Driver findings
 
 The upstream AR62xx driver has code for active and standby frequency commands, channel conversion, response parsing, and CRC-16 with polynomial `0x8005`. Its frequency command carries both active and standby values, so a standby update must preserve the actual active value. Verify how the driver learns both values on startup and after reconnecting. [OpenSoar AR62xx driver source](https://github.com/August2111/OpenSoar/blob/master/src/Device/Driver/AR62xx.cpp)

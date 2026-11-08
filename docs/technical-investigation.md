@@ -62,6 +62,8 @@ Its successful navigation service is user-reported. Firmware source, board varia
 
 ## Recommended minimum architecture
 
+Follow-up research identifies the Yuri-rage fork as the first small bridge candidate to evaluate. See [Related projects](related-projects.md) for the updated comparison.
+
 Retain the proposed separate radio TCP endpoint and byte-transparent UART path. Prefer adapting the installed firmware if inspection establishes that it can meet the requirements. Otherwise, start from the basic MIT bridge, with bounded buffering, checked writes, isolated diagnostics, and one command-writing client for the radio endpoint. Pro adds configuration convenience but also filtering/routing and licensing work.
 
 Before radio bench testing, address the OpenSoar transmission, initialization, framing, and acknowledgment defects together. Establish the real radio response rules before implementing ACK handling. Keep frequency validity explicit, require known active state before standby changes, and refresh state after reconnect or local radio changes.
