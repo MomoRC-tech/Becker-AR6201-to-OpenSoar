@@ -1,6 +1,6 @@
 # Roadmap and iterative workflow
 
-Updated 2026-11-08. This is the single work queue. The current request authorizes documentation cleanup (WP0); subsequent analysis/implementation packages are planned, not automatically authorized by this list.
+Updated 2026-11-08. This is the single work queue. WP0 documentation cleanup and the bounded WP3 source comparison below are complete. The current request authorizes architecture/hardware clarification and a README goal/architecture summary. Firmware selection and implementation remain open; listed packages are not automatically authorized by this queue.
 
 ## Work queue and milestones
 
@@ -25,6 +25,8 @@ Public-source analysis can continue when an installed-system input is missing, b
 Authorized WP3 subtask completed 2026-11-08: [Yuri/basic AlphaLima source and maintenance comparison](reviews/2026-11-08-yuri-bridge.md), including proposed minimal increments and one verification summary. This does not close WP3 or authorize firmware changes. Next prerequisite remains WP1: identify installed firmware/configuration and UART ownership before selecting a replacement.
 
 **Question:** What is installed now, and which connections must the radio extension preserve?
+
+Current increment: owner agreed the first-version goal and one ESP32 on 2026-11-08. README reflects that agreement. The [hardware proposal](architecture.md#hardware-proposal--one-esp32) records a bench board candidate, conditional GPIO allocation, interface research and the verification summary (S09). Tom will supply the missing equipment/wiring/power information when available; navigation return traffic is unknown. Final board/interface/firmware selection remains open. A conditional pinning/cabling schedule is now included for later comparison with Tom’s setup; retain working arrangements or propose justified improvements rather than treating either the current setup or this draft as fixed. Next: reconcile Tom’s information with this proposal before final wiring or implementation.
 
 **Inputs:** exact radio model/part and hardware/software revision; ESP32 board and existing firmware/configuration; OpenSoar version and device settings; known wiring/level converters; a non-invasive observation of current navigation reception. The [inventory](project-baseline.md#existing-installation--wp1-record) lists the missing fields.
 

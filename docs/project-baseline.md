@@ -4,7 +4,7 @@ Updated 2026-11-08. Evidence labels and source IDs are defined in [Sources](sour
 
 ## Scope and requirements
 
-These are target behaviors from the existing project brief, not implemented or accepted results. Priority P0 protects the minimum use case; P1 supports reproducibility. Final physical acceptance is still open for every requirement.
+The owner agreed the first-version goal on 2026-11-08: standby transfer while preserving active frequency, local controls and navigation, with honest failure/unknown-state reporting. One ESP32 is the accepted architecture constraint. These are agreed goals, not implemented or physically accepted results. Priority P0 protects the minimum use case; P1 supports reproducibility. Final physical acceptance is still open for every requirement.
 
 | ID | Priority | Requirement | Acceptance evidence / package |
 | --- | --- | --- | --- |
@@ -34,6 +34,13 @@ Reported context from the previous README/brief (S00): a DG200 installation rece
 | Navigation baseline | Successful reception reported | Data types, update intervals/gaps, observation duration and reconnect behavior | Unknown |
 
 WP1 fills this table from evidence and adds an as-built map here. A proposed map belongs in [architecture](architecture.md), never in this inventory. Backup material stays private; do not alter or reflash working equipment to obtain it.
+
+### Owner clarification — 2026-11-08
+
+- **Reported:** Zander/FLARM topology and any OpenSoar return traffic are unknown. Tom can supply radio identity/revisions, FLARM model, occupied connectors, wiring and power information; obtaining this will take time.
+- **Accepted constraint:** one ESP32. A board/topology proposal is requested; it does not identify the existing board or authorize replacement.
+- **Assumption / planning target:** latest released OpenSoar. S09 identifies 7.46.26 as the latest listed release on the review date; installed build/configuration remains unknown.
+- **Consequence:** final connector pinning, voltage conversion, power design, serial settings and navigation directionality await Tom’s information. Public-source architecture work may continue as a proposal.
 
 ## Assumptions to resolve
 

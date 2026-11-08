@@ -29,6 +29,16 @@ The detailed manual pinouts, product-specific version cutoffs and license metada
 
 ## Rechecked facts
 
+S09 — Hardware proposal references, checked 2026-11-08; source observations only, not installed-system evidence:
+
+- [Espressif DevKitC V4 guide](https://documentation.espressif.com/esp-dev-kits/en/latest/esp32/esp32-devkitc/user_guide.html), Header Block and Power Supply Options: GPIO availability, WROOM/WROVER differences, mutually exclusive supply paths. [ESP32 datasheet v5.3](https://documentation.espressif.com/esp32_datasheet_en.html), GPIO/boot configuration and UART sections; [ESP-IDF UART guide v6.1](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/peripherals/uart.html), Introduction and Set Communication Pins: three UARTs and routing. Live documentation; no framework selection implied.
+- Zander-authored ZS1 manual, D3029, 16.09.2004, pages 46 and 48, [third-party text mirror](https://manualzz.com/doc/4639871/zander-sdi-zs1-segelflugrechner--sdi-zs1r-analoganzeige-b...): PC-cable connector and NMEA behavior. Mirror text inspected; original installation manual ZS1_Inst_d.pdf and connector-view drawing not obtained. Treat as a conditional lead pending matching equipment/cable confirmation.
+- [FLARM FTD-012 download](https://www.flarm.com/wp-content/uploads/2025/09/FTD-012-Data-Port-Interface-Control-Document-ICD-7.22.pdf), section 5, PDF page 13: RS-232, configurable rates/protocols, limited Classic extension port. Catalog dates download 2025-09-24; retrieved text headers say 2022-06-06/version 1.1, so filename 7.22 is not treated as confirmed internal revision. Model-specific connector pinning remains unknown.
+- [TI MAX3232 Rev. O](https://www.ti.com/lit/ds/symlink/max3232.pdf), title/supply range; [TI THVD1451 product details](https://www.ti.com/product/THVD1451/part-details/THVD1451DRBR), full-duplex RS-422/485 family at 3.3–5 V: component candidates only, no module/circuit acceptance.
+- [OpenSoar release index](https://opensoar.de/releases/) and [7.46.26 notes](https://opensoar.de/releases/v7.46.26/): latest listed release 2026-10-30, Android artifacts, b2e745cfdd prefix and Becker WIP. This retrieval succeeds and supersedes S04's earlier retrieval limitation; no deployed-build claim.
+
+Owner statements on 2026-11-08 establish goal agreement and one ESP32, request a board proposal and latest-release planning, and assign missing hardware information to Tom. Navigation return traffic remains explicitly unknown. See baseline and architecture for decision status.
+
 S08 — [Yuri/basic AlphaLima source evaluation](reviews/2026-11-08-yuri-bridge.md), rechecked 2026-11-08: pinned sketches, Yuri configuration/license/tree and default-branch histories. Yuri 130f731 has later functional fixes; AlphaLima bb42dc3 has newer documentation only since their shared 2020 revision. See the review for exact references, proposed increments and verification limits; no runtime evidence.
 
 | ID | Observation | Evidence and limit |
