@@ -2,7 +2,7 @@
 
 This project aims to let a pilot select an airfield in OpenSoar on Android and load its frequency into the Becker radio’s **standby** slot. An ESP32 would carry the radio’s commands and replies between Wi-Fi and the serial interface. The goal is a low-cost, reproducible integration that reuses existing open-source software and preserves the glider’s navigation feeds.
 
-**Project status:** Investigation and architecture planning. The project notes report that OpenSoar receives navigation data over Wi-Fi from the existing ESP32 in a DG200. Remote frequency control, the physical radio interface, and compatibility with the installed radio have yet to be demonstrated. This repository currently contains the project outline.
+**Project status:** Investigation and architecture planning. The project notes report that OpenSoar receives navigation data over Wi-Fi from the existing ESP32 in a DG200. Remote frequency control, the physical radio interface, and compatibility with the installed radio have yet to be demonstrated. The initial source review is documented in [Technical investigation](docs/technical-investigation.md), including pinned revisions, confirmed defects, bridge options, and open checks.
 
 ## Existing installation
 
