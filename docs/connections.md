@@ -29,19 +29,19 @@ flowchart LR
 
     Z ---|"Z1 pin 2 TX → receiver"| ZC
     Z -.-|"Z2 pin 3 RX ← driver · reserved"| ZC
-    Z -.-|"ZG pin 5 · reference TBD"| ZC
+    Z -.-|"ZG pin 5 GND · bond TBD"| ZC
     ZC ---|"Receiver out → GPIO32 RX"| U0
     ZC -.-|"Driver in ← GPIO33 TX · reserved"| U0
-    ZC -.-|"Logic reference TBD"| U0
+    ZC -.-|"ESP32 logic GND · bond TBD"| U0
     U0 ---|"Navigation data →"| NZ
     U0 -.-|"← Return if needed"| NZ
 
     F ---|"F1 TX TBD → receiver"| FC
     F -.-|"F2 RX TBD ← driver · reserved"| FC
-    F -.-|"FG signal reference TBD"| FC
+    F -.-|"FG signal GND pin TBD"| FC
     FC ---|"Receiver out → GPIO26 RX"| U1
     FC -.-|"Driver in ← GPIO27 TX · reserved"| U1
-    FC -.-|"Logic reference TBD"| U1
+    FC -.-|"ESP32 logic GND · bond TBD"| U1
     U1 ---|"Navigation data →"| NF
     U1 -.-|"← Return if needed"| NF
 
@@ -52,7 +52,7 @@ flowchart LR
     B -.-|"BG pin 21 D_GND · reference TBD"| BC
     BC ---|"Receiver out → GPIO16 RX"| U2
     BC ---|"Driver in ← GPIO17 TX"| U2
-    BC -.-|"Logic reference TBD"| U2
+    BC -.-|"ESP32 logic GND · bond TBD"| U2
     U2 ---|"Radio status →"| RB
     U2 ---|"← Radio commands"| RB
 ```
@@ -61,15 +61,56 @@ Data between the converters and the ESP32 uses 3.3 V logic. Reference and shield
 
 Separate device connections are proposed to avoid a new navigation multiplexer. Network port numbers, navigation transport and OpenSoar source priorities remain to be configured from the installation evidence. No navigation or diagnostic bytes may enter the Becker connection.
 
-### Bridge power path
+### Bridge power and ground
+
+The drawing shows the candidate 5 V header option and the unresolved converter supply branches. Use one ESP32 power input. Micro USB and the 3.3 V header are alternative inputs listed by Espressif. The converter branches show the terminals to identify for each module. Supply rails and any shared ground or isolation remain TBD. See [S09](sources.md#rechecked-facts).
 
 ```mermaid
 flowchart LR
-    S["Supply source TBD"] --> P["Protection and conversion TBD"]
-    P --> E["One ESP32 supply input TBD"]
+    S["Bridge supply source TBD"]
+    P["Protection and 5 V regulation TBD"]
+    E["ESP32-DevKitC V4<br/>5 V header option"]
+    C["Converter supplies TBD"]
+    ZC["Zander RS-232 converter"]
+    FC["FLARM RS-232 converter"]
+    BC["Becker RS-422 converter"]
+
+    S -.-|"Positive feed TBD"| P
+    S -.-|"Supply return TBD"| P
+    P ---|"Regulated +5 V → J2 pin 19 (5V)"| E
+    P ---|"Return · J2 pin 14 (GND)"| E
+    C -.-|"Supply → VCC pin TBD"| ZC
+    C -.-|"Return · GND pin TBD"| ZC
+    C -.-|"Supply → VCC pin TBD"| FC
+    C -.-|"Return · GND pin TBD"| FC
+    C -.-|"Supply → VCC pin TBD"| BC
+    C -.-|"Return · GND pin TBD"| BC
 ```
 
-Converter power feeds, return conductors, and shield terminations need the final interface and supply design.
+### Existing instrument power and ground
+
+Trace these paths during the installation survey and preserve the existing feeds. Becker pin numbers are manual references for the variants covered by Issue 06. Match the installed radio before using them. The Zander and FLARM supply connectors and pins still need confirmation. See [S10](sources.md#rechecked-facts).
+
+```mermaid
+flowchart LR
+    Z["Zander ZS1"]
+    F["FLARM model TBD"]
+    B["Becker AR6201<br/>Variant to verify"]
+    ZP["Zander supply wiring TBD"]
+    FP["FLARM supply wiring TBD"]
+    BP["Becker supply wiring TBD"]
+    BG["Chassis bond point TBD"]
+
+    Z -.-|"Power input pin TBD"| ZP
+    Z -.-|"Power return pin TBD"| ZP
+    F -.-|"Power input pin TBD"| FP
+    F -.-|"Power return pin TBD"| FP
+    B -.-|"P1 pin 11 P_SUPP (+)"| BP
+    B -.-|"P1 pin 12 P_SUPP (+)"| BP
+    B -.-|"P1 pin 13 P_SUPP_GND"| BP
+    B -.-|"P1 pin 25 P_SUPP_GND"| BP
+    B -.-|"Rear chassis ground stud"| BG
+```
 
 ## ESP32 pin allocation
 
@@ -125,7 +166,7 @@ Becker numbers above reproduce **prior review** of DV14307.03 Issue 06, section 
 - Use one twisted pair for B1 and a separate twisted pair for B2 as the proposed RS-422 cable arrangement. Specify cable impedance, termination locations/values, reference conductor and shield bonding only after checking the matched radio/interface requirements and actual cable run. A shield is not a substitute for a defined signal reference.
 - Keep 3.3 V logic connections within the bridge assembly as a proposed layout rule; carry the matched equipment-level signals along external branches. RS-232 and RS-422 paths use different converter functions. Do not connect instrument serial outputs directly to GPIO or combine independent TX outputs.
 - Preserve required navigation return paths and existing FLARM displays. Receive-only branches are a simplification to evaluate, not an accepted removal of functionality. Document port loading and fan-out before proposing splitters.
-- Give power a separate documented branch: source **TBD** → protection/conversion **TBD** → one selected board supply input. Choose conductor sizes, fuse/protection, regulator, grounding/isolation and USB servicing arrangement from the actual supply and load requirements; no aircraft power pin assignment is proposed yet.
+- Use the [power and ground drawings](#bridge-power-and-ground) to record the installed feed and return wiring. Choose conductor sizes, protection, regulation, grounding, isolation and USB servicing from the actual supply and load requirements.
 - Prefer the proposed GPIO reassignment over the upstream defaults if board checks confirm it: it avoids equipment wiring on USB/programming pins and GPIO15. Preserve the benefit only if firmware diagnostics and startup behavior are also controlled; remapping alone is insufficient.
 
 When Tom's information arrives, compare each row as **retain / improve / incompatible / unresolved**, with evidence, reason and effect on existing functions. Preserve a working arrangement where appropriate; recommend changes when they improve compatibility, maintainability or interference control. An improvement recommendation remains a proposal until accepted; this comparison does not require copying the current installation unchanged.
