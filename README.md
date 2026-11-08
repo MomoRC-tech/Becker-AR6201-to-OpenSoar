@@ -18,14 +18,23 @@ Larus wind sensor integration is a possible later extension.
 
 ## Proposed architecture
 
-```text
-Zander ZS1 ── serial ──┐
-                       ├── ESP32 ── Wi-Fi ── Android / OpenSoar
-FLARM ─────── serial ──┘      │
-                             ↕ 3.3 V UART
-                   Full-duplex RS-422 transceiver
-                             ↕
-                        Becker radio
+```mermaid
+flowchart TD
+    accTitle: Proposed OpenSoar and Becker radio integration
+    accDescr: Zander and FLARM send data to OpenSoar via the ESP32. A separate two-way path connects OpenSoar to the Becker radio through the ESP32 and an RS-422 transceiver.
+
+    Zander["Zander ZS1"] -->|NMEA over serial| Nav
+    FLARM["FLARM"] -->|Serial data| Nav
+
+    subgraph ESP32["ESP32 bridge"]
+        Nav["Navigation feeds"]
+        RadioLink["Dedicated radio endpoint"]
+    end
+
+    Nav -->|Navigation and FLARM data over Wi-Fi| OpenSoar["OpenSoar on Android"]
+    RadioLink <-->|Radio commands and replies over Wi-Fi / TCP| OpenSoar
+    RadioLink <-->|3.3 V UART| Transceiver["Full-duplex RS-422 transceiver"]
+    Transceiver <-->|RS-422| Becker["Becker radio"]
 ```
 
 Give radio traffic its own bidirectional TCP endpoint and keep it separate from the existing Zander and FLARM feeds. Evaluate separate navigation endpoints if the current setup needs them. OpenSoar handles protocol framing, commands, and responses. The bridge forwards the radio stream byte for byte in both directions, including zero bytes and control bytes, without NMEA parsing or line ending conversion. TCP can split a frame across reads or deliver several frames in one read, so the receiver must handle both.
