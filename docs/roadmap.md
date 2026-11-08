@@ -22,6 +22,8 @@ Public-source analysis can continue when an installed-system input is missing, b
 
 ## WP1 — existing installation (first priority)
 
+Authorized WP3 subtask completed 2026-11-08: [Yuri/basic AlphaLima source and maintenance comparison](reviews/2026-11-08-yuri-bridge.md), including proposed minimal increments and one verification summary. This does not close WP3 or authorize firmware changes. Next prerequisite remains WP1: identify installed firmware/configuration and UART ownership before selecting a replacement.
+
 **Question:** What is installed now, and which connections must the radio extension preserve?
 
 **Inputs:** exact radio model/part and hardware/software revision; ESP32 board and existing firmware/configuration; OpenSoar version and device settings; known wiring/level converters; a non-invasive observation of current navigation reception. The [inventory](project-baseline.md#existing-installation--wp1-record) lists the missing fields.

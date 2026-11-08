@@ -29,6 +29,8 @@ The detailed manual pinouts, product-specific version cutoffs and license metada
 
 ## Rechecked facts
 
+S08 — [Yuri/basic AlphaLima source evaluation](reviews/2026-11-08-yuri-bridge.md), rechecked 2026-11-08: pinned sketches, Yuri configuration/license/tree and default-branch histories. Yuri 130f731 has later functional fixes; AlphaLima bb42dc3 has newer documentation only since their shared 2020 revision. See the review for exact references, proposed increments and verification limits; no runtime evidence.
+
 | ID | Observation | Evidence and limit |
 | --- | --- | --- |
 | F01 | S00 contains README and two docs, with no application code/tests. | Repository tree inspection; no claim about private or external firmware. |
