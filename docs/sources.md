@@ -46,10 +46,12 @@ S08 — [Yuri/basic AlphaLima source evaluation](reviews/2026-11-08-yuri-bridge.
 | ID | Observation | Evidence and limit |
 | --- | --- | --- |
 | F01 | S00 contains README and two docs, with no application code/tests. | Repository tree inspection; no claim about private or external firmware. |
-| F02 | Send ignores msg_size and passes a char pointer to FullWrite; Port offers a string_view overload. | S01 lines 247–265; S02 lines 87–93. Inferred consequence: implicit string length stops at a zero byte instead of honoring the binary frame length. Not reproduced on a running build here. |
+| F02 | Send ignores msg_size and passes a char pointer to FullWrite; Port offers a string_view overload. | S01 lines 247–265; S02 lines 87–93. Measured host consequence in S12: the actual Send body passes 4/10 or 6/10 bytes for synthetic zero-containing frames. Full deployed-build and physical acceptance remain open. |
 | F03 | Send assigns ACK locally after writing; success follows that value. No receive-side assignment/notification implements actual acknowledgment in this driver. | S01 Send and receive methods, especially lines 264–278. Establishes a source defect, not the radio's real acknowledgment format. |
 | F04 | The command reads both stored frequencies; the constructor does not initialize them. Reception can update private state. | S01 Radio/radio_para, constructor, SetAR620xStation and AR620xConvertAnswer. Unknown/stale active state is a design risk; physical consequences remain untested. |
 | F05 | Parser resets on A5, keeps static state, allows zero received CRC and suppresses conversion while sending. Frequency decoding lacks command-specific length checks. | S01 lines 459–558. Implementation observations; whether any exception is protocol-valid requires independent evidence. |
 | F06 | Manufacturer supplies distinct manuals for different hardware generations. | S03. Supports identifying the installed device before choosing connector/settings guidance. |
 
 For new evidence, add source revision or manual issue/page, retrieval date, exact scope, and whether it is observed, inferred or measured. Preserve conflicting evidence and resolve it explicitly. Do not turn historical reports or agreement between related codebases into independent protocol validation.
+
+S12 — [Historical Becker driver comparison and send reproduction](reviews/2026-11-08-becker-send.md), rechecked/measured 2026-11-08. PR #189-associated cd818c90 uses counted writes. The current char-pointer call appears in eku60 commit 7a575346 (2024-03-05) and OpenSoar 7.46.26 b2e745cf. A compiled host extraction reproduces truncation and verifies the single-call byte-span correction. See the review for synthetic inputs, method, exact revisions and limits.

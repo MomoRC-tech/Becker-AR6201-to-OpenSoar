@@ -14,6 +14,10 @@ Current requirements, decisions and package order live in [Project baseline](pro
 
 Dates and archive flags above are historical metadata recorded by the original review, not current maintenance claims. The subsequent OpenSoaring baseline is b2e745cfddfe0150f6ed7db467ac18c321b38d01 (S01/S02 in [Sources](sources.md)); the August2111 revision remains as provenance. Neither baseline identifies the installed firmware or Android build.
 
+## Follow-up send reproduction — 2026-11-08
+
+[Historical comparison and host evidence S12](reviews/2026-11-08-becker-send.md) supersede the unmeasured status of the send-length finding below. The PR-associated 2019 driver used explicit lengths. The 7.46.26 Send body was reproduced with a captured byte sink and corrected with a single byte-span call. Full application and physical acceptance remain open.
+
 ## OpenSoar driver findings
 
 The original review reports the following observations in the [pinned AR62xx driver](https://github.com/August2111/OpenSoar/blob/4a3794a02211eb03b21ddb8a6b8ec5ad62ee3b41/src/Device/Driver/AR62xx.cpp).

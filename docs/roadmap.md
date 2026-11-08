@@ -20,6 +20,10 @@ Milestones are evidence gates, not dates: **M1 understood installation** (WP1 + 
 
 Public-source analysis can continue when an installed-system input is missing, but must not silently close the dependent package. Before starting WP2–WP7, choose one row or a smaller subtask with its own output and stop point.
 
+## Bounded WP4/WP5 send investigation — 2026-11-08
+
+Owner-requested historical comparison and host reproduction are complete. [Review S12](reviews/2026-11-08-becker-send.md) demonstrates binary truncation in OpenSoar 7.46.26 and tests a one-call byte-span correction. The committed harness is a transport regression, with radio protocol vectors, full application implementation and physical acceptance still open. Next driver increment is the counted-send patch and its integration test, subject to implementation authorization. State validity and real readback remain required for the end-to-end goal.
+
 ## WP1 — existing installation (first priority)
 
 Authorized WP3 subtask completed 2026-11-08: [Yuri/basic AlphaLima source and maintenance comparison](reviews/2026-11-08-yuri-bridge.md), including proposed minimal increments and one verification summary. This does not close WP3 or authorize firmware changes. Next prerequisite remains WP1: identify installed firmware/configuration and UART ownership before selecting a replacement.
