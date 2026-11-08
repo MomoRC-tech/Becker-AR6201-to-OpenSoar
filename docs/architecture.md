@@ -1,6 +1,6 @@
 # Architecture and decisions
 
-Updated 2026-11-08. **One ESP32 accepted as an owner constraint; board, interfaces and detailed routing remain proposed.** Tom’s photos partially identify the hardware; exact revisions, settings and electrical paths remain open. The inventory and [photo comparison](project-baseline.md#toms-photo-evidence--2026-11-08) belong in [Project baseline](project-baseline.md#existing-installation--wp1-record).
+Updated 2026-11-08. **One ESP32 in new, separate hardware is accepted; the existing setup stays unchanged as backup (ADR-03).** Board, interfaces and detailed routing remain proposed. Tom’s photos partially identify the existing hardware; exact revisions, settings and electrical paths remain open. The inventory and [photo comparison](project-baseline.md#toms-photo-evidence--2026-11-08) belong in [Project baseline](project-baseline.md#existing-installation--wp1-record).
 
 ## Responsibilities and routing
 
@@ -12,7 +12,7 @@ The conditional radio interface is 3.3 V UART to full-duplex RS-422. The LXNAV R
 
 ## Hardware proposal — one ESP32
 
-Proposed 2026-11-08, based on S08/S09. No purchase, wiring or firmware changes authorized. Recommend **Espressif ESP32-DevKitC V4 with ESP32-WROOM-32E** as a bench development board: it stays close to the classic ESP32 targeted by both bridge sketches and provides three hardware UARTs. Use the exact WROOM board variant; WROVER reserves GPIO16/17 internally. This development board is not an accepted aircraft installation design.
+Proposed 2026-11-08, based on S08/S09. The separate new build is accepted in ADR-03; exact components, wiring and firmware remain to be selected. Recommend **Espressif ESP32-DevKitC V4 with ESP32-WROOM-32E** as a bench development board: it stays close to the classic ESP32 targeted by both bridge sketches and provides three hardware UARTs. Use the exact WROOM board variant; WROVER reserves GPIO16/17 internally. This development board is not an accepted aircraft installation design.
 
 Prefer separate Zander and FLARM serial inputs and a bidirectional radio UART, with separate network device connections initially. This avoids a new NMEA multiplexer. Existing combined routing may be retained if Tom's evidence shows it is needed and preserves all required messages. OpenSoar's simultaneous device configuration and GPS-source priority still need verification.
 
@@ -41,15 +41,25 @@ Status vocabulary: **proposed → accepted → implemented → verified**, or **
 ### ADR-01 — separate transparent radio path
 
 - Status: **proposed**, not implemented. Owner accepted the one-ESP32 constraint on 2026-11-08; detailed interfaces and protocol responsibilities remain proposed.
-- Choice: one bidirectional radio endpoint, isolated from existing navigation routing; keep protocol/state handling in OpenSoar. Prefer adapting the installed firmware if it meets R02/R03.
+- Choice: one bidirectional radio endpoint, isolated from navigation routing; keep protocol/state handling in OpenSoar. Select firmware for the new bridge against R02/R03, preserving the original setup as backup under ADR-03.
 - Alternatives: a separate ESP32 dedicated to the radio (historical alternative, outside the current one-board constraint); adapt a reviewed small bridge; use a larger configurable bridge; implement radio protocol/state in bridge firmware. The last option expands responsibilities and duplicates driver work.
-- Tradeoff: reuse can minimize hardware changes, but spare UARTs and reliable buffering are unknown. A dedicated bridge adds hardware but may isolate resource contention.
+- Tradeoff: the new bridge needs its own verified UART allocation and reliable buffering. The separate backup preserves the original setup; it does not establish coexistence or radio acceptance on the new bridge.
 - Decision gate: WP1 inventory plus WP2 interface evidence and WP3 routing/resource/license comparison. Record selected option and reasons before implementing it.
 
 ### ADR-02 — implementation and reuse baseline
 
 - Status: **proposed**, selection open.
-- Bounded source evaluation completed 2026-11-08: [Yuri versus basic AlphaLima](reviews/2026-11-08-yuri-bridge.md). Yuri remains the first external candidate based on bounded reads and routing; it still needs radio-only ownership, isolated diagnostics and checked bounded forwarding. Installed firmware comparison and owner selection remain open.
+- Bounded source evaluation completed 2026-11-08: [Yuri versus basic AlphaLima](reviews/2026-11-08-yuri-bridge.md). Yuri remains the first external candidate based on bounded reads and routing; it still needs radio-only ownership, isolated diagnostics and checked bounded forwarding. Compatibility with the instrument requirements and firmware selection remain open.
 - Use pinned OpenSoaring source S01/S02 as the review baseline; verify the installed build separately. Investigate targeted upstream driver fixes before creating a permanent application fork.
-- Candidate evaluation order: installed firmware first; Yuri-rage fork as the first small external bridge candidate; basic AlphaLima for comparison; DroneBridge as a dedicated-link alternative. This is the earlier research recommendation, not a tested ranking. Pro, XCVario and historical drivers remain references in [Related projects](related-projects.md).
+- Candidate evaluation order for the new hardware: Yuri-rage fork as the first small external bridge candidate; basic AlphaLima for comparison; DroneBridge as a dedicated-link alternative. Installed firmware, if identified, may inform compatibility or be evaluated for a separate new build; adapting the backup in place is superseded by ADR-03. This remains a research recommendation, not a tested ranking. Pro, XCVario and historical drivers remain references in [Related projects](related-projects.md).
 - Decision gate: WP3 chooses firmware only after compatibility, required fixes, licenses and reproducibility are documented. WP4 records the minimal driver change plan. No replacement or code copying is approved by listing a candidate.
+
+### ADR-03 — new hardware with the existing setup as backup
+
+- Status: **accepted build strategy**, 2026-11-08, by the owner's explicit instruction (S15). Hardware is not yet built or verified.
+- Decision: build a new, separate bridge with one ESP32 and its own interfaces and power circuitry. Preserve the existing assembly, firmware, configuration and harness as the backup; do not harvest its components or reflash it for development.
+- Supersedes: the S13 photo assessment's hardware-reuse recommendation and the preference to adapt the installed bridge in place. Reuse of suitable software and architecture remains available for the new build.
+- Consequence: the old board's spare UARTs and exact internal GPIO allocation no longer constrain the new design. Instrument identity, external connectors/signals, serial settings, navigation return paths, OpenSoar configuration and supply requirements still determine compatibility. Photos remain evidence about the backup and its interfaces.
+- Next: resolve those equipment interfaces and specify the new board, converters, power circuitry and connection schedule. Final component selection, physical assembly, bench acceptance and later aircraft integration remain distinct steps; the backup's reported operation does not validate the new hardware.
+
+Verification for this decision increment: checked README, inventory, assumptions, active architecture/reuse guidance, connection scope, sources and roadmap for consistency with S15; checked relative links/anchors and whitespace. Historical photo findings remain labelled, with superseded reuse guidance linked here. Documentation only; no purchases, builds, flashing, wiring or device tests performed.

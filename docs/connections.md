@@ -1,6 +1,6 @@
 # Pinning, cabling and routing
 
-**Proposal for comparison with Tom’s installation.** Board, interfaces, equipment pins and firmware remain open. This document brings each signal path and its pin table together; the [README](../README.md#architecture-overview) contains the project-level overview.
+**Proposal for new, separate hardware; preserve Tom’s existing setup as backup ([ADR-03](architecture.md#adr-03--new-hardware-with-the-existing-setup-as-backup)).** Board, interfaces, equipment pins and firmware remain open. Compare this proposal with the instrument interfaces and required functions. This document brings each signal path and its pin table together; the [README](../README.md#architecture-overview) contains the project-level overview.
 
 GPIO numbers refer to the candidate ESP32-DevKitC V4 with WROOM-32E. Equipment pins are conditional references, not verified installed wiring. Converter labels describe functions, not module terminal names or IC package pins. Connector views, actual cable continuity, grounding and serial settings must be resolved before building a harness.
 
@@ -259,7 +259,7 @@ Becker numbers above reproduce **prior review** of DV14307.03 Issue 06, section 
 - Use the [power and ground drawings](#bridge-power-and-ground) to record the installed feed and return wiring. Choose conductor sizes, protection, regulation, grounding, isolation and USB servicing from the actual supply and load requirements.
 - Prefer the proposed GPIO reassignment over the upstream defaults if board checks confirm it: it avoids equipment wiring on USB/programming pins and GPIO15. Preserve the benefit only if firmware diagnostics and startup behavior are also controlled; remapping alone is insufficient.
 
-When Tom's information arrives, compare each row as **retain / improve / incompatible / unresolved**, with evidence, reason and effect on existing functions. Preserve a working arrangement where appropriate; recommend changes when they improve compatibility, maintainability or interference control. An improvement recommendation remains a proposal until accepted; this comparison does not require copying the current installation unchanged.
+When Tom's information arrives, classify each proposed new connection as **compatible / change needed / unresolved**, with evidence, reason and effect on required functions. Preserve the original assembly and harness as backup; provide separate components and cabling for the new bridge. The new design can use different internal wiring while matching the instrument interfaces and preserving navigation functions. Recommendations remain proposals until accepted.
 
 ## Evidence and remaining checks
 

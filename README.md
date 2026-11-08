@@ -26,9 +26,9 @@ The bridge carries device data; OpenSoar handles radio commands and state. Navig
 
 ## Current status and next step
 
-Architecture and hardware planning. The board, wiring and firmware are still proposals; radio operation and navigation coexistence have not been tested. The bench board candidate is an ESP32-DevKitC V4 with WROOM-32E.
+Architecture and hardware planning for a **new, separate bridge**, keeping the existing hardware unchanged as a backup. The board, wiring and firmware are still proposals; radio operation and navigation coexistence have not been tested. The bench board candidate is an ESP32-DevKitC V4 with WROOM-32E.
 
-Next, compare the proposal with the installed equipment and wiring. Confirm the radio revisions, FLARM model, existing connections, navigation return traffic and power supply. Retain suitable connections and recommend improvements where justified. Implementation and bench verification follow that comparison.
+Next, confirm the radio revisions, FLARM model, instrument connections, navigation return traffic and power supply, then specify the new hardware to match those interfaces. The existing setup provides the compatibility and navigation baseline. Implementation and bench verification follow that comparison.
 
 The first version covers navigation reception and standby tuning. Direct active tuning, swap, volume/squelch control and aircraft installation are deferred.
 
