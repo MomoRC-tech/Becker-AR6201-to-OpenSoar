@@ -1,12 +1,12 @@
 # Sources and evidence
 
-Reviewed for documentation cleanup on 2026-11-08. A source observation is not a runtime or hardware result. Keep source revision/date and scope with each claim.
+Reviewed for documentation cleanup and the dated follow-up investigations on 2026-11-08. A source observation is not a runtime or hardware result. Keep source revision/date and scope with each claim.
 
 ## Evidence labels
 
 | Label | Meaning |
 | --- | --- |
-| Rechecked source | Read again during this cleanup at the stated revision; consequences inferred from code are identified as such. |
+| Rechecked source | Read at the stated revision during the identified review; consequences inferred from code are identified as such. |
 | Prior review | Preserved investigation at S00; not independently repeated in this cleanup. |
 | Reported | Project/user/vendor statement; no matching measurement supplied. |
 | Assumption / proposed | Working hypothesis or design choice; not a verified fact or approval. |
@@ -24,6 +24,7 @@ Reviewed for documentation cleanup on 2026-11-08. A source observation is not a 
 | S05 | [Technical investigation](technical-investigation.md); AlphaLima [basic](https://github.com/AlphaLima/ESP32-Serial-Bridge) / [Pro](https://github.com/AlphaLima/ESP32-Serial-Bridge-Pro) | Prior pinned August2111, AlphaLima basic/Pro reviews and Becker/LXNAV/SD-Link manual observations. Detailed source URLs and revisions remain there. Apart from S01/S02/S03, these checks were not repeated. |
 | S06 | [Related projects](related-projects.md) | Prior pinned LK8000, Yuri-rage, RadioDriver, DroneBridge and XCVario reviews plus historical XCSoar issues/PRs. Candidate/licensing/build claims require rechecking before selection or copying. |
 | S07 | [OpenAI workflow guidance](https://developers.openai.com/cookbook/examples/codex/iterating-development-workflows-with-codex) | Read on 2026-11-08 for repository work instructions. Our file layout and package gates are project conventions, not mandatory Codex infrastructure. |
+| S11 | [Becker driver follow-up](technical-investigation.md#becker-driver-follow-up--2026-11-08), checked 2026-11-08 | Rechecked S01/S02; Werner86/XCSoar 9854e3f3ba6ed92c2094cdaa4afa8278d67f8f0c driver and RadioFrequency.hpp; LK8000 8d78c63f599b894dbff217e007db44be06ee67ee driver and conversion history; eku60/XCSoar a9ab01cd4855db8b60deb59675ffe74b5d7a0b55 driver; rbp28668/RadioDriver a794c4a994838b94d2b0bfa69ef76cda9a698957 Arduino driver, Windows license header and tree. Exact file/function references, selected OpenSoar branch pins and one verification summary are in the follow-up. PR 449 and issue 1092 hardware/protocol statements remain attributed reports; Becker's live service page is a contact lead. No independent protocol document, traffic capture or runtime result. |
 
 The detailed manual pinouts, product-specific version cutoffs and license metadata in S05/S06 remain research leads. They do not establish compatibility, universal protocol rules, reuse permission for every file, or a wiring instruction for this installation.
 

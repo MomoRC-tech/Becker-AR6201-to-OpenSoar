@@ -4,6 +4,8 @@ Prior investigation dated 2026-11-08, preserved from [baseline fbed731](https://
 
 These are research leads, not selected dependencies or verified compatibility. [Sources](sources.md) defines the evidence labels; [ADR-02](architecture.md#adr-02--implementation-and-reuse-baseline) owns the evaluation order and [WP3](roadmap.md#work-queue-and-milestones) owns selection.
 
+**Follow-up, 2026-11-08 (S11):** The [Becker driver comparison](technical-investigation.md#becker-driver-follow-up--2026-11-08) rechecks LK8000, eku60 and RadioDriver and examines Werner86's PR 449 implementation in detail. Werner supplies useful counted-write, integer-conversion and state-guard ideas plus a reported explanation for paired frequency writes, but the guard's initialization and stream parser remain defective. Use that follow-up for these candidates' current evidence and file-level license limits; none is a verified replacement.
+
 ## Prior review shortlist
 
 ### LK8000 — primary protocol reference

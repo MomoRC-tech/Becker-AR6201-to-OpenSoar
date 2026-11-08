@@ -1,6 +1,6 @@
 # Roadmap and iterative workflow
 
-Updated 2026-11-08. This is the single work queue. WP0 documentation cleanup and the bounded WP3 source comparison below are complete. The current request authorizes architecture/hardware clarification and a README goal/architecture summary. Firmware selection and implementation remain open; listed packages are not automatically authorized by this queue.
+Updated 2026-11-08. This is the single work queue. WP0 documentation cleanup, architecture/hardware clarification, the bounded WP3 source comparison and the Becker driver research below have been documented. The latest request authorized finding useful Becker driver evidence. Firmware selection and implementation remain open; listed packages are not automatically authorized by this queue.
 
 ## Work queue and milestones
 
@@ -8,7 +8,7 @@ Updated 2026-11-08. This is the single work queue. WP0 documentation cleanup and
 | --- | --- | --- | --- |
 | WP0 Documentation baseline | P0 / complete; owner acceptance pending | Existing docs | Consistent document roles, traceable findings, work queue and instructions. [Review/evidence](reviews/2026-11-08-documentation.md). |
 | WP1 Existing installation | P0 / next; evidence missing | Owner-supplied equipment/configuration information | Complete inventory and as-built map, or explicit gaps with owner and consequence. Detailed task below. |
-| WP2 Interface and protocol evidence | P0 / planned | WP1 radio identity for hardware-specific conclusions | Match manufacturer manual to radio; record connector view, signals/settings, framing, response/status rules, channel conversion and independent vectors. Unknown rules remain open, never invented. |
+| WP2 Interface and protocol evidence | P0 / open; bounded driver research complete | WP1 radio identity for hardware-specific conclusions | Match manufacturer manual to radio; record connector view, signals/settings, framing, response/status rules, channel conversion and independent vectors. [S11 driver research](technical-investigation.md#becker-driver-follow-up--2026-11-08) adds source leads, not independent protocol validation. Unknown rules remain open, never invented. |
 | WP3 Architecture/reuse choice | P0 / planned | WP1 topology/resources; WP2 interface constraints | Compare installed firmware and short-listed alternatives against R02/R03/R07/R08. Update ADR-01/02 with choice, required changes, license evidence, build inputs and owner decision. |
 | WP4 Driver change plan | P0 / planned | WP1 deployed build; WP2 protocol evidence; WP3 responsibility split | Reproduce/review each applicable source finding, map actual app state/transport/UI paths, then specify one minimal change and regression check per increment. No bundled driver rewrite. |
 | WP5 Host verification | P0 / planned | WP2 independent expectations; accepted WP4 scope | First executable deliverable: a small host harness and one independently supported command/response case. Then separate increments for framing/length/CRC, unknown/stale state, responses and reconnect. Run relevant checks after each change. |
@@ -23,6 +23,12 @@ Public-source analysis can continue when an installed-system input is missing, b
 ## Bounded WP4/WP5 send investigation — 2026-11-08
 
 Owner-requested historical comparison and host reproduction are complete. [Review S12](reviews/2026-11-08-becker-send.md) demonstrates binary truncation in OpenSoar 7.46.26 and tests a one-call byte-span correction. The committed harness is a transport regression, with radio protocol vectors, full application implementation and physical acceptance still open. Next driver increment is the counted-send patch and its integration test, subject to implementation authorization. State validity and real readback remain required for the end-to-end goal.
+
+## Bounded WP2 driver research — complete, 2026-11-08
+
+The owner's request to find useful Becker driver material produced the [S11 source comparison and verification summary](technical-investigation.md#becker-driver-follow-up--2026-11-08). It identifies useful parts of Werner86's PR 449 and LK8000, their remaining defects, the reported control-head reason for paired writes, and a manufacturer protocol-documentation contact lead. It does not complete WP2/WP4 or approve code reuse, implementation or radio commands.
+
+Next evidence prerequisite: Tom's radio identity and installed configuration, then a matching protocol reference or independently captured behavior. Alongside the isolated send correction proposed in S12, a bounded WP4 follow-up is to map the pinned OpenSoar standby caller, receive-state lifecycle and displayed result before specifying state/response changes. Exact response semantics and active-channel preservation during local tuning remain unresolved.
 
 ## WP1 — existing installation (first priority)
 
