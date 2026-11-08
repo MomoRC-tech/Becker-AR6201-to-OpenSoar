@@ -19,6 +19,17 @@ The owner agreed the first-version goal on 2026-11-08: standby transfer while pr
 
 Direct active tuning, swap, volume/squelch, Larus integration, general XCSoar support and aircraft installation are deferred. Existing code for those functions is not a requirement to implement them now. Choosing a license for this repository also remains open; public visibility alone does not establish reuse permission.
 
+## New build selections — 2026-11-08
+
+S16 records the owner's selection of AZ-Delivery ESP32 WROOM-32, HW-044 RS-232 modules, a model-aircraft 5 V BEC and the board's 3.3 V output for converters. See [ADR-04](architecture.md#adr-04--selected-bench-hardware-and-power-path) and the [bench package](connections.md#bench-build-package--2026-11-08). This inventory is separate from the preserved backup below.
+
+| Item | Evidence / decision | Gap, owner and consequence |
+| --- | --- | --- |
+| ESP32 | Brand/family selected; owner confirmed AZ-Delivery | Owner: exact model/link and regulator identity; blocks final header and thermal/current validation |
+| Navigation modules | Supplied photo shows HW-044, VCC/RXD/TXD/GND and apparent MAX3232 marking; two modules planned | Owner/build operator: identify both units and trace IC/header/DB9 nets; blocks a final connection-by-label table. Photo does not prove 3.3 V operation |
+| Supply | Nominal 12 V aircraft battery → BEC rated 2S–4S input / 5 V output → board → 3.3 V converters selected | Owner: exact BEC model, battery chemistry and actual voltage range still needed; blocks protection part values and final power budget. No additional BEC protections inferred from the old UBEC; owner prevents simultaneous USB/BEC connection manually |
+| Radio converter | THVD1451D/SOIC breakout proposed in the bench package | Final interface depends on matched Becker and bench evidence; not an accepted aircraft circuit |
+
 ## Existing installation — WP1 record
 
 Reported context from the previous README/brief (S00): a DG200 installation receives navigation data in OpenSoar through an ESP32. It is not a measured baseline. Do not copy private logs, SSIDs, aircraft identifiers, full serial numbers or credentials into this public repository. Record sanitized conclusions and a non-sensitive evidence reference/date instead.

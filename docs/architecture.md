@@ -1,6 +1,6 @@
 # Architecture and decisions
 
-Updated 2026-11-08. **One ESP32 in new, separate hardware is accepted; the existing setup stays unchanged as backup (ADR-03).** Board, interfaces and detailed routing remain proposed. Tom’s photos partially identify the existing hardware; exact revisions, settings and electrical paths remain open. The inventory and [photo comparison](project-baseline.md#toms-photo-evidence--2026-11-08) belong in [Project baseline](project-baseline.md#existing-installation--wp1-record).
+Updated 2026-11-08. **One ESP32 in new, separate hardware is accepted; the existing setup stays unchanged as backup (ADR-03).** The owner selected the AZ-Delivery WROOM-32 family, HW-044 navigation modules and BEC/board-regulator power path (ADR-04); exact variants, radio interface and detailed routing remain open. Tom’s photos partially identify the existing hardware; exact revisions, settings and electrical paths remain open. The inventory and [photo comparison](project-baseline.md#toms-photo-evidence--2026-11-08) belong in [Project baseline](project-baseline.md#existing-installation--wp1-record).
 
 ## Responsibilities and routing
 
@@ -12,7 +12,7 @@ The conditional radio interface is 3.3 V UART to full-duplex RS-422. The LXNAV R
 
 ## Hardware proposal — one ESP32
 
-Proposed 2026-11-08, based on S08/S09. The separate new build is accepted in ADR-03; exact components, wiring and firmware remain to be selected. Recommend **Espressif ESP32-DevKitC V4 with ESP32-WROOM-32E** as a bench development board: it stays close to the classic ESP32 targeted by both bridge sketches and provides three hardware UARTs. Use the exact WROOM board variant; WROVER reserves GPIO16/17 internally. This development board is not an accepted aircraft installation design.
+The original Espressif ESP32-DevKitC V4/WROOM-32E recommendation (S09) is superseded by the owner's **AZ-Delivery ESP32 WROOM-32** selection (S16). The exact board model/regulator/header layout still needs identification; a vendor Dev Kit C V4 page is a reference, not confirmation of the owner's variant. Preserve the classic ESP32 GPIO allocation as a proposal and verify the exposed pins on the chosen board. The [bench package](connections.md#bench-build-package--2026-11-08) uses GPIO names and verified converter functions rather than assuming header positions.
 
 Prefer separate Zander and FLARM serial inputs and a bidirectional radio UART, with separate network device connections initially. This avoids a new NMEA multiplexer. Existing combined routing may be retained if Tom's evidence shows it is needed and preserves all required messages. OpenSoar's simultaneous device configuration and GPS-source priority still need verification.
 
@@ -63,3 +63,10 @@ Status vocabulary: **proposed → accepted → implemented → verified**, or **
 - Next: resolve those equipment interfaces and specify the new board, converters, power circuitry and connection schedule. Final component selection, physical assembly, bench acceptance and later aircraft integration remain distinct steps; the backup's reported operation does not validate the new hardware.
 
 Verification for this decision increment: checked README, inventory, assumptions, active architecture/reuse guidance, connection scope, sources and roadmap for consistency with S15; checked relative links/anchors and whitespace. Historical photo findings remain labelled, with superseded reuse guidance linked here. Documentation only; no purchases, builds, flashing, wiring or device tests performed.
+
+### ADR-04 — selected bench hardware and power path
+
+- Status: **owner-selected families and power topology**, 2026-11-08 (S16); not electrically verified. The user requested the bench schematic/parts/connection package and then selected AZ-Delivery WROOM-32, the pictured HW-044 modules, a model-aircraft 5 V BEC and board-derived 3.3 V.
+- Decision: use two new HW-044 modules for the proposed navigation paths, subject to module/interface checks. The owner reports a nominal 12 V aircraft battery feeding a BEC rated for 2S–4S input. Power the board from the BEC's 5 V output and converters from its 3.3 V regulator. Preserve ADR-03's backup intact. The owner will manually prevent simultaneous USB/BEC powering; no extra USB power-selection or back-feed circuitry is planned.
+- Proposed engineering details: THVD1451D on a SOIC breakout for the isolated bench radio path; input fuse and reverse-polarity protection; transient/output-overvoltage protection selected from the actual source/BEC/board limits. The radio data path is separate; the proposed transceiver is not galvanically isolated.
+- Consequence: the [connection document](connections.md#bench-build-package--2026-11-08) owns the BOM, schematic, continuity checks, power budget and one verification summary. Unknown protection values and module/connector mappings remain explicit. This selection does not approve substitutions, establish aircraft suitability or close WP1/WP2/WP7.

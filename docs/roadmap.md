@@ -1,6 +1,6 @@
 # Roadmap and iterative workflow
 
-Updated 2026-11-08. This is the single work queue. WP0 documentation cleanup, architecture/hardware clarification, the bounded WP3 source comparison and the Becker driver research below have been documented. Tom’s photos were assessed in WP1; the owner then accepted a new, separate hardware build with the existing setup preserved as backup ([ADR-03](architecture.md#adr-03--new-hardware-with-the-existing-setup-as-backup)). Component/firmware selection and implementation remain open; listed packages are not automatically authorized by this queue.
+Updated 2026-11-08. This is the single work queue. WP0 documentation cleanup, architecture/hardware clarification, the bounded WP3 source comparison and the Becker driver research below have been documented. Tom’s photos were assessed in WP1; the owner then accepted a new, separate hardware build with the existing setup preserved as backup ([ADR-03](architecture.md#adr-03--new-hardware-with-the-existing-setup-as-backup)). The bounded bench-design package is now documented, with owner-selected component families and explicit unresolved interfaces/protection. Firmware selection and implementation remain open; listed packages are not automatically authorized by this queue.
 
 ## Work queue and milestones
 
@@ -9,7 +9,7 @@ Updated 2026-11-08. This is the single work queue. WP0 documentation cleanup, ar
 | WP0 Documentation baseline | P0 / complete; owner acceptance pending | Existing docs | Consistent document roles, traceable findings, work queue and instructions. [Review/evidence](reviews/2026-11-08-documentation.md). |
 | WP1 Existing installation | P0 / in progress; photo increment complete, identity/configuration gaps remain | Owner-supplied equipment/configuration information | Complete inventory and as-built map, or explicit gaps with owner and consequence. [Photo assessment and verification](project-baseline.md#toms-photo-evidence--2026-11-08); detailed task below. |
 | WP2 Interface and protocol evidence | P0 / open; bounded driver research complete | WP1 radio identity for hardware-specific conclusions | Match manufacturer manual to radio; record connector view, signals/settings, framing, response/status rules, channel conversion and independent vectors. [S11 driver research](technical-investigation.md#becker-driver-follow-up--2026-11-08) adds source leads, not independent protocol validation. Unknown rules remain open, never invented. |
-| WP3 Architecture/reuse choice | P0 / planned; separate new hardware accepted | WP1 equipment interfaces/behavior; WP2 interface constraints | Select new hardware and compare firmware candidates against R02/R03/R07/R08 under ADR-03. Installed firmware may be a reference; backup-board spare resources are not a gate. Update ADR-01/02 with choices, required changes, license evidence, build inputs and owner decision. |
+| WP3 Architecture/reuse choice | P0 / in progress; bench design documented | WP1 equipment interfaces/behavior; WP2 interface constraints | Select new hardware and compare firmware candidates against R02/R03/R07/R08 under ADR-03. Installed firmware may be a reference; backup-board spare resources are not a gate. Update ADR-01/02 with choices, required changes, license evidence, build inputs and owner decision. |
 | WP4 Driver change plan | P0 / planned | WP1 deployed build; WP2 protocol evidence; WP3 responsibility split | Reproduce/review each applicable source finding, map actual app state/transport/UI paths, then specify one minimal change and regression check per increment. No bundled driver rewrite. |
 | WP5 Host verification | P0 / planned | WP2 independent expectations; accepted WP4 scope | First executable deliverable: a small host harness and one independently supported command/response case. Then separate increments for framing/length/CRC, unknown/stale state, responses and reconnect. Run relevant checks after each change. |
 | WP6 Bridge increment | P0 / planned | Accepted WP3 choice; WP5 cases | One isolated bidirectional radio path with exact-byte tests, bounded buffers, checked writes, exclusive command ownership and isolated diagnostics. Verify coexistence against WP1 baseline. |
@@ -19,6 +19,12 @@ Updated 2026-11-08. This is the single work queue. WP0 documentation cleanup, ar
 Milestones are evidence gates, not dates: **M1 understood installation** (WP1 + hardware-specific WP2); **M2 selected design** (WP3/WP4 and owner decision); **M3 software evidence** (WP5/WP6); **M4 bench evidence** (WP7). No runtime or hardware milestone is complete.
 
 Public-source analysis can continue when an installed-system input is missing, but must not silently close the dependent package. Before starting WP2–WP7, choose one row or a smaller subtask with its own output and stop point.
+
+## Bounded WP3 bench hardware package — 2026-11-08
+
+Owner-authorized schematic, parts list and connection schedule are documented in [connections.md](connections.md#bench-build-package--2026-11-08), including one verification summary and staged checks. S16 incorporates subsequent choices: AZ-Delivery WROOM-32, HW-044 RS-232 modules, a 5 V model-aircraft BEC and board-derived 3.3 V. ADR-04 records selection versus proposed engineering details. No hardware or firmware was changed.
+
+Next bounded step: identify the exact ESP32 board and BEC/input source; finish the regulator budget and protection parts, and obtain the HW-044 continuity map. Instrument connectors and final radio circuitry remain dependent on WP1/WP2. The BOM is usable for planning but its protection/harness rows are not purchase-ready. WP3 and physical acceptance remain open.
 
 ## Bounded WP4/WP5 send investigation — 2026-11-08
 
