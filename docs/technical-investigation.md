@@ -1,20 +1,22 @@
 # Technical investigation
 
-Reviewed 2026-11-08. This is a source review and an engineering recommendation. No application build, simulator, ESP32 execution, radio bench test, or aircraft test was performed.
+Original reviews dated 2026-11-08, preserved from [baseline fbed731](https://github.com/MomoRC-tech/Becker-AR6201-to-OpenSoar/tree/fbed731cf5fa7e0f3106886182d14e2282b72a6b). This report records prior source/manual observations, not measured interoperability. The cleanup rechecked only the scope listed in [Sources and evidence](sources.md); other historical verification statements below belong to the original reviews. No application build, simulator, ESP32 execution, radio bench test, or aircraft test is established here.
 
-## Reproducible source baseline
+Current requirements, decisions and package order live in [Project baseline](project-baseline.md), [Architecture](architecture.md) and [Roadmap](roadmap.md). Their status takes precedence over recommendations in this research report.
 
-| Project | Reviewed revision | Latest commit date at review | Repository state |
+## Original source baseline
+
+| Project | Reviewed revision | Commit date recorded in prior review | State recorded in prior review |
 | --- | --- | --- | --- |
 | OpenSoar | [4a3794a](https://github.com/August2111/OpenSoar/tree/4a3794a02211eb03b21ddb8a6b8ec5ad62ee3b41) | 2026-10-21 | Not archived |
 | ESP32 Serial Bridge | [bb42dc3](https://github.com/AlphaLima/ESP32-Serial-Bridge/tree/bb42dc3db926f9baf1f5faa76cc21bad1dd80cdf) | 2026-07-28 | Not archived |
 | ESP32 Serial Bridge Pro | [bf263c1](https://github.com/AlphaLima/ESP32-Serial-Bridge-Pro/tree/bf263c1880d7630cadef5264dac9aa9654e4096e) | 2026-07-30 | Not archived |
 
-Dates and archive flags came from GitHub repository/commit metadata. Recent commits alone do not establish ongoing support or reliability. The installed firmware and Android build have not been identified.
+Dates and archive flags above are historical metadata recorded by the original review, not current maintenance claims. The subsequent OpenSoaring baseline is b2e745cfddfe0150f6ed7db467ac18c321b38d01 (S01/S02 in [Sources](sources.md)); the August2111 revision remains as provenance. Neither baseline identifies the installed firmware or Android build.
 
 ## OpenSoar driver findings
 
-Confirmed in the [pinned AR62xx driver](https://github.com/August2111/OpenSoar/blob/4a3794a02211eb03b21ddb8a6b8ec5ad62ee3b41/src/Device/Driver/AR62xx.cpp).
+The original review reports the following observations in the [pinned AR62xx driver](https://github.com/August2111/OpenSoar/blob/4a3794a02211eb03b21ddb8a6b8ec5ad62ee3b41/src/Device/Driver/AR62xx.cpp).
 
 | Area | Source observation and consequence |
 | --- | --- |
@@ -44,7 +46,7 @@ However, startup prints go to all three UARTs unconditionally. Disabling debug a
 
 The [configuration](https://github.com/AlphaLima/ESP32-Serial-Bridge/blob/bb42dc3db926f9baf1f5faa76cc21bad1dd80cdf/config.h) defaults to three UARTs, TCP ports 8880–8882, 19200 baud, 8N1, AP mode, debug, and OTA. These defaults describe the project, not the Becker requirements or installed board.
 
-The repository includes an [MIT license](https://github.com/AlphaLima/ESP32-Serial-Bridge/blob/bb42dc3db926f9baf1f5faa76cc21bad1dd80cdf/LICENSE). It is the smaller adaptation candidate, subject to the forwarding fixes and hardware checks.
+The repository includes an [MIT license](https://github.com/AlphaLima/ESP32-Serial-Bridge/blob/bb42dc3db926f9baf1f5faa76cc21bad1dd80cdf/LICENSE). It remains a comparison candidate, subject to the forwarding fixes and hardware checks; see ADR-02 for the current evaluation order.
 
 ### Pro bridge
 
@@ -60,17 +62,17 @@ No standalone license file appeared in the reviewed tree, despite the README ref
 
 Its successful navigation service is user-reported. Firmware source, board variant, serial routing, and bidirectional behavior are unknown. Identify and back up its configuration before deciding whether to adapt it. Neither upstream candidate has been shown to match the installed firmware.
 
-## Recommended minimum architecture
+## Architecture recommendation from the investigation
 
 Follow-up research identifies the Yuri-rage fork as the first small bridge candidate to evaluate. See [Related projects](related-projects.md) for the updated comparison.
 
-Retain the proposed separate radio TCP endpoint and byte-transparent UART path. Prefer adapting the installed firmware if inspection establishes that it can meet the requirements. Otherwise, start from the basic MIT bridge, with bounded buffering, checked writes, isolated diagnostics, and one command-writing client for the radio endpoint. Pro adds configuration convenience but also filtering/routing and licensing work.
+The separate radio TCP endpoint and byte-transparent UART path remain proposals. Prefer investigating the installed firmware first. If it cannot meet requirements, evaluate the Yuri-rage fork before basic AlphaLima, as suggested by the follow-up research. No firmware is selected. Required evaluation includes bounded buffering, checked writes, isolated diagnostics and command-writer ownership. Pro adds filtering/routing and licensing work. [ADR-01/02](architecture.md#decision-record) own the current alternatives and decision gates.
 
-Before radio bench testing, address the OpenSoar transmission, initialization, framing, and acknowledgment defects together. Establish the real radio response rules before implementing ACK handling. Keep frequency validity explicit, require known active state before standby changes, and refresh state after reconnect or local radio changes.
+Before radio bench testing, resolve applicable transmission, initialization, framing and response-handling risks. Do so in separate reviewable increments with targeted checks, following WP4/WP5. Establish the real radio response rules before implementing ACK handling. Keep frequency validity explicit, require known active state before standby changes, and refresh state after reconnect or local radio changes.
 
 These are proposed changes. This investigation implements documentation only.
 
-## Open checks and next work package
+## Detailed open checks
 
 | Check | Evidence needed |
 | --- | --- |
@@ -86,11 +88,11 @@ These are proposed changes. This investigation implements documentation only.
 
 Use the [Becker manual catalog](https://becker-avionics.com/manual-instructions-downloads/) to select the manual after identifying the device revision. No pinout or baud rate is approved by this review.
 
-The next executable deliverable should be a host-side protocol harness with independently checked vectors and explicit tests for the source findings. A simulator based only on the same driver would reproduce its assumptions, so agreement with it alone is insufficient.
+The first executable deliverable remains a host-side protocol harness (WP5), after independent expectations and its scope are established. It is not the next project task: WP1 inventory comes first. A simulator based only on the same driver would reproduce its assumptions, so agreement with it alone is insufficient. See the [roadmap](roadmap.md) for dependencies and acceptance criteria.
 
 ## Follow-up source verification (2026-11-08)
 
-- The official release index records the Becker driver in OpenSoar 7.28.05 on 2023-03-24 and lists 7.46.26, dated 2026-10-30, at the top. The 7.46.26 notes still mark Becker support WIP. The tag is in the OpenSoaring organization repository, distinct from the August2111 fork used for the initial review. [Release index](https://opensoar.de/releases/) · [7.46.26 notes](https://opensoar.de/releases/v7.46.26/)
+- The original review recorded the Becker driver in OpenSoar 7.28.05 on 2023-03-24 and 7.46.26, dated 2026-10-30, at the top of the release index at that time. That review reported Becker support marked WIP in the 7.46.26 notes. The release page could not be retrieved during the documentation cleanup (S04); this is not a newly verified release claim. The tag is in the OpenSoaring organization repository, distinct from the August2111 fork used for the initial review. [Release index](https://opensoar.de/releases/) · [7.46.26 notes](https://opensoar.de/releases/v7.46.26/)
 - The official tag resolves to b2e745cfddfe0150f6ed7db467ac18c321b38d01. Its driver still uses A5/14 framing, CRC polynomial 8005 hexadecimal, channel conversion, and a command containing both frequency values. It still passes a character pointer without the frame length and assigns ACK locally after the write. Received frequency fields update private state. This confirms the source findings at the release tag. The Android build and actual radio reply behavior still need testing. [Tagged AR62xx source](https://github.com/OpenSoaring/OpenSoar/blob/b2e745cfddfe0150f6ed7db467ac18c321b38d01/src/Device/Driver/AR62xx.cpp)
 - Becker DV14307.03 Issue 06, section 2.5.3.2 (page 59), confirms J1 pins 2/9 as TX2+/−, 3/10 as RX2+/−, and 21 as D_GND (discrete-line ground). Pins 22 and 23 also carry D_GND in that table. Becker lists separate first hardware design manuals. The older tables label pin 2 TX2+ with conflicting direction text (IN in the direction column and OUT+ in the function column). Issue 06 marks it OUT. Pin functions also vary by revision, including J1-5. Match the installed part number, software version, and connector view before relying on a diagram. [Issue 06, page 59](https://www.becker-avionics.com/wp-content/uploads/00_Literature/6200_Series_IO_en.pdf#page=59) · [First hardware design manual](https://becker-avionics.com/wp-content/uploads/2017/08/AR6201_IO_SW3050149.pdf#page=22) · [Manual catalog](https://becker-avionics.com/manual-instructions-downloads/)
 - LXNAV rev. 21 v2.10, pages 10–11, shows separate AR6201 single-seat, AR6201 twin-seat, and RT6201 remote-head layouts. The AR6201 diagrams use interface 2 for the LXNAV adapter and pin 21 for its ground connection. The RT6201 example uses interface 1 for the adapter and interface 2 for the RCU. These diagrams include a separate RS232-to-RS422 Becker adapter on the LXNAV bridge path. The reseller listing identifies a J1 harness for that product. [LXNAV diagrams](https://www.lx-avionik.de/wp/download/manuals/lx232BridgeManualEnglishVer0210Rev21.pdf#page=10) · [Navboys harness listing](https://www.navboys.com/lxnav-to-becker-ar6201-harness-for-radio-bridge-j1-plug.html)
@@ -100,6 +102,6 @@ The next executable deliverable should be a host-side protocol harness with inde
 Verification consisted of release and source checks and visual inspection of the LXNAV diagrams. The installed part number, firmware, J1 occupancy, serial settings and bench behavior remain open.
 
 
-## Verification record
+## Original verification record
 
 Read the complete pinned driver and port write declarations, the basic sketch/configuration/license, and Pro configuration and forwarding paths. Confirmed cloned bridge HEADs match the recorded revisions. Reviewed documentation links and Markdown whitespace. All behavior claims above are static source observations or stated consequences. Runtime performance, toolchain compatibility, and physical interoperability remain untested.

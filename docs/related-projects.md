@@ -1,8 +1,10 @@
 # Related projects and reuse investigation
 
-Reviewed 2026-11-08. Public GitHub repository searches covered AR6201/AR620x, Becker issues in XCSoar/OpenSoar/LK8000, and ESP32 serial bridges. This is source/documentation review. No candidate was built or tested with hardware.
+Prior investigation dated 2026-11-08, preserved from [baseline fbed731](https://github.com/MomoRC-tech/Becker-AR6201-to-OpenSoar/tree/fbed731cf5fa7e0f3106886182d14e2282b72a6b). Public GitHub searches covered AR6201/AR620x, Becker issues in XCSoar/OpenSoar/LK8000, and ESP32 serial bridges. Candidate source/metadata findings below were not independently repeated during the documentation cleanup. No candidate was built or tested with hardware.
 
-## Prioritized shortlist
+These are research leads, not selected dependencies or verified compatibility. [Sources](sources.md) defines the evidence labels; [ADR-02](architecture.md#adr-02--implementation-and-reuse-baseline) owns the evaluation order and [WP3](roadmap.md#work-queue-and-milestones) owns selection.
+
+## Prior review shortlist
 
 ### LK8000 — primary protocol reference
 
@@ -16,7 +18,7 @@ The [AlphaLima-derived fork](https://github.com/yuri-rage/ESP-Serial-Bridge/tree
 
 Inspection of its main sketch confirms the TCP receive loop breaks at buffer capacity before forwarding, addressing the drain-and-drop behavior in the basic AlphaLima revision. UART-to-TCP writes carry explicit lengths. Bluetooth targets a configured serial port. Write results remain unchecked in the inspected paths. Debug/boot output, multiple writers, backpressure, and simultaneous navigation require further checks.
 
-Revision 130f731416d43c89bce5626ef989b3e65918c9ce, committed 2024-08-21. MIT repository metadata. A clone attempt failed with an empty server response, so pinned API/raw endpoints were used to inspect the tree, README, and sketch. Build compatibility statements are upstream claims.
+Revision 130f731416d43c89bce5626ef989b3e65918c9ce, committed 2024-08-21. MIT repository metadata. The original review inspected the tree, README and sketch through pinned API/raw endpoints. Build compatibility statements are upstream claims.
 
 ### rbp28668/RadioDriver — dedicated Becker controller examples
 
@@ -41,7 +43,7 @@ Revision a794c4a994838b94d2b0bfa69ef76cda9a698957, committed 2024-08-02. README 
 
 No merged repair or independently validated end-to-end replacement was established in this search. The search is not exhaustive.
 
-## Updated recommendation
+## Recommendation recorded by the prior review
 
 1. Identify the installed ESP32 firmware before selecting a replacement.
 2. Compare OpenSoar with LK8000 and the historical Becker branches for explicit-length transmission, initialization, and status handling.
@@ -49,8 +51,8 @@ No merged repair or independently validated end-to-end replacement was establish
 4. Establish real radio response rules and independent vectors before implementing ACK logic or trusting a simulator.
 5. Exercise embedded zero/A5, malformed frames, startup state, oversized bursts, partial writes, slow clients, reconnects, and navigation coexistence.
 
-This updates the earlier preference for the basic AlphaLima bridge. It is a candidate-selection recommendation. Installed firmware replacement remains a later step.
+This superseded the earlier preference for starting with basic AlphaLima. It is a candidate-evaluation recommendation; installed firmware replacement remains undecided. Use ADR-02 for the current decision status.
 
-## Verification and limitations
+## Original verification and limitations
 
 Inspected pinned source for LK8000, the Yuri-rage forwarding paths, RadioDriver entry points/tree, and XCVario routing. Read DroneBridge documentation and checked repository metadata and XCSoar issue/PR status. License labels need file-level review before reuse. No application build, hardware test, or independent reproduction of historical claims was performed.
