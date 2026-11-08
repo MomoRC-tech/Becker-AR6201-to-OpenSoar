@@ -25,7 +25,7 @@ Reported context from the previous README/brief (S00): a DG200 installation rece
 
 | Item | Reported information | Still needed | Evidence/status |
 | --- | --- | --- | --- |
-| Radio | Target named AR6201; earlier notes also say AR6102 | Exact model/part number, hardware and software revisions; connector occupancy | Reported / identity unresolved |
+| Radio | Becker AR6201 is the project target | Installed unit’s full part number, hardware and software revisions, and connector occupancy | Reported / installed variant unverified |
 | ESP32 | Existing serial-to-Wi-Fi bridge | Board/SoC, firmware project and revision, config backup, UART/pin ownership, boot/debug outputs | Reported / artifacts missing |
 | Zander | ZS1 navigation input | Connection, signal levels, serial settings, routing and baseline reception | Reported / unmeasured |
 | FLARM | Additional serial input | Model, format, levels, serial settings, routing and baseline reception | Reported / unmeasured |
