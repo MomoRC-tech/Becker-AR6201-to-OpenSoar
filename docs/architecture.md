@@ -1,6 +1,6 @@
 # Architecture and decisions
 
-Updated 2026-11-08. **One ESP32 accepted as an owner constraint; board, interfaces and detailed routing remain proposed.** The actual installation is still unknown; its inventory belongs in [Project baseline](project-baseline.md#existing-installation--wp1-record).
+Updated 2026-11-08. **One ESP32 accepted as an owner constraint; board, interfaces and detailed routing remain proposed.** Tom’s photos partially identify the hardware; exact revisions, settings and electrical paths remain open. The inventory and [photo comparison](project-baseline.md#toms-photo-evidence--2026-11-08) belong in [Project baseline](project-baseline.md#existing-installation--wp1-record).
 
 ## Responsibilities and routing
 

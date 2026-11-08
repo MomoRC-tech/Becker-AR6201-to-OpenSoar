@@ -23,17 +23,19 @@ Direct active tuning, swap, volume/squelch, Larus integration, general XCSoar su
 
 Reported context from the previous README/brief (S00): a DG200 installation receives navigation data in OpenSoar through an ESP32. It is not a measured baseline. Do not copy private logs, SSIDs, aircraft identifiers, full serial numbers or credentials into this public repository. Record sanitized conclusions and a non-sensitive evidence reference/date instead.
 
-| Item | Reported information | Still needed | Evidence/status |
+| Item | Reported / visible information | Still needed, owner and consequence | Evidence/status |
 | --- | --- | --- | --- |
-| Radio | Becker AR6201 is the project target | Installed unit’s full part number, hardware and software revisions, and connector occupancy | Reported / installed variant unverified |
-| ESP32 | Existing serial-to-Wi-Fi bridge | Board/SoC, firmware project and revision, config backup, UART/pin ownership, boot/debug outputs | Reported / artifacts missing |
-| Zander | ZS1 navigation input | Connection, signal levels, serial settings, routing and baseline reception | Reported / unmeasured |
-| FLARM | Additional serial input | Model, format, levels, serial settings, routing and baseline reception | Reported / unmeasured |
-| Android/OpenSoar | Receives navigation via Wi-Fi | App/build version, device entries, drivers, transport and endpoint mapping | Reported / configuration missing |
-| Existing wiring | No verified map available | Sanitized as-built map, level converters, UART ownership and power paths | Unknown |
-| Navigation baseline | Successful reception reported | Data types, update intervals/gaps, observation duration and reconnect behavior | Unknown |
+| Radio | Becker AR6201 is the project target; not identified by the photos | Tom: installed unit’s part number, HW/SW revisions and connector occupancy; blocks matching the manual/interface | Reported / installed variant unverified |
+| ESP32 | Photos show a WROOM-family module on a development board with micro-USB, BOOT/RST buttons and two long pin rows | Tom: exact board/module revision, firmware project/revision, private configuration backup, UART/GPIO ownership and boot/debug outputs; blocks reuse and routing choice | S13 P3/P4 rechecked photo source; exact board and firmware unknown |
+| Zander | ZS1 navigation input reported; endpoints not traceable in photos | Tom: cable/connector map, signal levels, serial settings, routing and return-traffic needs; blocks preserving the existing path | Reported / unmeasured |
+| FLARM | Additional serial input reported; model not shown | Tom: model, occupied ports, format, levels, serial settings, routing and return-traffic needs; blocks interface and port choice | Reported / unmeasured |
+| Android/OpenSoar | Receives navigation via Wi-Fi | Owner, with Tom if needed: app/build version, device entries, drivers, transport and endpoint mapping; blocks app/bridge configuration comparison | Reported / configuration missing |
+| Serial converters | Separate board marked RS422 TO TTL, with Y/Z/B/A terminals and a wired logic header | Tom: board/IC identity, supply and logic levels, both-side wiring and whether installed or merely available; blocks accepting it for the radio. Navigation converters remain unidentified | S13 P1 rechecked photo source; compatibility unknown |
+| Bridge power | HOBBYWING UBEC-labelled module in the assembly, with a blue jumper visible | Tom: exact unit, selected/measured output, input source/protection, board entry pin and converter supplies/grounds; blocks supply compatibility. S14 is a product-family lead only | S13 P2 rechecked photo source; no voltage measurement |
+| Existing wiring | ESP32, stripboard, power module, enclosure and partly covered harness visible | Tom: sanitized end-to-end pin map, UART ownership, references and power paths; blocks final wiring and coexistence review | S13 partial photo map below; no continuity evidence |
+| Navigation baseline | Successful reception reported | Owner/Tom: data types, update intervals/gaps, observation duration and reconnect behavior; blocks defining and verifying preservation of existing reception | Reported / unmeasured |
 
-WP1 fills this table from evidence and adds an as-built map here. A proposed map belongs in [architecture](architecture.md), never in this inventory. Backup material stays private; do not alter or reflash working equipment to obtain it.
+The partial as-built record below contains only supported observations and explicit gaps. Proposed wiring remains in [connections](connections.md). Backup material stays private; do not alter or reflash working equipment to obtain it.
 
 ### Owner clarification — 2026-11-08
 
@@ -41,6 +43,41 @@ WP1 fills this table from evidence and adds an as-built map here. A proposed map
 - **Accepted constraint:** one ESP32. A board/topology proposal is requested; it does not identify the existing board or authorize replacement.
 - **Assumption / planning target:** latest released OpenSoar. S09 identifies 7.46.26 as the latest listed release on the review date; installed build/configuration remains unknown.
 - **Consequence:** final connector pinning, voltage conversion, power design, serial settings and navigation directionality await Tom’s information. Public-source architecture work may continue as a proposal.
+
+### Tom’s photo evidence — 2026-11-08
+
+The owner supplied four photos attributed to Tom (S13). This is visual evidence of the pictured hardware, not a powered test or confirmation that every item is currently connected. Raw images remain outside version control; aircraft markings and other identifiers are omitted here.
+
+| Photo | Rechecked source: visible observation | Inference / limit |
+| --- | --- | --- |
+| P1 | Blue board marked RS422 TO TTL; four screw terminals marked Y, Z, B, A; VCC/GND markings at the wired header; IC marking too blurred to identify | Relevant candidate for the proposed radio interface. Separate terminal pairs suggest a full-duplex module, but the IC/circuit must establish direction, polarity, supply, logic levels, termination and isolation. TTL wording does not establish 3.3 V compatibility. No connection to the radio or pictured ESP32 is traceable |
+| P2 | HOBBYWING UBEC-labelled module, visible 3A marking, blue jumper, stripboard and soldered wiring | Likely the bridge’s regulator; exact model/revision, jumper function/setting and delivered voltage are unverified. S14 describes a similar 5/6 V selectable product, not a measurement of this unit |
+| P3 | ESP32 WROOM-family development board; module marking appears to read ESP-WROOM-32; micro-USB, BOOT/RST buttons, pin labels and attached wiring visible | Supports the classic ESP32/WROOM family as a reuse lead. Does not establish an official DevKitC V4, WROOM-32E, board schematic, firmware, spare UARTs or complete GPIO assignments |
+| P4 | Wider view of the board, green enclosure and partly covered cable assembly | Supports assembly context; covered joins and off-frame endpoints prevent an end-to-end wiring map. Wire colour alone does not establish function or voltage |
+
+#### Partial as-built connection map
+
+This table maps the visible segments without inventing electrical connections. No equipment-to-GPIO path is established by these photos.
+
+| Segment | Supported map | Unresolved endpoint / function |
+| --- | --- | --- |
+| Enclosure assembly | P2–P4 show the ESP32 board, stripboard, UBEC module and wiring as parts of the photographed assembly | Exact interconnections, supply entry, regulator output destination and any concealed interface circuits |
+| External harness | P3/P4 show conductors from the harness reaching the board area; sections are covered | Connector contacts, GPIOs, serial directions and which branch serves Zander or FLARM |
+| RS-422 module | P1 shows wires attached at its logic-side header and four labelled field terminals | Far ends of those wires, field-side cable, radio connection and relationship to the enclosure assembly |
+| Navigation over Wi-Fi | S00 reports navigation reception through the ESP32 into OpenSoar | Whether feeds are combined, network transport/endpoints, UART settings and return traffic; not visible or measured in S13 |
+
+#### Comparison with the proposal
+
+| Part | Disposition | Reason / next evidence |
+| --- | --- | --- |
+| Existing ESP32 | **Unresolved; retain as a reuse candidate** | Photos give no reason by themselves to require replacement. Identify board, firmware and allocated resources before applying the proposed GPIO table |
+| RS422 TO TTL module | **Unresolved** | Its stated function is relevant, but the photos cannot establish electrical compatibility or that it is already in use. Obtain an IC marking or exact product reference before choosing it |
+| UBEC and power wiring | **Unresolved** | A regulator is present; a suitable output rail and board input are not established. Do not assume 5 V from appearance or wire colour |
+| Navigation wiring / converters | **Unresolved** | Concealed or off-frame circuitry cannot be treated as absent. Preserve existing paths while obtaining the map |
+
+Smallest next evidence request, owned by Tom: identify whether P1 is installed or a proposed addition, provide its IC/product identity, and name the ESP32 firmware with its current GPIO-to-device assignments. Radio identity/revisions and the remaining inventory gaps are still required before final wiring. No replacement, firmware selection or hardware work is approved by this comparison.
+
+**WP1 photo increment verification:** inspected all four supplied photos and cross-checked the UBEC product-family lead S14; separated visible labels from inferred functions and unknown connections. Checked updated document consistency, relative links/anchors and whitespace. Public changes contain sanitized text only. No build, firmware access, continuity/voltage measurement, live navigation observation or radio test was performed. This increment supports R02/R06/R07 evidence collection; WP1 and M1 remain open.
 
 ## Assumptions to resolve
 

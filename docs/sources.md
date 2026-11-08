@@ -6,7 +6,7 @@ Reviewed for documentation cleanup and the dated follow-up investigations on 202
 
 | Label | Meaning |
 | --- | --- |
-| Rechecked source | Read at the stated revision during the identified review; consequences inferred from code are identified as such. |
+| Rechecked source | Read at the stated revision or inspected as a dated supplied artifact during the identified review; inferred consequences/functions are identified separately. Photo inspection establishes visible features, not electrical measurements. |
 | Prior review | Preserved investigation at S00; not independently repeated in this cleanup. |
 | Reported | Project/user/vendor statement; no matching measurement supplied. |
 | Assumption / proposed | Working hypothesis or design choice; not a verified fact or approval. |
@@ -25,6 +25,8 @@ Reviewed for documentation cleanup and the dated follow-up investigations on 202
 | S06 | [Related projects](related-projects.md) | Prior pinned LK8000, Yuri-rage, RadioDriver, DroneBridge and XCVario reviews plus historical XCSoar issues/PRs. Candidate/licensing/build claims require rechecking before selection or copying. |
 | S07 | [OpenAI workflow guidance](https://developers.openai.com/cookbook/examples/codex/iterating-development-workflows-with-codex) | Read on 2026-11-08 for repository work instructions. Our file layout and package gates are project conventions, not mandatory Codex infrastructure. |
 | S11 | [Becker driver follow-up](technical-investigation.md#becker-driver-follow-up--2026-11-08), checked 2026-11-08 | Rechecked S01/S02; Werner86/XCSoar 9854e3f3ba6ed92c2094cdaa4afa8278d67f8f0c driver and RadioFrequency.hpp; LK8000 8d78c63f599b894dbff217e007db44be06ee67ee driver and conversion history; eku60/XCSoar a9ab01cd4855db8b60deb59675ffe74b5d7a0b55 driver; rbp28668/RadioDriver a794c4a994838b94d2b0bfa69ef76cda9a698957 Arduino driver, Windows license header and tree. Exact file/function references, selected OpenSoar branch pins and one verification summary are in the follow-up. PR 449 and issue 1092 hardware/protocol statements remain attributed reports; Becker's live service page is a contact lead. No independent protocol document, traffic capture or runtime result. |
+| S13 | Four owner-supplied photos attributed to Tom, received/inspected 2026-11-08: P1 `1000062273.jpg`, P2 `1000062275.jpg`, P3 `1000062274.jpg`, P4 `1000062276.jpg` | Rechecked photo sources: converter labels, ESP32 board/module appearance, UBEC label, stripboard and partly covered harness. Capture date and hardware revisions unknown. [Photo findings, partial as-built map and verification](project-baseline.md#toms-photo-evidence--2026-11-08). Original images retained privately, not published; no identifying markings transcribed. No electrical/settings/runtime evidence |
+| S14 | [Hobbywing UBEC 3A (2-6S), part 86010010](https://www.hobbywing.com/en/products/ubec-3a-2-6s99), Overview / Specifications, checked 2026-11-08; live page has no stated revision | Rechecked manufacturer description: switching DC-DC regulator with jumper-selected 5 V or 6 V output, rated 3 A. Product-family identification lead for S13 P2 only; exact pictured unit/revision and installed output setting are not confirmed |
 
 The detailed manual pinouts, product-specific version cutoffs and license metadata in S05/S06 remain research leads. They do not establish compatibility, universal protocol rules, reuse permission for every file, or a wiring instruction for this installation.
 
