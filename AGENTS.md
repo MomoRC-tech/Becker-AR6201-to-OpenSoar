@@ -25,10 +25,12 @@ For documentation-only work, check consistency, relative links/anchors, source s
 
 Update the document that owns the information: baseline for requirements/inventory/risks; sources for evidence; architecture for decisions; roadmap for work status. Preserve useful prior findings, label superseded guidance and link replacements. Keep one concise verification summary per package, with detailed evidence only where useful.
 
+Keep documentation readable and easy to navigate. Use descriptive headings, short paragraphs and tables for structured data. Keep the README focused on the project goal, scope, architecture and next step. Record approval history and dated review notes in the relevant project documents, and link to details where readers need them.
+
 ## Preservation and delivery
 
 This repository is public. Do not commit credentials, private firmware/configuration backups, identifying device logs or other private datasets. Use sanitized findings and synthetic fixtures.
 
-Review the diff and stage only task files. Never reset/overwrite unrelated changes or force-push to simplify publication. Confirm the remote base before writing; handle concurrent changes explicitly. Report failed writes and unsaved work.
+Review the diff and stage only task files. Commit and push relevant, verified changes to the project remote at the end of each task. Never reset/overwrite unrelated changes or force-push to simplify publication. Confirm the remote base before writing and handle concurrent changes explicitly. Report failed commits or pushes and any unsaved work.
 
 Finish with a concise outcome, meaningful verification, commit/publication status and unresolved items. Include a very brief emoji summary. Keep the existing English documentation language unless the user requests otherwise; communicate with the user in their chosen language.

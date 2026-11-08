@@ -1,55 +1,47 @@
-# Becker AR6201 to OpenSoar
+# FLARM, Zander and Becker to OpenSoar
 
-Select an airfield in OpenSoar on Android and transfer its frequency to the Becker radio's **standby** slot while preserving the active frequency and existing Zander/FLARM feeds. An ESP32 Wi-Fi/serial bridge is the proposed transport. Prefer reuse of the existing installation and available software.
+Connect **FLARM, the Zander ZS1 and the Becker radio to OpenSoar on Android through one ESP32 Wi-Fi bridge**. Bring navigation data into OpenSoar and send a selected airfield frequency to the radio’s standby slot.
 
-**Status — 2026-11-08:** Documentation and investigation only. This repository contains no firmware, simulator or automated runtime tests. Navigation reception is reported in earlier project notes; radio control and compatibility with the installed equipment have not been demonstrated. Even the exact radio model/revision remains to be confirmed.
+## What the project should deliver
 
-## Agreed first-version goal
+| Device | Function in OpenSoar |
+| --- | --- |
+| FLARM | Receive traffic and available navigation data. |
+| Zander ZS1 | Receive the instrument’s navigation and flight data. |
+| Becker radio | Set standby from the selected airfield and receive radio status where supported. |
 
-Agreed with the owner on 2026-11-08:
+Preserve the active radio frequency, local radio controls and existing navigation functions. Distinguish a sent command from a confirmed change and report failure or unknown state clearly.
 
-- Transfer the selected airfield channel from OpenSoar to Becker **standby**, preserving the actual active channel.
-- Preserve existing Zander/FLARM reception and keep the radio's local controls usable.
-- Distinguish a sent command from a confirmed radio change; show failure or unknown state honestly.
-- Reuse suitable installed hardware and existing software where practical, with bench verification before aircraft integration.
-
-Use **one ESP32** for navigation and radio. Firmware selection remains open. Direct active tuning, swap, volume/squelch control and aircraft installation are outside the first-version scope. Detailed requirements remain in the [project baseline](docs/project-baseline.md#scope-and-requirements).
-
-## Architecture overview — proposed
+## Architecture overview
 
 ```mermaid
 flowchart LR
-    Zander["Zander ZS1 / matching interface"] --> Nav
-    FLARM["FLARM / matching interface"] --> Nav
-    subgraph ESP["One ESP32 — board proposed, firmware open"]
-        Nav["Separate navigation inputs and routing"]
-        Radio["Dedicated binary radio path"]
-    end
-    Nav -->|Wi-Fi navigation data| App["OpenSoar on Android"]
-    App <-->|Wi-Fi / dedicated radio TCP connection| Radio
-    Radio <-->|UART bytes| Interface["Compatible electrical interface"]
-    Interface <-->|Verified radio interface| Becker["Becker radio: standby and status"]
+    F["FLARM"] -->|Traffic / navigation| E
+    Z["Zander ZS1"] -->|Flight / navigation data| E
+    B["Becker radio"] <-->|Standby commands / radio status| E
+    E["One ESP32 with matching serial interfaces"] <-->|Wi-Fi: separate device paths| O["OpenSoar on Android"]
 ```
 
-This is a logical overview, not a wiring diagram or a verified map of the installation. Navigation inputs may already be combined. The owner selected one ESP32. Separate navigation inputs are proposed; existing connections and any return traffic must be checked with Tom. The bench board candidate is an ESP32-DevKitC V4 with ESP32-WROOM-32E. The electrical interface, power supply, pins and serial settings must match the identified equipment.
+The bridge carries device data; OpenSoar handles radio commands and state. Navigation return paths remain to be checked. The detailed [connection diagram and device pin tables](docs/connections.md) show the proposed converters, UART routing and cabling.
 
-OpenSoar would handle Becker commands and radio state; the bridge would carry binary bytes in both directions without mixing radio, navigation or diagnostic traffic. See [architecture and open decisions](docs/architecture.md), including the [proposed pinning and cabling](docs/architecture.md#pinning-and-cabling-proposal-for-comparison-with-the-installation).
+## Current status and next step
 
-Planning targets the latest listed OpenSoar release, **7.46.26 as checked on 2026-11-08**; this does not identify the installed version. Tom will supply the radio identity/revisions, FLARM model, wiring and power details when available.
+Architecture and hardware planning. The board, wiring and firmware are still proposals; radio operation and navigation coexistence have not been tested. The bench board candidate is an ESP32-DevKitC V4 with WROOM-32E.
 
-## Start here
+Next, compare the proposal with the installed equipment and wiring. Confirm the radio revisions, FLARM model, existing connections, navigation return traffic and power supply. Retain suitable connections and recommend improvements where justified. Implementation and bench verification follow that comparison.
 
-**Next: WP1 — record the existing installation.** Identify the radio, ESP32 and installed OpenSoar build; document current connections and missing evidence. Do not select replacement firmware or wiring from an example diagram. The [bounded WP1 task](docs/roadmap.md#wp1--existing-installation-first-priority) defines the inputs, output and completion criteria.
+The first version covers navigation reception and standby tuning. Direct active tuning, swap, volume/squelch control and aircraft installation are deferred.
 
-| Document | Owns |
+## Documentation
+
+| Document | Contents |
 | --- | --- |
-| [Project baseline](docs/project-baseline.md) | Requirements, installed-system inventory, assumptions and risks |
-| [Sources and evidence](docs/sources.md) | Evidence labels, pinned sources, rechecked facts and verification limits |
-| [Architecture and decisions](docs/architecture.md) | Logical proposal, alternatives and decision status |
-| [Roadmap and workflow](docs/roadmap.md) | Prioritized work packages, milestones and acceptance checks |
-| [Codex instructions](AGENTS.md) | How to carry out one authorized work package |
-| [Technical investigation](docs/technical-investigation.md) | Detailed source findings and hardware-reference leads |
-| [Related projects](docs/related-projects.md) | Previous reuse investigation; candidates, not selected dependencies |
-| [Documentation review](docs/reviews/2026-11-08-documentation.md) | Changes, preservation record and verification of this cleanup |
+| [Connections and pinning](docs/connections.md) | Connection diagram, per-device pin tables, converters and cabling |
+| [Architecture and decisions](docs/architecture.md) | Board proposal, responsibilities, alternatives and open choices |
+| [Project baseline](docs/project-baseline.md) | Requirements, installed equipment, unknowns and risks |
+| [Roadmap](docs/roadmap.md) | Work queue and verification milestones |
+| [Sources and evidence](docs/sources.md) | Pinned references and limits of the findings |
+| [Technical investigation](docs/technical-investigation.md) | Driver findings and hardware/manual research |
+| [Related projects](docs/related-projects.md) | Reuse candidates and earlier comparisons |
 
-The pinned OpenSoar driver contains a write without an explicit binary length and locally assigns ACK after writing. These are source observations, not a successful radio test; see [F02–F04](docs/sources.md#rechecked-facts). No connector pinout, baud rate, bridge selection or aircraft installation is approved by this documentation.
+Contributor workflow is in [AGENTS.md](AGENTS.md).

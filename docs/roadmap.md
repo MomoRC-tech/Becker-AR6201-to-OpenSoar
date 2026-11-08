@@ -26,7 +26,7 @@ Authorized WP3 subtask completed 2026-11-08: [Yuri/basic AlphaLima source and ma
 
 **Question:** What is installed now, and which connections must the radio extension preserve?
 
-Current increment: owner agreed the first-version goal and one ESP32 on 2026-11-08. README reflects that agreement. The [hardware proposal](architecture.md#hardware-proposal--one-esp32) records a bench board candidate, conditional GPIO allocation, interface research and the verification summary (S09). Tom will supply the missing equipment/wiring/power information when available; navigation return traffic is unknown. Final board/interface/firmware selection remains open. A conditional pinning/cabling schedule is now included for later comparison with Tom’s setup; retain working arrangements or propose justified improvements rather than treating either the current setup or this draft as fixed. Next: reconcile Tom’s information with this proposal before final wiring or implementation.
+Current increment: owner agreed the first-version goal and one ESP32 on 2026-11-08. README reflects that agreement. The [hardware proposal](architecture.md#hardware-proposal--one-esp32) records a bench board candidate, conditional GPIO allocation, interface research and the verification summary (S09). Tom will supply the missing equipment/wiring/power information when available; navigation return traffic is unknown. Final board/interface/firmware selection remains open. The [connection diagram and per-device pinning/cabling tables](connections.md) are included for later comparison with Tom’s setup; retain working arrangements or propose justified improvements rather than treating either the current setup or this draft as fixed. Next: reconcile Tom’s information with this proposal before final wiring or implementation.
 
 **Inputs:** exact radio model/part and hardware/software revision; ESP32 board and existing firmware/configuration; OpenSoar version and device settings; known wiring/level converters; a non-invasive observation of current navigation reception. The [inventory](project-baseline.md#existing-installation--wp1-record) lists the missing fields.
 
@@ -55,7 +55,7 @@ Current increment: owner agreed the first-version goal and one ESP32 on 2026-11-
 3. **Investigate or change:** use pinned sources and existing tools. Distinguish proposal, authorization, implementation and acceptance.
 4. **Verify:** documentation gets reference/consistency checks; changed logic gets relevant automated cases; hardware claims require actual recorded observation.
 5. **Record:** update the owning document/ADR/status and one evidence summary. Capture date, revisions, environment, input, expected/actual result and limitations. Link larger evidence under docs/reviews/ only when needed.
-6. **Commit:** one coherent change per commit, review the diff and explicit file list, and record the resulting commit in the task report. Check the remote head before publication; never overwrite concurrent work.
+6. **Commit and push:** review the diff and stage only relevant files. Make one coherent change per commit, check the remote head before pushing, and record the commit and push result in the task report. Preserve concurrent work.
 7. **Close:** report what changed, verification and unresolved items. Continue within already authorized scope; a plan or recommendation alone does not authorize the next implementation package.
 
 ## Verification coverage for later packages
@@ -67,3 +67,7 @@ Current increment: owner agreed the first-version goal and one ESP32 on 2026-11-
 | Physical bench | Selected channel → actual standby display/readback; active unchanged; supported replies distinguished from writes; local controls usable; repeat with connection/power failures and navigation present. |
 
 Synthetic checks are useful regression evidence but do not establish interoperability. Agree measurable traffic/gap/timeout limits from WP1/WP2 before running acceptance tests; do not invent universal thresholds. Any remaining P0 failure blocks bench acceptance.
+
+## Documentation readability review — 2026-11-08
+
+README now leads with the three-device integration goal and owns the single architecture overview. Architecture owns rationale and decisions; connections.md owns the detailed routing diagram and separate device pin tables. Agreement history remains in the baseline/decision records, outside the summary. Existing conditional pin references and unresolved choices are preserved. Verification: checked local links/anchors, signal IDs and diagram/table mapping, and whitespace; no new technical claims, builds or hardware tests. Mermaid source reviewed; rendered output not visually verified.
