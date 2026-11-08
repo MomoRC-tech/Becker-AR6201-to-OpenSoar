@@ -2,6 +2,19 @@
 
 One ESP32 Wi-Fi bridge for OpenSoar on Android.
 
+## Plan status
+
+| Stage | Status |
+| --- | --- |
+| Research / bench design | Documented; send regression host-tested |
+| Next: finalize design | Equipment/board/BEC details, interfaces, protection and firmware open |
+| Implementation / bench acceptance | Pending |
+| Aircraft integration | Deferred |
+
+[Work queue](docs/roadmap.md).
+
+## Scope
+
 | Device | Function |
 | --- | --- |
 | FLARM | Traffic/navigation input |
@@ -25,10 +38,7 @@ flowchart LR
 | Build | New bridge; existing assembly/harness retained as backup |
 | Selected hardware | AZ-Delivery WROOM-32; 2 × HW-044; 5 V BEC; board-derived 3.3 V |
 | Proposed radio interface | Full-duplex RS-422, THVD1451D |
-| Open | Exact board/BEC, equipment revisions, interfaces, protection, firmware |
-| Verification | Source reviews and host send regression; no device acceptance |
-| Next | Identify board/BEC and equipment; complete power budget and connector maps |
-| Deferred | Active tuning, swap, volume/squelch, aircraft installation |
+| Deferred controls | Active tuning, swap, volume/squelch |
 
 ## Documentation
 
