@@ -6,115 +6,25 @@ GPIO numbers refer to the candidate ESP32-DevKitC V4 with WROOM-32E. Equipment p
 
 ## Connection and routing diagram
 
-Each line shows one signal or reference connection. Arrows in the labels show data direction while keeping all three devices on the left. Dotted lines indicate reserved navigation returns or unresolved reference connections. Signal IDs match the device tables below.
+### Logical connections
 
-```mermaid
-flowchart LR
-    Z["Zander PC cable"]
-    F["FLARM<br/>Connector TBD"]
-    B["Becker AR6201 J1<br/>Variant to verify"]
-    ZC["RS-232 converter"]
-    FC["RS-232 converter"]
-    BC["Full-duplex RS-422 converter"]
-    subgraph ESP["One ESP32"]
-        U0["UART0"]
-        U1["UART1"]
-        U2["UART2"]
-    end
-    subgraph OS["OpenSoar via Wi-Fi"]
-        NZ["Zander device connection"]
-        NF["FLARM device connection"]
-        RB["Becker TCP connection"]
-    end
+Each terminal has its own box on the device or converter. Arrows show data direction. Dashed arrows mark reserved navigation returns. Converter terminal names describe functions. Confirm the selected module's pin numbers before wiring.
 
-    Z ---|"Z1 pin 2 TX → receiver"| ZC
-    Z -.-|"Z2 pin 3 RX ← driver · reserved"| ZC
-    Z -.-|"ZG pin 5 GND · bond TBD"| ZC
-    ZC ---|"Receiver out → GPIO32 RX"| U0
-    ZC -.-|"Driver in ← GPIO33 TX · reserved"| U0
-    ZC -.-|"ESP32 logic GND · bond TBD"| U0
-    U0 ---|"Navigation data →"| NZ
-    U0 -.-|"← Return if needed"| NZ
+![Logical connections with individual instrument, converter and ESP32 pin boxes](diagrams/logical-connections.svg)
 
-    F ---|"F1 TX TBD → receiver"| FC
-    F -.-|"F2 RX TBD ← driver · reserved"| FC
-    F -.-|"FG signal GND pin TBD"| FC
-    FC ---|"Receiver out → GPIO26 RX"| U1
-    FC -.-|"Driver in ← GPIO27 TX · reserved"| U1
-    FC -.-|"ESP32 logic GND · bond TBD"| U1
-    U1 ---|"Navigation data →"| NF
-    U1 -.-|"← Return if needed"| NF
-
-    B ---|"B1+ pin 2 TX2+ → receiver +"| BC
-    B ---|"B1− pin 9 TX2− → receiver −"| BC
-    B ---|"B2+ pin 3 RX2+ ← driver +"| BC
-    B ---|"B2− pin 10 RX2− ← driver −"| BC
-    B -.-|"BG pin 21 D_GND · reference TBD"| BC
-    BC ---|"Receiver out → GPIO16 RX"| U2
-    BC ---|"Driver in ← GPIO17 TX"| U2
-    BC -.-|"ESP32 logic GND · bond TBD"| U2
-    U2 ---|"Radio status →"| RB
-    U2 ---|"← Radio commands"| RB
-```
-
-Data between the converters and the ESP32 uses 3.3 V logic. Reference and shield bonding depend on the selected interfaces and installation.
-
-Separate device connections are proposed to avoid a new navigation multiplexer. Network port numbers, navigation transport and OpenSoar source priorities remain to be configured from the installation evidence. No navigation or diagnostic bytes may enter the Becker connection.
+The three separate Wi-Fi endpoints are proposed. Network ports, navigation transport and OpenSoar source priorities still need confirmation. Keep navigation and diagnostics out of the Becker connection.
 
 ### Bridge power and ground
 
-The drawing shows the candidate 5 V header option and the unresolved converter supply branches. Use one ESP32 power input. Micro USB and the 3.3 V header are alternative inputs listed by Espressif. The converter branches show the terminals to identify for each module. Supply rails and any shared ground or isolation remain TBD. See [S09](sources.md#rechecked-facts).
+The drawing covers the bridge and the existing instrument power paths. Dashed lines indicate connections to verify or design. Select one ESP32 supply input. The drawing shows the 5 V header option. Micro USB and the 3.3 V header are alternatives. Converter supply rails, shared grounds, isolation and shielding remain open. See [S09 and S10](sources.md#rechecked-facts).
 
-```mermaid
-flowchart LR
-    S["Bridge supply source TBD"]
-    P["Protection and 5 V regulation TBD"]
-    E["ESP32-DevKitC V4<br/>5 V header option"]
-    C["Converter supplies TBD"]
-    ZC["Zander RS-232 converter"]
-    FC["FLARM RS-232 converter"]
-    BC["Becker RS-422 converter"]
+![Power and ground with individual supply, return, reference and chassis terminals](diagrams/power-and-ground.svg)
 
-    S -.-|"Positive feed TBD"| P
-    S -.-|"Supply return TBD"| P
-    P ---|"Regulated +5 V → J2 pin 19 (5V)"| E
-    P ---|"Return · J2 pin 14 (GND)"| E
-    C -.-|"Supply → VCC pin TBD"| ZC
-    C -.-|"Return · GND pin TBD"| ZC
-    C -.-|"Supply → VCC pin TBD"| FC
-    C -.-|"Return · GND pin TBD"| FC
-    C -.-|"Supply → VCC pin TBD"| BC
-    C -.-|"Return · GND pin TBD"| BC
-```
-
-### Existing instrument power and ground
-
-Trace these paths during the installation survey and preserve the existing feeds. Becker pin numbers are manual references for the variants covered by Issue 06. Match the installed radio before using them. The Zander and FLARM supply connectors and pins still need confirmation. See [S10](sources.md#rechecked-facts).
-
-```mermaid
-flowchart LR
-    Z["Zander ZS1"]
-    F["FLARM model TBD"]
-    B["Becker AR6201<br/>Variant to verify"]
-    ZP["Zander supply wiring TBD"]
-    FP["FLARM supply wiring TBD"]
-    BP["Becker supply wiring TBD"]
-    BG["Chassis bond point TBD"]
-
-    Z -.-|"Power input pin TBD"| ZP
-    Z -.-|"Power return pin TBD"| ZP
-    F -.-|"Power input pin TBD"| FP
-    F -.-|"Power return pin TBD"| FP
-    B -.-|"P1 pin 11 P_SUPP (+)"| BP
-    B -.-|"P1 pin 12 P_SUPP (+)"| BP
-    B -.-|"P1 pin 13 P_SUPP_GND"| BP
-    B -.-|"P1 pin 25 P_SUPP_GND"| BP
-    B -.-|"Rear chassis ground stud"| BG
-```
+The Becker P1 pin numbers apply to the variants covered by Issue 06. Match the installed radio before using them. Zander and FLARM power connectors remain TBD. Preserve the existing instrument feeds.
 
 ## ESP32 pin allocation
 
-ESP32-side GPIO numbers only, not equipment connector pins. This is a resource-feasibility proposal derived from Espressif's GPIO matrix and board header documentation, not tested wiring.
+The table lists ESP32 GPIO numbers. The logical drawing adds the corresponding DevKitC header positions from [Espressif’s board documentation (S09)](sources.md#rechecked-facts). The UART assignments remain a proposal.
 
 | Function | UART | ESP32 RX | ESP32 TX | Condition |
 | --- | --- | --- | --- | --- |

@@ -1,0 +1,195 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 984 969" role="img" aria-labelledby="title desc">
+  <title id="title">Power and ground</title>
+  <desc id="desc">Separate power feed, return, signal ground and chassis ground terminals. Dashed connections are pending verification or design. Existing instrument feeds and the proposed bridge supply are separate sections.</desc>
+  <style>
+    text { font-family: Arial, sans-serif; fill: #17243b; }
+    .heading { font-size: 18px; font-weight: 700; }
+    .sub { font-size: 13px; fill: #43516a; }
+    .label { font-size: 14px; font-weight: 600; }
+    .card { fill: #edf2fa; stroke: #9caec7; }
+    .pin { fill: #fff; stroke: #556e91; }
+    .wire { stroke: #354f73; stroke-width: 2; }
+    .pending { stroke-dasharray: 5 4; }
+    .divider { stroke: #b6c4d8; }
+  </style>
+  <defs>
+    <marker id="arrow" viewBox="0 0 8 8" refX="8" refY="4" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M0 0 L8 4 L0 8 Z" fill="#354f73"/>
+    </marker>
+  </defs>
+  <rect width="984" height="969" rx="12" fill="#fff"/>
+  <text x="14" y="26" class="heading">Bridge supply · candidate 5 V header option</text>
+  <rect x="14" y="39" width="218" height="114" rx="10" class="card"/>
+  <text x="26" y="62" class="heading">Bridge supply</text>
+  <text x="26" y="80" class="sub">Source TBD</text>
+  <rect x="277" y="39" width="349" height="114" rx="10" class="card"/>
+  <text x="289" y="62" class="heading">Protection and regulation</text>
+  <text x="289" y="80" class="sub">Design TBD</text>
+  <rect x="671" y="39" width="299" height="114" rx="10" class="card"/>
+  <text x="683" y="62" class="heading">ESP32-DevKitC V4</text>
+  <text x="683" y="80" class="sub">One supply input</text>
+  <rect x="54" y="86" width="178" height="26" rx="4" class="pin"/>
+  <text x="143.0" y="104" class="label" text-anchor="middle">Positive feed TBD</text>
+  <rect x="277" y="86" width="142" height="26" rx="4" class="pin"/>
+  <text x="348.0" y="104" class="label" text-anchor="middle">Supply input</text>
+  <rect x="466" y="86" width="160" height="26" rx="4" class="pin"/>
+  <text x="546.0" y="104" class="label" text-anchor="middle">Regulated +5 V</text>
+  <rect x="671" y="86" width="173" height="26" rx="4" class="pin"/>
+  <text x="757.5" y="104" class="label" text-anchor="middle">J2-19 · 5V</text>
+  <line x1="232" y1="99" x2="277" y2="99" class="wire pending"/>
+  <line x1="626" y1="99" x2="671" y2="99" class="wire"/>
+  <rect x="54" y="118" width="178" height="26" rx="4" class="pin"/>
+  <text x="143.0" y="136" class="label" text-anchor="middle">Supply return TBD</text>
+  <rect x="277" y="118" width="142" height="26" rx="4" class="pin"/>
+  <text x="348.0" y="136" class="label" text-anchor="middle">Input return</text>
+  <rect x="466" y="118" width="160" height="26" rx="4" class="pin"/>
+  <text x="546.0" y="136" class="label" text-anchor="middle">Output return</text>
+  <rect x="671" y="118" width="173" height="26" rx="4" class="pin"/>
+  <text x="757.5" y="136" class="label" text-anchor="middle">J2-14 · GND</text>
+  <line x1="232" y1="131" x2="277" y2="131" class="wire pending"/>
+  <line x1="626" y1="131" x2="671" y2="131" class="wire"/>
+  <text x="14" y="183" class="heading">Converter supplies and signal ground</text>
+  <text x="14" y="202" class="sub">The three supply branches are shown separately. Ground bonding, isolation and shield termination are TBD.</text>
+  <rect x="14" y="214" width="218" height="105" rx="10" class="card"/>
+  <text x="26" y="234" class="heading">Zander PC cable</text>
+  <rect x="277" y="214" width="349" height="105" rx="10" class="card"/>
+  <text x="289" y="234" class="heading">RS-232 converter</text>
+  <rect x="671" y="214" width="299" height="105" rx="10" class="card"/>
+  <text x="683" y="234" class="heading">Bridge terminals · TBD</text>
+  <rect x="34" y="244" width="198" height="26" rx="4" class="pin"/>
+  <text x="133.0" y="262" class="label" text-anchor="middle">Pin 5 · signal GND</text>
+  <rect x="277" y="244" width="157" height="26" rx="4" class="pin"/>
+  <text x="355.5" y="262" class="label" text-anchor="middle">Device-side reference</text>
+  <line x1="232" y1="257" x2="277" y2="257" class="wire pending"/>
+  <rect x="466" y="238" width="160" height="26" rx="4" class="pin"/>
+  <text x="546.0" y="256" class="label" text-anchor="middle">VCC pin TBD</text>
+  <rect x="671" y="238" width="173" height="26" rx="4" class="pin"/>
+  <text x="757.5" y="256" class="label" text-anchor="middle">Converter supply</text>
+  <line x1="626" y1="251" x2="671" y2="251" class="wire pending"/>
+  <rect x="466" y="265" width="160" height="26" rx="4" class="pin"/>
+  <text x="546.0" y="283" class="label" text-anchor="middle">GND pin TBD</text>
+  <rect x="671" y="265" width="173" height="26" rx="4" class="pin"/>
+  <text x="757.5" y="283" class="label" text-anchor="middle">Converter return</text>
+  <line x1="626" y1="278" x2="671" y2="278" class="wire pending"/>
+  <rect x="466" y="292" width="160" height="26" rx="4" class="pin"/>
+  <text x="546.0" y="310" class="label" text-anchor="middle">Logic ref. pin TBD</text>
+  <rect x="671" y="292" width="173" height="26" rx="4" class="pin"/>
+  <text x="757.5" y="310" class="label" text-anchor="middle">ESP32 GND · bond TBD</text>
+  <line x1="626" y1="305" x2="671" y2="305" class="wire pending"/>
+  <rect x="14" y="322" width="218" height="105" rx="10" class="card"/>
+  <text x="26" y="342" class="heading">FLARM</text>
+  <rect x="277" y="322" width="349" height="105" rx="10" class="card"/>
+  <text x="289" y="342" class="heading">RS-232 converter</text>
+  <rect x="671" y="322" width="299" height="105" rx="10" class="card"/>
+  <text x="683" y="342" class="heading">Bridge terminals · TBD</text>
+  <rect x="34" y="352" width="198" height="26" rx="4" class="pin"/>
+  <text x="133.0" y="370" class="label" text-anchor="middle">Signal GND pin TBD</text>
+  <rect x="277" y="352" width="157" height="26" rx="4" class="pin"/>
+  <text x="355.5" y="370" class="label" text-anchor="middle">Device-side reference</text>
+  <line x1="232" y1="365" x2="277" y2="365" class="wire pending"/>
+  <rect x="466" y="346" width="160" height="26" rx="4" class="pin"/>
+  <text x="546.0" y="364" class="label" text-anchor="middle">VCC pin TBD</text>
+  <rect x="671" y="346" width="173" height="26" rx="4" class="pin"/>
+  <text x="757.5" y="364" class="label" text-anchor="middle">Converter supply</text>
+  <line x1="626" y1="359" x2="671" y2="359" class="wire pending"/>
+  <rect x="466" y="373" width="160" height="26" rx="4" class="pin"/>
+  <text x="546.0" y="391" class="label" text-anchor="middle">GND pin TBD</text>
+  <rect x="671" y="373" width="173" height="26" rx="4" class="pin"/>
+  <text x="757.5" y="391" class="label" text-anchor="middle">Converter return</text>
+  <line x1="626" y1="386" x2="671" y2="386" class="wire pending"/>
+  <rect x="466" y="400" width="160" height="26" rx="4" class="pin"/>
+  <text x="546.0" y="418" class="label" text-anchor="middle">Logic ref. pin TBD</text>
+  <rect x="671" y="400" width="173" height="26" rx="4" class="pin"/>
+  <text x="757.5" y="418" class="label" text-anchor="middle">ESP32 GND · bond TBD</text>
+  <line x1="626" y1="413" x2="671" y2="413" class="wire pending"/>
+  <rect x="14" y="430" width="218" height="105" rx="10" class="card"/>
+  <text x="26" y="450" class="heading">Becker J1</text>
+  <rect x="277" y="430" width="349" height="105" rx="10" class="card"/>
+  <text x="289" y="450" class="heading">RS-422 converter</text>
+  <rect x="671" y="430" width="299" height="105" rx="10" class="card"/>
+  <text x="683" y="450" class="heading">Bridge terminals · TBD</text>
+  <rect x="34" y="460" width="198" height="26" rx="4" class="pin"/>
+  <text x="133.0" y="478" class="label" text-anchor="middle">J1-21 · D_GND (candidate)</text>
+  <rect x="277" y="460" width="157" height="26" rx="4" class="pin"/>
+  <text x="355.5" y="478" class="label" text-anchor="middle">Device-side reference</text>
+  <line x1="232" y1="473" x2="277" y2="473" class="wire pending"/>
+  <rect x="466" y="454" width="160" height="26" rx="4" class="pin"/>
+  <text x="546.0" y="472" class="label" text-anchor="middle">VCC pin TBD</text>
+  <rect x="671" y="454" width="173" height="26" rx="4" class="pin"/>
+  <text x="757.5" y="472" class="label" text-anchor="middle">Converter supply</text>
+  <line x1="626" y1="467" x2="671" y2="467" class="wire pending"/>
+  <rect x="466" y="481" width="160" height="26" rx="4" class="pin"/>
+  <text x="546.0" y="499" class="label" text-anchor="middle">GND pin TBD</text>
+  <rect x="671" y="481" width="173" height="26" rx="4" class="pin"/>
+  <text x="757.5" y="499" class="label" text-anchor="middle">Converter return</text>
+  <line x1="626" y1="494" x2="671" y2="494" class="wire pending"/>
+  <rect x="466" y="508" width="160" height="26" rx="4" class="pin"/>
+  <text x="546.0" y="526" class="label" text-anchor="middle">Logic ref. pin TBD</text>
+  <rect x="671" y="508" width="173" height="26" rx="4" class="pin"/>
+  <text x="757.5" y="526" class="label" text-anchor="middle">ESP32 GND · bond TBD</text>
+  <line x1="626" y1="521" x2="671" y2="521" class="wire pending"/>
+  <text x="14" y="553" class="heading">Existing instrument feeds and chassis ground</text>
+  <text x="14" y="573" class="sub">Preserve the installed wiring. Verify the Becker variant and trace the existing connections.</text>
+  <rect x="14" y="585" width="369" height="78" rx="10" class="card"/>
+  <text x="26" y="608" class="heading">Zander ZS1</text>
+  <text x="26" y="626" class="sub">Supply connector TBD</text>
+  <rect x="427" y="585" width="543" height="78" rx="10" class="card"/>
+  <text x="635" y="608" class="heading">Zander ZS1 supply wiring</text>
+  <rect x="204" y="602" width="179" height="26" rx="4" class="pin"/>
+  <text x="293.5" y="620" class="label" text-anchor="middle">Power input pin TBD</text>
+  <rect x="427" y="602" width="174" height="26" rx="4" class="pin"/>
+  <text x="514.0" y="620" class="label" text-anchor="middle">Positive feed TBD</text>
+  <line x1="383" y1="615" x2="427" y2="615" class="wire pending"/>
+  <rect x="204" y="632" width="179" height="26" rx="4" class="pin"/>
+  <text x="293.5" y="650" class="label" text-anchor="middle">Power return pin TBD</text>
+  <rect x="427" y="632" width="174" height="26" rx="4" class="pin"/>
+  <text x="514.0" y="650" class="label" text-anchor="middle">Supply return TBD</text>
+  <line x1="383" y1="645" x2="427" y2="645" class="wire pending"/>
+  <rect x="14" y="671" width="369" height="78" rx="10" class="card"/>
+  <text x="26" y="694" class="heading">FLARM</text>
+  <text x="26" y="712" class="sub">Supply connector TBD</text>
+  <rect x="427" y="671" width="543" height="78" rx="10" class="card"/>
+  <text x="635" y="694" class="heading">FLARM supply wiring</text>
+  <rect x="204" y="688" width="179" height="26" rx="4" class="pin"/>
+  <text x="293.5" y="706" class="label" text-anchor="middle">Power input pin TBD</text>
+  <rect x="427" y="688" width="174" height="26" rx="4" class="pin"/>
+  <text x="514.0" y="706" class="label" text-anchor="middle">Positive feed TBD</text>
+  <line x1="383" y1="701" x2="427" y2="701" class="wire pending"/>
+  <rect x="204" y="718" width="179" height="26" rx="4" class="pin"/>
+  <text x="293.5" y="736" class="label" text-anchor="middle">Power return pin TBD</text>
+  <rect x="427" y="718" width="174" height="26" rx="4" class="pin"/>
+  <text x="514.0" y="736" class="label" text-anchor="middle">Supply return TBD</text>
+  <line x1="383" y1="731" x2="427" y2="731" class="wire pending"/>
+  <rect x="14" y="757" width="369" height="178" rx="10" class="card"/>
+  <text x="26" y="780" class="heading">Becker AR6201</text>
+  <text x="26" y="798" class="sub">P1 · variant to verify</text>
+  <rect x="427" y="757" width="543" height="178" rx="10" class="card"/>
+  <text x="635" y="780" class="heading">Existing wiring and chassis bond</text>
+  <rect x="204" y="776" width="179" height="26" rx="4" class="pin"/>
+  <text x="293.5" y="794" class="label" text-anchor="middle">P1-11 · P_SUPP (+)</text>
+  <rect x="427" y="776" width="189" height="26" rx="4" class="pin"/>
+  <text x="521.5" y="794" class="label" text-anchor="middle">Positive feed TBD</text>
+  <line x1="383" y1="789" x2="427" y2="789" class="wire pending"/>
+  <rect x="204" y="807" width="179" height="26" rx="4" class="pin"/>
+  <text x="293.5" y="825" class="label" text-anchor="middle">P1-12 · P_SUPP (+)</text>
+  <rect x="427" y="807" width="189" height="26" rx="4" class="pin"/>
+  <text x="521.5" y="825" class="label" text-anchor="middle">Positive feed TBD</text>
+  <line x1="383" y1="820" x2="427" y2="820" class="wire pending"/>
+  <rect x="204" y="838" width="179" height="26" rx="4" class="pin"/>
+  <text x="293.5" y="856" class="label" text-anchor="middle">P1-13 · P_SUPP_GND</text>
+  <rect x="427" y="838" width="189" height="26" rx="4" class="pin"/>
+  <text x="521.5" y="856" class="label" text-anchor="middle">Supply return TBD</text>
+  <line x1="383" y1="851" x2="427" y2="851" class="wire pending"/>
+  <rect x="204" y="869" width="179" height="26" rx="4" class="pin"/>
+  <text x="293.5" y="887" class="label" text-anchor="middle">P1-25 · P_SUPP_GND</text>
+  <rect x="427" y="869" width="189" height="26" rx="4" class="pin"/>
+  <text x="521.5" y="887" class="label" text-anchor="middle">Supply return TBD</text>
+  <line x1="383" y1="882" x2="427" y2="882" class="wire pending"/>
+  <rect x="204" y="900" width="179" height="26" rx="4" class="pin"/>
+  <text x="293.5" y="918" class="label" text-anchor="middle">Rear ground stud</text>
+  <rect x="427" y="900" width="189" height="26" rx="4" class="pin"/>
+  <text x="521.5" y="918" class="label" text-anchor="middle">Chassis bond point TBD</text>
+  <line x1="383" y1="913" x2="427" y2="913" class="wire pending"/>
+  <line x1="18" y1="952" x2="54" y2="952" class="wire pending"/>
+  <text x="65" y="957" class="sub">Pending verification or design</text>
+</svg>
