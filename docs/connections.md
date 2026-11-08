@@ -6,56 +6,146 @@ GPIO numbers refer to the candidate ESP32-DevKitC V4 with WROOM-32E. Equipment p
 
 ## Connection and routing diagram
 
-Each line shows one signal or reference connection. Arrows in the labels show data direction while keeping all three devices on the left. Dotted lines indicate reserved navigation returns or unresolved reference connections. Signal IDs match the device tables below.
+Each wired endpoint has its own pin or terminal box. Arrowheads on the wires show data direction; dotted arrows mark reserved navigation returns. Dotted lines without arrows mark unresolved ground or reference connections. Signal IDs match the device tables below.
 
 ```mermaid
-flowchart LR
-    Z["Zander PC cable"]
-    F["FLARM<br/>Connector TBD"]
-    B["Becker AR6201 J1<br/>Variant to verify"]
-    ZC["RS-232 converter"]
-    FC["RS-232 converter"]
-    BC["Full-duplex RS-422 converter"]
-    subgraph ESP["One ESP32"]
-        U0["UART0"]
-        U1["UART1"]
-        U2["UART2"]
+block-beta
+    columns 7
+    block:zander
+        columns 1
+        zh["Zander PC cable"]
+        ztx["Z1 · Pin 2 TX"]
+        zrx["Z2 · Pin 3 RX"]
+        zg["ZG · Pin 5 GND"]
     end
-    subgraph OS["OpenSoar via Wi-Fi"]
-        NZ["Zander device connection"]
-        NF["FLARM device connection"]
-        RB["Becker TCP connection"]
+    space
+    block:zconverter
+        columns 2
+        zch["RS-232 converter"]:2
+        zri["RS-232 RX in"] zro["Receiver out"]
+        zdo["RS-232 TX out"] zdi["Driver in"]
+        zref["Signal ref. TBD"] zlogic["Logic GND TBD"]
+    end
+    space
+    block:uart0
+        columns 1
+        e0["ESP32 · UART0"]
+        er0["GPIO32 RX"]
+        et0["GPIO33 TX"]
+        eg0["GND bond TBD"]
+    end
+    space
+    block:zapp
+        columns 1
+        zah["OpenSoar · Zander"]
+        zn["Navigation data"]
+        zb["Return if needed"]
+        space
     end
 
-    Z ---|"Z1 pin 2 TX → receiver"| ZC
-    Z -.-|"Z2 pin 3 RX ← driver · reserved"| ZC
-    Z -.-|"ZG pin 5 GND · bond TBD"| ZC
-    ZC ---|"Receiver out → GPIO32 RX"| U0
-    ZC -.-|"Driver in ← GPIO33 TX · reserved"| U0
-    ZC -.-|"ESP32 logic GND · bond TBD"| U0
-    U0 ---|"Navigation data →"| NZ
-    U0 -.-|"← Return if needed"| NZ
+    block:flarm
+        columns 1
+        fh["FLARM · Connector TBD"]
+        ftx["F1 · TX pin TBD"]
+        frx["F2 · RX pin TBD"]
+        fg["FG · GND pin TBD"]
+    end
+    space
+    block:fconverter
+        columns 2
+        fch["RS-232 converter"]:2
+        fri["RS-232 RX in"] fro["Receiver out"]
+        fdo["RS-232 TX out"] fdi["Driver in"]
+        fref["Signal ref. TBD"] flogic["Logic GND TBD"]
+    end
+    space
+    block:uart1
+        columns 1
+        e1["ESP32 · UART1"]
+        er1["GPIO26 RX"]
+        et1["GPIO27 TX"]
+        eg1["GND bond TBD"]
+    end
+    space
+    block:fapp
+        columns 1
+        fah["OpenSoar · FLARM"]
+        fn["Navigation data"]
+        fb["Return if needed"]
+        space
+    end
 
-    F ---|"F1 TX TBD → receiver"| FC
-    F -.-|"F2 RX TBD ← driver · reserved"| FC
-    F -.-|"FG signal GND pin TBD"| FC
-    FC ---|"Receiver out → GPIO26 RX"| U1
-    FC -.-|"Driver in ← GPIO27 TX · reserved"| U1
-    FC -.-|"ESP32 logic GND · bond TBD"| U1
-    U1 ---|"Navigation data →"| NF
-    U1 -.-|"← Return if needed"| NF
+    block:becker
+        columns 1
+        bh["Becker AR6201 · J1"]
+        btp["B1+ · Pin 2 TX2+"]
+        btn["B1− · Pin 9 TX2−"]
+        brp["B2+ · Pin 3 RX2+"]
+        brn["B2− · Pin 10 RX2−"]
+        bg["BG · Pin 21 D_GND"]
+    end
+    space
+    block:bconverter
+        columns 2
+        bch["Full-duplex RS-422 converter"]:2
+        brip["Receiver + in"] bro["Receiver out"]
+        brin["Receiver − in"] space
+        bdop["Driver + out"] bdi["Driver in"]
+        bdon["Driver − out"] space
+        bref["Signal ref. TBD"] blogic["Logic GND TBD"]
+    end
+    space
+    block:uart2
+        columns 1
+        e2["ESP32 · UART2"]
+        er2["GPIO16 RX"]
+        space
+        et2["GPIO17 TX"]
+        space
+        eg2["GND bond TBD"]
+    end
+    space
+    block:bapp
+        columns 1
+        bah["OpenSoar · Becker TCP"]
+        bs["Radio status"]
+        space
+        bc["Radio commands"]
+        space
+        space
+    end
 
-    B ---|"B1+ pin 2 TX2+ → receiver +"| BC
-    B ---|"B1− pin 9 TX2− → receiver −"| BC
-    B ---|"B2+ pin 3 RX2+ ← driver +"| BC
-    B ---|"B2− pin 10 RX2− ← driver −"| BC
-    B -.-|"BG pin 21 D_GND · reference TBD"| BC
-    BC ---|"Receiver out → GPIO16 RX"| U2
-    BC ---|"Driver in ← GPIO17 TX"| U2
-    BC -.-|"ESP32 logic GND · bond TBD"| U2
-    U2 ---|"Radio status →"| RB
-    U2 ---|"← Radio commands"| RB
+    ztx --> zri
+    zro --> er0
+    er0 --> zn
+    zb -.-> et0
+    et0 -.-> zdi
+    zdo -.-> zrx
+    zg -.- zref
+    zlogic -.- eg0
+
+    ftx --> fri
+    fro --> er1
+    er1 --> fn
+    fb -.-> et1
+    et1 -.-> fdi
+    fdo -.-> frx
+    fg -.- fref
+    flogic -.- eg1
+
+    btp --> brip
+    btn --> brin
+    bro --> er2
+    er2 --> bs
+    bc --> et2
+    et2 --> bdi
+    bdop --> brp
+    bdon --> brn
+    bg -.- bref
+    blogic -.- eg2
 ```
+
+UART0–2 belong to one ESP32. The rightmost links carry data over Wi-Fi.
 
 Data between the converters and the ESP32 uses 3.3 V logic. Reference and shield bonding depend on the selected interfaces and installation.
 
