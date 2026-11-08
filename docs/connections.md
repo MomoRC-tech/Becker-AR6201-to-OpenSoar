@@ -6,34 +6,70 @@ GPIO numbers refer to the candidate ESP32-DevKitC V4 with WROOM-32E. Equipment p
 
 ## Connection and routing diagram
 
-The diagram shows the proposed navigation receive paths and bidirectional radio path. Signal IDs match the device tables below. Ground, shielding and power are described separately.
+Each line shows one signal or reference connection. Arrows in the labels show data direction while keeping all three devices on the left. Dotted lines indicate reserved navigation returns or unresolved reference connections. Signal IDs match the device tables below.
 
 ```mermaid
 flowchart LR
-    Z["Zander PC cable"] -->|Z1: pin 2| ZC["RS-232 converter"]
-    F["FLARM: connector TBD"] -->|F1: TX pin TBD| FC["RS-232 converter"]
-    B["Becker J1: revision to verify"] <-->|B1 status: pins 2 / 9<br/>B2 commands: pins 3 / 10| BC["Full-duplex RS-422 converter"]
+    Z["Zander PC cable"]
+    F["FLARM<br/>Connector TBD"]
+    B["Becker AR6201 J1<br/>Variant to verify"]
+    ZC["RS-232 converter"]
+    FC["RS-232 converter"]
+    BC["Full-duplex RS-422 converter"]
     subgraph ESP["One ESP32"]
-        U0["UART0: RX32 / TX33 reserved"]
-        U1["UART1: RX26 / TX27 reserved"]
-        U2["UART2: RX16 / TX17"]
+        U0["UART0"]
+        U1["UART1"]
+        U2["UART2"]
     end
-    ZC -->|3.3 V data| U0
-    FC -->|3.3 V data| U1
-    BC <-->|3.3 V data| U2
     subgraph OS["OpenSoar via Wi-Fi"]
         NZ["Zander device connection"]
         NF["FLARM device connection"]
         RB["Becker TCP connection"]
     end
-    U0 --> NZ
-    U1 --> NF
-    U2 <--> RB
+
+    Z ---|"Z1 pin 2 TX → receiver"| ZC
+    Z -.-|"Z2 pin 3 RX ← driver · reserved"| ZC
+    Z -.-|"ZG pin 5 · reference TBD"| ZC
+    ZC ---|"Receiver out → GPIO32 RX"| U0
+    ZC -.-|"Driver in ← GPIO33 TX · reserved"| U0
+    ZC -.-|"Logic reference TBD"| U0
+    U0 ---|"Navigation data →"| NZ
+    U0 -.-|"← Return if needed"| NZ
+
+    F ---|"F1 TX TBD → receiver"| FC
+    F -.-|"F2 RX TBD ← driver · reserved"| FC
+    F -.-|"FG signal reference TBD"| FC
+    FC ---|"Receiver out → GPIO26 RX"| U1
+    FC -.-|"Driver in ← GPIO27 TX · reserved"| U1
+    FC -.-|"Logic reference TBD"| U1
+    U1 ---|"Navigation data →"| NF
+    U1 -.-|"← Return if needed"| NF
+
+    B ---|"B1+ pin 2 TX2+ → receiver +"| BC
+    B ---|"B1− pin 9 TX2− → receiver −"| BC
+    B ---|"B2+ pin 3 RX2+ ← driver +"| BC
+    B ---|"B2− pin 10 RX2− ← driver −"| BC
+    B -.-|"BG pin 21 D_GND · reference TBD"| BC
+    BC ---|"Receiver out → GPIO16 RX"| U2
+    BC ---|"Driver in ← GPIO17 TX"| U2
+    BC -.-|"Logic reference TBD"| U2
+    U2 ---|"Radio status →"| RB
+    U2 ---|"← Radio commands"| RB
 ```
 
-If navigation return traffic is required, it would run from OpenSoar through the corresponding ESP32 UART TX and RS-232 converter to the device RX. The [Zander Z2](#zander-zs1) and [FLARM F2](#flarm) rows show the reserved paths.
+Data between the converters and the ESP32 uses 3.3 V logic. Reference and shield bonding depend on the selected interfaces and installation.
 
 Separate device connections are proposed to avoid a new navigation multiplexer. Network port numbers, navigation transport and OpenSoar source priorities remain to be configured from the installation evidence. No navigation or diagnostic bytes may enter the Becker connection.
+
+### Bridge power path
+
+```mermaid
+flowchart LR
+    S["Supply source TBD"] --> P["Protection and conversion TBD"]
+    P --> E["One ESP32 supply input TBD"]
+```
+
+Converter power feeds, return conductors, and shield terminations need the final interface and supply design.
 
 ## ESP32 pin allocation
 
