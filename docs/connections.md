@@ -6,294 +6,115 @@ GPIO numbers refer to the candidate ESP32-DevKitC V4 with WROOM-32E. Equipment p
 
 ## Connection and routing diagram
 
-### Logical connections
-
-Each terminal has its own box on the device or converter. Arrows show data direction. Dashed arrows mark reserved navigation returns. Converter terminal names describe functions. Confirm the selected module's pin numbers before wiring.
+Each line shows one signal or reference connection. Arrows in the labels show data direction while keeping all three devices on the left. Dotted lines indicate reserved navigation returns or unresolved reference connections. Signal IDs match the device tables below.
 
 ```mermaid
-block-beta
-  columns 4
+flowchart LR
+    Z["Zander PC cable"]
+    F["FLARM<br/>Connector TBD"]
+    B["Becker AR6201 J1<br/>Variant to verify"]
+    ZC["RS-232 converter"]
+    FC["RS-232 converter"]
+    BC["Full-duplex RS-422 converter"]
+    subgraph ESP["One ESP32"]
+        U0["UART0"]
+        U1["UART1"]
+        U2["UART2"]
+    end
+    subgraph OS["OpenSoar via Wi-Fi"]
+        NZ["Zander device connection"]
+        NF["FLARM device connection"]
+        RB["Becker TCP connection"]
+    end
 
-  block:zander
-    columns 1
-    zh["Zander ZS1 · PC cable"]
-    ztx["Pin 2 · TX (Z1)"]
-    zrx["Pin 3 · RX (Z2)"]
-  end
-  block:z232
-    columns 2
-    zch["RS-232 converter"]:2
-    zri["Receiver in"] zro["Receiver out"]
-    zdo["Driver out"] zdi["Driver in"]
-  end
-  block:uart0
-    columns 1
-    e0["ESP32 · UART0"]
-    er0["J2-7 · GPIO32 RX"]
-    et0["J2-8 · GPIO33 TX"]
-  end
-  block:zapp
-    columns 1
-    zah["OpenSoar · Zander"]
-    zn["Navigation data"]
-    zb["Optional return"]
-  end
+    Z ---|"Z1 pin 2 TX → receiver"| ZC
+    Z -.-|"Z2 pin 3 RX ← driver · reserved"| ZC
+    Z -.-|"ZG pin 5 GND · bond TBD"| ZC
+    ZC ---|"Receiver out → GPIO32 RX"| U0
+    ZC -.-|"Driver in ← GPIO33 TX · reserved"| U0
+    ZC -.-|"ESP32 logic GND · bond TBD"| U0
+    U0 ---|"Navigation data →"| NZ
+    U0 -.-|"← Return if needed"| NZ
 
-  block:flarm
-    columns 1
-    fh["FLARM · connector TBD"]
-    ftx["TX pin TBD (F1)"]
-    frx["RX pin TBD (F2)"]
-  end
-  block:f232
-    columns 2
-    fch["RS-232 converter"]:2
-    fri["Receiver in"] fro["Receiver out"]
-    fdo["Driver out"] fdi["Driver in"]
-  end
-  block:uart1
-    columns 1
-    e1["ESP32 · UART1"]
-    er1["J2-10 · GPIO26 RX"]
-    et1["J2-11 · GPIO27 TX"]
-  end
-  block:fapp
-    columns 1
-    fah["OpenSoar · FLARM"]
-    fn["Navigation data"]
-    fb["Optional return"]
-  end
+    F ---|"F1 TX TBD → receiver"| FC
+    F -.-|"F2 RX TBD ← driver · reserved"| FC
+    F -.-|"FG signal GND pin TBD"| FC
+    FC ---|"Receiver out → GPIO26 RX"| U1
+    FC -.-|"Driver in ← GPIO27 TX · reserved"| U1
+    FC -.-|"ESP32 logic GND · bond TBD"| U1
+    U1 ---|"Navigation data →"| NF
+    U1 -.-|"← Return if needed"| NF
 
-  block:becker
-    columns 1
-    bh["Becker AR6201 · J1"]
-    btp["J1-2 · TX2+ (B1+)"]
-    btn["J1-9 · TX2− (B1−)"]
-    brp["J1-3 · RX2+ (B2+)"]
-    brn["J1-10 · RX2− (B2−)"]
-  end
-  block:b422
-    columns 2
-    bch["Full-duplex RS-422 converter"]:2
-    brip["Receiver in +"] bro["Receiver out"]
-    brin["Receiver in −"] space
-    bdop["Driver out +"] bdi["Driver in"]
-    bdon["Driver out −"] space
-  end
-  block:uart2
-    columns 1
-    e2["ESP32 · UART2"]
-    er2["J3-12 · GPIO16 RX"]
-    space
-    et2["J3-11 · GPIO17 TX"]
-    space
-  end
-  block:bapp
-    columns 1
-    bah["OpenSoar · Becker TCP"]
-    bs["Radio status"]
-    space
-    bc["Radio commands"]
-    space
-  end
-
-  ztx --> zri
-  zro --> er0
-  er0 --> zn
-  zb -.-> et0
-  et0 -.-> zdi
-  zdo -.-> zrx
-  ftx --> fri
-  fro --> er1
-  er1 --> fn
-  fb -.-> et1
-  et1 -.-> fdi
-  fdo -.-> frx
-  btp --> brip
-  btn --> brin
-  bro --> er2
-  er2 --> bs
-  bc --> et2
-  et2 --> bdi
-  bdop --> brp
-  bdon --> brn
+    B ---|"B1+ pin 2 TX2+ → receiver +"| BC
+    B ---|"B1− pin 9 TX2− → receiver −"| BC
+    B ---|"B2+ pin 3 RX2+ ← driver +"| BC
+    B ---|"B2− pin 10 RX2− ← driver −"| BC
+    B -.-|"BG pin 21 D_GND · reference TBD"| BC
+    BC ---|"Receiver out → GPIO16 RX"| U2
+    BC ---|"Driver in ← GPIO17 TX"| U2
+    BC -.-|"ESP32 logic GND · bond TBD"| U2
+    U2 ---|"Radio status →"| RB
+    U2 ---|"← Radio commands"| RB
 ```
 
-UART0–2 belong to one ESP32. Converter-to-ESP32 signals use 3.3 V logic. OpenSoar connects over Wi-Fi. Network ports, navigation transport and OpenSoar source priorities still need confirmation. Keep navigation and diagnostics out of the Becker connection.
+Data between the converters and the ESP32 uses 3.3 V logic. Reference and shield bonding depend on the selected interfaces and installation.
+
+Separate device connections are proposed to avoid a new navigation multiplexer. Network port numbers, navigation transport and OpenSoar source priorities remain to be configured from the installation evidence. No navigation or diagnostic bytes may enter the Becker connection.
 
 ### Bridge power and ground
 
-The drawing covers the bridge and the existing instrument power paths. Dashed lines indicate connections to verify or design. Select one ESP32 supply input. The drawing shows the 5 V header option. Micro USB and the 3.3 V header are alternatives. Converter supply rails, shared grounds, isolation and shielding remain open. See [S09 and S10](sources.md#rechecked-facts).
+The drawing shows the candidate 5 V header option and the unresolved converter supply branches. Use one ESP32 power input. Micro USB and the 3.3 V header are alternative inputs listed by Espressif. The converter branches show the terminals to identify for each module. Supply rails and any shared ground or isolation remain TBD. See [S09](sources.md#rechecked-facts).
 
 ```mermaid
-block-beta
-  columns 3
+flowchart LR
+    S["Bridge supply source TBD"]
+    P["Protection and 5 V regulation TBD"]
+    E["ESP32-DevKitC V4<br/>5 V header option"]
+    C["Converter supplies TBD"]
+    ZC["Zander RS-232 converter"]
+    FC["FLARM RS-232 converter"]
+    BC["Becker RS-422 converter"]
 
-  block:source
-    columns 1
-    sh["Bridge supply · TBD"]
-    sp["Positive feed"]
-    sg["Supply return"]
-  end
-  block:regulator
-    columns 2
-    rh["Protection and regulation · TBD"]:2
-    ri["Supply input"] rp["Regulated +5 V"]
-    rg["Input return"] rr["Output return"]
-  end
-  block:board
-    columns 1
-    eh["ESP32 · 5 V header option"]
-    ep["J2-19 · 5V"]
-    eg["J2-14 · GND"]
-  end
-
-  block:zref
-    columns 1
-    zrh["Zander PC cable"]
-    zg["Pin 5 · signal GND"]
-    space
-    space
-  end
-  block:zconverter
-    columns 2
-    zch["Zander RS-232 converter"]:2
-    zr["Device-side reference"] zcr["Logic reference pin TBD"]
-    space zp["VCC pin TBD"]
-    space zcg["GND pin TBD"]
-  end
-  block:zbridge
-    columns 1
-    zbh["Bridge terminals · TBD"]
-    zeg["ESP32 GND bond"]
-    zsp["Converter supply"]
-    zsg["Converter return"]
-  end
-
-  block:fref
-    columns 1
-    frh["FLARM · connector TBD"]
-    fg["Signal GND pin TBD"]
-    space
-    space
-  end
-  block:fconverter
-    columns 2
-    fch["FLARM RS-232 converter"]:2
-    fr["Device-side reference"] fcr["Logic reference pin TBD"]
-    space fp["VCC pin TBD"]
-    space fcg["GND pin TBD"]
-  end
-  block:fbridge
-    columns 1
-    fbh["Bridge terminals · TBD"]
-    feg["ESP32 GND bond"]
-    fsp["Converter supply"]
-    fsg["Converter return"]
-  end
-
-  block:bref
-    columns 1
-    brh["Becker AR6201 · J1"]
-    bg["J1-21 · D_GND (candidate)"]
-    space
-    space
-  end
-  block:bconverter
-    columns 2
-    bch["Becker RS-422 converter"]:2
-    br["Device-side reference"] bcr["Logic reference pin TBD"]
-    space bp["VCC pin TBD"]
-    space bcg["GND pin TBD"]
-  end
-  block:bbridge
-    columns 1
-    bbh["Bridge terminals · TBD"]
-    beg["ESP32 GND bond"]
-    bsp["Converter supply"]
-    bsg["Converter return"]
-  end
-
-  block:zpower
-    columns 1
-    zph["Zander ZS1 · power"]
-    zi["Power input pin TBD"]
-    zgr["Power return pin TBD"]
-  end
-  block:zwiring
-    columns 1
-    zwh["Existing Zander wiring"]
-    zwp["Positive feed TBD"]
-    zwg["Supply return TBD"]
-  end
-  space
-
-  block:fpower
-    columns 1
-    fph["FLARM · power"]
-    fi["Power input pin TBD"]
-    fgr["Power return pin TBD"]
-  end
-  block:fwiring
-    columns 1
-    fwh["Existing FLARM wiring"]
-    fwp["Positive feed TBD"]
-    fwg["Supply return TBD"]
-  end
-  space
-
-  block:bpower
-    columns 1
-    bph["Becker AR6201 · P1"]
-    p11["P1-11 · P_SUPP (+)"]
-    p12["P1-12 · P_SUPP (+)"]
-    p13["P1-13 · P_SUPP_GND"]
-    p25["P1-25 · P_SUPP_GND"]
-    stud["Rear ground stud"]
-  end
-  block:bwiring
-    columns 1
-    bwh["Existing Becker wiring"]
-    wp11["Positive feed TBD"]
-    wp12["Positive feed TBD"]
-    wg13["Supply return TBD"]
-    wg25["Supply return TBD"]
-    bond["Chassis bond point TBD"]
-  end
-  space
-
-  sp -.- ri
-  sg -.- rg
-  rp --- ep
-  rr --- eg
-  zg -.- zr
-  zcr -.- zeg
-  zp -.- zsp
-  zcg -.- zsg
-  fg -.- fr
-  fcr -.- feg
-  fp -.- fsp
-  fcg -.- fsg
-  bg -.- br
-  bcr -.- beg
-  bp -.- bsp
-  bcg -.- bsg
-  zi -.- zwp
-  zgr -.- zwg
-  fi -.- fwp
-  fgr -.- fwg
-  p11 -.- wp11
-  p12 -.- wp12
-  p13 -.- wg13
-  p25 -.- wg25
-  stud -.- bond
+    S -.-|"Positive feed TBD"| P
+    S -.-|"Supply return TBD"| P
+    P ---|"Regulated +5 V → J2 pin 19 (5V)"| E
+    P ---|"Return · J2 pin 14 (GND)"| E
+    C -.-|"Supply → VCC pin TBD"| ZC
+    C -.-|"Return · GND pin TBD"| ZC
+    C -.-|"Supply → VCC pin TBD"| FC
+    C -.-|"Return · GND pin TBD"| FC
+    C -.-|"Supply → VCC pin TBD"| BC
+    C -.-|"Return · GND pin TBD"| BC
 ```
 
-The Becker P1 pin numbers apply to the variants covered by Issue 06. Match the installed radio before using them. Zander and FLARM power connectors remain TBD. Preserve the existing instrument feeds.
+### Existing instrument power and ground
+
+Trace these paths during the installation survey and preserve the existing feeds. Becker pin numbers are manual references for the variants covered by Issue 06. Match the installed radio before using them. The Zander and FLARM supply connectors and pins still need confirmation. See [S10](sources.md#rechecked-facts).
+
+```mermaid
+flowchart LR
+    Z["Zander ZS1"]
+    F["FLARM model TBD"]
+    B["Becker AR6201<br/>Variant to verify"]
+    ZP["Zander supply wiring TBD"]
+    FP["FLARM supply wiring TBD"]
+    BP["Becker supply wiring TBD"]
+    BG["Chassis bond point TBD"]
+
+    Z -.-|"Power input pin TBD"| ZP
+    Z -.-|"Power return pin TBD"| ZP
+    F -.-|"Power input pin TBD"| FP
+    F -.-|"Power return pin TBD"| FP
+    B -.-|"P1 pin 11 P_SUPP (+)"| BP
+    B -.-|"P1 pin 12 P_SUPP (+)"| BP
+    B -.-|"P1 pin 13 P_SUPP_GND"| BP
+    B -.-|"P1 pin 25 P_SUPP_GND"| BP
+    B -.-|"Rear chassis ground stud"| BG
+```
 
 ## ESP32 pin allocation
 
-The table lists ESP32 GPIO numbers. The logical drawing adds the corresponding DevKitC header positions from [Espressif’s board documentation (S09)](sources.md#rechecked-facts). The UART assignments remain a proposal.
+ESP32-side GPIO numbers only, not equipment connector pins. This is a resource-feasibility proposal derived from Espressif's GPIO matrix and board header documentation, not tested wiring.
 
 | Function | UART | ESP32 RX | ESP32 TX | Condition |
 | --- | --- | --- | --- | --- |
