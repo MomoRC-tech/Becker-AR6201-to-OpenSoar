@@ -1,22 +1,20 @@
 # Yuri bridge source evaluation
 
-2026-11-08. Authorized bounded WP3 source analysis; no firmware selection, implementation, build, flashing or hardware work. Requirements: R02/R03/R07/R08; R01/R04 remain OpenSoar/protocol responsibilities. Evidence below is **rechecked source** unless marked proposed or inferred.
+S08, 2026-11-08. R02/R03/R07/R08. Source analysis; firmware selection open.
 
 ## Revisions and maintenance
 
-- Yuri default-branch head: [130f731416d43c89bce5626ef989b3e65918c9ce](https://github.com/yuri-rage/ESP-Serial-Bridge/commit/130f731416d43c89bce5626ef989b3e65918c9ce), 2024-08-21, merge of UDP fixes. Functional changes were authored in 2023; the 2024 merge is not a new TCP rewrite.
-- AlphaLima basic default-branch head: [bb42dc3db926f9baf1f5faa76cc21bad1dd80cdf](https://github.com/AlphaLima/ESP32-Serial-Bridge/commit/bb42dc3db926f9baf1f5faa76cc21bad1dd80cdf), 2026-07-28, README update.
-- Both histories include f6c6ada6aa9a437e4c4a2436d45f98551cd9d6fe (2020-06-10). The [AlphaLima comparison](https://github.com/AlphaLima/ESP32-Serial-Bridge/compare/f6c6ada6aa9a437e4c4a2436d45f98551cd9d6fe...bb42dc3db926f9baf1f5faa76cc21bad1dd80cdf) contains six later commits and only README changes. The [Yuri comparison](https://github.com/yuri-rage/ESP-Serial-Bridge/compare/f6c6ada6aa9a437e4c4a2436d45f98551cd9d6fe...130f731416d43c89bce5626ef989b3e65918c9ce) contains ten later commits, including sketch/config changes and an additional client sketch.
+| Source | Review baseline |
+| --- | --- |
+| [Yuri 130f731](https://github.com/yuri-rage/ESP-Serial-Bridge/commit/130f731416d43c89bce5626ef989b3e65918c9ce) | 2024-08-21 merge; functional fixes authored 2023 |
+| [AlphaLima bb42dc3](https://github.com/AlphaLima/ESP32-Serial-Bridge/commit/bb42dc3db926f9baf1f5faa76cc21bad1dd80cdf) | 2026-07-28 README update |
+| Shared `f6c6ada6aa9a437e4c4a2436d45f98551cd9d6fe` | 2020-06-10; later [AlphaLima changes](https://github.com/AlphaLima/ESP32-Serial-Bridge/compare/f6c6ada6aa9a437e4c4a2436d45f98551cd9d6fe...bb42dc3db926f9baf1f5faa76cc21bad1dd80cdf): 6 documentation commits; [Yuri changes](https://github.com/yuri-rage/ESP-Serial-Bridge/compare/f6c6ada6aa9a437e4c4a2436d45f98551cd9d6fe...130f731416d43c89bce5626ef989b3e65918c9ce): 10 commits including code/config |
 
-Conclusion: AlphaLima has the newer repository timestamp; Yuri has later functional development and relevant fixes compared with basic AlphaLima. Yuri does not contain the later upstream documentation commits. Neither timestamp proves ongoing maintenance or modern toolchain compatibility. AlphaLima Pro is a separate project and is outside this comparison.
+Yuri has later functional fixes; timestamps establish neither current maintenance nor toolchain compatibility.
 
 ## Source findings
 
-Source keys, pinned throughout this review:
-
-- [Y sketch](https://github.com/yuri-rage/ESP-Serial-Bridge/blob/130f731416d43c89bce5626ef989b3e65918c9ce/ESP-Serial-Bridge.ino): globals, setup(), loop(), WiFiStationDisconnected().
-- [Y config](https://github.com/yuri-rage/ESP-Serial-Bridge/blob/130f731416d43c89bce5626ef989b3e65918c9ce/config.h).
-- [A sketch](https://github.com/AlphaLima/ESP32-Serial-Bridge/blob/bb42dc3db926f9baf1f5faa76cc21bad1dd80cdf/ESP32-Serial-Bridge.ino): setup(), loop().
+Pinned sources: [Y sketch](https://github.com/yuri-rage/ESP-Serial-Bridge/blob/130f731416d43c89bce5626ef989b3e65918c9ce/ESP-Serial-Bridge.ino) (`setup`, `loop`, `WiFiStationDisconnected`); [Y config](https://github.com/yuri-rage/ESP-Serial-Bridge/blob/130f731416d43c89bce5626ef989b3e65918c9ce/config.h); [A sketch](https://github.com/AlphaLima/ESP32-Serial-Bridge/blob/bb42dc3db926f9baf1f5faa76cc21bad1dd80cdf/ESP32-Serial-Bridge.ino) (`setup`, `loop`).
 
 | Area | Observation | Consequence / limit |
 | --- | --- | --- |
@@ -30,11 +28,14 @@ Source keys, pinned throughout this review:
 | Session boundaries | No radio-session state or pending-byte ownership; UART input is consumed even without a TCP receiver. | No offline status replay is provided. Reconnect must invalidate app state; future queues must not replay old commands to a new session. |
 | Configuration | Y defaults to station mode and 115200 baud on all UARTs; TCP, UDP, DEBUG and OTA enabled. | These are upstream examples, not installation settings. Blind adoption could interrupt navigation. |
 
-The [README](https://github.com/yuri-rage/ESP-Serial-Bridge/blob/130f731416d43c89bce5626ef989b3e65918c9ce/README.md) reports Arduino framework 2.0 and PlatformIO compatibility. The complete pinned tree contains no platformio.ini or dependency lock. Build reproducibility is therefore still work to specify, not established support for a current framework. The [LICENSE](https://github.com/yuri-rage/ESP-Serial-Bridge/blob/130f731416d43c89bce5626ef989b3e65918c9ce/LICENSE) is MIT with AlphaLima attribution; inspected sketch/config headers contain no different license grant. Preserve notices if code is later reused. No code was copied in this work.
+| Build/license evidence | Limit |
+| --- | --- |
+| [README](https://github.com/yuri-rage/ESP-Serial-Bridge/blob/130f731416d43c89bce5626ef989b3e65918c9ce/README.md): Arduino 2.0/PlatformIO reported | No platformio.ini/dependency lock in pinned tree; build unverified |
+| [LICENSE](https://github.com/yuri-rage/ESP-Serial-Bridge/blob/130f731416d43c89bce5626ef989b3e65918c9ce/LICENSE): MIT, AlphaLima attribution | No conflicting sketch/config grant found; preserve notices |
 
 ## Smallest proposed changes
 
-These are analysis outputs, not implementation authorization. A precise patch size depends on WP1. Retain existing navigation pins, settings, endpoints, client behavior and required transports; do not set MAX_NMEA_CLIENTS to one globally or disable a navigation transport merely to isolate the radio.
+Proposals only. New bridge under ADR-03; match required navigation interfaces/settings/transports. Do not globally restrict navigation clients to isolate radio.
 
 | Increment | Minimal proposal and expected result | Future regression evidence |
 | --- | --- | --- |
@@ -44,10 +45,8 @@ These are analysis outputs, not implementation authorization. A precise patch si
 | 4. Conditional station reconnect (R02/R03) | If the installation uses station mode, replace unbounded connection waits with timed retry state and invalidate radio sessions on link loss. If it uses AP mode, leave the unused station path out of the initial change. | Wi-Fi absent at startup and loss/recovery while servicing UARTs; no command replay. |
 | 5. Reproducible configuration (R07) | Pin board/framework/dependencies and sanitized build configuration. Do not upgrade the framework merely because it is newer. | Later reproducible build on the selected environment; no build performed now. |
 
-Finite buffers cannot preserve unlimited serial input during a network outage. Choose explicit overflow/session failure behavior and refresh radio state on reconnect. Keep Becker parsing, acknowledgment and active/standby decisions in OpenSoar; a bridge cannot fix the known driver defects or protect active frequency through byte forwarding alone.
-
-Recommendation: retain Yuri as the first external candidate, because its existing bounded reads and routing reduce necessary changes. Before choosing it over the installed firmware, obtain the sanitized current configuration/source and spare-UART evidence. No navigation-preservation claim is possible without that comparison and later coexistence tests.
+Finite buffers cannot cover unlimited outages. Define overflow/session failure; no old-command replay. OpenSoar owns protocol/state; forwarding alone cannot preserve active frequency.
 
 ## Verification summary
 
-Re-read both pinned sketches, Yuri config/README/LICENSE and recursive tree through GitHub; checked default-branch commit histories and both comparisons from the shared revision. Confirmed project remote HEAD matched local 3d1c69e before documentation edits. Reviewed documentation diff, links and whitespace. Source analysis only: no compilation, synthetic transport tests, board execution, radio commands or navigation measurements. Framework write blocking, boot output, installed topology, radio revision and license choice for this repository remain unresolved. WP3 selection remains open.
+Pinned sketches/config/README/license/tree and histories inspected. No compilation, transport tests, board/radio/navigation measurements. Framework blocking, boot output, installed interfaces and firmware selection open.

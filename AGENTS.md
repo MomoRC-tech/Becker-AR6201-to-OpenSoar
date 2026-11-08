@@ -25,7 +25,7 @@ For documentation-only work, check consistency, relative links/anchors, source s
 
 Update the document that owns the information: baseline for requirements/inventory/risks; sources for evidence; architecture for decisions; roadmap for work status. Preserve useful prior findings, label superseded guidance and link replacements. Keep one concise verification summary per package, with detailed evidence only where useful.
 
-Keep documentation readable and easy to navigate. Use descriptive headings, short paragraphs and tables for structured data. Keep the README focused on the project goal, scope, architecture and next step. Record approval history and dated review notes in the relevant project documents, and link to details where readers need them.
+Use minimal technical wording: short fragments and tables. Remove repetition, decision narratives, personal justifications and chronology of owner choices. Record current selections/status, constraints, open items and necessary evidence only. Keep source/test dates and revisions where needed for traceability. README: goal, scope, architecture and next step.
 
 ## Preservation and delivery
 
