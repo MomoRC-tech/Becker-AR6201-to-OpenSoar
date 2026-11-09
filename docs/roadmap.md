@@ -81,4 +81,4 @@ Transport success ≠ radio acceptance. ACK constants do not establish response 
 
 ## Bounded WP0 Mermaid overview correction — 2026-11-09
 
-[Connections overview](connections.md#logical-connections): paired forward/return arrows replaced by single bidirectional links; navigation return optionality labelled. All equipment left, converters next, ESP32 then OpenSoar. Verification: Mermaid 12.3.0 default and Dagre renders visually checked; node positions and all seven bidirectional paths checked; README layout unaffected. Whitespace checked. Local renders only; live GitHub rendering not checked. No application/device tests.
+[Connections guide](connections.md#logical-connections): separate forward and return arrows, compact Markdown tables, cropped Hailege image and shorter connector notes. Checked local Mermaid default and Dagre layouts. GitHub controls native table padding.
