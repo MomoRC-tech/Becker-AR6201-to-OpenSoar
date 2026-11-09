@@ -14,8 +14,8 @@ Parts for one bridge.
 | RS-422 mod / 1 | TI THVD1451D, SOIC-8 | Proposed full-duplex RS-422; always enabled; soldering required |
 | Adapter / 1 | SOIC-8 to 2.54 mm breakout, e.g. Adafruit 1212 | Use the SOIC side. Check pins after soldering |
 | C-R / 1 | 100 nF ceramic, at least 10 V | Close between RS-422 mod pins 1 and 4; H-1-0290 fitted capacitors need value/condition checks |
-| R-Z, R-F, R-R / 3 | 10 kΩ, 1%, at least 0.125 W | Proposed pull-ups from each converter's logic data input to 3.3 V; retain an idle input when its TX jumper is open |
-| TX links / 3 | Removable 2-pin links, 2.54 mm, with labelled shunts | ESP32 TX → converter input. Start open. Converter output remains enabled |
+| R-Z, R-F, R-R / 3 | 10 kΩ, 1%, at least 0.125 W | Proposed pull-ups to 3.3 V for idle bias when the ESP32 TX output is high impedance |
+| Navigation TX links / 2 | Removable 2-pin links, 2.54 mm, with labelled shunts | Zander and FLARM TX paths. Start open. Converter outputs remain enabled |
 | Bench interconnect / 1 set | Carrier/prototyping board, insulated wire, headers, standoffs and labelled test points | Solder transceiver and decoupling together. Keep differential test leads short |
 | Navigation interconnect / 2 sets | Soldered leads/headers for H-1-0290 pads; equipment-side connectors TBD | Pad pitch, connector type/gender and actual cable mapping require inspection; no onboard DB9 assumed |
 | Radio bench terminal / 1 | Labelled 5-way connector for A, B, Y, Z and logic reference | Lab use only; instrument connector and shielding remain TBD |
@@ -65,7 +65,7 @@ Record pad maps, shared contacts and deviations from S27. Trace equipment cables
 | --- | --- |
 | 1 VCC | 3.3 V; C-R 100 nF to pin 4 |
 | 2 R | Logic receiver output |
-| 3 D | Logic driver input; R-R 10k to 3.3 V, converter side of Becker TX link |
+| 3 D | Logic driver input, wired directly to GPIO17 TX. R-R 10 kΩ pull-up to 3.3 V |
 | 4 GND | Common bench logic ground |
 | 5 Y | Non-inverting driver output, bench TX+ |
 | 6 Z | Inverting driver output, bench TX− |

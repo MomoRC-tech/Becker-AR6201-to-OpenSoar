@@ -5,7 +5,7 @@
 > [!WARNING]
 > Confirm cable pinouts, converter pads and ESP32 headers before connecting. UNKNOWN = unresolved.
 >
-> TX links start open. Leave instrument RX disconnected for receive-only use.
+> Zander and FLARM TX links start open. Leave their RX inputs disconnected for receive-only use.
 
 [Bench checks and parts](bench-build.md) · [Sources](sources.md)
 
@@ -111,19 +111,18 @@ IGC numbering runs in the opposite direction to common RJ45 numbering. Match the
 
 ![Proposed device to module to ESP32 path](images/wiring-becker.svg)
 
-| | Becker J1* | → / ← | RS422 chip pin | Logic / TX link | → / ← | ESP32 / TX link |
+| | Becker J1* | → / ← | RS422 chip pin | Logic pin | → / ← | ESP32 |
 | :-: | --- | :-: | --- | --- | :-: | --- |
 | 🟦 | 2 (<img src="images/pins/tx2-plus.svg" alt="TX2+" width="28" height="14">) | → | 8 (<img src="images/pins/a.svg" alt="A" width="20" height="14">) | — | — | — |
 | 🟦 | 9 (<img src="images/pins/tx2-minus.svg" alt="TX2−" width="28" height="14">) | → | 7 (<img src="images/pins/b.svg" alt="B" width="20" height="14">) | — | — | — |
 | 🟦 | — | — | — | 2 (<img src="images/pins/r.svg" alt="R" width="20" height="14">) | → | GPIO16 (<img src="images/pins/rx.svg" alt="RX" width="20" height="14">) |
-| 🟧 | *3 (<img src="images/pins/rx2-plus.svg" alt="RX2+" width="28" height="14">)* | *←* | *5 (<img src="images/pins/y.svg" alt="Y" width="20" height="14">)* | — | — | — |
-| 🟧 | *10 (<img src="images/pins/rx2-minus.svg" alt="RX2−" width="28" height="14">)* | *←* | *6 (<img src="images/pins/z.svg" alt="Z" width="20" height="14">)* | — | — | — |
-| 🟧 | — | — | — | *3 (<img src="images/pins/d.svg" alt="D" width="20" height="14">)* | *←* | *TX link: module contact **UNKNOWN*** |
-| 🟧 | — | — | — | *TX link: ESP32 contact **UNKNOWN*** | *←* | *GPIO17 (<img src="images/pins/tx.svg" alt="TX" width="20" height="14">)* |
+| 🟧 | 3 (<img src="images/pins/rx2-plus.svg" alt="RX2+" width="28" height="14">) | ← | 5 (<img src="images/pins/y.svg" alt="Y" width="20" height="14">) | — | — | — |
+| 🟧 | 10 (<img src="images/pins/rx2-minus.svg" alt="RX2−" width="28" height="14">) | ← | 6 (<img src="images/pins/z.svg" alt="Z" width="20" height="14">) | — | — | — |
+| 🟧 | — | — | — | 3 (<img src="images/pins/d.svg" alt="D" width="20" height="14">) | ← | GPIO17 (<img src="images/pins/tx.svg" alt="TX" width="20" height="14">) |
 | ⬜ | 21 (<img src="images/pins/d_gnd.svg" alt="D_GND" width="33" height="14">) | — | Reference **UNKNOWN** | — | — | — |
 | ⬜ | — | — | — | 4 (<img src="images/pins/gnd.svg" alt="GND" width="23" height="14">) | — | GND contact **UNKNOWN** |
 
-Confirm J1 revision and signal ground. 🟦 Status · 🟧 Commands · ⬜ Ground. The table uses THVD1451D chip pins. Standby tuning requires the command path.
+Confirm J1 revision and signal ground. 🟦 Status · 🟧 Commands · ⬜ Ground. The table uses THVD1451D chip pins. GPIO17 connects directly to D for standby tuning. ESP32 header positions and breakout contacts remain **UNKNOWN**.
 
 <details>
 <summary>Becker rear connector and J1 pin view</summary>
