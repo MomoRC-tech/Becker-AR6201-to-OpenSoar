@@ -9,19 +9,19 @@
 ```mermaid
 flowchart LR
     Z[Zander ZS1] --> NZ["Zander adapter: HW-044 RS-232"]
-    F["FLARM: model UNKNOWN"] --> NF["FLARM adapter: HW-044 RS-232"]
+    F["Classic FLARM: reported, match pending"] --> NF["FLARM adapter: HW-044 RS-232"]
     NZ --> E[ESP32]
     NF --> E
-    B["Becker: variant UNKNOWN"] <--> R["Becker transceiver: proposed RS-422"]
+    B["AR6201-022: reported, match pending"] <--> R["Becker transceiver: proposed RS-422"]
     R <--> E
     E <-->|Wi-Fi: separate device paths| O[OpenSoar]
 ```
 
-Navigation returns: optional, listed below. Serial settings/network ports UNKNOWN. Radio bytes separate from navigation/diagnostics.
+Navigation returns: optional, listed below. Serial settings unverified; existing TCP endpoints [reported in baseline](project-baseline.md#pending-configuration), not selected/verified new-build settings. Radio bytes separate from navigation/diagnostics.
 
 ## Zander ZS1
 
-**Drawing unavailable:** Zander installation manual/PC-cable connector photo still needed.
+**Unmatched drawing crop (S25):** connector **B** labels: 2 GND, 3 RX-PC, 4 TX-PC. Red-circled **A** uses RX-SR/TX-SR and other functions. Revision/view unverified; complete installation drawing and actual cable mapping still needed. This crop does not authorize wiring.
 
 | From | To | Function / status |
 | --- | --- | --- |
@@ -32,14 +32,16 @@ Navigation returns: optional, listed below. Serial settings/network ports UNKNOW
 | Zander adapter DB9 output pin **UNKNOWN** | PC cable pin 3, RX | Optional return; RMC only |
 | PC cable pin 5, GND | Zander adapter DB9 reference pin **UNKNOWN** | Ground/reference design open |
 
-Source: S09, ZS1 D3029, 16.09.2004, p.46; conditional **PC-cable** reference, not rear-panel pinout. Cable/interface match pending.
+Source: [S22 original handbook](reference/ZS1_Deutsch.pdf), D3029, 16.09.2004, pp.46/48; conditional **PC-cable DE9** reference, not rear-panel B numbering. Cable/interface match pending. The 3037 supplement specifies 4,800 baud with the ZS1 FLARM function off, 19,200 with it on; installed version/setting unverified. RJ45/DE9 shape does not establish voltage or compatible pinning.
 
 ## FLARM
 
 <img src="images/powerflarm-core-reference-connectors.png" width="260" alt="PowerFLARM Core manual reference: connector locations">
 <img src="images/powerflarm-core-reference-de9.png" width="390" alt="PowerFLARM Core DE9 reference: device socket left, cable plug right, mating faces">
 
-**Reference only — PowerFLARM Core; installed model UNKNOWN.** DE9: device socket left, cable plug right, mating faces. [FTD-033 v1.1, pp.11/14](https://www.flarm.com/wp-content/uploads/2024/04/FTD-033-PowerFLARM-Core-Installation-Manual.pdf#page=11), © FLARM Technology AG. Installed pins remain UNKNOWN.
+**PowerFLARM Core examples only; not the reported Classic FLARM.** DE9: device socket left, cable plug right, mating faces. [FTD-033 v1.1, pp.11/14](https://www.flarm.com/wp-content/uploads/2024/04/FTD-033-PowerFLARM-Core-Installation-Manual.pdf#page=11), © FLARM Technology AG. Retained as reference, not installed pinning.
+
+**Conditional Classic reference (S23):** [F6/F7/F8/F9 manual v221, p.6](https://www.flarm.com/wp-content/uploads/2024/04/FLARM_InstallationManual_D.pdf#page=6): RJ45 Power/Data, TX 5, RX 6, ground 7/8 (also 4); supply 1/2. IGC numbering is reversed relative to common numbering: match the manual's plug view and trace the actual cable. Extension is a separate RJ12 socket. Installed pins below remain UNKNOWN pending match.
 
 | From | To | Function / status |
 | --- | --- | --- |
@@ -50,7 +52,7 @@ Source: S09, ZS1 D3029, 16.09.2004, p.46; conditional **PC-cable** reference, no
 | FLARM adapter DB9 output pin **UNKNOWN** | FLARM RX pin **UNKNOWN** | Optional return |
 | FLARM reference pin **UNKNOWN** | FLARM adapter DB9 reference pin **UNKNOWN** | Ground/reference design open |
 
-Source: S09, FTD-012 §5. Confirm model/RS-232 port; some Classic extension ports provide only PFLAU. Preserve displays/returns; no assumed splitter.
+Source: S23, FTD-012 §5 and Classic installation manual pp.6/7/9. RS-232 is not ESP32 GPIO signalling. Confirm baud/output; TCP port 2000 does not establish serial settings. Preserve displays/returns; the Classic manual permits one attached device per data port, so no assumed passive splitter.
 
 **Both HW-044 adapters:** connector photos/mapping pending. RXD/TXD direction requires [unpowered continuity](bench-build.md#hw-044-identification). For receive-only use, disconnect the RS-232 output at the instrument; an open TX link does not disable it.
 
@@ -58,7 +60,7 @@ Source: S09, FTD-012 §5. Confirm model/RS-232 port; some Classic extension port
 
 <img src="images/becker-reference-connectors.png" width="325" alt="Becker manual reference: AR62X1/RT62X1 rear connector layout, P1 above J1">
 
-**Reference only — AR62X1/RT62X1 rear view; installed revision UNKNOWN.** Callout 4 identifies J1, not contact 4. Contact numbering is not shown. [DV14307.03 Issue 06, p.57, Fig.18](https://www.becker-avionics.com/wp-content/uploads/00_Literature/6200_Series_IO_en.pdf#page=57), © Becker Avionics GmbH.
+**Reference only — AR62X1/RT62X1 rear view; AR6201-(022) reported, revision UNKNOWN.** Callout 4 identifies J1, not contact 4. Contact numbering is not shown. [DV14307.03 Issue 06, p.57, Fig.18](https://www.becker-avionics.com/wp-content/uploads/00_Literature/6200_Series_IO_en.pdf#page=57), © Becker Avionics GmbH.
 
 **Conditional manual pins; installed match unverified.** Becker transceiver means **THVD1451D IC pins**, not breakout/header positions (UNKNOWN).
 
@@ -73,7 +75,7 @@ Source: S09, FTD-012 §5. Confirm model/RS-232 port; some Classic extension port
 | Becker transceiver IC pin 6, Z | Becker J1 pin 10, RX2− | Driver → radio − |
 | Becker J1 pin 21, D_GND | Reference connection **UNKNOWN** | Discrete-line ground; bonding unresolved |
 
-Sources: prior review, DV14307.03 Issue 06 §2.5.3.2 p.59; Becker transceiver pins S18. [Circuit details](bench-build.md#rs-422-circuit). Full-duplex RS-422; no galvanic isolation. Termination/protection UNKNOWN. Keep radio unplugged pending interface/coexistence checks: Becker transceiver remains enabled with Becker TX link open.
+Sources: S10 recheck, DV14307.03 Issue 06 §2.5.3.2 p.59; Becker transceiver pins S18. [Circuit details](bench-build.md#rs-422-circuit). Full-duplex RS-422; no galvanic isolation. Termination/protection UNKNOWN. Keep radio unplugged pending interface/coexistence checks: Becker transceiver remains enabled with Becker TX link open.
 
 ## Power
 

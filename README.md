@@ -48,6 +48,7 @@ flowchart LR
 | [Bench reference](docs/bench-build.md) | BOM, converter internals, protection, checks |
 | [Architecture](docs/architecture.md) | Current design and selections |
 | [Baseline](docs/project-baseline.md) | Requirements, inventory, risks |
+| [Installation claim review](docs/reviews/2026-11-09-installation-claims.md) | Tom's report, PDF versions, supported data and open questions |
 | [Roadmap](docs/roadmap.md) | Work queue |
 | [Sources](docs/sources.md) | Evidence and revisions |
 | [Investigation](docs/technical-investigation.md) | Driver and interface findings |

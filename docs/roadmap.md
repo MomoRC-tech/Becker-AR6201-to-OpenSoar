@@ -7,7 +7,7 @@ Single work queue. Listed work is not implementation authorization.
 | Package | Status | Prerequisite | Output / completion check |
 | --- | --- | --- | --- |
 | WP0 Documentation | Complete; acceptance pending | Existing records | Concise, consistent docs; [verification](reviews/2026-11-08-documentation.md) |
-| WP1 Installation | Open; photos assessed | Equipment/configuration evidence | Inventory, connector map, navigation baseline; gaps with owner/consequence |
+| WP1 Installation | Open; photos and equipment report assessed | Equipment/configuration evidence | Inventory, connector map, navigation baseline; gaps with owner/consequence |
 | WP2 Interfaces/protocol | Open; driver research complete | Radio identity | Matched manual, settings, framing, response rules, independent vectors |
 | WP3 Architecture/reuse | Open; bench design documented | WP1/WP2 | Board/interfaces, firmware, required fixes, licenses, build inputs |
 | WP4 Driver plan | Planned; send investigation complete | WP1–WP3 | One minimal change and regression check per increment |
@@ -37,13 +37,15 @@ Single work queue. Listed work is not implementation authorization.
 
 ## WP1 — existing installation (first priority)
 
+[2026-11-09 report verification](reviews/2026-11-09-installation-claims.md): supplied Zander PDFs retained; Classic FLARM references, driver field support and reported endpoints recorded. No Becker integration established. Source review complete for this increment; WP1/WP2/M1 remain open.
+
 | Needed | Owner | Blocks |
 | --- | --- | --- |
-| Radio model/part/HW/SW, connector occupancy | Tom | Manual/interface matching |
-| FLARM model/ports; Zander cable map; levels/settings | Tom | Equipment wiring |
+| Confirm AR6201-(022): type plate/article/HW/SW, connector occupancy | Tom | Manual/interface matching |
+| Confirm Classic FLARM F6/IGC and ZS1 version; actual port/cable/conversion map; baud/output menus | Tom | Equipment wiring; resolve conjectured absence of RS-232 conversion |
 | Navigation routing/returns, update gaps, reconnect behavior | Tom/owner | Coexistence baseline |
-| OpenSoar build, drivers, endpoints | Owner/Tom | App/bridge configuration |
-| Board/BEC models, source range | Owner | Protection/current budget |
+| OpenSoar build and evidence for reported drivers/endpoints; clarify OpenVario's role | Owner/Tom | App/bridge configuration |
+| Existing board/firmware, UBEC output/board input; separate new-build BEC/source limits | Tom/owner | Backup record and protection/current budget |
 
 Update [inventory](project-baseline.md#existing-installation--wp1-record) and sources with supported values or explicit gaps. Keep backups private. No flashing, rewiring or radio commands. M1 requires closure of interface-critical gaps.
 

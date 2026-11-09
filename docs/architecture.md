@@ -30,7 +30,7 @@
 
 ### OpenSoar baseline and pending inputs
 
-Tom: radio part/HW/SW, FLARM model/ports, Zander cable map, serial settings, return traffic, supply details. Owner: exact board/BEC and OpenSoar configuration.
+Reported equipment/endpoints: [WP1 inventory](project-baseline.md#existing-installation--wp1-record). Tom: confirm radio type plate/HW/SW, Classic FLARM port/firmware, ZS1 version/cable/conversion map, serial settings, return traffic and UBEC output. Owner: separate new-build board/BEC details and installed OpenSoar configuration. Reports do not select new-build network/serial settings.
 
 ## Decision record
 
