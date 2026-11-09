@@ -115,20 +115,20 @@ IGC numbering runs in the opposite direction to common RJ45 numbering. Match the
 
 ![Proposed device to module to ESP32 path](images/wiring-becker.svg)
 
-| | Becker J1* | → / ← | RS422 chip pin | Logic pin | → / ← | ESP32 |
-| :-: | --- | :-: | --- | --- | :-: | --- |
-| 🟦 | 2 (<img src="images/pins/tx2-plus.svg" alt="TX2+" width="28" height="14">) | → | 8 (<img src="images/pins/a.svg" alt="A" width="20" height="14">) | — | — | — |
-| 🟦 | 9 (<img src="images/pins/tx2-minus.svg" alt="TX2−" width="28" height="14">) | → | 7 (<img src="images/pins/b.svg" alt="B" width="20" height="14">) | — | — | — |
-| 🟦 | — | — | — | 2 (<img src="images/pins/r.svg" alt="R" width="20" height="14">) | → | GPIO16 (<img src="images/pins/rx.svg" alt="RX" width="20" height="14">) |
-| 🟧 | 3 (<img src="images/pins/rx2-plus.svg" alt="RX2+" width="28" height="14">) | ← | 5 (<img src="images/pins/y.svg" alt="Y" width="20" height="14">) | — | — | — |
-| 🟧 | 10 (<img src="images/pins/rx2-minus.svg" alt="RX2−" width="28" height="14">) | ← | 6 (<img src="images/pins/z.svg" alt="Z" width="20" height="14">) | — | — | — |
-| 🟧 | — | — | — | 3 (<img src="images/pins/d.svg" alt="D" width="20" height="14">) | ← | GPIO17 (<img src="images/pins/tx.svg" alt="TX" width="20" height="14">) |
-| ⬜ | 21 (<img src="images/pins/d_gnd.svg" alt="D_GND" width="33" height="14">) | — | Reference **UNKNOWN** | — | — | — |
-| ⬜ | — | — | — | 4 (<img src="images/pins/gnd.svg" alt="GND" width="23" height="14">) | — | GND contact |
+**Selected module:** assembled board marked `RS422 TO TTL`. In the supplied photo, header labels left to right are `TXD`, `RXD`, `GND`, `VCC`. Screw terminals read `Y`, `Z`, `B`, `A`. [S28](sources.md#source-register)
 
-Confirm J1 revision and signal ground. 🟦 Status · 🟧 Commands · ⬜ Ground. The table uses THVD1451D chip pins. GPIO17 connects directly to D for standby tuning. ESP32 header positions and breakout contacts remain **UNKNOWN**.
+**Proposed routes.** Module pin functions and polarity require matching documentation. Becker J1 assignments are conditional on the installed revision.
 
-**Converter build:** THVD1451D SOIC-8 with 100 nF between IC pins 1 and 4, a proposed 10 kΩ pull-up from D to 3.3 V, and common logic ground. The driver is always enabled and the circuit has no galvanic isolation. Use separate TX and RX twisted pairs. Match termination, shielding and reference bonding before connection. [S18](sources.md#source-register)
+| Path | Becker J1 reference | RS-422 module | ESP32 |
+| --- | --- | --- | --- |
+| Status pair | 2 TX2+ / 9 TX2− → | A / B (proposed receive pair) | — |
+| Status logic | — | Logic output pin **UNKNOWN** → | GPIO16 RX |
+| Command pair | 3 RX2+ / 10 RX2− ← | Y / Z (proposed transmit pair) | — |
+| Command logic | — | Logic input pin **UNKNOWN** ← | GPIO17 TX |
+| Equipment reference | 21 D_GND | Reference bond **UNKNOWN** | — |
+| Logic return | — | GND contact | GND contact |
+
+Use separate TX and RX twisted pairs. Confirm module supply, TXD/RXD direction and logic levels, termination, shielding and reference bonding before connecting. ESP32 GPIO tolerance is 3.6 V. A module output above that needs level conversion before reaching the ESP32. [Espressif GPIO limits](https://docs.espressif.com/projects/esp-faq/en/latest/hardware-related/hardware-design.html#what-is-the-voltage-tolerance-of-gpios-of-esp-chips)
 
 <details>
 <summary>Becker rear connector and J1 pin view</summary>
@@ -156,7 +156,8 @@ flowchart LR
     I --- T["Transient clamp to return: UNKNOWN"]
     B --> V["Output protection if required: UNKNOWN"] --> E["ESP32 5 V input: position UNKNOWN"]
     E --> R[Board 3.3 V regulator]
-    R --> C["RS-232-mod1 / RS-232-mod2 / RS-422 mod"]
+    R --> C["RS-232-mod1 / RS-232-mod2"]
+    U["Supply rail UNKNOWN"] -.-> Q["Becker RS-422 module VCC"]
 ```
 
 | From | To | Status |
@@ -165,15 +166,15 @@ flowchart LR
 | BEC output return | ESP32 GND contact | Common logic ground; source return design pending |
 | ESP32 3.3 V contact **UNKNOWN** | RS-232-mod1 R3 (`+`) | Proposed; module check pending |
 | ESP32 3.3 V contact **UNKNOWN** | RS-232-mod2 R3 (`+`) | Proposed; module check pending |
-| ESP32 3.3 V contact **UNKNOWN** | RS-422 mod IC pin 1, VCC | Proposed |
+| Supply rail **UNKNOWN** | RS-422 module VCC | Confirm module voltage before assigning a rail |
 | ESP32 GND contact | RS-232-mod1 R4 (`−`) | Proposed; continuity pending |
 | ESP32 GND contact | RS-232-mod2 R4 (`−`) | Proposed; continuity pending |
-| ESP32 GND contact | RS-422 mod IC pin 4, GND | Proposed |
+| ESP32 GND contact | RS-422 module GND contact | Proposed logic return |
 
 Use one VCC/GND pair per H-1-0290. Disconnect BEC 5 V before USB powering. Preserve existing instrument power feeds.
 
 - Size the fuse near the source and select reverse-polarity protection for the actual wiring, BEC input range and inrush. Coordinate the input transient clamp to return with the fuse and BEC limits. Evaluate output overvoltage cutoff against BEC faults and ESP32 input limits.
-- Verify the board regulator current and temperature with Wi-Fi and all converters active. Spare 3.3 V capacity, source voltage range, BEC model and protection ratings remain open. [S16–S19](sources.md#source-register)
+- Verify the board regulator current and temperature with Wi-Fi and the 3.3 V loads active. Spare 3.3 V capacity, source voltage range, BEC model and protection ratings remain open. [S16–S19](sources.md#source-register)
 
 ---
 
@@ -188,11 +189,9 @@ Parts for one bridge. Keep the existing assembly and harness as backup.
 | MCU / 1 | AZ-Delivery ESP32 WROOM dev module | Owner-selected. Verify header positions and regulator limits |
 | RS-232-mod1, RS-232-mod2 / 2 | Hailege H-1-0290 RS-232/logic boards; 9.4 × 15.9 mm each | Selected (S26); reported MAX3232CSE. Verify both ICs, pad routing and 3.3 V operation |
 | PS1 / 1 | BEC: reported 2S–4S input; 5 V output | Reported nominal 12 V battery; model, voltage range, polarity, tolerance, ripple/protection TBD. Old UBEC specs inapplicable |
-| RS-422 mod / 1 | TI THVD1451D, SOIC-8 | Proposed full-duplex RS-422; always enabled; soldering required |
-| Adapter / 1 | SOIC-8 to 2.54 mm breakout, e.g. Adafruit 1212 | Use the SOIC side. Check pins after soldering |
-| C-R / 1 | 100 nF ceramic, at least 10 V | Close between RS-422 mod pins 1 and 4; H-1-0290 fitted capacitors need value/condition checks |
-| R-Z, R-F, R-R / 3 | 10 kΩ, 1%, at least 0.125 W | Proposed pull-ups to 3.3 V for idle bias when the ESP32 TX output is high impedance |
-| Bridge interconnect / 1 set | Carrier/prototyping board, insulated wire, headers and standoffs | Solder transceiver and decoupling together. Keep differential test leads short |
+| RS-422 mod / 1 | Assembled RS422-to-TTL board shown in S28 | Owner-selected for Becker. Supply, logic compatibility and exact model open |
+| R-Z, R-F / 2 | 10 kΩ, 1%, at least 0.125 W | Proposed idle pull-ups for the Zander and FLARM converter inputs |
+| Bridge interconnect / 1 set | Carrier, insulated wire, headers and standoffs | Mount and connect the modules |
 | Navigation interconnect / 2 sets | Soldered leads/headers for H-1-0290 pads; equipment-side connectors TBD | Pad pitch, connector type/gender and actual cable mapping require inspection; no onboard DB9 assumed |
 | F1, reverse-polarity stage, transient/OV protection | [Power protection](#power) | Hold purchase until BEC, source and board limits are known |
 | Equipment harness, termination, enclosure | Model-specific connectors, cable and resistors | Hold for matched manuals, cable lengths and enclosure space. No fixed 120 Ω termination is assumed |
@@ -209,4 +208,4 @@ Parts for one bridge. Keep the existing assembly and harness as backup.
 | Both H-1-0290 sides, IC markings + continuity map | Confirm inferred L/R pad map; equipment cable mapping |
 | ESP32 header/regulator checks and BEC/source limits | Header positions, current budget, protection |
 | Return-traffic requirements + serial settings | Optional return wiring and port configuration |
-| Matched radio interface/reference/termination | Final radio circuit/harness |
+| RS-422 module model, supply, logic levels and pin functions | Becker supply and wiring, level conversion, reference and termination |

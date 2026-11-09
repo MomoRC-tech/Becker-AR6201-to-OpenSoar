@@ -7,7 +7,7 @@
 | OpenSoar | Radio framing, channel conversion, state, responses |
 | ESP32 | Counted binary forwarding; separate radio/navigation/diagnostic paths |
 | Navigation | Preserve required messages, displays and return traffic |
-| Radio interface | Proposed 3.3 V UART ↔ full-duplex RS-422; no intermediate RS-232 stage required by the proposal |
+| Radio interface | ESP32 UART ↔ assembled RS422-to-TTL board. Logic compatibility and module pin functions open |
 
 [Overview](../README.md#architecture-overview) · [Connections](connections.md)
 
@@ -19,8 +19,8 @@
 | --- | --- |
 | Board | AZ-Delivery ESP32 WROOM dev module (owner selection). Verify header positions and regulator limits |
 | Navigation | 2 × Hailege H-1-0290 at 3.3 V (S26); continuity and interface checks pending |
-| Radio | THVD1451D/SOIC breakout proposed; no galvanic isolation |
-| Supply | Nominal 12 V battery → BEC (reported 2S–4S input), 5 V → board → 3.3 V converters |
+| Radio | Owner-selected assembled RS422-to-TTL board (S28). Supply, logic levels and isolation unverified |
+| Supply | Nominal 12 V battery → BEC (reported 2S–4S input), 5 V → ESP32 → 3.3 V navigation converters. Becker module supply open |
 | USB | Disconnect BEC 5 V before USB powering; no added power-selection circuit |
 | Routing | Separate UART/device endpoints proposed; return traffic and GPS priority TBD |
 | Firmware | Unselected; Yuri first external candidate, AlphaLima basic comparator |
@@ -58,4 +58,4 @@ One queue: [roadmap](roadmap.md). Requirements: baseline; evidence: sources; des
 
 ### ADR-04 — selected bench hardware and power path
 
-**Selected:** board/module families and power path above. **Proposed:** THVD1451D, input fuse, reverse-polarity and transient/overvoltage protection. Exact parts, ratings and electrical acceptance open. [Wiring and parts](connections.md#parts-list).
+**Selected:** boards and navigation power path above. The assembled RS-422 module supersedes the bare THVD1451D proposal. **Proposed:** input fuse, reverse-polarity and transient/overvoltage protection. Exact parts, ratings and electrical acceptance open. [Wiring and parts](connections.md#parts-list).
