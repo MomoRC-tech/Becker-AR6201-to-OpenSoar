@@ -41,7 +41,7 @@ flowchart LR
 | --- | --- |
 | Build | New bridge; existing assembly/harness retained as backup |
 | Selected hardware | AZ-Delivery WROOM-32; 2 × Hailege H-1-0290; 5 V BEC; board-derived 3.3 V for navigation converters |
-| Radio interface | Owner-selected assembled RS422-to-TTL board. Supply and logic levels open |
+| Radio interface | Owner-selected assembled RS422-to-TTL board. Schematic shows 5 V. Board match and logic levels open |
 | Deferred controls | Active tuning, swap, volume/squelch |
 
 ---
