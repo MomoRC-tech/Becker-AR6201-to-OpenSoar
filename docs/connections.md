@@ -166,7 +166,8 @@ Pin-view styling follows the [Pinout.xyz examples](https://github.com/pinout-xyz
 
 ```mermaid
 flowchart LR
-    S["Nominal 12 V battery"] --> P["Fuse / reverse protection: UNKNOWN"]
+    S["Nominal 12 V battery"] --> F1["F1 fuse (rating TBD)"]
+    F1 --> P["Reverse protection: UNKNOWN"]
     P --> I[Input node] --> B["BEC: 5 V"]
     I --- T["Transient clamp to return: UNKNOWN"]
     B --> V["Output protection if required: UNKNOWN"] --> E["ESP32 5 V input: position UNKNOWN"]

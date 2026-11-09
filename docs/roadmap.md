@@ -28,6 +28,8 @@
 
 [Wiring and parts](connections.md#parts-list). Open checks cover ESP32 headers and regulator, BEC/source limits, H-1-0290 continuity, RS-422 levels, series resistance and termination (S28–S30), power budget and protection values.
 
+The [power diagram](connections.md#power) shows the dedicated F1 fuse near the battery. Rating TBD.
+
 > [!IMPORTANT]
 > Hold harness and protection purchases until the wiring and power checks are complete.
 
