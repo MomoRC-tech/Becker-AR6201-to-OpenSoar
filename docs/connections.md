@@ -16,23 +16,16 @@ Signals: <img src="images/pins/rx.svg" alt="RX" width="28" height="20"> receive 
 
 ```mermaid
 flowchart LR
-    Z[Zander ZS1] --> NZ["RS-232-mod1: H-1-0290 RS-232"]
-    F["Classic FLARM: reported, match pending"] --> NF["RS-232-mod2: H-1-0290 RS-232"]
-    NZ --> E[ESP32]
-    NF --> E
-    NZ -.-> Z
-    E -.-> NZ
-    NF -.-> F
-    E -.-> NF
-    B["AR6201-022: reported, match pending"] --> R["RS-422 mod: proposed RS-422"]
-    R --> E
-    E -.-> R
-    R -.-> B
-    E -->|Wi-Fi: separate device paths| O[OpenSoar]
-    O --> E
+    Z[Zander ZS1] <-->|return optional| NZ["RS-232-mod1: H-1-0290 RS-232"]
+    F["Classic FLARM: reported, match pending"] <-->|return optional| NF["RS-232-mod2: H-1-0290 RS-232"]
+    B["AR6201-022: reported, match pending"] <-->|commands for tuning| R["RS-422 mod: proposed RS-422"]
+    NZ <--> E[ESP32]
+    NF <--> E
+    R <--> E
+    E <-->|Wi-Fi: separate device paths| O[OpenSoar]
 ```
 
-Navigation returns: optional, listed below. Serial settings unverified; existing TCP endpoints [reported in baseline](project-baseline.md#pending-configuration), not selected/verified new-build settings. Radio bytes separate from navigation/diagnostics.
+Overview arrows show bidirectional paths; device-RX returns are optional for navigation and required for radio tuning. Detailed optional connections remain italic/dotted below. Serial settings unverified; existing TCP endpoints [reported in baseline](project-baseline.md#pending-configuration), not selected/verified new-build settings. Radio bytes separate from navigation/diagnostics.
 
 ### Hailege board pad reference
 
