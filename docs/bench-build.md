@@ -9,11 +9,11 @@ Quantities: one new bridge. Product links are references; no purchases.
 | Ref / quantity | Part or specification | Status / use |
 | --- | --- | --- |
 | MCU / 1 | AZ-Delivery ESP32 WROOM-32 | Selected family; model/regulator/header TBD. S17 vendor board is a reference only |
-| Zander adapter, FLARM adapter / 2 | HW-044 DB9-to-logic modules matching the supplied photo | Selected; apparent MAX3232. Verify both ICs, routing and 3.3 V operation |
+| RS-232-mod1, RS-232-mod2 / 2 | HW-044 DB9-to-logic modules matching the supplied photo | Selected; apparent MAX3232. Verify both ICs, routing and 3.3 V operation |
 | PS1 / 1 | BEC: reported 2S–4S input; 5 V output | Reported nominal 12 V battery; model, voltage range, polarity, tolerance, ripple/protection TBD. Old UBEC specs inapplicable |
-| Becker transceiver / 1 | TI THVD1451D, SOIC-8 | Proposed full-duplex RS-422; always enabled; soldering required |
+| RS-422 mod / 1 | TI THVD1451D, SOIC-8 | Proposed full-duplex RS-422; always enabled; soldering required |
 | Adapter / 1 | SOIC-8 to 2.54 mm breakout, e.g. Adafruit 1212 | Use its SOIC side; verify pin numbering after soldering. A pack may contain more than one board |
-| C-R / 1 | 100 nF ceramic, at least 10 V | Close between Becker transceiver pins 1 and 4; HW-044 capacitors are already fitted but their values/condition need inspection |
+| C-R / 1 | 100 nF ceramic, at least 10 V | Close between RS-422 mod pins 1 and 4; HW-044 capacitors are already fitted but their values/condition need inspection |
 | R-Z, R-F, R-R / 3 | 10 kΩ, 1%, at least 0.125 W | Proposed pull-ups from each converter's logic data input to 3.3 V; retain an idle input when its TX jumper is open |
 | Zander TX link, FLARM TX link, Becker TX link / 3 | Removable 2-pin links, 2.54 mm, with labelled shunts | ESP32 TX-to-converter-input links; initially open. These are not power switches or driver-disable controls |
 | Bench interconnect / 1 set | Carrier/prototyping board, insulated wire, headers, standoffs and labelled test points | Solder the transceiver/decoupling locally; keep differential test leads short. No production PCB required for this increment |
@@ -41,9 +41,9 @@ Record header-to-IC-to-DB9 mapping, reference, power and tied contacts for each 
 
 ## RS-422 circuit
 
-Becker transceiver: **THVD1451D, SOIC-8** (S18), not the unidentified blue module. Local 100 nF decoupling; common bench logic ground; no galvanic isolation.
+RS-422 mod: **THVD1451D, SOIC-8** (S18), not the unidentified blue module. Local 100 nF decoupling; common bench logic ground; no galvanic isolation.
 
-| Becker transceiver IC pin | Function / local components |
+| RS-422 mod IC pin | Function / local components |
 | --- | --- |
 | 1 VCC | 3.3 V; C-R 100 nF to pin 4 |
 | 2 R | Logic receiver output |
@@ -96,7 +96,7 @@ Classify proposed connections: **compatible / change needed / unresolved**, with
 
 | Step | Work and pass condition | Stop condition |
 | --- | --- | --- |
-| 1 Identify | Exact ESP board/regulator, BEC voltage/current ratings, both HW-044 markings and continuity map recorded; Becker transceiver adapter orientation checked | Unknown supply pin, module direction or package |
+| 1 Identify | Exact ESP board/regulator, BEC voltage/current ratings, both HW-044 markings and continuity map recorded; RS-422 mod adapter orientation checked | Unknown supply pin, module direction or package |
 | 2 Power only | Test BEC without electronics first, then under a suitable dummy load; measure startup, steady output, ripple and polarity against the selected board's permitted input. Verify fuse/protection design before using the intended source | Wrong/unstable voltage, unexplained current or missing source/BEC limits |
 | 3 Board and converter rails | Add ESP32, then converters individually. Check 5 V/3.3 V during Wi-Fi load, converter activity and warm operation; measure regulator temperature and compare with its datasheet | Rail excursions, reset, excessive temperature or unbudgeted load |
 | 4 Logic and loops | With equipment disconnected, verify converter outputs stay within the ESP32 input limits. Later test each UART and converter loop with counted binary patterns including 00, A5, FF and fragmented traffic | Byte loss/change, debug bytes, back-power or incorrect levels |
