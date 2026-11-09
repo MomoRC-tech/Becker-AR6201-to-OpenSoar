@@ -44,7 +44,7 @@ flowchart LR
 
 | Document | Contents |
 | --- | --- |
-| [Connections](docs/connections.md) | Device wiring, pin tables, power |
+| [Connections](docs/connections.md) | Board image/pinout, device wiring, power |
 | [Bench reference](docs/bench-build.md) | BOM, converter internals, protection, checks |
 | [Architecture](docs/architecture.md) | Current design and selections |
 | [Baseline](docs/project-baseline.md) | Requirements, inventory, risks |

@@ -35,9 +35,9 @@ Selected: **2 × Hailege H-1-0290**, one per navigation device; replaces HW-044.
 | Supply | 3–5 V reported; **3.3 V** selected for this design |
 | Rate | Above 120 kbps not recommended by listing; not a verified throughput or installed baud setting |
 | Power pads | Both sides reportedly connected; connect one VCC/GND pair per board after continuity checks |
-| Signals | Listing: independent channels, arrows show flow; RS232 and TTL identify signal levels. Physical pad/channel map unverified |
+| Signals | Listing: independent channels, arrows show flow; RS232 and TTL identify signal levels. Inferred pad/channel map in [connections](connections.md#hailege-board-pad-reference); sample continuity pending |
 
-**Unpowered continuity first.** Trace each pad to the IC; arrows/labels are identification aids. Generic MAX3232 16-pin reference from prior review S17 below; confirm actual IC marking, package, pin 1 and matching datasheet before applying it.
+**Unpowered continuity first.** Match the [chip-side photo and L/R pad map](connections.md#hailege-board-pad-reference), then identify actual IC pin 1. S27 comparator routes channel 2: L3→8, L4→7, R1→10, R2→9; both `+` pads→16 and both `−` pads→15. Check all eight pads on both boards, shared supply/ground and absence of a supply short; stop and remap any mismatch. Do not continuity-test through the active signal path. Arrows/labels are identification aids. Generic MAX3232 16-pin reference from prior review S17 below; confirm actual IC marking, package, pin 1 and matching datasheet before applying it.
 
 | Function | MAX3232 channel 1 / channel 2 pins | Connection after confirming the used channel |
 | --- | --- | --- |
@@ -48,7 +48,7 @@ Selected: **2 × Hailege H-1-0290**, one per navigation device; replaces HW-044.
 | RS-232 output | 14 T1OUT / 7 T2OUT | Trace to RS-232-side pad and record its position; initially leave off the instrument |
 | Reference | 15 GND | Trace ground pads on both sides; equipment-reference/shield bonding is a separate question |
 
-Record logic-pad-to-IC-to-RS-232-pad mapping, reference, power and tied contacts for each board, including unused channels. Equipment connectors are separate; no assumed straight-through cable. Return path checked separately. Module supply: 3.3 V only for this design.
+Record logic-pad-to-IC-to-RS-232-pad mapping, reference, power and tied contacts for each board, recording any deviation from S27's channel-2-only pad map. Equipment connectors are separate; no assumed straight-through cable. Return path checked separately. Module supply: 3.3 V only for this design.
 
 ## RS-422 circuit
 
@@ -122,4 +122,4 @@ Preserve existing feeds; not supplied by the bridge. Zander/FLARM supply pins UN
 
 ## Evidence
 
-S09/S16–S19/S26 in [sources](sources.md); Becker pin evidence: prior review. Existing component-pin review retained; no new electrical/device tests. [Documentation verification](reviews/2026-11-08-documentation.md).
+S09/S16–S19/S26–S27 in [sources](sources.md); Becker pin evidence: prior review. Existing component-pin review retained; no new electrical/device tests. [Documentation verification](reviews/2026-11-08-documentation.md).
