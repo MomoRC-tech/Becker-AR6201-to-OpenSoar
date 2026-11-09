@@ -105,4 +105,4 @@ Read relevant sources/status → bound one change → execute → verify → upd
 
 [Connections guide](connections.md#logical-connections): separate forward and return arrows, compact Markdown tables, cropped Hailege image and shorter connector notes. Checked local Mermaid default and Dagre layouts. Live GitHub preview at `4ace6ba` confirmed 14 separate arrows, three devices on the left, cropped image, warning callout and section dividers. GitHub controls native table padding.
 
-[Wiring guide follow-up](connections.md#converter-modules): Becker matches the navigation tables. One closed section groups converter specs, board photos and pin diagrams. Short GitHub alerts highlight caveats and design notes across the docs. Checked rendering, pin mapping, links and whitespace. Documentation only.
+[Wiring guide follow-up](connections.md#module-specs): Becker matches the navigation tables. One closed section groups all module specs and both converter photos and pin diagrams. Short GitHub alerts highlight caveats and design notes across the docs. Checked rendering, pin mapping, links and whitespace. Documentation only.

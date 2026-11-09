@@ -7,7 +7,7 @@
 >
 > Wire the optional Zander and FLARM return paths directly where required. Leave instrument RX disconnected when the return path is unused.
 
-[Converter modules](#converter-modules) · [Parts list](#parts-list) · [Sources](sources.md)
+[Module specs](#module-specs) · [Parts list](#parts-list) · [Sources](sources.md)
 
 ---
 
@@ -41,16 +41,21 @@ flowchart LR
 ---
 
 <a id="hailege-board-pad-reference"></a>
+<a id="converter-modules"></a>
 
-### Converter modules
+### Module specs
 
 <details>
-<summary>RS-232 and RS-422 specs, photos and pin diagrams</summary>
+<summary>Module specs, converter photos and pin diagrams</summary>
 
-| Module | Supply in this design | Chip | Reported size |
+| Module | Power | Chip | Reported size |
 | --- | --- | --- | --- |
 | Hailege H-1-0290 (Zander and FLARM) | 3.3 V | MAX3232CSE (reported) | 9.4 × 15.9 mm |
 | RS422 TO TTL (Becker) | 5 V per schematic | MAX490ESA (owner-confirmed) | 50 × 27 mm |
+| AZ-Delivery ESP32 WROOM dev module | 5 V input, 3.3 V regulator | — | — |
+| BEC (model TBD) | 2S–4S input reported, 5 V output | — | — |
+
+[Power module sources (S16–S19)](sources.md#source-register)
 
 #### Hailege H-1-0290 · RS-232
 
@@ -58,7 +63,7 @@ flowchart LR
 | --- | --- |
 | <img src="images/hailege-h-1-0290-board.svg" width="240" alt="Hailege H-1-0290 board, chip side"> | <img src="images/pinout-hailege.svg" width="420" alt="Hailege chip-side pad map. L1 ground, L2 supply, L3 RS-232 input, L4 RS-232 output. R1 TTL input, R2 TTL output, R3 supply, R4 ground. Continuity unknown."> |
 
-S27 comparator channel 2: L3 → IC pin 8, L4 → 7, R1 → 10, R2 → 9, supplies → 16, grounds → 15. [S26–S27](sources.md#source-register)
+[S26–S27](sources.md#source-register)
 
 #### RS422 TO TTL · RS-422
 
@@ -69,9 +74,6 @@ S27 comparator channel 2: L3 → IC pin 8, L4 → 7, R1 → 10, R2 → 9, suppli
 [S28–S30](sources.md#source-register)
 
 </details>
-
-> [!WARNING]
-> Before power, verify the chip, pin 1, pad routing and shared power pads on both Hailege boards. Check for shorts and confirm the traced channel against the datasheet. Check pad pitch and clearance before mounting.
 
 ---
 
@@ -189,18 +191,6 @@ flowchart LR
 >
 > - Size the fuse near the source and select reverse-polarity protection for the actual wiring, BEC input range and inrush. Coordinate the input transient clamp to return with the fuse and BEC limits. Evaluate output overvoltage cutoff against BEC faults and ESP32 input limits.
 > - Verify BEC polarity, tolerance and ripple. Check regulator current and temperature with Wi-Fi and the 3.3 V loads active. Spare 3.3 V capacity, source voltage range, BEC model and protection ratings remain open. [S16–S19](sources.md#source-register)
-
-<details>
-<summary>ESP32 and BEC specs</summary>
-
-| Module | Power |
-| --- | --- |
-| AZ-Delivery ESP32 WROOM dev module | 5 V input, 3.3 V regulator |
-| BEC (model TBD) | 2S–4S input reported, 5 V output |
-
-[S16–S19](sources.md#source-register)
-
-</details>
 
 ---
 
