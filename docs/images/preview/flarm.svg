@@ -15,14 +15,14 @@
 <rect x="840" y="136" width="252" height="370" rx="8" fill="#f2f5f8" stroke="#ccd5dd"/>
 <text x="44" y="165" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#182b3a" text-anchor="start">Classic FLARM</text>
 <text x="44" y="189" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#485a69" text-anchor="start">Classic F6/IGC reported</text>
-<text x="392" y="165" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#182b3a" text-anchor="start">RS-232-mod2 · HW-044</text>
-<text x="392" y="189" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#764b00" text-anchor="start">DB9/header mapping UNKNOWN</text>
+<text x="392" y="165" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#182b3a" text-anchor="start">RS-232-mod2 · H-1-0290</text>
+<text x="392" y="189" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#764b00" text-anchor="start">Pad mapping UNKNOWN</text>
 <text x="857" y="165" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#182b3a" text-anchor="start">ESP32 · proposed GPIO</text>
 <text x="857" y="189" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#764b00" text-anchor="start">Header positions UNKNOWN</text>
 <text x="326" y="139" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#485a69" text-anchor="middle">RS-232</text>
 <text x="790" y="139" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#485a69" text-anchor="middle">3.3 V logic</text>
-<text x="392" y="219" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#485a69" text-anchor="start">DB9 SIDE</text>
-<text x="590" y="219" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#485a69" text-anchor="start">LOGIC HEADER</text>
+<text x="392" y="219" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#485a69" text-anchor="start">RS-232 PADS</text>
+<text x="590" y="219" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#485a69" text-anchor="start">LOGIC PADS</text>
 <text x="44" y="260" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#075b92" text-anchor="start">TX · UNKNOWN</text>
 <text x="44" y="285" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#764b00" text-anchor="start">Installed pin UNKNOWN</text>
 <text x="392" y="260" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#075b92" text-anchor="start">Input</text>
@@ -72,5 +72,5 @@
 <text x="44" y="552" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#764b00" text-anchor="start">TX link contacts UNKNOWN. An open logic link does not disable the RS-232 output.</text>
 <text x="44" y="577" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#764b00" text-anchor="start">Receive-only: disconnect the output at the instrument. No equipment-ground bond specified.</text>
 <text x="44" y="602" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#764b00" text-anchor="start">Power omitted here: both converters use proposed 3.3 V; physical supply contacts UNKNOWN.</text>
-<text x="28" y="648" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#485a69" text-anchor="start">Prior review: S23 · Classic FLARM v221, pp.6/7/9; S17 · HW-044 mapping pending. See README.preview.md.</text>
+<text x="28" y="648" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#485a69" text-anchor="start">Prior review: S23 · Classic FLARM v221, pp.6/7/9; S26 · H-1-0290 reported; pad map pending. See README.preview.md.</text>
 </svg>

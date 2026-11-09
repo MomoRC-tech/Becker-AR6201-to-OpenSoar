@@ -24,7 +24,7 @@ Deferred: active tuning, swap, volume/squelch, Larus, general XCSoar support, ai
 | Item | Current selection | Missing / consequence |
 | --- | --- | --- |
 | ESP32 | AZ-Delivery WROOM-32 | Owner: exact board/regulator/header; current/thermal budget |
-| Navigation | 2 × HW-044; apparent MAX3232 | Build operator: IC/header/DB9 continuity and 3.3 V checks |
+| Navigation | 2 × Hailege H-1-0290; reported MAX3232CSE, 9.4 × 15.9 mm (S26) | Build operator: IC/pad continuity, dimensions and 3.3 V checks |
 | Supply | Nominal 12 V battery → 2S–4S-rated BEC → 5 V board → 3.3 V converters | Owner: BEC model, chemistry/voltage range; protection ratings |
 | Radio | THVD1451D proposed | Matched radio interface and bench validation |
 

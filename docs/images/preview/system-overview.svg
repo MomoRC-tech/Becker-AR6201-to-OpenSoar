@@ -11,13 +11,13 @@
 <rect x="28" y="95" width="220" height="60" rx="8" fill="#f2f5f8" stroke="#ccd5dd"/>
 <text x="44" y="131" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#182b3a" text-anchor="start">Zander ZS1</text>
 <rect x="310" y="95" width="260" height="60" rx="8" fill="#eaf4fb" stroke="#ccd5dd"/>
-<text x="326" y="131" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#075b92" text-anchor="start">HW-044 · RS-232-mod1</text>
+<text x="326" y="131" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#075b92" text-anchor="start">H-1-0290 · RS-232-mod1</text>
 <path d="M248 125L310 125" fill="none" stroke="#075b92" stroke-width="2.5" marker-end="url(#blue)"/>
 <path d="M570 125L636 125" fill="none" stroke="#075b92" stroke-width="2.5" marker-end="url(#blue)"/>
 <rect x="28" y="181" width="220" height="60" rx="8" fill="#f2f5f8" stroke="#ccd5dd"/>
 <text x="44" y="217" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#182b3a" text-anchor="start">Classic FLARM</text>
 <rect x="310" y="181" width="260" height="60" rx="8" fill="#eaf4fb" stroke="#ccd5dd"/>
-<text x="326" y="217" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#075b92" text-anchor="start">HW-044 · RS-232-mod2</text>
+<text x="326" y="217" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#075b92" text-anchor="start">H-1-0290 · RS-232-mod2</text>
 <path d="M248 211L310 211" fill="none" stroke="#075b92" stroke-width="2.5" marker-end="url(#blue)"/>
 <path d="M570 211L636 211" fill="none" stroke="#075b92" stroke-width="2.5" marker-end="url(#blue)"/>
 <rect x="28" y="267" width="220" height="60" rx="8" fill="#f2f5f8" stroke="#ccd5dd"/>

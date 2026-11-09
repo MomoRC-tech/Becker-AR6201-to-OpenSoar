@@ -4,7 +4,7 @@
 
 **Proposed, untested wiring. UNKNOWN = unresolved; do not connect.** GPIO assignments proposed; physical ESP32 header positions UNKNOWN. Existing setup stays as backup.
 
-**RS-232-mod1** = Zander HW-044 · **RS-232-mod2** = FLARM HW-044 · **RS-422 mod** = proposed Becker THVD1451D circuit; no finished module selected.
+**RS-232-mod1** = Zander Hailege H-1-0290 · **RS-232-mod2** = FLARM Hailege H-1-0290 · **RS-422 mod** = proposed Becker THVD1451D circuit; no finished module selected.
 
 [BOM and bench checks](bench-build.md). Tables show equipment-side and ESP32-side connections. *Italic* rows and dotted arrows = optional device-RX paths (ESP32 → device). TX links start open; their contact numbers are UNKNOWN.
 
@@ -16,8 +16,8 @@ Signals: <img src="images/pins/rx.svg" alt="RX" width="28" height="20"> receive 
 
 ```mermaid
 flowchart LR
-    Z[Zander ZS1] --> NZ["RS-232-mod1: HW-044 RS-232"]
-    F["Classic FLARM: reported, match pending"] --> NF["RS-232-mod2: HW-044 RS-232"]
+    Z[Zander ZS1] --> NZ["RS-232-mod1: H-1-0290 RS-232"]
+    F["Classic FLARM: reported, match pending"] --> NF["RS-232-mod2: H-1-0290 RS-232"]
     NZ --> E[ESP32]
     NF --> E
     NZ -.-> Z
@@ -40,7 +40,7 @@ Navigation returns: optional, listed below. Serial settings unverified; existing
 
 ![Proposed device to module to ESP32 path](images/wiring-zander.svg)
 
-| ZS1 PC cable | → / ← | RS-232-mod1 · DB9 | RS-232-mod1 · logic header | → / ← | ESP32 |
+| ZS1 PC cable | → / ← | RS-232-mod1 · RS-232 pads | RS-232-mod1 · logic pads | → / ← | ESP32 |
 | --- | :-: | --- | --- | :-: | --- |
 | 2 (<img src="images/pins/tx.svg" alt="TX" width="28" height="20">) | → | Input **UNKNOWN** | Output **UNKNOWN** | → | GPIO32 (<img src="images/pins/rx.svg" alt="RX" width="28" height="20">) |
 | *3 (<img src="images/pins/rx.svg" alt="RX" width="28" height="20">)* (optional) | *←* | *Output **UNKNOWN*** | *Input **UNKNOWN*** | *←* | *GPIO33 (<img src="images/pins/tx.svg" alt="TX" width="28" height="20">) via Zander TX link* |
@@ -53,7 +53,7 @@ Conditional PC-cable DE9 reference; actual cable match pending. Device RX option
 
 | ZS1 connector | RS-232-mod1 | ESP32 |
 | --- | --- | --- |
-| Matched view missing; private S25 crop unverified | HW-044 contact mapping UNKNOWN | Exact board/header positions UNKNOWN |
+| Matched view missing; private S25 crop unverified | H-1-0290 pad mapping UNKNOWN | Exact board/header positions UNKNOWN |
 
 **Unmatched drawing crop (S25):** connector **B** labels: 2 GND, 3 RX-PC, 4 TX-PC. Red-circled **A** uses RX-SR/TX-SR and other functions. Revision/view unverified; complete installation drawing and actual cable mapping still needed. This crop does not authorize wiring.
 
@@ -67,7 +67,7 @@ Source: [S22 original handbook](reference/ZS1_Deutsch.pdf), D3029, 16.09.2004, p
 
 ![Proposed device to module to ESP32 path](images/wiring-flarm.svg)
 
-| FLARM data port | → / ← | RS-232-mod2 · DB9 | RS-232-mod2 · logic header | → / ← | ESP32 |
+| FLARM data port | → / ← | RS-232-mod2 · RS-232 pads | RS-232-mod2 · logic pads | → / ← | ESP32 |
 | --- | :-: | --- | --- | :-: | --- |
 | <img src="images/pins/tx.svg" alt="TX" width="28" height="20"> **UNKNOWN** | → | Input **UNKNOWN** | Output **UNKNOWN** | → | GPIO26 (<img src="images/pins/rx.svg" alt="RX" width="28" height="20">) |
 | *<img src="images/pins/rx.svg" alt="RX" width="28" height="20"> **UNKNOWN*** (optional) | *←* | *Output **UNKNOWN*** | *Input **UNKNOWN*** | *←* | *GPIO27 (<img src="images/pins/tx.svg" alt="TX" width="28" height="20">) via FLARM TX link* |
@@ -80,7 +80,7 @@ Classic FLARM reported; actual port/view unverified. Device RX optional; equipme
 
 | FLARM connector | RS-232-mod2 | ESP32 |
 | --- | --- | --- |
-| Classic plug view: manual link below; actual cable unverified | HW-044 contact mapping UNKNOWN | Exact board/header positions UNKNOWN |
+| Classic plug view: manual link below; actual cable unverified | H-1-0290 pad mapping UNKNOWN | Exact board/header positions UNKNOWN |
 
 <img src="images/powerflarm-core-reference-connectors.png" width="260" alt="PowerFLARM Core manual reference: connector locations">
 <img src="images/powerflarm-core-reference-de9.png" width="390" alt="PowerFLARM Core DE9 reference: device socket left, cable plug right, mating faces">
@@ -93,7 +93,7 @@ Source: S23, FTD-012 §5 and Classic installation manual pp.6/7/9. RS-232 is not
 
 </details>
 
-Both RS-232 modules: connector photos/mapping pending. RXD/TXD direction requires [unpowered continuity](bench-build.md#hw-044-identification). For receive-only use, disconnect the RS-232 output at the instrument; an open TX link does not disable it.
+Both H-1-0290 boards: pad mapping pending (S26); no onboard DB9. Signal direction requires [unpowered continuity](bench-build.md#h-1-0290-identification). For receive-only use, disconnect the RS-232 output at the instrument; an open TX link does not disable it.
 
 <a id="becker-radio"></a>
 
@@ -148,14 +148,14 @@ flowchart LR
 | --- | --- | --- |
 | Protected BEC 5 V output | ESP32 5 V input contact **UNKNOWN** | Board/BEC identification pending |
 | BEC output return | ESP32 GND contact **UNKNOWN** | Common logic ground; source return design pending |
-| ESP32 3.3 V contact **UNKNOWN** | RS-232-mod1 VCC header | Proposed; module check pending |
-| ESP32 3.3 V contact **UNKNOWN** | RS-232-mod2 VCC header | Proposed; module check pending |
+| ESP32 3.3 V contact **UNKNOWN** | RS-232-mod1 VCC pad | Proposed; module check pending |
+| ESP32 3.3 V contact **UNKNOWN** | RS-232-mod2 VCC pad | Proposed; module check pending |
 | ESP32 3.3 V contact **UNKNOWN** | RS-422 mod IC pin 1, VCC | Proposed |
-| ESP32 GND contact **UNKNOWN** | RS-232-mod1 GND header | Proposed; continuity pending |
-| ESP32 GND contact **UNKNOWN** | RS-232-mod2 GND header | Proposed; continuity pending |
+| ESP32 GND contact **UNKNOWN** | RS-232-mod1 GND pad | Proposed; continuity pending |
+| ESP32 GND contact **UNKNOWN** | RS-232-mod2 GND pad | Proposed; continuity pending |
 | ESP32 GND contact **UNKNOWN** | RS-422 mod IC pin 4, GND | Proposed |
 
-Disconnect BEC 5 V before USB powering. [Protection/current budget](bench-build.md#power-protection-and-budget) pending. Keep existing instrument supplies unchanged.
+Use one VCC/GND pair per H-1-0290; the listing reports shared power pads on both sides (S26), continuity pending. Disconnect BEC 5 V before USB powering. [Protection/current budget](bench-build.md#power-protection-and-budget) pending. Keep existing instrument supplies unchanged.
 
 <a id="open-items"></a>
 
@@ -164,7 +164,7 @@ Disconnect BEC 5 V before USB powering. [Protection/current budget](bench-build.
 | Needed | Resolves |
 | --- | --- |
 | Device connector photos + exact model/revisions | Correct pin view; FLARM/Zander/Becker applicability |
-| Both HW-044 sides, IC markings + continuity map | DB9 ↔ logic-header contacts |
+| Both H-1-0290 sides, IC markings + continuity map | RS-232 ↔ logic pads; equipment cable mapping |
 | Exact ESP32 board/BEC + source limits | Header positions, current budget, protection |
 | Return-traffic requirements + serial settings | Optional links and port configuration |
 | Matched radio interface/reference/termination | Final radio circuit/harness |

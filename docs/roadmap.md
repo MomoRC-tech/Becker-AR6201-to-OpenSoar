@@ -25,7 +25,13 @@ Single work queue. Listed work is not implementation authorization.
 
 ## Bounded WP3 bench hardware package — 2026-11-08
 
-[Wiring guide](connections.md): diagrams/pin tables. [Bench reference](bench-build.md): BOM, protection, checks. Next: exact board/regulator, BEC/source limits, HW-044 continuity map, power budget and protection values. Harness/protection BOM not purchase-ready.
+[Wiring guide](connections.md): diagrams/pin tables. [Bench reference](bench-build.md): BOM, protection, checks. Next: exact board/regulator, BEC/source limits, H-1-0290 pad continuity map, power budget and protection values. Harness/protection BOM not purchase-ready.
+
+## Bounded WP3 RS-232 board selection — 2026-11-09
+
+Selected: 2 × Hailege H-1-0290 for Zander/FLARM; replaces HW-044. [S26](sources.md) records supplied specifications; [bench reference](bench-build.md#h-1-0290-identification) uses text dimensions **9.4 × 15.9 mm**. Board acceptance, pad mapping, equipment connectors and enclosure clearance remain open.
+
+Verification: selection/specifications and affected wiring/preview labels checked for consistency; 121 relative file/anchor references, three SVG structures and whitespace checked; updated diagrams visually checked in local renders. Documentation only; no build, electrical or device tests. WP3/M2 remain open.
 
 ## Bounded WP4/WP5 send investigation — 2026-11-08
 

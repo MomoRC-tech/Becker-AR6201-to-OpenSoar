@@ -36,7 +36,7 @@ flowchart LR
 | Item | Current state |
 | --- | --- |
 | Build | New bridge; existing assembly/harness retained as backup |
-| Selected hardware | AZ-Delivery WROOM-32; 2 × HW-044; 5 V BEC; board-derived 3.3 V |
+| Selected hardware | AZ-Delivery WROOM-32; 2 × Hailege H-1-0290; 5 V BEC; board-derived 3.3 V |
 | Proposed radio interface | Full-duplex RS-422, THVD1451D |
 | Deferred controls | Active tuning, swap, volume/squelch |
 

@@ -16,7 +16,7 @@
 | Item | Selection / status |
 | --- | --- |
 | Board | AZ-Delivery ESP32 WROOM-32 family; exact model/regulator/header TBD |
-| Navigation | 2 × HW-044 at 3.3 V; continuity and interface checks pending |
+| Navigation | 2 × Hailege H-1-0290 at 3.3 V (S26); continuity and interface checks pending |
 | Radio | THVD1451D/SOIC breakout proposed; no galvanic isolation |
 | Supply | Nominal 12 V battery → BEC (reported 2S–4S input), 5 V → board → 3.3 V converters |
 | USB | Disconnect BEC 5 V before USB powering; no added power-selection circuit |

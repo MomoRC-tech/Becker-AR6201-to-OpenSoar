@@ -3,7 +3,7 @@
 One ESP32 Wi-Fi bridge for traffic, navigation and planned standby-frequency control in OpenSoar on Android.
 
 > [!NOTE]
-> **Temporary review preview — not the main README.** The existing README and connection guide remain unchanged. Drawings below are proposed, untested signal maps, not connector-face or construction drawings. **UNKNOWN = unresolved; do not connect.**
+> **Temporary review preview — not the main README.** Presentation proposal only; current hardware selection follows the README and connection guide. Drawings below are proposed, untested signal maps, not connector-face or construction drawings. **UNKNOWN = unresolved; do not connect.**
 
 ## Current status
 
@@ -30,7 +30,7 @@ New bridge and harness; existing assembly, firmware and harness retained as back
 | Zander ZS1 | Flight/navigation input; optional RMC return | Version and actual cable/conversion map UNKNOWN |
 | Becker AR6201-(022) | Selected airfield → standby; radio status where supported | Model reported; installed article/HW/SW and J1 wiring match UNKNOWN |
 | AZ-Delivery ESP32 WROOM-32 | Wi-Fi / serial bridge | Family selected; exact board, regulator and physical header positions UNKNOWN |
-| 2 × HW-044 | Separate Zander and FLARM RS-232 interfaces | Modules selected; ICs, DB9/header mapping and 3.3 V operation require checks |
+| 2 × Hailege H-1-0290 | Separate Zander and FLARM RS-232 interfaces | Selected (S26); reported 9.4 × 15.9 mm, MAX3232CSE; ICs, pad mapping and 3.3 V operation require checks |
 | THVD1451D / SOIC-8 breakout | Full-duplex Becker RS-422 interface | Proposed; breakout contacts, reference bonding and termination UNKNOWN; no galvanic isolation |
 | 5 V BEC → ESP32 → 3.3 V converters | New bridge power | Path selected; exact BEC, limits, budget and protection incomplete |
 
@@ -56,13 +56,13 @@ GPIO numbers are proposed functions, **not physical header positions**. Every ES
 
 ![Zander preview: conditional PC-cable DE9 pin 2 TX toward GPIO32 RX, optional pin 3 RX from GPIO33 TX through an open link, and unresolved reference bonding. Installed pins, module mapping and physical headers remain UNKNOWN.](docs/images/preview/zander.svg)
 
-| Path | ZS1 PC-cable DE9 reference | HW-044 / RS-232-mod1 | ESP32 proposal |
+| Path | ZS1 PC-cable DE9 reference | H-1-0290 / RS-232-mod1 | ESP32 proposal |
 | --- | --- | --- | --- |
-| Device output → | 2 · TX; installed match **UNKNOWN** | DB9 input **UNKNOWN** → logic output contact **UNKNOWN** | GPIO32 · RX; header **UNKNOWN** |
-| Optional RMC return ← | 3 · RX; installed match **UNKNOWN** | DB9 output **UNKNOWN** ← logic input contact **UNKNOWN** | GPIO33 · TX via open TX link; header **UNKNOWN** |
-| Reference / ground | 5 · GND; installed match **UNKNOWN** | DB9 reference and equipment bond **UNKNOWN**; logic GND contact **UNKNOWN** | GND header **UNKNOWN** |
+| Device output → | 2 · TX; installed match **UNKNOWN** | RS-232 input pad **UNKNOWN** → logic output contact **UNKNOWN** | GPIO32 · RX; header **UNKNOWN** |
+| Optional RMC return ← | 3 · RX; installed match **UNKNOWN** | RS-232 output pad **UNKNOWN** ← logic input contact **UNKNOWN** | GPIO33 · TX via open TX link; header **UNKNOWN** |
+| Reference / ground | 5 · GND; installed match **UNKNOWN** | Ground pad and equipment bond **UNKNOWN**; logic GND contact **UNKNOWN** | GND header **UNKNOWN** |
 
-**Pin-view status:** device mating face/wire side, HW-044 contact view and exact ESP32 header layout UNKNOWN. PC-cable numbering is **not** rear-panel connector B numbering. The unmatched S25 crop labels B2 GND, B3 RX-PC, B4 TX-PC; it is not substituted here.
+**Pin-view status:** device mating face/wire side, H-1-0290 contact view and exact ESP32 header layout UNKNOWN. PC-cable numbering is **not** rear-panel connector B numbering. The unmatched S25 crop labels B2 GND, B3 RX-PC, B4 TX-PC; it is not substituted here.
 
 **Prior review:** [S22, ZS1 handbook D3029, 2004-09-16, pp.46/48](docs/reference/ZS1_Deutsch.pdf#page=46). Installed version, cable and settings remain UNKNOWN. [Current Zander evidence](docs/connections.md#zander-zs1).
 
@@ -71,21 +71,21 @@ GPIO numbers are proposed functions, **not physical header positions**. Every ES
 <details open>
 <summary><strong>Classic FLARM — installed contacts remain UNKNOWN</strong></summary>
 
-![FLARM preview: unknown device TX through unknown HW-044 contacts toward GPIO26 RX, optional return from GPIO27 TX through an open link, and unresolved equipment-reference bonding.](docs/images/preview/flarm.svg)
+![FLARM preview: unknown device TX through unknown H-1-0290 contacts toward GPIO26 RX, optional return from GPIO27 TX through an open link, and unresolved equipment-reference bonding.](docs/images/preview/flarm.svg)
 
-| Path | Installed FLARM data port | HW-044 / RS-232-mod2 | ESP32 proposal |
+| Path | Installed FLARM data port | H-1-0290 / RS-232-mod2 | ESP32 proposal |
 | --- | --- | --- | --- |
-| Device output → | TX pin **UNKNOWN** | DB9 input **UNKNOWN** → logic output contact **UNKNOWN** | GPIO26 · RX; header **UNKNOWN** |
-| Optional return ← | RX pin **UNKNOWN** | DB9 output **UNKNOWN** ← logic input contact **UNKNOWN** | GPIO27 · TX via open TX link; header **UNKNOWN** |
-| Reference / ground | GND pin **UNKNOWN** | DB9 reference and equipment bond **UNKNOWN**; logic GND contact **UNKNOWN** | GND header **UNKNOWN** |
+| Device output → | TX pin **UNKNOWN** | RS-232 input pad **UNKNOWN** → logic output contact **UNKNOWN** | GPIO26 · RX; header **UNKNOWN** |
+| Optional return ← | RX pin **UNKNOWN** | RS-232 output pad **UNKNOWN** ← logic input contact **UNKNOWN** | GPIO27 · TX via open TX link; header **UNKNOWN** |
+| Reference / ground | GND pin **UNKNOWN** | Ground pad and equipment bond **UNKNOWN**; logic GND contact **UNKNOWN** | GND header **UNKNOWN** |
 
-**Pin-view status:** actual device connector/view, HW-044 contact view and ESP32 header layout UNKNOWN. Preserve existing displays and required returns; no assumed passive splitter.
+**Pin-view status:** actual device connector/view, H-1-0290 contact view and ESP32 header layout UNKNOWN. Preserve existing displays and required returns; no assumed passive splitter.
 
 **Prior review:** [S23, Classic installation manual v221, 2016-12-18, p.6](https://www.flarm.com/wp-content/uploads/2024/04/FLARM_InstallationManual_D.pdf#page=6): conditional RJ45 Power/Data reference TX 5, RX 6, GND 7/8 (also 4), supply 1/2. IGC numbering is reversed relative to common numbering. Match the manual's plug view and actual cable before assigning installed pins. [Current FLARM evidence](docs/connections.md#flarm).
 
 </details>
 
-For both HW-044 modules, trace each DB9 contact to its IC and logic header before using RXD/TXD markings. For receive-only use, disconnect the RS-232 output at the instrument. [Module identification checks](docs/bench-build.md#hw-044-identification).
+For both H-1-0290 modules, trace each RS-232 pad to its IC and logic pad before using arrow/level markings. For receive-only use, disconnect the RS-232 output at the instrument. [Module identification checks](docs/bench-build.md#h-1-0290-identification).
 
 <details open>
 <summary><strong>Becker — separate differential pairs and logic signals</strong></summary>
@@ -115,8 +115,8 @@ Each differential pair is **two wires in matching order**. IC numbers are not br
 | Reported nominal 12 V source | Input protection → BEC | Source range, fuse/reverse protection and transient clamp ratings **UNKNOWN**; clamp is a shunt to return |
 | BEC 5 V output | Output protection if required → ESP32 5 V input | Protection, board/BEC limits and input contact **UNKNOWN** |
 | BEC output return | ESP32 GND | Header contact and source-return design **UNKNOWN** |
-| Board-derived 3.3 V | Both HW-044 VCC headers; THVD1451D IC pin 1 VCC | ESP32, module and breakout contacts **UNKNOWN**; current budget unverified |
-| Common logic GND | Both HW-044 GND headers; THVD1451D IC pin 4 GND | Physical contacts **UNKNOWN**; equipment bonding separate and unresolved |
+| Board-derived 3.3 V | Both H-1-0290 VCC pads; THVD1451D IC pin 1 VCC | ESP32, module and breakout contacts **UNKNOWN**; current budget unverified |
+| Common logic GND | Both H-1-0290 GND pads; THVD1451D IC pin 4 GND | Physical contacts **UNKNOWN**; equipment bonding separate and unresolved |
 
 Disconnect BEC 5 V before USB powering. Existing instrument feeds remain unchanged. [Power design and checks](docs/bench-build.md#power-protection-and-budget) · [Current power connections](docs/connections.md#power).
 
@@ -124,7 +124,7 @@ Disconnect BEC 5 V before USB powering. Existing instrument feeds remain unchang
 
 ## Next step
 
-Complete **WP1 installation matching**: equipment revisions, connector/cable views, actual port settings and navigation returns. Then resolve board/BEC identification, HW-044 continuity, radio reference/termination and protection before build acceptance. [Roadmap — single work queue](docs/roadmap.md#wp1--existing-installation-first-priority).
+Complete **WP1 installation matching**: equipment revisions, connector/cable views, actual port settings and navigation returns. Then resolve board/BEC identification, H-1-0290 continuity, radio reference/termination and protection before build acceptance. [Roadmap — single work queue](docs/roadmap.md#wp1--existing-installation-first-priority).
 
 ## References and contributions
 
@@ -141,10 +141,10 @@ Repository license remains undecided. Third-party manuals and references retain 
 <details>
 <summary>Preview provenance and verification — 2026-11-09</summary>
 
-Presentation-only snapshot of the connection/bench/source documents at `ced7c4b`; hardware findings retained as **prior review**, equipment identities as **reported**, routes/GPIOs as **proposed**. No new electrical evidence or firmware selection. This preview is not a second work queue or an accepted replacement for the existing guide.
+Original presentation-only snapshot of the connection/bench/source documents at `ced7c4b`; hardware findings retained as **prior review**, equipment identities as **reported**, routes/GPIOs as **proposed**. No new electrical evidence or firmware selection. This preview is not a second work queue or an accepted replacement for the existing guide.
 
 Original editable SVG drawings use WireViz's [labelled pin-to-pin presentation](https://github.com/wireviz/WireViz/blob/master/tutorial/readme.md#03---pinouts-shielding-templates-i) and SparkFun's [diagram-plus-table approach](https://github.com/sparkfun/SparkFun_BlueSMiRF-v2/blob/main/docs/hardware-assembly.md) as visual references; no third-party artwork/code copied. Google [Material 3 accessibility guidance](https://developer.android.com/develop/ui/compose/designsystems/material3#accessibility) informs contrast and text hierarchy; technical signal labels and explicit UNKNOWN states take precedence over decorative colour.
 
-Verification: 27 relative file/anchor links, SVG structure and whitespace checked; all four diagrams and the README opening layout visually reviewed in local renders. Pin paths compared with the existing connection tables; all 38 pre-existing tracked files unchanged by hash comparison. Local Markdown rendering approximates GitHub; live GitHub layout not tested. No application builds or device tests. Presentation acceptance pending.
+Original preview verification: 27 relative file/anchor links, SVG structure and whitespace checked; all four diagrams and the README opening layout visually reviewed in local renders. Pin paths compared with the existing connection tables; all 38 pre-existing tracked files unchanged by hash comparison. Local Markdown rendering approximates GitHub; live GitHub layout not tested. No application builds or device tests. Presentation acceptance pending. H-1-0290 selection/labels updated under [S26 / WP3](docs/roadmap.md#bounded-wp3-rs-232-board-selection--2026-11-09); original verification counts apply only to the preview creation.
 
 </details>
