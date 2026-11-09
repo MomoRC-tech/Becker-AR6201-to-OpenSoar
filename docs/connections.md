@@ -2,11 +2,14 @@
 
 ## 🔌 Pinning, cabling and routing
 
-**Proposed wiring. Confirm cable pinouts, converter pads and ESP32 headers before connecting. UNKNOWN = unresolved.**
-
-TX links start open. Leave instrument RX disconnected for receive-only use.
+> [!WARNING]
+> Confirm cable pinouts, converter pads and ESP32 headers before connecting. UNKNOWN = unresolved.
+>
+> TX links start open. Leave instrument RX disconnected for receive-only use.
 
 [Bench checks and parts](bench-build.md) · [Sources](sources.md)
+
+---
 
 <a id="logical-connections"></a>
 
@@ -34,6 +37,8 @@ flowchart LR
 
 Dotted arrows show optional navigation returns. Becker commands are required for tuning.
 
+---
+
 <a id="hailege-board-pad-reference"></a>
 <details>
 <summary>Hailege board pad reference</summary>
@@ -54,6 +59,8 @@ Dotted arrows show optional navigation returns. Becker commands are required for
 
 </details>
 
+---
+
 <a id="zander-zs1"></a>
 
 ### ✈️ Zander ZS1
@@ -68,6 +75,8 @@ Dotted arrows show optional navigation returns. Becker commands are required for
 
 Use the ZS1 PC-cable DE9. Optional RMC requires an enabled, unused RX input. † Confirm signal ground.
 
+---
+
 <a id="flarm"></a>
 
 ### 📡 FLARM
@@ -81,6 +90,8 @@ Use the ZS1 PC-cable DE9. Optional RMC requires an enabled, unused RX input. †
 | 7/8 (<img src="images/pins/gnd.svg" alt="GND" width="23" height="14">)† | — | L1 GND† | R4 GND | — | GND contact **UNKNOWN** |
 
 † Confirm the Classic Power/Data plug view and IGC numbering. Use a free data port and signal ground. Keep FLARM supply pins separate from converter VCC.
+
+---
 
 <a id="becker-radio"></a>
 
@@ -109,6 +120,8 @@ Confirm J1 revision and signal ground. 🟦 Status · 🟧 Commands · ⬜ Groun
 
 </details>
 
+---
+
 <a id="power"></a>
 
 ### ⚡ Power
@@ -135,6 +148,8 @@ flowchart LR
 | ESP32 GND contact **UNKNOWN** | RS-422 mod IC pin 4, GND | Proposed |
 
 Use one VCC/GND pair per H-1-0290. Disconnect BEC 5 V before USB powering. [Protection and current budget](bench-build.md#power-protection-and-budget).
+
+---
 
 <a id="open-items"></a>
 
