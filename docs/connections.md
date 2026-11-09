@@ -9,7 +9,7 @@
 
 Selected board: AZ-Delivery ESP32 WROOM dev module.
 
-[Parts list](#parts-list) · [Bench acceptance](roadmap.md#verification-coverage-for-later-packages) · [Sources](sources.md)
+[Parts list](#parts-list) · [Sources](sources.md)
 
 ---
 
@@ -192,13 +192,10 @@ Parts for one bridge. Keep the existing assembly and harness as backup.
 | Adapter / 1 | SOIC-8 to 2.54 mm breakout, e.g. Adafruit 1212 | Use the SOIC side. Check pins after soldering |
 | C-R / 1 | 100 nF ceramic, at least 10 V | Close between RS-422 mod pins 1 and 4; H-1-0290 fitted capacitors need value/condition checks |
 | R-Z, R-F, R-R / 3 | 10 kΩ, 1%, at least 0.125 W | Proposed pull-ups to 3.3 V for idle bias when the ESP32 TX output is high impedance |
-| Bench interconnect / 1 set | Carrier/prototyping board, insulated wire, headers, standoffs and labelled test points | Solder transceiver and decoupling together. Keep differential test leads short |
+| Bridge interconnect / 1 set | Carrier/prototyping board, insulated wire, headers and standoffs | Solder transceiver and decoupling together. Keep differential test leads short |
 | Navigation interconnect / 2 sets | Soldered leads/headers for H-1-0290 pads; equipment-side connectors TBD | Pad pitch, connector type/gender and actual cable mapping require inspection; no onboard DB9 assumed |
-| Radio bench terminal / 1 | Labelled 5-way connector for A, B, Y, Z and logic reference | Lab use only; instrument connector and shielding remain TBD |
 | F1, reverse-polarity stage, transient/OV protection | [Power protection](#power) | Hold purchase until BEC, source and board limits are known |
 | Equipment harness, termination, enclosure | Model-specific connectors, cable and resistors | Hold for matched manuals, cable lengths and enclosure space. No fixed 120 Ω termination is assumed |
-
-Tools: multimeter, current-limited supply suitable for the BEC, oscilloscope. Use a logic analyser on logic-level signals only.
 
 ---
 

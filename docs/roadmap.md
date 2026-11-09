@@ -13,21 +13,19 @@ Single work queue. Listed work is not implementation authorization.
 | WP4 Driver plan | Planned; send investigation complete | WP1–WP3 | One minimal change and regression check per increment |
 | WP5 Host verification | Partial: send regression only | WP2 expectations; approved WP4 scope | Framing, state, response and reconnect cases |
 | WP6 Bridge | Planned | Selected WP3 design; WP5 | Isolated bidirectional radio path; exact bytes, bounded/checked writes, single owner, navigation coexistence |
-| WP7 Bench acceptance | Open | Verified interfaces/software; authorized bench work | Actual standby/readback, active unchanged, local controls, navigation, failure/reconnect |
-| WP8 Aircraft integration | Deferred | WP7; separate authorization | Installation, protection and approval requirements |
+| WP8 Aircraft integration | Deferred | Verified hardware and separate authorization | Installation, protection and approval requirements |
 
 | Milestone | Gate | Status |
 | --- | --- | --- |
 | M1 | Installation/interfaces understood | Open |
 | M2 | Design and driver plan selected | Open |
 | M3 | Software verified | Open |
-| M4 | Physical bench accepted | Open |
 
 ---
 
 ## Bounded WP3 bench hardware package — 2026-11-08
 
-[Wiring and parts](connections.md#parts-list) · [Bench acceptance](#verification-coverage-for-later-packages). Open: ESP32 header/regulator checks, BEC/source limits, H-1-0290 continuity, power budget and protection values. Hold harness/protection purchases.
+[Wiring and parts](connections.md#parts-list). Open: ESP32 header/regulator checks, BEC/source limits, H-1-0290 continuity, power budget and protection values. Hold harness/protection purchases.
 
 ---
 
@@ -41,7 +39,7 @@ Verification: selection/specifications and affected wiring/preview labels checke
 
 ## Bounded WP3 Hailege pinout — 2026-11-09
 
-[Connections](connections.md#hailege-board-pad-reference): supplied board image, inferred eight-pad map, conditional Zander/Classic FLARM connections and proposed ESP32 GPIOs. [S27](sources.md) supplier comparator; no Hailege-specific schematic or measured sample match. Next: confirm IC/pad continuity on both boards, equipment cable/view and signal-reference compatibility; bench acceptance remains open.
+[Connections](connections.md#hailege-board-pad-reference): supplied board image, inferred eight-pad map, conditional Zander/Classic FLARM connections and proposed ESP32 GPIOs. [S27](sources.md) supplier comparator; no Hailege-specific schematic or measured sample match. Next: confirm IC/pad continuity on both boards, equipment cable/view and signal-reference compatibility.
 
 Verification: S27 schematic/photos cross-checked with supplied image; ZS1 pp.46/48 and Classic FLARM pp.6/7 pin references rechecked. 97 relative file/anchor references and whitespace checked; pad-table directions compared with the reference schematic/photos. Supplied image preserved byte-for-byte. No firmware, electrical or device tests; WP3/M2 remain open.
 
@@ -87,16 +85,8 @@ Read relevant sources/status → bound one change → execute → verify → upd
 | --- | --- |
 | Driver/protocol | Independent framing/CRC/channel vectors; zero/A5; short/invalid frames; unknown/stale state; local tuning; separate instances; reconnect; documented responses |
 | Bridge | Exact bytes/order; split/coalesced reads; bursts; slow clients; partial writes; disconnect; ownership; boot/debug isolation; concurrent navigation |
-| Bench | Actual standby/readback; active unchanged; local controls; navigation; connection/power failures |
 
-**Bench sequence (WP7, pending)**
-
-1. Match equipment and header contacts. Record regulator and BEC limits, converter pad continuity and RS-422 breakout orientation. Keep instruments unplugged.
-2. Check BEC polarity, startup, voltage and ripple alone and under a dummy load. Verify protection before using the intended source. Add the ESP32 and converters one at a time. Check loaded rails and regulator temperature.
-3. With instruments unplugged, verify logic levels and UART startup and diagnostic isolation. Loop the RS-422 converter Y→A and Z→B. Verify counted bytes including `00`, `A5`, `FF` and fragmented traffic. Stop on unexpected bytes, levels or back-power.
-4. After interface and software checks pass, verify each navigation feed and required return, then both together. Check actual Becker standby readback, unchanged active frequency, local controls and navigation through reconnect and power loss.
-
-Transport success ≠ radio acceptance. ACK constants do not establish response bytes. Traffic/gap/timeout limits require WP1/WP2 evidence. Any remaining P0 failure blocks bench acceptance.
+Transport success ≠ radio acceptance. ACK constants do not establish response bytes. Traffic/gap/timeout limits require WP1/WP2 evidence.
 
 ---
 

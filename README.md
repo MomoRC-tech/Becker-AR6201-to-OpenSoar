@@ -8,7 +8,7 @@ One ESP32 Wi-Fi bridge for Zander, FLARM and Becker in OpenSoar on Android.
 | --- | --- |
 | Research / bench design | Documented; send regression host-tested |
 | Next: finalize design | Equipment/board/BEC details, interfaces, protection and firmware open |
-| Implementation / bench acceptance | Pending |
+| Implementation | Pending |
 | Aircraft integration | Deferred |
 
 [Work queue](docs/roadmap.md).
