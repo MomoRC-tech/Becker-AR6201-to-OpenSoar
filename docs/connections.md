@@ -4,7 +4,7 @@
 
 **RS-232-mod1** = Zander HW-044 · **RS-232-mod2** = FLARM HW-044 · **RS-422 mod** = proposed Becker THVD1451D circuit; no finished module selected.
 
-[BOM and bench checks](bench-build.md). Each table pairs equipment-side wires with ESP32-side wires through the converter. TX links start open; their contact numbers are UNKNOWN.
+[BOM and bench checks](bench-build.md). Tables show equipment-side and ESP32-side connections. *Italic* rows and dotted arrows = optional device-RX paths (ESP32 → device). TX links start open; their contact numbers are UNKNOWN.
 
 ### Logical connections
 
@@ -14,9 +14,16 @@ flowchart LR
     F["Classic FLARM: reported, match pending"] --> NF["RS-232-mod2: HW-044 RS-232"]
     NZ --> E[ESP32]
     NF --> E
-    B["AR6201-022: reported, match pending"] <--> R["RS-422 mod: proposed RS-422"]
-    R <--> E
-    E <-->|Wi-Fi: separate device paths| O[OpenSoar]
+    NZ -.-> Z
+    E -.-> NZ
+    NF -.-> F
+    E -.-> NF
+    B["AR6201-022: reported, match pending"] --> R["RS-422 mod: proposed RS-422"]
+    R --> E
+    E -.-> R
+    R -.-> B
+    E -->|Wi-Fi: separate device paths| O[OpenSoar]
+    O --> E
 ```
 
 Navigation returns: optional, listed below. Serial settings unverified; existing TCP endpoints [reported in baseline](project-baseline.md#pending-configuration), not selected/verified new-build settings. Radio bytes separate from navigation/diagnostics.
@@ -25,13 +32,13 @@ Navigation returns: optional, listed below. Serial settings unverified; existing
 
 ![Proposed device to module to ESP32 path](images/wiring-zander.svg)
 
-| ZS1 PC cable | ↔ | RS-232-mod1 · DB9 | RS-232-mod1 · logic header | ↔ | ESP32 |
+| ZS1 PC cable | → / ← | RS-232-mod1 · DB9 | RS-232-mod1 · logic header | → / ← | ESP32 |
 | --- | :-: | --- | --- | :-: | --- |
-| 2 · TX | → | Input **UNKNOWN** | Output **UNKNOWN** | → | GPIO32 · RX |
-| 3 · RX | ← | Output **UNKNOWN** | Input **UNKNOWN** | ← | GPIO33 · TX via Zander TX link |
-| 5 · GND | — | Reference **UNKNOWN** | GND | — | GND contact **UNKNOWN** |
+| 2 (TX) | → | Input **UNKNOWN** | Output **UNKNOWN** | → | GPIO32 (RX) |
+| *3 (RX)* (optional) | *←* | *Output **UNKNOWN*** | *Input **UNKNOWN*** | *←* | *GPIO33 (TX) via Zander TX link* |
+| 5 (GND) | — | Reference **UNKNOWN** | GND | — | GND contact **UNKNOWN** |
 
-Conditional PC-cable DE9 reference; actual cable match pending. Return optional (RMC only); equipment-reference bonding unresolved.
+Conditional PC-cable DE9 reference; actual cable match pending. Device RX optional (RMC only); equipment-reference bonding unresolved.
 
 <details>
 <summary>Connector / module / ESP32 pictures and references</summary>
@@ -50,13 +57,13 @@ Source: [S22 original handbook](reference/ZS1_Deutsch.pdf), D3029, 16.09.2004, p
 
 ![Proposed device to module to ESP32 path](images/wiring-flarm.svg)
 
-| FLARM data port | ↔ | RS-232-mod2 · DB9 | RS-232-mod2 · logic header | ↔ | ESP32 |
+| FLARM data port | → / ← | RS-232-mod2 · DB9 | RS-232-mod2 · logic header | → / ← | ESP32 |
 | --- | :-: | --- | --- | :-: | --- |
-| TX **UNKNOWN** | → | Input **UNKNOWN** | Output **UNKNOWN** | → | GPIO26 · RX |
-| RX **UNKNOWN** | ← | Output **UNKNOWN** | Input **UNKNOWN** | ← | GPIO27 · TX via FLARM TX link |
+| TX **UNKNOWN** | → | Input **UNKNOWN** | Output **UNKNOWN** | → | GPIO26 (RX) |
+| *RX **UNKNOWN*** (optional) | *←* | *Output **UNKNOWN*** | *Input **UNKNOWN*** | *←* | *GPIO27 (TX) via FLARM TX link* |
 | GND **UNKNOWN** | — | Reference **UNKNOWN** | GND | — | GND contact **UNKNOWN** |
 
-Classic FLARM reported; actual port/view unverified. Return optional; equipment-reference bonding unresolved. Preserve displays; no assumed splitter.
+Classic FLARM reported; actual port/view unverified. Device RX optional; equipment-reference bonding unresolved. Preserve displays; no assumed splitter.
 
 <details>
 <summary>Connector / module / ESP32 pictures and references</summary>
@@ -82,13 +89,19 @@ Both RS-232 modules: connector photos/mapping pending. RXD/TXD direction require
 
 ![Proposed device to module to ESP32 path](images/wiring-becker.svg)
 
-| Becker J1* | ↔ | RS-422 mod · line-side IC pins | RS-422 mod · logic IC pin | ↔ | ESP32 |
-| --- | :-: | --- | --- | :-: | --- |
-| 2 · TX2+ / 9 · TX2− | → | 8 · A / 7 · B | 2 · R | → | GPIO16 · RX |
-| 3 · RX2+ / 10 · RX2− | ← | 5 · Y / 6 · Z | 3 · D | ← | GPIO17 · TX via Becker TX link |
-| 21 · D_GND | — | Reference **UNKNOWN** | 4 · GND | — | GND contact **UNKNOWN** |
+| | Becker J1* | → / ← | RS-422 mod · line IC pin | RS-422 mod · logic / TX link | → / ← | ESP32 / TX link |
+| :-: | --- | :-: | --- | --- | :-: | --- |
+| 🟦 | 2 (TX2+) | → | 8 (A) | — | — | — |
+| 🟦 | 9 (TX2−) | → | 7 (B) | — | — | — |
+| 🟦 | — | — | — | 2 (R) | → | GPIO16 (RX) |
+| 🟧 | *3 (RX2+)* | *←* | *5 (Y)* | — | — | — |
+| 🟧 | *10 (RX2−)* | *←* | *6 (Z)* | — | — | — |
+| 🟧 | — | — | — | *3 (D)* | *←* | *TX link: module contact **UNKNOWN*** |
+| 🟧 | — | — | — | *TX link: ESP32 contact **UNKNOWN*** | *←* | *GPIO17 (TX)* |
+| ⬜ | 21 (D_GND) | — | Reference **UNKNOWN** | — | — | — |
+| ⬜ | — | — | — | 4 (GND) | — | GND contact **UNKNOWN** |
 
-*Conditional J1 reference; installed revision unverified. Paired pins mean **two wires in matching order**. THVD1451D **IC numbers**, not module-header numbers. Breakout contacts, reference bonding and termination UNKNOWN. Keep radio unplugged pending checks; TX link does not disable the transceiver. No galvanic isolation.
+*Conditional J1 reference; installed revision unverified. 🟦 Status · 🟧 *Commands (optional)* · ⬜ Reference/ground. Each row shows one connection; — = unused cell. **Becker device RX is required for standby tuning; optional only for receive-only monitoring.** THVD1451D **IC numbers**, not module-header numbers. Breakout contacts, reference bonding and termination UNKNOWN. Keep radio unplugged pending checks; TX link does not disable the transceiver. No galvanic isolation.
 
 <details>
 <summary>Connector / module / ESP32 pictures and references</summary>

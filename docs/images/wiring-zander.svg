@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="720" height="72" viewBox="0 0 720 72" role="img" aria-label="Zander ZS1 via RS-232-mod1 to ESP32; proposed">
 <rect width="720" height="72" fill="white"/>
-<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#52647b"/></marker></defs>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#52647b"/></marker><marker id="optional-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#737373"/></marker></defs>
 <g fill="#eaf1fb" stroke="#9cb1cc"><rect x="1" y="7" width="180" height="34" rx="4"/><rect x="267" y="7" width="186" height="34" rx="4"/><rect x="539" y="7" width="180" height="34" rx="4"/></g>
-<g stroke="#52647b" stroke-width="1.5" marker-start="url(#arrow)" marker-end="url(#arrow)"><path d="M189 24H259"/><path d="M461 24H531"/></g>
+<g stroke="#52647b" stroke-width="1.5" marker-end="url(#arrow)"><path d="M189 18H259"/><path d="M461 18H531"/><path d="M259 31H189" stroke="#737373" stroke-dasharray="3 3" marker-end="url(#optional-arrow)"/><path d="M531 31H461" stroke="#737373" stroke-dasharray="3 3" marker-end="url(#optional-arrow)"/></g>
 <g font-family="Arial,sans-serif" font-size="13" text-anchor="middle" fill="#172b4d"><text x="91" y="29">Zander ZS1</text><text x="360" y="29">RS-232-mod1</text><text x="629" y="29">ESP32</text></g>
-<g font-family="Arial,sans-serif" font-size="11" fill="#475569" text-anchor="middle"><text x="224" y="60">RS-232; return optional</text><text x="496" y="60">3.3 V logic; proposed</text></g>
+<g font-family="Arial,sans-serif" font-size="11" fill="#475569" text-anchor="middle"><text x="224" y="60">Device RX optional</text><text x="496" y="60">3.3 V logic; proposed</text></g>
 </svg>
