@@ -1,4 +1,6 @@
-## Pinning, cabling and routing
+<a id="pinning-cabling-and-routing"></a>
+
+## 🔌 Pinning, cabling and routing
 
 **Proposed, untested wiring. UNKNOWN = unresolved; do not connect.** GPIO assignments proposed; physical ESP32 header positions UNKNOWN. Existing setup stays as backup.
 
@@ -6,7 +8,11 @@
 
 [BOM and bench checks](bench-build.md). Tables show equipment-side and ESP32-side connections. *Italic* rows and dotted arrows = optional device-RX paths (ESP32 → device). TX links start open; their contact numbers are UNKNOWN.
 
-### Logical connections
+Signals: <img src="images/pins/rx.svg" alt="RX" width="28" height="20"> receive · <img src="images/pins/tx.svg" alt="TX" width="28" height="20"> transmit · <img src="images/pins/gnd.svg" alt="GND" width="33" height="20"> ground. Labels refer to each endpoint; colours are not wire colours.
+
+<a id="logical-connections"></a>
+
+### 🧭 Logical connections
 
 ```mermaid
 flowchart LR
@@ -28,20 +34,22 @@ flowchart LR
 
 Navigation returns: optional, listed below. Serial settings unverified; existing TCP endpoints [reported in baseline](project-baseline.md#pending-configuration), not selected/verified new-build settings. Radio bytes separate from navigation/diagnostics.
 
-### Zander ZS1
+<a id="zander-zs1"></a>
+
+### ✈️ Zander ZS1
 
 ![Proposed device to module to ESP32 path](images/wiring-zander.svg)
 
 | ZS1 PC cable | → / ← | RS-232-mod1 · DB9 | RS-232-mod1 · logic header | → / ← | ESP32 |
 | --- | :-: | --- | --- | :-: | --- |
-| 2 (TX) | → | Input **UNKNOWN** | Output **UNKNOWN** | → | GPIO32 (RX) |
-| *3 (RX)* (optional) | *←* | *Output **UNKNOWN*** | *Input **UNKNOWN*** | *←* | *GPIO33 (TX) via Zander TX link* |
-| 5 (GND) | — | Reference **UNKNOWN** | GND | — | GND contact **UNKNOWN** |
+| 2 (<img src="images/pins/tx.svg" alt="TX" width="28" height="20">) | → | Input **UNKNOWN** | Output **UNKNOWN** | → | GPIO32 (<img src="images/pins/rx.svg" alt="RX" width="28" height="20">) |
+| *3 (<img src="images/pins/rx.svg" alt="RX" width="28" height="20">)* (optional) | *←* | *Output **UNKNOWN*** | *Input **UNKNOWN*** | *←* | *GPIO33 (<img src="images/pins/tx.svg" alt="TX" width="28" height="20">) via Zander TX link* |
+| 5 (<img src="images/pins/gnd.svg" alt="GND" width="33" height="20">) | — | Reference **UNKNOWN** | GND | — | GND contact **UNKNOWN** |
 
 Conditional PC-cable DE9 reference; actual cable match pending. Device RX optional (RMC only); equipment-reference bonding unresolved.
 
 <details>
-<summary>Connector / module / ESP32 pictures and references</summary>
+<summary>🖼️ Connector / module / ESP32 pictures and references</summary>
 
 | ZS1 connector | RS-232-mod1 | ESP32 |
 | --- | --- | --- |
@@ -53,20 +61,22 @@ Source: [S22 original handbook](reference/ZS1_Deutsch.pdf), D3029, 16.09.2004, p
 
 </details>
 
-### FLARM
+<a id="flarm"></a>
+
+### 📡 FLARM
 
 ![Proposed device to module to ESP32 path](images/wiring-flarm.svg)
 
 | FLARM data port | → / ← | RS-232-mod2 · DB9 | RS-232-mod2 · logic header | → / ← | ESP32 |
 | --- | :-: | --- | --- | :-: | --- |
-| TX **UNKNOWN** | → | Input **UNKNOWN** | Output **UNKNOWN** | → | GPIO26 (RX) |
-| *RX **UNKNOWN*** (optional) | *←* | *Output **UNKNOWN*** | *Input **UNKNOWN*** | *←* | *GPIO27 (TX) via FLARM TX link* |
-| GND **UNKNOWN** | — | Reference **UNKNOWN** | GND | — | GND contact **UNKNOWN** |
+| <img src="images/pins/tx.svg" alt="TX" width="28" height="20"> **UNKNOWN** | → | Input **UNKNOWN** | Output **UNKNOWN** | → | GPIO26 (<img src="images/pins/rx.svg" alt="RX" width="28" height="20">) |
+| *<img src="images/pins/rx.svg" alt="RX" width="28" height="20"> **UNKNOWN*** (optional) | *←* | *Output **UNKNOWN*** | *Input **UNKNOWN*** | *←* | *GPIO27 (<img src="images/pins/tx.svg" alt="TX" width="28" height="20">) via FLARM TX link* |
+| <img src="images/pins/gnd.svg" alt="GND" width="33" height="20"> **UNKNOWN** | — | Reference **UNKNOWN** | GND | — | GND contact **UNKNOWN** |
 
 Classic FLARM reported; actual port/view unverified. Device RX optional; equipment-reference bonding unresolved. Preserve displays; no assumed splitter.
 
 <details>
-<summary>Connector / module / ESP32 pictures and references</summary>
+<summary>🖼️ Connector / module / ESP32 pictures and references</summary>
 
 | FLARM connector | RS-232-mod2 | ESP32 |
 | --- | --- | --- |
@@ -85,26 +95,28 @@ Source: S23, FTD-012 §5 and Classic installation manual pp.6/7/9. RS-232 is not
 
 Both RS-232 modules: connector photos/mapping pending. RXD/TXD direction requires [unpowered continuity](bench-build.md#hw-044-identification). For receive-only use, disconnect the RS-232 output at the instrument; an open TX link does not disable it.
 
-### Becker radio
+<a id="becker-radio"></a>
+
+### 📻 Becker radio
 
 ![Proposed device to module to ESP32 path](images/wiring-becker.svg)
 
 | | Becker J1* | → / ← | RS-422 mod · line IC pin | RS-422 mod · logic / TX link | → / ← | ESP32 / TX link |
 | :-: | --- | :-: | --- | --- | :-: | --- |
-| 🟦 | 2 (TX2+) | → | 8 (A) | — | — | — |
-| 🟦 | 9 (TX2−) | → | 7 (B) | — | — | — |
-| 🟦 | — | — | — | 2 (R) | → | GPIO16 (RX) |
-| 🟧 | *3 (RX2+)* | *←* | *5 (Y)* | — | — | — |
-| 🟧 | *10 (RX2−)* | *←* | *6 (Z)* | — | — | — |
-| 🟧 | — | — | — | *3 (D)* | *←* | *TX link: module contact **UNKNOWN*** |
-| 🟧 | — | — | — | *TX link: ESP32 contact **UNKNOWN*** | *←* | *GPIO17 (TX)* |
-| ⬜ | 21 (D_GND) | — | Reference **UNKNOWN** | — | — | — |
-| ⬜ | — | — | — | 4 (GND) | — | GND contact **UNKNOWN** |
+| 🟦 | 2 (<img src="images/pins/tx2-plus.svg" alt="TX2+" width="40" height="20">) | → | 8 (<img src="images/pins/a.svg" alt="A" width="28" height="20">) | — | — | — |
+| 🟦 | 9 (<img src="images/pins/tx2-minus.svg" alt="TX2−" width="40" height="20">) | → | 7 (<img src="images/pins/b.svg" alt="B" width="28" height="20">) | — | — | — |
+| 🟦 | — | — | — | 2 (<img src="images/pins/r.svg" alt="R" width="28" height="20">) | → | GPIO16 (<img src="images/pins/rx.svg" alt="RX" width="28" height="20">) |
+| 🟧 | *3 (<img src="images/pins/rx2-plus.svg" alt="RX2+" width="40" height="20">)* | *←* | *5 (<img src="images/pins/y.svg" alt="Y" width="28" height="20">)* | — | — | — |
+| 🟧 | *10 (<img src="images/pins/rx2-minus.svg" alt="RX2−" width="40" height="20">)* | *←* | *6 (<img src="images/pins/z.svg" alt="Z" width="28" height="20">)* | — | — | — |
+| 🟧 | — | — | — | *3 (<img src="images/pins/d.svg" alt="D" width="28" height="20">)* | *←* | *TX link: module contact **UNKNOWN*** |
+| 🟧 | — | — | — | *TX link: ESP32 contact **UNKNOWN*** | *←* | *GPIO17 (<img src="images/pins/tx.svg" alt="TX" width="28" height="20">)* |
+| ⬜ | 21 (<img src="images/pins/d_gnd.svg" alt="D_GND" width="47" height="20">) | — | Reference **UNKNOWN** | — | — | — |
+| ⬜ | — | — | — | 4 (<img src="images/pins/gnd.svg" alt="GND" width="33" height="20">) | — | GND contact **UNKNOWN** |
 
 *Conditional J1 reference; installed revision unverified. 🟦 Status · 🟧 *Commands (optional)* · ⬜ Reference/ground. Each row shows one connection; — = unused cell. **Becker device RX is required for standby tuning; optional only for receive-only monitoring.** THVD1451D **IC numbers**, not module-header numbers. Breakout contacts, reference bonding and termination UNKNOWN. Keep radio unplugged pending checks; TX link does not disable the transceiver. No galvanic isolation.
 
 <details>
-<summary>Connector / module / ESP32 pictures and references</summary>
+<summary>🖼️ Connector / module / ESP32 pictures and references</summary>
 
 | Becker connector | RS-422 mod | ESP32 |
 | --- | --- | --- |
@@ -118,7 +130,9 @@ Sources: S10, DV14307.03 Issue 06 §2.5.3.2 p.59; S18 THVD1451D. [Circuit detail
 
 </details>
 
-### Power
+<a id="power"></a>
+
+### ⚡ Power
 
 ```mermaid
 flowchart LR
@@ -143,7 +157,9 @@ flowchart LR
 
 Disconnect BEC 5 V before USB powering. [Protection/current budget](bench-build.md#power-protection-and-budget) pending. Keep existing instrument supplies unchanged.
 
-### Open items
+<a id="open-items"></a>
+
+### ❓ Open items
 
 | Needed | Resolves |
 | --- | --- |
