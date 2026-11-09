@@ -6,6 +6,8 @@ This project is in investigation/planning. Read README.md, the current package i
 
 The roadmap is the single work queue. A listed package, proposed ADR or recommendation is not implementation approval. Complete the user's authorized scope without repeated confirmation; ask only when missing information materially affects scope, cost, privacy, compatibility or an irreversible action. For a broad request to continue, use the next package and its stated boundaries.
 
+---
+
 ## Evidence and engineering rules
 
 - Use docs/sources.md labels: rechecked source, prior review, reported, assumption/proposed, measured.
@@ -17,6 +19,8 @@ The roadmap is the single work queue. A listed package, proposed ADR or recommen
 - Reuse existing architecture/tools; review file-level licenses before copying code. Do not select a repository license without the owner's decision.
 - Do not incur paid API, CI or service charges or introduce infrastructure without authorization covering it.
 
+---
+
 ## Small increments and verification
 
 One question or behavior change per increment. Before changing logic, identify the affected requirement, expected outcome and suitable regression check. For broad later packages, choose a bounded subtask rather than implementing the whole plan.
@@ -26,6 +30,8 @@ For documentation-only work, check consistency, relative links/anchors, source s
 Update the document that owns the information: baseline for requirements/inventory/risks; sources for evidence; architecture for decisions; roadmap for work status. Preserve useful prior findings, label superseded guidance and link replacements. Keep one concise verification summary per package, with detailed evidence only where useful.
 
 Use minimal technical wording: short fragments and tables. Remove repetition, decision narratives, personal justifications and chronology of owner choices. Record current selections/status, constraints, open items and necessary evidence only. Keep source/test dates and revisions where needed for traceability. README: goal, scope, architecture and next step.
+
+---
 
 ## Preservation and delivery
 

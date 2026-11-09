@@ -12,6 +12,8 @@ Source/test dates identify evidence scope; source inspection ≠ hardware valida
 | Assumption / proposed | Unverified hypothesis/design. |
 | Measured | Recorded setup/versions/input/result. Host evidence only; no radio/bridge measurements. |
 
+---
+
 ## Source register
 
 | ID | Source / baseline | Checked scope and limits |
@@ -44,6 +46,8 @@ S05/S06: prior findings; confirm model compatibility and file-level reuse permis
 
 S22/S23 pinout follow-up, 2026-11-09: supplied ZS1 D3029 pp.46/48 visually rechecked (PC-cable DE9 2 TX, 3 optional RMC input, 5 GND); Classic FLARM v221 pp.6/7 rechecked (Power/Data 5 TX, 6 RX, 7/8 GND; reversed IGC numbering, one attached device per port). Installed cable/view matching remains open.
 
+---
+
 ## Rechecked facts
 
 S09 — Hardware proposal references, checked 2026-11-08; source observations only, not installed-system evidence:
@@ -62,7 +66,7 @@ S14 follow-up, rechecked 2026-11-09: same manufacturer Specifications lists 5.5�
 
 S19 follow-up, rechecked 2026-11-09: [Espressif hardware FAQ](https://docs.espressif.com/projects/esp-faq/en/latest/hardware-related/hardware-design.html#what-is-the-voltage-tolerance-of-gpios-of-esp-chips), GPIO voltage-tolerance section: 3.6 V maximum. Inference with S23: connector-only adaptation cannot establish a compatible RS-232-to-ESP32 input.
 
-Current constraints: one new ESP32; [reported installation and remaining gaps](project-baseline.md#existing-installation--wp1-record); navigation returns unverified.
+[Reported installation and open checks](project-baseline.md#existing-installation--wp1-record).
 
 S08 — [Yuri/basic AlphaLima source evaluation](reviews/2026-11-08-yuri-bridge.md), rechecked 2026-11-08: pinned sketches, Yuri configuration/license/tree and default-branch histories. Yuri 130f731 has later functional fixes; AlphaLima bb42dc3 has newer documentation only since their shared 2020 revision. See the review for exact references, proposed increments and verification limits; no runtime evidence.
 
@@ -78,6 +82,8 @@ S08 — [Yuri/basic AlphaLima source evaluation](reviews/2026-11-08-yuri-bridge.
 New evidence: revision/page, date, scope and label. Related drivers are not independent protocol validation.
 
 S12 — [Historical Becker driver comparison and send reproduction](reviews/2026-11-08-becker-send.md), rechecked/measured 2026-11-08. PR #189-associated cd818c90 uses counted writes. The current char-pointer call appears in eku60 commit 7a575346 (2024-03-05) and OpenSoar 7.46.26 b2e745cf. A compiled host extraction reproduces truncation and verifies the single-call byte-span correction. See the review for synthetic inputs, method, exact revisions and limits.
+
+---
 
 ## Connector reference drawings
 

@@ -1,6 +1,6 @@
 # Becker send regression
 
-S12, 2026-11-08. R01/R03/R04. Host reproduction only; application patch/deployment and physical acceptance open.
+S12 · 2026-11-08 · R01/R03/R04. Host reproduction. App patch, deployment and physical acceptance open.
 
 ## Sources and historical baseline
 
@@ -11,6 +11,8 @@ S12, 2026-11-08. R01/R03/R04. Host reproduction only; application patch/deployme
 | Rechecked source | OpenSoar 7.46.26, `b2e745cfddfe0150f6ed7db467ac18c321b38d01`: [driver](https://github.com/OpenSoaring/OpenSoar/blob/b2e745cfddfe0150f6ed7db467ac18c321b38d01/src/Device/Driver/AR62xx.cpp), [Port.hpp](https://github.com/OpenSoaring/OpenSoar/blob/b2e745cfddfe0150f6ed7db467ac18c321b38d01/src/Device/Port/Port.hpp), [Port.cpp](https://github.com/OpenSoaring/OpenSoar/blob/b2e745cfddfe0150f6ed7db467ac18c321b38d01/src/Device/Port/Port.cpp) |
 | Rechecked source | [7a575346](https://github.com/eku60/XCSoar/commit/7a575346b71c2384420d275b335f36d3078d327d), 2024-03-05: char-pointer call replaces broken span adaptation; introduces current string-length behavior |
 
+---
+
 ## Comparison
 
 | Area | Historical PR source | OpenSoar 7.46.26 | Consequence |
@@ -20,6 +22,8 @@ S12, 2026-11-08. R01/R03/R04. Host reproduction only; application patch/deployme
 | Success | ACK is assigned locally after successful FullWrite. | ACK is assigned locally after FullWrite returns. | Historical weakness persists. Neither implementation establishes radio acceptance. |
 | Active state | Both stored frequencies are read to construct the command. Constructor does not establish a valid initial frequency state. | Same dependency, stored in radio_para. | Known active state is required before using the combined command. Hardware startup behavior and a reliable refresh mechanism remain unresolved. |
 | Reception | Parser resets on every A5, uses static state, accepts zero CRC and skips conversion while sending. | These behaviors remain. | Historical success reports do not cover all frame contents, reconnects or local tuning. |
+
+---
 
 ## Measured host reproduction
 
@@ -41,6 +45,8 @@ Harness: [check_becker_send.py](../../tools/check_becker_send.py).
 
 Frame: `A5 14 05 16 00 00 03 70 53 17`; original sink: `A5 14 05 16`. Truncation precedes TCP/serial. Inference: a transparent bridge cannot restore omitted bytes.
 
+---
+
 ## Minimum changes and open decisions
 
 | Change | Status / required check |
@@ -49,6 +55,8 @@ Frame: `A5 14 05 16 00 00 03 70 53 17`; original sink: `A5 14 05 16`. Truncation
 | Unknown/fresh active state | Startup/reconnect/local-tuning behavior; no arbitrary default frequencies |
 | Response/readback | Actual protocol rules; separate transport success from confirmed state |
 | Parser | Length bounds, per-instance state, payload A5, CRC exceptions, receive during send |
+
+---
 
 ## Verification summary
 

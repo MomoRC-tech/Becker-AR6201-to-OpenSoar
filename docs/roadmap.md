@@ -23,9 +23,13 @@ Single work queue. Listed work is not implementation authorization.
 | M3 | Software verified | Open |
 | M4 | Physical bench accepted | Open |
 
+---
+
 ## Bounded WP3 bench hardware package — 2026-11-08
 
-[Wiring guide](connections.md): diagrams/pin tables. [Bench reference](bench-build.md): BOM, protection, checks. Next: exact board/regulator, BEC/source limits, H-1-0290 pad continuity map, power budget and protection values. Harness/protection BOM not purchase-ready.
+[Wiring](connections.md) · [Bench parts and checks](bench-build.md). Open: board/regulator, BEC/source limits, H-1-0290 continuity, power budget and protection values. Hold harness/protection purchases.
+
+---
 
 ## Bounded WP3 RS-232 board selection — 2026-11-09
 
@@ -33,19 +37,27 @@ Selected: 2 × Hailege H-1-0290 for Zander/FLARM; replaces HW-044. [S26](sources
 
 Verification: selection/specifications and affected wiring/preview labels checked for consistency; 121 relative file/anchor references, three SVG structures and whitespace checked; updated diagrams visually checked in local renders. Documentation only; no build, electrical or device tests. WP3/M2 remain open.
 
+---
+
 ## Bounded WP3 Hailege pinout — 2026-11-09
 
 [Connections](connections.md#hailege-board-pad-reference): supplied board image, inferred eight-pad map, conditional Zander/Classic FLARM connections and proposed ESP32 GPIOs. [S27](sources.md) supplier comparator; no Hailege-specific schematic or measured sample match. Next: confirm IC/pad continuity on both boards, equipment cable/view and signal-reference compatibility; bench acceptance remains open.
 
 Verification: S27 schematic/photos cross-checked with supplied image; ZS1 pp.46/48 and Classic FLARM pp.6/7 pin references rechecked. 97 relative file/anchor references and whitespace checked; pad-table directions compared with the reference schematic/photos. Supplied image preserved byte-for-byte. No firmware, electrical or device tests; WP3/M2 remain open.
 
+---
+
 ## Bounded WP4/WP5 send investigation — 2026-11-08
 
 [S12](reviews/2026-11-08-becker-send.md): host reproduction of truncated writes; byte-span correction passes synthetic cases. Next, subject to implementation approval: counted-send patch/integration test, caller/state/UI mapping. Active-state freshness and real readback remain open.
 
+---
+
 ## Bounded WP2 driver research — complete, 2026-11-08
 
 [S11](technical-investigation.md#becker-driver-follow-up--2026-11-08): implementation comparisons and protocol leads. Next: matched radio identity/protocol reference or independent captures. WP2 remains open.
+
+---
 
 ## WP1 — existing installation (first priority)
 
@@ -59,11 +71,15 @@ Verification: S27 schematic/photos cross-checked with supplied image; ZS1 pp.46/
 | OpenSoar build and evidence for reported drivers/endpoints; clarify OpenVario's role | Owner/Tom | App/bridge configuration |
 | Existing board/firmware, UBEC output/board input; separate new-build BEC/source limits | Tom/owner | Backup record and protection/current budget |
 
-Update [inventory](project-baseline.md#existing-installation--wp1-record) and sources with supported values or explicit gaps. Keep backups private. No flashing, rewiring or radio commands. M1 requires closure of interface-critical gaps.
+Record supported values and gaps in the [inventory](project-baseline.md#existing-installation--wp1-record) and sources. Keep backups private. Scope is evidence review. M1 requires closure of interface-critical gaps.
+
+---
 
 ## One-package working loop
 
 Read relevant sources/status → bound one change → execute → verify → update owning document → review/stage task files → commit/push.
+
+---
 
 ## Verification coverage for later packages
 
@@ -75,9 +91,13 @@ Read relevant sources/status → bound one change → execute → verify → upd
 
 Transport success ≠ radio acceptance. ACK constants do not establish response bytes. Traffic/gap/timeout limits require WP1/WP2 evidence. Any remaining P0 failure blocks bench acceptance.
 
+---
+
 ## Documentation readability review — 2026-11-08
 
 [Verification](reviews/2026-11-08-documentation.md). Documentation only; no application/device tests.
+
+---
 
 ## Bounded WP0 Mermaid overview correction — 2026-11-09
 

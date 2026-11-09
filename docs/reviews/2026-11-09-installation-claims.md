@@ -2,7 +2,7 @@
 
 2026-11-09 · WP1 / bounded WP2 research · [source register](../sources.md)
 
-Tom's report describes working Zander/FLARM reception through the existing ESP32, **without Becker integration**. Equipment, settings and operation remain **reported**, not measured. Manuals and pinned source establish capabilities, not the installed configuration.
+Tom reports Zander and FLARM reception through the existing ESP32 and no Becker integration. Equipment, settings and operation remain unmeasured.
 
 ## Claim assessment
 
@@ -19,6 +19,8 @@ Tom's report describes working Zander/FLARM reception through the existing ESP32
 | Latest Zander has FLARM input; unused here | 3037 supplement confirms a FLARM function exists; it does not establish which hardware revision first had that socket. No FLARM-to-Zander connection and an inactive input are reported; menu setting unverified. |
 | 12 V bus, Hobbywing 3A UBEC 2–6S; instruments separately powered | Consistent with manufacturer part 86010010: 5.5–26 V input, jumper-selectable **5 or 6 V** output. Installed setting/output and board supply connection unmeasured. Separate instrument supplies are reported, not evidence of galvanic isolation. S14/S21 |
 
+---
+
 ## Reported TCP configuration
 
 | Feed | Address | Driver | Status |
@@ -27,7 +29,9 @@ Tom's report describes working Zander/FLARM reception through the existing ESP32
 | FLARM | `10.10.10.10:2000` | `FLARM` | Reported existing input |
 | Becker | `10.10.10.10:4352` | `AR62xx` | Reported entry/intended path; no working radio integration |
 
-These are bridge configuration values, not instrument protocol standards or proof of listening services. No network probe performed. The pasted `http://` links do not establish HTTP; the report describes TCP byte streams. Separate endpoints do not prove bidirectional UART wiring. S24 confirms the navigation driver names; Becker source limitations remain in S01/S12.
+Reported TCP byte streams. Services, HTTP support and UART direction remain unverified. S24 confirms driver names. Becker limits are in S01/S12.
+
+---
 
 ## Zander output versus OpenSoar consumption
 
@@ -45,11 +49,15 @@ These are bridge configuration values, not instrument protocol standards or proo
 
 The supplement explicitly changes `PZAN3` from older versions. It specifies 19,200 baud when the ZS1 FLARM function is enabled, otherwise 4,800. **Conditional inference:** 4,800 is a candidate only if this firmware/configuration matches Tom's unit. No FLARM cable alone does not prove the menu setting or baud rate. Baud rates belong to serial links, not TCP ports.
 
+---
+
 ## FLARM traffic and serial scope
 
 **Rechecked source:** FTD-012 revision history 7.22, §5 and §8.2: RS-232/8N1, configurable baud/output; some Classic extension ports emit only `PFLAU`. `PFLAA` traffic requires at least 19,200 baud. It carries relative position/height, ID, track, speed and climb; fields/targets can be absent. It describes nearby traffic, not only opposing traffic. `PFLAU` is the primary alarm source.
 
 Distance/absolute target altitude may be derived from relative data. A Classic target ID is not a callsign. Newer `PFLAM` identity messaging is unavailable on Classic (§8.20, pp.55–56). OpenSoar can resolve names through local/FLARMnet data (`TrafficDatabases::FindNameById`, S24). Displayed names therefore do not prove callsign transmission by this unit.
+
+---
 
 ## Document applicability and retained material
 
@@ -70,6 +78,8 @@ Supplied file SHA-256:
 | `ZS1_Deutsch.pdf` | `0d103b402edea8e5c3798d9979a7df01493b3f0a8c6553fe19912b59b07c2a80` |
 | `ZS1_NMEA_3037.pdf` | `036188492bb829e5c49123323c2939aaddc1ab9f387e08dd4e6f8ba072bd1cb2` |
 | `FTD-116-FLARM-FAMP-Public-Protocol-v1.02.pdf` | `561c59a848e0219600265f38fe6fabc7a4f48fda027c18468e9936e345fb2d73` |
+
+---
 
 ## Verification
 

@@ -12,6 +12,8 @@ S08, 2026-11-08. R02/R03/R07/R08. Source analysis; firmware selection open.
 
 Yuri has later functional fixes; timestamps establish neither current maintenance nor toolchain compatibility.
 
+---
+
 ## Source findings
 
 Pinned sources: [Y sketch](https://github.com/yuri-rage/ESP-Serial-Bridge/blob/130f731416d43c89bce5626ef989b3e65918c9ce/ESP-Serial-Bridge.ino) (`setup`, `loop`, `WiFiStationDisconnected`); [Y config](https://github.com/yuri-rage/ESP-Serial-Bridge/blob/130f731416d43c89bce5626ef989b3e65918c9ce/config.h); [A sketch](https://github.com/AlphaLima/ESP32-Serial-Bridge/blob/bb42dc3db926f9baf1f5faa76cc21bad1dd80cdf/ESP32-Serial-Bridge.ino) (`setup`, `loop`).
@@ -33,9 +35,11 @@ Pinned sources: [Y sketch](https://github.com/yuri-rage/ESP-Serial-Bridge/blob/1
 | [README](https://github.com/yuri-rage/ESP-Serial-Bridge/blob/130f731416d43c89bce5626ef989b3e65918c9ce/README.md): Arduino 2.0/PlatformIO reported | No platformio.ini/dependency lock in pinned tree; build unverified |
 | [LICENSE](https://github.com/yuri-rage/ESP-Serial-Bridge/blob/130f731416d43c89bce5626ef989b3e65918c9ce/LICENSE): MIT, AlphaLima attribution | No conflicting sketch/config grant found; preserve notices |
 
+---
+
 ## Smallest proposed changes
 
-Proposals only. New bridge under ADR-03; match required navigation interfaces/settings/transports. Do not globally restrict navigation clients to isolate radio.
+Proposed for the new bridge (ADR-03). Match navigation interfaces, settings and transports. Restrict radio clients separately.
 
 | Increment | Minimal proposal and expected result | Future regression evidence |
 | --- | --- | --- |
@@ -46,6 +50,8 @@ Proposals only. New bridge under ADR-03; match required navigation interfaces/se
 | 5. Reproducible configuration (R07) | Pin board/framework/dependencies and sanitized build configuration. Do not upgrade the framework merely because it is newer. | Later reproducible build on the selected environment; no build performed now. |
 
 Finite buffers cannot cover unlimited outages. Define overflow/session failure; no old-command replay. OpenSoar owns protocol/state; forwarding alone cannot preserve active frequency.
+
+---
 
 ## Verification summary
 

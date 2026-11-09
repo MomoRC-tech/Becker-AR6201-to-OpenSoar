@@ -11,6 +11,8 @@
 
 [Overview](../README.md#architecture-overview) · [Connections](connections.md)
 
+---
+
 ## Hardware proposal — one ESP32
 
 | Item | Selection / status |
@@ -30,7 +32,9 @@
 
 ### OpenSoar baseline and pending inputs
 
-Reported equipment/endpoints: [WP1 inventory](project-baseline.md#existing-installation--wp1-record). Tom: confirm radio type plate/HW/SW, Classic FLARM port/firmware, ZS1 version/cable/conversion map, serial settings, return traffic and UBEC output. Owner: separate new-build board/BEC details and installed OpenSoar configuration. Reports do not select new-build network/serial settings.
+[WP1 inventory](project-baseline.md#existing-installation--wp1-record) records reported equipment and endpoints. [Open checks and owners](roadmap.md#wp1--existing-installation-first-priority). New-build network and serial settings remain open.
+
+---
 
 ## Decision record
 
@@ -50,7 +54,7 @@ One queue: [roadmap](roadmap.md). Requirements: baseline; evidence: sources; des
 
 ### ADR-03 — new hardware with the existing setup as backup
 
-**Selected:** new bridge, one ESP32, separate interfaces/power/harness. Preserve existing hardware, firmware and configuration; no harvesting or reflashing. Compatibility depends on equipment interfaces, not spare resources in the backup.
+**Selected:** one ESP32 with separate interfaces, power and harness. Keep the existing hardware, firmware and configuration as backup. Match equipment interfaces before building.
 
 ### ADR-04 — selected bench hardware and power path
 

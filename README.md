@@ -1,6 +1,6 @@
 # FLARM, Zander and Becker to OpenSoar
 
-One ESP32 Wi-Fi bridge for OpenSoar on Android.
+One ESP32 Wi-Fi bridge for Zander, FLARM and Becker in OpenSoar on Android.
 
 ## Plan status
 
@@ -13,6 +13,8 @@ One ESP32 Wi-Fi bridge for OpenSoar on Android.
 
 [Work queue](docs/roadmap.md).
 
+---
+
 ## Scope
 
 | Device | Function |
@@ -22,6 +24,8 @@ One ESP32 Wi-Fi bridge for OpenSoar on Android.
 | Becker | Selected airfield → standby; radio status where supported |
 
 Preserve active frequency, local controls and navigation. Report unknown state and failures.
+
+---
 
 ## Architecture overview
 
@@ -39,6 +43,8 @@ flowchart LR
 | Selected hardware | AZ-Delivery WROOM-32; 2 × Hailege H-1-0290; 5 V BEC; board-derived 3.3 V |
 | Proposed radio interface | Full-duplex RS-422, THVD1451D |
 | Deferred controls | Active tuning, swap, volume/squelch |
+
+---
 
 ## Documentation
 

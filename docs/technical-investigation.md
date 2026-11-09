@@ -1,6 +1,6 @@
 # Technical investigation
 
-Evidence: [sources](sources.md). Source inspection unless labelled measured/reported. No application/device acceptance.
+See [sources](sources.md) for evidence labels. Application and device acceptance remain open.
 
 ## Original source baseline
 
@@ -12,9 +12,13 @@ Evidence: [sources](sources.md). Source inspection unless labelled measured/repo
 
 Primary review: OpenSoaring `b2e745cfddfe0150f6ed7db467ac18c321b38d01` (S01/S02). Installed build unknown.
 
+---
+
 ## Follow-up send reproduction — 2026-11-08
 
 [S12 host regression](reviews/2026-11-08-becker-send.md): zero-containing frames truncated to 4/10 or 6/10 bytes; byte-span correction preserves 10/10. Synthetic transport evidence only.
+
+---
 
 ## OpenSoar driver findings
 
@@ -40,6 +44,8 @@ Source: [AR62xx.cpp, 4a3794a](https://github.com/August2111/OpenSoar/blob/4a3794
 | ACK/NAK constants | Actual response format; constants prove no response bytes |
 | Channel conversion | Valid/invalid channel vectors |
 | Startup/readback | Query, broadcast timing, freshness, UI display |
+
+---
 
 ## Becker driver follow-up — 2026-11-08
 
@@ -76,7 +82,7 @@ Licenses inspected: OpenSoar/Werner/LK8000 driver GPL-2.0-or-later; RadioDriver 
 
 [PR documentation report](https://github.com/XCSoar/XCSoar/pull/449#issuecomment-667976007) · [redesign report](https://github.com/XCSoar/XCSoar/pull/449#issuecomment-670971343) · [publication refusal report](https://github.com/XCSoar/XCSoar/pull/449#issuecomment-679080020) · [issue 1092](https://github.com/XCSoar/XCSoar/issues/1092).
 
-Historical reports only; current access policy unknown. [Becker service](https://becker-avionics.com/service-request/): contact lead, no submission.
+Historical reports. Current access policy unknown. Contact lead: [Becker service](https://becker-avionics.com/service-request/).
 
 Request after radio identification: matching remote-control protocol/revision; supported HW/SW; serial settings; status timing; paired/single-command behavior; framing/escaping/CRC; responses; channel vectors; publication permission. No independent protocol document/capture obtained.
 
@@ -94,6 +100,8 @@ Source-derived cases: 118.000 → 00 00 (send truncation); 119.030 → 00 A5 (pa
 
 **S11 verification:** pinned drivers, constructors, overloads, branch blobs, conversion history and discussions inspected. No execution/device tests. S12 supplies separate host evidence.
 
+---
+
 ## ESP32 bridge comparison
 
 | Candidate | Source findings | Limits |
@@ -105,9 +113,13 @@ Source-derived cases: 118.000 → 00 00 (send truncation); 119.030 → 00 A5 (pa
 | Pro licensing/build | No standalone license found despite README reference | Permission, web/SPIFFS dependencies and reproducibility unresolved |
 | Installed bridge | Reported working navigation | Firmware/routing/returns unknown; preserve as backup |
 
+---
+
 ## Architecture recommendation from the investigation
 
 Current design: [architecture](architecture.md). Candidate order: Yuri, basic AlphaLima; no firmware selected. Required: bounded/checked forwarding, isolated diagnostics, exclusive command ownership, navigation coexistence.
+
+---
 
 ## Detailed open checks
 
@@ -123,6 +135,8 @@ Current design: [architecture](architecture.md). Candidate order: Yuri, basic Al
 | Driver regression | Embedded zero/A5, short frames, invalid CRC, unknown initial state, two instances, absent/late responses |
 | Physical acceptance | Frequency change and status readback on the real radio while preserving local controls and navigation |
 
+---
+
 ## Follow-up source verification (2026-11-08)
 
 Manual details below: **prior review** unless rechecked in S09/S10. Installed applicability unknown.
@@ -136,6 +150,8 @@ Manual details below: **prior review** unless rechecked in S09/S10. Installed ap
 | [LXNAV rev.21 v2.10 pp.10–11](https://www.lx-avionik.de/wp/download/manuals/lx232BridgeManualEnglishVer0210Rev21.pdf#page=10), [harness listing](https://www.navboys.com/lxnav-to-becker-ar6201-harness-for-radio-bridge-j1-plug.html) | AR6201 adapter on interface 2, ground pin 21; RT6201 adapter on interface 1, RCU on 2; product uses RS232↔RS422 adapter |
 | Same LXNAV manual | Remote control/Tandem; minimum bridge 1.16, Becker SCI1050S305 3.05 / SCI1051S305 1.49; product-specific |
 | [SD-Link prerequisites](https://sdlink.de/en/Manual/ar620x/) | Free J1, Tandem, AR6201 serial ≥3001 for its BLE adapter; not universal ESP32 requirements |
+
+---
 
 ## Original verification record
 

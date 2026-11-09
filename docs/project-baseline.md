@@ -19,6 +19,8 @@ One new ESP32 bridge; preserve the existing setup as backup. All physical accept
 
 Deferred: active tuning, swap, volume/squelch, Larus, general XCSoar support, aircraft installation. Repository license undecided.
 
+---
+
 ## New build selections
 
 | Item | Current selection | Missing / consequence |
@@ -29,6 +31,8 @@ Deferred: active tuning, swap, volume/squelch, Larus, general XCSoar support, ai
 | Radio | THVD1451D proposed | Matched radio interface and bench validation |
 
 [Design](architecture.md) · [Wiring](connections.md) · [BOM](bench-build.md#parts-list). USB and BEC powering mutually exclusive; manual disconnection.
+
+---
 
 ## Existing installation — WP1 record
 
@@ -56,7 +60,7 @@ Keep logs, identifiers, credentials and raw backups private. Preserve backup har
 | FLARM | `10.10.10.10:2000` | `FLARM` |
 | Becker | `10.10.10.10:4352` | `AR62xx`; entry/intention only, no integrated radio |
 
-Separate navigation paths and no FLARM-to-Zander connection reported; wiring/return traffic unverified. Review baseline: OpenSoar 7.46.26 (S09/S24); installed build unknown. Tom mentions OpenVario for task navigation; its relationship to the reported Android/OpenSoar installation needs clarification. Working reception does not establish every listed Zander field is consumed; see S24 assessment.
+Separate navigation paths reported. Wiring, return traffic, installed OpenSoar build and OpenVario’s role are open. Review baseline is OpenSoar 7.46.26 (S09/S24). See S24 for Zander fields consumed.
 
 ### Tom’s photo evidence — 2026-11-08
 
@@ -82,6 +86,8 @@ Existing assembly retained as backup ([ADR-03](architecture.md#adr-03--new-hardw
 
 **WP1 verification:** [current package summary](reviews/2026-11-09-installation-claims.md#verification), including retained S13 photo evidence. WP1/M1 open.
 
+---
+
 ## Assumptions to resolve
 
 | ID | Assumption, not a fact | How to resolve / dependency |
@@ -92,6 +98,8 @@ Existing assembly retained as backup ([ADR-03](architecture.md#adr-03--new-hardw
 | A04 | Radio status can establish sufficiently fresh active state before standby tuning. | WP2 protocol evidence, WP4 state design and WP7 observation. Blocks safe command semantics. |
 | A05 | A dedicated radio TCP endpoint is feasible without disrupting existing feeds. | WP1 topology and WP3 alternatives comparison. Blocks ADR-01 acceptance. |
 | A06 | The selected new ESP32 board and firmware can carry all required navigation paths plus an isolated bidirectional radio path. | WP1 equipment requirements, WP3 resource allocation and WP6/WP7 coexistence verification; existing backup operation does not prove this |
+
+---
 
 ## Risk register
 
