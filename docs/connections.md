@@ -43,19 +43,11 @@ Dotted arrows show optional navigation returns. Becker commands are required for
 <details>
 <summary>Hailege board pad reference</summary>
 
-<img src="images/hailege-h-1-0290-board.svg" width="240" alt="Hailege H-1-0290 board, chip side">
+| Chip-side reference | Inferred pad view |
+| --- | --- |
+| <img src="images/hailege-h-1-0290-board.svg" width="240" alt="Hailege H-1-0290 board, chip side"> | <img src="images/pinout-hailege.svg" width="420" alt="Hailege chip-side pad map. L1 ground, L2 supply, L3 RS-232 input, L4 RS-232 output. R1 TTL input, R2 TTL output, R3 supply, R4 ground. Continuity unknown."> |
 
-**Inferred pad map.** Orient the chip side as pictured. Confirm continuity before power.
-
-```text
-        RS232 / instrument             TTL / ESP32
-                +---------------------+
-  L1  GND   −   |                     |   ←  TX input   R1
-  L2  3.3 V +   |      MAX3232CSE      |   →  RX output  R2
-  L3  RX in →   |                     |   +  3.3 V      R3
-  L4  TX out←   |                     |   −  GND        R4
-                +---------------------+
-```
+Orient the chip side as pictured. Confirm continuity before power. [S26–S27](sources.md#source-register)
 
 </details>
 
@@ -75,6 +67,15 @@ Dotted arrows show optional navigation returns. Becker commands are required for
 
 Use the ZS1 PC-cable DE9. Optional RMC requires an enabled, unused RX input. † Confirm signal ground.
 
+<details>
+<summary>Zander PC-cable connector pin view</summary>
+
+| Connector reference | Pin view |
+| --- | --- |
+| Matched cable photo pending. [ZS1 handbook D3029, pp.46/48](reference/ZS1_Deutsch.pdf#page=46) (S22) | <img src="images/pinout-zander-de9.svg" width="420" alt="ZS1 PC-cable DE-9 index. Pin 2 TX, pin 3 optional RX, pin 5 ground. Installed cable match and connector face unknown."> |
+
+</details>
+
 ---
 
 <a id="flarm"></a>
@@ -90,6 +91,17 @@ Use the ZS1 PC-cable DE9. Optional RMC requires an enabled, unused RX input. †
 | 7/8 (<img src="images/pins/gnd.svg" alt="GND" width="23" height="14">)† | — | L1 GND† | R4 GND | — | GND contact **UNKNOWN** |
 
 † Confirm the Classic Power/Data plug view and IGC numbering. Use a free data port and signal ground. Keep FLARM supply pins separate from converter VCC.
+
+<details>
+<summary>Classic FLARM Power/Data connector pin view</summary>
+
+| Connector reference | Pin view |
+| --- | --- |
+| [Classic rear-panel and plug pictures, v221 p.6](https://www.flarm.com/wp-content/uploads/2024/04/FLARM_InstallationManual_D.pdf#page=6) (S23) | <img src="images/pinout-flarm-classic.svg" width="420" alt="Classic FLARM plug, latch down, IGC numbering. Pins 1 and 2 supply in, 3 auxiliary voltage out, 4, 7 and 8 ground, 5 TX, 6 RX. Installed match unknown."> |
+
+IGC numbering runs in the opposite direction to common RJ45 numbering. Match the actual plug to the manual.
+
+</details>
 
 ---
 
@@ -114,11 +126,17 @@ Use the ZS1 PC-cable DE9. Optional RMC requires an enabled, unused RX input. †
 Confirm J1 revision and signal ground. 🟦 Status · 🟧 Commands · ⬜ Ground. The table uses THVD1451D chip pins. Standby tuning requires the command path.
 
 <details>
-<summary>Becker rear connector view</summary>
+<summary>Becker rear connector and J1 pin view</summary>
 
-<img src="images/becker-reference-connectors.png" width="325" alt="Becker rear view with P1 above J1">
+| Radio rear reference | J1 mating-face reference |
+| --- | --- |
+| <img src="images/becker-reference-connectors.png" width="275" alt="Becker rear drawing, P1 above J1. Callout 4 identifies the J1 connector."> | <img src="images/pinout-becker-j1.svg" width="420" alt="Becker J1 DB-25 socket reference. Pins 2 and 9 TX pair, 3 and 10 RX pair, 21 digital ground. Installed match and ground bond unknown."> |
+
+Callout 4 identifies J1. Functions from [Becker DV14307.03 Issue 06, pp.57/59](https://www.becker-avionics.com/wp-content/uploads/00_Literature/6200_Series_IO_en.pdf#page=59) (S10/S20). Socket numbering follows the [Winford BRKDD25F-R-FT Rev. A mating-face drawing](https://www.winford.com/products/cad/brkdd25f-r-ft_rev_a_dwg.pdf). Confirm the moulded numbers on the installed connector.
 
 </details>
+
+Pin-view styling follows the [Pinout.xyz examples](https://github.com/pinout-xyz/Pinout.xyz/tree/main/graphics). Colours group functions.
 
 ---
 

@@ -1,80 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="600" viewBox="0 0 1080 600" role="img" aria-labelledby="title description">
-<title id="title">Becker connection proposal, schematic connector shapes</title>
-<desc id="description">Conditional Becker J1 pins 2 TX2+ and 9 TX2- connect to THVD1451D IC pins 8 A and 7 B; receiver pin 2 R connects to proposed GPIO16 RX. Proposed GPIO17 TX passes through an open link to IC pin 3 D; driver pins 5 Y and 6 Z connect to conditional J1 pins 3 RX2+ and 10 RX2-. J1 pin 21 D_GND bonding remains unknown. Local IC pin 4 GND and pin 1 VCC connect to proposed ESP32 GND and 3.3 V. Installed connector match, breakout contacts, TX link contacts and ESP32 physical header pins are UNKNOWN. This is not a physical pin layout or a validated circuit.</desc>
-<rect width="1080" height="600" fill="white"/>
-<defs>
-<marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#205c80"/></marker>
-<marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#8b4b20"/></marker>
-</defs>
-<g font-family="Arial, sans-serif" fill="#202a32">
-<text x="30" y="40" font-size="26" font-weight="500">Becker → RS-422 interface → ESP32</text>
-<text x="30" y="70" font-size="16" fill="#5b6268">Proposal only · selected signals · connector shapes are symbolic, not physical pin layouts</text>
-<text x="30" y="114" font-size="20" font-weight="500">Becker J1*</text>
-<text x="370" y="114" font-size="20" font-weight="500">THVD1451D · IC pins</text>
-<text x="815" y="114" font-size="20" font-weight="500">ESP32 header</text>
-
-<path d="M47 140H242Q262 140 267 159L285 410Q287 432 265 432H25Q5 432 8 410L27 159Q29 140 47 140Z" fill="#f4f6f7" stroke="#64727d" stroke-width="2"/>
-<rect x="370" y="140" width="330" height="292" rx="5" fill="#f4f6f7" stroke="#64727d" stroke-width="2"/>
-<rect x="815" y="140" width="235" height="292" rx="5" fill="#f4f6f7" stroke="#64727d" stroke-width="2"/>
-
-<g font-size="18" fill="#205c80">
-<text x="45" y="187">2 · TX2+</text><text x="45" y="229">9 · TX2−</text>
-<text x="387" y="187">8 · A</text><text x="387" y="229">7 · B</text>
-<text x="614" y="208">2 · R</text>
-<text x="865" y="208">GPIO16 · RX</text>
-</g>
-<g stroke="#205c80" stroke-width="2" fill="none">
-<circle cx="246" cy="180" r="5"/><circle cx="246" cy="222" r="5"/>
-<path d="M251 180H370M251 222H370" marker-end="url(#a)"/>
-<path d="M446 180H481M446 222H481M571 201H603"/>
-<path d="M700 201H815" marker-end="url(#a)"/>
-<rect x="831" y="195" width="12" height="12"/>
-</g>
-<rect x="481" y="163" width="90" height="76" rx="3" fill="#e4eff5" stroke="#205c80"/>
-<text x="526" y="207" font-size="17" text-anchor="middle">Receiver</text>
-
-<g font-size="18" fill="#8b4b20">
-<text x="45" y="287">3 · RX2+</text><text x="45" y="329">10 · RX2−</text>
-<text x="387" y="287">5 · Y</text><text x="387" y="329">6 · Z</text>
-<text x="614" y="308">3 · D</text>
-<text x="865" y="308">GPIO17 · TX</text>
-</g>
-<g stroke="#8b4b20" stroke-width="2" fill="none">
-<circle cx="246" cy="280" r="5"/><circle cx="246" cy="322" r="5"/>
-<path d="M370 280H251M370 322H251" marker-end="url(#b)"/>
-<path d="M481 280H446M481 322H446M603 301H571"/>
-<path d="M815 301H772"/>
-<path d="M752 301H700" marker-end="url(#b)"/>
-<circle cx="772" cy="301" r="3"/><circle cx="752" cy="301" r="3"/><path d="M772 301L752 286"/>
-<rect x="831" y="295" width="12" height="12"/>
-</g>
-<rect x="481" y="263" width="90" height="76" rx="3" fill="#f7ede5" stroke="#8b4b20"/>
-<text x="526" y="307" font-size="17" text-anchor="middle">Driver</text>
-<text x="758" y="347" font-size="14" fill="#8b4b20" text-anchor="middle">TX link OPEN</text>
-
-<text x="45" y="382" font-size="18">21 · D_GND</text>
-<circle cx="246" cy="376" r="5" fill="none" stroke="#64727d" stroke-width="2"/>
-<path d="M251 376H300M337 376H370" fill="none" stroke="#64727d" stroke-width="2" stroke-dasharray="5 5"/>
-<text x="319" y="383" font-size="22" fill="#8b4b20" text-anchor="middle">?</text>
-<text x="387" y="382" font-size="16" fill="#8b4b20">Bond UNKNOWN</text>
-<text x="614" y="382" font-size="18">4 · GND</text>
-<text x="865" y="382" font-size="18">GND</text>
-<text x="614" y="414" font-size="18">1 · VCC</text>
-<text x="865" y="414" font-size="18">3.3 V</text>
-<g fill="none" stroke="#64727d" stroke-width="2">
-<path d="M700 376H815M700 408H815"/>
-<rect x="831" y="370" width="12" height="12"/><rect x="831" y="402" width="12" height="12"/>
-</g>
-<g font-size="16" fill="#8b4b20">
-<text x="30" y="460">Installed match UNKNOWN</text>
-<text x="370" y="460">Breakout contacts UNKNOWN</text>
-<text x="815" y="460">Physical pins UNKNOWN</text>
-</g>
-<g font-size="15" fill="#48545f">
-<text x="30" y="504">*J1 numbers: conditional manual reference. View/orientation unverified; no contact locations implied.</text>
-<text x="30" y="530">TX link contacts UNKNOWN. Open link ≠ disabled driver. Termination/shielding UNKNOWN.</text>
-<text x="30" y="556">Signal proposal only; protection and local components omitted. Commands are required for standby tuning.</text>
-<text x="30" y="582" font-size="13">Prior review: Becker DV14307.03 Issue 06, p.59; THVD1451D SLLSEY3E Rev. E, p.6. No hardware validation.</text>
-</g>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="72" viewBox="0 0 720 72" role="img" aria-label="Becker AR6201 (reported) via RS-422 mod to ESP32; proposed">
+<rect width="720" height="72" fill="white"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#52647b"/></marker><marker id="optional-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#737373"/></marker></defs>
+<g fill="#eaf1fb" stroke="#9cb1cc"><rect x="1" y="7" width="180" height="34" rx="4"/><rect x="267" y="7" width="186" height="34" rx="4"/><rect x="539" y="7" width="180" height="34" rx="4"/></g>
+<g stroke="#52647b" stroke-width="1.5" marker-end="url(#arrow)"><path d="M189 18H259"/><path d="M461 18H531"/><path d="M259 31H189" stroke="#737373" stroke-dasharray="3 3" marker-end="url(#optional-arrow)"/><path d="M531 31H461" stroke="#737373" stroke-dasharray="3 3" marker-end="url(#optional-arrow)"/></g>
+<g font-family="Arial,sans-serif" font-size="13" text-anchor="middle" fill="#172b4d"><text x="91" y="29">Becker AR6201 (reported)</text><text x="360" y="29">RS-422 mod</text><text x="629" y="29">ESP32</text></g>
+<g font-family="Arial,sans-serif" font-size="11" fill="#475569" text-anchor="middle"><text x="224" y="60">Device RX optional*</text><text x="496" y="60">3.3 V logic; proposed</text></g>
 </svg>
