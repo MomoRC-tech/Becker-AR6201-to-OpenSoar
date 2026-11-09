@@ -9,7 +9,7 @@
 
 Selected board: AZ-Delivery ESP32 WROOM dev module.
 
-[Bench checks and parts](bench-build.md) · [Sources](sources.md)
+[Parts list](#parts-list) · [Bench acceptance](roadmap.md#verification-coverage-for-later-packages) · [Sources](sources.md)
 
 ---
 
@@ -49,7 +49,9 @@ Dotted arrows show optional navigation returns. Becker commands are required for
 | --- | --- |
 | <img src="images/hailege-h-1-0290-board.svg" width="240" alt="Hailege H-1-0290 board, chip side"> | <img src="images/pinout-hailege.svg" width="420" alt="Hailege chip-side pad map. L1 ground, L2 supply, L3 RS-232 input, L4 RS-232 output. R1 TTL input, R2 TTL output, R3 supply, R4 ground. Continuity unknown."> |
 
-Orient the chip side as pictured. Confirm continuity before power. [S26–S27](sources.md#source-register)
+Orient the chip side as pictured. Before power, verify IC marking, package and pin 1. Trace all eight pads on both modules, check shared supply and ground pads, and check for shorts. Remap any mismatch.
+
+S27 comparator, channel 2: L3 → IC pin 8, L4 → 7, R1 → 10, R2 → 9, both supply pads → 16 and both grounds → 15. Use the traced channel and IC datasheet to confirm the actual mapping. The reported board size is **9.4 × 15.9 mm**. Pad pitch and clearance remain open. Use 3.3 V for this design. The reported rate recommendation is ≤120 kbps. Actual baud and throughput are unverified. [S17, S26–S27](sources.md#source-register)
 
 </details>
 
@@ -126,6 +128,8 @@ IGC numbering runs in the opposite direction to common RJ45 numbering. Match the
 
 Confirm J1 revision and signal ground. 🟦 Status · 🟧 Commands · ⬜ Ground. The table uses THVD1451D chip pins. GPIO17 connects directly to D for standby tuning. ESP32 header positions and breakout contacts remain **UNKNOWN**.
 
+**Converter build:** THVD1451D SOIC-8 with 100 nF between IC pins 1 and 4, a proposed 10 kΩ pull-up from D to 3.3 V, and common logic ground. The driver is always enabled and the circuit has no galvanic isolation. Use separate TX and RX twisted pairs. Match termination, shielding and reference bonding before connection. [S18](sources.md#source-register)
+
 <details>
 <summary>Becker rear connector and J1 pin view</summary>
 
@@ -166,7 +170,35 @@ flowchart LR
 | ESP32 GND contact | RS-232-mod2 R4 (`−`) | Proposed; continuity pending |
 | ESP32 GND contact | RS-422 mod IC pin 4, GND | Proposed |
 
-Use one VCC/GND pair per H-1-0290. Disconnect BEC 5 V before USB powering. [Protection and current budget](bench-build.md#power-protection-and-budget).
+Use one VCC/GND pair per H-1-0290. Disconnect BEC 5 V before USB powering. Preserve existing instrument power feeds.
+
+- Size the fuse near the source and select reverse-polarity protection for the actual wiring, BEC input range and inrush. Coordinate the input transient clamp to return with the fuse and BEC limits. Evaluate output overvoltage cutoff against BEC faults and ESP32 input limits.
+- Verify the board regulator current and temperature with Wi-Fi and all converters active. Spare 3.3 V capacity, source voltage range, BEC model and protection ratings remain open. [S16–S19](sources.md#source-register)
+
+---
+
+<a id="parts-list"></a>
+
+### Parts list
+
+Parts for one bridge. Keep the existing assembly and harness as backup.
+
+| Ref / quantity | Part or specification | Status / use |
+| --- | --- | --- |
+| MCU / 1 | AZ-Delivery ESP32 WROOM dev module | Owner-selected. Verify header positions and regulator limits |
+| RS-232-mod1, RS-232-mod2 / 2 | Hailege H-1-0290 RS-232/logic boards; 9.4 × 15.9 mm each | Selected (S26); reported MAX3232CSE. Verify both ICs, pad routing and 3.3 V operation |
+| PS1 / 1 | BEC: reported 2S–4S input; 5 V output | Reported nominal 12 V battery; model, voltage range, polarity, tolerance, ripple/protection TBD. Old UBEC specs inapplicable |
+| RS-422 mod / 1 | TI THVD1451D, SOIC-8 | Proposed full-duplex RS-422; always enabled; soldering required |
+| Adapter / 1 | SOIC-8 to 2.54 mm breakout, e.g. Adafruit 1212 | Use the SOIC side. Check pins after soldering |
+| C-R / 1 | 100 nF ceramic, at least 10 V | Close between RS-422 mod pins 1 and 4; H-1-0290 fitted capacitors need value/condition checks |
+| R-Z, R-F, R-R / 3 | 10 kΩ, 1%, at least 0.125 W | Proposed pull-ups to 3.3 V for idle bias when the ESP32 TX output is high impedance |
+| Bench interconnect / 1 set | Carrier/prototyping board, insulated wire, headers, standoffs and labelled test points | Solder transceiver and decoupling together. Keep differential test leads short |
+| Navigation interconnect / 2 sets | Soldered leads/headers for H-1-0290 pads; equipment-side connectors TBD | Pad pitch, connector type/gender and actual cable mapping require inspection; no onboard DB9 assumed |
+| Radio bench terminal / 1 | Labelled 5-way connector for A, B, Y, Z and logic reference | Lab use only; instrument connector and shielding remain TBD |
+| F1, reverse-polarity stage, transient/OV protection | [Power protection](#power) | Hold purchase until BEC, source and board limits are known |
+| Equipment harness, termination, enclosure | Model-specific connectors, cable and resistors | Hold for matched manuals, cable lengths and enclosure space. No fixed 120 Ω termination is assumed |
+
+Tools: multimeter, current-limited supply suitable for the BEC, oscilloscope. Use a logic analyser on logic-level signals only.
 
 ---
 

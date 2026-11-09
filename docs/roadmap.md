@@ -27,13 +27,13 @@ Single work queue. Listed work is not implementation authorization.
 
 ## Bounded WP3 bench hardware package — 2026-11-08
 
-[Wiring](connections.md) · [Bench parts and checks](bench-build.md). Open: ESP32 header/regulator checks, BEC/source limits, H-1-0290 continuity, power budget and protection values. Hold harness/protection purchases.
+[Wiring and parts](connections.md#parts-list) · [Bench acceptance](#verification-coverage-for-later-packages). Open: ESP32 header/regulator checks, BEC/source limits, H-1-0290 continuity, power budget and protection values. Hold harness/protection purchases.
 
 ---
 
 ## Bounded WP3 RS-232 board selection — 2026-11-09
 
-Selected: 2 × Hailege H-1-0290 for Zander/FLARM; replaces HW-044. [S26](sources.md) records supplied specifications; [bench reference](bench-build.md#h-1-0290-identification) uses text dimensions **9.4 × 15.9 mm**. Board acceptance, pad mapping, equipment connectors and enclosure clearance remain open.
+Selected: 2 × Hailege H-1-0290 for Zander/FLARM; replaces HW-044. [S26](sources.md) records supplied specifications; [converter reference](connections.md#hailege-board-pad-reference) uses text dimensions **9.4 × 15.9 mm**. Board acceptance, pad mapping, equipment connectors and enclosure clearance remain open.
 
 Verification: selection/specifications and affected wiring/preview labels checked for consistency; 121 relative file/anchor references, three SVG structures and whitespace checked; updated diagrams visually checked in local renders. Documentation only; no build, electrical or device tests. WP3/M2 remain open.
 
@@ -88,6 +88,13 @@ Read relevant sources/status → bound one change → execute → verify → upd
 | Driver/protocol | Independent framing/CRC/channel vectors; zero/A5; short/invalid frames; unknown/stale state; local tuning; separate instances; reconnect; documented responses |
 | Bridge | Exact bytes/order; split/coalesced reads; bursts; slow clients; partial writes; disconnect; ownership; boot/debug isolation; concurrent navigation |
 | Bench | Actual standby/readback; active unchanged; local controls; navigation; connection/power failures |
+
+**Bench sequence (WP7, pending)**
+
+1. Match equipment and header contacts. Record regulator and BEC limits, converter pad continuity and RS-422 breakout orientation. Keep instruments unplugged.
+2. Check BEC polarity, startup, voltage and ripple alone and under a dummy load. Verify protection before using the intended source. Add the ESP32 and converters one at a time. Check loaded rails and regulator temperature.
+3. With instruments unplugged, verify logic levels and UART startup and diagnostic isolation. Loop the RS-422 converter Y→A and Z→B. Verify counted bytes including `00`, `A5`, `FF` and fragmented traffic. Stop on unexpected bytes, levels or back-power.
+4. After interface and software checks pass, verify each navigation feed and required return, then both together. Check actual Becker standby readback, unchanged active frequency, local controls and navigation through reconnect and power loss.
 
 Transport success ≠ radio acceptance. ACK constants do not establish response bytes. Traffic/gap/timeout limits require WP1/WP2 evidence. Any remaining P0 failure blocks bench acceptance.
 

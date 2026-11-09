@@ -50,8 +50,7 @@ flowchart LR
 
 | Document | Contents |
 | --- | --- |
-| [Connections](docs/connections.md) | Board image/pinout, device wiring, power |
-| [Bench reference](docs/bench-build.md) | BOM, converter internals, protection, checks |
+| [Connections](docs/connections.md) | Board pinouts, device wiring, power and parts list |
 | [Architecture](docs/architecture.md) | Current design and selections |
 | [Baseline](docs/project-baseline.md) | Requirements, inventory, risks |
 | [Installation claim review](docs/reviews/2026-11-09-installation-claims.md) | Tom's report, PDF versions, supported data and open questions |

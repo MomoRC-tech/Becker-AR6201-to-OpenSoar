@@ -30,7 +30,7 @@ Deferred: active tuning, swap, volume/squelch, Larus, general XCSoar support, ai
 | Supply | Nominal 12 V battery → 2S–4S-rated BEC → 5 V board → 3.3 V converters | Owner: BEC model, chemistry/voltage range; protection ratings |
 | Radio | THVD1451D proposed | Matched radio interface and bench validation |
 
-[Design](architecture.md) · [Wiring](connections.md) · [BOM](bench-build.md#parts-list). USB and BEC powering mutually exclusive; manual disconnection.
+[Design](architecture.md) · [Wiring](connections.md) · [Parts list](connections.md#parts-list). USB and BEC powering mutually exclusive; manual disconnection.
 
 ---
 
