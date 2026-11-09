@@ -63,3 +63,15 @@ S08 — [Yuri/basic AlphaLima source evaluation](reviews/2026-11-08-yuri-bridge.
 New evidence: revision/page, date, scope and label. Related drivers are not independent protocol validation.
 
 S12 — [Historical Becker driver comparison and send reproduction](reviews/2026-11-08-becker-send.md), rechecked/measured 2026-11-08. PR #189-associated cd818c90 uses counted writes. The current char-pointer call appears in eku60 commit 7a575346 (2024-03-05) and OpenSoar 7.46.26 b2e745cf. A compiled host extraction reproduces truncation and verifies the single-call byte-span correction. See the review for synthetic inputs, method, exact revisions and limits.
+
+## Connector reference drawings
+
+S20 — Rechecked source, 2026-11-09. Cropped PDF renders; labels unchanged. Reference examples only; installed model/revision and wiring remain unverified.
+
+| Asset | Manufacturer source | Scope |
+| --- | --- | --- |
+| `images/becker-reference-connectors.png` | [Becker DV14307.03 Issue 06, February 2021, p.57 Fig.18](https://www.becker-avionics.com/wp-content/uploads/00_Literature/6200_Series_IO_en.pdf#page=57) | AR62X1/RT62X1 rear connector layout; callouts identify components, not contacts. J1 functions rechecked on p.59 |
+| `images/powerflarm-core-reference-connectors.png` | [FLARM FTD-033 v1.1, 2022-06-06, p.11 §5.3.1](https://www.flarm.com/wp-content/uploads/2024/04/FTD-033-PowerFLARM-Core-Installation-Manual.pdf#page=11) | PowerFLARM Core connector locations |
+| `images/powerflarm-core-reference-de9.png` | Same manual, p.14 §5.3.7 | Device socket left / cable plug right; mating-face numbering |
+
+Drawing copyrights: Becker Avionics GmbH / FLARM Technology AG; no repository-license claim. Zander connector drawing not obtained; S09 text reference retained. No generic DE9 image substituted for Zander.

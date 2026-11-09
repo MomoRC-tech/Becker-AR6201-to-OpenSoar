@@ -8,11 +8,11 @@
 
 ```mermaid
 flowchart LR
-    Z[Zander ZS1] --> NZ["N-Z: HW-044 RS-232"]
-    F["FLARM: model UNKNOWN"] --> NF["N-F: HW-044 RS-232"]
+    Z[Zander ZS1] --> NZ["Zander adapter: HW-044 RS-232"]
+    F["FLARM: model UNKNOWN"] --> NF["FLARM adapter: HW-044 RS-232"]
     NZ --> E[ESP32]
     NF --> E
-    B["Becker: variant UNKNOWN"] <--> R["U-R: proposed RS-422"]
+    B["Becker: variant UNKNOWN"] <--> R["Becker transceiver: proposed RS-422"]
     R <--> E
     E <-->|Wi-Fi: separate device paths| O[OpenSoar]
 ```
@@ -21,31 +21,34 @@ Navigation returns: optional, listed below. Serial settings/network ports UNKNOW
 
 ## Zander ZS1
 
-**Picture pending:** actual PC-cable connector, numbered contacts and viewing side.
+**Drawing unavailable:** Zander installation manual/PC-cable connector photo still needed.
 
 | From | To | Function / status |
 | --- | --- | --- |
-| PC cable pin 2, TX | N-Z DB9 pin **UNKNOWN** | Navigation input |
-| N-Z logic-output header contact **UNKNOWN** | ESP32 GPIO32 / UART0 RX | Proposed |
-| ESP32 GPIO33 / UART0 TX | JP-Z contact **UNKNOWN** | Optional return; link open initially |
-| JP-Z other contact **UNKNOWN** | N-Z logic-input header contact **UNKNOWN** | Optional return |
-| N-Z DB9 output pin **UNKNOWN** | PC cable pin 3, RX | Optional return; RMC only |
-| PC cable pin 5, GND | N-Z DB9 reference pin **UNKNOWN** | Ground/reference design open |
+| PC cable pin 2, TX | Zander adapter DB9 pin **UNKNOWN** | Navigation input |
+| Zander adapter logic-output header contact **UNKNOWN** | ESP32 GPIO32 / UART0 RX | Proposed |
+| ESP32 GPIO33 / UART0 TX | Zander TX link contact **UNKNOWN** | Optional return; link open initially |
+| Zander TX link other contact **UNKNOWN** | Zander adapter logic-input header contact **UNKNOWN** | Optional return |
+| Zander adapter DB9 output pin **UNKNOWN** | PC cable pin 3, RX | Optional return; RMC only |
+| PC cable pin 5, GND | Zander adapter DB9 reference pin **UNKNOWN** | Ground/reference design open |
 
 Source: S09, ZS1 D3029, 16.09.2004, p.46; conditional **PC-cable** reference, not rear-panel pinout. Cable/interface match pending.
 
 ## FLARM
 
-**Picture pending:** exact model and selected data-port connector, numbered contacts and viewing side.
+<img src="images/powerflarm-core-reference-connectors.png" width="260" alt="PowerFLARM Core manual reference: connector locations">
+<img src="images/powerflarm-core-reference-de9.png" width="390" alt="PowerFLARM Core DE9 reference: device socket left, cable plug right, mating faces">
+
+**Reference only — PowerFLARM Core; installed model UNKNOWN.** DE9: device socket left, cable plug right, mating faces. [FTD-033 v1.1, pp.11/14](https://www.flarm.com/wp-content/uploads/2024/04/FTD-033-PowerFLARM-Core-Installation-Manual.pdf#page=11), © FLARM Technology AG. Installed pins remain UNKNOWN.
 
 | From | To | Function / status |
 | --- | --- | --- |
-| FLARM TX pin **UNKNOWN** | N-F DB9 input pin **UNKNOWN** | Navigation input |
-| N-F logic-output header contact **UNKNOWN** | ESP32 GPIO26 / UART1 RX | Proposed |
-| ESP32 GPIO27 / UART1 TX | JP-F contact **UNKNOWN** | Optional return; link open initially |
-| JP-F other contact **UNKNOWN** | N-F logic-input header contact **UNKNOWN** | Optional return |
-| N-F DB9 output pin **UNKNOWN** | FLARM RX pin **UNKNOWN** | Optional return |
-| FLARM reference pin **UNKNOWN** | N-F DB9 reference pin **UNKNOWN** | Ground/reference design open |
+| FLARM TX pin **UNKNOWN** | FLARM adapter DB9 input pin **UNKNOWN** | Navigation input |
+| FLARM adapter logic-output header contact **UNKNOWN** | ESP32 GPIO26 / UART1 RX | Proposed |
+| ESP32 GPIO27 / UART1 TX | FLARM TX link contact **UNKNOWN** | Optional return; link open initially |
+| FLARM TX link other contact **UNKNOWN** | FLARM adapter logic-input header contact **UNKNOWN** | Optional return |
+| FLARM adapter DB9 output pin **UNKNOWN** | FLARM RX pin **UNKNOWN** | Optional return |
+| FLARM reference pin **UNKNOWN** | FLARM adapter DB9 reference pin **UNKNOWN** | Ground/reference design open |
 
 Source: S09, FTD-012 §5. Confirm model/RS-232 port; some Classic extension ports provide only PFLAU. Preserve displays/returns; no assumed splitter.
 
@@ -53,22 +56,24 @@ Source: S09, FTD-012 §5. Confirm model/RS-232 port; some Classic extension port
 
 ## Becker radio
 
-**Picture pending:** installed model/revision, J1 connector and viewing side.
+<img src="images/becker-reference-connectors.png" width="325" alt="Becker manual reference: AR62X1/RT62X1 rear connector layout, P1 above J1">
 
-**Conditional manual pins; installed match unverified.** U-R below means **THVD1451D IC pins**, not breakout/header positions (UNKNOWN).
+**Reference only — AR62X1/RT62X1 rear view; installed revision UNKNOWN.** Callout 4 identifies J1, not contact 4. Contact numbering is not shown. [DV14307.03 Issue 06, p.57, Fig.18](https://www.becker-avionics.com/wp-content/uploads/00_Literature/6200_Series_IO_en.pdf#page=57), © Becker Avionics GmbH.
+
+**Conditional manual pins; installed match unverified.** Becker transceiver means **THVD1451D IC pins**, not breakout/header positions (UNKNOWN).
 
 | From | To | Function / status |
 | --- | --- | --- |
-| Becker J1 pin 2, TX2+ | U-R IC pin 8, A | Radio → receiver + |
-| Becker J1 pin 9, TX2− | U-R IC pin 7, B | Radio → receiver − |
-| U-R IC pin 2, R | ESP32 GPIO16 / UART2 RX | Logic receive |
-| ESP32 GPIO17 / UART2 TX | JP-R contact **UNKNOWN** | Link open initially |
-| JP-R other contact **UNKNOWN** | U-R IC pin 3, D | Logic transmit |
-| U-R IC pin 5, Y | Becker J1 pin 3, RX2+ | Driver → radio + |
-| U-R IC pin 6, Z | Becker J1 pin 10, RX2− | Driver → radio − |
+| Becker J1 pin 2, TX2+ | Becker transceiver IC pin 8, A | Radio → receiver + |
+| Becker J1 pin 9, TX2− | Becker transceiver IC pin 7, B | Radio → receiver − |
+| Becker transceiver IC pin 2, R | ESP32 GPIO16 / UART2 RX | Logic receive |
+| ESP32 GPIO17 / UART2 TX | Becker TX link contact **UNKNOWN** | Link open initially |
+| Becker TX link other contact **UNKNOWN** | Becker transceiver IC pin 3, D | Logic transmit |
+| Becker transceiver IC pin 5, Y | Becker J1 pin 3, RX2+ | Driver → radio + |
+| Becker transceiver IC pin 6, Z | Becker J1 pin 10, RX2− | Driver → radio − |
 | Becker J1 pin 21, D_GND | Reference connection **UNKNOWN** | Discrete-line ground; bonding unresolved |
 
-Sources: prior review, DV14307.03 Issue 06 §2.5.3.2 p.59; U-R pins S18. [Circuit details](bench-build.md#rs-422-circuit). Full-duplex RS-422; no galvanic isolation. Termination/protection UNKNOWN. Keep radio unplugged pending interface/coexistence checks: U-R remains enabled with JP-R open.
+Sources: prior review, DV14307.03 Issue 06 §2.5.3.2 p.59; Becker transceiver pins S18. [Circuit details](bench-build.md#rs-422-circuit). Full-duplex RS-422; no galvanic isolation. Termination/protection UNKNOWN. Keep radio unplugged pending interface/coexistence checks: Becker transceiver remains enabled with Becker TX link open.
 
 ## Power
 
@@ -79,19 +84,19 @@ flowchart LR
     I --- T["Transient clamp to return: UNKNOWN"]
     B --> V["Output protection if required: UNKNOWN"] --> E["ESP32 5 V input: position UNKNOWN"]
     E --> R[Board 3.3 V regulator]
-    R --> C["N-Z / N-F / U-R"]
+    R --> C["Zander adapter / FLARM adapter / Becker transceiver"]
 ```
 
 | From | To | Status |
 | --- | --- | --- |
 | Protected BEC 5 V output | ESP32 5 V input contact **UNKNOWN** | Board/BEC identification pending |
 | BEC output return | ESP32 GND contact **UNKNOWN** | Common logic ground; source return design pending |
-| ESP32 3.3 V contact **UNKNOWN** | N-Z VCC header | Proposed; module check pending |
-| ESP32 3.3 V contact **UNKNOWN** | N-F VCC header | Proposed; module check pending |
-| ESP32 3.3 V contact **UNKNOWN** | U-R IC pin 1, VCC | Proposed |
-| ESP32 GND contact **UNKNOWN** | N-Z GND header | Proposed; continuity pending |
-| ESP32 GND contact **UNKNOWN** | N-F GND header | Proposed; continuity pending |
-| ESP32 GND contact **UNKNOWN** | U-R IC pin 4, GND | Proposed |
+| ESP32 3.3 V contact **UNKNOWN** | Zander adapter VCC header | Proposed; module check pending |
+| ESP32 3.3 V contact **UNKNOWN** | FLARM adapter VCC header | Proposed; module check pending |
+| ESP32 3.3 V contact **UNKNOWN** | Becker transceiver IC pin 1, VCC | Proposed |
+| ESP32 GND contact **UNKNOWN** | Zander adapter GND header | Proposed; continuity pending |
+| ESP32 GND contact **UNKNOWN** | FLARM adapter GND header | Proposed; continuity pending |
+| ESP32 GND contact **UNKNOWN** | Becker transceiver IC pin 4, GND | Proposed |
 
 Disconnect BEC 5 V before USB powering. [Protection/current budget](bench-build.md#power-protection-and-budget) pending. Keep existing instrument supplies unchanged.
 
@@ -105,4 +110,4 @@ Disconnect BEC 5 V before USB powering. [Protection/current budget](bench-build.
 | Return-traffic requirements + serial settings | Optional links and port configuration |
 | Matched radio interface/reference/termination | Final radio circuit/harness |
 
-Pictures must show connector name, pin numbers and mating/wiring-side orientation. No verified installed-device connector pictures available. Evidence: [S09/S16–S19](sources.md); no electrical acceptance.
+Manual crops: [S20](sources.md#connector-reference-drawings). Installed connector matches unverified; no electrical acceptance.
