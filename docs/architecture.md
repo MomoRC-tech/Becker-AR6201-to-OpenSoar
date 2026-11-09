@@ -54,4 +54,4 @@ One queue: [roadmap](roadmap.md). Requirements: baseline; evidence: sources; des
 
 ### ADR-04 — selected bench hardware and power path
 
-**Selected:** board/module families and power path above. **Proposed:** THVD1451D, input fuse, reverse-polarity and transient/overvoltage protection. Exact parts, ratings and electrical acceptance open. [Bench package](connections.md#bench-build-package--2026-11-08).
+**Selected:** board/module families and power path above. **Proposed:** THVD1451D, input fuse, reverse-polarity and transient/overvoltage protection. Exact parts, ratings and electrical acceptance open. [Bench package](bench-build.md).

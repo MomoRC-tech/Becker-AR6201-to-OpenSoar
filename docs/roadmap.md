@@ -25,7 +25,7 @@ Single work queue. Listed work is not implementation authorization.
 
 ## Bounded WP3 bench hardware package — 2026-11-08
 
-[Bench package](connections.md#bench-build-package--2026-11-08): schematic, BOM, connection checks. Next: exact board/regulator, BEC/source limits, HW-044 continuity map, power budget and protection values. Harness/protection BOM not purchase-ready.
+[Wiring guide](connections.md): diagrams/pin tables. [Bench reference](bench-build.md): BOM, protection, checks. Next: exact board/regulator, BEC/source limits, HW-044 continuity map, power budget and protection values. Harness/protection BOM not purchase-ready.
 
 ## Bounded WP4/WP5 send investigation — 2026-11-08
 
