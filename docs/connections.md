@@ -5,7 +5,7 @@
 > [!WARNING]
 > Confirm cable pinouts, converter pads and ESP32 headers before connecting. UNKNOWN = unresolved.
 >
-> Zander and FLARM TX links start open. Leave their RX inputs disconnected for receive-only use.
+> Wire the optional Zander and FLARM return paths directly where required. Leave instrument RX disconnected when the return path is unused.
 
 [Bench checks and parts](bench-build.md) · [Sources](sources.md)
 
@@ -62,7 +62,7 @@ Orient the chip side as pictured. Confirm continuity before power. [S26–S27](s
 | ZS1 PC cable | → / ← | RS232 pads | TTL pads | → / ← | ESP32 |
 | --- | :-: | --- | --- | :-: | --- |
 | 2 (<img src="images/pins/tx.svg" alt="TX" width="20" height="14">) | → | **L3** RS232 input | **R2** TTL output | → | GPIO32 (<img src="images/pins/rx.svg" alt="RX" width="20" height="14">) |
-| *3 (<img src="images/pins/rx.svg" alt="RX" width="20" height="14">)* (optional) | *←* | *L4 RS232 output* | *R1 TTL input* | *←* | *GPIO33 (<img src="images/pins/tx.svg" alt="TX" width="20" height="14">) via TX link* |
+| *3 (<img src="images/pins/rx.svg" alt="RX" width="20" height="14">)* (optional) | *←* | *L4 RS232 output* | *R1 TTL input* | *←* | *GPIO33 (<img src="images/pins/tx.svg" alt="TX" width="20" height="14">)* |
 | 5 (<img src="images/pins/gnd.svg" alt="GND" width="23" height="14">) | — | L1 GND† | R4 GND | — | GND contact **UNKNOWN** |
 
 Use the ZS1 PC-cable DE9. Optional RMC requires an enabled, unused RX input. † Confirm signal ground.
@@ -87,7 +87,7 @@ Use the ZS1 PC-cable DE9. Optional RMC requires an enabled, unused RX input. †
 | Classic Power/Data reference† | → / ← | RS232 pads | TTL pads | → / ← | ESP32 |
 | --- | :-: | --- | --- | :-: | --- |
 | 5 (<img src="images/pins/tx.svg" alt="TX" width="20" height="14">)† | → | **L3** RS232 input | **R2** TTL output | → | GPIO26 (<img src="images/pins/rx.svg" alt="RX" width="20" height="14">) |
-| *6 (<img src="images/pins/rx.svg" alt="RX" width="20" height="14">)* (optional) | *←* | *L4 RS232 output* | *R1 TTL input* | *←* | *GPIO27 (<img src="images/pins/tx.svg" alt="TX" width="20" height="14">) via TX link* |
+| *6 (<img src="images/pins/rx.svg" alt="RX" width="20" height="14">)* (optional) | *←* | *L4 RS232 output* | *R1 TTL input* | *←* | *GPIO27 (<img src="images/pins/tx.svg" alt="TX" width="20" height="14">)* |
 | 7/8 (<img src="images/pins/gnd.svg" alt="GND" width="23" height="14">)† | — | L1 GND† | R4 GND | — | GND contact **UNKNOWN** |
 
 † Confirm the Classic Power/Data plug view and IGC numbering. Use a free data port and signal ground. Keep FLARM supply pins separate from converter VCC.
@@ -177,5 +177,5 @@ Use one VCC/GND pair per H-1-0290. Disconnect BEC 5 V before USB powering. [Prot
 | Device connector photos + exact model/revisions | Correct pin view; FLARM/Zander/Becker applicability |
 | Both H-1-0290 sides, IC markings + continuity map | Confirm inferred L/R pad map; equipment cable mapping |
 | Exact ESP32 board/BEC + source limits | Header positions, current budget, protection |
-| Return-traffic requirements + serial settings | Optional links and port configuration |
+| Return-traffic requirements + serial settings | Optional return wiring and port configuration |
 | Matched radio interface/reference/termination | Final radio circuit/harness |

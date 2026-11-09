@@ -15,7 +15,6 @@ Parts for one bridge.
 | Adapter / 1 | SOIC-8 to 2.54 mm breakout, e.g. Adafruit 1212 | Use the SOIC side. Check pins after soldering |
 | C-R / 1 | 100 nF ceramic, at least 10 V | Close between RS-422 mod pins 1 and 4; H-1-0290 fitted capacitors need value/condition checks |
 | R-Z, R-F, R-R / 3 | 10 kΩ, 1%, at least 0.125 W | Proposed pull-ups to 3.3 V for idle bias when the ESP32 TX output is high impedance |
-| Navigation TX links / 2 | Removable 2-pin links, 2.54 mm, with labelled shunts | Zander and FLARM TX paths. Start open. Converter outputs remain enabled |
 | Bench interconnect / 1 set | Carrier/prototyping board, insulated wire, headers, standoffs and labelled test points | Solder transceiver and decoupling together. Keep differential test leads short |
 | Navigation interconnect / 2 sets | Soldered leads/headers for H-1-0290 pads; equipment-side connectors TBD | Pad pitch, connector type/gender and actual cable mapping require inspection; no onboard DB9 assumed |
 | Radio bench terminal / 1 | Labelled 5-way connector for A, B, Y, Z and logic reference | Lab use only; instrument connector and shielding remain TBD |
@@ -48,7 +47,7 @@ S27 comparator, channel 2: L3→8, L4→7, R1→10, R2→9, both `+`→16 and bo
 | --- | --- | --- |
 | Supply | 16 VCC; 15 GND | H-1-0290 VCC → board 3.3 V; GND → common logic GND; verify continuity |
 | Logic output from instrument | 12 R1OUT / 9 R2OUT | Trace to actual logic output pad; device connections in wiring guide |
-| Logic input toward instrument | 11 T1IN / 10 T2IN | Trace to actual logic input pad; 10k pull-up to 3.3 V on converter side of TX link |
+| Logic input toward instrument | 11 T1IN / 10 T2IN | Trace to actual logic input pad. Wire directly to ESP32 TX where a return is required. Proposed 10 kΩ pull-up to 3.3 V |
 | RS-232 input | 13 R1IN / 8 R2IN | Trace to RS-232-side pad and record its position; later receives instrument TX |
 | RS-232 output | 14 T1OUT / 7 T2OUT | Trace to RS-232-side pad and record its position; initially leave off the instrument |
 | Reference | 15 GND | Trace ground pads on both sides; equipment-reference/shield bonding is a separate question |
