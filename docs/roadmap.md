@@ -100,4 +100,4 @@ Transport success ≠ radio acceptance. ACK constants do not establish response 
 
 [Connections guide](connections.md#logical-connections): separate forward and return arrows, compact Markdown tables, cropped Hailege image and shorter connector notes. Checked local Mermaid default and Dagre layouts. Live GitHub preview at `4ace6ba` confirmed 14 separate arrows, three devices on the left, cropped image, warning callout and section dividers. GitHub controls native table padding.
 
-[Wiring table follow-up](connections.md#becker-radio): Becker matches the navigation tables. Four short module spec tables sit in closed sections. Checked local Markdown rendering, signal mapping, links and whitespace. Documentation only.
+[Wiring guide follow-up](connections.md#becker-radio): Becker matches the navigation tables. Four short module spec tables sit in closed sections. GitHub alerts highlight caveats and design notes. Checked rendering, signal mapping, links and whitespace. Documentation only.

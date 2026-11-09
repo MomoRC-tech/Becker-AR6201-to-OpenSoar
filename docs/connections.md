@@ -35,7 +35,8 @@ flowchart LR
     linkStyle 7,8,9,10,11,12,13 marker-end:none
 ```
 
-Dotted arrows show optional navigation returns. Becker commands are required for tuning.
+> [!NOTE]
+> Dotted arrows show optional navigation returns. Becker commands are required for tuning.
 
 ---
 
@@ -47,11 +48,12 @@ Dotted arrows show optional navigation returns. Becker commands are required for
 | --- | --- |
 | <img src="images/hailege-h-1-0290-board.svg" width="240" alt="Hailege H-1-0290 board, chip side"> | <img src="images/pinout-hailege.svg" width="420" alt="Hailege chip-side pad map. L1 ground, L2 supply, L3 RS-232 input, L4 RS-232 output. R1 TTL input, R2 TTL output, R3 supply, R4 ground. Continuity unknown."> |
 
-Orient the chip side as pictured. Before power, verify IC marking, package and pin 1. Trace all eight pads on both modules, check shared supply and ground pads, and check for shorts. Remap any mismatch.
-
-S27 comparator, channel 2: L3 → IC pin 8, L4 → 7, R1 → 10, R2 → 9, both supply pads → 16 and both grounds → 15. Confirm the traced channel against the IC datasheet. Pad pitch and clearance remain open. [S27](sources.md#source-register)
-
 </details>
+
+> [!WARNING]
+> Orient the chip side as pictured. Before power, verify IC marking, package and pin 1. Trace all eight pads on both modules, check shared supply and ground pads, and check for shorts. Remap any mismatch.
+>
+> The S27 comparator uses channel 2 (L3 → IC pin 8, L4 → 7, R1 → 10, R2 → 9, both supply pads → 16 and both grounds → 15). Confirm the traced channel against the IC datasheet. Pad pitch and clearance remain open. [S27](sources.md#source-register)
 
 ---
 
@@ -67,7 +69,8 @@ S27 comparator, channel 2: L3 → IC pin 8, L4 → 7, R1 → 10, R2 → 9, both 
 | *3 (<img src="images/pins/rx.svg" alt="RX" width="20" height="14">)* (optional) | *←* | *L4 RS232 output* | *R1 TTL input* | *←* | *GPIO33 (<img src="images/pins/tx.svg" alt="TX" width="20" height="14">)* |
 | 5 (<img src="images/pins/gnd.svg" alt="GND" width="23" height="14">) | — | L1 GND† | R4 GND | — | GND contact |
 
-Use the ZS1 PC-cable DE9. Optional RMC requires an enabled, unused RX input. † Confirm signal ground.
+> [!IMPORTANT]
+> Use the ZS1 PC-cable DE9. A matched cable photo is pending. Optional RMC requires an enabled, unused RX input. † Confirm signal ground.
 
 <details>
 <summary>RS-232 module specs (RS-232-mod1)</summary>
@@ -85,7 +88,7 @@ Use the ZS1 PC-cable DE9. Optional RMC requires an enabled, unused RX input. †
 
 | Connector reference | Pin view |
 | --- | --- |
-| Matched cable photo pending. [ZS1 handbook D3029, pp.46/48](reference/ZS1_Deutsch.pdf#page=46) (S22) | <img src="images/pinout-zander-de9.svg" width="420" alt="ZS1 PC-cable DE-9 index. Pin 2 TX, pin 3 optional RX, pin 5 ground. Installed cable match and connector face unknown."> |
+| [ZS1 handbook D3029, pp.46/48](reference/ZS1_Deutsch.pdf#page=46) (S22) | <img src="images/pinout-zander-de9.svg" width="420" alt="ZS1 PC-cable DE-9 index. Pin 2 TX, pin 3 optional RX, pin 5 ground. Installed cable match and connector face unknown."> |
 
 </details>
 
@@ -103,7 +106,8 @@ Use the ZS1 PC-cable DE9. Optional RMC requires an enabled, unused RX input. †
 | *6 (<img src="images/pins/rx.svg" alt="RX" width="20" height="14">)* (optional) | *←* | *L4 RS232 output* | *R1 TTL input* | *←* | *GPIO27 (<img src="images/pins/tx.svg" alt="TX" width="20" height="14">)* |
 | 7/8 (<img src="images/pins/gnd.svg" alt="GND" width="23" height="14">)† | — | L1 GND† | R4 GND | — | GND contact |
 
-† Confirm the Classic Power/Data plug view and IGC numbering. Use a free data port and signal ground. Keep FLARM supply pins separate from converter VCC.
+> [!WARNING]
+> † Match the Classic Power/Data plug to the manual. IGC numbering runs in the opposite direction to common RJ45 numbering. Use a free data port and signal ground. Keep FLARM supply pins separate from converter VCC.
 
 <details>
 <summary>RS-232 module specs (RS-232-mod2)</summary>
@@ -123,8 +127,6 @@ Use the ZS1 PC-cable DE9. Optional RMC requires an enabled, unused RX input. †
 | --- | --- |
 | [Classic rear-panel and plug pictures, v221 p.6](https://www.flarm.com/wp-content/uploads/2024/04/FLARM_InstallationManual_D.pdf#page=6) (S23) | <img src="images/pinout-flarm-classic.svg" width="420" alt="Classic FLARM plug, latch down, IGC numbering. Pins 1 and 2 supply in, 3 auxiliary voltage out, 4, 7 and 8 ground, 5 TX, 6 RX. Installed match unknown."> |
 
-IGC numbering runs in the opposite direction to common RJ45 numbering. Match the actual plug to the manual.
-
 </details>
 
 ---
@@ -142,7 +144,8 @@ IGC numbering runs in the opposite direction to common RJ45 numbering. Match the
 | 21 D_GND | — | Bond **UNKNOWN** | — | — | — |
 | — | — | — | GND | — | GND contact |
 
-† Confirm installed J1 revision and pair polarity. Use separate twisted pairs. Convert the 5 V-domain RXD before GPIO16. Verify GPIO17 compatibility, series resistance, termination, shielding and reference bonding before connecting. [S28–S30](sources.md#source-register) · [Espressif GPIO limits](https://docs.espressif.com/projects/esp-faq/en/latest/hardware-related/hardware-design.html#what-is-the-voltage-tolerance-of-gpios-of-esp-chips)
+> [!WARNING]
+> † Confirm the installed J1 revision, moulded pin numbers and pair polarity. Use separate twisted pairs. Convert the 5 V-domain RXD before GPIO16. Verify GPIO17 compatibility, series resistance, termination, shielding and reference bonding before connecting. [S28–S30](sources.md#source-register) · [Espressif GPIO limits](https://docs.espressif.com/projects/esp-faq/en/latest/hardware-related/hardware-design.html#what-is-the-voltage-tolerance-of-gpios-of-esp-chips)
 
 <details>
 <summary>RS-422 module specs</summary>
@@ -162,7 +165,7 @@ IGC numbering runs in the opposite direction to common RJ45 numbering. Match the
 | --- | --- |
 | <img src="images/becker-reference-connectors.png" width="275" alt="Becker rear drawing, P1 above J1. Callout 4 identifies the J1 connector."> | <img src="images/pinout-becker-j1.svg" width="420" alt="Becker J1 DB-25 socket reference. Pins 2 and 9 TX pair, 3 and 10 RX pair, 21 digital ground. Installed match and ground bond unknown."> |
 
-Callout 4 identifies J1. Functions from [Becker DV14307.03 Issue 06, pp.57/59](https://www.becker-avionics.com/wp-content/uploads/00_Literature/6200_Series_IO_en.pdf#page=59) (S10/S20). Socket numbering follows the [Winford BRKDD25F-R-FT Rev. A mating-face drawing](https://www.winford.com/products/cad/brkdd25f-r-ft_rev_a_dwg.pdf). Confirm the moulded numbers on the installed connector.
+Callout 4 identifies J1. Functions from [Becker DV14307.03 Issue 06, pp.57/59](https://www.becker-avionics.com/wp-content/uploads/00_Literature/6200_Series_IO_en.pdf#page=59) (S10/S20). Socket numbering follows the [Winford BRKDD25F-R-FT Rev. A mating-face drawing](https://www.winford.com/products/cad/brkdd25f-r-ft_rev_a_dwg.pdf).
 
 </details>
 
@@ -196,10 +199,11 @@ flowchart LR
 | ESP32 GND contact | RS-232-mod2 R4 (`−`) | Proposed; continuity pending |
 | ESP32 GND contact | RS-422 module GND contact | Proposed logic return |
 
-Use one VCC/GND pair per H-1-0290. Disconnect BEC 5 V before USB powering. Preserve existing instrument power feeds.
-
-- Size the fuse near the source and select reverse-polarity protection for the actual wiring, BEC input range and inrush. Coordinate the input transient clamp to return with the fuse and BEC limits. Evaluate output overvoltage cutoff against BEC faults and ESP32 input limits.
-- Verify BEC polarity, tolerance and ripple. Check regulator current and temperature with Wi-Fi and the 3.3 V loads active. Spare 3.3 V capacity, source voltage range, BEC model and protection ratings remain open. [S16–S19](sources.md#source-register)
+> [!WARNING]
+> Use one VCC/GND pair per H-1-0290. Disconnect BEC 5 V before USB powering. Preserve existing instrument power feeds.
+>
+> - Size the fuse near the source and select reverse-polarity protection for the actual wiring, BEC input range and inrush. Coordinate the input transient clamp to return with the fuse and BEC limits. Evaluate output overvoltage cutoff against BEC faults and ESP32 input limits.
+> - Verify BEC polarity, tolerance and ripple. Check regulator current and temperature with Wi-Fi and the 3.3 V loads active. Spare 3.3 V capacity, source voltage range, BEC model and protection ratings remain open. [S16–S19](sources.md#source-register)
 
 <details>
 <summary>ESP32 and BEC specs</summary>
@@ -219,7 +223,7 @@ Use one VCC/GND pair per H-1-0290. Disconnect BEC 5 V before USB powering. Prese
 
 ### Parts list
 
-Parts for one bridge. Keep the existing assembly and harness as backup.
+Parts for one bridge.
 
 | Ref / quantity | Part or specification | Status / use |
 | --- | --- | --- |
@@ -229,9 +233,14 @@ Parts for one bridge. Keep the existing assembly and harness as backup.
 | RS-422 mod / 1 | Assembled RS422-to-TTL board | [Becker](#becker-radio) |
 | R-Z, R-F / 2 | 10 kΩ, 1%, at least 0.125 W | Proposed idle pull-ups for the Zander and FLARM converter inputs |
 | Bridge interconnect / 1 set | Carrier, insulated wire, headers and standoffs | Mount and connect the modules |
-| Navigation interconnect / 2 sets | Soldered leads/headers for H-1-0290 pads; equipment-side connectors TBD | Pad pitch, connector type/gender and actual cable mapping require inspection; no onboard DB9 assumed |
-| F1, reverse-polarity stage, transient/OV protection | [Power protection](#power) | Hold purchase until BEC, source and board limits are known |
-| Equipment harness, termination, enclosure | Model-specific connectors, cable and resistors | Hold for matched manuals, cable lengths and enclosure space. No fixed 120 Ω termination is assumed |
+| Navigation interconnect / 2 sets | Soldered leads/headers for H-1-0290 pads | Equipment-side connectors TBD |
+| F1, reverse-polarity stage, transient/OV protection | [Power protection](#power) | Purchase on hold |
+| Equipment harness, termination, enclosure | Model-specific connectors, cable and resistors | Purchase on hold |
+
+> [!IMPORTANT]
+> Keep the existing assembly and harness as backup. Confirm pad pitch, connector type and gender, and cable mapping. No onboard DB9 or fixed 120 Ω termination is assumed.
+>
+> Hold protection purchases until BEC, source and board limits are known. Hold harness, termination and enclosure purchases until manuals, cable lengths and enclosure clearance are confirmed.
 
 ---
 
