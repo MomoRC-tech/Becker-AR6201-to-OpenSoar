@@ -1,6 +1,9 @@
 # Related projects
 
-Source review, 2026-11-08. Candidate builds and hardware tests pending. Selection: [ADR-02](architecture.md#adr-02--implementation-and-reuse-baseline). Detailed driver evidence: [S11](technical-investigation.md#becker-driver-follow-up--2026-11-08).
+Source review, 2026-11-08. [Selection status](architecture.md#adr-02--implementation-and-reuse-baseline) · [Driver evidence (S11)](technical-investigation.md#becker-driver-follow-up--2026-11-08)
+
+> [!NOTE]
+> Candidate builds and hardware tests are pending. Review file-level licenses before reuse.
 
 ## Prior review shortlist
 
@@ -34,4 +37,4 @@ Source review, 2026-11-08. Candidate builds and hardware tests pending. Selectio
 
 ## Original verification and limitations
 
-Pinned LK8000, Yuri, RadioDriver and XCVario paths inspected; DroneBridge documentation and PR metadata reviewed. No exhaustive search, build or device tests. File-level licenses require review before reuse.
+Pinned LK8000, Yuri, RadioDriver and XCVario paths inspected. DroneBridge documentation and PR metadata reviewed. Search was limited to the listed candidates and leads.

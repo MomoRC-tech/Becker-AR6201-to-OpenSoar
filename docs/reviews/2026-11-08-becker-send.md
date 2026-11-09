@@ -62,4 +62,7 @@ Frame: `A5 14 05 16 00 00 03 70 53 17`; original sink: `A5 14 05 16`. Truncation
 
 Measured: WSL Ubuntu, g++ 13.3.0 (`13.3.0-6ubuntu2~24.04.1`), C++20, ASan/UBSan. Four original-outcome and four corrected-byte assertions passed; no sanitizer findings in exercised paths.
 
-Reproduce: `python3 tools/check_becker_send.py --compiler g++` (Linux/WSL, network). GPL headers reviewed; extracted upstream bodies temporary. No full app build, live TCP, ESP32, radio or aircraft test. Results retained; not rerun for prose edits.
+Reproduce with `python3 tools/check_becker_send.py --compiler g++` (Linux/WSL, network). GPL headers reviewed. Extracted upstream bodies were temporary.
+
+> [!NOTE]
+> Retained host results only. Full app, live TCP, ESP32, radio and aircraft tests were outside scope.

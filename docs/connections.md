@@ -7,7 +7,7 @@
 >
 > Wire the optional Zander and FLARM return paths directly where required. Leave instrument RX disconnected when the return path is unused.
 
-[Parts list](#parts-list) · [Sources](sources.md)
+[Converter modules](#converter-modules) · [Parts list](#parts-list) · [Sources](sources.md)
 
 ---
 
@@ -41,19 +41,37 @@ flowchart LR
 ---
 
 <a id="hailege-board-pad-reference"></a>
+
+### Converter modules
+
 <details>
-<summary>Hailege board pad reference</summary>
+<summary>RS-232 and RS-422 specs, photos and pin diagrams</summary>
+
+| Module | Supply in this design | Chip | Reported size |
+| --- | --- | --- | --- |
+| Hailege H-1-0290 (Zander and FLARM) | 3.3 V | MAX3232CSE (reported) | 9.4 × 15.9 mm |
+| RS422 TO TTL (Becker) | 5 V per schematic | MAX490ESA (owner-confirmed) | 50 × 27 mm |
+
+#### Hailege H-1-0290 · RS-232
 
 | Chip-side reference | Inferred pad view |
 | --- | --- |
 | <img src="images/hailege-h-1-0290-board.svg" width="240" alt="Hailege H-1-0290 board, chip side"> | <img src="images/pinout-hailege.svg" width="420" alt="Hailege chip-side pad map. L1 ground, L2 supply, L3 RS-232 input, L4 RS-232 output. R1 TTL input, R2 TTL output, R3 supply, R4 ground. Continuity unknown."> |
 
+S27 comparator channel 2: L3 → IC pin 8, L4 → 7, R1 → 10, R2 → 9, supplies → 16, grounds → 15. [S26–S27](sources.md#source-register)
+
+#### RS422 TO TTL · RS-422
+
+| Chip-side reference | Module pin diagram |
+| --- | --- |
+| <img src="images/rs422-to-ttl-supplied.png" width="160" alt="Supplied RS422 TO TTL board, chip side with the logic header above the green screw terminal block"> | <img src="images/pinout-rs422-to-ttl.svg" width="420" alt="Chip-side RS-422 module. Top left to right: TXD input, RXD output, GND, 5 V VCC. Bottom left to right: Y and Z outputs, B and A inputs."> |
+
+[S28–S30](sources.md#source-register)
+
 </details>
 
 > [!WARNING]
-> Orient the chip side as pictured. Before power, verify IC marking, package and pin 1. Trace all eight pads on both modules, check shared supply and ground pads, and check for shorts. Remap any mismatch.
->
-> The S27 comparator uses channel 2 (L3 → IC pin 8, L4 → 7, R1 → 10, R2 → 9, both supply pads → 16 and both grounds → 15). Confirm the traced channel against the IC datasheet. Pad pitch and clearance remain open. [S27](sources.md#source-register)
+> Before power, verify the chip, pin 1, pad routing and shared power pads on both Hailege boards. Check for shorts and confirm the traced channel against the datasheet. Check pad pitch and clearance before mounting.
 
 ---
 
@@ -71,17 +89,6 @@ flowchart LR
 
 > [!IMPORTANT]
 > Use the ZS1 PC-cable DE9. A matched cable photo is pending. Optional RMC requires an enabled, unused RX input. † Confirm signal ground.
-
-<details>
-<summary>RS-232 module specs (RS-232-mod1)</summary>
-
-| Module | Supply in this design | Reported chip | Reported size |
-| --- | --- | --- | --- |
-| Hailege H-1-0290 | 3.3 V | MAX3232CSE | 9.4 × 15.9 mm |
-
-[Pad reference](#hailege-board-pad-reference) · [S26](sources.md#source-register)
-
-</details>
 
 <details>
 <summary>Zander PC-cable connector pin view</summary>
@@ -110,17 +117,6 @@ flowchart LR
 > † Match the Classic Power/Data plug to the manual. IGC numbering runs in the opposite direction to common RJ45 numbering. Use a free data port and signal ground. Keep FLARM supply pins separate from converter VCC.
 
 <details>
-<summary>RS-232 module specs (RS-232-mod2)</summary>
-
-| Module | Supply in this design | Reported chip | Reported size |
-| --- | --- | --- | --- |
-| Hailege H-1-0290 | 3.3 V | MAX3232CSE | 9.4 × 15.9 mm |
-
-[Pad reference](#hailege-board-pad-reference) · [S26](sources.md#source-register)
-
-</details>
-
-<details>
 <summary>Classic FLARM Power/Data connector pin view</summary>
 
 | Connector reference | Pin view |
@@ -146,17 +142,6 @@ flowchart LR
 
 > [!WARNING]
 > † Confirm the installed J1 revision, moulded pin numbers and pair polarity. Use separate twisted pairs. Convert the 5 V-domain RXD before GPIO16. Verify GPIO17 compatibility, series resistance, termination, shielding and reference bonding before connecting. [S28–S30](sources.md#source-register) · [Espressif GPIO limits](https://docs.espressif.com/projects/esp-faq/en/latest/hardware-related/hardware-design.html#what-is-the-voltage-tolerance-of-gpios-of-esp-chips)
-
-<details>
-<summary>RS-422 module specs</summary>
-
-| Module | Supply | Confirmed chip | Reported size |
-| --- | --- | --- | --- |
-| RS422 TO TTL | 5 V per schematic | MAX490ESA | 50 × 27 mm |
-
-[S28–S30](sources.md#source-register)
-
-</details>
 
 <details>
 <summary>Becker rear connector and J1 pin view</summary>

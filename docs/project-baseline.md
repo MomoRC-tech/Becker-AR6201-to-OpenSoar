@@ -4,7 +4,10 @@
 
 ## Scope and requirements
 
-One new ESP32 bridge; preserve the existing setup as backup. Physical operation remains unverified.
+One new ESP32 bridge. Preserve the existing setup as backup.
+
+> [!NOTE]
+> Physical operation remains unverified.
 
 | ID | Priority | Requirement | Acceptance evidence / package |
 | --- | --- | --- | --- |
@@ -30,7 +33,10 @@ Deferred: active tuning, swap, volume/squelch, Larus, general XCSoar support, ai
 | Supply | Nominal 12 V battery → 2S–4S-rated BEC → 5 V ESP32 → 3.3 V navigation converters | Owner: BEC model, chemistry/voltage range; protection ratings |
 | Radio | Assembled RS422-to-TTL board (owner selection, S28) | 5 V and header directions in S29. MAX490ESA owner confirmed. Board dimensions of 50 × 27 mm reported in S30. ESP32 level interface and radio match pending |
 
-[Design](architecture.md) · [Wiring](connections.md) · [Parts list](connections.md#parts-list). USB and BEC powering mutually exclusive; manual disconnection.
+[Design](architecture.md) · [Wiring](connections.md) · [Parts list](connections.md#parts-list)
+
+> [!WARNING]
+> Disconnect BEC power before USB powering.
 
 ---
 
@@ -50,7 +56,8 @@ Deferred: active tuning, swap, volume/squelch, Larus, general XCSoar support, ai
 | Wiring | Partial photos; unmatched Zander/FLARM diagrams (S25); absence of RS-232 conversion only conjectured | Tom: trace each selected TX/reference through any conversion to GPIO; identify returns |
 | Navigation | Reception reported | Owner/Tom: data types, intervals/gaps, duration, reconnect → acceptance limits |
 
-Keep logs, identifiers, credentials and raw backups private. Preserve backup hardware/harness unchanged.
+> [!IMPORTANT]
+> Keep logs, identifiers, credentials and raw backups private. Preserve the backup hardware and harness.
 
 ### Pending configuration
 

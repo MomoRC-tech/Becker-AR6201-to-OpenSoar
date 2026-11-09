@@ -10,7 +10,10 @@ S08, 2026-11-08. R02/R03/R07/R08. Source analysis; firmware selection open.
 | [AlphaLima bb42dc3](https://github.com/AlphaLima/ESP32-Serial-Bridge/commit/bb42dc3db926f9baf1f5faa76cc21bad1dd80cdf) | 2026-07-28 README update |
 | Shared `f6c6ada6aa9a437e4c4a2436d45f98551cd9d6fe` | 2020-06-10; later [AlphaLima changes](https://github.com/AlphaLima/ESP32-Serial-Bridge/compare/f6c6ada6aa9a437e4c4a2436d45f98551cd9d6fe...bb42dc3db926f9baf1f5faa76cc21bad1dd80cdf): 6 documentation commits; [Yuri changes](https://github.com/yuri-rage/ESP-Serial-Bridge/compare/f6c6ada6aa9a437e4c4a2436d45f98551cd9d6fe...130f731416d43c89bce5626ef989b3e65918c9ce): 10 commits including code/config |
 
-Yuri has later functional fixes; timestamps establish neither current maintenance nor toolchain compatibility.
+Yuri has later functional fixes.
+
+> [!NOTE]
+> Current maintenance and toolchain compatibility remain unverified.
 
 ---
 
@@ -49,7 +52,8 @@ Proposed for the new bridge (ADR-03). Match navigation interfaces, settings and 
 | 4. Conditional station reconnect (R02/R03) | If the installation uses station mode, replace unbounded connection waits with timed retry state and invalidate radio sessions on link loss. If it uses AP mode, leave the unused station path out of the initial change. | Wi-Fi absent at startup and loss/recovery while servicing UARTs; no command replay. |
 | 5. Reproducible configuration (R07) | Pin board/framework/dependencies and sanitized build configuration. Do not upgrade the framework merely because it is newer. | Later reproducible build on the selected environment; no build performed now. |
 
-Finite buffers cannot cover unlimited outages. Define overflow/session failure; no old-command replay. OpenSoar owns protocol/state; forwarding alone cannot preserve active frequency.
+> [!IMPORTANT]
+> Define session failure for overflow. Prevent command replay. OpenSoar owns protocol and radio state, including active-frequency preservation.
 
 ---
 

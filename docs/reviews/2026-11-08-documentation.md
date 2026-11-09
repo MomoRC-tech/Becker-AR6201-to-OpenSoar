@@ -14,4 +14,5 @@
 
 ---
 
-Documentation only. No application builds, device tests or rendered-diagram verification. Physical acceptance open.
+> [!NOTE]
+> The initial review covered documentation only. Application, device and diagram-rendering checks were outside its scope. Physical acceptance remains open.

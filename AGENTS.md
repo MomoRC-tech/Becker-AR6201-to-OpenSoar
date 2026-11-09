@@ -35,7 +35,8 @@ Use minimal technical wording: short fragments and tables. Remove repetition, de
 
 ## Preservation and delivery
 
-This repository is public. Do not commit credentials, private firmware/configuration backups, identifying device logs or other private datasets. Use sanitized findings and synthetic fixtures.
+> [!IMPORTANT]
+> This repository is public. Do not commit credentials, private firmware/configuration backups, identifying device logs or other private datasets. Use sanitized findings and synthetic fixtures.
 
 Review the diff and stage only task files. Commit and push relevant, verified changes to the project remote at the end of each task. Never reset/overwrite unrelated changes or force-push to simplify publication. Confirm the remote base before writing and handle concurrent changes explicitly. Report failed commits or pushes and any unsaved work.
 

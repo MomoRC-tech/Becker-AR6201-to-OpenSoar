@@ -2,7 +2,10 @@
 
 2026-11-09 · WP1 / bounded WP2 research · [source register](../sources.md)
 
-Tom reports Zander and FLARM reception through the existing ESP32 and no Becker integration. Equipment, settings and operation remain unmeasured.
+Tom reports Zander and FLARM reception through the existing ESP32 and no Becker integration.
+
+> [!NOTE]
+> Equipment, settings and operation remain unmeasured.
 
 ## Claim assessment
 
@@ -29,7 +32,8 @@ Tom reports Zander and FLARM reception through the existing ESP32 and no Becker 
 | FLARM | `10.10.10.10:2000` | `FLARM` | Reported existing input |
 | Becker | `10.10.10.10:4352` | `AR62xx` | Reported entry/intended path; no working radio integration |
 
-Reported TCP byte streams. Services, HTTP support and UART direction remain unverified. S24 confirms driver names. Becker limits are in S01/S12.
+> [!NOTE]
+> TCP byte streams are reported. Services, HTTP support and UART direction remain unverified. See S24 for driver names and S01/S12 for Becker limits.
 
 ---
 
@@ -47,7 +51,10 @@ Reported TCP byte streams. Services, HTTP support and UART direction remain unve
 | `PZAN4`: MacCready, set wind component, wing loading, best L/D | `PZAN4` reads **MacCready only** |
 | `PZAN5`: vario/speed-to-fly mode, destination, distance/units, compass | `PZAN5` reads **mode only** (`VA`/`SF`) |
 
-The supplement explicitly changes `PZAN3` from older versions. It specifies 19,200 baud when the ZS1 FLARM function is enabled, otherwise 4,800. **Conditional inference:** 4,800 is a candidate only if this firmware/configuration matches Tom's unit. No FLARM cable alone does not prove the menu setting or baud rate. Baud rates belong to serial links, not TCP ports.
+The supplement changes `PZAN3` from older versions. It specifies 19,200 baud with the ZS1 FLARM function enabled and 4,800 baud otherwise.
+
+> [!IMPORTANT]
+> Verify the ZS1 firmware and menu before using 4,800 baud, even with the FLARM port unplugged. Baud applies to the serial link.
 
 ---
 

@@ -21,10 +21,12 @@
 | Navigation | 2 × Hailege H-1-0290 at 3.3 V (S26); continuity and interface checks pending |
 | Radio | Owner-selected assembled RS422-to-TTL board (S28). 5 V supply per S29. MAX490ESA owner confirmed (S30). RXD level conversion required for the documented circuit. TXD compatibility and isolation open |
 | Supply | Nominal 12 V battery → BEC (reported 2S–4S input), 5 V → ESP32 → 3.3 V navigation converters. Becker module from the protected 5 V rail |
-| USB | Disconnect BEC 5 V before USB powering; no added power-selection circuit |
 | Routing | Separate UART/device endpoints proposed; return traffic and GPS priority TBD |
 | Firmware | Unselected; Yuri first external candidate, AlphaLima basic comparator |
 | OpenSoar review baseline | 7.46.26, `b2e745cfddfe0150f6ed7db467ac18c321b38d01`; Becker WIP (S09); installed build unknown |
+
+> [!WARNING]
+> Disconnect BEC 5 V before USB powering. The design has no power-selection circuit.
 
 ### Pinning and cabling
 
@@ -38,7 +40,8 @@
 
 ## Decision record
 
-Selection ≠ implementation ≠ physical acceptance. IDs retained for references.
+> [!NOTE]
+> Selections record design decisions. Implementation and physical acceptance are tracked separately.
 
 ### ADR-00 — repository as project record
 
@@ -58,4 +61,7 @@ One queue: [roadmap](roadmap.md). Requirements: baseline; evidence: sources; des
 
 ### ADR-04 — selected bench hardware and power path
 
-**Selected:** boards and navigation power path above. The assembled RS-422 module supersedes the bare THVD1451D proposal. **Proposed:** input fuse, reverse-polarity and transient/overvoltage protection. Exact parts, ratings and electrical acceptance open. [Wiring and parts](connections.md#parts-list).
+**Selected:** boards and navigation power path above. The assembled RS-422 module supersedes the bare THVD1451D proposal. [Wiring and parts](connections.md#parts-list).
+
+> [!IMPORTANT]
+> Fuse, reverse-polarity and transient/overvoltage protection are proposed. Parts, ratings and electrical acceptance remain open.

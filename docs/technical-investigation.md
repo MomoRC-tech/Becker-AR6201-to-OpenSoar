@@ -1,6 +1,9 @@
 # Technical investigation
 
-See [sources](sources.md) for evidence labels. Application and device acceptance remain open.
+See [sources](sources.md) for evidence labels.
+
+> [!NOTE]
+> Application and device acceptance remain open.
 
 ## Original source baseline
 
@@ -16,7 +19,10 @@ Primary review: OpenSoaring `b2e745cfddfe0150f6ed7db467ac18c321b38d01` (S01/S02)
 
 ## Follow-up send reproduction — 2026-11-08
 
-[S12 host regression](reviews/2026-11-08-becker-send.md): zero-containing frames truncated to 4/10 or 6/10 bytes; byte-span correction preserves 10/10. Synthetic transport evidence only.
+[S12 host regression](reviews/2026-11-08-becker-send.md): zero-containing frames truncated to 4/10 or 6/10 bytes. The byte-span correction preserves 10/10.
+
+> [!NOTE]
+> The host regression uses synthetic transport data.
 
 ---
 
@@ -94,7 +100,8 @@ Request after radio identification: matching remote-control protocol/revision; s
 | [topic/device-misc e0d9228](https://github.com/OpenSoaring/OpenSoar/blob/e0d9228a590605edb9e22b58bd0b3d48c34483fa/src/Device/Driver/AR62xx.cpp) | Same blob as S01 |
 | [master e34b3dc](https://github.com/OpenSoaring/OpenSoar/blob/e34b3dca3f63bf534c79657b22d181449350b9ca/src/Device/Driver/AR62xx.cpp) | RadioFrequency include-path change only |
 
-WP4 proposal: caller/state/UI mapping, then separate counted-send, unknown/fresh-state, stream-parser and response increments. Local-tuning race unresolved even after fresh paired readback.
+> [!IMPORTANT]
+> WP4 starts with caller, state and UI mapping. Counted send, state freshness, parsing and responses are separate increments. Fresh paired readback still leaves a local-tuning race.
 
 Source-derived cases: 118.000 → 00 00 (send truncation); 119.030 → 00 A5 (parser reset). Not independent protocol vectors. Test every split position and multiple frames per read after framing validation.
 
@@ -139,7 +146,8 @@ Current design: [architecture](architecture.md). Candidate order: Yuri, basic Al
 
 ## Follow-up source verification (2026-11-08)
 
-Manual details below: **prior review** unless rechecked in S09/S10. Installed applicability unknown.
+> [!NOTE]
+> Manual details are from prior review unless rechecked in S09/S10. Confirm applicability to the installed equipment.
 
 | Reference | Finding / limitation |
 | --- | --- |

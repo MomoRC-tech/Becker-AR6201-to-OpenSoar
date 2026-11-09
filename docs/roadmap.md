@@ -1,6 +1,7 @@
 # Roadmap
 
-Single work queue. Listed work is not implementation authorization.
+> [!IMPORTANT]
+> This is the single work queue. Implementation requires separate approval.
 
 ## Work queue and milestones
 
@@ -25,7 +26,10 @@ Single work queue. Listed work is not implementation authorization.
 
 ## Bounded WP3 bench hardware package — 2026-11-08
 
-[Wiring and parts](connections.md#parts-list). Open: ESP32 header/regulator checks, BEC/source limits, H-1-0290 continuity, RS-422 level conversion, series resistance and termination (S28–S30), power budget and protection values. Hold harness/protection purchases.
+[Wiring and parts](connections.md#parts-list). Open checks cover ESP32 headers and regulator, BEC/source limits, H-1-0290 continuity, RS-422 levels, series resistance and termination (S28–S30), power budget and protection values.
+
+> [!IMPORTANT]
+> Hold harness and protection purchases until the wiring and power checks are complete.
 
 ---
 
@@ -86,7 +90,8 @@ Read relevant sources/status → bound one change → execute → verify → upd
 | Driver/protocol | Independent framing/CRC/channel vectors; zero/A5; short/invalid frames; unknown/stale state; local tuning; separate instances; reconnect; documented responses |
 | Bridge | Exact bytes/order; split/coalesced reads; bursts; slow clients; partial writes; disconnect; ownership; boot/debug isolation; concurrent navigation |
 
-Transport success ≠ radio acceptance. ACK constants do not establish response bytes. Traffic/gap/timeout limits require WP1/WP2 evidence.
+> [!IMPORTANT]
+> Verify radio acceptance and response bytes independently. Use WP1/WP2 evidence for traffic, gap and timeout limits.
 
 ---
 
@@ -100,4 +105,4 @@ Transport success ≠ radio acceptance. ACK constants do not establish response 
 
 [Connections guide](connections.md#logical-connections): separate forward and return arrows, compact Markdown tables, cropped Hailege image and shorter connector notes. Checked local Mermaid default and Dagre layouts. Live GitHub preview at `4ace6ba` confirmed 14 separate arrows, three devices on the left, cropped image, warning callout and section dividers. GitHub controls native table padding.
 
-[Wiring guide follow-up](connections.md#becker-radio): Becker matches the navigation tables. Four short module spec tables sit in closed sections. GitHub alerts highlight caveats and design notes. Checked rendering, signal mapping, links and whitespace. Documentation only.
+[Wiring guide follow-up](connections.md#converter-modules): Becker matches the navigation tables. One closed section groups converter specs, board photos and pin diagrams. Short GitHub alerts highlight caveats and design notes across the docs. Checked rendering, pin mapping, links and whitespace. Documentation only.
