@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="668" viewBox="0 0 1120 668" role="img" aria-labelledby="title desc">
+<title id="title">Zander ZS1 connection preview</title><desc id="desc">Proposed signal map, not a connector face. Unknown installed contacts and module mappings remain unresolved. TX link open; ground bonding unresolved.</desc>
+<defs>
+<marker id="blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#075b92"/></marker>
+<marker id="brown" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#873c13"/></marker>
+<marker id="grey" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#485a69"/></marker>
+</defs>
+<rect width="1120" height="100%" rx="12" fill="#ffffff"/>
+<text x="28" y="39" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#182b3a" text-anchor="start">Zander ZS1 → RS-232-mod1 → ESP32</text>
+<text x="28" y="67" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#485a69" text-anchor="start">Signal map only • device and header views UNKNOWN • colours are not wire colours</text>
+<rect x="28" y="83" width="1064" height="35" rx="5" fill="#fff3d5" stroke="#e5c376"/>
+<text x="43" y="106" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#764b00" text-anchor="start">PROPOSED / UNTESTED  •  UNKNOWN = unresolved; do not connect</text>
+<rect x="28" y="136" width="250" height="370" rx="8" fill="#f2f5f8" stroke="#ccd5dd"/>
+<rect x="375" y="136" width="365" height="370" rx="8" fill="#f2f5f8" stroke="#ccd5dd"/>
+<rect x="840" y="136" width="252" height="370" rx="8" fill="#f2f5f8" stroke="#ccd5dd"/>
+<text x="44" y="165" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#182b3a" text-anchor="start">Zander ZS1</text>
+<text x="44" y="189" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#485a69" text-anchor="start">PC-cable DE9 reference only</text>
+<text x="392" y="165" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#182b3a" text-anchor="start">RS-232-mod1 · HW-044</text>
+<text x="392" y="189" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#764b00" text-anchor="start">DB9/header mapping UNKNOWN</text>
+<text x="857" y="165" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#182b3a" text-anchor="start">ESP32 · proposed GPIO</text>
+<text x="857" y="189" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#764b00" text-anchor="start">Header positions UNKNOWN</text>
+<text x="326" y="139" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#485a69" text-anchor="middle">RS-232</text>
+<text x="790" y="139" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#485a69" text-anchor="middle">3.3 V logic</text>
+<text x="392" y="219" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#485a69" text-anchor="start">DB9 SIDE</text>
+<text x="590" y="219" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#485a69" text-anchor="start">LOGIC HEADER</text>
+<text x="44" y="260" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#075b92" text-anchor="start">2 · TX (reference)</text>
+<text x="44" y="285" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#764b00" text-anchor="start">Installed match UNKNOWN</text>
+<text x="392" y="260" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#075b92" text-anchor="start">Input</text>
+<text x="392" y="285" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#764b00" text-anchor="start">Pin UNKNOWN</text>
+<text x="590" y="260" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#075b92" text-anchor="start">Output</text>
+<text x="590" y="285" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#764b00" text-anchor="start">Contact UNKNOWN</text>
+<text x="857" y="260" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#075b92" text-anchor="start">GPIO32 · RX</text>
+<text x="857" y="285" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#764b00" text-anchor="start">Contact UNKNOWN</text>
+<path d="M278 266L375 266" fill="none" stroke="#075b92" stroke-width="2.5" marker-end="url(#blue)"/>
+<path d="M550 266L577 266" fill="none" stroke="#075b92" stroke-width="2.5" marker-end="url(#blue)"/>
+<path d="M740 266L840 266" fill="none" stroke="#075b92" stroke-width="2.5" marker-end="url(#blue)"/>
+<text x="326" y="300" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#075b92" text-anchor="middle">Device output</text>
+<text x="44" y="356" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#873c13" text-anchor="start">3 · RX (reference)</text>
+<text x="44" y="381" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#764b00" text-anchor="start">Installed match UNKNOWN</text>
+<text x="392" y="356" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#873c13" text-anchor="start">Output</text>
+<text x="392" y="381" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#764b00" text-anchor="start">Pin UNKNOWN</text>
+<text x="590" y="356" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#873c13" text-anchor="start">Input</text>
+<text x="590" y="381" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#764b00" text-anchor="start">Contact UNKNOWN</text>
+<text x="857" y="356" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#873c13" text-anchor="start">GPIO33 · TX</text>
+<text x="857" y="381" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#764b00" text-anchor="start">Contact UNKNOWN</text>
+<path d="M375 362L278 362" fill="none" stroke="#873c13" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#brown)"/>
+<path d="M577 362L550 362" fill="none" stroke="#873c13" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#brown)"/>
+<path d="M840 362L804 362" fill="none" stroke="#873c13" stroke-width="2.5" stroke-dasharray="7 5"/>
+<path d="M787 352L802 362" fill="none" stroke="#873c13" stroke-width="2.5"/>
+<path d="M786 362L740 362" fill="none" stroke="#873c13" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#brown)"/>
+<circle cx="786" cy="362" r="3" fill="white" stroke="#873c13" stroke-width="2"/>
+<circle cx="804" cy="362" r="3" fill="white" stroke="#873c13" stroke-width="2"/>
+<text x="790" y="398" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#873c13" text-anchor="middle">TX link OPEN</text>
+<text x="326" y="396" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#873c13" text-anchor="middle">Optional return</text>
+<text x="44" y="452" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#485a69" text-anchor="start">5 · GND (reference)</text>
+<text x="44" y="477" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#764b00" text-anchor="start">Installed match UNKNOWN</text>
+<text x="392" y="452" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#485a69" text-anchor="start">Reference</text>
+<text x="392" y="477" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#764b00" text-anchor="start">Pin UNKNOWN</text>
+<text x="590" y="452" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#485a69" text-anchor="start">GND</text>
+<text x="590" y="477" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#764b00" text-anchor="start">Contact UNKNOWN</text>
+<text x="857" y="452" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#485a69" text-anchor="start">GND</text>
+<text x="857" y="477" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#764b00" text-anchor="start">Contact UNKNOWN</text>
+<path d="M278 458L313.5 458" fill="none" stroke="#485a69" stroke-width="2.5" stroke-dasharray="7 5"/>
+<path d="M339.5 458L375 458" fill="none" stroke="#485a69" stroke-width="2.5" stroke-dasharray="7 5"/>
+<text x="326.5" y="464" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#764b00" text-anchor="middle">?</text>
+<path d="M547 458L550.5 458" fill="none" stroke="#485a69" stroke-width="2.5" stroke-dasharray="7 5"/>
+<path d="M576.5 458L580 458" fill="none" stroke="#485a69" stroke-width="2.5" stroke-dasharray="7 5"/>
+<text x="563.5" y="464" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#764b00" text-anchor="middle">?</text>
+<path d="M740 458L840 458" fill="none" stroke="#485a69" stroke-width="2.5"/>
+<text x="326" y="491" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#764b00" text-anchor="middle">Bond UNKNOWN</text>
+<rect x="28" y="526" width="1064" height="99" rx="7" fill="#fff8e9" stroke="#e5c376"/>
+<text x="44" y="552" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#764b00" text-anchor="start">TX link contacts UNKNOWN. An open logic link does not disable the RS-232 output.</text>
+<text x="44" y="577" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#764b00" text-anchor="start">Receive-only: disconnect the output at the instrument. No equipment-ground bond specified.</text>
+<text x="44" y="602" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#764b00" text-anchor="start">Power omitted here: both converters use proposed 3.3 V; physical supply contacts UNKNOWN.</text>
+<text x="28" y="648" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#485a69" text-anchor="start">Prior review: S22 · ZS1 D3029, pp.46/48; S17 · HW-044 mapping pending. See README.preview.md.</text>
+</svg>

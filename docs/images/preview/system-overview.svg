@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="396" viewBox="0 0 1120 396" role="img" aria-labelledby="title desc">
+<title id="title">Proposed bridge system overview</title><desc id="desc">One new ESP32 bridge with separate Zander and FLARM RS-232 paths and a proposed Becker RS-422 path, connected over Wi-Fi to OpenSoar Android. Navigation return paths conditional.</desc>
+<defs>
+<marker id="blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#075b92"/></marker>
+<marker id="brown" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#873c13"/></marker>
+<marker id="grey" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#485a69"/></marker>
+</defs>
+<rect width="1120" height="100%" rx="12" fill="#ffffff"/>
+<text x="28" y="38" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#182b3a" text-anchor="start">One bridge · three separate device paths</text>
+<text x="28" y="65" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#764b00" text-anchor="start">PROPOSED / UNTESTED • equipment revisions, connector matches and settings unresolved</text>
+<rect x="28" y="95" width="220" height="60" rx="8" fill="#f2f5f8" stroke="#ccd5dd"/>
+<text x="44" y="131" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#182b3a" text-anchor="start">Zander ZS1</text>
+<rect x="310" y="95" width="260" height="60" rx="8" fill="#eaf4fb" stroke="#ccd5dd"/>
+<text x="326" y="131" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#075b92" text-anchor="start">HW-044 · RS-232-mod1</text>
+<path d="M248 125L310 125" fill="none" stroke="#075b92" stroke-width="2.5" marker-end="url(#blue)"/>
+<path d="M570 125L636 125" fill="none" stroke="#075b92" stroke-width="2.5" marker-end="url(#blue)"/>
+<rect x="28" y="181" width="220" height="60" rx="8" fill="#f2f5f8" stroke="#ccd5dd"/>
+<text x="44" y="217" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#182b3a" text-anchor="start">Classic FLARM</text>
+<rect x="310" y="181" width="260" height="60" rx="8" fill="#eaf4fb" stroke="#ccd5dd"/>
+<text x="326" y="217" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#075b92" text-anchor="start">HW-044 · RS-232-mod2</text>
+<path d="M248 211L310 211" fill="none" stroke="#075b92" stroke-width="2.5" marker-end="url(#blue)"/>
+<path d="M570 211L636 211" fill="none" stroke="#075b92" stroke-width="2.5" marker-end="url(#blue)"/>
+<rect x="28" y="267" width="220" height="60" rx="8" fill="#f2f5f8" stroke="#ccd5dd"/>
+<text x="44" y="303" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#182b3a" text-anchor="start">Becker AR6201</text>
+<rect x="310" y="267" width="260" height="60" rx="8" fill="#eaf4fb" stroke="#ccd5dd"/>
+<text x="326" y="303" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#075b92" text-anchor="start">THVD1451D · RS-422</text>
+<path d="M248 297L310 297" fill="none" stroke="#075b92" stroke-width="2.5" marker-end="url(#blue)" marker-start="url(#blue)"/>
+<path d="M570 297L636 297" fill="none" stroke="#075b92" stroke-width="2.5" marker-end="url(#blue)" marker-start="url(#blue)"/>
+<rect x="636" y="95" width="180" height="232" rx="8" fill="#eaf4fb" stroke="#ccd5dd"/>
+<text x="726" y="186" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#182b3a" text-anchor="middle">ESP32</text>
+<text x="726" y="216" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#485a69" text-anchor="middle">Byte forwarding</text>
+<text x="726" y="245" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#485a69" text-anchor="middle">Separate paths</text>
+<rect x="904" y="153" width="188" height="116" rx="8" fill="#eaf4fb" stroke="#ccd5dd"/>
+<text x="998" y="191" font-family="Arial, sans-serif" font-size="23" font-weight="700" fill="#182b3a" text-anchor="middle">OpenSoar</text>
+<text x="998" y="218" font-family="Arial, sans-serif" font-size="17" font-weight="400" fill="#485a69" text-anchor="middle">Android</text>
+<text x="998" y="245" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#485a69" text-anchor="middle">Radio protocol/state</text>
+<path d="M816 211L904 211" fill="none" stroke="#075b92" stroke-width="2.5" marker-end="url(#blue)" marker-start="url(#blue)"/>
+<text x="860" y="195" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#075b92" text-anchor="middle">Wi-Fi</text>
+<text x="28" y="362" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#485a69" text-anchor="start">Navigation returns conditional; Becker commands required for standby tuning. Power and pin details below.</text>
+</svg>
