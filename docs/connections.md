@@ -190,8 +190,20 @@ flowchart LR
 > [!WARNING]
 > Use one VCC/GND pair per H-1-0290. Disconnect BEC 5 V before USB powering. Preserve existing instrument power feeds.
 >
-> - Size the fuse near the source and select reverse-polarity protection for the actual wiring, BEC input range and inrush. Coordinate the input transient clamp to return with the fuse and BEC limits. Evaluate output overvoltage cutoff against BEC faults and ESP32 input limits.
+> - Place F1 near the battery on the bridge's positive feed. Use a separate reverse-polarity stage only if the exact BEC lacks adequate reverse-input protection.
+> - Coordinate any input transient clamp with the fuse and BEC limits. Evaluate output overvoltage cutoff against BEC faults and ESP32 input limits.
 > - Verify BEC polarity, tolerance and ripple. Check regulator current and temperature with Wi-Fi and the 3.3 V loads active. Spare 3.3 V capacity, source voltage range, BEC model and protection ratings remain open. [S16–S19](sources.md#source-register)
+
+#### F1 sizing inputs
+
+| Needed | Check |
+| --- | --- |
+| BEC model and datasheet | Input range, any specified input fuse, and reverse-input protection |
+| Bridge load on the BEC input | Worst-case running current and startup inrush magnitude and duration across the battery voltage range |
+| Battery and wiring | Maximum source voltage and prospective fault current. Smallest wire gauge, run length, connector and holder ratings, and temperature/bundling |
+
+> [!IMPORTANT]
+> Select the lowest fuse rating that carries the running load with temperature margin and survives startup per its time-current and pulse data. Check that it clears faults before the protected wiring or connectors overheat. Verify DC voltage and interrupt ratings against the source. [S31](sources.md#source-register)
 
 ---
 
@@ -208,15 +220,11 @@ Parts for one bridge.
 | PS1 / 1 | 5 V BEC | [Power](#power) |
 | RS-422 mod / 1 | Assembled RS422-to-TTL board | [Becker](#becker-radio) |
 | R-Z, R-F / 2 | 10 kΩ, 1%, at least 0.125 W | Proposed idle pull-ups for the Zander and FLARM converter inputs |
-| Bridge interconnect / 1 set | Carrier, insulated wire, headers and standoffs | Mount and connect the modules |
-| Navigation interconnect / 2 sets | Soldered leads/headers for H-1-0290 pads | Equipment-side connectors TBD |
-| F1, reverse-polarity stage, transient/OV protection | [Power protection](#power) | Purchase on hold |
-| Equipment harness, termination, enclosure | Model-specific connectors, cable and resistors | Purchase on hold |
+| F1 / 1 | DC blade fuse with inline holder (bench candidate: 32 V DC ATO/ATOF) | [Current rating TBD](#f1-sizing-inputs) |
+| Reverse-polarity stage / optional | Separate BEC input protection | Only if the BEC lacks adequate reverse-input protection |
 
 > [!IMPORTANT]
-> Keep the existing assembly and harness as backup. Confirm pad pitch, connector type and gender, and cable mapping. No onboard DB9 or fixed 120 Ω termination is assumed.
->
-> Hold protection purchases until BEC, source and board limits are known. Hold harness, termination and enclosure purchases until manuals, cable lengths and enclosure clearance are confirmed.
+> Keep the existing assembly and harness as backup. Hold F1 and holder purchase until the BEC, source and wiring limits are known.
 
 ---
 
