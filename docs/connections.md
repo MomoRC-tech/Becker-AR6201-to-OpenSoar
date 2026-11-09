@@ -117,7 +117,7 @@ IGC numbering runs in the opposite direction to common RJ45 numbering. Match the
 
 **Selected module:** assembled board marked `RS422 TO TTL`. In the supplied photo, header labels left to right are `TXD`, `RXD`, `GND`, `VCC`. Screw terminals read `Y`, `Z`, `B`, `A`. [S28](sources.md#source-register)
 
-**Schematic reference (S29):** VCC is +5 V. TXD feeds DI (module input) and RXD comes from RO (module output). A/B are receiver inputs and Y/Z are driver outputs. Supply capacitors are shown on the module. The drawing has inconsistent IC identification and pin numbers. Confirm it matches the selected board before using these routes. Becker J1 assignments remain conditional on the installed revision.
+**Board schematic (S29, owner confirmed):** VCC is +5 V. TXD feeds DI (module input) and RXD comes from RO (module output). A/B are receiver inputs and Y/Z are driver outputs. Supply capacitors are shown on the module. The drawing has inconsistent IC identification and pin numbers. The routes below use the board header labels. Becker J1 assignments remain conditional on the installed revision.
 
 | Path | Becker J1 reference | RS-422 module | ESP32 |
 | --- | --- | --- | --- |
@@ -128,7 +128,7 @@ IGC numbering runs in the opposite direction to common RJ45 numbering. Match the
 | Equipment reference | 21 D_GND | Reference bond **UNKNOWN** | — |
 | Logic return | — | GND contact | GND contact |
 
-Use separate TX and RX twisted pairs. Confirm the board match, logic levels, termination, shielding and reference bonding before connecting. The drawing shows 120 Ω resistor symbols with open ends. Actual termination remains **UNKNOWN**. Verify that ESP32 TX can drive the module input, including the shown 5 V LED circuit. ESP32 GPIO tolerance is 3.6 V. A module output above that needs level conversion before reaching the ESP32. [Espressif GPIO limits](https://docs.espressif.com/projects/esp-faq/en/latest/hardware-related/hardware-design.html#what-is-the-voltage-tolerance-of-gpios-of-esp-chips)
+Use separate TX and RX twisted pairs. Confirm logic levels, termination, shielding and reference bonding before connecting. The drawing shows 120 Ω resistor symbols with open ends. Actual termination remains **UNKNOWN**. Verify that ESP32 TX can drive the module input, including the shown 5 V LED circuit. ESP32 GPIO tolerance is 3.6 V. A module output above that needs level conversion before reaching the ESP32. [Espressif GPIO limits](https://docs.espressif.com/projects/esp-faq/en/latest/hardware-related/hardware-design.html#what-is-the-voltage-tolerance-of-gpios-of-esp-chips)
 
 <details>
 <summary>Becker rear connector and J1 pin view</summary>
@@ -157,7 +157,7 @@ flowchart LR
     B --> V["Output protection if required: UNKNOWN"] --> E["ESP32 5 V input: position UNKNOWN"]
     E --> R[Board 3.3 V regulator]
     R --> C["RS-232-mod1 / RS-232-mod2"]
-    V -.-> Q["Becker module VCC: 5 V if S29 matches"]
+    V --> Q["Becker module VCC: 5 V"]
 ```
 
 | From | To | Status |
@@ -166,7 +166,7 @@ flowchart LR
 | BEC output return | ESP32 GND contact | Common logic ground; source return design pending |
 | ESP32 3.3 V contact **UNKNOWN** | RS-232-mod1 R3 (`+`) | Proposed; module check pending |
 | ESP32 3.3 V contact **UNKNOWN** | RS-232-mod2 R3 (`+`) | Proposed; module check pending |
-| Protected BEC 5 V output | RS-422 module VCC | Conditional on matching S29 to the board |
+| Protected BEC 5 V output | RS-422 module VCC | 5 V per board schematic (S29) |
 | ESP32 GND contact | RS-232-mod1 R4 (`−`) | Proposed; continuity pending |
 | ESP32 GND contact | RS-232-mod2 R4 (`−`) | Proposed; continuity pending |
 | ESP32 GND contact | RS-422 module GND contact | Proposed logic return |
@@ -189,7 +189,7 @@ Parts for one bridge. Keep the existing assembly and harness as backup.
 | MCU / 1 | AZ-Delivery ESP32 WROOM dev module | Owner-selected. Verify header positions and regulator limits |
 | RS-232-mod1, RS-232-mod2 / 2 | Hailege H-1-0290 RS-232/logic boards; 9.4 × 15.9 mm each | Selected (S26); reported MAX3232CSE. Verify both ICs, pad routing and 3.3 V operation |
 | PS1 / 1 | BEC: reported 2S–4S input; 5 V output | Reported nominal 12 V battery; model, voltage range, polarity, tolerance, ripple/protection TBD. Old UBEC specs inapplicable |
-| RS-422 mod / 1 | Assembled RS422-to-TTL board shown in S28 | Owner-selected for Becker. S29 shows 5 V. Board match and logic compatibility open |
+| RS-422 mod / 1 | Assembled RS422-to-TTL board shown in S28 | Owner-selected for Becker. 5 V supply per S29. ESP32 logic compatibility open |
 | R-Z, R-F / 2 | 10 kΩ, 1%, at least 0.125 W | Proposed idle pull-ups for the Zander and FLARM converter inputs |
 | Bridge interconnect / 1 set | Carrier, insulated wire, headers and standoffs | Mount and connect the modules |
 | Navigation interconnect / 2 sets | Soldered leads/headers for H-1-0290 pads; equipment-side connectors TBD | Pad pitch, connector type/gender and actual cable mapping require inspection; no onboard DB9 assumed |
@@ -208,4 +208,4 @@ Parts for one bridge. Keep the existing assembly and harness as backup.
 | Both H-1-0290 sides, IC markings + continuity map | Confirm inferred L/R pad map; equipment cable mapping |
 | ESP32 header/regulator checks and BEC/source limits | Header positions, current budget, protection |
 | Return-traffic requirements + serial settings | Optional return wiring and port configuration |
-| Match the RS-422 board to S29. Confirm logic levels, pin functions and termination | Becker supply and wiring, level conversion and reference |
+| Confirm RS-422 module logic levels and fitted termination | Becker level conversion, termination and reference |
