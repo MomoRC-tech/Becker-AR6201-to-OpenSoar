@@ -19,7 +19,7 @@
 | --- | --- |
 | Board | AZ-Delivery ESP32 WROOM dev module (owner selection). Verify header positions and regulator limits |
 | Navigation | 2 × Hailege H-1-0290 at 3.3 V (S26); continuity and interface checks pending |
-| Radio | Owner-selected assembled RS422-to-TTL board (S28). 5 V supply per board schematic (S29). Logic levels and isolation unverified |
+| Radio | Owner-selected assembled RS422-to-TTL board (S28). 5 V supply per S29. MAX490ESA reported (S30). RXD level conversion required for the documented circuit. TXD compatibility and isolation open |
 | Supply | Nominal 12 V battery → BEC (reported 2S–4S input), 5 V → ESP32 → 3.3 V navigation converters. Becker module from the protected 5 V rail |
 | USB | Disconnect BEC 5 V before USB powering; no added power-selection circuit |
 | Routing | Separate UART/device endpoints proposed; return traffic and GPS priority TBD |

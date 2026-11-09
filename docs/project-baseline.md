@@ -28,7 +28,7 @@ Deferred: active tuning, swap, volume/squelch, Larus, general XCSoar support, ai
 | ESP32 | AZ-Delivery ESP32 WROOM dev module (owner selection) | Confirm header positions, regulator limits and current/thermal budget |
 | Navigation | 2 × Hailege H-1-0290; reported MAX3232CSE, 9.4 × 15.9 mm (S26) | S27 inferred pad map; build operator: confirm IC/pad continuity, dimensions and 3.3 V operation |
 | Supply | Nominal 12 V battery → 2S–4S-rated BEC → 5 V ESP32 → 3.3 V navigation converters | Owner: BEC model, chemistry/voltage range; protection ratings |
-| Radio | Assembled RS422-to-TTL board (owner selection, S28) | 5 V and header directions documented in S29. Logic levels and radio interface match pending |
+| Radio | Assembled RS422-to-TTL board (owner selection, S28) | 5 V and header directions in S29. MAX490ESA and 50 × 27 mm reported in S30. ESP32 level interface and radio match pending |
 
 [Design](architecture.md) · [Wiring](connections.md) · [Parts list](connections.md#parts-list). USB and BEC powering mutually exclusive; manual disconnection.
 
