@@ -17,7 +17,7 @@
 
 | Item | Selection / status |
 | --- | --- |
-| Board | AZ-Delivery ESP32 WROOM-32 family; exact model/regulator/header TBD |
+| Board | AZ-Delivery ESP32 WROOM dev module (owner selection). Verify header positions and regulator limits |
 | Navigation | 2 × Hailege H-1-0290 at 3.3 V (S26); continuity and interface checks pending |
 | Radio | THVD1451D/SOIC breakout proposed; no galvanic isolation |
 | Supply | Nominal 12 V battery → BEC (reported 2S–4S input), 5 V → board → 3.3 V converters |

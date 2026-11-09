@@ -8,7 +8,7 @@ Parts for one bridge.
 
 | Ref / quantity | Part or specification | Status / use |
 | --- | --- | --- |
-| MCU / 1 | AZ-Delivery ESP32 WROOM-32 | Selected family; model/regulator/header TBD. S17 vendor board is a reference only |
+| MCU / 1 | AZ-Delivery ESP32 WROOM dev module | Owner-selected. Verify header positions and regulator limits |
 | RS-232-mod1, RS-232-mod2 / 2 | Hailege H-1-0290 RS-232/logic boards; 9.4 × 15.9 mm each | Selected (S26); reported MAX3232CSE. Verify both ICs, pad routing and 3.3 V operation |
 | PS1 / 1 | BEC: reported 2S–4S input; 5 V output | Reported nominal 12 V battery; model, voltage range, polarity, tolerance, ripple/protection TBD. Old UBEC specs inapplicable |
 | RS-422 mod / 1 | TI THVD1451D, SOIC-8 | Proposed full-duplex RS-422; always enabled; soldering required |
@@ -96,7 +96,7 @@ Nominal 12 V source reported. Battery chemistry, voltage range, transients and B
 
 ## ESP32 constraints
 
-Proposed GPIO allocation: [wiring guide](connections.md). Exact board/header positions UNKNOWN.
+Proposed GPIO allocation: [wiring guide](connections.md). Confirm physical header positions on the selected dev module.
 
 All three UARTs are allocated. Before connecting instruments, verify boot and GPIO remapping. Isolate application, framework and OTA output. S08 upstream RX/TX defaults are 21/1, 16/17 and 15/4.
 
@@ -121,7 +121,7 @@ Classify proposed connections: **compatible / change needed / unresolved**, with
 
 | Step | Work and pass condition | Stop condition |
 | --- | --- | --- |
-| 1 Identify | Exact ESP board/regulator, BEC voltage/current ratings, both H-1-0290 markings and continuity map recorded; RS-422 mod adapter orientation checked | Unknown supply pin, module direction or package |
+| 1 Identify | ESP32 header positions and regulator limits, BEC voltage/current ratings, both H-1-0290 markings and continuity map recorded; RS-422 mod adapter orientation checked | Unknown supply pin, module direction or package |
 | 2 Power only | Test BEC alone, then with a dummy load. Check startup, voltage, ripple and polarity against board limits. Verify protection before using the intended source | Wrong/unstable voltage, unexplained current or missing source/BEC limits |
 | 3 Board and converter rails | Add ESP32, then converters one at a time. Check 5 V/3.3 V under Wi-Fi and converter load. Compare warm regulator temperature with its datasheet | Rail excursions, reset, excessive temperature or unbudgeted load |
 | 4 Logic and loops | Unplug instruments. Verify ESP32 input levels. Test each UART and converter loop with counted bytes, including 00, A5, FF and fragmented traffic | Byte loss/change, debug bytes, back-power or incorrect levels |

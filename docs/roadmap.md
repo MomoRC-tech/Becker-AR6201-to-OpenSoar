@@ -27,7 +27,7 @@ Single work queue. Listed work is not implementation authorization.
 
 ## Bounded WP3 bench hardware package — 2026-11-08
 
-[Wiring](connections.md) · [Bench parts and checks](bench-build.md). Open: board/regulator, BEC/source limits, H-1-0290 continuity, power budget and protection values. Hold harness/protection purchases.
+[Wiring](connections.md) · [Bench parts and checks](bench-build.md). Open: ESP32 header/regulator checks, BEC/source limits, H-1-0290 continuity, power budget and protection values. Hold harness/protection purchases.
 
 ---
 

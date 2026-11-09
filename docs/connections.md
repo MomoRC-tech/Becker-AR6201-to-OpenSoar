@@ -7,6 +7,8 @@
 >
 > Wire the optional Zander and FLARM return paths directly where required. Leave instrument RX disconnected when the return path is unused.
 
+Selected board: AZ-Delivery ESP32 WROOM dev module.
+
 [Bench checks and parts](bench-build.md) · [Sources](sources.md)
 
 ---
@@ -63,7 +65,7 @@ Orient the chip side as pictured. Confirm continuity before power. [S26–S27](s
 | --- | :-: | --- | --- | :-: | --- |
 | 2 (<img src="images/pins/tx.svg" alt="TX" width="20" height="14">) | → | **L3** RS232 input | **R2** TTL output | → | GPIO32 (<img src="images/pins/rx.svg" alt="RX" width="20" height="14">) |
 | *3 (<img src="images/pins/rx.svg" alt="RX" width="20" height="14">)* (optional) | *←* | *L4 RS232 output* | *R1 TTL input* | *←* | *GPIO33 (<img src="images/pins/tx.svg" alt="TX" width="20" height="14">)* |
-| 5 (<img src="images/pins/gnd.svg" alt="GND" width="23" height="14">) | — | L1 GND† | R4 GND | — | GND contact **UNKNOWN** |
+| 5 (<img src="images/pins/gnd.svg" alt="GND" width="23" height="14">) | — | L1 GND† | R4 GND | — | GND contact |
 
 Use the ZS1 PC-cable DE9. Optional RMC requires an enabled, unused RX input. † Confirm signal ground.
 
@@ -88,7 +90,7 @@ Use the ZS1 PC-cable DE9. Optional RMC requires an enabled, unused RX input. †
 | --- | :-: | --- | --- | :-: | --- |
 | 5 (<img src="images/pins/tx.svg" alt="TX" width="20" height="14">)† | → | **L3** RS232 input | **R2** TTL output | → | GPIO26 (<img src="images/pins/rx.svg" alt="RX" width="20" height="14">) |
 | *6 (<img src="images/pins/rx.svg" alt="RX" width="20" height="14">)* (optional) | *←* | *L4 RS232 output* | *R1 TTL input* | *←* | *GPIO27 (<img src="images/pins/tx.svg" alt="TX" width="20" height="14">)* |
-| 7/8 (<img src="images/pins/gnd.svg" alt="GND" width="23" height="14">)† | — | L1 GND† | R4 GND | — | GND contact **UNKNOWN** |
+| 7/8 (<img src="images/pins/gnd.svg" alt="GND" width="23" height="14">)† | — | L1 GND† | R4 GND | — | GND contact |
 
 † Confirm the Classic Power/Data plug view and IGC numbering. Use a free data port and signal ground. Keep FLARM supply pins separate from converter VCC.
 
@@ -120,7 +122,7 @@ IGC numbering runs in the opposite direction to common RJ45 numbering. Match the
 | 🟧 | 10 (<img src="images/pins/rx2-minus.svg" alt="RX2−" width="28" height="14">) | ← | 6 (<img src="images/pins/z.svg" alt="Z" width="20" height="14">) | — | — | — |
 | 🟧 | — | — | — | 3 (<img src="images/pins/d.svg" alt="D" width="20" height="14">) | ← | GPIO17 (<img src="images/pins/tx.svg" alt="TX" width="20" height="14">) |
 | ⬜ | 21 (<img src="images/pins/d_gnd.svg" alt="D_GND" width="33" height="14">) | — | Reference **UNKNOWN** | — | — | — |
-| ⬜ | — | — | — | 4 (<img src="images/pins/gnd.svg" alt="GND" width="23" height="14">) | — | GND contact **UNKNOWN** |
+| ⬜ | — | — | — | 4 (<img src="images/pins/gnd.svg" alt="GND" width="23" height="14">) | — | GND contact |
 
 Confirm J1 revision and signal ground. 🟦 Status · 🟧 Commands · ⬜ Ground. The table uses THVD1451D chip pins. GPIO17 connects directly to D for standby tuning. ESP32 header positions and breakout contacts remain **UNKNOWN**.
 
@@ -155,14 +157,14 @@ flowchart LR
 
 | From | To | Status |
 | --- | --- | --- |
-| Protected BEC 5 V output | ESP32 5 V input contact **UNKNOWN** | Board/BEC identification pending |
-| BEC output return | ESP32 GND contact **UNKNOWN** | Common logic ground; source return design pending |
+| Protected BEC 5 V output | ESP32 5 V input contact **UNKNOWN** | Verify 5 V header position and BEC output |
+| BEC output return | ESP32 GND contact | Common logic ground; source return design pending |
 | ESP32 3.3 V contact **UNKNOWN** | RS-232-mod1 R3 (`+`) | Proposed; module check pending |
 | ESP32 3.3 V contact **UNKNOWN** | RS-232-mod2 R3 (`+`) | Proposed; module check pending |
 | ESP32 3.3 V contact **UNKNOWN** | RS-422 mod IC pin 1, VCC | Proposed |
-| ESP32 GND contact **UNKNOWN** | RS-232-mod1 R4 (`−`) | Proposed; continuity pending |
-| ESP32 GND contact **UNKNOWN** | RS-232-mod2 R4 (`−`) | Proposed; continuity pending |
-| ESP32 GND contact **UNKNOWN** | RS-422 mod IC pin 4, GND | Proposed |
+| ESP32 GND contact | RS-232-mod1 R4 (`−`) | Proposed; continuity pending |
+| ESP32 GND contact | RS-232-mod2 R4 (`−`) | Proposed; continuity pending |
+| ESP32 GND contact | RS-422 mod IC pin 4, GND | Proposed |
 
 Use one VCC/GND pair per H-1-0290. Disconnect BEC 5 V before USB powering. [Protection and current budget](bench-build.md#power-protection-and-budget).
 
@@ -176,6 +178,6 @@ Use one VCC/GND pair per H-1-0290. Disconnect BEC 5 V before USB powering. [Prot
 | --- | --- |
 | Device connector photos + exact model/revisions | Correct pin view; FLARM/Zander/Becker applicability |
 | Both H-1-0290 sides, IC markings + continuity map | Confirm inferred L/R pad map; equipment cable mapping |
-| Exact ESP32 board/BEC + source limits | Header positions, current budget, protection |
+| ESP32 header/regulator checks and BEC/source limits | Header positions, current budget, protection |
 | Return-traffic requirements + serial settings | Optional return wiring and port configuration |
 | Matched radio interface/reference/termination | Final radio circuit/harness |
