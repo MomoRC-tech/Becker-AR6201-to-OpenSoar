@@ -7,9 +7,9 @@
 The one list of everything still missing: what is needed, who provides it, and what it unblocks. Other pages link here instead of repeating open questions.
 
 > [!NOTE]
-> **Status:** all items open. Work top-down — the bench hardware checks are the current focus.
+> **Status:** all items open. Current focus: the bench hardware checks and the housing inputs.
 
-📑 **On this page:** <kbd>[1 · 🔧 Bench hardware — current focus](#bench-hardware)</kbd> <kbd>[2 · 📦 Housing — next](#housing)</kbd> <kbd>[3 · 🛩️ Installed equipment](#installed-equipment)</kbd> <kbd>[4 · 💻 Software and acceptance — later](#software-and-acceptance)</kbd>
+📑 **On this page:** <kbd>[1 · 🔧 Bench hardware — current focus](#bench-hardware)</kbd> <kbd>[2 · 📦 Housing — current focus](#housing)</kbd> <kbd>[3 · 🛩️ Installed equipment](#installed-equipment)</kbd> <kbd>[4 · 💻 Software and acceptance — later](#software-and-acceptance)</kbd>
 
 Related: 🗺️ [Roadmap](roadmap.md) · 🤔 [Assumptions](../design/requirements.md#assumptions) · 🛩️ [Existing installation](existing-installation.md)
 
@@ -41,18 +41,46 @@ Checks on the delivered parts before the bridge is connected to any device. Step
 
 <a id="housing"></a>
 
-## 2. 📦 Housing — next
+## 2. 📦 Housing — current focus
 
-Mechanical design of the bridge ([housing](../hardware/housing.md)). Connector and F1 details are items 11, 13 and 14 above.
+Inputs and design rules needed before the housing can be modelled ([housing](../hardware/housing.md)). Connector and F1 details are items 11, 13 and 14 above. Work top-down: each group sets limits for the next.
+
+### 2.1 Installation and environment
 
 | # | Item | What is needed | How it is closed |
 | :-: | --- | --- | --- |
-| 1 | Part sizes | Compare the ESP32 with its [CAD reference](../hardware/housing.md#contents): PCB thickness, header spacing, overall length including antenna and USB protrusion, overall height with headers, USB-plug and wiring clearance; measure RS-232 PCB thickness, assembled height on both sides and soldered-wire clearance against its CAD reference on the same page; measure the RS-422 board's hole positions, PCB thickness and screw-terminal height against its CAD reference; measure XT30, DE-9 socket and UBEC with leads | Bench measurement |
-| 2 | Material and manufacturing | How the housing is made (for example 3D print) and from what | Owner selection |
-| 3 | Location in the aircraft | Where the bridge sits and how it is attached | Owner / Tom |
-| 4 | Module mounting and layout | How each module is held, and where it sits | Owner selection, fit test |
-| 5 | Access | Whether the UBEC jumper, Micro-USB and F1 are reachable without opening the housing | Owner selection |
+| 3 | Location in the aircraft | Where the bridge sits, maximum envelope (L × W × H) at that spot, orientation, and how it is attached (screws to existing structure, hook-and-loop, cable ties, bracket) | Owner / Tom; photo and measurement of the spot |
+| 7 | Cable exits | Direction from which the 12 V harness and the instrument cables arrive; whether XT30 and DE-9 sit on the same face or opposite faces; free space in front of each for the mating plug, backshell and bend radius | Owner selection, from item 3 |
+| 8 | Temperature and environment | Highest temperature at the location (sun on the canopy can heat cockpit parts well above ambient), moisture or condensation, vibration and handling loads | Owner estimate; sets the material in item 2 |
+| 9 | Distance to compass and radio antenna | Minimum distance from the magnetic compass (UBEC coil, ferrite ring, steel screws) and from the VHF antenna cable | Owner / Tom; compass check in the aircraft |
 | 6 | Wi-Fi path | Antenna position relative to the phone and surrounding structure | Owner selection; check in the aircraft |
+
+### 2.2 Manufacturing and print rules
+
+| # | Item | What is needed | How it is closed |
+| :-: | --- | --- | --- |
+| 2 | Material and manufacturing | Process (for example FDM print), printer and build volume, filament (PLA softens in a hot cockpit; PETG or ASA are common alternatives) | Owner selection |
+| 10 | Print design rules | Minimum wall thickness; clearance for sliding and press fits; hole compensation; minimum feature size; overhangs and support-free orientation; layer height. Use the owner's proven values or derive them from a calibration print | Owner values or test print |
+| 11 | CAD workflow | Tool (for example Fusion), units, which files go into the repository (source file, STEP, STL/3MF) and where (`cad/housing/`) | Owner selection |
+
+### 2.3 Construction
+
+| # | Item | What is needed | How it is closed |
+| :-: | --- | --- | --- |
+| 12 | Enclosure split and closure | Box with lid, two half-shells or slide-in tray; closure by screws (into heat-set inserts or self-tapping) or snap-fit; which screw and insert sizes the owner has in stock | Owner selection |
+| 4 | Module mounting and layout | How each module is held (standoffs and screws for the MAX490 holes; pockets, clips or adhesive for the ESP32, RS-232 modules and UBEC) and where it sits | Owner selection, fit test |
+| 13 | ESP32 replaceable or soldered | ESP32 plugged into female headers (replaceable, taller) or wires soldered to the pins (flatter, permanent) | Owner selection |
+| 14 | Internal wiring method | Point-to-point wires, or a small perfboard or carrier for the divider and pull-up resistors and the ground point; internal wire type and gauge; tie-down points and service loops | Owner selection |
+| 15 | Heat | Closed box or ventilation slots (dissipation is roughly 2 W, estimate from [currents](../hardware/power.md#currents)) | Owner selection |
+
+### 2.4 Access, markings and targets
+
+| # | Item | What is needed | How it is closed |
+| :-: | --- | --- | --- |
+| 5 | Access | Whether the UBEC jumper, Micro-USB, F1 and the ESP32 EN/BOOT buttons are reachable without opening the housing; whether the power LED should be visible | Owner selection |
+| 16 | Markings | What is marked on the housing (connector names, pin-1 side, "5 V jumper", USB warning, version) and how (embossed, engraved, label) | Owner selection |
+| 17 | Size and weight targets | Priority between smallest housing and easiest assembly and service; any weight limit | Owner selection |
+| 1 | Part sizes | Compare the ESP32 with its [CAD reference](../hardware/housing.md#contents): PCB thickness, header spacing, overall length including antenna and USB protrusion, overall height with headers, USB-plug and wiring clearance; measure RS-232 PCB thickness, assembled height on both sides and soldered-wire clearance against its CAD reference on the same page; measure the RS-422 board's hole positions, PCB thickness and screw-terminal height against its CAD reference; measure XT30, DE-9 socket and UBEC with leads | Bench measurement |
 
 ---
 

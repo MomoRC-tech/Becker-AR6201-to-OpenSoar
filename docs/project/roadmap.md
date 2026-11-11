@@ -21,7 +21,7 @@ Related: ❓ [Open items](open-items.md) · 🎯 [Requirements](../design/requir
 
 | Package | Status | Next step | Done when |
 | --- | --- | --- | --- |
-| **WP3 Hardware** | 🟡 **Current focus** — parts and wiring decided ([wiring](../hardware/wiring.md), [power](../hardware/power.md), [parts](../hardware/modules.md#parts-list), [housing](../hardware/housing.md)) | Work through the [bench hardware checks](open-items.md#bench-hardware), then build and bring up the bench bridge | Bench bridge built and all bench checks passed |
+| **WP3 Hardware** | 🟡 **Current focus** — parts and wiring decided ([wiring](../hardware/wiring.md), [power](../hardware/power.md), [parts](../hardware/modules.md#parts-list), [housing](../hardware/housing.md)) | Collect the [housing inputs](open-items.md#housing) and model the housing; work through the [bench hardware checks](open-items.md#bench-hardware), then build and bring up the bench bridge | Bench bridge built and all bench checks passed |
 | WP1 Installed equipment | 🟡 Photos and equipment report reviewed ([review](../research/reviews/2026-11-09-installation-claims.md)) | Get the [installed-equipment facts](open-items.md#installed-equipment) from Tom | Inventory, connector map and navigation baseline complete |
 | WP0 Documentation | ✅ Done | — | — |
 | WP2 Interfaces and protocol | ⏸️ Driver research done ([Becker driver](../research/becker-driver.md)) | Matching radio protocol reference or independent captures | Manual, settings, framing and reply rules confirmed |

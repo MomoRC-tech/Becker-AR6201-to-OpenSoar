@@ -7,7 +7,7 @@
 Mechanical design of the bridge: what goes inside, part sizes, connectors on the housing, internal layout.
 
 > [!NOTE]
-> **Status:** not designed yet. Selected so far: XT30 and DE-9 on the housing, F1 inside the housing. Everything else: [open items](../project/open-items.md#housing).
+> **Status:** not modelled yet. Selected so far: XT30 and DE-9 on the housing, F1 inside the housing. Inputs and design rules still needed before modelling: [open items](../project/open-items.md#housing).
 
 📑 **On this page:** <kbd>[1 · 🎯 Requirements](#requirements)</kbd> <kbd>[2 · 📏 Contents and sizes](#contents)</kbd> <kbd>[3 · 🔌 Connectors on the housing](#connectors)</kbd> <kbd>[4 · 🧩 Internal layout](#layout)</kbd>
 
