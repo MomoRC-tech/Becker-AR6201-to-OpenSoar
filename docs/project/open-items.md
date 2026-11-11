@@ -49,9 +49,9 @@ Inputs still needed before the housing can be modelled. Selected rules: [housing
 
 | # | Item | What is needed | How it is closed |
 | :-: | --- | --- | --- |
-| 3 | Location in the aircraft | Where the bridge sits, maximum envelope (L × W × H) at that spot, orientation, and which structure the cable ties go around | Owner / Tom; photo and measurement of the spot |
+| 3 | Location in the aircraft | Which shaded spot the bridge sits in, maximum envelope (L × W × H) at that spot, orientation, and which structure the cable ties go around | Owner / Tom; photo and measurement of the spot |
 | 7 | Cable exits | Direction from which the 12 V harness and the instrument cables arrive at the connector side; free space in front of it for the mating plugs, DE-9 backshell and cable bend radius | Owner, from item 3 |
-| 8 | Temperature and environment | Highest temperature at the location (shaded or in sun through the canopy), moisture or condensation | Owner estimate; decides item 2 |
+| 8 | Moisture | Moisture or condensation at the location (shaded spot selected) | Owner estimate |
 | 9 | Distance to compass and radio antenna | Minimum distance from the magnetic compass (UBEC coil, ferrite ring, steel screws and inserts) and from the VHF antenna cable | Owner / Tom; compass check in the aircraft |
 | 6 | Wi-Fi path | Antenna position relative to the phone and surrounding structure | Owner selection; check in the aircraft |
 
@@ -59,7 +59,6 @@ Inputs still needed before the housing can be modelled. Selected rules: [housing
 
 | # | Item | What is needed | How it is closed |
 | :-: | --- | --- | --- |
-| 2 | Material | PETG (proposed) or ASA, based on the [material check](../hardware/housing.md#material) and item 8 | Owner selection |
 | 10 | Print dimensions | Wall, floor and cover thickness; snap-fit clearance and hook size; press-fit interference for the XT30; hole sizes for the M3 heat-set inserts and screws; minimum feature size; print orientation without supports | Owner values, then a calibration print |
 | 11 | CAD workflow | Tool (for example Fusion), units, which files go into the repository (source file, STEP, STL/3MF) and where (`cad/housing/`) | Owner selection |
 

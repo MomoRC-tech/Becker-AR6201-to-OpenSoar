@@ -7,7 +7,7 @@
 Mechanical design of the bridge: what goes inside, part sizes, connectors on the housing, internal layout.
 
 > [!NOTE]
-> **Status:** not modelled yet. Design rules selected ([section 2](#rules)); material, wall thickness and the remaining inputs: [open items](../project/open-items.md#housing).
+> **Status:** not modelled yet. Design rules and material selected ([section 2](#rules)); wall thickness and the remaining inputs: [open items](../project/open-items.md#housing).
 
 📑 **On this page:** <kbd>[1 · 🎯 Requirements](#requirements)</kbd> <kbd>[2 · 📐 Design rules](#rules)</kbd> <kbd>[3 · 📏 Contents and sizes](#contents)</kbd> <kbd>[4 · 🔌 Connectors on the housing](#connectors)</kbd> <kbd>[5 · 🧩 Internal layout](#layout)</kbd>
 
@@ -38,7 +38,7 @@ Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md)
 
 | Topic | Rule |
 | --- | --- |
-| Manufacturing | 3D printed on a Bambu Lab P1S; material: [section 2.1](#material) |
+| Manufacturing | 3D printed on a Bambu Lab P1S in PETG ([section 2.1](#material)) |
 | Cover | Separate cover held by M3 screws in heat-set inserts |
 | PCB mounting | All PCBs held by snap-fits |
 | Soldering | Every solder joint reachable with all PCBs fitted and the cover off |
@@ -47,24 +47,23 @@ Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md)
 | DE-9 | Rigid mount, screwed to the housing |
 | Walls | Thick enough for aircraft vibration — no thin walls (value: [open items](../project/open-items.md#housing)) |
 | Edges | Rounded outside edges and corners, no sharp corners |
+| Location | Shaded spot in the cockpit, out of direct sun through the canopy |
 | Attachment | Cable-tie lugs on the housing to tie the closed housing to the aircraft |
 | Heat | Ventilation openings |
 
 <a id="material"></a>
 
-### 2.1 Material check: PETG
+### 2.1 Material: PETG
 
-PETG was proposed. Heat resistance compared with ASA, which the enclosed P1S can also print:
+PETG is selected because the housing sits in the shade. Heat resistance compared with ASA, the alternative for the enclosed P1S:
 
 | Bambu filament | HDT at 0.45 MPa | HDT at 1.8 MPa | Source |
 | --- | ---: | ---: | --- |
 | PETG HF | 69 °C | 62 °C | S47 |
 | ASA | 100 °C | 92 °C | S48 |
 
-- **PETG is fine** where the housing stays shaded and well below about 60 °C, for example behind the panel or under the seat.
-- **PETG is marginal** where sun through the canopy reaches the housing: a closed cockpit in the sun can get far hotter than the outside air, and focused sunlight has burnt instrument panels (S49). Snap-fits and press fits under constant load creep first.
-- **ASA** keeps about 30 °C more margin, but prints with fumes and more warping.
-- The choice depends on the location → [open items](../project/open-items.md#housing).
+- **Keep it in the shade:** PETG is fine well below about 60 °C. Sun through the canopy can heat cockpit parts far above the outside air; focused sunlight has burnt instrument panels (S49).
+- **Loaded features creep first:** snap-fits and the XT30 press fit. If the housing has to move into the sun, switch to ASA (about 30 °C more margin).
 
 ### 2.2 Later optimizations
 
