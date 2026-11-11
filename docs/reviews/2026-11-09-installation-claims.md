@@ -72,11 +72,10 @@ Distance/absolute target altitude may be derived from relative data. A Classic t
 | --- | --- | --- |
 | [ZS1 handbook](../reference/ZS1_Deutsch.pdf) | `ZS1_Man_d`, D3029, 2004-09-16; pp.46/48 PC/NMEA cable. Older than the supplement; not a complete 3037 reference | Unmodified supplied PDF, 51 pages |
 | [ZS1 NMEA supplement](../reference/ZS1_NMEA_3037.pdf) | Program 3037, 2010-10-14; 2 pages, German/English | Unmodified supplied PDF; preferred supplied sentence reference for 3037 |
-| [FTD-116 FAMP](https://www.flarm.com/en/integration/flarm-famp-public-protocol/) | Supplied v1.02, 2026-09-07; still listed by manufacturer at review. Radio-over-air protocol, not ESP serial protocol | Link/hash only; outside bridge implementation scope |
-| [FTD-012 Data Port ICD](https://www.flarm.com/wp-content/uploads/2025/09/FTD-012-Data-Port-Interface-Control-Document-ICD-7.22.pdf) | History p.2 confirms 7.22 dated 2025-09-24 despite stale page headers “1.1 / 2022-06-06”; manufacturer catalog lists this download | Serial reference; S23 corrects S09's earlier revision uncertainty |
+| [FTD-012 Data Port ICD](https://www.flarm.com/wp-content/uploads/2025/09/FTD-012-Data-Port-Interface-Control-Document-ICD-7.22.pdf) | History p.2 confirms 7.22 dated 2025-09-24 despite stale page headers “1.1 / 2022-06-06”; manufacturer catalog lists this download | Serial reference (S23) |
 | [Classic FLARM installation manual](https://www.flarm.com/wp-content/uploads/2024/04/FLARM_InstallationManual_D.pdf) | v221, 2016-12-18; still manufacturer's listed F6/F7/F8/F9 manual. Upload date 2024 is not the manual date | Model-family connector reference; actual match pending |
 
-No authoritative newer Zander release obtained: manufacturer website timed out and searches did not establish current documentation. Neither “old” nor a newer filename proves incompatibility/compatibility with the installed unit. The cropped Zander diagram has no visible revision/page; retained as a private source observation (S25), not a matched installation drawing. PDF copyrights remain with their authors; no repository license assigned.
+Installed Zander program version and applicable documentation remain open. The cropped Zander diagram has no visible revision/page; retained as a private source observation (S25), not a matched installation drawing. PDF copyrights remain with their authors; no repository license assigned.
 
 Supplied file SHA-256:
 
@@ -84,10 +83,9 @@ Supplied file SHA-256:
 | --- | --- |
 | `ZS1_Deutsch.pdf` | `0d103b402edea8e5c3798d9979a7df01493b3f0a8c6553fe19912b59b07c2a80` |
 | `ZS1_NMEA_3037.pdf` | `036188492bb829e5c49123323c2939aaddc1ab9f387e08dd4e6f8ba072bd1cb2` |
-| `FTD-116-FLARM-FAMP-Public-Protocol-v1.02.pdf` | `561c59a848e0219600265f38fe6fabc7a4f48fda027c18468e9936e345fb2d73` |
 
 ---
 
 ## Verification
 
-Supplied PDFs extracted; Zander NMEA p.1/handbook p.46 and FLARM connector p.6/revision-history p.2 rendered and visually checked; both supplied diagrams inspected. Manufacturer sources and pinned parser functions checked; both saved PDFs hash-matched; 62 local link/anchor checks and whitespace checks passed; documentation consistency reviewed. Rendered pages readable despite Poppler font-substitution warnings. No application builds/tests, live traffic, voltage/continuity measurements, firmware changes, radio commands or aircraft work. WP1/WP2 remain open; [remaining evidence](../roadmap.md#wp1--existing-installation-first-priority).
+The ZS1 reference PDFs were extracted; Zander NMEA p.1/handbook p.46 and FLARM connector p.6/revision-history p.2 rendered and visually checked; both supplied diagrams inspected. Manufacturer sources and pinned parser functions checked; both saved PDFs hash-matched. No application builds/tests, live traffic, voltage/continuity measurements, firmware changes, radio commands or aircraft work. WP1/WP2 remain open; [remaining evidence](../roadmap.md#wp1--existing-installation-first-priority).

@@ -43,7 +43,7 @@ Deferred: active tuning, swap, volume/squelch, Larus, general XCSoar support, ai
 
 ## Existing installation — WP1 record
 
-**Reported (S00/S21):** DG200 Zander/FLARM → ESP32 Wi-Fi → OpenSoar; no working Becker integration. [2026-11-09 claim assessment](reviews/2026-11-09-installation-claims.md). No measured baseline.
+**Reported (S21):** DG200 Zander/FLARM → ESP32 Wi-Fi → OpenSoar; no working Becker integration. [2026-11-09 claim assessment](reviews/2026-11-09-installation-claims.md). No measured baseline.
 
 | Item | Known | Missing / owner / consequence |
 | --- | --- | --- |
@@ -86,7 +86,7 @@ S13: four private photos; visible features only. No powered/continuity tests or 
 | Enclosure assembly | P2–P4 show the ESP32 board, stripboard, UBEC module and wiring as parts of the photographed assembly | Exact interconnections, supply entry, regulator output destination and any concealed interface circuits |
 | External harness | P3/P4 show conductors from the harness reaching the board area; sections are covered | Connector contacts, GPIOs, serial directions and which branch serves Zander or FLARM |
 | RS-422 module | P1 shows wires attached at its logic-side header and four labelled field terminals | Far ends of those wires, field-side cable, radio connection and relationship to the enclosure assembly |
-| Navigation over Wi-Fi | S00 reports navigation reception through the ESP32 into OpenSoar | Whether feeds are combined, network transport/endpoints, UART settings and return traffic; not visible or measured in S13 |
+| Navigation over Wi-Fi | S21 reports separate Zander and FLARM TCP paths into OpenSoar | Live endpoint mapping, UART settings and return traffic remain unverified |
 
 #### Comparison with the proposal
 
@@ -101,7 +101,6 @@ Existing assembly retained as backup ([ADR-03](architecture.md#adr-03--new-hardw
 | ID | Assumption, not a fact | How to resolve / dependency |
 | --- | --- | --- |
 | A01 | The installed radio is a remotely controllable AR6201 variant. | WP1 identity, then WP2 matching manufacturer documentation. Blocks hardware design. |
-| A02 | Retired: spare capacity in existing ESP32. | Backup preserved; new bridge capacity covered by A06 |
 | A03 | The installed OpenSoar build supports the desired driver/transport combination alongside navigation. | WP1 build/configuration, then WP4 application integration review. Blocks end-to-end implementation choice. |
 | A04 | Radio status can establish sufficiently fresh active state before standby tuning. | WP2 protocol evidence and WP4 state design. Actual state freshness remains unverified. Blocks safe command semantics. |
 | A05 | A dedicated radio TCP endpoint is feasible without disrupting existing feeds. | WP1 topology and WP3 alternatives comparison. Blocks ADR-01 acceptance. |

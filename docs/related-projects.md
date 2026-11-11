@@ -21,7 +21,6 @@ Source review, 2026-11-08. [Selection status](architecture.md#adr-02--implementa
 | --- | --- | --- |
 | [DroneBridge ESP32](https://github.com/DroneBridge/ESP32/tree/25b3d9c60ca4cb958ad7156a742436c6a4361475) | README documents bidirectional transparent mode, TCP port 5760, configurable flush timeout, and host regression checks. Apache-2.0 metadata. Revision dated 2026-10-26. | Dedicated-radio bridge alternative. Confirm transparent TCP behavior and independent multi-UART capability. Forwarding code not audited here. |
 | [XCVario](https://github.com/iltis42/XCVario/tree/1c5ad83a9e0911b81bb0bd5a47243bea5746f6c2) | ESP32 gliding instrument with serial/Wi-Fi routing. Router.cpp contains message filtering and queue routing. GPL-2.0 metadata. Revision dated 2026-10-18. | Useful coexistence reference. Whole-firmware adoption expands scope, and Becker binary transparency is unverified. |
-| [esp-link](https://github.com/jeelabs/esp-link) | Project describes an ESP8266 Wi-Fi/serial bridge. | Background reference with a different target from the installed ESP32. |
 | [SD-Link AR620X](https://sdlink.de/wp-content/uploads/2026/02/SD-AR620X-E-NG_en_easyvfr_installation_v1.0.pdf) | Commercial BLE integration. Vendor documentation specifies serial-number and tandem-mode prerequisites for its adapter. | Compare prerequisites against the exact radio and manufacturer documentation before applying them here. |
 
 ---

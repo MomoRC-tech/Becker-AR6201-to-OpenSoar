@@ -7,7 +7,7 @@
 
 | Package | Status | Prerequisite | Output / completion check |
 | --- | --- | --- | --- |
-| WP0 Documentation | Complete; acceptance pending | Existing records | Concise, consistent docs; [verification](reviews/2026-11-08-documentation.md) |
+| WP0 Documentation | Complete; acceptance pending | Existing records | Current requirements, design, evidence and work queue |
 | WP1 Installation | Open; photos and equipment report assessed | Equipment/configuration evidence | Inventory, connector map, navigation baseline; gaps with owner/consequence |
 | WP2 Interfaces/protocol | Open; driver research complete | Radio identity | Matched manual, settings, framing, response rules, independent vectors |
 | WP3 Architecture/reuse | Open; bench design documented | WP1/WP2 | Board/interfaces, firmware, required fixes, licenses, build inputs |
@@ -24,32 +24,18 @@
 
 ---
 
-## Bounded WP3 bench hardware package — 2026-11-08
+## WP3 — bench hardware
 
 [Wiring and parts](connections.md#parts-list). Open checks cover ESP32 headers and regulator, BEC/source limits, H-1-0290 continuity, 3.3 V full-duplex RS-422 board selection and electrical checks, power budget and protection values.
 
 The Becker board requires a 3.3 V supply and ESP32-compatible UART logic. Model and 3.3 V rail remain open.
 
+The [Hailege pin map](connections.md#hailege-board-pad-reference) is inferred from the supplied image and S27. ZS1 D3029 pp.46/48 and Classic FLARM v221 pp.6/7 were rechecked. Confirm pad continuity on both boards, enclosure clearance, equipment connector views and signal references. Electrical and device checks remain open.
+
 The [power diagram](connections.md#power) shows F1 near the battery. [Sizing inputs](connections.md#f1-sizing-inputs) are open. A separate reverse-polarity stage depends on the BEC's documented input protection.
 
 > [!IMPORTANT]
 > Hold harness and protection purchases until the wiring and power checks are complete.
-
----
-
-## Bounded WP3 RS-232 board selection — 2026-11-09
-
-Selected: 2 × Hailege H-1-0290 for Zander/FLARM. [S26](sources.md) records supplied specifications; [converter reference](connections.md#hailege-board-pad-reference) uses text dimensions **9.4 × 15.9 mm**. Board acceptance, pad mapping, equipment connectors and enclosure clearance remain open.
-
-Verification: selection/specifications and affected wiring/preview labels checked for consistency; 121 relative file/anchor references, three SVG structures and whitespace checked; updated diagrams visually checked in local renders. Documentation only; no build, electrical or device tests. WP3/M2 remain open.
-
----
-
-## Bounded WP3 Hailege pinout — 2026-11-09
-
-[Connections](connections.md#hailege-board-pad-reference): supplied board image, inferred eight-pad map, conditional Zander/Classic FLARM connections and proposed ESP32 GPIOs. [S27](sources.md) supplier comparator; no Hailege-specific schematic or measured sample match. Next: confirm IC/pad continuity on both boards, equipment cable/view and signal-reference compatibility.
-
-Verification: S27 schematic/photos cross-checked with supplied image; ZS1 pp.46/48 and Classic FLARM pp.6/7 pin references rechecked. 97 relative file/anchor references and whitespace checked; pad-table directions compared with the reference schematic/photos. Supplied image preserved byte-for-byte. No firmware, electrical or device tests; WP3/M2 remain open.
 
 ---
 
@@ -96,17 +82,3 @@ Read relevant sources/status → bound one change → execute → verify → upd
 
 > [!IMPORTANT]
 > Verify radio acceptance and response bytes independently. Use WP1/WP2 evidence for traffic, gap and timeout limits.
-
----
-
-## Documentation readability review — 2026-11-08
-
-[Verification](reviews/2026-11-08-documentation.md). Documentation only; no application/device tests.
-
----
-
-## Bounded WP0 Mermaid overview correction — 2026-11-09
-
-[Connections guide](connections.md#logical-connections): separate forward and return arrows, compact Markdown tables, cropped Hailege image and shorter connector notes. Checked local Mermaid default and Dagre layouts. Live GitHub preview at `4ace6ba` confirmed 14 separate arrows, three devices on the left, cropped image, warning callout and section dividers. GitHub controls native table padding.
-
-[Wiring guide follow-up](connections.md#module-specs): Becker matches the navigation tables. One closed section groups all module specs and both converter photos and pin diagrams. Short GitHub alerts highlight caveats and design notes across the docs. Checked rendering, pin mapping, links and whitespace. Documentation only.

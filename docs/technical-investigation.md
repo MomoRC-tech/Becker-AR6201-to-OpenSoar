@@ -5,18 +5,6 @@ See [sources](sources.md) for evidence labels.
 > [!NOTE]
 > Application and device acceptance remain open.
 
-## Original source baseline
-
-| Project | Reviewed revision | Commit date recorded in prior review | State recorded in prior review |
-| --- | --- | --- | --- |
-| OpenSoar | [4a3794a](https://github.com/August2111/OpenSoar/tree/4a3794a02211eb03b21ddb8a6b8ec5ad62ee3b41) | 2026-10-21 | Not archived |
-| ESP32 Serial Bridge | [bb42dc3](https://github.com/AlphaLima/ESP32-Serial-Bridge/tree/bb42dc3db926f9baf1f5faa76cc21bad1dd80cdf) | 2026-07-28 | Not archived |
-| ESP32 Serial Bridge Pro | [bf263c1](https://github.com/AlphaLima/ESP32-Serial-Bridge-Pro/tree/bf263c1880d7630cadef5264dac9aa9654e4096e) | 2026-07-30 | Not archived |
-
-Primary review: OpenSoaring `b2e745cfddfe0150f6ed7db467ac18c321b38d01` (S01/S02). Installed build unknown.
-
----
-
 ## Follow-up send reproduction — 2026-11-08
 
 [S12 host regression](reviews/2026-11-08-becker-send.md): zero-containing frames truncated to 4/10 or 6/10 bytes. The byte-span correction preserves 10/10.
@@ -28,7 +16,7 @@ Primary review: OpenSoaring `b2e745cfddfe0150f6ed7db467ac18c321b38d01` (S01/S02)
 
 ## OpenSoar driver findings
 
-Source: [AR62xx.cpp, 4a3794a](https://github.com/August2111/OpenSoar/blob/4a3794a02211eb03b21ddb8a6b8ec5ad62ee3b41/src/Device/Driver/AR62xx.cpp); rechecked at S01. [Port.hpp](https://github.com/August2111/OpenSoar/blob/4a3794a02211eb03b21ddb8a6b8ec5ad62ee3b41/src/Device/Port/Port.hpp).
+Source: OpenSoar 7.46.26, [AR62xx.cpp](https://github.com/OpenSoaring/OpenSoar/blob/b2e745cfddfe0150f6ed7db467ac18c321b38d01/src/Device/Driver/AR62xx.cpp) and [Port.hpp](https://github.com/OpenSoaring/OpenSoar/blob/b2e745cfddfe0150f6ed7db467ac18c321b38d01/src/Device/Port/Port.hpp) (S01/S02). Installed build unknown.
 
 | Area | Source observation and consequence |
 | --- | --- |
@@ -94,18 +82,12 @@ Request after radio identification: matching remote-control protocol/revision; s
 
 ### Consequences for the next increment
 
-| Inspected OpenSoar revision | Driver result |
-| --- | --- |
-| [work26 41342db](https://github.com/OpenSoaring/OpenSoar/blob/41342dbabfa89a22b04af3a9ba4c8d9dbe9d52f5/src/Device/Driver/AR62xx.cpp) | Same blob as S01 |
-| [topic/device-misc e0d9228](https://github.com/OpenSoaring/OpenSoar/blob/e0d9228a590605edb9e22b58bd0b3d48c34483fa/src/Device/Driver/AR62xx.cpp) | Same blob as S01 |
-| [master e34b3dc](https://github.com/OpenSoaring/OpenSoar/blob/e34b3dca3f63bf534c79657b22d181449350b9ca/src/Device/Driver/AR62xx.cpp) | RadioFrequency include-path change only |
-
 > [!IMPORTANT]
 > WP4 starts with caller, state and UI mapping. Counted send, state freshness, parsing and responses are separate increments. Fresh paired readback still leaves a local-tuning race.
 
 Source-derived cases: 118.000 → 00 00 (send truncation); 119.030 → 00 A5 (parser reset). Not independent protocol vectors. Test every split position and multiple frames per read after framing validation.
 
-**S11 verification:** pinned drivers, constructors, overloads, branch blobs, conversion history and discussions inspected. No execution/device tests. S12 supplies separate host evidence.
+**S11 verification:** pinned drivers, constructors, overloads, channel conversion and discussions inspected. No execution/device tests. S12 supplies separate host evidence.
 
 ---
 
@@ -151,8 +133,6 @@ Current design: [architecture](architecture.md). Candidate order: Yuri, basic Al
 
 | Reference | Finding / limitation |
 | --- | --- |
-| [Release index](https://opensoar.de/releases/), [7.46.26](https://opensoar.de/releases/v7.46.26/) | 2026-10-30; Becker WIP; rechecked S09. Installed build unknown |
-| [Tagged driver b2e745c](https://github.com/OpenSoaring/OpenSoar/blob/b2e745cfddfe0150f6ed7db467ac18c321b38d01/src/Device/Driver/AR62xx.cpp) | Same send/state defects; source only |
 | [DV14307.03 Issue 06 §2.5.3.2 p.59](https://www.becker-avionics.com/wp-content/uploads/00_Literature/6200_Series_IO_en.pdf#page=59) | J1 2/9 TX2+/−; 3/10 RX2+/−; 21/22/23 D_GND; discrete-line ground |
 | [First-design manual p.22](https://becker-avionics.com/wp-content/uploads/2017/08/AR6201_IO_SW3050149.pdf#page=22), [catalog](https://becker-avionics.com/manual-instructions-downloads/) | Older pin 2 direction conflicts (IN vs OUT+); Issue 06 OUT. J1-5 also revision-dependent. Match part/SW/connector view |
 | [LXNAV rev.21 v2.10 pp.10–11](https://www.lx-avionik.de/wp/download/manuals/lx232BridgeManualEnglishVer0210Rev21.pdf#page=10), [harness listing](https://www.navboys.com/lxnav-to-becker-ar6201-harness-for-radio-bridge-j1-plug.html) | AR6201 adapter on interface 2, ground pin 21; RT6201 adapter on interface 1, RCU on 2; product uses RS232↔RS422 adapter |
