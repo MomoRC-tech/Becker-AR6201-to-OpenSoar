@@ -2,13 +2,15 @@
 
 [← Project overview](../../README.md)
 
-Proposed pinning, cabling and power for the new bridge. Bench design: no electrical checks are done yet.
+How the bridge connects to the Zander, the FLARM, the Becker radio and power. The device-side connectors and harness already exist in the aircraft; this page covers the bridge end only.
 
-[Modules and parts](modules.md) · [Open hardware checks](../project/open-items.md#bench-hardware-wp3) · [Sources](../research/sources.md)
+**Status:** bench design. Nothing is built or measured yet. Open questions are in [open items](../project/open-items.md#bench-hardware-wp3).
+
+[Modules and parts](modules.md) · [Sources](../research/sources.md)
 
 ---
 
-## Logical connections
+## Overview
 
 ```mermaid
 flowchart LR
@@ -30,30 +32,40 @@ flowchart LR
     linkStyle 7,8,9,10,11,12,13 marker-end:none
 ```
 
-> [!NOTE]
-> Dotted arrows show optional navigation returns. Becker commands are required for tuning.
+Dotted arrows are optional return paths to the navigation instruments. The Becker path must work in both directions.
+
+### UART plan
+
+The ESP32 has three UARTs; each device gets one.
+
+| Device | UART | ESP32 RX | ESP32 TX | Interface |
+| --- | --- | --- | --- | --- |
+| Zander ZS1 | UART0, remapped | GPIO32 | GPIO33 (optional) | RS-232-mod1 |
+| FLARM | UART1 | GPIO26 | GPIO27 (optional) | RS-232-mod2 |
+| Becker | UART2 | GPIO16, through 10 kΩ | GPIO17 | MAX490 RS-422 board |
+
+UART0 is also the USB serial port. The firmware moves it to GPIO32/33 after boot, so there is no USB serial log in operation; diagnostics go over Wi-Fi. Boot messages only appear on GPIO1, so they never reach a device.
 
 ---
 
 ## Zander ZS1
 
-![Proposed device to module to ESP32 path](../images/wiring-zander.svg)
+![Zander to RS-232 module to ESP32](../images/wiring-zander.svg)
 
-| ZS1 PC cable | → / ← | RS232 pads | TTL pads | → / ← | ESP32 |
+Use the ZS1 PC-cable DE9 ([ZS1 handbook pp.46/48](../reference/ZS1_Deutsch.pdf#page=46), S22).
+
+| ZS1 PC cable | → / ← | RS-232 pads | TTL pads | → / ← | ESP32 |
 | --- | :-: | --- | --- | :-: | --- |
-| 2 (<img src="../images/pins/tx.svg" alt="TX" width="20" height="14">) | → | **L3** RS232 input | **R2** TTL output | → | GPIO32 (<img src="../images/pins/rx.svg" alt="RX" width="20" height="14">) |
-| *3 (<img src="../images/pins/rx.svg" alt="RX" width="20" height="14">)* (optional) | *←* | *L4 RS232 output* | *R1 TTL input* | *←* | *GPIO33 (<img src="../images/pins/tx.svg" alt="TX" width="20" height="14">)* |
-| 5 (<img src="../images/pins/gnd.svg" alt="GND" width="23" height="14">) | — | L1 GND† | R4 GND | — | GND contact |
+| 2 (<img src="../images/pins/tx.svg" alt="TX" width="20" height="14">) | → | **L3** RS-232 input | **R2** TTL output | → | GPIO32 (<img src="../images/pins/rx.svg" alt="RX" width="20" height="14">) |
+| *3 (<img src="../images/pins/rx.svg" alt="RX" width="20" height="14">) — optional GPS (RMC) input* | *←* | *L4 RS-232 output* | *R1 TTL input* | *←* | *GPIO33 (<img src="../images/pins/tx.svg" alt="TX" width="20" height="14">)* |
+| 5 (<img src="../images/pins/gnd.svg" alt="GND" width="23" height="14">) | — | L1 GND | R4 GND | — | GND |
 
-> [!IMPORTANT]
-> Use the ZS1 PC-cable DE9. A matched cable photo is pending. Optional RMC requires an enabled, unused RX input. † Confirm signal ground.
+R1 always gets a 10 kΩ pull-up (R-Z) to 3.3 V, so the return line idles correctly while the ESP32 boots or when GPIO33 is not wired.
 
 <details>
 <summary>Zander PC-cable connector pin view</summary>
 
-| Connector reference | Pin view |
-| --- | --- |
-| [ZS1 handbook D3029, pp.46/48](../reference/ZS1_Deutsch.pdf#page=46) (S22) | <img src="../images/pinout-zander-de9.svg" width="420" alt="ZS1 PC-cable DE-9 index. Pin 2 TX, pin 3 optional RX, pin 5 ground. Installed cable match and connector face unknown."> |
+<img src="../images/pinout-zander-de9.svg" width="420" alt="ZS1 PC-cable DE-9. Pin 2 TX, pin 3 optional RX, pin 5 ground.">
 
 </details>
 
@@ -61,23 +73,25 @@ flowchart LR
 
 ## FLARM
 
-![Proposed device to module to ESP32 path](../images/wiring-flarm.svg)
+![FLARM to RS-232 module to ESP32](../images/wiring-flarm.svg)
 
-| Classic Power/Data reference† | → / ← | RS232 pads | TTL pads | → / ← | ESP32 |
+Use a free data port on the Classic FLARM ([installation manual v221 pp.6/7](https://www.flarm.com/wp-content/uploads/2024/04/FLARM_InstallationManual_D.pdf#page=6), S23).
+
+| FLARM Power/Data | → / ← | RS-232 pads | TTL pads | → / ← | ESP32 |
 | --- | :-: | --- | --- | :-: | --- |
-| 5 (<img src="../images/pins/tx.svg" alt="TX" width="20" height="14">)† | → | **L3** RS232 input | **R2** TTL output | → | GPIO26 (<img src="../images/pins/rx.svg" alt="RX" width="20" height="14">) |
-| *6 (<img src="../images/pins/rx.svg" alt="RX" width="20" height="14">)* (optional) | *←* | *L4 RS232 output* | *R1 TTL input* | *←* | *GPIO27 (<img src="../images/pins/tx.svg" alt="TX" width="20" height="14">)* |
-| 7/8 (<img src="../images/pins/gnd.svg" alt="GND" width="23" height="14">)† | — | L1 GND† | R4 GND | — | GND contact |
+| 5 (<img src="../images/pins/tx.svg" alt="TX" width="20" height="14">) | → | **L3** RS-232 input | **R2** TTL output | → | GPIO26 (<img src="../images/pins/rx.svg" alt="RX" width="20" height="14">) |
+| *6 (<img src="../images/pins/rx.svg" alt="RX" width="20" height="14">) — optional* | *←* | *L4 RS-232 output* | *R1 TTL input* | *←* | *GPIO27 (<img src="../images/pins/tx.svg" alt="TX" width="20" height="14">)* |
+| 7/8 (<img src="../images/pins/gnd.svg" alt="GND" width="23" height="14">) | — | L1 GND | R4 GND | — | GND |
+
+R1 gets a 10 kΩ pull-up (R-F) to 3.3 V, as for the Zander.
 
 > [!WARNING]
-> † Match the Classic Power/Data plug to the manual. IGC numbering runs in the opposite direction to common RJ45 numbering. Use a free data port and signal ground. Keep FLARM supply pins separate from converter VCC.
+> FLARM uses IGC pin numbering, which runs opposite to common RJ45 numbering. Pins 1–3 carry supply voltage: never connect them to the converter.
 
 <details>
 <summary>Classic FLARM Power/Data connector pin view</summary>
 
-| Connector reference | Pin view |
-| --- | --- |
-| [Classic rear-panel and plug pictures, v221 p.6](https://www.flarm.com/wp-content/uploads/2024/04/FLARM_InstallationManual_D.pdf#page=6) (S23) | <img src="../images/pinout-flarm-classic.svg" width="420" alt="Classic FLARM plug, latch down, IGC numbering. Pins 1 and 2 supply in, 3 auxiliary voltage out, 4, 7 and 8 ground, 5 TX, 6 RX. Installed match unknown."> |
+<img src="../images/pinout-flarm-classic.svg" width="420" alt="Classic FLARM plug, latch down, IGC numbering. Pins 1 and 2 supply in, 3 auxiliary voltage out, 4, 7 and 8 ground, 5 TX, 6 RX.">
 
 </details>
 
@@ -85,30 +99,48 @@ flowchart LR
 
 ## Becker radio
 
-![Proposed device to module to ESP32 path](../images/wiring-becker.svg)
+![Becker to RS-422 board to ESP32](../images/wiring-becker.svg)
 
-| Becker J1 reference† | → / ← | RS-422 board signals | Module UART signals | → / ← | ESP32 |
-| --- | :-: | --- | --- | :-: | --- |
-| 2 TX2+ / 9 TX2− | → | Differential receive pair | 5 V-domain UART output | → | GPIO16 via 1 kΩ series resistor (unverified) (<img src="../images/pins/rx.svg" alt="RX" width="20" height="14">) |
-| 3 RX2+ / 10 RX2− | ← | Differential transmit pair | UART input | ← | GPIO17 (<img src="../images/pins/tx.svg" alt="TX" width="20" height="14">) |
-| 21 D_GND | — | Bond **UNKNOWN** | — | — | — |
-| — | — | — | GND | — | GND contact |
+The radio's serial interface 2 on connector J1 ([Becker DV14307.03 Issue 06, p.59](https://www.becker-avionics.com/wp-content/uploads/00_Literature/6200_Series_IO_en.pdf#page=59), S10).
+
+**Radio side** — MAX490 board screw terminals:
+
+| J1 pin | Radio signal | MAX490 terminal | Meaning |
+| --- | --- | --- | --- |
+| 2 | TX2+ | A | Receiver input + |
+| 9 | TX2− | B | Receiver input − |
+| 3 | RX2+ | Y | Driver output + |
+| 10 | RX2− | Z | Driver output − |
+| 21 | D_GND | GND | Signal reference |
+
+Run TX2± and RX2± as two separate twisted pairs in a shielded cable. Connect J1-21 to the board GND with a dedicated wire or the cable's drain wire.
+
+**ESP32 side** — MAX490 board header:
+
+| Board signal | ESP32 |
+| --- | --- |
+| Receiver output (RO) | 10 kΩ series resistor (R-B) → GPIO16 (<img src="../images/pins/rx.svg" alt="RX" width="20" height="14">) |
+| Driver input (DI) | GPIO17 (<img src="../images/pins/tx.svg" alt="TX" width="20" height="14">) |
+| VCC | 5 V from the UBEC |
+| GND | GND |
+
+The board's TXD/RXD header labels may be named from either side; identify RO and DI on the board before wiring.
 
 > [!WARNING]
-> † Confirm the installed J1 revision, moulded pin numbers and pair polarity. Use separate twisted pairs. Verify the MAX490 UART output and ESP32 input voltage limits before connecting GPIO16. [UART receive details](modules.md#becker-max490-board)
+> The MAX490 runs at 5 V, so RO idles near 5 V — above the ESP32's 3.6 V input limit. Never connect RO directly to GPIO16. The 10 kΩ resistor limits the current into the GPIO's protection diode to about 0.1 mA (owner decision; Espressif does not document an allowed injection current).
+
+ESP32 TX at 3.3 V drives DI directly; the MAX490 needs 2.0 V for a logic high.
 
 <details>
 <summary>Becker rear connector and J1 pin view</summary>
 
-| Radio rear reference | J1 mating-face reference |
+| Radio rear | J1 mating face |
 | --- | --- |
-| <img src="../images/becker-reference-connectors.png" width="275" alt="Becker rear drawing, P1 above J1. Callout 4 identifies the J1 connector."> | <img src="../images/pinout-becker-j1.svg" width="420" alt="Becker J1 DB-25 socket reference. Pins 2 and 9 TX pair, 3 and 10 RX pair, 21 digital ground. Installed match and ground bond unknown."> |
+| <img src="../images/becker-reference-connectors.png" width="275" alt="Becker rear drawing, P1 above J1. Callout 4 identifies the J1 connector."> | <img src="../images/pinout-becker-j1.svg" width="420" alt="Becker J1 DB-25 socket. Pins 2 and 9 TX pair, 3 and 10 RX pair, 21 digital ground."> |
 
-Callout 4 identifies J1. Functions from [Becker DV14307.03 Issue 06, pp.57/59](https://www.becker-avionics.com/wp-content/uploads/00_Literature/6200_Series_IO_en.pdf#page=59) (S10/S20). Socket numbering follows the [Winford BRKDD25F-R-FT Rev. A mating-face drawing](https://www.winford.com/products/cad/brkdd25f-r-ft_rev_a_dwg.pdf).
+Callout 4 is J1. Socket numbering follows the [Winford BRKDD25F-R-FT mating-face drawing](https://www.winford.com/products/cad/brkdd25f-r-ft_rev_a_dwg.pdf).
 
 </details>
-
-Pin-view styling follows the [Pinout.xyz examples](https://github.com/pinout-xyz/Pinout.xyz/tree/main/graphics). Colours group functions.
 
 ---
 
@@ -116,41 +148,49 @@ Pin-view styling follows the [Pinout.xyz examples](https://github.com/pinout-xyz
 
 ```mermaid
 flowchart LR
-    S["Nominal 12 V battery"] --> F1["F1 fuse (rating TBD)"]
-    F1 --> P["Reverse protection: UNKNOWN"]
-    P --> I[Input node] --> B["Hobbywing UBEC set to 5 V"]
-    I --- T["Transient clamp to return: UNKNOWN"]
-    B --> V["Output protection if required: UNKNOWN"] --> E["ESP32 5 V input (ref. J2-19)"]
-    E --> R[Board 3.3 V regulator]
-    R --> C["RS-232-mod1 / RS-232-mod2"]
-    V --> Q["Becker MAX490 board: 5 V"]
+    S["12 V battery"] --> F1["F1: 2 A ATO fuse"]
+    F1 --> B["Hobbywing UBEC, 5 V"]
+    B --> E["ESP32 5 V pin (J2-19)"]
+    B --> Q["MAX490 board VCC"]
+    E --> R["ESP32 3.3 V regulator"]
+    R --> C["RS-232-mod1 / mod2"]
 ```
 
-| From | To | Status |
-| --- | --- | --- |
-| Protected BEC 5 V output | ESP32 5 V input ([ref. J2-19](modules.md#esp32-pinout)) | Confirm board match and BEC output |
-| BEC output return | ESP32 GND contact | Common logic ground; source return design pending |
-| ESP32 3.3 V ([ref. J2-1](modules.md#esp32-pinout)) | RS-232-mod1 R3 (`+`) | Proposed; module check pending |
-| ESP32 3.3 V ([ref. J2-1](modules.md#esp32-pinout)) | RS-232-mod2 R3 (`+`) | Proposed; module check pending |
-| Regulated 5 V | MAX490 board VCC | Verify board pinout, current draw and BEC output |
-| ESP32 GND contact | RS-232-mod1 R4 (`−`) | Proposed; continuity pending |
-| ESP32 GND contact | RS-232-mod2 R4 (`−`) | Proposed; continuity pending |
-| ESP32 GND contact | RS-422 module GND contact | Proposed logic return |
+| From | To |
+| --- | --- |
+| UBEC 5 V | ESP32 5V pin ([J2-19](modules.md#esp32-pinout)) and MAX490 board VCC |
+| UBEC GND | ESP32 GND |
+| ESP32 3V3 ([J2-1](modules.md#esp32-pinout)) | R3 (+) on both RS-232 modules, and the two R1 pull-ups |
+| ESP32 GND | R4 (−) on both RS-232 modules, MAX490 board GND |
+
+Protection is the fuse plus the UBEC's own reverse-input protection (S14). Place F1 close to the battery on the bridge's positive feed.
 
 > [!WARNING]
-> Use one VCC/GND pair per H-1-0290. Disconnect BEC 5 V before USB powering. Preserve existing instrument power feeds.
->
-> - Place F1 near the battery on the bridge's positive feed. Use a separate reverse-polarity stage only if the exact BEC lacks adequate reverse-input protection.
-> - Coordinate any input transient clamp with the fuse and BEC limits. Evaluate output overvoltage cutoff against BEC faults and ESP32 input limits.
-> - Verify UBEC polarity and 5 V output before connecting the ESP32. Check output tolerance and ripple under load. Check regulator current and temperature with Wi-Fi and the 3.3 V loads active. Spare 3.3 V capacity, source voltage range and protection ratings remain open. [S14, S16, S17, S19](../research/sources.md#source-register)
+> Never connect USB and the UBEC 5 V at the same time: the board has no power selection. Unplug the UBEC before using USB.
 
-### F1 sizing inputs
+### Load estimate
 
-| Needed | Check |
+Estimate from typical datasheet values, not measured.
+
+| Load | Current at 5 V |
 | --- | --- |
-| UBEC and battery compatibility | Match delivered part and check actual source range against 5.5–26 V. Confirm input fuse requirements and reverse-input protection for that revision |
-| Bridge load on the BEC input | Worst-case running current and startup inrush magnitude and duration across the battery voltage range |
-| Battery and wiring | Maximum source voltage and prospective fault current. Smallest wire gauge, run length, connector and holder ratings, and temperature/bundling |
+| ESP32 with Wi-Fi | about 250 mA average, 500 mA peaks |
+| MAX490 driving the radio input | about 30 mA |
+| Two MAX3232 modules | a few mA |
+| **Total** | **about 0.3 A average** — about 0.15 A at 12 V |
 
-> [!IMPORTANT]
-> Select the lowest fuse rating that carries the running load with temperature margin and survives startup per its time-current and pulse data. Check that it clears faults before the protected wiring or connectors overheat. Verify DC voltage and interrupt ratings against the source. [S31](../research/sources.md#source-register)
+The 2 A fuse leaves margin for switch-on inrush ([fuse selection, S31](../research/sources.md#source-register)). Confirm by measuring current and inrush on the bench.
+
+---
+
+## Bench bring-up
+
+Before connecting any device:
+
+1. Set the UBEC jumper to 5 V; measure the output with no load and with the ESP32 connected.
+2. Match the ESP32 board's headers and module marking to the [pinout](modules.md#esp32-pinout).
+3. Check continuity of both RS-232 modules against the [pad map](modules.md#hailege-board-pad-reference).
+4. On the MAX490 board, identify RO and DI on the header and check the 120 Ω termination.
+5. With the MAX490 powered, measure the voltage at GPIO16 behind the 10 kΩ resistor.
+6. Measure the bridge's current and switch-on inrush at 12 V.
+7. In the aircraft: listen for radio noise and check squelch with the bridge on and off.

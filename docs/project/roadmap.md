@@ -2,8 +2,7 @@
 
 [← Project overview](../../README.md)
 
-> [!IMPORTANT]
-> This is the single work queue. Implementation requires separate approval.
+This is the single work queue. Current focus: hardware selection and wiring (WP3); software packages wait until it is finished. Implementation requires separate approval.
 
 ## Work queue
 
@@ -34,7 +33,7 @@
 | --- | --- | --- |
 | WP1 | First priority. Photos (S13) and equipment report (S21) assessed in the [2026-11-09 review](../research/reviews/2026-11-09-installation-claims.md). No Becker integration established | Close the [installed-equipment items](open-items.md#installed-equipment-wp1); record values in the [existing installation](existing-installation.md) record and sources. Keep backups private |
 | WP2 | [Driver research](../research/becker-driver.md) complete (S11): implementation comparisons and protocol leads | Matched radio identity and protocol reference, or independent captures |
-| WP3 | Bench design documented: [connections](../hardware/wiring.md), [module specs](../hardware/modules.md), [parts list](../hardware/modules.md#parts-list) | Close the [bench hardware checks](open-items.md#bench-hardware-wp3). Hold harness and protection purchases until the wiring and power checks are complete |
+| WP3 | **Current focus.** Hardware decisions recorded 2026-11-11: [wiring](../hardware/wiring.md), [modules and parts](../hardware/modules.md#parts-list) | Close the [bench hardware checks](open-items.md#bench-hardware-wp3); then build and bring up the bench bridge |
 | WP4 / WP5 | [Send truncation reproduced on host](../research/reviews/2026-11-08-becker-send.md) (S12); byte-span correction passes synthetic cases | Subject to implementation approval: counted-send patch and integration test; caller/state/UI mapping. Active-state freshness and real readback remain open |
 
 ---

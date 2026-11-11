@@ -17,28 +17,21 @@ How the bridge is split up, which hardware is selected and the decisions behind 
 
 ---
 
-## Hardware proposal — one ESP32
+## Hardware — one ESP32
 
-| Item | Selection / status |
+| Item | Selection |
 | --- | --- |
-| Board | AZ-Delivery ESP32 WROOM dev module (owner selection). Verify header positions and regulator limits |
-| Navigation | 2 × Hailege H-1-0290 at 3.3 V (S26); continuity and interface checks pending |
-| Radio | Selected 5 V MAX490 board (S34). Pinout, termination and ESP32 interface checks open |
-| Supply | Nominal 12 V battery → Hobbywing UBEC 3A (2–6S), selected at 5 V → ESP32 → 3.3 V navigation converters (S14, S16). Becker module uses regulated 5 V, subject to BEC output and load checks |
-| Routing | Separate UART/device endpoints proposed; return traffic and GPS priority TBD |
-| Firmware | Unselected; Yuri first external candidate, AlphaLima basic comparator |
-| OpenSoar review baseline | 7.46.26, `b2e745cfddfe0150f6ed7db467ac18c321b38d01`; Becker WIP (S09); installed build unknown |
+| Board | AZ-Delivery ESP32 WROOM dev module |
+| Zander, FLARM | 2 × Hailege H-1-0290 RS-232 modules at 3.3 V |
+| Becker | 5 V MAX490 RS-422 board; receiver output to the ESP32 through 10 kΩ |
+| UARTs | UART0 (remapped) Zander, UART1 FLARM, UART2 Becker |
+| Supply | 12 V battery → 2 A fuse → Hobbywing UBEC at 5 V → ESP32 and MAX490; ESP32 3.3 V → RS-232 modules |
+| Firmware | Not selected (software waits for the hardware design); candidates in [bridge firmware](../research/bridge-firmware.md) |
+| OpenSoar review baseline | 7.46.26, `b2e745cfddfe0150f6ed7db467ac18c321b38d01` (S09); installed build unknown |
 
-> [!WARNING]
-> Disconnect BEC 5 V before USB powering. The design has no power-selection circuit.
+Details: [wiring](../hardware/wiring.md) · [modules and parts](../hardware/modules.md).
 
-### Pinning and cabling
-
-[Connection tables](../hardware/wiring.md) own GPIOs, equipment pins, power and cabling.
-
-### OpenSoar baseline and pending inputs
-
-[Existing installation](../project/existing-installation.md) records reported equipment and endpoints. [Open items](../project/open-items.md).
+The installed equipment and its reported endpoints are in [existing installation](../project/existing-installation.md).
 
 ---
 
@@ -62,7 +55,4 @@ One queue: [roadmap](../project/roadmap.md). Requirements: [requirements](requir
 
 ### ADR-04 — selected bench hardware and power path
 
-**Selected:** ESP32, navigation converters and Hobbywing UBEC at 5 V. The 5 V MAX490 board is selected for Becker. UART interface verification remains open. [Wiring and parts](../hardware/modules.md#parts-list).
-
-> [!IMPORTANT]
-> Fuse, reverse-polarity and transient/overvoltage protection are proposed. Parts, ratings and electrical acceptance remain open.
+**Selected:** ESP32, two Hailege RS-232 modules and the Hobbywing UBEC at 5 V. Becker: 5 V MAX490 board, receiver output to GPIO16 through a 10 kΩ series resistor, J1-21 bonded to the board ground. UART plan: UART0 (remapped) Zander, UART1 FLARM, UART2 Becker. Power protection: 2 A fuse plus the UBEC's reverse-input protection. [Wiring and parts](../hardware/modules.md#parts-list).

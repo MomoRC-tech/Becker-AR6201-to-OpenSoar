@@ -2,47 +2,24 @@
 
 [← Project overview](../../README.md)
 
-The selected modules, their reported specs and the parts list for one bridge. Specs are seller- or datasheet-reported unless marked.
+The selected modules and the parts list for one bridge. Specs are from seller listings or datasheets; nothing is measured yet. Open questions are in [open items](../project/open-items.md#bench-hardware-wp3).
 
-[Wiring](wiring.md) · [Parts list](#parts-list) · [Open hardware checks](../project/open-items.md#bench-hardware-wp3) · [Sources](../research/sources.md)
+[Wiring](wiring.md) · [Parts list](#parts-list) · [Sources](../research/sources.md)
 
-| Module | Power | Chip | Reported size |
-| --- | --- | --- | --- |
-| Hailege H-1-0290 (Zander and FLARM) | 3.3 V | MAX3232CSE (reported) | 9.4 × 15.9 mm |
-| [Becker RS-422 board](#becker-max490-board) | 5 V | MAX490 (seller-reported) | 50 x 27 mm (reported) |
-| AZ-Delivery ESP32 WROOM dev module | 5 V input, 3.3 V regulator | — | — |
-| Hobbywing UBEC 3A (2–6S), 86010010 | 5.5–26 V input, jumper-selectable 5 V or 6 V at 3 A. Selected setting: 5 V | — | 43 × 17 × 7 mm (catalog) |
+| Module | Use | Supply | Chip | Size |
+| --- | --- | --- | --- | --- |
+| [AZ-Delivery ESP32 WROOM dev module](#esp32-pinout) | Bridge controller | 5 V in, 3.3 V on board | ESP32-WROOM-32 | — |
+| [Hailege H-1-0290](#hailege-board-pad-reference) (2×) | RS-232 for Zander and FLARM | 3.3 V | MAX3232CSE | 9.4 × 15.9 mm |
+| [RS-422 board](#becker-max490-board) | Becker radio | 5 V | MAX490 | 50 × 27 mm |
+| [Hobbywing UBEC 3A (2–6S)](#hobbywing-ubec), part 86010010 | 12 V → 5 V | 5.5–26 V in; 5 V or 6 V out (jumper) at 3 A | — | 43 × 17 × 7 mm |
 
-<a id="hobbywing-ubec"></a>
-
-## Hobbywing UBEC 3A (2–6S)
-
-<table>
-  <tr>
-    <td><img src="../images/hobbywing-ubec-3a-product.png" alt="Hobbywing UBEC with voltage jumper, ferrite ring and leads" width="320"></td>
-    <td><img src="../images/hobbywing-ubec-3a-dimensions.png" alt="Supplied UBEC image annotated 35 × 12 × 5 mm" width="320"></td>
-  </tr>
-</table>
-
-Verify clearance on the delivered unit including the jumper, leads, ferrite ring and connector. The owner-supplied image marks 35 × 12 × 5 mm around the pictured body. The dimension boundaries are unverified.
-
-[Power module sources (S14, S16, S17, S19)](../research/sources.md#source-register)
-
-<a id="becker-max490-board"></a>
-
-## Becker MAX490 board
-
-**Selected for bench design.** The supplied photos show a blue board marked RS422 TO TTL, a header marked TXD/RXD/GND/VCC, and four screw terminals marked Y/Z/B/A. The seller reports a MAX490, 5 V supply and UART logic, power and activity LEDs, 2.5 Mbit/s, up to 1000 m, 15 kV ESD protection, 10 Ω series resistance, protection diodes and 120 Ω termination. Treat rate, distance and protection figures as separate claims. Verify chip identity, header directions, resistor placement, effective termination and protection ratings. [Evidence (S34)](../research/sources.md#source-register)
-
-**UART receive interface.** ESP32-WROOM-32 specifies VDD + 0.3 V as the upper input limit (3.6 V at nominal 3.3 V). A series resistor alone limits current only if there is a current path. The reviewed Espressif documents give no allowable continuous positive injection current for GPIO16 that would support sizing a resistor for a 5 V UART idle level. The seller's 10 Ω claim gives no basis for protecting this input.
-
-**Owner-selected configuration.** Place one 1 kΩ resistor in series from the module's UART receiver output to ESP32 GPIO16 (UART RX), with a shared UART ground. Verify GPIO voltage compliance before connecting. The series resistor alone does not establish compliance with the ESP32 input limit. The ESP32 TX can drive the MAX490 DI directly if the module header routes to DI without incompatible circuitry. The MAX490 DI high threshold is 2.0 V. Verify header routing and startup/shutdown behavior before connecting to the radio. [Evidence (S34)](../research/sources.md#source-register)
+---
 
 <a id="esp32-pinout"></a>
 
 ## ESP32 DevKitC V4 pinout
 
-**Candidate for the AZ-Delivery WROOM-32 board.** View from the component side with the antenna at the top and Micro-USB at the bottom. J2 is on the left and J3 on the right. Count both headers from the antenna end. Header labels below follow Espressif's reference. RX and TX are from the ESP32's perspective.
+The AZ-Delivery board follows Espressif's DevKitC V4 layout (S32). View from the component side, antenna at the top, Micro-USB at the bottom: J2 is the left header, J3 the right; both are counted from the antenna end. RX and TX are from the ESP32's side.
 
 <details>
 <summary>AZ-Delivery pinout diagram</summary>
@@ -55,57 +32,88 @@ Verify clearance on the delivered unit including the jumper, leads, ferrite ring
 
 | Position | J2 label | J2 bridge use | J3 label | J3 bridge use |
 | ---: | --- | --- | --- | --- |
-| 1 | `3V3` | Navigation converters' 3.3 V supply | `GND` | Logic ground |
+| 1 | `3V3` | 3.3 V to RS-232 modules and pull-ups | `GND` | Ground |
 | 2 | `EN` | — | `IO23` | — |
 | 3 | `VP` | — | `IO22` | — |
-| 4 | `VN` | — | `TX` | UART0 TX (USB serial) |
-| 5 | `IO34` | — | `RX` | UART0 RX (USB serial) |
+| 4 | `VN` | — | `TX` | USB serial (boot only) |
+| 5 | `IO34` | — | `RX` | USB serial (boot only) |
 | 6 | `IO35` | — | `IO21` | — |
-| 7 | `IO32` | Zander RX | `GND` | Logic ground |
-| 8 | `IO33` | Zander TX (optional) | `IO19` | — |
+| 7 | `IO32` | Zander RX (UART0) | `GND` | Ground |
+| 8 | `IO33` | Zander TX, optional (UART0) | `IO19` | — |
 | 9 | `IO25` | — | `IO18` | — |
-| 10 | `IO26` | FLARM RX | `IO5` | — |
-| 11 | `IO27` | FLARM TX (optional) | `IO17` | Becker TX |
-| 12 | `IO14` | — | `IO16` | Becker RX |
+| 10 | `IO26` | FLARM RX (UART1) | `IO5` | — |
+| 11 | `IO27` | FLARM TX, optional (UART1) | `IO17` | Becker TX (UART2) |
+| 12 | `IO14` | — | `IO16` | Becker RX via 10 kΩ (UART2) |
 | 13 | `IO12` | — | `IO4` | — |
-| 14 | `GND` | Logic ground | `IO0` | — |
+| 14 | `GND` | Ground | `IO0` | — |
 | 15 | `IO13` | — | `IO2` | — |
 | 16 | `D2` | — | `IO15` | — |
 | 17 | `D3` | — | `D1` | — |
 | 18 | `CMD` | — | `D0` | — |
-| 19 | `5V` | 5 V BEC input | `CLK` | — |
+| 19 | `5V` | 5 V from UBEC | `CLK` | — |
 
-> [!IMPORTANT]
-> Before wiring, match the board's module marking, two 19-pin headers, silkscreen and power contacts to the reference. The proposed Becker pins GPIO16/17 are available on WROOM boards and reserved internally on WROVER boards. Leave D0–D3, CMD and CLK free for flash. Verify regulator capacity for the navigation converters.
+GPIO16/17 are free only on WROOM boards (WROVER boards use them for PSRAM). D0–D3, CMD and CLK belong to the flash; leave them free. The pin plan avoids the boot strapping pins (GPIO0, 2, 5, 12, 15).
 
-[Espressif header tables and pin layout](https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32/esp32-devkitc/user_guide.html#header-block) · [Evidence (S32)](../research/sources.md#source-register)
+[Espressif header tables](https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32/esp32-devkitc/user_guide.html#header-block)
+
+---
 
 <a id="hailege-board-pad-reference"></a>
 
 ## Hailege H-1-0290 · RS-232
 
-| Chip-side reference | Inferred pad view |
-| --- | --- |
-| <img src="../images/hailege-h-1-0290-board.svg" width="240" alt="Hailege H-1-0290 board, chip side"> | <img src="../images/pinout-hailege.svg" width="420" alt="Hailege chip-side pad map. L1 ground, L2 supply, L3 RS-232 input, L4 RS-232 output. R1 TTL input, R2 TTL output, R3 supply, R4 ground. Continuity unknown."> |
+A MAX3232 RS-232 ↔ 3.3 V converter with edge pads. The pad map below is inferred from the seller image and the matching Sunrom layout (S26, S27); check it with a continuity test.
 
-[S26–S27](../research/sources.md#source-register)
+| Chip side | Pad map |
+| --- | --- |
+| <img src="../images/hailege-h-1-0290-board.svg" width="240" alt="Hailege H-1-0290 board, chip side"> | <img src="../images/pinout-hailege.svg" width="420" alt="Hailege chip-side pad map. L1 ground, L2 supply, L3 RS-232 input, L4 RS-232 output. R1 TTL input, R2 TTL output, R3 supply, R4 ground."> |
+
+Both sides share one supply: connect 3.3 V and GND on the TTL side (R3/R4) only.
+
+---
+
+<a id="becker-max490-board"></a>
+
+## RS-422 board (MAX490)
+
+A blue "RS422 TO TTL" board with a 4-pin header (TXD/RXD/GND/VCC) and four screw terminals (Y/Z/B/A), S34. The seller lists a MAX490, 5 V supply, 120 Ω termination and ESD protection.
+
+| Terminal | MAX490 function |
+| --- | --- |
+| A / B | Receiver input + / − (from the radio's TX2) |
+| Y / Z | Driver output + / − (to the radio's RX2) |
+| Header RXD / TXD | Receiver output (RO) and driver input (DI); check which is which on the board |
+
+At 5 V the receiver output idles near 5 V. It reaches the ESP32 only through the 10 kΩ series resistor — see [Becker wiring](wiring.md#becker-radio).
+
+---
+
+<a id="hobbywing-ubec"></a>
+
+## Hobbywing UBEC 3A (2–6S)
+
+<table>
+  <tr>
+    <td><img src="../images/hobbywing-ubec-3a-product.png" alt="Hobbywing UBEC with voltage jumper, ferrite ring and leads" width="320"></td>
+    <td><img src="../images/hobbywing-ubec-3a-dimensions.png" alt="Supplied UBEC image annotated 35 × 12 × 5 mm" width="320"></td>
+  </tr>
+</table>
+
+Set the jumper to 5 V. The manual describes reverse-input protection (S14). Allow space for the jumper, leads and ferrite ring; the body alone is about 35 × 12 × 5 mm in the supplied image, 43 × 17 × 7 mm per the catalog.
 
 ---
 
 ## Parts list
 
-Parts for one bridge.
+Bridge end only; device-side connectors and harness already exist. The existing bridge stays as a backup.
 
-| Ref / quantity | Part or specification | Status / use |
-| --- | --- | --- |
-| MCU / 1 | AZ-Delivery ESP32 WROOM dev module | [Candidate pinout](#esp32-pinout) · [Power](wiring.md#power) |
-| RS-232-mod1, RS-232-mod2 / 2 | Hailege H-1-0290 | [Zander](wiring.md#zander-zs1) and [FLARM](wiring.md#flarm) |
-| PS1 / 1 | Hobbywing UBEC 3A (2–6S), 86010010 | Selected at 5 V. [Module specs and photos](#hobbywing-ubec) · [Power](wiring.md#power) |
-| R-B / 1 | 1 kΩ series resistor at ESP32 UART RX | Owner-selected. GPIO voltage compliance unverified |
-| RS-422 mod / 1 | Selected 5 V MAX490 full-duplex RS-422 board | [Board and UART receive details](#becker-max490-board) · [Becker wiring](wiring.md#becker-radio) |
-| R-Z, R-F / 2 | 10 kΩ, 1%, at least 0.125 W | Proposed idle pull-ups for the Zander and FLARM converter inputs |
-| F1 / 1 | DC blade fuse with inline holder (bench candidate: 32 V DC ATO/ATOF) | [Current rating TBD](wiring.md#f1-sizing-inputs) |
-| Reverse-polarity stage / optional | Separate BEC input protection | Only if the BEC lacks adequate reverse-input protection |
-
-> [!IMPORTANT]
-> Keep the existing assembly and harness as backup. Hold F1 and holder purchase until the BEC, source and wiring limits are known.
+| Ref | Qty | Part | Use |
+| --- | :-: | --- | --- |
+| MCU | 1 | AZ-Delivery ESP32 WROOM dev module | [Pinout](#esp32-pinout) |
+| RS-232-mod1, mod2 | 2 | Hailege H-1-0290 | [Zander](wiring.md#zander-zs1), [FLARM](wiring.md#flarm) |
+| RS-422 mod | 1 | MAX490 RS-422 board, 5 V | [Becker](wiring.md#becker-radio) |
+| PS1 | 1 | Hobbywing UBEC 3A (2–6S), 86010010, set to 5 V | [Power](wiring.md#power) |
+| R-B | 1 | 10 kΩ resistor, 0.125 W | Series resistor, MAX490 RO → GPIO16 |
+| R-Z, R-F | 2 | 10 kΩ resistor, 0.125 W | Pull-up, RS-232 module R1 → 3.3 V |
+| F1 | 1 | 2 A ATO blade fuse, 32 V DC, with inline holder | [Power](wiring.md#power) |
+| — | as needed | Shielded cable with two twisted pairs | Becker RS-422 run |

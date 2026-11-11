@@ -49,3 +49,4 @@ All risks open.
 | K05 | P0 | Shared resources on the new bridge could interrupt navigation (A05/A06). | Record WP1 baseline; compare coexistence under WP6 conditions. |
 | K06 | P0 | Simulator could merely reproduce driver assumptions. | WP2 independent protocol evidence/vectors; label synthetic cases. Simulation never establishes physical acceptance. |
 | K07 | P1 | License, dependency or maintenance assumptions may prevent reuse. | WP3 inspect pinned license files and build dependencies. No code copying before permission is established. |
+| K08 | P1 | Switching noise from the UBEC or ESP32 could be heard in the VHF radio or open its squelch. | Bench and aircraft check with the bridge on and off ([bench bring-up](../hardware/wiring.md#bench-bring-up)). |

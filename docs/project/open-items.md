@@ -26,24 +26,25 @@ Reported state: [existing installation](existing-installation.md). Closing the i
 
 Design: [connections](../hardware/wiring.md) · [module specs](../hardware/modules.md).
 
-| Item | Needed | Resolves |
+| Item | Needed | How it is closed |
 | --- | --- | --- |
-| Device connectors | Connector photos; exact model and revisions | Correct pin view; FLARM/Zander/Becker applicability |
-| Becker J1 | Installed J1 revision, moulded pin numbers, pair polarity, D_GND bond | Becker wiring and reference |
-| MAX490 board | Chip identity, pinout, current draw, termination, protection; UART RX voltage compliance through power-up and power-down | Becker wiring, power rail and ESP32 input safety |
-| Hailege H-1-0290 (both) | Both sides, IC markings, continuity map, dimensions, 3.3 V operation | Inferred L/R pad map; equipment cable mapping |
-| ESP32 board | Module marking, header positions, regulator limits, current/thermal budget | Header positions, current budget |
-| UBEC and source | Delivered part, polarity, 5 V output, source voltage range, protection ratings, clearance | Power path |
-| Protection | F1 rating ([sizing inputs](../hardware/wiring.md#f1-sizing-inputs)); reverse-polarity and transient/overvoltage parts and ratings | Protection design; purchases |
-| Serial settings and returns | Return-traffic requirements; serial settings per device | Optional return wiring and port configuration |
-| Network settings | New-build network configuration and device endpoints | App and bridge configuration |
+| Device connectors | Photos of the installed connectors and exact device models/revisions (from Tom) | Confirms the pin views used in the wiring tables |
+| Becker J1 | Installed J1 revision, moulded pin numbers and which pins are already in use | Confirms the J1 pins and the J1-21 ground connection |
+| MAX490 board | Which header pin is RO and which is DI; termination; current draw | Bench check on the delivered board |
+| GPIO16 input | Voltage at GPIO16 behind the 10 kΩ resistor, also at power-up and power-down | Bench measurement |
+| Hailege modules | Continuity of both modules against the inferred pad map; IC marking | Bench check |
+| ESP32 board | Module marking and header positions match the DevKitC V4 reference | Visual check on the delivered board |
+| UBEC | 5 V output with and without load; fit in the enclosure | Bench measurement |
+| Current and fuse | Running current and switch-on inrush at 12 V, to confirm the 2 A fuse | Bench measurement |
+| Radio noise | No audible noise or squelch opening from the bridge | Check in the aircraft |
+| Return paths | Whether the Zander and FLARM return lines (GPIO33, GPIO27) are needed | Decides whether those wires are fitted |
 
 ## Protocol, software and acceptance (WP2, WP4–WP6)
 
 | Item | Needed | Blocks |
 | --- | --- | --- |
 | Protocol | Authoritative framing, ACK/NAK, CRC rules, status requests, channel conversion vectors ([details](../research/becker-driver.md#protocol-details-to-validate-independently)) | Driver plan; independent test vectors |
-| Radio configuration | Matching installation manual, serial settings, remote-control configuration | Wiring and port configuration |
+| Radio configuration | Matching installation manual, serial settings, remote-control configuration | Port configuration |
 | Application integration | AR62xx availability over TCP, simultaneous navigation connections, status presentation | Driver plan |
 | Firmware selection | Candidate audit, file licenses, reproducible build inputs ([ADR-02](../design/architecture.md#adr-02--implementation-and-reuse-baseline)) | Bridge implementation |
 | Driver regression | Embedded zero/A5, short frames, invalid CRC, unknown initial state, two instances, absent/late responses | Software verification (M3) |
