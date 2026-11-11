@@ -38,7 +38,7 @@ Write for a person building the bridge, not for an auditor.
 - Plain, complete sentences and clear tables. Say what to do, then why if it is not obvious.
 - State a page's or section's verification status once, at the top. Do not append "unverified", "remains open" or "confirm…" to individual cells or sentences.
 - Open questions live only in docs/project/open-items.md; other pages link to it.
-- Use warning boxes only for things that can damage hardware or affect flight safety. At most one per section.
+- Use warning boxes only for things that can damage hardware or affect flight safety, one box per hazard.
 - Each fact has one owning page; elsewhere, link to it instead of restating it.
 - No decision narratives or chronology of owner choices; record the current selection.
 - README: goal, scope, status and where to start.
@@ -57,11 +57,26 @@ Pages must be easy to scan for a human reader. Every page in docs/ (except the f
 | H2 sections | `## 1. <icon> Title`, each preceded by a stable `<a id="short-slug"></a>`; link to that id, never to the generated heading anchor |
 | H3 sections | `### 1.1 Title`, no icon |
 | Separators | `---` between H2 sections |
-| Alerts | `[!TIP]` for current selections/decisions, `[!WARNING]` for hazards only, at most one of each per section |
+| Alerts | `[!TIP]` for current selections/decisions (at most one per section), `[!WARNING]` for hazards only (one per hazard) |
 | Collapsibles | Only for large reference images. Summary: `<summary><b>🖼️ Show …</b> (click to expand)</summary>` |
 | Footer | `<kbd>[⬆️ Back to top](#top)</kbd> <kbd>[🏠 Overview](…)</kbd>` |
 
 Category icons: 🔧 Hardware · 🧩 Design · 📋 Project · 🔬 Research.
+
+### Visual elements
+
+Pick the element that makes the content easiest to scan, not plain paragraphs by default.
+
+| Element | Use it for |
+| --- | --- |
+| Alert boxes | `[!NOTE]` page status, `[!TIP]` current selection, `[!IMPORTANT]` a step the builder must not miss, `[!WARNING]` hazards |
+| Tables | Pin maps, parts, comparisons, option lists, status overviews |
+| Task lists (`- [ ]`) | Checklists the builder works through, such as bench checks |
+| Mermaid diagrams | Signal flow, power tree, sequences, state |
+| Code blocks | Commands, configuration, serial frames; always with a language tag |
+| Images and badges | Wiring diagrams, pin views, photos; local SVG badges such as the pin labels |
+| Math (`$…$`, `$$…$$`) | Calculations such as dividers, currents and fuse sizing |
+| Blockquotes | Short verbatim quotes from a source, with its source ID |
 
 ---
 
