@@ -7,7 +7,7 @@
 Mechanical design of the bridge: what goes inside, part sizes, connectors on the housing, internal layout.
 
 > [!NOTE]
-> **Status:** not modelled yet. Design rules and material selected ([section 2](#rules)); wall thickness and the remaining inputs: [open items](../project/open-items.md#housing).
+> **Status:** not modelled yet. Design rules, material and wall thickness selected ([section 2](#rules)); remaining inputs: [open items](../project/open-items.md#housing).
 
 📑 **On this page:** <kbd>[1 · 🎯 Requirements](#requirements)</kbd> <kbd>[2 · 📐 Design rules](#rules)</kbd> <kbd>[3 · 📏 Contents and sizes](#contents)</kbd> <kbd>[4 · 🔌 Connectors on the housing](#connectors)</kbd> <kbd>[5 · 🧩 Internal layout](#layout)</kbd>
 
@@ -45,7 +45,7 @@ Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md)
 | Connectors | XT30 and DE-9 together on one short side |
 | XT30 | Press fit is the design goal; glue only as a backup |
 | DE-9 | Rigid mount, screwed to the housing |
-| Walls | Thick enough for aircraft vibration — no thin walls (value: [open items](../project/open-items.md#housing)) |
+| Walls | 2.5 mm side walls, floor and cover; 3.5 mm connector wall (DE-9 screws, XT30 press fit); at least 2.0 mm of material around each M3 heat-set insert |
 | Edges | Rounded outside edges and corners, no sharp corners |
 | Location | Shaded spot in the cockpit, out of direct sun through the canopy |
 | Attachment | Cable-tie lugs on the housing to tie the closed housing to the aircraft |

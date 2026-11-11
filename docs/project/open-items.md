@@ -59,7 +59,7 @@ Inputs still needed before the housing can be modelled. Selected rules: [housing
 
 | # | Item | What is needed | How it is closed |
 | :-: | --- | --- | --- |
-| 10 | Print dimensions | Wall, floor and cover thickness; snap-fit clearance and hook size; press-fit interference for the XT30; hole sizes for the M3 heat-set inserts and screws; minimum feature size; print orientation without supports | Owner values, then a calibration print |
+| 10 | Print dimensions | Snap-fit clearance and hook size; press-fit interference for the XT30; hole sizes for the M3 heat-set inserts and screws; minimum feature size; print orientation without supports | Owner values, then a calibration print |
 | 11 | CAD workflow | Tool (for example Fusion), units, which files go into the repository (source file, STEP, STL/3MF) and where (`cad/housing/`) | Owner selection |
 
 ### 2.3 Construction
