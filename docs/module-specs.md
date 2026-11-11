@@ -5,7 +5,7 @@
 | Module | Power | Chip | Reported size |
 | --- | --- | --- | --- |
 | Hailege H-1-0290 (Zander and FLARM) | 3.3 V | MAX3232CSE (reported) | 9.4 × 15.9 mm |
-| Becker RS-422 board (model TBD) | 3.3 V required | [Chip candidates](#becker-rs422-chips) | TBD |
+| [Becker RS-422 board](#becker-max490-board) | 5 V | MAX490 (seller-reported) | 50 x 27 mm (reported) |
 | AZ-Delivery ESP32 WROOM dev module | 5 V input, 3.3 V regulator | — | — |
 | Hobbywing UBEC 3A (2–6S), 86010010 | 5.5–26 V input, jumper-selectable 5 V or 6 V at 3 A. Selected setting: 5 V | — | 43 × 17 × 7 mm (catalog) |
 
@@ -20,11 +20,21 @@ Verify clearance on the delivered unit including the jumper, leads, ferrite ring
 
 [Power module sources (S14, S16, S17, S19)](sources.md#source-register)
 
+<a id="becker-max490-board"></a>
+
+## Becker MAX490 board
+
+**Selected for bench design.** The supplied photos show a blue board marked RS422 TO TTL, a header marked TXD/RXD/GND/VCC, and four screw terminals marked Y/Z/B/A. The seller reports a MAX490, 5 V supply and UART logic, power and activity LEDs, 2.5 Mbit/s, up to 1000 m, 15 kV ESD protection, 10 Ω series resistance, protection diodes and 120 Ω termination. Treat rate, distance and protection figures as separate claims. Verify chip identity, header directions, resistor placement, effective termination and protection ratings. [Evidence (S34)](sources.md#source-register)
+
+**UART receive interface.** ESP32-WROOM-32 specifies VDD + 0.3 V as the upper input limit (3.6 V at nominal 3.3 V). A series resistor alone limits current only if there is a current path. The reviewed Espressif documents give no allowable continuous positive injection current for GPIO16 that would support sizing a resistor for a 5 V UART idle level. The seller's 10 Ω claim gives no basis for protecting this input.
+
+**Proposed interface.** Feed the module's receiver output into a SN74LVC1G17 powered from the ESP32 3.3 V rail, with a common UART ground. The buffer accepts up to 5.5 V and specifies partial-power-down behavior. The ESP32 TX can drive the MAX490 DI directly if the module header routes to DI without incompatible circuitry. The MAX490 DI high threshold is 2.0 V. Verify header routing and startup/shutdown behavior before connecting to the radio. [Evidence (S34)](sources.md#source-register)
+
 <a id="becker-rs422-chips"></a>
 
 ## Becker 3.3 V RS-422 chip candidates
 
-The board needs a 3.3 V supply, ESP32-compatible UART logic and separate differential transmit and receive pairs for full duplex. These parts meet the chip-level supply and duplex requirements. Board selection and Becker compatibility checks remain open.
+Alternative chip candidates for a native 3.3 V board. These parts support separate differential transmit and receive pairs. The selected 5 V board is documented above.
 
 | Chip | Rated data rate | Enable pins | Datasheet evidence |
 | --- | --- | --- | --- |
@@ -75,7 +85,7 @@ Verify the assembled board's supply and UART levels in both directions, terminal
 | 19 | `5V` | 5 V BEC input | `CLK` | — |
 
 > [!IMPORTANT]
-> Before wiring, match the board's module marking, two 19-pin headers, silkscreen and power contacts to the reference. The proposed Becker pins GPIO16/17 are available on WROOM boards and reserved internally on WROVER boards. Leave D0–D3, CMD and CLK free for flash. Verify regulator capacity for the navigation converters. The Becker board's 3.3 V rail is TBD.
+> Before wiring, match the board's module marking, two 19-pin headers, silkscreen and power contacts to the reference. The proposed Becker pins GPIO16/17 are available on WROOM boards and reserved internally on WROVER boards. Leave D0–D3, CMD and CLK free for flash. Verify regulator capacity for the navigation converters.
 
 [Espressif header tables and pin layout](https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32/esp32-devkitc/user_guide.html#header-block) · [Evidence (S32)](sources.md#source-register)
 

@@ -19,7 +19,7 @@ One new ESP32 bridge. Preserve the existing setup as backup.
 | R06 | P0 | Match electrical interface and serial configuration to the actual equipment. | WP2 records exact applicable manual, connector view, directions, levels and settings. No direct incompatible signals on ESP32 GPIO. |
 | R07 | P1 | Make results reproducible and minimize custom development. | WP3 compares reuse options and licenses; WP5–WP6 record versions, configuration, steps, expected/actual results and limitations. |
 | R08 | P1 | Receive radio state where supported, and specify what OpenSoar can display. | WP2/WP4 establish readback and UI capability; WP5 covers the supported software behavior and limitations. |
-| R09 | P0 | Use a full-duplex RS-422 board with a 3.3 V supply and ESP32-compatible UART logic for Becker. | WP3 board selection, pinout and electrical checks. |
+| R09 | P0 | Use a full-duplex RS-422 board with UART levels within ESP32 limits for Becker. | WP3 board selection, pinout and electrical checks. |
 
 Deferred: active tuning, swap, volume/squelch, Larus, general XCSoar support, aircraft installation. Repository license undecided.
 
@@ -32,7 +32,7 @@ Deferred: active tuning, swap, volume/squelch, Larus, general XCSoar support, ai
 | ESP32 | AZ-Delivery ESP32 WROOM dev module (owner selection) | Confirm header positions, regulator limits and current/thermal budget |
 | Navigation | 2 × Hailege H-1-0290; reported MAX3232CSE, 9.4 × 15.9 mm (S26) | S27 inferred pad map; build operator: confirm IC/pad continuity, dimensions and 3.3 V operation |
 | Supply | Nominal 12 V battery → Hobbywing UBEC 3A (2–6S), part 86010010 → 5 V ESP32 → 3.3 V navigation converters | Confirm delivered part, 5 V output, source voltage range and protection ratings ([S14, S16](sources.md#source-register)) |
-| Radio | 3.3 V full-duplex RS-422 board required. Model TBD | Verify ESP32 logic levels, power budget, pinout and radio match |
+| Radio | Selected 5 V MAX490 full-duplex RS-422 board (S34) | Verify ESP32 logic levels, power budget, pinout and radio match |
 
 [Design](architecture.md) · [Wiring](connections.md) · [Parts list](connections.md#parts-list)
 

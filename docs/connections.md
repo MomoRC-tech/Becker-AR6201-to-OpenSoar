@@ -93,9 +93,9 @@ flowchart LR
 
 ![Proposed device to module to ESP32 path](images/wiring-becker.svg)
 
-| Becker J1 reference† | → / ← | RS-422 board signals | 3.3 V UART signals | → / ← | ESP32 |
+| Becker J1 reference† | → / ← | RS-422 board signals | Module UART signals | → / ← | ESP32 |
 | --- | :-: | --- | --- | :-: | --- |
-| 2 TX2+ / 9 TX2− | → | Differential receive pair | UART output | → | GPIO16 (<img src="images/pins/rx.svg" alt="RX" width="20" height="14">) |
+| 2 TX2+ / 9 TX2− | → | Differential receive pair | 5 V-domain UART output | → | GPIO16 via proposed level buffer (<img src="images/pins/rx.svg" alt="RX" width="20" height="14">) |
 | 3 RX2+ / 10 RX2− | ← | Differential transmit pair | UART input | ← | GPIO17 (<img src="images/pins/tx.svg" alt="TX" width="20" height="14">) |
 | 21 D_GND | — | Bond **UNKNOWN** | — | — | — |
 | — | — | — | GND | — | GND contact |
@@ -131,7 +131,7 @@ flowchart LR
     B --> V["Output protection if required: UNKNOWN"] --> E["ESP32 5 V input (ref. J2-19)"]
     E --> R[Board 3.3 V regulator]
     R --> C["RS-232-mod1 / RS-232-mod2"]
-    TBD["3.3 V rail: source TBD"] --> Q["Becker RS-422 board"]
+    V --> Q["Becker MAX490 board: 5 V"]
 ```
 
 | From | To | Status |
@@ -140,7 +140,7 @@ flowchart LR
 | BEC output return | ESP32 GND contact | Common logic ground; source return design pending |
 | ESP32 3.3 V ([ref. J2-1](module-specs.md#esp32-pinout)) | RS-232-mod1 R3 (`+`) | Proposed; module check pending |
 | ESP32 3.3 V ([ref. J2-1](module-specs.md#esp32-pinout)) | RS-232-mod2 R3 (`+`) | Proposed; module check pending |
-| 3.3 V rail **TBD** | RS-422 board supply | Verify board current and regulator capacity |
+| Regulated 5 V | MAX490 board VCC | Verify board pinout, current draw and BEC output |
 | ESP32 GND contact | RS-232-mod1 R4 (`−`) | Proposed; continuity pending |
 | ESP32 GND contact | RS-232-mod2 R4 (`−`) | Proposed; continuity pending |
 | ESP32 GND contact | RS-422 module GND contact | Proposed logic return |
@@ -176,7 +176,7 @@ Parts for one bridge.
 | MCU / 1 | AZ-Delivery ESP32 WROOM dev module | [Candidate pinout](module-specs.md#esp32-pinout) · [Power](#power) |
 | RS-232-mod1, RS-232-mod2 / 2 | Hailege H-1-0290 | [Zander](#zander-zs1) and [FLARM](#flarm) |
 | PS1 / 1 | Hobbywing UBEC 3A (2–6S), 86010010 | Selected at 5 V. [Module specs and photos](module-specs.md#hobbywing-ubec) · [Power](#power) |
-| RS-422 mod / 1 | Full-duplex RS-422 board, 3.3 V supply and ESP32-compatible UART logic | Model TBD. [Chip candidates](module-specs.md#becker-rs422-chips) · [Becker wiring](#becker-radio) |
+| RS-422 mod / 1 | Selected 5 V MAX490 full-duplex RS-422 board | [Board and proposed UART buffer](module-specs.md#becker-max490-board) · [Becker wiring](#becker-radio) |
 | R-Z, R-F / 2 | 10 kΩ, 1%, at least 0.125 W | Proposed idle pull-ups for the Zander and FLARM converter inputs |
 | F1 / 1 | DC blade fuse with inline holder (bench candidate: 32 V DC ATO/ATOF) | [Current rating TBD](#f1-sizing-inputs) |
 | Reverse-polarity stage / optional | Separate BEC input protection | Only if the BEC lacks adequate reverse-input protection |
@@ -196,4 +196,4 @@ Parts for one bridge.
 | Both H-1-0290 sides, IC markings + continuity map | Confirm inferred L/R pad map; equipment cable mapping |
 | ESP32 header/regulator checks and BEC/source limits | Header positions, current budget, protection |
 | Return-traffic requirements + serial settings | Optional return wiring and port configuration |
-| Identify a 3.3 V full-duplex RS-422 board and verify pinout, logic levels, current draw, series resistance and termination | Becker wiring, power rail and reference |
+| Verify MAX490 board pinout, current draw, termination and buffered UART levels through power-up and power-down | Becker wiring, power rail and reference |

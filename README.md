@@ -42,11 +42,11 @@ flowchart LR
 | --- | --- |
 | Build | New bridge; existing assembly/harness retained as backup |
 | Selected hardware | AZ-Delivery WROOM-32; 2 × Hailege H-1-0290; Hobbywing UBEC at 5 V; board-derived 3.3 V for navigation converters |
-| Radio interface | Full-duplex RS-422 board with 3.3 V supply and ESP32-compatible UART logic. Model TBD |
+| Radio interface | Selected 5 V MAX490 full-duplex RS-422 board. ESP32 receive level conversion pending |
 | Deferred controls | Active tuning, swap, volume/squelch |
 
 > [!WARNING]
-> Board selection and electrical compatibility checks are open. See the [wiring checks](docs/connections.md#becker-radio).
+> Electrical compatibility checks are open. See the [wiring checks](docs/connections.md#becker-radio).
 
 ---
 
