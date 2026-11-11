@@ -16,13 +16,13 @@ One ESP32 Wi-Fi bridge that connects a FLARM, a Zander ZS1 vario and a Becker AR
 
 ## 1. 🎯 What it does
 
-![Signal overview: Zander and FLARM into the ESP32 bridge, receive only; Becker in both directions; ESP32 to OpenSoar over Wi-Fi](docs/images/wiring-overview.svg)
+![Overview: vario Zander ZS1 and collision warning Classic FLARM send data to the Wi-Fi bridge; radio Becker AR6201 exchanges data both ways; the bridge talks to the navigation app OpenSoar over Wi-Fi](docs/images/overview.svg)
 
 | Device | What the bridge does |
 | --- | --- |
-| 📡 FLARM | Sends traffic and navigation data to OpenSoar |
-| 📈 Zander ZS1 | Sends flight and navigation data to OpenSoar |
-| 📻 Becker AR6201 | Puts the selected airfield frequency into standby; reports radio status where supported |
+| 📈 Vario: Zander ZS1 | Sends flight and navigation data to OpenSoar |
+| 📡 Collision warning: Classic FLARM | Sends traffic and navigation data to OpenSoar |
+| 📻 Radio: Becker AR6201 | Puts the selected airfield frequency into standby; reports radio status where supported |
 
 The bridge never changes the active frequency, and the radio's own controls keep working. Not planned: active tuning, frequency swap, volume and squelch.
 
