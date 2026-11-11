@@ -1,0 +1,6 @@
+# Preserve third-party CAD exports byte-for-byte; suppress generated geometry diffs.
+*.STEP binary
+*.SLDPRT binary
+*.SLDASM binary
+*.3MF binary
+*.jpg binary

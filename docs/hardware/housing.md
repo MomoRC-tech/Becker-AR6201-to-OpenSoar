@@ -46,7 +46,23 @@ Sizes from owner measurements, seller listings or datasheets; see the source col
 | DE-9 female socket | 1 | Standard D-sub shell | — | Exact part open |
 | Resistors (divider, pull-ups) | 5 | Small | — | R-B1, R-B2, R-Z, R-F, R-D |
 
-### 2.1 RS-232 CAD reference
+### 2.1 ESP32 CAD reference
+
+Use the [STEP assembly](../../cad/reference/esp32-devkitc-v4/ESP-WROOM-32D-Export/ESP32-WROOM-32D-Assembly.STEP) for preliminary layout. The [original download files and attribution](../../cad/reference/esp32-devkitc-v4/README.md) include SolidWorks files, 3MF and a preview (S42).
+
+| Dimension | CAD model (mm) | Delivered board (mm, S40) | Model minus measured (mm) |
+| --- | ---: | ---: | ---: |
+| Base PCB length | 48.26 | 48.5 | −0.24 |
+| Base PCB width | 28.10 | 28.5 | −0.40 |
+| PCB thickness | 1.60 | — | — |
+| Overall length, antenna and USB included | 54.86 | — | — |
+| Overall height, headers included | 14.23 | — | — |
+
+- Keep the delivered-board measurements for mounting design; this simplified DevKitC V4/WROOM-32D model is not an exact AZ-Delivery mechanical drawing.
+- Model axes: X = width, Y = height, Z = length. The PCB underside is Y = 0; pins extend to Y = −8.89 mm and the top reaches Y = 5.34 mm.
+- Do not uniformly scale the assembly to match the PCB: that changes the header pitch and component sizes too. Allow separately for the USB plug and wiring; physical fit checks belong to the [housing measurements](../project/open-items.md#housing).
+
+### 2.2 RS-232 CAD reference
 
 Use the [STEP model](../../cad/reference/rs232-uart-ttl-mini-max3232/RS232_TTL/RS232_TTL.STEP) for preliminary layout. The [original download files and attribution](../../cad/reference/rs232-uart-ttl-mini-max3232/README.md) include a Parasolid alternative (S41).
 
