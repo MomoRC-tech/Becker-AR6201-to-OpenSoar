@@ -26,7 +26,7 @@
 
 ## WP3 — bench hardware
 
-[Wiring and parts](connections.md#parts-list). Open checks cover ESP32 headers and regulator, BEC/source limits, H-1-0290 continuity, 3.3 V full-duplex RS-422 board selection and electrical checks, power budget and protection values.
+[Wiring and parts](connections.md#parts-list). [ESP32 header reference](connections.md#esp32-pinout) checked against the DevKitC V4 guide. Open checks cover physical board match and regulator capacity, BEC/source limits, H-1-0290 continuity, 3.3 V full-duplex RS-422 board selection and electrical checks, power budget and protection values.
 
 The Becker board requires a 3.3 V supply and ESP32-compatible UART logic. Model and 3.3 V rail remain open.
 

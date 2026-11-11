@@ -40,6 +40,41 @@ flowchart LR
 
 ---
 
+<a id="esp32-pinout"></a>
+
+### ESP32 DevKitC V4 pinout
+
+**Candidate for the AZ-Delivery WROOM-32 board.** View from the component side with the antenna at the top and Micro-USB at the bottom. J2 is on the left and J3 on the right. Count both headers from the antenna end. Header labels below follow Espressif's reference. RX and TX are from the ESP32's perspective.
+
+| Position | J2 label | J2 bridge use | J3 label | J3 bridge use |
+| ---: | --- | --- | --- | --- |
+| 1 | `3V3` | Navigation converters' 3.3 V supply | `GND` | Logic ground |
+| 2 | `EN` | — | `IO23` | — |
+| 3 | `VP` | — | `IO22` | — |
+| 4 | `VN` | — | `TX` | UART0 TX (USB serial) |
+| 5 | `IO34` | — | `RX` | UART0 RX (USB serial) |
+| 6 | `IO35` | — | `IO21` | — |
+| 7 | `IO32` | Zander RX | `GND` | Logic ground |
+| 8 | `IO33` | Zander TX (optional) | `IO19` | — |
+| 9 | `IO25` | — | `IO18` | — |
+| 10 | `IO26` | FLARM RX | `IO5` | — |
+| 11 | `IO27` | FLARM TX (optional) | `IO17` | Becker TX |
+| 12 | `IO14` | — | `IO16` | Becker RX |
+| 13 | `IO12` | — | `IO4` | — |
+| 14 | `GND` | Logic ground | `IO0` | — |
+| 15 | `IO13` | — | `IO2` | — |
+| 16 | `D2` | — | `IO15` | — |
+| 17 | `D3` | — | `D1` | — |
+| 18 | `CMD` | — | `D0` | — |
+| 19 | `5V` | 5 V BEC input | `CLK` | — |
+
+> [!IMPORTANT]
+> Before wiring, match the board's module marking, two 19-pin headers, silkscreen and power contacts to the reference. The proposed Becker pins GPIO16/17 are available on WROOM boards and reserved internally on WROVER boards. Leave D0–D3, CMD and CLK free for flash. Verify regulator capacity for the navigation converters. The Becker board's 3.3 V rail is TBD.
+
+[Espressif header tables and pin layout](https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32/esp32-devkitc/user_guide.html#header-block) · [AZ-Delivery pinout](https://cdn.shopify.com/s/files/1/1509/1638/files/ESP32_DevKit_C_V4_Pinout.pdf?v=1615364529) · [Evidence (S32)](sources.md#source-register)
+
+---
+
 <a id="hailege-board-pad-reference"></a>
 <a id="converter-modules"></a>
 
@@ -162,7 +197,7 @@ flowchart LR
     F1 --> P["Reverse protection: UNKNOWN"]
     P --> I[Input node] --> B["BEC: 5 V"]
     I --- T["Transient clamp to return: UNKNOWN"]
-    B --> V["Output protection if required: UNKNOWN"] --> E["ESP32 5 V input: position UNKNOWN"]
+    B --> V["Output protection if required: UNKNOWN"] --> E["ESP32 5 V input (ref. J2-19)"]
     E --> R[Board 3.3 V regulator]
     R --> C["RS-232-mod1 / RS-232-mod2"]
     TBD["3.3 V rail: source TBD"] --> Q["Becker RS-422 board"]
@@ -170,10 +205,10 @@ flowchart LR
 
 | From | To | Status |
 | --- | --- | --- |
-| Protected BEC 5 V output | ESP32 5 V input contact **UNKNOWN** | Verify 5 V header position and BEC output |
+| Protected BEC 5 V output | ESP32 5 V input ([ref. J2-19](#esp32-pinout)) | Confirm board match and BEC output |
 | BEC output return | ESP32 GND contact | Common logic ground; source return design pending |
-| ESP32 3.3 V contact **UNKNOWN** | RS-232-mod1 R3 (`+`) | Proposed; module check pending |
-| ESP32 3.3 V contact **UNKNOWN** | RS-232-mod2 R3 (`+`) | Proposed; module check pending |
+| ESP32 3.3 V ([ref. J2-1](#esp32-pinout)) | RS-232-mod1 R3 (`+`) | Proposed; module check pending |
+| ESP32 3.3 V ([ref. J2-1](#esp32-pinout)) | RS-232-mod2 R3 (`+`) | Proposed; module check pending |
 | 3.3 V rail **TBD** | RS-422 board supply | Verify board current and regulator capacity |
 | ESP32 GND contact | RS-232-mod1 R4 (`−`) | Proposed; continuity pending |
 | ESP32 GND contact | RS-232-mod2 R4 (`−`) | Proposed; continuity pending |
@@ -207,7 +242,7 @@ Parts for one bridge.
 
 | Ref / quantity | Part or specification | Status / use |
 | --- | --- | --- |
-| MCU / 1 | AZ-Delivery ESP32 WROOM dev module | [Power](#power) |
+| MCU / 1 | AZ-Delivery ESP32 WROOM dev module | [Candidate pinout](#esp32-pinout) · [Power](#power) |
 | RS-232-mod1, RS-232-mod2 / 2 | Hailege H-1-0290 | [Zander](#zander-zs1) and [FLARM](#flarm) |
 | PS1 / 1 | 5 V BEC | [Power](#power) |
 | RS-422 mod / 1 | Full-duplex RS-422 board, 3.3 V supply and ESP32-compatible UART logic | Model TBD. [Becker](#becker-radio) |
