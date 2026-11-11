@@ -114,7 +114,7 @@ Start at the loose ends of the existing Becker harness ([installed wiring](../pr
 | 11 | SHIELD_2 | — (cable shield) | Shield of the auxiliary control interface |
 | 21 | D_GND | GND | Signal reference |
 
-Run TX2± and RX2± as two separate twisted pairs in a shielded cable, as Becker requires for the interface lines (S10). Connect the shield to J1-11 at the radio end only and leave it unconnected at the bridge end, so it carries no ground current. Connect J1-21 to the board GND with a separate wire in the same cable, not the shield or drain wire. J1-21 also closes ground loop L1; see [grounding and loops](power.md#ground).
+Run TX2± and RX2± as two separate twisted pairs in a shielded cable, as Becker requires for the interface lines (S10). Connect the shield to J1-11 at the radio end only and leave it unconnected at the bridge end, so it carries no ground current. Connect J1-21 to the board GND with a separate wire in the same cable, not the shield or drain wire. J1-21 also closes ground loop B; see [grounding and loops](power.md#ground).
 
 ### 4.2 ESP32 side — board header
 
