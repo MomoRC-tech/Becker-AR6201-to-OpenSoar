@@ -17,7 +17,7 @@ Tom reports Zander and FLARM reception through the existing ESP32 and no Becker 
 | Zander ZS1; only two Zanders | ZS1 is reported. “Only two” is too ambiguous to establish compatibility: the supplied handbook distinguishes ZS1, ZS1G and ZS1R and references SR940; software and options also matter. S22 pp.2/48/50 |
 | No RS-232 converter because no DE9 connector | Incorrect reasoning. RS-232 is an electrical interface; RJ45 and DE9 are connector forms. Classic FLARM explicitly uses RS-232 over RJ45. ESP GPIO is not RS-232; Espressif specifies 3.6 V maximum GPIO tolerance. Conversion may be concealed or discrete; its presence/absence is unverified. S23/S19 |
 | Instrument TX is tapped into ESP32 | Receive-only forwarding is plausible, but the actual level conversion, signal reference and return wiring are unknown. The word “processed” does not establish whether firmware parses or merely forwards bytes. No direct instrument-to-GPIO wiring established. |
-| Both have RJ45; FLARM signal/interface is uniform across navigation systems | Partly. Classic Power/Data is RJ45/RS-232; shared sentence definitions do not make every port, setting or parser identical. The Zander crop shows eight contacts with different data assignments; actual connector/view remains unverified. See [connector evidence](../connections.md#zander-zs1). |
+| Both have RJ45; FLARM signal/interface is uniform across navigation systems | Partly. Classic Power/Data is RJ45/RS-232; shared sentence definitions do not make every port, setting or parser identical. The Zander crop shows eight contacts with different data assignments; actual connector/view remains unverified. See [connector evidence](../../hardware/wiring.md#zander-zs1). |
 | Zander emits all listed flight/navigation values; OpenSoar understands them | The 3037 supplement lists them; the reviewed OpenSoar driver consumes only a subset. See table below. Installed ZS1 and OpenSoar versions unknown. |
 | Latest Zander has FLARM input; unused here | 3037 supplement confirms a FLARM function exists; it does not establish which hardware revision first had that socket. No FLARM-to-Zander connection and an inactive input are reported; menu setting unverified. |
 | 12 V bus, Hobbywing 3A UBEC 2–6S; instruments separately powered | Consistent with manufacturer part 86010010: 5.5–26 V input, jumper-selectable **5 or 6 V** output. Installed setting/output and board supply connection unmeasured. Separate instrument supplies are reported, not evidence of galvanic isolation. S14/S21 |
@@ -70,8 +70,8 @@ Distance/absolute target altitude may be derived from relative data. A Classic t
 
 | Document | Verified version / useful scope | Retention |
 | --- | --- | --- |
-| [ZS1 handbook](../reference/ZS1_Deutsch.pdf) | `ZS1_Man_d`, D3029, 2004-09-16; pp.46/48 PC/NMEA cable. Older than the supplement; not a complete 3037 reference | Unmodified supplied PDF, 51 pages |
-| [ZS1 NMEA supplement](../reference/ZS1_NMEA_3037.pdf) | Program 3037, 2010-10-14; 2 pages, German/English | Unmodified supplied PDF; preferred supplied sentence reference for 3037 |
+| [ZS1 handbook](../../reference/ZS1_Deutsch.pdf) | `ZS1_Man_d`, D3029, 2004-09-16; pp.46/48 PC/NMEA cable. Older than the supplement; not a complete 3037 reference | Unmodified supplied PDF, 51 pages |
+| [ZS1 NMEA supplement](../../reference/ZS1_NMEA_3037.pdf) | Program 3037, 2010-10-14; 2 pages, German/English | Unmodified supplied PDF; preferred supplied sentence reference for 3037 |
 | [FTD-012 Data Port ICD](https://www.flarm.com/wp-content/uploads/2025/09/FTD-012-Data-Port-Interface-Control-Document-ICD-7.22.pdf) | History p.2 confirms 7.22 dated 2025-09-24 despite stale page headers “1.1 / 2022-06-06”; manufacturer catalog lists this download | Serial reference (S23) |
 | [Classic FLARM installation manual](https://www.flarm.com/wp-content/uploads/2024/04/FLARM_InstallationManual_D.pdf) | v221, 2016-12-18; still manufacturer's listed F6/F7/F8/F9 manual. Upload date 2024 is not the manual date | Model-family connector reference; actual match pending |
 
@@ -88,4 +88,4 @@ Supplied file SHA-256:
 
 ## Verification
 
-The ZS1 reference PDFs were extracted; Zander NMEA p.1/handbook p.46 and FLARM connector p.6/revision-history p.2 rendered and visually checked; both supplied diagrams inspected. Manufacturer sources and pinned parser functions checked; both saved PDFs hash-matched. No application builds/tests, live traffic, voltage/continuity measurements, firmware changes, radio commands or aircraft work. WP1/WP2 remain open; [remaining evidence](../roadmap.md#current-state).
+The ZS1 reference PDFs were extracted; Zander NMEA p.1/handbook p.46 and FLARM connector p.6/revision-history p.2 rendered and visually checked; both supplied diagrams inspected. Manufacturer sources and pinned parser functions checked; both saved PDFs hash-matched. No application builds/tests, live traffic, voltage/continuity measurements, firmware changes, radio commands or aircraft work. WP1/WP2 remain open; [remaining evidence](../../project/roadmap.md#current-state).

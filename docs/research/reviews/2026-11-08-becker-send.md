@@ -27,7 +27,7 @@ S12 · 2026-11-08 · R01/R03/R04. Host reproduction. App patch, deployment and p
 
 ## Measured host reproduction
 
-Harness: [check_becker_send.py](../../tools/check_becker_send.py).
+Harness: [check_becker_send.py](../../../tools/check_becker_send.py).
 
 | Method | Scope |
 | --- | --- |

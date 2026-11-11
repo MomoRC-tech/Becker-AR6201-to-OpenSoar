@@ -1,8 +1,10 @@
 # Requirements
 
+[← Project overview](../../README.md)
+
 What the bridge must do, the assumptions behind the plan and the risks. One new ESP32 bridge; the existing setup stays as backup. Physical operation is unverified.
 
-[Open items](open-items.md) · [Roadmap](roadmap.md) · [Evidence labels](sources.md#evidence-labels)
+[Open items](../project/open-items.md) · [Roadmap](../project/roadmap.md) · [Evidence labels](../research/sources.md#evidence-labels)
 
 ## Requirements
 

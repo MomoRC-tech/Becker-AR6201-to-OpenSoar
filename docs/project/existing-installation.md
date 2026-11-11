@@ -1,8 +1,10 @@
 # Existing installation
 
-The WP1 record of the bridge already in the aircraft: DG200 Zander/FLARM → ESP32 Wi-Fi → OpenSoar, no working Becker integration (reported, S21). No measured baseline. The assembly stays as backup ([ADR-03](architecture.md#adr-03--new-hardware-with-the-existing-setup-as-backup)); no component reuse planned.
+[← Project overview](../../README.md)
 
-[Claim assessment and verification, 2026-11-09](reviews/2026-11-09-installation-claims.md) · [Open items](open-items.md#installed-equipment-wp1) · [Evidence labels](sources.md#evidence-labels)
+The WP1 record of the bridge already in the aircraft: DG200 Zander/FLARM → ESP32 Wi-Fi → OpenSoar, no working Becker integration (reported, S21). No measured baseline. The assembly stays as backup ([ADR-03](../design/architecture.md#adr-03--new-hardware-with-the-existing-setup-as-backup)); no component reuse planned.
+
+[Claim assessment and verification, 2026-11-09](../research/reviews/2026-11-09-installation-claims.md) · [Open items](open-items.md#installed-equipment-wp1) · [Evidence labels](../research/sources.md#evidence-labels)
 
 ## Reported equipment
 

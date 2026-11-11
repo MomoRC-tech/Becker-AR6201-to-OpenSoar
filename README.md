@@ -30,17 +30,17 @@ The bridge preserves the active frequency, the radio's local controls and both n
 | Firmware and driver changes | ⬜ Planned; not approved |
 | Aircraft integration | ⬜ Deferred |
 
-**Next step:** confirm the installed equipment — [open items, WP1](docs/open-items.md#installed-equipment-wp1).
+**Next step:** confirm the installed equipment — [open items, WP1](docs/project/open-items.md#installed-equipment-wp1).
 
 > [!WARNING]
-> Planning stage. Nothing is verified on hardware. Complete the [open hardware checks](docs/open-items.md#bench-hardware-wp3) before connecting anything.
+> Planning stage. Nothing is verified on hardware. Complete the [open hardware checks](docs/project/open-items.md#bench-hardware-wp3) before connecting anything.
 
 ## Start here
 
 | I want to… | Go to |
 | --- | --- |
-| Wire or build it | [Connections](docs/connections.md) · [Module specs](docs/module-specs.md) |
-| Understand the design | [Architecture](docs/architecture.md) · [Requirements and risks](docs/requirements.md) |
-| See what is open | [Open items](docs/open-items.md) · [Roadmap](docs/roadmap.md) · [Existing installation](docs/existing-installation.md) |
-| Check the evidence | [Sources](docs/sources.md) · [Becker driver research](docs/becker-driver.md) · [Reviews](docs/reviews) · [Bridge firmware candidates](docs/bridge-firmware.md) |
+| Wire or build it | [Wiring](docs/hardware/wiring.md) · [Modules and parts](docs/hardware/modules.md) |
+| Understand the design | [Architecture](docs/design/architecture.md) · [Requirements and risks](docs/design/requirements.md) |
+| See what is open | [Open items](docs/project/open-items.md) · [Roadmap](docs/project/roadmap.md) · [Existing installation](docs/project/existing-installation.md) |
+| Check the evidence | [Sources](docs/research/sources.md) · [Becker driver research](docs/research/becker-driver.md) · [Reviews](docs/research/reviews) · [Bridge firmware candidates](docs/research/bridge-firmware.md) |
 | Contribute | [Work instructions](AGENTS.md) |

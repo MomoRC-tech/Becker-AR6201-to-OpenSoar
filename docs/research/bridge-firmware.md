@@ -1,6 +1,8 @@
 # Bridge firmware candidates
 
-No firmware is selected ([ADR-02](architecture.md#adr-02--implementation-and-reuse-baseline)). Candidate order: Yuri, then the basic AlphaLima sketch. Required of any candidate: bounded and checked forwarding, isolated diagnostics, exclusive command ownership, navigation coexistence.
+[← Project overview](../../README.md)
+
+No firmware is selected ([ADR-02](../design/architecture.md#adr-02--implementation-and-reuse-baseline)). Candidate order: Yuri, then the basic AlphaLima sketch. Required of any candidate: bounded and checked forwarding, isolated diagnostics, exclusive command ownership, navigation coexistence.
 
 Source review, 2026-11-08. Candidate builds and hardware tests are pending. Review file-level licenses before reuse.
 

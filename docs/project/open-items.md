@@ -1,8 +1,10 @@
 # Open items
 
+[← Project overview](../../README.md)
+
 The one list of what is missing, who supplies it and what it blocks. All items are open.
 
-[Roadmap](roadmap.md) · [Assumptions](requirements.md#assumptions) · [Evidence labels](sources.md#evidence-labels)
+[Roadmap](roadmap.md) · [Assumptions](../design/requirements.md#assumptions) · [Evidence labels](../research/sources.md#evidence-labels)
 
 ## Installed equipment (WP1)
 
@@ -22,7 +24,7 @@ Reported state: [existing installation](existing-installation.md). Closing the i
 
 ## Bench hardware (WP3)
 
-Design: [connections](connections.md) · [module specs](module-specs.md).
+Design: [connections](../hardware/wiring.md) · [module specs](../hardware/modules.md).
 
 | Item | Needed | Resolves |
 | --- | --- | --- |
@@ -32,7 +34,7 @@ Design: [connections](connections.md) · [module specs](module-specs.md).
 | Hailege H-1-0290 (both) | Both sides, IC markings, continuity map, dimensions, 3.3 V operation | Inferred L/R pad map; equipment cable mapping |
 | ESP32 board | Module marking, header positions, regulator limits, current/thermal budget | Header positions, current budget |
 | UBEC and source | Delivered part, polarity, 5 V output, source voltage range, protection ratings, clearance | Power path |
-| Protection | F1 rating ([sizing inputs](connections.md#f1-sizing-inputs)); reverse-polarity and transient/overvoltage parts and ratings | Protection design; purchases |
+| Protection | F1 rating ([sizing inputs](../hardware/wiring.md#f1-sizing-inputs)); reverse-polarity and transient/overvoltage parts and ratings | Protection design; purchases |
 | Serial settings and returns | Return-traffic requirements; serial settings per device | Optional return wiring and port configuration |
 | Network settings | New-build network configuration and device endpoints | App and bridge configuration |
 
@@ -40,10 +42,10 @@ Design: [connections](connections.md) · [module specs](module-specs.md).
 
 | Item | Needed | Blocks |
 | --- | --- | --- |
-| Protocol | Authoritative framing, ACK/NAK, CRC rules, status requests, channel conversion vectors ([details](becker-driver.md#protocol-details-to-validate-independently)) | Driver plan; independent test vectors |
+| Protocol | Authoritative framing, ACK/NAK, CRC rules, status requests, channel conversion vectors ([details](../research/becker-driver.md#protocol-details-to-validate-independently)) | Driver plan; independent test vectors |
 | Radio configuration | Matching installation manual, serial settings, remote-control configuration | Wiring and port configuration |
 | Application integration | AR62xx availability over TCP, simultaneous navigation connections, status presentation | Driver plan |
-| Firmware selection | Candidate audit, file licenses, reproducible build inputs ([ADR-02](architecture.md#adr-02--implementation-and-reuse-baseline)) | Bridge implementation |
+| Firmware selection | Candidate audit, file licenses, reproducible build inputs ([ADR-02](../design/architecture.md#adr-02--implementation-and-reuse-baseline)) | Bridge implementation |
 | Driver regression | Embedded zero/A5, short frames, invalid CRC, unknown initial state, two instances, absent/late responses | Software verification (M3) |
 | Bridge reliability | Bidirectional all-byte tests, oversized bursts, slow clients, partial writes, reconnects, concurrent navigation | Software verification (M3) |
 | Physical acceptance | Frequency change and status readback on the real radio while preserving local controls and navigation | Aircraft integration |

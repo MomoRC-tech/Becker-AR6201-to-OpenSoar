@@ -2,7 +2,7 @@
 
 ## Scope and starting point
 
-This project is in investigation/planning. Read README.md, the current package in docs/roadmap.md, and only the source/documents needed for that package. Check repository status and preserve unrelated edits. Do not repeat whole-repository audits for a narrow task.
+This project is in investigation/planning. Read README.md, the current package in docs/project/roadmap.md, and only the source/documents needed for that package. Check repository status and preserve unrelated edits. Do not repeat whole-repository audits for a narrow task.
 
 The roadmap is the single work queue. A listed package, proposed ADR or recommendation is not implementation approval. Complete the user's authorized scope without repeated confirmation; ask only when missing information materially affects scope, cost, privacy, compatibility or an irreversible action. For a broad request to continue, use the next package and its stated boundaries.
 
@@ -10,7 +10,7 @@ The roadmap is the single work queue. A listed package, proposed ADR or recommen
 
 ## Evidence and engineering rules
 
-- Use docs/sources.md labels: rechecked source, prior review, reported, assumption/proposed, measured.
+- Use docs/research/sources.md labels: rechecked source, prior review, reported, assumption/proposed, measured.
 - Pin technical source claims to revision and file/function or manual issue/page. Report inference separately from observation. Earlier chat statements are context, not proof.
 - Match radio identity and hardware/software revision before choosing wiring or serial parameters. Never substitute candidate defaults for installed settings.
 - Do not infer radio acceptance from a TCP/serial write, nor infer actual acknowledgment bytes from constants in a driver.
@@ -27,7 +27,7 @@ One question or behavior change per increment. Before changing logic, identify t
 
 For documentation-only work, check consistency, relative links/anchors, source support and whitespace; do not build applications or run device tests. For logic changes, run relevant checks and record versions/results. State what was not tested. Simulation and static analysis are not physical acceptance. Do not add tests that only mirror the implementation's assumptions.
 
-Update the document that owns the information: requirements for requirements/assumptions/risks; existing-installation for the installed inventory; open-items for missing evidence and owners; sources for evidence; architecture for decisions; roadmap for work status. Keep documentation current. Remove superseded selections, guidance, references and assets once they no longer support the current project state. Use Git history for previous versions. Keep one concise verification summary per package, with detailed evidence only where useful.
+Update the document that owns the information: requirements for requirements/assumptions/risks; existing-installation for the installed inventory; open-items for missing evidence and owners; sources for evidence; architecture for decisions; wiring and modules for pinning, power and parts; roadmap for work status. Dated reviews in docs/research/reviews are frozen records. Keep documentation current. Remove superseded selections, guidance, references and assets once they no longer support the current project state. Use Git history for previous versions. Keep one concise verification summary per package, with detailed evidence only where useful.
 
 Use minimal technical wording: short fragments and tables. Remove repetition, decision narratives, personal justifications and chronology of owner choices. Record current selections/status, constraints, open items and necessary evidence only. Keep source/test dates and revisions where needed for traceability. README: goal, scope, architecture and next step.
 

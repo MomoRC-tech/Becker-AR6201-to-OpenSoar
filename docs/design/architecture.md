@@ -1,5 +1,9 @@
 # Architecture
 
+[← Project overview](../../README.md)
+
+How the bridge is split up, which hardware is selected and the decisions behind it. Selections are design decisions; implementation and physical acceptance are tracked separately.
+
 ## Responsibilities and routing
 
 | Component | Responsibility |
@@ -7,9 +11,9 @@
 | OpenSoar | Radio framing, channel conversion, state, responses |
 | ESP32 | Counted binary forwarding; separate radio/navigation/diagnostic paths |
 | Navigation | Preserve required messages, displays and return traffic |
-| Radio interface | ESP32 UART ↔ selected 5 V MAX490 full-duplex RS-422 board. Owner-selected 1 kΩ series resistor on UART RX. GPIO voltage compliance unverified |
+| Radio interface | ESP32 UART ↔ selected 5 V MAX490 full-duplex RS-422 board; [UART interface details and checks](../hardware/modules.md#becker-max490-board) |
 
-[Overview](../README.md#architecture-overview) · [Connections](connections.md)
+[Wiring](../hardware/wiring.md) · [Modules and parts](../hardware/modules.md) · [Requirements](requirements.md)
 
 ---
 
@@ -30,22 +34,19 @@
 
 ### Pinning and cabling
 
-[Connection tables](connections.md) own GPIOs, equipment pins, power and cabling.
+[Connection tables](../hardware/wiring.md) own GPIOs, equipment pins, power and cabling.
 
 ### OpenSoar baseline and pending inputs
 
-[Existing installation](existing-installation.md) records reported equipment and endpoints. [Open items](open-items.md).
+[Existing installation](../project/existing-installation.md) records reported equipment and endpoints. [Open items](../project/open-items.md).
 
 ---
 
 ## Decision record
 
-> [!NOTE]
-> Selections record design decisions. Implementation and physical acceptance are tracked separately.
-
 ### ADR-00 — repository as project record
 
-One queue: [roadmap](roadmap.md). Requirements: [requirements](requirements.md); missing evidence: [open items](open-items.md); evidence: [sources](sources.md); design: architecture/connections.
+One queue: [roadmap](../project/roadmap.md). Requirements: [requirements](requirements.md); missing evidence: [open items](../project/open-items.md); evidence: [sources](../research/sources.md); design: architecture/connections.
 
 ### ADR-01 — separate transparent radio path
 
@@ -53,7 +54,7 @@ One queue: [roadmap](roadmap.md). Requirements: [requirements](requirements.md);
 
 ### ADR-02 — implementation and reuse baseline
 
-**Open:** firmware selection. [Yuri/basic comparison](reviews/2026-11-08-yuri-bridge.md): Yuri needs exclusive radio ownership, diagnostic isolation and checked bounded writes. DroneBridge remains an alternative; multi-UART capability unverified. Review compatibility, file licenses and reproducible build inputs before reuse. Plan targeted OpenSoar fixes under WP4.
+**Open:** firmware selection. [Yuri/basic comparison](../research/reviews/2026-11-08-yuri-bridge.md): Yuri needs exclusive radio ownership, diagnostic isolation and checked bounded writes. DroneBridge remains an alternative; multi-UART capability unverified. Review compatibility, file licenses and reproducible build inputs before reuse. Plan targeted OpenSoar fixes under WP4.
 
 ### ADR-03 — new hardware with the existing setup as backup
 
@@ -61,7 +62,7 @@ One queue: [roadmap](roadmap.md). Requirements: [requirements](requirements.md);
 
 ### ADR-04 — selected bench hardware and power path
 
-**Selected:** ESP32, navigation converters and Hobbywing UBEC at 5 V. The 5 V MAX490 board is selected for Becker. UART interface verification remains open. [Wiring and parts](connections.md#parts-list).
+**Selected:** ESP32, navigation converters and Hobbywing UBEC at 5 V. The 5 V MAX490 board is selected for Becker. UART interface verification remains open. [Wiring and parts](../hardware/modules.md#parts-list).
 
 > [!IMPORTANT]
 > Fuse, reverse-polarity and transient/overvoltage protection are proposed. Parts, ratings and electrical acceptance remain open.

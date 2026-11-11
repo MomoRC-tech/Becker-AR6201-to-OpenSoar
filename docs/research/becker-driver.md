@@ -1,8 +1,10 @@
 # Becker driver research
 
+[← Project overview](../../README.md)
+
 What the OpenSoar AR62xx driver does, how other implementations differ and which protocol evidence is missing. Source inspection plus one host regression; no device tests. Application and device acceptance are open.
 
-[Sources](sources.md) · [Open items](open-items.md#protocol-software-and-acceptance-wp2-wp4wp6) · [Bridge firmware candidates](bridge-firmware.md)
+[Sources](sources.md) · [Open items](../project/open-items.md#protocol-software-and-acceptance-wp2-wp4wp6) · [Bridge firmware candidates](bridge-firmware.md)
 
 ## OpenSoar driver findings
 
