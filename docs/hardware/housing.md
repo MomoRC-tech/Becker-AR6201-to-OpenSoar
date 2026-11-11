@@ -39,11 +39,13 @@ Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md)
 | Topic | Rule |
 | --- | --- |
 | Manufacturing | 3D printed on a Bambu Lab P1S in PETG ([section 2.1](#material)) |
-| Cover | Separate cover held by M3 screws in heat-set inserts |
-| PCB mounting | All PCBs held by snap-fits |
+| Split | Shallow base tray (floor, low side walls, full-height connector wall) and a deep hood as the cover; connectors stay on the base when the hood is off |
+| Cover | Hood held by M3 screws in heat-set inserts in the base |
+| PCB mounting | Snap-fits locate and hold every PCB; ribs inside the hood press the PCBs down when it is closed, so vibration loads go into the hood, not the hooks |
+| ESP32 | Component side up; its pre-soldered header pins point up, and wires are soldered directly to them from above (not replaceable) |
 | Soldering | Every solder joint reachable with all PCBs fitted and the cover off |
 | Connectors | XT30 and DE-9 together on one short side |
-| XT30 | Press fit is the design goal; glue only as a backup |
+| XT30 | Press fit positions it; a shoulder in front and a hood rib behind capture it, so unplugging cannot pull it out; glue optional |
 | DE-9 | Rigid mount, screwed to the housing |
 | Walls | 2.5 mm side walls, floor and cover; 3.5 mm connector wall (DE-9 screws, XT30 press fit); at least 2.0 mm of material around each M3 heat-set insert |
 | Edges | Rounded outside edges and corners, no sharp corners |
@@ -148,7 +150,7 @@ Use the [STEP model](../../cad/reference/rs422-to-ttl-max490/rs422-to-ttl-max490
 **XT30 (power)** — electrical side: [power](power.md#supply)
 
 - Male on the housing, female on the powered harness.
-- Press-fit pocket with retaining shoulder; adhesive only as a backup.
+- Press-fit pocket; front shoulder and a hood rib behind capture it ([design rules](#rules)); adhesive optional.
 - Support the wires inside so mating forces don't load the solder joints.
 - Before the final pocket: measure the real connector, print a fit-test piece.
 

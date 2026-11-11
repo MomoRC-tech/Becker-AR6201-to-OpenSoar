@@ -66,9 +66,8 @@ Inputs still needed before the housing can be modelled. Selected rules: [housing
 
 | # | Item | What is needed | How it is closed |
 | :-: | --- | --- | --- |
-| 12 | Cover screws and inserts | Insert type and size in stock (length, outer diameter), screw head and length, number of screws | Owner selection |
-| 4 | Module layout and snap-fits | Where each PCB sits, snap-fit style per PCB (edge hooks, clip posts through the MAX490 holes); UBEC, F1 holder and ferrite ring held the same way or otherwise | Owner selection, fit test |
-| 13 | ESP32 replaceable or soldered | ESP32 plugged into female headers (replaceable, taller) or wires soldered to the pins (flatter, permanent) | Owner selection |
+| 12 | Hood screws and inserts | Insert type and size (length, outer diameter), screw head and length, number of screws | Owner, later |
+| 4 | Module layout and snap-fits | Where each PCB sits in the base tray; snap-fit style per PCB (edge hooks, clip posts through the MAX490 holes); how the UBEC, F1 holder and ferrite ring are held | Owner selection, fit test |
 | 14 | Internal wiring method | Point-to-point wires, or a small perfboard or carrier for the divider and pull-up resistors and the ground point; internal wire type and gauge; tie-down points and service loops | Owner selection |
 | 15 | Ventilation openings | Position and size of the openings; keep small parts and dirt out (slots, not open holes) | Owner selection |
 
