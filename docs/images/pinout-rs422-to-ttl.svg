@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="350" viewBox="0 0 560 350" role="img" aria-labelledby="title desc">
+<title id="title">RS422 TO TTL · component side</title>
+<desc id="desc">Component-side view, header at top. Header left to right: TXD, RXD, GND, VCC. TXD/RXD are printed labels, not a verified RO/DI assignment. Bottom screw terminals left to right: Y driver output positive, Z driver output negative, B receiver input negative, A receiver input positive. Supply is 5 V.</desc>
+<rect width="560" height="350" fill="white"/>
+<g font-family="Arial,sans-serif">
+<rect x="65" y="129" width="430" height="123" rx="8" fill="#eaf1fb" stroke="#9cb1cc"/>
+<rect x="76" y="119" width="68" height="28" rx="5" fill="#37474f"/>
+<rect x="189" y="119" width="68" height="28" rx="5" fill="#37474f"/>
+<rect x="302" y="119" width="68" height="28" rx="5" fill="#616161"/>
+<rect x="415" y="119" width="68" height="28" rx="5" fill="#ef6c00"/>
+<rect x="76" y="238" width="68" height="28" rx="5" fill="#37474f"/>
+<rect x="189" y="238" width="68" height="28" rx="5" fill="#37474f"/>
+<rect x="302" y="238" width="68" height="28" rx="5" fill="#37474f"/>
+<rect x="415" y="238" width="68" height="28" rx="5" fill="#37474f"/>
+<text x="18" y="29" font-size="21" fill="#172b4d" text-anchor="start" font-weight="700">RS422 TO TTL · component side</text>
+<text x="18" y="53" font-size="14" fill="#475569" text-anchor="start">Header at top · labels as printed (S34)</text>
+<text x="280" y="83" font-size="16" fill="#172b4d" text-anchor="middle" font-weight="700">TTL header</text>
+<text x="110" y="108" font-size="14" fill="#172b4d" text-anchor="middle">TTL signal</text>
+<text x="110" y="139" font-size="16" fill="white" text-anchor="middle" font-weight="700">TXD</text>
+<text x="223" y="108" font-size="14" fill="#172b4d" text-anchor="middle">TTL signal</text>
+<text x="223" y="139" font-size="16" fill="white" text-anchor="middle" font-weight="700">RXD</text>
+<text x="336" y="108" font-size="14" fill="#172b4d" text-anchor="middle">Ground</text>
+<text x="336" y="139" font-size="16" fill="white" text-anchor="middle" font-weight="700">GND</text>
+<text x="449" y="108" font-size="14" fill="#172b4d" text-anchor="middle">5 V supply</text>
+<text x="449" y="139" font-size="16" fill="white" text-anchor="middle" font-weight="700">VCC</text>
+<text x="280" y="190" font-size="18" fill="#172b4d" text-anchor="middle" font-weight="700">MAX490</text>
+<text x="280" y="216" font-size="14" fill="#475569" text-anchor="middle">RO → divider → ESP32 · ESP32 → DI</text>
+<text x="110" y="258" font-size="16" fill="white" text-anchor="middle" font-weight="700">Y</text>
+<text x="110" y="288" font-size="14" fill="#172b4d" text-anchor="middle">Output +</text>
+<text x="223" y="258" font-size="16" fill="white" text-anchor="middle" font-weight="700">Z</text>
+<text x="223" y="288" font-size="14" fill="#172b4d" text-anchor="middle">Output −</text>
+<text x="336" y="258" font-size="16" fill="white" text-anchor="middle" font-weight="700">B</text>
+<text x="336" y="288" font-size="14" fill="#172b4d" text-anchor="middle">Input −</text>
+<text x="449" y="258" font-size="16" fill="white" text-anchor="middle" font-weight="700">A</text>
+<text x="449" y="288" font-size="14" fill="#172b4d" text-anchor="middle">Input +</text>
+<text x="166" y="312" font-size="14" fill="#475569" text-anchor="middle">To radio RX2</text>
+<text x="392" y="312" font-size="14" fill="#475569" text-anchor="middle">From radio TX2</text>
+<text x="280" y="338" font-size="16" fill="#172b4d" text-anchor="middle" font-weight="700">RS-422 screw terminals</text>
+</g>
+</svg>

@@ -5,7 +5,7 @@ Writes the SVGs into docs/images. Edit the diagram sections below, run the
 script, and check the result in a browser before committing.
 
 Output: overview.svg (README), power-supply.svg, ground-loops.svg, wiring-overview.svg,
-wiring-zander.svg, wiring-flarm.svg, wiring-becker.svg.
+wiring-zander.svg, wiring-flarm.svg, wiring-becker.svg, pinout-rs422-to-ttl.svg.
 """
 import io
 import os
@@ -250,3 +250,32 @@ s.legend(492, ["v12", ("v5", "5 V in bridge"), ("gnd", "Supply ground"), ("sgnd"
 s.save("ground-loops.svg")
 
 print("ok")
+
+# ------------------------------------------------------- RS-422 module pin view
+s = Svg(560, 350, "RS422 TO TTL · component side",
+        "Component-side view, header at top. Header left to right: TXD, RXD, GND, VCC. "
+        "TXD/RXD are printed labels, not a verified RO/DI assignment. "
+        "Bottom screw terminals left to right: Y driver output positive, Z driver output negative, "
+        "B receiver input negative, A receiver input positive. Supply is 5 V.")
+s.text(18, 29, "RS422 TO TTL · component side", size=21, bold=True, anchor="start")
+s.text(18, 53, "Header at top · labels as printed (S34)", size=14, color=SUB, anchor="start")
+s.text(280, 83, "TTL header", size=16, bold=True)
+s.groups.append('<rect x="65" y="129" width="430" height="123" rx="8" fill="#eaf1fb" stroke="#9cb1cc"/>')
+for x, name, detail, kind in [(110, "TXD", "TTL signal", "data"),
+                              (223, "RXD", "TTL signal", "data"),
+                              (336, "GND", "Ground", "gnd"),
+                              (449, "VCC", "5 V supply", "v5")]:
+    s.text(x, 108, detail, size=14)
+    s.boxes.append(f'<rect x="{x-34}" y="119" width="68" height="28" rx="5" fill="{STYLE[kind]["color"]}"/>')
+    s.text(x, 139, name, color="white", size=16, bold=True)
+s.text(280, 190, "MAX490", size=18, bold=True)
+s.text(280, 216, "RO → divider → ESP32 · ESP32 → DI", size=14, color=SUB)
+for x, name, detail in [(110, "Y", "Output +"), (223, "Z", "Output −"),
+                         (336, "B", "Input −"), (449, "A", "Input +")]:
+    s.boxes.append(f'<rect x="{x-34}" y="238" width="68" height="28" rx="5" fill="{STYLE["data"]["color"]}"/>')
+    s.text(x, 258, name, color="white", size=16, bold=True)
+    s.text(x, 288, detail, size=14)
+s.text(166, 312, "To radio RX2", size=14, color=SUB)
+s.text(392, 312, "From radio TX2", size=14, color=SUB)
+s.text(280, 338, "RS-422 screw terminals", size=16, bold=True)
+s.save("pinout-rs422-to-ttl.svg")
