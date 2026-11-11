@@ -26,11 +26,11 @@
 
 ## WP3 — bench hardware
 
-[Wiring and parts](connections.md#parts-list). [ESP32 header reference](connections.md#esp32-pinout) checked against the DevKitC V4 guide. Open checks cover physical board match and regulator capacity, BEC/source limits, H-1-0290 continuity, 3.3 V full-duplex RS-422 board selection and electrical checks, power budget and protection values.
+[Wiring and parts](connections.md#parts-list). [ESP32 header reference](module-specs.md#esp32-pinout) checked against the DevKitC V4 guide. Open checks cover physical board match and regulator capacity, BEC/source limits, H-1-0290 continuity, 3.3 V full-duplex RS-422 board selection and electrical checks, power budget and protection values.
 
 The Becker board requires a 3.3 V supply and ESP32-compatible UART logic. Model and 3.3 V rail remain open.
 
-The [Hailege pin map](connections.md#hailege-board-pad-reference) is inferred from the supplied image and S27. ZS1 D3029 pp.46/48 and Classic FLARM v221 pp.6/7 were rechecked. Confirm pad continuity on both boards, enclosure clearance, equipment connector views and signal references. Electrical and device checks remain open.
+The [Hailege pin map](module-specs.md#hailege-board-pad-reference) is inferred from the supplied image and S27. ZS1 D3029 pp.46/48 and Classic FLARM v221 pp.6/7 were rechecked. Confirm pad continuity on both boards, enclosure clearance, equipment connector views and signal references. Electrical and device checks remain open.
 
 The [power diagram](connections.md#power) shows F1 near the battery. [Sizing inputs](connections.md#f1-sizing-inputs) are open. A separate reverse-polarity stage depends on the BEC's documented input protection.
 
