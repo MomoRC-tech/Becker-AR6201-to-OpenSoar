@@ -9,11 +9,7 @@ What is already in the glider (a DG200): Zander and FLARM → an ESP32 Wi-Fi bri
 > [!NOTE]
 > **Status:** based on Tom's report (S21) and four photos (S13); nothing measured. Missing facts: [installed equipment](open-items.md#installed-equipment). Full assessment: [2026-11-09 review](../research/reviews/2026-11-09-installation-claims.md).
 
-📑 **Contents**
-
-1. [Equipment](#equipment)
-2. [OpenSoar configuration](#configuration)
-3. [Photos](#photos)
+📑 **On this page:** <kbd>[1 · 🧰 Equipment](#equipment)</kbd> <kbd>[2 · 🌐 OpenSoar configuration](#configuration)</kbd> <kbd>[3 · 📷 Photos](#photos)</kbd>
 
 > [!WARNING]
 > Keep logs, device identifiers, credentials and configuration backups out of this public repository.
@@ -68,4 +64,4 @@ Four private photos from Tom (S13). They show what is visible only — no wiring
 
 ---
 
-⬆️ [Back to top](#top) · 🏠 [Overview](../../README.md)
+<kbd>[⬆️ Back to top](#top)</kbd> <kbd>[🏠 Overview](../../README.md)</kbd>

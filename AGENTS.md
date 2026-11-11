@@ -53,13 +53,13 @@ Pages must be easy to scan for a human reader. Every page in docs/ (except the f
 | Breadcrumb | `🏠 [Overview](…) › <category icon> Category › **Page**` |
 | Purpose | One sentence on what the page is for |
 | Status | One `> [!NOTE]` box with **Status:** — the only status statement on the page |
-| Contents | Numbered list of the H2 sections when a page has three or more |
+| Contents | One line of key-style buttons for the H2 sections when a page has three or more: `📑 **On this page:** <kbd>[1 · <icon> Title](#slug)</kbd> …` |
 | H2 sections | `## 1. <icon> Title`, each preceded by a stable `<a id="short-slug"></a>`; link to that id, never to the generated heading anchor |
 | H3 sections | `### 1.1 Title`, no icon |
 | Separators | `---` between H2 sections |
 | Alerts | `[!TIP]` for current selections/decisions, `[!WARNING]` for hazards only, at most one of each per section |
 | Collapsibles | Only for large reference images. Summary: `<summary><b>🖼️ Show …</b> (click to expand)</summary>` |
-| Footer | `⬆️ [Back to top](#top) · 🏠 [Overview](…)` |
+| Footer | `<kbd>[⬆️ Back to top](#top)</kbd> <kbd>[🏠 Overview](…)</kbd>` |
 
 Category icons: 🔧 Hardware · 🧩 Design · 📋 Project · 🔬 Research.
 

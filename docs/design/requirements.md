@@ -9,11 +9,7 @@ What the bridge must do, what the plan assumes, and what could go wrong.
 > [!NOTE]
 > **Status:** requirements agreed; none is verified on hardware yet. P0 = must have, P1 = should have.
 
-📑 **Contents**
-
-1. [Requirements](#requirements)
-2. [Assumptions](#assumptions)
-3. [Risks](#risks)
+📑 **On this page:** <kbd>[1 · ✅ Requirements](#requirements)</kbd> <kbd>[2 · 🤔 Assumptions](#assumptions)</kbd> <kbd>[3 · ⚠️ Risks](#risks)</kbd>
 
 Related: 🏗️ [Architecture](architecture.md) · ❓ [Open items](../project/open-items.md) · 🗺️ [Roadmap](../project/roadmap.md)
 
@@ -74,4 +70,4 @@ All risks are open.
 
 ---
 
-⬆️ [Back to top](#top) · 🏠 [Overview](../../README.md)
+<kbd>[⬆️ Back to top](#top)</kbd> <kbd>[🏠 Overview](../../README.md)</kbd>

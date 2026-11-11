@@ -9,11 +9,7 @@ Every source the project relies on: what it is, what was checked in it, and its 
 > [!NOTE]
 > **Status:** documents and code are reviewed; no hardware measurements exist yet. Dated review records: [reviews](reviews).
 
-📑 **Contents**
-
-1. [Evidence labels](#evidence-labels)
-2. [Source register](#source-register)
-3. [Driver findings](#findings)
+📑 **On this page:** <kbd>[1 · 🏷️ Evidence labels](#evidence-labels)</kbd> <kbd>[2 · 📋 Source register](#source-register)</kbd> <kbd>[3 · 🔍 Driver findings](#findings)</kbd>
 
 ---
 
@@ -85,4 +81,4 @@ Observations on the OpenSoar AR62xx driver; explained in [Becker driver research
 
 ---
 
-⬆️ [Back to top](#top) · 🏠 [Overview](../../README.md)
+<kbd>[⬆️ Back to top](#top)</kbd> <kbd>[🏠 Overview](../../README.md)</kbd>

@@ -9,11 +9,7 @@ Existing ESP32 serial-to-Wi-Fi firmware that could run on the bridge, and what e
 > [!NOTE]
 > **Status:** source review from 2026-11-08; nothing built or run. No firmware is selected ([ADR-02](../design/architecture.md#adr-02)), and the choice waits until the hardware is finished.
 
-📑 **Contents**
-
-1. [Requirements for any firmware](#firmware-requirements)
-2. [Candidates](#candidates)
-3. [Alternatives](#alternatives)
+📑 **On this page:** <kbd>[1 · 📐 Requirements for any firmware](#firmware-requirements)</kbd> <kbd>[2 · 🧪 Candidates](#candidates)</kbd> <kbd>[3 · 🔀 Alternatives](#alternatives)</kbd>
 
 Related: 📻 [Becker driver](becker-driver.md) · 📚 [Sources](sources.md)
 
@@ -56,4 +52,4 @@ In order of preference.
 
 ---
 
-⬆️ [Back to top](#top) · 🏠 [Overview](../../README.md)
+<kbd>[⬆️ Back to top](#top)</kbd> <kbd>[🏠 Overview](../../README.md)</kbd>

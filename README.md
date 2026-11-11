@@ -8,12 +8,7 @@ One ESP32 Wi-Fi bridge that connects a FLARM, a Zander ZS1 vario and a Becker AR
 > **Status:** planning and bench design — nothing is built yet.
 > **Current focus:** 🔧 hardware selection and wiring. Software work waits until the hardware design is finished.
 
-📑 **Contents**
-
-1. [What it does](#what-it-does)
-2. [Project status](#status)
-3. [Documentation map](#documentation)
-4. [Safety](#safety)
+📑 **On this page:** <kbd>[1 · 🎯 What it does](#what-it-does)</kbd> <kbd>[2 · 🚦 Project status](#status)</kbd> <kbd>[3 · 🗺️ Documentation map](#documentation)</kbd> <kbd>[4 · ⚠️ Safety](#safety)</kbd>
 
 ---
 
@@ -79,4 +74,4 @@ Working on the repository? Read the [work instructions](AGENTS.md) first.
 
 ---
 
-⬆️ [Back to top](#top)
+<kbd>[⬆️ Back to top](#top)</kbd>

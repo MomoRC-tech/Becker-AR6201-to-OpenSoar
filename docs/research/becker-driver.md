@@ -9,12 +9,7 @@ What the OpenSoar AR62xx radio driver does today, how other implementations solv
 > [!NOTE]
 > **Status:** source review (S11) plus one host test (S12); nothing tested on a radio. Driver work is on hold until the hardware is finished.
 
-📑 **Contents**
-
-1. [OpenSoar driver findings](#opensoar-driver)
-2. [Other implementations](#other-implementations)
-3. [What this means for the driver work](#consequences)
-4. [Manuals and commercial adapters](#manuals)
+📑 **On this page:** <kbd>[1 · 🔍 OpenSoar driver findings](#opensoar-driver)</kbd> <kbd>[2 · 📚 Other implementations](#other-implementations)</kbd> <kbd>[3 · ➡️ What this means for the driver work](#consequences)</kbd> <kbd>[4 · 📖 Manuals and commercial adapters](#manuals)</kbd>
 
 Related: 📶 [Bridge firmware](bridge-firmware.md) · 📚 [Sources](sources.md) · ❓ [Open items](../project/open-items.md#software-and-acceptance)
 
@@ -127,4 +122,4 @@ Test cases from the code: 118.000 → `00 00` (cut off by the send bug); 119.030
 
 ---
 
-⬆️ [Back to top](#top) · 🏠 [Overview](../../README.md)
+<kbd>[⬆️ Back to top](#top)</kbd> <kbd>[🏠 Overview](../../README.md)</kbd>

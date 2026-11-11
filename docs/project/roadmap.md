@@ -9,11 +9,7 @@ The single work queue: which work package comes next and what finishes it.
 > [!NOTE]
 > **Status:** WP3 hardware is the current focus. Software packages (WP4–WP6) wait until the hardware is finished. Every implementation step needs the owner's approval.
 
-📑 **Contents**
-
-1. [Work packages](#work-packages)
-2. [Milestones](#milestones)
-3. [Test coverage for the software phase](#test-coverage)
+📑 **On this page:** <kbd>[1 · 📦 Work packages](#work-packages)</kbd> <kbd>[2 · 🏁 Milestones](#milestones)</kbd> <kbd>[3 · ✅ Test coverage for the software phase](#test-coverage)</kbd>
 
 Related: ❓ [Open items](open-items.md) · 🎯 [Requirements](../design/requirements.md)
 
@@ -63,4 +59,4 @@ Radio acceptance and reply bytes are checked on the real radio, not inferred fro
 
 ---
 
-⬆️ [Back to top](#top) · 🏠 [Overview](../../README.md)
+<kbd>[⬆️ Back to top](#top)</kbd> <kbd>[🏠 Overview](../../README.md)</kbd>

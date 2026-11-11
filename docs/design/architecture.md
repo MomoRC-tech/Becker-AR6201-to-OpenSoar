@@ -9,11 +9,7 @@ How the bridge is split up, which hardware is selected, and the decisions behind
 > [!NOTE]
 > **Status:** hardware design selected (ADR-04); firmware not selected. Building and testing are tracked in the [roadmap](../project/roadmap.md).
 
-📑 **Contents**
-
-1. [Who does what](#responsibilities)
-2. [Hardware](#hardware)
-3. [Decisions](#decisions)
+📑 **On this page:** <kbd>[1 · 🧩 Who does what](#responsibilities)</kbd> <kbd>[2 · 🔧 Hardware](#hardware)</kbd> <kbd>[3 · 📝 Decisions](#decisions)</kbd>
 
 Related: 🔌 [Wiring](../hardware/wiring.md) · 🧱 [Modules and parts](../hardware/modules.md) · 🎯 [Requirements](requirements.md)
 
@@ -101,4 +97,4 @@ Parts: [parts list](../hardware/modules.md#parts-list).
 
 ---
 
-⬆️ [Back to top](#top) · 🏠 [Overview](../../README.md)
+<kbd>[⬆️ Back to top](#top)</kbd> <kbd>[🏠 Overview](../../README.md)</kbd>

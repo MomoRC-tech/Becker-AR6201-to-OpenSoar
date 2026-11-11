@@ -9,11 +9,7 @@ The one list of everything still missing: what is needed, who provides it, and w
 > [!NOTE]
 > **Status:** all items open. Work top-down — the bench hardware checks are the current focus.
 
-📑 **Contents**
-
-1. [Bench hardware — current focus](#bench-hardware)
-2. [Installed equipment](#installed-equipment)
-3. [Software and acceptance — later](#software-and-acceptance)
+📑 **On this page:** <kbd>[1 · 🔧 Bench hardware — current focus](#bench-hardware)</kbd> <kbd>[2 · 🛩️ Installed equipment](#installed-equipment)</kbd> <kbd>[3 · 💻 Software and acceptance — later](#software-and-acceptance)</kbd>
 
 Related: 🗺️ [Roadmap](roadmap.md) · 🤔 [Assumptions](../design/requirements.md#assumptions) · 🛩️ [Existing installation](existing-installation.md)
 
@@ -79,4 +75,4 @@ On hold until the hardware is finished.
 
 ---
 
-⬆️ [Back to top](#top) · 🏠 [Overview](../../README.md)
+<kbd>[⬆️ Back to top](#top)</kbd> <kbd>[🏠 Overview](../../README.md)</kbd>

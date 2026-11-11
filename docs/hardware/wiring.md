@@ -9,14 +9,7 @@ How the bridge connects to the Zander, the FLARM, the Becker radio and power —
 > [!NOTE]
 > **Status:** bench design. Parts and wiring are decided; nothing is built or measured yet. Open checks: [bench hardware](../project/open-items.md#bench-hardware).
 
-📑 **Contents**
-
-1. [Overview and UART plan](#overview)
-2. [Zander ZS1](#zander)
-3. [FLARM](#flarm)
-4. [Becker radio](#becker)
-5. [Power](#power)
-6. [Bench bring-up](#bring-up)
+📑 **On this page:** <kbd>[1 · 🧭 Overview and UART plan](#overview)</kbd> <kbd>[2 · 📈 Zander ZS1](#zander)</kbd> <kbd>[3 · 📡 FLARM](#flarm)</kbd> <kbd>[4 · 📻 Becker radio](#becker)</kbd> <kbd>[5 · ⚡ Power](#power)</kbd> <kbd>[6 · 🧪 Bench bring-up](#bring-up)</kbd>
 
 Related: 🧱 [Modules and parts](modules.md) · 📚 [Sources](../research/sources.md)
 
@@ -207,4 +200,4 @@ Before connecting any device:
 
 ---
 
-⬆️ [Back to top](#top) · 🏠 [Overview](../../README.md)
+<kbd>[⬆️ Back to top](#top)</kbd> <kbd>[🏠 Overview](../../README.md)</kbd>

@@ -9,14 +9,7 @@ The modules the bridge is built from, how to orient them, and the shopping list 
 > [!NOTE]
 > **Status:** all modules selected. Specs come from seller listings or datasheets; nothing is measured yet. Open checks: [bench hardware](../project/open-items.md#bench-hardware).
 
-📑 **Contents**
-
-1. [Module overview](#module-overview)
-2. [ESP32 board](#esp32-pinout)
-3. [RS-232 modules (Zander, FLARM)](#rs232-module)
-4. [RS-422 board (Becker)](#rs422-board)
-5. [Power module (UBEC)](#ubec)
-6. [Parts list](#parts-list)
+📑 **On this page:** <kbd>[1 · 📋 Module overview](#module-overview)</kbd> <kbd>[2 · 🧠 ESP32 board](#esp32-pinout)</kbd> <kbd>[3 · 🔁 RS-232 modules (Zander, FLARM)](#rs232-module)</kbd> <kbd>[4 · 📻 RS-422 board (Becker)](#rs422-board)</kbd> <kbd>[5 · 🔋 Power module (UBEC)](#ubec)</kbd> <kbd>[6 · 🛒 Parts list](#parts-list)</kbd>
 
 Related: 🔌 [Wiring](wiring.md) · 📚 [Sources](../research/sources.md)
 
@@ -141,4 +134,4 @@ For one bridge, bridge end only — the device-side connectors and harness alrea
 
 ---
 
-⬆️ [Back to top](#top) · 🏠 [Overview](../../README.md)
+<kbd>[⬆️ Back to top](#top)</kbd> <kbd>[🏠 Overview](../../README.md)</kbd>
