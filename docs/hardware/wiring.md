@@ -114,9 +114,10 @@ The radio's serial interface 2 on connector J1 ([Becker DV14307.03 Issue 06, p.5
 | 9 | TX2− | B | Receiver input − |
 | 3 | RX2+ | Y | Driver output + |
 | 10 | RX2− | Z | Driver output − |
+| 11 | SHIELD_2 | — (cable shield) | Shield of the auxiliary control interface |
 | 21 | D_GND | GND | Signal reference |
 
-Run TX2± and RX2± as two separate twisted pairs in a shielded cable. Connect J1-21 to the board GND with a dedicated wire or the cable's drain wire.
+Run TX2± and RX2± as two separate twisted pairs in a shielded cable, as Becker requires for the interface lines (S10). Connect the shield to J1-11 at the radio end only and leave it unconnected at the bridge end, so it carries no ground current. Connect J1-21 to the board GND with a separate wire in the same cable, not the shield or drain wire.
 
 ### 4.2 ESP32 side — board header
 
@@ -138,7 +139,7 @@ The divider brings RO's 5.0–5.25 V high level down to 3.0–3.15 V at GPIO16, 
 
 | Radio rear (callout 4 = J1) | J1 mating face |
 | --- | --- |
-| <img src="../images/becker-reference-connectors.png" width="275" alt="Becker rear drawing, P1 above J1. Callout 4 identifies the J1 connector."> | <img src="../images/pinout-becker-j1.svg" width="420" alt="Becker J1 DB-25 socket. Pins 2 and 9 TX pair, 3 and 10 RX pair, 21 digital ground."> |
+| <img src="../images/becker-reference-connectors.png" width="275" alt="Becker rear drawing, P1 above J1. Callout 4 identifies the J1 connector."> | <img src="../images/pinout-becker-j1.svg" width="420" alt="Becker J1 DB-25 socket. Pins 2 and 9 TX pair, 3 and 10 RX pair, 11 shield, 21 digital ground."> |
 
 Socket numbering follows the [Winford BRKDD25F-R-FT mating-face drawing](https://www.winford.com/products/cad/brkdd25f-r-ft_rev_a_dwg.pdf). Pin-view styling follows the [Pinout.xyz examples](https://github.com/pinout-xyz/Pinout.xyz/tree/main/graphics).
 

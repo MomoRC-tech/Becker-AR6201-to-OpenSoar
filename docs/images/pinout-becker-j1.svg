@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="560" height="258" viewBox="0 0 560 258" role="img" aria-labelledby="title desc">
 <title id="title">Becker J1 · DB-25 socket</title>
-<desc id="desc">Radio rear mating-face reference. 2 TX2+, 9 TX2−, 3 RX2+, 10 RX2−, 21 D_GND. All other contacts outside bridge scope. Installed match and bond UNKNOWN.</desc>
+<desc id="desc">Radio rear mating-face reference. 2 TX2+, 9 TX2−, 3 RX2+, 10 RX2−, 11 SHIELD_2, 21 D_GND. All other contacts outside bridge scope. Installed match and bond UNKNOWN.</desc>
 <rect width="560" height="258" rx="8" fill="#fff"/>
 <g font-family="Arial,sans-serif">
 <text x="18" y="29" font-size="21" fill="#1d2b37" text-anchor="start" font-weight="700">Becker J1 · DB-25 socket</text>
@@ -10,7 +10,7 @@
 <text x="52" y="97" font-size="14" fill="#fff" text-anchor="middle" font-weight="700">13</text>
 <circle cx="90" cy="92" r="15" fill="#626b75"/>
 <text x="90" y="97" font-size="14" fill="#fff" text-anchor="middle" font-weight="700">12</text>
-<circle cx="128" cy="92" r="15" fill="#626b75"/>
+<circle cx="128" cy="92" r="15" fill="#2f7d4f"/>
 <text x="128" y="97" font-size="14" fill="#fff" text-anchor="middle" font-weight="700">11</text>
 <circle cx="166" cy="92" r="15" fill="#914018"/>
 <text x="166" y="97" font-size="14" fill="#fff" text-anchor="middle" font-weight="700">10</text>
@@ -66,8 +66,10 @@
 <text x="432" y="178" font-size="16" fill="#1d2b37" text-anchor="start" font-weight="400">10  RX2−</text>
 <rect x="18" y="191" width="5" height="15" rx="2" fill="#465466"/>
 <text x="31" y="204" font-size="16" fill="#1d2b37" text-anchor="start" font-weight="400">21  D_GND</text>
-<rect x="190" y="191" width="5" height="15" rx="2" fill="#626b75"/>
-<text x="203" y="204" font-size="16" fill="#1d2b37" text-anchor="start" font-weight="400">Grey  outside bridge scope</text>
+<rect x="155" y="191" width="5" height="15" rx="2" fill="#2f7d4f"/>
+<rect x="312" y="191" width="5" height="15" rx="2" fill="#626b75"/>
+<text x="168" y="204" font-size="16" fill="#1d2b37" text-anchor="start" font-weight="400">11  SHIELD_2</text>
+<text x="325" y="204" font-size="16" fill="#1d2b37" text-anchor="start" font-weight="400">Grey  outside bridge scope</text>
 <text x="18" y="235" font-size="16" fill="#475569" text-anchor="start" font-weight="400">Installed pin match and signal-ground bond UNKNOWN.</text>
 </g>
 </svg>
