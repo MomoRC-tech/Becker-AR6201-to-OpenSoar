@@ -159,7 +159,9 @@ Socket numbering follows the [Winford BRKDD25F-R-FT mating-face drawing](https:/
 
 ## 5. ⚡ Power
 
-Use a dedicated power connector, separate from the instrument connections. The owner reports approximately 22 AWG wiring from the 12 V harness to the UBEC, with no upstream fuse currently fitted. Connector selection and supply-cable protection are tracked in [open items](../project/open-items.md#bench-hardware).
+Use a dedicated standard XT30 male connector on the housing, mating with female contacts on the powered harness. Retain the housing connector in a snug printed pocket with a retaining shoulder and adhesive. Support the wires inside the housing so mating forces do not load the solder joints. Measure the actual connector and print a fit-test piece before finalizing the pocket.
+
+The owner reports approximately 22 AWG wiring from the 12 V harness to the UBEC, with no upstream fuse currently fitted. Connector fit and supply-cable protection are tracked in [open items](../project/open-items.md#bench-hardware).
 
 ```mermaid
 flowchart LR
