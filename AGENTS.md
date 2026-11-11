@@ -71,7 +71,7 @@ Pick the element that makes the content easiest to scan, not plain paragraphs by
 | Task lists (`- [ ]`) | Checklists the builder works through, such as bench checks |
 | Mermaid diagrams | Signal flow, power tree, sequences, state |
 | Code blocks | Commands, configuration, serial frames; always with a language tag |
-| Images and badges | Wiring diagrams, pin views, photos; local SVG badges such as the pin labels |
+| Images and badges | Wiring diagrams, pin views, photos; local SVG badges such as the pin labels. Hardware diagrams (supply, ground loops, signal wiring) are generated: edit `tools/diagrams.py`, run `python tools/diagrams.py`, check the SVGs in a browser, commit script and SVGs together |
 | Math (` ```math ` blocks, `$`…`$` inline) | Calculations such as dividers, currents and fuse sizing; use ` ```math ` blocks, since `$$` blocks lose backslashes on GitHub; write units as `\text{ V}`, not with `\,` |
 | Blockquotes | Short verbatim quotes from a source, with its source ID |
 

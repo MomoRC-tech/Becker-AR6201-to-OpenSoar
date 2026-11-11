@@ -3,128 +3,90 @@
 <desc id="desc">The battery feeds the bridge (F1, UBEC, ESP32 with MAX490 and RS-232 modules) and each device with +12 V; arrows show the normal current direction. The battery minus, the bridge ground and each device's supply ground meet at the common ground point. Dashed signal grounds from the bridge to the Becker (J1-21), Zander (pin 5) and FLARM (pins 7/8) each close a ground loop: Loop B, Loop Z and Loop F.</desc>
 <rect width="930" height="530" fill="white"/>
 <g font-family="Arial,sans-serif">
-
-<!-- Bridge group outline -->
 <rect x="200" y="50" width="270" height="320" rx="8" fill="#f7f9fc" stroke="#9cb1cc" stroke-width="1.5" stroke-dasharray="6 4"/>
-<text x="214" y="70" font-size="13" font-weight="700" fill="#172b4d">Bridge</text>
-
-<!-- Supply lines -->
-<g stroke="#d32f2f" stroke-width="2.5" fill="none">
-  <path d="M95 70V46"/>
-  <path d="M335 24V80"/>
-  <path d="M335 116V140"/>
-  <path d="M810 86H835"/>
-  <path d="M810 201H835"/>
-  <path d="M810 316H835"/>
-</g>
-<path d="M335 176V220" stroke="#ef6c00" stroke-width="2.5" fill="none"/>
-
-<!-- Supply grounds -->
-<g stroke="#616161" stroke-width="2.5" fill="none">
-  <path d="M95 126V440"/>
-  <path d="M335 330V440"/>
-  <path d="M810 112H900"/>
-  <path d="M810 227H900"/>
-  <path d="M810 342H900"/>
-  <path d="M900 112V440"/>
-</g>
-<path d="M95 440H900" stroke="#616161" stroke-width="4" fill="none"/>
-<g fill="#616161"><circle cx="95" cy="440" r="5"/><circle cx="335" cy="440" r="5"/><circle cx="900" cy="440" r="5"/><circle cx="900" cy="227" r="4"/><circle cx="900" cy="342" r="4"/></g>
-
-<!-- Signal grounds (loops) -->
-<g stroke="#1e88e5" stroke-width="2.5" stroke-dasharray="7 5" fill="none">
-  <path d="M445 240H520V98H660"/>
-  <path d="M445 275H560V213H660"/>
-  <path d="M445 310H660"/>
-</g>
-
-<!-- Normal current direction -->
-<g>
-  <polygon points="90,62 100,62 95,53" fill="#d32f2f"/>
-  <polygon points="330,52 340,52 335,61" fill="#d32f2f"/>
-  <polygon points="330,125 340,125 335,134" fill="#d32f2f"/>
-  <polygon points="826,81 826,91 817,86" fill="#d32f2f"/>
-  <polygon points="826,196 826,206 817,201" fill="#d32f2f"/>
-  <polygon points="826,311 826,321 817,316" fill="#d32f2f"/>
-  <polygon points="330,188 340,188 335,197" fill="#ef6c00"/>
-  <polygon points="824,107 824,117 833,112" fill="#616161"/>
-  <polygon points="824,222 824,232 833,227" fill="#616161"/>
-  <polygon points="824,337 824,347 833,342" fill="#616161"/>
-  <polygon points="895,166 905,166 900,175" fill="#616161"/>
-  <polygon points="895,281 905,281 900,290" fill="#616161"/>
-  <polygon points="895,391 905,391 900,400" fill="#616161"/>
-  <polygon points="624,435 624,445 615,440" fill="#616161"/>
-  <polygon points="219,435 219,445 210,440" fill="#616161"/>
-  <polygon points="330,381 340,381 335,390" fill="#616161"/>
-  <polygon points="90,304 100,304 95,295" fill="#616161"/>
-</g>
-
-<!-- Boxes -->
-<g fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5">
-  <rect x="30" y="70" width="130" height="56" rx="5"/>
-  <rect x="245" y="80" width="180" height="36" rx="5"/>
-  <rect x="245" y="140" width="180" height="36" rx="5"/>
-  <rect x="225" y="220" width="220" height="110" rx="5"/>
-  <rect x="660" y="70" width="150" height="56" rx="5"/>
-  <rect x="660" y="185" width="150" height="56" rx="5"/>
-  <rect x="660" y="300" width="150" height="56" rx="5"/>
-</g>
-
-<!-- Box labels -->
-<g font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">
-  <text x="95" y="95">Battery</text>
-  <text x="335" y="103">F1 fuse</text>
-  <text x="335" y="163">UBEC 5 V</text>
-  <text x="335" y="258">ESP32</text>
-  <text x="735" y="103">Becker AR6201</text>
-  <text x="735" y="218">Zander ZS1</text>
-  <text x="735" y="333">FLARM</text>
-</g>
-<g font-size="12" fill="#475569" text-anchor="middle">
-  <text x="95" y="113">12 V</text>
-  <text x="335" y="278">MAX490 board</text>
-  <text x="335" y="296">RS-232 modules (3.3 V from ESP32)</text>
-</g>
-
-<!-- Line labels -->
-<g font-size="12" fill="#d32f2f" font-weight="700">
-  <text x="95" y="40" text-anchor="middle">+12 V</text>
-  <text x="343" y="34">+12 V</text>
-  <text x="840" y="90">+12 V</text>
-  <text x="840" y="205">+12 V</text>
-  <text x="840" y="320">+12 V</text>
-</g>
-<text x="343" y="203" font-size="12" fill="#ef6c00" font-weight="700">5 V</text>
-<g font-size="11" fill="#616161">
-  <text x="845" y="106">P1-13/25</text>
-  <text x="845" y="221">GND</text>
-  <text x="845" y="336">GND</text>
-  <text x="343" y="405">Bridge GND</text>
-  <text x="103" y="160">Battery −</text>
-</g>
-<g font-size="12" fill="#1565c0" text-anchor="end">
-  <text x="652" y="75" font-weight="700">Loop B</text>
-  <text x="652" y="91">signal GND J1-21</text>
-  <text x="652" y="190" font-weight="700">Loop Z</text>
-  <text x="652" y="206">signal GND pin 5</text>
-  <text x="652" y="287" font-weight="700">Loop F</text>
-  <text x="652" y="303">signal GND pins 7/8</text>
-</g>
+<path d="M95 70 L95 46" stroke="#d32f2f" stroke-width="2.5" fill="none"/>
+<path d="M335 24 L335 80" stroke="#d32f2f" stroke-width="2.5" fill="none"/>
+<path d="M335 116 L335 140" stroke="#d32f2f" stroke-width="2.5" fill="none"/>
+<path d="M335 176 L335 220" stroke="#ef6c00" stroke-width="2.5" fill="none"/>
+<path d="M95 126 L95 440" stroke="#616161" stroke-width="2.5" fill="none"/>
+<path d="M335 330 L335 440" stroke="#616161" stroke-width="2.5" fill="none"/>
+<path d="M900 112 L900 440" stroke="#616161" stroke-width="2.5" fill="none"/>
+<path d="M95 440 L900 440" stroke="#616161" stroke-width="4" fill="none"/>
+<path d="M810 86 L835 86" stroke="#d32f2f" stroke-width="2.5" fill="none"/>
+<path d="M810 112 L900 112" stroke="#616161" stroke-width="2.5" fill="none"/>
+<path d="M445 240 L520 240 L520 98 L660 98" stroke="#1e88e5" stroke-width="2.5" fill="none" stroke-dasharray="7 5"/>
+<path d="M810 201 L835 201" stroke="#d32f2f" stroke-width="2.5" fill="none"/>
+<path d="M810 227 L900 227" stroke="#616161" stroke-width="2.5" fill="none"/>
+<path d="M445 275 L560 275 L560 213 L660 213" stroke="#1e88e5" stroke-width="2.5" fill="none" stroke-dasharray="7 5"/>
+<path d="M810 316 L835 316" stroke="#d32f2f" stroke-width="2.5" fill="none"/>
+<path d="M810 342 L900 342" stroke="#616161" stroke-width="2.5" fill="none"/>
+<path d="M445 310 L660 310" stroke="#1e88e5" stroke-width="2.5" fill="none" stroke-dasharray="7 5"/>
+<path d="M30 492 H60" stroke="#d32f2f" stroke-width="2.5"/>
+<path d="M184 492 H214" stroke="#ef6c00" stroke-width="2.5"/>
+<path d="M345 492 H375" stroke="#616161" stroke-width="2.5"/>
+<path d="M506 492 H536" stroke="#1e88e5" stroke-width="2.5" stroke-dasharray="7 5"/>
+<polygon points="90,62 100,62 95,53" fill="#d32f2f"/>
+<polygon points="330,52 340,52 335,61" fill="#d32f2f"/>
+<polygon points="330,125 340,125 335,134" fill="#d32f2f"/>
+<polygon points="330,188 340,188 335,197" fill="#ef6c00"/>
+<polygon points="90,304 100,304 95,295" fill="#616161"/>
+<polygon points="330,381 340,381 335,390" fill="#616161"/>
+<polygon points="895,166 905,166 900,175" fill="#616161"/>
+<polygon points="895,281 905,281 900,290" fill="#616161"/>
+<polygon points="895,391 905,391 900,400" fill="#616161"/>
+<polygon points="624,435 624,445 615,440" fill="#616161"/>
+<polygon points="219,435 219,445 210,440" fill="#616161"/>
+<circle cx="95" cy="440" r="5" fill="#616161"/>
+<circle cx="335" cy="440" r="5" fill="#616161"/>
+<circle cx="900" cy="440" r="5" fill="#616161"/>
+<circle cx="900" cy="227" r="4" fill="#616161"/>
+<circle cx="900" cy="342" r="4" fill="#616161"/>
+<polygon points="826,81 826,91 817,86" fill="#d32f2f"/>
+<polygon points="824,107 824,117 833,112" fill="#616161"/>
+<polygon points="826,196 826,206 817,201" fill="#d32f2f"/>
+<polygon points="824,222 824,232 833,227" fill="#616161"/>
+<polygon points="826,311 826,321 817,316" fill="#d32f2f"/>
+<polygon points="824,337 824,347 833,342" fill="#616161"/>
+<rect x="660" y="70" width="150" height="56" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
+<rect x="660" y="185" width="150" height="56" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
+<rect x="660" y="300" width="150" height="56" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
+<rect x="30" y="70" width="130" height="56" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
+<rect x="245" y="80" width="180" height="36" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
+<rect x="245" y="140" width="180" height="36" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
+<rect x="225" y="220" width="220" height="110" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
+<text x="212" y="70" font-size="13" fill="#172b4d" text-anchor="start" font-weight="700">Bridge</text>
+<text x="95" y="40" font-size="12" fill="#d32f2f" text-anchor="middle" font-weight="700">+12 V</text>
+<text x="343" y="34" font-size="12" fill="#d32f2f" text-anchor="start" font-weight="700">+12 V</text>
+<text x="343" y="203" font-size="12" fill="#ef6c00" text-anchor="start" font-weight="700">5 V</text>
+<text x="735.0" y="103.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">Becker AR6201</text>
+<text x="840" y="90" font-size="12" fill="#d32f2f" text-anchor="start" font-weight="700">+12 V</text>
+<text x="845" y="106" font-size="11" fill="#616161" text-anchor="start">P1-13/25</text>
+<text x="652" y="75" font-size="12" fill="#1e88e5" text-anchor="end" font-weight="700">Loop B</text>
+<text x="652" y="91" font-size="12" fill="#1e88e5" text-anchor="end">signal GND J1-21</text>
+<text x="735.0" y="218.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">Zander ZS1</text>
+<text x="840" y="205" font-size="12" fill="#d32f2f" text-anchor="start" font-weight="700">+12 V</text>
+<text x="845" y="221" font-size="11" fill="#616161" text-anchor="start">GND</text>
+<text x="652" y="190" font-size="12" fill="#1e88e5" text-anchor="end" font-weight="700">Loop Z</text>
+<text x="652" y="206" font-size="12" fill="#1e88e5" text-anchor="end">signal GND pin 5</text>
+<text x="735.0" y="333.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">FLARM</text>
+<text x="840" y="320" font-size="12" fill="#d32f2f" text-anchor="start" font-weight="700">+12 V</text>
+<text x="845" y="336" font-size="11" fill="#616161" text-anchor="start">GND</text>
+<text x="652" y="287" font-size="12" fill="#1e88e5" text-anchor="end" font-weight="700">Loop F</text>
+<text x="652" y="303" font-size="12" fill="#1e88e5" text-anchor="end">signal GND pins 7/8</text>
+<text x="95.0" y="94.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">Battery</text>
+<text x="95.0" y="112.0" font-size="12" fill="#475569" text-anchor="middle">12 V</text>
+<text x="335.0" y="103.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">F1 fuse</text>
+<text x="335.0" y="163.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">UBEC 5 V</text>
+<text x="335.0" y="262.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">ESP32</text>
+<text x="335.0" y="280.0" font-size="12" fill="#475569" text-anchor="middle">MAX490 board</text>
+<text x="335.0" y="298.0" font-size="12" fill="#475569" text-anchor="middle">RS-232 modules (3.3 V from ESP32)</text>
+<text x="103" y="160" font-size="11" fill="#616161" text-anchor="start">Battery −</text>
+<text x="343" y="405" font-size="11" fill="#616161" text-anchor="start">Bridge GND</text>
 <text x="497" y="462" font-size="13" fill="#424242" text-anchor="middle" font-weight="700">Common ground point (battery −)</text>
-
-<!-- Legend -->
-<g stroke-width="2.5" fill="none">
-  <path d="M30 492H60" stroke="#d32f2f"/>
-  <path d="M170 492H200" stroke="#ef6c00"/>
-  <path d="M330 492H360" stroke="#616161"/>
-  <path d="M500 492H530" stroke="#1e88e5" stroke-dasharray="7 5"/>
-</g>
-<g font-size="12" fill="#172b4d">
-  <text x="66" y="496">+12 V supply</text>
-  <text x="206" y="496">5 V in bridge</text>
-  <text x="366" y="496">Supply ground</text>
-  <text x="536" y="496">Signal ground, closes a loop</text>
-  <text x="30" y="520" fill="#475569">Arrows show the normal current direction. Signal grounds carry small shares in either direction.</text>
-</g>
+<text x="66" y="496" font-size="12" fill="#172b4d" text-anchor="start">+12 V supply</text>
+<text x="220" y="496" font-size="12" fill="#172b4d" text-anchor="start">5 V in bridge</text>
+<text x="381" y="496" font-size="12" fill="#172b4d" text-anchor="start">Supply ground</text>
+<text x="542" y="496" font-size="12" fill="#172b4d" text-anchor="start">Signal ground, closes a loop</text>
+<text x="30" y="516" font-size="12" fill="#475569" text-anchor="start">Arrows show the normal current direction. Signal grounds carry small shares in either direction.</text>
 </g>
 </svg>
