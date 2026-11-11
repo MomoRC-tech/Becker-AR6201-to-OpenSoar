@@ -51,7 +51,7 @@ The ESP32 has three UARTs; each device gets one.
 | 📡 FLARM | UART1 | GPIO26 | GPIO27 (optional) | RS-232-mod2 |
 | 📻 Becker | UART2 | GPIO16, through 10 kΩ | GPIO17 | MAX490 RS-422 board |
 
-UART0 is also the USB serial port. The firmware moves it to GPIO32/33 after boot, so there is no USB serial log in operation; diagnostics go over Wi-Fi. Boot messages appear only on GPIO1, so they never reach a device.
+UART0 is also the USB serial port. The firmware moves it to GPIO32/33 after boot, so there is no USB serial log in operation; diagnostics go over Wi-Fi. Boot messages appear only on GPIO1, so they never reach a device. The firmware must switch the UART0 log console off; otherwise log output would go to the Zander's GPS input (GPIO33). Keeping the radio off UART0 means a stray log line can never reach the radio.
 
 ---
 
@@ -123,11 +123,11 @@ Run TX2± and RX2± as two separate twisted pairs in a shielded cable. Connect J
 | Board signal | ESP32 |
 | --- | --- |
 | Receiver output (RO) | 10 kΩ series resistor (R-B) → GPIO16 (<img src="../images/pins/rx.svg" alt="RX" width="20" height="14">) |
-| Driver input (DI) | GPIO17 (<img src="../images/pins/tx.svg" alt="TX" width="20" height="14">) |
+| Driver input (DI) | GPIO17, plus a 10 kΩ pull-up (R-D) to 3.3 V (<img src="../images/pins/tx.svg" alt="TX" width="20" height="14">) |
 | VCC | 5 V from the UBEC |
 | GND | GND |
 
-The board's TXD/RXD header labels may be named from either side; identify RO and DI on the board before wiring. ESP32 TX at 3.3 V drives DI directly (the MAX490 needs 2.0 V for a logic high).
+The board's TXD/RXD header labels may be named from either side; identify RO and DI on the board before wiring. ESP32 TX at 3.3 V drives DI directly (the MAX490 needs 2.0 V for a logic high). The pull-up R-D holds DI idle while the ESP32 boots, so no random bits reach the radio before the UART is set up.
 
 > [!WARNING]
 > The MAX490 runs at 5 V, so RO idles near 5 V — above the ESP32's 3.6 V input limit. Never connect RO directly to GPIO16. The 10 kΩ resistor limits the current into the GPIO's protection diode to about 0.1 mA (owner decision; Espressif does not document an allowed injection current).
@@ -160,7 +160,7 @@ flowchart LR
 | --- | --- |
 | UBEC 5 V | ESP32 5V pin ([J2-19](modules.md#esp32-pinout)) and MAX490 board VCC |
 | UBEC GND | ESP32 GND |
-| ESP32 3V3 ([J2-1](modules.md#esp32-pinout)) | R3 (+) on both RS-232 modules, and the two R1 pull-ups |
+| ESP32 3V3 ([J2-1](modules.md#esp32-pinout)) | R3 (+) on both RS-232 modules; the pull-ups R-Z, R-F and R-D |
 | ESP32 GND | R4 (−) on both RS-232 modules, MAX490 board GND |
 
 > [!TIP]

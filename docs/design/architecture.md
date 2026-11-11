@@ -89,7 +89,7 @@ One work queue: the [roadmap](../project/roadmap.md). Requirements live in [requ
 > [!TIP]
 > **Selected:**
 > - ESP32, two Hailege RS-232 modules and the Hobbywing UBEC at 5 V.
-> - Becker: 5 V MAX490 board; receiver output to GPIO16 through a 10 kΩ series resistor; J1-21 bonded to the board ground.
+> - Becker: 5 V MAX490 board; receiver output to GPIO16 through a 10 kΩ series resistor; J1-21 bonded to the board ground; 10 kΩ pull-up on the driver input so the radio line stays quiet during boot.
 > - UART plan: UART0 (remapped) Zander, UART1 FLARM, UART2 Becker.
 > - Power protection: 2 A fuse plus the UBEC's reverse-input protection.
 
