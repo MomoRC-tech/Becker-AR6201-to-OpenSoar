@@ -41,9 +41,24 @@ flowchart LR
 ---
 
 <a id="esp32-pinout"></a>
+<a id="hailege-board-pad-reference"></a>
+<a id="converter-modules"></a>
+
+### Module specs
 
 <details>
-<summary>ESP32 DevKitC V4 pinout</summary>
+<summary>Module specs, board photos and pinouts</summary>
+
+| Module | Power | Chip | Reported size |
+| --- | --- | --- | --- |
+| Hailege H-1-0290 (Zander and FLARM) | 3.3 V | MAX3232CSE (reported) | 9.4 × 15.9 mm |
+| Becker RS-422 board (model TBD) | 3.3 V required | TBD | TBD |
+| AZ-Delivery ESP32 WROOM dev module | 5 V input, 3.3 V regulator | — | — |
+| BEC (model TBD) | 2S–4S input reported, 5 V output | — | — |
+
+[Power module sources (S16, S17, S19)](sources.md#source-register)
+
+#### ESP32 DevKitC V4 pinout
 
 **Candidate for the AZ-Delivery WROOM-32 board.** View from the component side with the antenna at the top and Micro-USB at the bottom. J2 is on the left and J3 on the right. Count both headers from the antenna end. Header labels below follow Espressif's reference. RX and TX are from the ESP32's perspective.
 
@@ -77,27 +92,6 @@ flowchart LR
 > Before wiring, match the board's module marking, two 19-pin headers, silkscreen and power contacts to the reference. The proposed Becker pins GPIO16/17 are available on WROOM boards and reserved internally on WROVER boards. Leave D0–D3, CMD and CLK free for flash. Verify regulator capacity for the navigation converters. The Becker board's 3.3 V rail is TBD.
 
 [Espressif header tables and pin layout](https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32/esp32-devkitc/user_guide.html#header-block) · [Evidence (S32)](sources.md#source-register)
-
-</details>
-
----
-
-<a id="hailege-board-pad-reference"></a>
-<a id="converter-modules"></a>
-
-### Module specs
-
-<details>
-<summary>Module specs, converter photos and pin diagrams</summary>
-
-| Module | Power | Chip | Reported size |
-| --- | --- | --- | --- |
-| Hailege H-1-0290 (Zander and FLARM) | 3.3 V | MAX3232CSE (reported) | 9.4 × 15.9 mm |
-| Becker RS-422 board (model TBD) | 3.3 V required | TBD | TBD |
-| AZ-Delivery ESP32 WROOM dev module | 5 V input, 3.3 V regulator | — | — |
-| BEC (model TBD) | 2S–4S input reported, 5 V output | — | — |
-
-[Power module sources (S16, S17, S19)](sources.md#source-register)
 
 #### Hailege H-1-0290 · RS-232
 
