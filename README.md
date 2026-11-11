@@ -50,7 +50,7 @@ The bridge never changes the active frequency, and the radio's own controls keep
 
 | | Section | Pages | What you find there |
 | :-: | --- | --- | --- |
-| 🔧 | **Hardware** | [🔌 Signal wiring](docs/hardware/wiring.md) · [⚡ Power and grounding](docs/hardware/power.md) · [🧱 Modules and parts](docs/hardware/modules.md) | Pin-by-pin signal wiring and bench bring-up; supply, ground loops and currents; module details, parts list |
+| 🔧 | **Hardware** | [🔌 Signal wiring](docs/hardware/wiring.md) · [⚡ Power and grounding](docs/hardware/power.md) · [🧱 Modules and parts](docs/hardware/modules.md) · [📦 Housing](docs/hardware/housing.md) | Pin-by-pin signal wiring and bench bring-up; supply, ground loops and currents; module details, parts list; mechanical design |
 | 🧩 | **Design** | [🏗️ Architecture](docs/design/architecture.md) · [🎯 Requirements](docs/design/requirements.md) | How the bridge is built and why; requirements, assumptions, risks |
 | 📋 | **Project** | [🗺️ Roadmap](docs/project/roadmap.md) · [❓ Open items](docs/project/open-items.md) · [🛩️ Existing installation](docs/project/existing-installation.md) | Work plan, everything still missing, the bridge already in the aircraft |
 | 🔬 | **Research** | [📚 Sources](docs/research/sources.md) · [📻 Becker driver](docs/research/becker-driver.md) · [📶 Bridge firmware](docs/research/bridge-firmware.md) · [🗂️ Reviews](docs/research/reviews) | Evidence, driver and firmware analysis, dated review records |

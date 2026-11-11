@@ -9,7 +9,7 @@ The one list of everything still missing: what is needed, who provides it, and w
 > [!NOTE]
 > **Status:** all items open. Work top-down — the bench hardware checks are the current focus.
 
-📑 **On this page:** <kbd>[1 · 🔧 Bench hardware — current focus](#bench-hardware)</kbd> <kbd>[2 · 🛩️ Installed equipment](#installed-equipment)</kbd> <kbd>[3 · 💻 Software and acceptance — later](#software-and-acceptance)</kbd>
+📑 **On this page:** <kbd>[1 · 🔧 Bench hardware — current focus](#bench-hardware)</kbd> <kbd>[2 · 📦 Housing — next](#housing)</kbd> <kbd>[3 · 🛩️ Installed equipment](#installed-equipment)</kbd> <kbd>[4 · 💻 Software and acceptance — later](#software-and-acceptance)</kbd>
 
 Related: 🗺️ [Roadmap](roadmap.md) · 🤔 [Assumptions](../design/requirements.md#assumptions) · 🛩️ [Existing installation](existing-installation.md)
 
@@ -32,16 +32,33 @@ Checks on the delivered parts before the bridge is connected to any device. Step
 | 8 | Device connectors | Photos of the installed connectors and exact device models (from Tom) | Confirms the pin views in the wiring tables |
 | 9 | Becker J1 | Installed J1 revision, moulded pin numbers and which pins are already used | Confirms the J1 pins and the J1-21 ground |
 | 10 | Radio noise | No audible noise or squelch opening caused by the bridge | Check in the aircraft |
-| 11 | Power connector fit and retention | Actual XT30 dimensions, printed pocket fit, adhesive compatibility with connector and housing materials, wire support and insulated terminations ([selected arrangement](../hardware/power.md#supply)) | Fit-test print and assembly check before final housing design |
+| 11 | Power connector fit and retention | Actual XT30 dimensions, printed pocket fit, adhesive compatibility with connector and housing materials, wire support and insulated terminations ([selected arrangement](../hardware/housing.md#connectors)) | Fit-test print and assembly check before final housing design |
 | 12 | Supply-cable protection | Owner confirmation of cable length, routing and wire specification; determine protection for the cable upstream of F1 ([power wiring](../hardware/power.md#supply)) | Owner supplies harness details; agree cable protection before aircraft connection |
-| 13 | F1 holder and fuse format — deferred | Exact holder, fuse format, mounting dimensions and replacement access; only the in-housing location is selected ([power wiring](../hardware/power.md#supply)) | Resume owner selection before housing cutout design |
+| 13 | F1 holder and fuse format — deferred | Exact holder, fuse format, mounting dimensions and replacement access; only the in-housing location is selected ([power wiring](../hardware/housing.md#connectors)) | Resume owner selection before housing cutout design |
 | 14 | Combined DE-9 instrument connection | Pin assignments for the nine signals; exact mating parts, wire-gauge compatibility, screw threads, backshell, strain relief and housing mounting; identify existing loose conductors and shield termination | Owner selects details; fit and continuity checks before connection |
+
+---
+
+<a id="housing"></a>
+
+## 2. 📦 Housing — next
+
+Mechanical design of the bridge ([housing](../hardware/housing.md)). Connector and F1 details are items 11, 13 and 14 above.
+
+| # | Item | What is needed | How it is closed |
+| :-: | --- | --- | --- |
+| 1 | Part sizes | Measure the delivered ESP32 board, XT30, DE-9 socket and UBEC with leads | Bench measurement |
+| 2 | Material and manufacturing | How the housing is made (for example 3D print) and from what | Owner selection |
+| 3 | Location in the aircraft | Where the bridge sits and how it is attached | Owner / Tom |
+| 4 | Module mounting and layout | How each module is held, and where it sits | Owner selection, fit test |
+| 5 | Access | Whether the UBEC jumper, Micro-USB and F1 are reachable without opening the housing | Owner selection |
+| 6 | Wi-Fi path | Antenna position relative to the phone and surrounding structure | Owner selection; check in the aircraft |
 
 ---
 
 <a id="installed-equipment"></a>
 
-## 2. 🛩️ Installed equipment
+## 3. 🛩️ Installed equipment
 
 Facts about the equipment already in the aircraft, mostly from Tom. What is known so far: [existing installation](existing-installation.md). Closing the interface items is milestone M1.
 
@@ -62,7 +79,7 @@ Facts about the equipment already in the aircraft, mostly from Tom. What is know
 
 <a id="software-and-acceptance"></a>
 
-## 3. 💻 Software and acceptance — later
+## 4. 💻 Software and acceptance — later
 
 On hold until the hardware is finished.
 

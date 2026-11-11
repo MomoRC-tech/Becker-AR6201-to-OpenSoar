@@ -11,7 +11,7 @@ The modules the bridge is built from, how to orient them, and the shopping list 
 
 📑 **On this page:** <kbd>[1 · 📋 Module overview](#module-overview)</kbd> <kbd>[2 · 🧠 ESP32 board](#esp32-pinout)</kbd> <kbd>[3 · 🔁 RS-232 modules (Zander, FLARM)](#rs232-module)</kbd> <kbd>[4 · 📻 RS-422 board (Becker)](#rs422-board)</kbd> <kbd>[5 · 🔋 Power module (UBEC)](#ubec)</kbd> <kbd>[6 · 🛒 Parts list](#parts-list)</kbd>
 
-Related: 🔌 [Signal wiring](wiring.md) · ⚡ [Power and grounding](power.md) · 📚 [Sources](../research/sources.md)
+Related: 🔌 [Signal wiring](wiring.md) · ⚡ [Power and grounding](power.md) · 📦 [Housing](housing.md) · 📚 [Sources](../research/sources.md)
 
 ---
 
@@ -136,7 +136,7 @@ For one bridge, bridge end only — the device-side connectors and harness alrea
 | 7 | R-D | 1 | 10 kΩ resistor, 0.125 W | Pull-up, MAX490 DI → 3.3 V (quiet radio line during boot) |
 | 8 | F1 | 1 | Supply fuse with housing-integrated holder; specification tracked in [open items](../project/open-items.md#bench-hardware) | [Power](power.md#supply) |
 | 9 | — | existing | Becker harness, reused from its loose bridge-side ends | Check against [Becker wiring](wiring.md#becker); [inventory](../project/existing-installation.md#equipment) |
-| 10 | — | 1 pair | Standard XT30 male housing connector and mating female harness connector | [Power connector and printed mounting pocket](power.md#supply) |
+| 10 | — | 1 pair | Standard XT30 male housing connector and mating female harness connector | [Power](power.md#supply), [mounting](housing.md#connectors) |
 | 11 | — | 1 pair | DE-9 female housing socket and male cable plug, solder cups and screw locking, with cable backshell and strain relief | [Combined instrument connector](wiring.md#overview) |
 
 ---

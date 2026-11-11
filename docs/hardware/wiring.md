@@ -34,7 +34,7 @@ Use one standard-density DE-9 connector for Becker, Zander and FLARM: a female s
 | FLARM | Data to bridge and ground | 2 |
 | **Total** | **No spare contacts or navigation return lines** | **9** |
 
-This is a custom combined instrument connection, not a standard PC serial port. Connector pin assignments, exact parts and housing fit are tracked in [open items](../project/open-items.md#bench-hardware). Keep the Becker shield treatment described in [Becker wiring](#becker).
+This is a custom combined instrument connection, not a standard PC serial port. Connector pin assignments, exact parts and housing fit are tracked in [open items](../project/open-items.md#bench-hardware); mechanical mounting: [housing](housing.md#connectors). Keep the Becker shield treatment described in [Becker wiring](#becker).
 
 ### 1.2 UART plan
 

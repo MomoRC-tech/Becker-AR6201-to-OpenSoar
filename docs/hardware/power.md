@@ -20,8 +20,7 @@ Related: 🔌 [Signal wiring](wiring.md) · 🧱 [Modules and parts](modules.md)
 ## 1. 🔋 Supply path
 
 - **Connector:** standard XT30 — male on the housing, female on the powered harness.
-- **Mounting:** snug printed pocket with retaining shoulder, plus adhesive; support the wires so mating forces don't load the solder joints.
-- **Before final pocket:** measure the real connector, print a fit-test piece.
+- **Mounting:** printed pocket in the housing → [housing](housing.md#connectors).
 - **Existing feed:** about 22 AWG from the 12 V harness, no upstream fuse yet (owner).
 - **Open:** connector fit and supply-cable protection → [open items](../project/open-items.md#bench-hardware).
 
