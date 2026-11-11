@@ -140,7 +140,7 @@ ESP32 TX at 3.3 V drives DI directly (the MAX490 needs 2.0 V for a logic high). 
 > The MAX490 runs at 5 V, so RO idles near 5 V — above the ESP32's 3.6 V input limit (S34). Never connect RO directly to GPIO16.
 
 ```math
-V_{\text{GPIO16}} = V_{\text{RO}} \cdot \frac{3.3\,\text{k}\Omega}{2.2\,\text{k}\Omega + 3.3\,\text{k}\Omega} = 0.6 \cdot V_{\text{RO}} \quad\Rightarrow\quad 5.0\text{ to }5.25\,\text{V} \;\to\; 3.0\text{ to }3.15\,\text{V}
+V_{\text{GPIO16}} = V_{\text{RO}} \cdot \frac{3.3\text{ k}\Omega}{2.2\text{ k}\Omega + 3.3\text{ k}\Omega} = 0.6 \cdot V_{\text{RO}} \quad\Rightarrow\quad 5.0\text{ to }5.25\text{ V} \to 3.0\text{ to }3.15\text{ V}
 ```
 
 The divider keeps GPIO16 inside the ESP32's input range, so no current flows into the pin's protection diode. A series resistor alone would rely on that diode, for which Espressif gives no current limit. The divider's low source impedance (about 1.3 kΩ) also keeps a clean logic low when the firmware enables the ESP32's internal RX pull-up (about 45 kΩ), as Arduino-ESP32 does by default (S35). RO is loaded with about 1 mA.
@@ -211,7 +211,7 @@ Estimate from typical datasheet values, not measured.
 At 12 V, assuming about 85 % UBEC efficiency:
 
 ```math
-I_{12\,\text{V}} \approx \frac{5\,\text{V} \times 0.3\,\text{A}}{12\,\text{V} \times 0.85} \approx 0.15\,\text{A}
+I_{12\text{ V}} \approx \frac{5\text{ V} \times 0.3\text{ A}}{12\text{ V} \times 0.85} \approx 0.15\text{ A}
 ```
 
 Size F1 using the measured running current and switch-on inrush, the wire's allowable current and the fuse's time-current curve and DC interrupting rating ([fuse selection, S31](../research/sources.md#source-register)). The load estimate alone does not establish a fuse rating.
