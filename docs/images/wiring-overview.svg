@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1020" height="380" viewBox="0 0 1020 380" role="img" aria-labelledby="title desc">
+<title id="title">Bridge signal overview</title>
+<desc id="desc">Zander ZS1 to RS-232-mod1 to ESP32 UART0 (receive only). Classic FLARM to RS-232-mod2 to ESP32 UART1 (receive only). Becker AR6201 to and from the MAX490 RS-422 board and ESP32 UART2 in both directions. The ESP32 talks to OpenSoar over Wi-Fi.</desc>
+<rect width="1020" height="380" fill="white"/>
+<g font-family="Arial,sans-serif">
+<path d="M170 78 L300 78" stroke="#37474f" stroke-width="2.5" fill="none"/>
+<path d="M470 78 L660 78" stroke="#37474f" stroke-width="2.5" fill="none"/>
+<path d="M170 173 L300 173" stroke="#37474f" stroke-width="2.5" fill="none"/>
+<path d="M470 173 L660 173" stroke="#37474f" stroke-width="2.5" fill="none"/>
+<path d="M170 262 L300 262" stroke="#37474f" stroke-width="2.5" fill="none"/>
+<path d="M300 286 L170 286" stroke="#37474f" stroke-width="2.5" fill="none"/>
+<path d="M470 262 L660 262" stroke="#37474f" stroke-width="2.5" fill="none"/>
+<path d="M660 286 L470 286" stroke="#37474f" stroke-width="2.5" fill="none"/>
+<path d="M790 176 L870 176" stroke="#00897b" stroke-width="2.5" fill="none" stroke-dasharray="8 5"/>
+<path d="M30 345 H60" stroke="#37474f" stroke-width="2.5"/>
+<path d="M268 345 H298" stroke="#00897b" stroke-width="2.5" stroke-dasharray="8 5"/>
+<polygon points="231,73 231,83 240,78" fill="#37474f"/>
+<polygon points="561,73 561,83 570,78" fill="#37474f"/>
+<polygon points="231,168 231,178 240,173" fill="#37474f"/>
+<polygon points="561,168 561,178 570,173" fill="#37474f"/>
+<polygon points="231,257 231,267 240,262" fill="#37474f"/>
+<polygon points="239,281 239,291 230,286" fill="#37474f"/>
+<polygon points="561,257 561,267 570,262" fill="#37474f"/>
+<polygon points="569,281 569,291 560,286" fill="#37474f"/>
+<polygon points="856,171 856,181 865,176" fill="#00897b"/>
+<polygon points="804,171 804,181 795,176" fill="#00897b"/>
+<rect x="20" y="50" width="150" height="56" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
+<rect x="20" y="145" width="150" height="56" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
+<rect x="20" y="240" width="150" height="66" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
+<rect x="300" y="50" width="170" height="56" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
+<rect x="300" y="145" width="170" height="56" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
+<rect x="300" y="240" width="170" height="66" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
+<rect x="660" y="40" width="130" height="276" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
+<rect x="870" y="148" width="130" height="56" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
+<text x="95.0" y="74.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">Zander ZS1</text>
+<text x="95.0" y="92.0" font-size="12" fill="#475569" text-anchor="middle">RS-232</text>
+<text x="95.0" y="169.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">Classic FLARM</text>
+<text x="95.0" y="187.0" font-size="12" fill="#475569" text-anchor="middle">RS-232</text>
+<text x="95.0" y="269.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">Becker AR6201</text>
+<text x="95.0" y="287.0" font-size="12" fill="#475569" text-anchor="middle">RS-422, J1</text>
+<text x="385.0" y="74.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">RS-232-mod1</text>
+<text x="385.0" y="92.0" font-size="12" fill="#475569" text-anchor="middle">MAX3232, 3.3 V</text>
+<text x="385.0" y="169.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">RS-232-mod2</text>
+<text x="385.0" y="187.0" font-size="12" fill="#475569" text-anchor="middle">MAX3232, 3.3 V</text>
+<text x="385.0" y="269.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">RS-422 board</text>
+<text x="385.0" y="287.0" font-size="12" fill="#475569" text-anchor="middle">MAX490, 5 V</text>
+<text x="725.0" y="174.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">ESP32</text>
+<text x="725.0" y="192.0" font-size="12" fill="#475569" text-anchor="middle">Wi-Fi bridge</text>
+<text x="935.0" y="172.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">OpenSoar</text>
+<text x="935.0" y="190.0" font-size="12" fill="#475569" text-anchor="middle">Android</text>
+<text x="235" y="70" font-size="12" fill="#37474f" text-anchor="middle">TX → L3</text>
+<text x="565" y="70" font-size="12" fill="#37474f" text-anchor="middle">R2 → GPIO32 · UART0</text>
+<text x="235" y="165" font-size="12" fill="#37474f" text-anchor="middle">pin 5 TX → L3</text>
+<text x="565" y="165" font-size="12" fill="#37474f" text-anchor="middle">R2 → GPIO26 · UART1</text>
+<text x="235" y="254" font-size="12" fill="#37474f" text-anchor="middle">TX2± → A/B</text>
+<text x="235" y="302" font-size="12" fill="#37474f" text-anchor="middle">RX2± ← Y/Z</text>
+<text x="565" y="254" font-size="12" fill="#37474f" text-anchor="middle">RO → divider → GPIO16</text>
+<text x="565" y="302" font-size="12" fill="#37474f" text-anchor="middle">DI ← GPIO17 · UART2</text>
+<text x="830" y="166" font-size="12" fill="#00897b" text-anchor="middle">one TCP path</text>
+<text x="830" y="196" font-size="12" fill="#00897b" text-anchor="middle">per device</text>
+<text x="66" y="349" font-size="12" fill="#172b4d" text-anchor="start">Data (arrow = direction)</text>
+<text x="304" y="349" font-size="12" fill="#172b4d" text-anchor="start">Wi-Fi</text>
+<text x="30" y="369" font-size="12" fill="#475569" text-anchor="start">Zander and FLARM: receive only. Becker: both directions. Pin details: see each device section.</text>
+</g>
+</svg>

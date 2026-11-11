@@ -16,13 +16,7 @@ One ESP32 Wi-Fi bridge that connects a FLARM, a Zander ZS1 vario and a Becker AR
 
 ## 1. 🎯 What it does
 
-```mermaid
-flowchart LR
-    F[📡 FLARM] --> E[ESP32 + serial interfaces]
-    Z[📈 Zander ZS1] --> E
-    B[📻 Becker AR6201] <--> E
-    E <-->|Wi-Fi: one path per device| O[📱 OpenSoar Android]
-```
+![Signal overview: Zander and FLARM into the ESP32 bridge, receive only; Becker in both directions; ESP32 to OpenSoar over Wi-Fi](docs/images/wiring-overview.svg)
 
 | Device | What the bridge does |
 | --- | --- |

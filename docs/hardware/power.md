@@ -19,20 +19,13 @@ Related: 🔌 [Signal wiring](wiring.md) · 🧱 [Modules and parts](modules.md)
 
 ## 1. 🔋 Supply path
 
-Use a dedicated standard XT30 male connector on the housing, mating with female contacts on the powered harness. Retain the housing connector in a snug printed pocket with a retaining shoulder and adhesive. Support the wires inside the housing so mating forces do not load the solder joints. Measure the actual connector and print a fit-test piece before finalizing the pocket.
+- **Connector:** standard XT30 — male on the housing, female on the powered harness.
+- **Mounting:** snug printed pocket with retaining shoulder, plus adhesive; support the wires so mating forces don't load the solder joints.
+- **Before final pocket:** measure the real connector, print a fit-test piece.
+- **Existing feed:** about 22 AWG from the 12 V harness, no upstream fuse yet (owner).
+- **Open:** connector fit and supply-cable protection → [open items](../project/open-items.md#bench-hardware).
 
-The owner reports approximately 22 AWG wiring from the 12 V harness to the UBEC, with no upstream fuse currently fitted. Connector fit and supply-cable protection are tracked in [open items](../project/open-items.md#bench-hardware).
-
-```mermaid
-flowchart LR
-    S["12 V supply feed"] --> X["XT30"]
-    X --> F1["F1: fuse in housing"]
-    F1 --> B["Hobbywing UBEC, 5 V"]
-    B --> E["ESP32 5 V pin (J2-19)"]
-    B --> Q["MAX490 board VCC"]
-    E --> R["ESP32 3.3 V regulator"]
-    R --> C["RS-232-mod1 / mod2, pull-ups"]
-```
+![Supply path: 12 V harness, XT30, F1 and UBEC; 5 V to the ESP32 board and the MAX490 board; the ESP32 3.3 V regulator feeds both RS-232 modules and the pull-ups](../images/power-supply.svg)
 
 | From | To |
 | --- | --- |

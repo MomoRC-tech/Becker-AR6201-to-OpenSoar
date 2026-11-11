@@ -32,7 +32,7 @@ Update the document that owns the information: requirements for requirements/ass
 
 Write for a person building the bridge, not for an auditor.
 
-- Plain, complete sentences and clear tables. Say what to do, then why if it is not obvious.
+- Prefer bullet lists and tables over paragraphs. Short fragments are fine when they stay understandable. Say what to do, then why if it is not obvious.
 - Do not append "unverified", "remains open" or "confirm…" to individual cells or sentences; the page's status box covers it.
 - Open questions live only in docs/project/open-items.md; other pages link to it.
 - Use warning boxes only for things that can damage hardware or affect flight safety, one box per hazard.

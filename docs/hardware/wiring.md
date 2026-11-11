@@ -19,21 +19,7 @@ Related: ⚡ [Power and grounding](power.md) · 🧱 [Modules and parts](modules
 
 ## 1. 🧭 Overview and UART plan
 
-```mermaid
-flowchart LR
-    Z[Zander ZS1] --> NZ["RS-232-mod1: H-1-0290"]
-    F["Classic FLARM"] --> NF["RS-232-mod2: H-1-0290"]
-    B["Becker AR6201-022"] --> R["RS-422 mod"]
-    NZ --> E[ESP32]
-    NF --> E
-    R --> E
-    E -->|Wi-Fi: separate paths| O[OpenSoar]
-    %% Keep edge declarations left to right. Return paths draw only the left arrowhead.
-    B <--> R
-    R <--> E
-    E <--> O
-    linkStyle 7,8,9 marker-end:none
-```
+![Signal overview: Zander and FLARM through RS-232 modules into ESP32 UART0 and UART1, receive only; Becker through the MAX490 RS-422 board to UART2 in both directions; ESP32 to OpenSoar over Wi-Fi](../images/wiring-overview.svg)
 
 Zander and FLARM are receive-only at the bridge. No return wires or connector contacts are fitted for their RX inputs. The Becker path works in both directions.
 
@@ -71,7 +57,7 @@ UART0 is also the USB serial port. The firmware remaps its receive input to GPIO
 
 ## 2. 📈 Zander ZS1
 
-![Zander to RS-232 module to ESP32](../images/wiring-zander.svg)
+![Zander TX to RS-232-mod1 pad L3, R2 to GPIO32; signal ground to L1, R4 to ESP32 GND; receive only](../images/wiring-zander.svg)
 
 Start with the loose ends of the existing Zander harness ([installed wiring](../project/existing-installation.md#equipment)). The table identifies the required RS-232 signals, not a connector at the bridge. Match each loose conductor to its signal before connecting it; see [open items](../project/open-items.md#bench-hardware). Signal functions follow the ZS1 handbook (S22).
 
@@ -88,7 +74,7 @@ Leave L4 and GPIO33 unconnected. Keep the existing 10 kΩ pull-up (R-Z) from R1 
 
 ## 3. 📡 FLARM
 
-![FLARM to RS-232 module to ESP32](../images/wiring-flarm.svg)
+![FLARM pin 5 TX to RS-232-mod2 pad L3, R2 to GPIO26; pins 7/8 ground to L1, R4 to ESP32 GND; receive only](../images/wiring-flarm.svg)
 
 Use a free data port on the Classic FLARM ([installation manual v221 pp.6/7](https://www.flarm.com/wp-content/uploads/2024/04/FLARM_InstallationManual_D.pdf#page=6), S23).
 
@@ -110,7 +96,7 @@ Leave L4, GPIO27 and the FLARM RX conductor unconnected. Keep the existing 10 k�
 
 ## 4. 📻 Becker radio
 
-![Becker to RS-422 board to ESP32](../images/wiring-becker.svg)
+![Becker J1 TX2 pair to MAX490 A/B, RX2 pair from Y/Z, D_GND to GND, shield at radio end only; RO through the divider to GPIO16, GPIO17 to DI](../images/wiring-becker.svg)
 
 The radio's serial interface 2 on connector J1 ([Becker DV14307.03 Issue 06, p.59](https://www.becker-avionics.com/wp-content/uploads/00_Literature/6200_Series_IO_en.pdf#page=59), S10).
 

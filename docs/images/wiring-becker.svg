@@ -1,8 +1,57 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="720" height="72" viewBox="0 0 720 72" role="img" aria-label="Becker AR6201 (reported) via RS-422 mod to ESP32; proposed">
-<rect width="720" height="72" fill="white"/>
-<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#52647b"/></marker></defs>
-<g fill="#eaf1fb" stroke="#9cb1cc"><rect x="1" y="7" width="180" height="34" rx="4"/><rect x="267" y="7" width="186" height="34" rx="4"/><rect x="539" y="7" width="180" height="34" rx="4"/></g>
-<g stroke="#52647b" stroke-width="1.5" marker-end="url(#arrow)"><path d="M189 18H259"/><path d="M461 18H531"/><path d="M259 31H189"/><path d="M531 31H461"/></g>
-<g font-family="Arial,sans-serif" font-size="13" text-anchor="middle" fill="#172b4d"><text x="91" y="29">Becker AR6201 (reported)</text><text x="360" y="29">RS-422 mod</text><text x="629" y="29">ESP32</text></g>
-<g font-family="Arial,sans-serif" font-size="11" fill="#475569" text-anchor="middle"><text x="224" y="60">RX for standby tuning</text><text x="496" y="60">2.2k/3.3k divider on ESP32 RX</text></g>
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="300" viewBox="0 0 980 300" role="img" aria-labelledby="title desc">
+<title id="title">Becker to RS-422 board to ESP32</title>
+<desc id="desc">Becker J1 TX2+ and TX2- (pins 2, 9) to MAX490 receiver inputs A and B; MAX490 driver outputs Y and Z to J1 RX2+ and RX2- (pins 3, 10). J1-21 D_GND to the board GND. Cable shield to J1-11 at the radio end only. Receiver output RO through a 2.2 kΩ / 3.3 kΩ divider to GPIO16; GPIO17 to driver input DI with a 10 kΩ pull-up to 3.3 V.</desc>
+<rect width="980" height="300" fill="white"/>
+<g font-family="Arial,sans-serif">
+<path d="M190 55 L330 55" stroke="#37474f" stroke-width="2.5" fill="none"/>
+<path d="M190 80 L330 80" stroke="#37474f" stroke-width="2.5" fill="none"/>
+<path d="M330 115 L190 115" stroke="#37474f" stroke-width="2.5" fill="none"/>
+<path d="M330 140 L190 140" stroke="#37474f" stroke-width="2.5" fill="none"/>
+<path d="M190 175 L330 175" stroke="#1e88e5" stroke-width="2.5" fill="none" stroke-dasharray="7 5"/>
+<path d="M190 205 L290 205" stroke="#9e9e9e" stroke-width="2.5" fill="none" stroke-dasharray="2 4"/>
+<path d="M520 78 L610 78" stroke="#37474f" stroke-width="2.5" fill="none"/>
+<path d="M730 78 L810 78" stroke="#37474f" stroke-width="2.5" fill="none"/>
+<path d="M810 140 L520 140" stroke="#37474f" stroke-width="2.5" fill="none"/>
+<path d="M520 175 L810 175" stroke="#616161" stroke-width="2.5" fill="none"/>
+<path d="M30 255 H60" stroke="#37474f" stroke-width="2.5"/>
+<path d="M268 255 H298" stroke="#1e88e5" stroke-width="2.5" stroke-dasharray="7 5"/>
+<path d="M429 255 H459" stroke="#616161" stroke-width="2.5"/>
+<path d="M590 255 H620" stroke="#9e9e9e" stroke-width="2.5" stroke-dasharray="2 4"/>
+<polygon points="256,50 256,60 265,55" fill="#37474f"/>
+<polygon points="256,75 256,85 265,80" fill="#37474f"/>
+<polygon points="264,110 264,120 255,115" fill="#37474f"/>
+<polygon points="264,135 264,145 255,140" fill="#37474f"/>
+<polygon points="561,73 561,83 570,78" fill="#37474f"/>
+<polygon points="766,73 766,83 775,78" fill="#37474f"/>
+<polygon points="669,135 669,145 660,140" fill="#37474f"/>
+<rect x="20" y="30" width="170" height="190" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
+<rect x="330" y="30" width="190" height="190" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
+<rect x="610" y="50" width="120" height="56" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
+<rect x="810" y="30" width="150" height="190" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
+<text x="105.0" y="112.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">Becker J1</text>
+<text x="105.0" y="130.0" font-size="12" fill="#475569" text-anchor="middle">radio rear</text>
+<text x="105.0" y="148.0" font-size="12" fill="#475569" text-anchor="middle">harness via DE-9</text>
+<text x="425.0" y="112.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">MAX490 board</text>
+<text x="425.0" y="130.0" font-size="12" fill="#475569" text-anchor="middle">A B Y Z | RO DI</text>
+<text x="425.0" y="148.0" font-size="12" fill="#475569" text-anchor="middle">5 V, 120 Ω term.</text>
+<text x="670.0" y="74.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">Divider</text>
+<text x="670.0" y="92.0" font-size="12" fill="#475569" text-anchor="middle">2.2 kΩ / 3.3 kΩ</text>
+<text x="885.0" y="121.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">ESP32</text>
+<text x="885.0" y="139.0" font-size="12" fill="#475569" text-anchor="middle">UART2</text>
+<text x="260" y="48" font-size="12" fill="#37474f" text-anchor="middle">2 TX2+ → A</text>
+<text x="260" y="73" font-size="12" fill="#37474f" text-anchor="middle">9 TX2− → B</text>
+<text x="260" y="108" font-size="12" fill="#37474f" text-anchor="middle">3 RX2+ ← Y</text>
+<text x="260" y="133" font-size="12" fill="#37474f" text-anchor="middle">10 RX2− ← Z</text>
+<text x="260" y="168" font-size="12" fill="#1e88e5" text-anchor="middle">21 D_GND → GND</text>
+<text x="198" y="198" font-size="11" fill="#9e9e9e" text-anchor="start">11 shield, radio end only</text>
+<text x="565" y="70" font-size="12" fill="#37474f" text-anchor="middle" font-weight="700">RO</text>
+<text x="770" y="70" font-size="12" fill="#37474f" text-anchor="middle" font-weight="700">GPIO16</text>
+<text x="665" y="132" font-size="12" fill="#37474f" text-anchor="middle" font-weight="700">DI ← GPIO17 (10 kΩ pull-up R-D)</text>
+<text x="665" y="168" font-size="12" fill="#616161" text-anchor="middle" font-weight="700">GND</text>
+<text x="66" y="259" font-size="12" fill="#172b4d" text-anchor="start">Data (arrow = direction)</text>
+<text x="304" y="259" font-size="12" fill="#172b4d" text-anchor="start">Signal ground</text>
+<text x="465" y="259" font-size="12" fill="#172b4d" text-anchor="start">Bridge ground</text>
+<text x="626" y="259" font-size="12" fill="#172b4d" text-anchor="start">Cable shield</text>
+<text x="30" y="279" font-size="12" fill="#475569" text-anchor="start">Twisted pairs: TX2± and RX2±. Board VCC 5 V from the UBEC (see power).</text>
+</g>
 </svg>
