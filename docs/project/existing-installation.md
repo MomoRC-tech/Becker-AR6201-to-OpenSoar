@@ -4,10 +4,10 @@
 
 🏠 [Overview](../../README.md) › 📋 Project › **Existing installation**
 
-What is already in the glider (a DG200): Zander and FLARM → an ESP32 Wi-Fi bridge → OpenSoar. The Becker radio is not connected to it. This setup stays untouched as a backup ([ADR-03](../design/architecture.md#adr-03)); no parts are reused for the new bridge.
+What is already in the glider (a DG200): Zander and FLARM → an ESP32 Wi-Fi bridge → OpenSoar. The Becker radio is not connected to it. Keep the existing bridge electronics, firmware and configuration as a backup ([ADR-03](../design/architecture.md#adr-03)); reuse the existing Becker and Zander harnesses for the new bridge.
 
 > [!NOTE]
-> **Status:** based on Tom's report (S21) and four photos (S13); nothing measured. Missing facts: [installed equipment](open-items.md#installed-equipment). Full assessment: [2026-11-09 review](../research/reviews/2026-11-09-installation-claims.md).
+> **Status:** based on Tom's report (S21), four photos (S13) and the owner's harness clarification (S36); nothing measured. Missing facts: [installed equipment](open-items.md#installed-equipment). Full assessment: [2026-11-09 review](../research/reviews/2026-11-09-installation-claims.md).
 
 📑 **On this page:** <kbd>[1 · 🧰 Equipment](#equipment)</kbd> <kbd>[2 · 🌐 OpenSoar configuration](#configuration)</kbd> <kbd>[3 · 📷 Photos](#photos)</kbd>
 
@@ -29,6 +29,7 @@ What is already in the glider (a DG200): Zander and FLARM → an ESP32 Wi-Fi bri
 | 🔁 Converter | Blue "RS422 TO TTL" board with Y/Z/B/A terminals (not connected to the radio) | S13 |
 | 🔋 Power | 12 V → Hobbywing UBEC 3A → ESP32; FLARM and Zander have their own supplies | S21 |
 | 🔌 Wiring | Partly visible in the photos; two unmatched wiring sketches (S25). Whether there is an RS-232 converter is not known | S13, S25 |
+| 🔌 Becker and Zander harness ends | Existing harnesses are to be reused. The owner reports twisted-pair wires and GND wires ending loose at the bridge, with no bridge-side connectors | S36 |
 | 📶 Navigation | Zander and FLARM data reach OpenSoar | S21 |
 
 ---

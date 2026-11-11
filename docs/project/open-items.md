@@ -36,6 +36,7 @@ Checks on the delivered parts before the bridge is connected to any device. Step
 | 11 | Power connector fit and retention | Actual XT30 dimensions, printed pocket fit, adhesive compatibility with connector and housing materials, wire support and insulated terminations ([selected arrangement](../hardware/wiring.md#power)) | Fit-test print and assembly check before final housing design |
 | 12 | Supply-cable protection | Owner confirmation of cable length, routing and wire specification; determine protection for the cable upstream of F1 ([power wiring](../hardware/wiring.md#power)) | Owner supplies harness details; agree cable protection before aircraft connection |
 | 13 | F1 holder and fuse format — deferred | Exact holder, fuse format, mounting dimensions and replacement access; only the in-housing location is selected ([power wiring](../hardware/wiring.md#power)) | Resume owner selection before housing cutout design |
+| 14 | Becker and Zander bridge terminations | Identify each existing loose conductor, wire gauge and shield termination; choose how the loose ends connect at the housing, starting with Becker | Owner confirms harness details and selects termination; continuity check before connection |
 
 ---
 

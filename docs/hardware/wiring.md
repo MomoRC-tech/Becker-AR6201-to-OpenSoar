@@ -64,17 +64,15 @@ UART0 is also the USB serial port. The firmware moves it to GPIO32/33 after boot
 
 ![Zander to RS-232 module to ESP32](../images/wiring-zander.svg)
 
-Use the ZS1 PC-cable DE9 ([ZS1 handbook pp.46/48](../reference/ZS1_Deutsch.pdf#page=46), S22).
+Start with the loose ends of the existing Zander harness ([installed wiring](../project/existing-installation.md#equipment)). The table identifies the required RS-232 signals, not a connector at the bridge. Match each loose conductor to its signal before connecting it; see [open items](../project/open-items.md#bench-hardware). Signal functions follow the ZS1 handbook (S22).
 
-| ZS1 PC cable | → / ← | RS-232 pads | TTL pads | → / ← | ESP32 |
+| Zander harness signal | → / ← | RS-232 pads | TTL pads | → / ← | ESP32 |
 | --- | :-: | --- | --- | :-: | --- |
-| 2 (<img src="../images/pins/tx.svg" alt="TX" width="20" height="14">) | → | **L3** RS-232 input | **R2** TTL output | → | GPIO32 (<img src="../images/pins/rx.svg" alt="RX" width="20" height="14">) |
-| *3 (<img src="../images/pins/rx.svg" alt="RX" width="20" height="14">) — optional GPS (RMC) input* | *←* | *L4 RS-232 output* | *R1 TTL input* | *←* | *GPIO33 (<img src="../images/pins/tx.svg" alt="TX" width="20" height="14">)* |
-| 5 (<img src="../images/pins/gnd.svg" alt="GND" width="23" height="14">) | — | L1 GND | R4 GND | — | GND |
+| TX from Zander | → | **L3** RS-232 input | **R2** TTL output | → | GPIO32 (<img src="../images/pins/rx.svg" alt="RX" width="20" height="14">) |
+| *RX to Zander — optional GPS (RMC) input* | *←* | *L4 RS-232 output* | *R1 TTL input* | *←* | *GPIO33 (<img src="../images/pins/tx.svg" alt="TX" width="20" height="14">)* |
+| Signal GND | — | L1 GND | R4 GND | — | GND |
 
 R1 always gets a 10 kΩ pull-up (R-Z) to 3.3 V, so the return line idles correctly while the ESP32 boots or when GPIO33 is not wired.
-
-<img src="../images/pinout-zander-de9.svg" width="420" alt="ZS1 PC-cable DE-9. Pin 2 TX, pin 3 optional RX, pin 5 ground.">
 
 ---
 
@@ -108,6 +106,8 @@ R1 gets a 10 kΩ pull-up (R-F) to 3.3 V, as for the Zander.
 ![Becker to RS-422 board to ESP32](../images/wiring-becker.svg)
 
 The radio's serial interface 2 on connector J1 ([Becker DV14307.03 Issue 06, p.59](https://www.becker-avionics.com/wp-content/uploads/00_Literature/6200_Series_IO_en.pdf#page=59), S10).
+
+Start at the loose ends of the existing Becker harness ([installed wiring](../project/existing-installation.md#equipment)). The J1 numbers below identify radio-side signal origins, not a bridge-side connector. Bridge termination is tracked in [open items](../project/open-items.md#bench-hardware).
 
 ### 4.1 Radio side — board screw terminals
 

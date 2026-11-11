@@ -80,7 +80,7 @@ One work queue: the [roadmap](../project/roadmap.md). Requirements live in [requ
 
 ### 3.4 ADR-03 — new hardware, existing setup as backup
 
-**Selected.** One new ESP32 with its own interfaces, power and wiring. The existing hardware, firmware and configuration stay untouched as a backup.
+**Selected.** One new ESP32 with its own interfaces, power and internal wiring. Reuse the existing Becker and Zander harnesses from their [loose bridge-side ends](../project/existing-installation.md#equipment). Preserve the existing bridge electronics, firmware and configuration as a backup.
 
 <a id="adr-04"></a>
 
