@@ -82,20 +82,20 @@ Keep the delivered-board measurements for mounting design. The model represents 
 
 ### 2.4 RS-422 board CAD reference
 
-Use the [STEP model](../../cad/reference/rs422-to-ttl-max490/rs422-to-ttl-max490.step) for preliminary layout. It is a simplified project model scaled from the supplied photo ([details](../../cad/reference/rs422-to-ttl-max490/README.md), S46).
+Use the [STEP model](../../cad/reference/rs422-to-ttl-max490/rs422-to-ttl-max490.step) for preliminary layout. It is a simplified project model based on reference photos ([details](../../cad/reference/rs422-to-ttl-max490/README.md), S46).
 
 | Dimension | CAD model (mm) | Basis |
 | --- | ---: | --- |
 | PCB | 50.0 × 27.0 | Seller size (S34) |
 | PCB thickness | 1.6 | Assumed standard thickness |
-| Mounting holes | 4 × Ø3.0, spacing 21.0 × 33.5 | Photo scale |
-| Hole centres from edges | 3.0 from the long sides; 2.5 from the header edge, 14.0 from the terminal edge | Photo scale |
-| Screw terminal | 21.5 × 8.5, top of screws 10.4 above the PCB | Photo scale, 5.08 mm pitch |
-| Header pins past the PCB edge | 7.25 | Photo scale, right-angle header |
-| Overall envelope, pins included | 27.0 × 57.25 × 15.5 | — |
+| Mounting holes | 4 × Ø3.2, spacing 21.6 × 34.8 | Photo scale |
+| Hole centres from edges | 2.8 and 2.6 from the long sides, 2.5 from the header edge, 12.7 from the terminal edge | Photo scale |
+| Screw terminal | 20.8 × 8.3, housing top 10.0 above the PCB | Photo scale, 5.08 mm pitch |
+| Header pins past the PCB edge | 6.9 | Photo scale, right-angle header |
+| Overall envelope, pins included | 27.0 × 56.9 × 14.1 | — |
 
-- Model axes: X = width, Y = length (terminal edge Y = 0, header edge Y = 50), Z = up; PCB underside Z = 0, pins below reach Z = −3.5.
-- The photo scale agrees with the seller size to about 2 %, so expect position errors of about ±0.5 mm. Measure holes, PCB thickness and terminal height before sizing the mount ([open items](../project/open-items.md#housing)).
+- Model axes: X = width, Y = length (terminal edge Y = 0, header edge Y = 50), Z = up; PCB underside Z = 0, pins below reach Z = −2.5.
+- Measure the mounting holes, PCB thickness and terminal height before sizing the mount ([open items](../project/open-items.md#housing)).
 
 ---
 
