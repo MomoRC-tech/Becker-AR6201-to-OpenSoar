@@ -2,11 +2,6 @@
 
 ## 🔌 Pinning, cabling and routing
 
-> [!WARNING]
-> Confirm cable pinouts, converter pads and ESP32 headers before connecting. UNKNOWN = unresolved.
->
-> Wire the optional Zander and FLARM return paths directly where required. Leave instrument RX disconnected when the return path is unused.
-
 [Module specs](module-specs.md) · [Parts list](#parts-list) · [Sources](sources.md)
 
 ---
