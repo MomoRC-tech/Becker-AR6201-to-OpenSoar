@@ -130,7 +130,7 @@ For one bridge, bridge end only — the device-side connectors and harness alrea
 | 5 | R-B1, R-B2 | 1 each | 2.2 kΩ and 3.3 kΩ resistors, 0.125 W | Divider, MAX490 RO → GPIO16 (R-B2 to GND) |
 | 6 | R-Z, R-F | 2 | 10 kΩ resistor, 0.125 W | Pull-up, RS-232 module R1 → 3.3 V |
 | 7 | R-D | 1 | 10 kΩ resistor, 0.125 W | Pull-up, MAX490 DI → 3.3 V (quiet radio line during boot) |
-| 8 | F1 | 1 | 2 A ATO blade fuse, 32 V DC, with inline holder | [Power](wiring.md#power) |
+| 8 | F1 | 1 | Supply fuse and holder; specification tracked in [open items](../project/open-items.md#bench-hardware) | [Power](wiring.md#power) |
 | 9 | — | as needed | Shielded cable with two twisted pairs and a separate ground wire (for example three pairs) | Becker RS-422 run; shield to J1-11 only |
 
 ---

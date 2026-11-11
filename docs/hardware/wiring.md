@@ -149,11 +149,11 @@ Socket numbering follows the [Winford BRKDD25F-R-FT mating-face drawing](https:/
 
 ## 5. ⚡ Power
 
-Use a dedicated power connector, separate from the instrument connections. The owner reports approximately 22 AWG wiring from the 12 V harness to the UBEC. Connector selection and supply-cable protection are tracked in [open items](../project/open-items.md#bench-hardware).
+Use a dedicated power connector, separate from the instrument connections. The owner reports approximately 22 AWG wiring from the 12 V harness to the UBEC, with no upstream fuse currently fitted. Connector selection and supply-cable protection are tracked in [open items](../project/open-items.md#bench-hardware).
 
 ```mermaid
 flowchart LR
-    S["12 V battery"] --> F1["F1: 2 A ATO fuse"]
+    S["12 V battery"] --> F1["F1: supply fuse"]
     F1 --> B["Hobbywing UBEC, 5 V"]
     B --> E["ESP32 5 V pin (J2-19)"]
     B --> Q["MAX490 board VCC"]
@@ -170,7 +170,7 @@ flowchart LR
 | ESP32 GND | R4 (−) on both RS-232 modules, MAX490 board GND |
 
 > [!TIP]
-> **Protection:** F1 (2 A) close to the battery on the bridge's positive feed, plus the UBEC's own reverse-input protection (S14). No further protection stages.
+> **Protection:** place F1 close to the source of the bridge's positive feed, so it protects the supply cable as well as the bridge. The UBEC also has reverse-input protection (S14). Fuse selection: [open items](../project/open-items.md#bench-hardware).
 
 > [!WARNING]
 > Never connect USB and the UBEC 5 V at the same time: the board has no power selection. Unplug the UBEC before using USB.
@@ -194,7 +194,7 @@ Estimate from typical datasheet values, not measured.
 | Two MAX3232 modules | a few mA |
 | **Total** | **about 0.3 A average** — about 0.15 A at 12 V |
 
-The 2 A fuse leaves margin for switch-on inrush ([fuse selection, S31](../research/sources.md#source-register)). Confirm by measuring current and inrush on the bench.
+Size F1 using the measured running current and switch-on inrush, the wire's allowable current and the fuse's time-current curve and DC interrupting rating ([fuse selection, S31](../research/sources.md#source-register)). The load estimate alone does not establish a fuse rating.
 
 ---
 

@@ -38,7 +38,7 @@ Related: 🔌 [Wiring](../hardware/wiring.md) · 🧱 [Modules and parts](../har
 | Zander, FLARM | 2 × Hailege H-1-0290 RS-232 modules at 3.3 V |
 | Becker | 5 V MAX490 RS-422 board; receiver output to the ESP32 through a 2.2 kΩ / 3.3 kΩ divider |
 | UARTs | UART0 (remapped) Zander, UART1 FLARM, UART2 Becker |
-| Supply | 12 V battery → 2 A fuse → Hobbywing UBEC at 5 V → ESP32 and MAX490; ESP32 3.3 V → RS-232 modules |
+| Supply | 12 V battery → supply fuse → Hobbywing UBEC at 5 V → ESP32 and MAX490; ESP32 3.3 V → RS-232 modules |
 | Firmware | Not selected — software waits for the hardware. Candidates: [bridge firmware](../research/bridge-firmware.md) |
 | OpenSoar review baseline | 7.46.26, `b2e745cfddfe0150f6ed7db467ac18c321b38d01` (S09); the installed build is not known yet |
 
@@ -91,7 +91,7 @@ One work queue: the [roadmap](../project/roadmap.md). Requirements live in [requ
 > - ESP32, two Hailege RS-232 modules and the Hobbywing UBEC at 5 V.
 > - Becker: 5 V MAX490 board; receiver output to GPIO16 through a 2.2 kΩ / 3.3 kΩ divider; J1-21 bonded to the board ground by a separate wire as signal reference only; bridge supply ground to the radio's supply ground point; cable shield to J1-11 at the radio end only; 10 kΩ pull-up on the driver input so the radio line stays quiet during boot.
 > - UART plan: UART0 (remapped) Zander, UART1 FLARM, UART2 Becker.
-> - Power protection: 2 A fuse plus the UBEC's reverse-input protection.
+> - Power protection: supply fuse plus the UBEC's reverse-input protection; [fuse selection](../project/open-items.md#bench-hardware).
 
 Parts: [parts list](../hardware/modules.md#parts-list).
 

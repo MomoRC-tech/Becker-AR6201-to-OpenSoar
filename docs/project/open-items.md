@@ -28,13 +28,13 @@ Checks on the delivered parts before the bridge is connected to any device. Step
 | 3 | RS-232 modules | Continuity of both modules against the inferred pad map; IC marking | Bench check |
 | 4 | ESP32 board | Module marking and header positions match the DevKitC V4 reference | Visual check |
 | 5 | UBEC | 5 V output with and without load; fit in the enclosure | Bench measurement |
-| 6 | Current and fuse | Running current and switch-on inrush at 12 V, to confirm the 2 A fuse | Bench measurement |
+| 6 | Current and fuse | Running current and switch-on inrush at 12 V; select fuse rating and speed using these measurements and the wire protection requirements | Bench measurement and owner selection |
 | 7 | Return paths | Whether the Zander and FLARM return lines (GPIO33, GPIO27) are needed | Decides whether those wires are fitted |
 | 8 | Device connectors | Photos of the installed connectors and exact device models (from Tom) | Confirms the pin views in the wiring tables |
 | 9 | Becker J1 | Installed J1 revision, moulded pin numbers and which pins are already used | Confirms the J1 pins and the J1-21 ground |
 | 10 | Radio noise | No audible noise or squelch opening caused by the bridge | Check in the aircraft |
 | 11 | Dedicated power connector | Owner proposes XT30; choose exact variant, mounting, retention and termination for the reported approximately 22 AWG feed | Owner selection, then assembly check |
-| 12 | Supply-cable protection | Existing upstream fuse rating and location; actual wire specification, length and routing; confirm inline versus enclosure fuse placement | Owner supplies harness details; select protection for the complete feed before construction |
+| 12 | Supply-cable protection | Actual wire specification, length and routing; choose source-side fuse holder and location for the feed described in [power wiring](../hardware/wiring.md#power) | Owner supplies harness details; select protection for the complete feed before construction |
 
 ---
 
