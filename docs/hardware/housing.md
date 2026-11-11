@@ -80,6 +80,23 @@ Keep the delivered-board measurements for mounting design. The model represents 
 - [Hobbywing UBEC 3A MAX 5A CAD reference](../../cad/reference/ubec-hobbywing-3a/README.md) (S44). The full model envelope is 54.40 × 24.00 × 9.50 mm, including the modeled jumper and wire ends. Use it for preliminary layout and measure the actual unit before sizing its mount.
 - [KiCad DIN0204 axial STEP models](../../cad/reference/kicad-din0204/README.md) (S45) give a 3.6 × Ø1.6 mm body with two options for horizontal leads. Use as placeholders for resistors of that body size.
 
+### 2.4 RS-422 board CAD reference
+
+Use the [STEP model](../../cad/reference/rs422-to-ttl-max490/rs422-to-ttl-max490.step) for preliminary layout. It is a simplified project model scaled from the supplied photo ([details](../../cad/reference/rs422-to-ttl-max490/README.md), S46).
+
+| Dimension | CAD model (mm) | Basis |
+| --- | ---: | --- |
+| PCB | 50.0 × 27.0 | Seller size (S34) |
+| PCB thickness | 1.6 | Assumed standard thickness |
+| Mounting holes | 4 × Ø3.0, spacing 21.0 × 33.5 | Photo scale |
+| Hole centres from edges | 3.0 from the long sides; 2.5 from the header edge, 14.0 from the terminal edge | Photo scale |
+| Screw terminal | 21.5 × 8.5, top of screws 10.4 above the PCB | Photo scale, 5.08 mm pitch |
+| Header pins past the PCB edge | 7.25 | Photo scale, right-angle header |
+| Overall envelope, pins included | 27.0 × 57.25 × 15.5 | — |
+
+- Model axes: X = width, Y = length (terminal edge Y = 0, header edge Y = 50), Z = up; PCB underside Z = 0, pins below reach Z = −3.5.
+- The photo scale agrees with the seller size to about 2 %, so expect position errors of about ±0.5 mm. Measure holes, PCB thickness and terminal height before sizing the mount ([open items](../project/open-items.md#housing)).
+
 ---
 
 <a id="connectors"></a>

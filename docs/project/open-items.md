@@ -47,7 +47,7 @@ Mechanical design of the bridge ([housing](../hardware/housing.md)). Connector a
 
 | # | Item | What is needed | How it is closed |
 | :-: | --- | --- | --- |
-| 1 | Part sizes | Compare the ESP32 with its [CAD reference](../hardware/housing.md#contents): PCB thickness, header spacing, overall length including antenna and USB protrusion, overall height with headers, USB-plug and wiring clearance; measure RS-232 PCB thickness, assembled height on both sides and soldered-wire clearance against its CAD reference on the same page; measure XT30, DE-9 socket and UBEC with leads | Bench measurement |
+| 1 | Part sizes | Compare the ESP32 with its [CAD reference](../hardware/housing.md#contents): PCB thickness, header spacing, overall length including antenna and USB protrusion, overall height with headers, USB-plug and wiring clearance; measure RS-232 PCB thickness, assembled height on both sides and soldered-wire clearance against its CAD reference on the same page; measure the RS-422 board's hole positions, PCB thickness and screw-terminal height against its CAD reference; measure XT30, DE-9 socket and UBEC with leads | Bench measurement |
 | 2 | Material and manufacturing | How the housing is made (for example 3D print) and from what | Owner selection |
 | 3 | Location in the aircraft | Where the bridge sits and how it is attached | Owner / Tom |
 | 4 | Module mounting and layout | How each module is held, and where it sits | Owner selection, fit test |
