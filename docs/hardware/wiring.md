@@ -149,6 +149,8 @@ Socket numbering follows the [Winford BRKDD25F-R-FT mating-face drawing](https:/
 
 ## 5. ⚡ Power
 
+Use a dedicated power connector, separate from the instrument connections. The owner reports approximately 22 AWG wiring from the 12 V harness to the UBEC. Connector selection and supply-cable protection are tracked in [open items](../project/open-items.md#bench-hardware).
+
 ```mermaid
 flowchart LR
     S["12 V battery"] --> F1["F1: 2 A ATO fuse"]

@@ -33,6 +33,8 @@ Checks on the delivered parts before the bridge is connected to any device. Step
 | 8 | Device connectors | Photos of the installed connectors and exact device models (from Tom) | Confirms the pin views in the wiring tables |
 | 9 | Becker J1 | Installed J1 revision, moulded pin numbers and which pins are already used | Confirms the J1 pins and the J1-21 ground |
 | 10 | Radio noise | No audible noise or squelch opening caused by the bridge | Check in the aircraft |
+| 11 | Dedicated power connector | Owner proposes XT30; choose exact variant, mounting, retention and termination for the reported approximately 22 AWG feed | Owner selection, then assembly check |
+| 12 | Supply-cable protection | Existing upstream fuse rating and location; actual wire specification, length and routing; confirm inline versus enclosure fuse placement | Owner supplies harness details; select protection for the complete feed before construction |
 
 ---
 
