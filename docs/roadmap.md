@@ -57,7 +57,7 @@ The [power diagram](connections.md#power) shows F1 near the battery. [Sizing inp
 
 Open checks and owners: [open items](open-items.md#installed-equipment-wp1).
 
-Record supported values and gaps in the [inventory](project-baseline.md#existing-installation--wp1-record) and sources. Keep backups private. Scope is evidence review. M1 requires closure of interface-critical gaps.
+Record supported values in the [existing installation](existing-installation.md) record and sources. Keep backups private. Scope is evidence review. M1 requires closure of interface-critical gaps.
 
 ---
 

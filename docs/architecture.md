@@ -19,8 +19,8 @@
 | --- | --- |
 | Board | AZ-Delivery ESP32 WROOM dev module (owner selection). Verify header positions and regulator limits |
 | Navigation | 2 × Hailege H-1-0290 at 3.3 V (S26); continuity and interface checks pending |
-| Radio | Selected 5 V MAX490 board. Pinout, termination and ESP32 interface checks open |
-| Supply | Nominal 12 V battery → Hobbywing UBEC 3A (2–6S), selected at 5 V → ESP32 → 3.3 V navigation converters. Becker module uses regulated 5 V, subject to BEC output and load checks |
+| Radio | Selected 5 V MAX490 board (S34). Pinout, termination and ESP32 interface checks open |
+| Supply | Nominal 12 V battery → Hobbywing UBEC 3A (2–6S), selected at 5 V → ESP32 → 3.3 V navigation converters (S14, S16). Becker module uses regulated 5 V, subject to BEC output and load checks |
 | Routing | Separate UART/device endpoints proposed; return traffic and GPS priority TBD |
 | Firmware | Unselected; Yuri first external candidate, AlphaLima basic comparator |
 | OpenSoar review baseline | 7.46.26, `b2e745cfddfe0150f6ed7db467ac18c321b38d01`; Becker WIP (S09); installed build unknown |
@@ -34,7 +34,7 @@
 
 ### OpenSoar baseline and pending inputs
 
-[WP1 inventory](project-baseline.md#existing-installation--wp1-record) records reported equipment and endpoints. [Open items](open-items.md).
+[Existing installation](existing-installation.md) records reported equipment and endpoints. [Open items](open-items.md).
 
 ---
 
@@ -45,7 +45,7 @@
 
 ### ADR-00 — repository as project record
 
-One queue: [roadmap](roadmap.md). Requirements: baseline; evidence: sources; design: architecture/connections.
+One queue: [roadmap](roadmap.md). Requirements: [requirements](requirements.md); missing evidence: [open items](open-items.md); evidence: [sources](sources.md); design: architecture/connections.
 
 ### ADR-01 — separate transparent radio path
 

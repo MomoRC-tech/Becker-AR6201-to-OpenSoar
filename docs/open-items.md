@@ -2,11 +2,11 @@
 
 The one list of what is missing, who supplies it and what it blocks. All items are open.
 
-[Roadmap](roadmap.md) · [Assumptions](project-baseline.md#assumptions-to-resolve) · [Evidence labels](sources.md#evidence-labels)
+[Roadmap](roadmap.md) · [Assumptions](requirements.md#assumptions) · [Evidence labels](sources.md#evidence-labels)
 
 ## Installed equipment (WP1)
 
-Reported state: [existing installation](project-baseline.md#existing-installation--wp1-record). Closing the interface-critical items is the gate for milestone M1.
+Reported state: [existing installation](existing-installation.md). Closing the interface-critical items is the gate for milestone M1.
 
 | Item | Needed | Owner | Blocks |
 | --- | --- | --- | --- |
