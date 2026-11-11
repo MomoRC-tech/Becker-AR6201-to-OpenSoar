@@ -153,7 +153,7 @@ Use a dedicated power connector, separate from the instrument connections. The o
 
 ```mermaid
 flowchart LR
-    S["12 V battery"] --> F1["F1: supply fuse"]
+    S["12 V supply feed"] --> F1["F1: fuse in housing"]
     F1 --> B["Hobbywing UBEC, 5 V"]
     B --> E["ESP32 5 V pin (J2-19)"]
     B --> Q["MAX490 board VCC"]
@@ -170,7 +170,10 @@ flowchart LR
 | ESP32 GND | R4 (−) on both RS-232 modules, MAX490 board GND |
 
 > [!TIP]
-> **Protection:** place F1 close to the source of the bridge's positive feed, so it protects the supply cable as well as the bridge. The UBEC also has reverse-input protection (S14). Fuse selection: [open items](../project/open-items.md#bench-hardware).
+> **Selected:** integrate the F1 fuse holder into the housing, in the positive feed before the UBEC. The UBEC also has reverse-input protection (S14). Fuse specification and incoming-cable protection: [open items](../project/open-items.md#bench-hardware).
+
+> [!WARNING]
+> F1 does not protect the incoming cable against a short before the housing. Resolve supply-cable protection before connecting the bridge to the aircraft supply.
 
 > [!WARNING]
 > Never connect USB and the UBEC 5 V at the same time: the board has no power selection. Unplug the UBEC before using USB.
