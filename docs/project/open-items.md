@@ -24,7 +24,7 @@ Checks on the delivered parts before the bridge is connected to any device. Step
 | # | Item | What is needed | How it is closed |
 | :-: | --- | --- | --- |
 | 1 | MAX490 board | Which header pin is RO and which is DI; termination; current draw | Bench check on the delivered board |
-| 2 | GPIO16 input | Voltage at GPIO16 behind the 10 kΩ resistor, also at power-up and power-down | Bench measurement |
+| 2 | GPIO16 input | High and low level at GPIO16 behind the divider, also at power-up and power-down | Bench measurement |
 | 3 | RS-232 modules | Continuity of both modules against the inferred pad map; IC marking | Bench check |
 | 4 | ESP32 board | Module marking and header positions match the DevKitC V4 reference | Visual check |
 | 5 | UBEC | 5 V output with and without load; fit in the enclosure | Bench measurement |

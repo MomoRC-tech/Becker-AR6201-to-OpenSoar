@@ -47,7 +47,7 @@ The AZ-Delivery board follows Espressif's DevKitC V4 layout (S32). View from the
 | 9 | `IO25` | — | `IO18` | — |
 | 10 | `IO26` | **FLARM RX** (UART1) | `IO5` | — |
 | 11 | `IO27` | **FLARM TX**, optional (UART1) | `IO17` | **Becker TX** (UART2) |
-| 12 | `IO14` | — | `IO16` | **Becker RX** via 10 kΩ (UART2) |
+| 12 | `IO14` | — | `IO16` | **Becker RX** via divider (UART2) |
 | 13 | `IO12` | — | `IO4` | — |
 | 14 | `GND` | Ground | `IO0` | — |
 | 15 | `IO13` | — | `IO2` | — |
@@ -96,7 +96,7 @@ A blue "RS422 TO TTL" board with a 4-pin header (TXD/RXD/GND/VCC) and four screw
 | Header RXD / TXD | Receiver output (RO) and driver input (DI) — check which is which on the board |
 
 > [!TIP]
-> **Selected:** keep the 5 V board; its receiver output reaches the ESP32 only through a 10 kΩ series resistor. Details: [Becker wiring](wiring.md#becker).
+> **Selected:** keep the 5 V board; its receiver output reaches the ESP32 only through a 2.2 kΩ / 3.3 kΩ divider. Details: [Becker wiring](wiring.md#becker).
 
 ---
 
@@ -127,7 +127,7 @@ For one bridge, bridge end only — the device-side connectors and harness alrea
 | 2 | RS-232-mod1, mod2 | 2 | Hailege H-1-0290 | [Zander](wiring.md#zander), [FLARM](wiring.md#flarm) |
 | 3 | RS-422 mod | 1 | MAX490 RS-422 board, 5 V | [Becker](wiring.md#becker) |
 | 4 | PS1 | 1 | Hobbywing UBEC 3A (2–6S), 86010010, set to 5 V | [Power](wiring.md#power) |
-| 5 | R-B | 1 | 10 kΩ resistor, 0.125 W | Series resistor, MAX490 RO → GPIO16 |
+| 5 | R-B1, R-B2 | 1 each | 2.2 kΩ and 3.3 kΩ resistors, 0.125 W | Divider, MAX490 RO → GPIO16 (R-B2 to GND) |
 | 6 | R-Z, R-F | 2 | 10 kΩ resistor, 0.125 W | Pull-up, RS-232 module R1 → 3.3 V |
 | 7 | R-D | 1 | 10 kΩ resistor, 0.125 W | Pull-up, MAX490 DI → 3.3 V (quiet radio line during boot) |
 | 8 | F1 | 1 | 2 A ATO blade fuse, 32 V DC, with inline holder | [Power](wiring.md#power) |
