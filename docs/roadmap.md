@@ -39,7 +39,7 @@ The [power diagram](connections.md#power) shows F1 near the battery. [Sizing inp
 
 ## Bounded WP3 RS-232 board selection — 2026-11-09
 
-Selected: 2 × Hailege H-1-0290 for Zander/FLARM; replaces HW-044. [S26](sources.md) records supplied specifications; [converter reference](connections.md#hailege-board-pad-reference) uses text dimensions **9.4 × 15.9 mm**. Board acceptance, pad mapping, equipment connectors and enclosure clearance remain open.
+Selected: 2 × Hailege H-1-0290 for Zander/FLARM. [S26](sources.md) records supplied specifications; [converter reference](connections.md#hailege-board-pad-reference) uses text dimensions **9.4 × 15.9 mm**. Board acceptance, pad mapping, equipment connectors and enclosure clearance remain open.
 
 Verification: selection/specifications and affected wiring/preview labels checked for consistency; 121 relative file/anchor references, three SVG structures and whitespace checked; updated diagrams visually checked in local renders. Documentation only; no build, electrical or device tests. WP3/M2 remain open.
 

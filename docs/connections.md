@@ -55,7 +55,7 @@ flowchart LR
 | AZ-Delivery ESP32 WROOM dev module | 5 V input, 3.3 V regulator | — | — |
 | BEC (model TBD) | 2S–4S input reported, 5 V output | — | — |
 
-[Power module sources (S16–S19)](sources.md#source-register)
+[Power module sources (S16, S17, S19)](sources.md#source-register)
 
 #### Hailege H-1-0290 · RS-232
 
@@ -184,7 +184,7 @@ flowchart LR
 >
 > - Place F1 near the battery on the bridge's positive feed. Use a separate reverse-polarity stage only if the exact BEC lacks adequate reverse-input protection.
 > - Coordinate any input transient clamp with the fuse and BEC limits. Evaluate output overvoltage cutoff against BEC faults and ESP32 input limits.
-> - Verify BEC polarity, tolerance and ripple. Check regulator current and temperature with Wi-Fi and the 3.3 V loads active. Spare 3.3 V capacity, source voltage range, BEC model and protection ratings remain open. [S16–S19](sources.md#source-register)
+> - Verify BEC polarity, tolerance and ripple. Check regulator current and temperature with Wi-Fi and the 3.3 V loads active. Spare 3.3 V capacity, source voltage range, BEC model and protection ratings remain open. [S16, S17, S19](sources.md#source-register)
 
 #### F1 sizing inputs
 
