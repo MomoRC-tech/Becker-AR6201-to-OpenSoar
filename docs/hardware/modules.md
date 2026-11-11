@@ -43,10 +43,10 @@ The AZ-Delivery board follows Espressif's DevKitC V4 layout (S32). View from the
 | 5 | `IO34` | — | `RX` | USB serial (boot only) |
 | 6 | `IO35` | — | `IO21` | — |
 | 7 | `IO32` | **Zander RX** (UART0) | `GND` | Ground |
-| 8 | `IO33` | **Zander TX**, optional (UART0) | `IO19` | — |
+| 8 | `IO33` | Not connected | `IO19` | — |
 | 9 | `IO25` | — | `IO18` | — |
 | 10 | `IO26` | **FLARM RX** (UART1) | `IO5` | — |
-| 11 | `IO27` | **FLARM TX**, optional (UART1) | `IO17` | **Becker TX** (UART2) |
+| 11 | `IO27` | Not connected | `IO17` | **Becker TX** (UART2) |
 | 12 | `IO14` | — | `IO16` | **Becker RX** via divider (UART2) |
 | 13 | `IO12` | — | `IO4` | — |
 | 14 | `GND` | Ground | `IO0` | — |

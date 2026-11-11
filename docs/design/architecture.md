@@ -23,7 +23,7 @@ Related: 🔌 [Signal wiring](../hardware/wiring.md) · ⚡ [Power and grounding
 | --- | --- |
 | 📱 OpenSoar | Understands the radio protocol: builds frames, converts channels, tracks radio state and replies |
 | 🧠 ESP32 bridge | Forwards bytes unchanged; keeps radio, navigation and diagnostic traffic on separate paths |
-| 📡📈 Navigation | FLARM and Zander data keep flowing as today, including any return traffic |
+| 📡📈 Navigation | FLARM and Zander send data to the bridge; no return lines to either instrument |
 | 📻 Radio interface | ESP32 UART ↔ 5 V MAX490 RS-422 board ([details](../hardware/modules.md#rs422-board)) |
 
 ---

@@ -29,17 +29,13 @@ flowchart LR
     R --> E
     E -->|Wi-Fi: separate paths| O[OpenSoar]
     %% Keep edge declarations left to right. Return paths draw only the left arrowhead.
-    Z <-.-> NZ
-    F <-.-> NF
     B <--> R
-    NZ <-.-> E
-    NF <-.-> E
     R <--> E
     E <--> O
-    linkStyle 7,8,9,10,11,12,13 marker-end:none
+    linkStyle 7,8,9 marker-end:none
 ```
 
-Dotted arrows are optional return paths to the navigation instruments. The Becker path must work in both directions.
+Zander and FLARM are receive-only at the bridge. No return wires or connector contacts are fitted for their RX inputs. The Becker path works in both directions.
 
 ### 1.1 UART plan
 
@@ -47,14 +43,14 @@ The ESP32 has three UARTs; each device gets one.
 
 | Device | UART | ESP32 RX | ESP32 TX | Interface |
 | --- | --- | --- | --- | --- |
-| 📈 Zander ZS1 | UART0, remapped | GPIO32 | GPIO33 (optional) | RS-232-mod1 |
-| 📡 FLARM | UART1 | GPIO26 | GPIO27 (optional) | RS-232-mod2 |
+| 📈 Zander ZS1 | UART0, remapped | GPIO32 | Not connected | RS-232-mod1 |
+| 📡 FLARM | UART1 | GPIO26 | Not connected | RS-232-mod2 |
 | 📻 Becker | UART2 | GPIO16, through a 2.2 kΩ / 3.3 kΩ divider | GPIO17 | MAX490 RS-422 board |
 
-UART0 is also the USB serial port. The firmware moves it to GPIO32/33 after boot, so there is no USB serial log in operation; diagnostics go over Wi-Fi. Boot messages appear only on GPIO1, so they never reach a device. Keeping the radio off UART0 means a stray log line can never reach the radio.
+UART0 is also the USB serial port. The firmware remaps its receive input to GPIO32 after boot, so there is no USB serial log in operation; diagnostics go over Wi-Fi. Boot messages appear only on GPIO1, so they never reach a device. Keeping the radio off UART0 means a stray log line can never reach the radio.
 
 > [!IMPORTANT]
-> The firmware must switch the UART0 log console off; otherwise log output goes to the Zander's GPS input (GPIO33).
+> The firmware must switch the UART0 log console off when assigning UART0 to Zander reception. GPIO33 and the Zander return path are not wired.
 
 ---
 
@@ -69,10 +65,9 @@ Start with the loose ends of the existing Zander harness ([installed wiring](../
 | Zander harness signal | → / ← | RS-232 pads | TTL pads | → / ← | ESP32 |
 | --- | :-: | --- | --- | :-: | --- |
 | TX from Zander | → | **L3** RS-232 input | **R2** TTL output | → | GPIO32 (<img src="../images/pins/rx.svg" alt="RX" width="20" height="14">) |
-| *RX to Zander — optional GPS (RMC) input* | *←* | *L4 RS-232 output* | *R1 TTL input* | *←* | *GPIO33 (<img src="../images/pins/tx.svg" alt="TX" width="20" height="14">)* |
 | Signal GND | — | L1 GND | R4 GND | — | GND |
 
-R1 always gets a 10 kΩ pull-up (R-Z) to 3.3 V, so the return line idles correctly while the ESP32 boots or when GPIO33 is not wired.
+Leave L4 and GPIO33 unconnected. Keep the existing 10 kΩ pull-up (R-Z) from R1 to 3.3 V to hold the unused converter driver input at a defined level.
 
 ---
 
@@ -87,10 +82,9 @@ Use a free data port on the Classic FLARM ([installation manual v221 pp.6/7](htt
 | FLARM Power/Data | → / ← | RS-232 pads | TTL pads | → / ← | ESP32 |
 | --- | :-: | --- | --- | :-: | --- |
 | 5 (<img src="../images/pins/tx.svg" alt="TX" width="20" height="14">) | → | **L3** RS-232 input | **R2** TTL output | → | GPIO26 (<img src="../images/pins/rx.svg" alt="RX" width="20" height="14">) |
-| *6 (<img src="../images/pins/rx.svg" alt="RX" width="20" height="14">) — optional* | *←* | *L4 RS-232 output* | *R1 TTL input* | *←* | *GPIO27 (<img src="../images/pins/tx.svg" alt="TX" width="20" height="14">)* |
 | 7/8 (<img src="../images/pins/gnd.svg" alt="GND" width="23" height="14">) | — | L1 GND | R4 GND | — | GND |
 
-R1 gets a 10 kΩ pull-up (R-F) to 3.3 V, as for the Zander.
+Leave L4, GPIO27 and the FLARM RX conductor unconnected. Keep the existing 10 kΩ pull-up (R-F) from R1 to 3.3 V, as for the Zander.
 
 > [!WARNING]
 > FLARM uses IGC pin numbering, which runs opposite to common RJ45 numbering. Pins 1–3 carry supply voltage: never connect them to the converter.
