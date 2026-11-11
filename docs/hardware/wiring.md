@@ -117,7 +117,7 @@ The radio's serial interface 2 on connector J1 ([Becker DV14307.03 Issue 06, p.5
 | 11 | SHIELD_2 | — (cable shield) | Shield of the auxiliary control interface |
 | 21 | D_GND | GND | Signal reference |
 
-Run TX2± and RX2± as two separate twisted pairs in a shielded cable, as Becker requires for the interface lines (S10). Connect the shield to J1-11 at the radio end only and leave it unconnected at the bridge end, so it carries no ground current. Connect J1-21 to the board GND with a separate wire in the same cable, not the shield or drain wire.
+Run TX2± and RX2± as two separate twisted pairs in a shielded cable, as Becker requires for the interface lines (S10). Connect the shield to J1-11 at the radio end only and leave it unconnected at the bridge end, so it carries no ground current. Connect J1-21 to the board GND with a separate wire in the same cable, not the shield or drain wire. J1-21 is a signal reference only; the bridge's supply ground follows the [ground rule](#ground).
 
 ### 4.2 ESP32 side — board header
 
@@ -163,6 +163,7 @@ flowchart LR
 
 | From | To |
 | --- | --- |
+| UBEC input GND | The radio's supply ground point (where P1-13/25 return, S10), with its own wire |
 | UBEC 5 V | ESP32 5V pin ([J2-19](modules.md#esp32-pinout)) and MAX490 board VCC |
 | UBEC GND | ESP32 GND |
 | ESP32 3V3 ([J2-1](modules.md#esp32-pinout)) | R3 (+) on both RS-232 modules; the pull-ups R-Z, R-F and R-D |
@@ -174,7 +175,13 @@ flowchart LR
 > [!WARNING]
 > Never connect USB and the UBEC 5 V at the same time: the board has no power selection. Unplug the UBEC before using USB.
 
-### 5.1 Load estimate
+<a id="ground"></a>
+
+### 5.1 Ground
+
+Treat the UBEC's input and output ground as connected, which is usual for this kind of regulator (bring-up step 1 checks it). The bridge ground, the battery minus and the radio's D_GND (J1-21) are one circuit. Run the bridge's supply ground to the same ground point as the radio's supply ground, with a solid crimped or screwed connection. If that wire opened, the bridge's supply current would return through J1-21 and the radio's internal ground instead. J1-21 only carries the signal reference.
+
+### 5.2 Load estimate
 
 Estimate from typical datasheet values, not measured.
 
@@ -195,13 +202,14 @@ The 2 A fuse leaves margin for switch-on inrush ([fuse selection, S31](../resear
 
 Before connecting any device:
 
-1. Set the UBEC jumper to 5 V; measure the output with no load and with the ESP32 connected.
+1. Set the UBEC jumper to 5 V; measure the output with no load and with the ESP32 connected. Check continuity between the UBEC's input and output ground.
 2. Match the ESP32 board's headers and module marking to the [pinout](modules.md#esp32-pinout).
 3. Check continuity of both RS-232 modules against the [pad map](modules.md#rs232-module).
 4. On the MAX490 board, identify RO and DI on the header and check the 120 Ω termination.
 5. With the MAX490 powered and the radio line idle, measure GPIO16: about 3.0 V (high). Then hold B above A with a 1.5 V cell (+ to B, − to A) and check for a low below 0.5 V.
 6. Measure the bridge's current and switch-on inrush at 12 V.
-7. In the aircraft: listen for radio noise and check squelch with the bridge on and off.
+7. Before plugging in J1, check that the bridge ground has low resistance (well under 1 Ω) to the radio's supply ground point.
+8. In the aircraft: listen for radio noise and check squelch with the bridge on and off.
 
 ---
 
