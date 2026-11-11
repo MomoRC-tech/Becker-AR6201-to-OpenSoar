@@ -33,9 +33,9 @@ Checks on the delivered parts before the bridge is connected to any device. Step
 | 8 | Device connectors | Photos of the installed connectors and exact device models (from Tom) | Confirms the pin views in the wiring tables |
 | 9 | Becker J1 | Installed J1 revision, moulded pin numbers and which pins are already used | Confirms the J1 pins and the J1-21 ground |
 | 10 | Radio noise | No audible noise or squelch opening caused by the bridge | Check in the aircraft |
-| 11 | Power connector fit and retention | Actual XT30 dimensions, printed pocket fit, adhesive compatibility with connector and housing materials, wire support and insulated terminations ([selected arrangement](../hardware/wiring.md#power)) | Fit-test print and assembly check before final housing design |
-| 12 | Supply-cable protection | Owner confirmation of cable length, routing and wire specification; determine protection for the cable upstream of F1 ([power wiring](../hardware/wiring.md#power)) | Owner supplies harness details; agree cable protection before aircraft connection |
-| 13 | F1 holder and fuse format — deferred | Exact holder, fuse format, mounting dimensions and replacement access; only the in-housing location is selected ([power wiring](../hardware/wiring.md#power)) | Resume owner selection before housing cutout design |
+| 11 | Power connector fit and retention | Actual XT30 dimensions, printed pocket fit, adhesive compatibility with connector and housing materials, wire support and insulated terminations ([selected arrangement](../hardware/power.md#supply)) | Fit-test print and assembly check before final housing design |
+| 12 | Supply-cable protection | Owner confirmation of cable length, routing and wire specification; determine protection for the cable upstream of F1 ([power wiring](../hardware/power.md#supply)) | Owner supplies harness details; agree cable protection before aircraft connection |
+| 13 | F1 holder and fuse format — deferred | Exact holder, fuse format, mounting dimensions and replacement access; only the in-housing location is selected ([power wiring](../hardware/power.md#supply)) | Resume owner selection before housing cutout design |
 | 14 | Becker and Zander bridge terminations | Identify each existing loose conductor, wire gauge and shield termination; choose how the loose ends connect at the housing, starting with Becker | Owner confirms harness details and selects termination; continuity check before connection |
 
 ---
@@ -57,7 +57,7 @@ Facts about the equipment already in the aircraft, mostly from Tom. What is know
 | 7 | Existing power | UBEC jumper/output, board input, grounding | Tom / owner | Backup record |
 | 8 | Navigation baseline | Data types, update gaps, reconnect behaviour of today's setup | Owner / Tom | Acceptance limits for the new bridge |
 | 9 | OpenSoar | Installed build, driver and endpoint settings, role of the OpenVario | Owner / Tom | App configuration |
-| 10 | Radio ground | Whether both P1 ground pins (13, 25) run to the battery minus, and whether the radio's grounding bolt is connected | Tom / owner | Confirms the radio cannot return its current through the bridge ([ground](../hardware/wiring.md#ground)) |
+| 10 | Radio ground | Whether both P1 ground pins (13, 25) run to the battery minus, and whether the radio's grounding bolt is connected | Tom / owner | Confirms the radio cannot return its current through the bridge ([ground](../hardware/power.md#ground)) |
 
 ---
 

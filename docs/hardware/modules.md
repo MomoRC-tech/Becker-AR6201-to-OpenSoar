@@ -11,7 +11,7 @@ The modules the bridge is built from, how to orient them, and the shopping list 
 
 📑 **On this page:** <kbd>[1 · 📋 Module overview](#module-overview)</kbd> <kbd>[2 · 🧠 ESP32 board](#esp32-pinout)</kbd> <kbd>[3 · 🔁 RS-232 modules (Zander, FLARM)](#rs232-module)</kbd> <kbd>[4 · 📻 RS-422 board (Becker)](#rs422-board)</kbd> <kbd>[5 · 🔋 Power module (UBEC)](#ubec)</kbd> <kbd>[6 · 🛒 Parts list](#parts-list)</kbd>
 
-Related: 🔌 [Wiring](wiring.md) · 📚 [Sources](../research/sources.md)
+Related: 🔌 [Signal wiring](wiring.md) · ⚡ [Power and grounding](power.md) · 📚 [Sources](../research/sources.md)
 
 ---
 
@@ -130,13 +130,13 @@ For one bridge, bridge end only — the device-side connectors and harness alrea
 | 1 | MCU | 1 | AZ-Delivery ESP32 WROOM dev module | [Pinout](#esp32-pinout) |
 | 2 | RS-232-mod1, mod2 | 2 | Hailege H-1-0290 | [Zander](wiring.md#zander), [FLARM](wiring.md#flarm) |
 | 3 | RS-422 mod | 1 | MAX490 RS-422 board, 5 V | [Becker](wiring.md#becker) |
-| 4 | PS1 | 1 | Hobbywing UBEC 3A (2–6S), 86010010, set to 5 V | [Power](wiring.md#power) |
+| 4 | PS1 | 1 | Hobbywing UBEC 3A (2–6S), 86010010, set to 5 V | [Power](power.md#supply) |
 | 5 | R-B1, R-B2 | 1 each | 2.2 kΩ and 3.3 kΩ resistors, 0.125 W | Divider, MAX490 RO → GPIO16 (R-B2 to GND) |
 | 6 | R-Z, R-F | 2 | 10 kΩ resistor, 0.125 W | Pull-up, RS-232 module R1 → 3.3 V |
 | 7 | R-D | 1 | 10 kΩ resistor, 0.125 W | Pull-up, MAX490 DI → 3.3 V (quiet radio line during boot) |
-| 8 | F1 | 1 | Supply fuse with housing-integrated holder; specification tracked in [open items](../project/open-items.md#bench-hardware) | [Power](wiring.md#power) |
+| 8 | F1 | 1 | Supply fuse with housing-integrated holder; specification tracked in [open items](../project/open-items.md#bench-hardware) | [Power](power.md#supply) |
 | 9 | — | existing | Becker harness, reused from its loose bridge-side ends | Check against [Becker wiring](wiring.md#becker); [inventory](../project/existing-installation.md#equipment) |
-| 10 | — | 1 pair | Standard XT30 male housing connector and mating female harness connector | [Power connector and printed mounting pocket](wiring.md#power) |
+| 10 | — | 1 pair | Standard XT30 male housing connector and mating female harness connector | [Power connector and printed mounting pocket](power.md#supply) |
 
 ---
 

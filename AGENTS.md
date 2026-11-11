@@ -26,7 +26,7 @@ One question or behavior change per increment. Before changing logic, identify t
 
 For documentation-only work, check consistency, relative links/anchors, source support and whitespace; do not build applications or run device tests. State what was not tested. Simulation and static analysis are not physical acceptance.
 
-Update the document that owns the information: requirements for requirements/assumptions/risks; existing-installation for the installed inventory; open-items for missing evidence and owners; sources for evidence; architecture for decisions; wiring and modules for pinning, power and parts; roadmap for work status. Dated reviews in docs/research/reviews are frozen records. Keep documentation current. Remove superseded selections, guidance, references and assets once they no longer support the current project state. Use Git history for previous versions. Keep one concise verification summary per package, with detailed evidence only where useful.
+Update the document that owns the information: requirements for requirements/assumptions/risks; existing-installation for the installed inventory; open-items for missing evidence and owners; sources for evidence; architecture for decisions; wiring for signal pinning and bench bring-up; power for supply, grounding and current assumptions; modules for parts; roadmap for work status. Dated reviews in docs/research/reviews are frozen records. Keep documentation current. Remove superseded selections, guidance, references and assets once they no longer support the current project state. Use Git history for previous versions. Keep one concise verification summary per package, with detailed evidence only where useful.
 
 ## Writing style
 

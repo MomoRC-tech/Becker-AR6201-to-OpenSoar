@@ -11,7 +11,7 @@ How the bridge is split up, which hardware is selected, and the decisions behind
 
 📑 **On this page:** <kbd>[1 · 🧩 Who does what](#responsibilities)</kbd> <kbd>[2 · 🔧 Hardware](#hardware)</kbd> <kbd>[3 · 📝 Decisions](#decisions)</kbd>
 
-Related: 🔌 [Wiring](../hardware/wiring.md) · 🧱 [Modules and parts](../hardware/modules.md) · 🎯 [Requirements](requirements.md)
+Related: 🔌 [Signal wiring](../hardware/wiring.md) · ⚡ [Power and grounding](../hardware/power.md) · 🧱 [Modules and parts](../hardware/modules.md) · 🎯 [Requirements](requirements.md)
 
 ---
 
@@ -42,7 +42,7 @@ Related: 🔌 [Wiring](../hardware/wiring.md) · 🧱 [Modules and parts](../har
 | Firmware | Not selected — software waits for the hardware. Candidates: [bridge firmware](../research/bridge-firmware.md) |
 | OpenSoar review baseline | 7.46.26, `b2e745cfddfe0150f6ed7db467ac18c321b38d01` (S09); the installed build is not known yet |
 
-Pin-by-pin details: [wiring](../hardware/wiring.md). Today's installation: [existing installation](../project/existing-installation.md).
+Pin-by-pin details: [signal wiring](../hardware/wiring.md) and [power and grounding](../hardware/power.md). Today's installation: [existing installation](../project/existing-installation.md).
 
 ---
 

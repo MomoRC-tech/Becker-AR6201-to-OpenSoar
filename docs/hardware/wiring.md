@@ -1,17 +1,17 @@
 <a id="top"></a>
 
-# 🔌 Wiring
+# 🔌 Signal wiring
 
-🏠 [Overview](../../README.md) › 🔧 Hardware › **Wiring**
+🏠 [Overview](../../README.md) › 🔧 Hardware › **Signal wiring**
 
-How the bridge connects to the Zander, the FLARM, the Becker radio and power — pin by pin. The device-side connectors and harness already exist in the aircraft; this page covers the bridge end only.
+How the bridge's signals connect to the Zander, the FLARM and the Becker radio — pin by pin. Supply and grounding: [power and grounding](power.md). The device-side connectors and harness already exist in the aircraft; this page covers the bridge end only.
 
 > [!NOTE]
 > **Status:** bench design. Parts and wiring are decided; nothing is built or measured yet. Open checks: [bench hardware](../project/open-items.md#bench-hardware).
 
-📑 **On this page:** <kbd>[1 · 🧭 Overview and UART plan](#overview)</kbd> <kbd>[2 · 📈 Zander ZS1](#zander)</kbd> <kbd>[3 · 📡 FLARM](#flarm)</kbd> <kbd>[4 · 📻 Becker radio](#becker)</kbd> <kbd>[5 · ⚡ Power](#power)</kbd> <kbd>[6 · 🧪 Bench bring-up](#bring-up)</kbd>
+📑 **On this page:** <kbd>[1 · 🧭 Overview and UART plan](#overview)</kbd> <kbd>[2 · 📈 Zander ZS1](#zander)</kbd> <kbd>[3 · 📡 FLARM](#flarm)</kbd> <kbd>[4 · 📻 Becker radio](#becker)</kbd> <kbd>[5 · 🧪 Bench bring-up](#bring-up)</kbd>
 
-Related: 🧱 [Modules and parts](modules.md) · 📚 [Sources](../research/sources.md)
+Related: ⚡ [Power and grounding](power.md) · 🧱 [Modules and parts](modules.md) · 📚 [Sources](../research/sources.md)
 
 ---
 
@@ -120,7 +120,7 @@ Start at the loose ends of the existing Becker harness ([installed wiring](../pr
 | 11 | SHIELD_2 | — (cable shield) | Shield of the auxiliary control interface |
 | 21 | D_GND | GND | Signal reference |
 
-Run TX2± and RX2± as two separate twisted pairs in a shielded cable, as Becker requires for the interface lines (S10). Connect the shield to J1-11 at the radio end only and leave it unconnected at the bridge end, so it carries no ground current. Connect J1-21 to the board GND with a separate wire in the same cable, not the shield or drain wire. J1-21 is a signal reference only; the bridge's supply ground follows the [ground rule](#ground).
+Run TX2± and RX2± as two separate twisted pairs in a shielded cable, as Becker requires for the interface lines (S10). Connect the shield to J1-11 at the radio end only and leave it unconnected at the bridge end, so it carries no ground current. Connect J1-21 to the board GND with a separate wire in the same cable, not the shield or drain wire. J1-21 also closes ground loop L1; see [grounding and loops](power.md#ground).
 
 ### 4.2 ESP32 side — board header
 
@@ -155,87 +155,9 @@ Socket numbering follows the [Winford BRKDD25F-R-FT mating-face drawing](https:/
 
 ---
 
-<a id="power"></a>
-
-## 5. ⚡ Power
-
-Use a dedicated standard XT30 male connector on the housing, mating with female contacts on the powered harness. Retain the housing connector in a snug printed pocket with a retaining shoulder and adhesive. Support the wires inside the housing so mating forces do not load the solder joints. Measure the actual connector and print a fit-test piece before finalizing the pocket.
-
-The owner reports approximately 22 AWG wiring from the 12 V harness to the UBEC, with no upstream fuse currently fitted. Connector fit and supply-cable protection are tracked in [open items](../project/open-items.md#bench-hardware).
-
-```mermaid
-flowchart LR
-    S["12 V supply feed"] --> F1["F1: fuse in housing"]
-    F1 --> B["Hobbywing UBEC, 5 V"]
-    B --> E["ESP32 5 V pin (J2-19)"]
-    B --> Q["MAX490 board VCC"]
-    E --> R["ESP32 3.3 V regulator"]
-    R --> C["RS-232-mod1 / mod2"]
-```
-
-| From | To |
-| --- | --- |
-| UBEC input GND | The radio's supply ground point (where P1-13/25 return, S10), with its own wire |
-| UBEC 5 V | ESP32 5V pin ([J2-19](modules.md#esp32-pinout)) and MAX490 board VCC |
-| UBEC GND | ESP32 GND |
-| ESP32 3V3 ([J2-1](modules.md#esp32-pinout)) | R3 (+) on both RS-232 modules; the pull-ups R-Z, R-F and R-D |
-| ESP32 GND | R4 (−) on both RS-232 modules, MAX490 board GND |
-
-> [!TIP]
-> **Selected:** integrate the F1 fuse holder into the housing, in the positive feed before the UBEC. The UBEC also has reverse-input protection (S14). Fuse specification and incoming-cable protection: [open items](../project/open-items.md#bench-hardware).
-
-> [!WARNING]
-> F1 does not protect the incoming cable against a short before the housing. Resolve supply-cable protection before connecting the bridge to the aircraft supply.
-
-> [!WARNING]
-> Never connect USB and the UBEC 5 V at the same time: the board has no power selection. Unplug the UBEC before using USB.
-
-> [!WARNING]
-> Unplug J1 from the radio whenever USB is connected. On USB alone the MAX490 has no supply, but GPIO17 and R-D partly power it through DI, so its outputs to the radio are undefined. A laptop on its mains charger can also put leakage voltage on the USB ground, which would reach the radio through J1-21.
-
-<a id="ground"></a>
-
-### 5.1 Ground
-
-Treat the UBEC's input and output ground as connected, which is usual for this kind of regulator (bring-up step 1 checks it). The bridge ground, the battery minus and the radio's D_GND (J1-21) are one circuit. Run the bridge's supply ground to the same ground point as the radio's supply ground, with a solid crimped or screwed connection. J1-21 connects directly to the board GND, without a series resistor. It carries the signal reference, plus a share of the radio's return current: the bridge ground runs parallel to the radio's own supply ground, so roughly a tenth of the radio's current (about 0.2 A of 1.8 A while transmitting, S10) can flow through J1-21 and the bridge. This is an estimate from typical wire resistances. The Zander and FLARM signal grounds form the same kind of loop, with much smaller currents.
-
-What a single broken wire does:
-
-| Broken wire | Effect | Risk |
-| --- | --- | --- |
-| Radio supply ground (P1-13/25) | The radio's whole return current, up to 3 A (S10), flows through J1-21, the MAX490 board, the ESP32 board and the bridge ground wire. The radio keeps working. | 🔴 Overheated wiring; see the warning below |
-| Bridge supply ground | The bridge's ~0.15 A returns through J1-21 and the Zander and FLARM grounds. The bridge keeps working. | 🟡 Low; bring-up step 7 catches a poor connection |
-| Zander or FLARM supply ground | That device's supply current returns through its RS-232 ground and the bridge. | 🟡 Low; small currents |
-| Bridge +12 V or F1 | The bridge switches off; its unpowered interfaces do not feed the devices. | 🟢 None |
-| One signal ground (J1-21, Zander, FLARM) | The link stays referenced through the supply grounds. | 🟢 None |
-
-> [!WARNING]
-> The direct J1-21 wire depends on the radio's own supply ground. If P1-13/25 lost their connection, up to 3 A of radio current would run through the bridge's thin signal wiring without any visible symptom. Make sure both P1 ground pins are wired to the ground point and check them before connecting the bridge (bring-up step 7).
-
-### 5.2 Load estimate
-
-Estimate from typical datasheet values, not measured.
-
-| Load | Current at 5 V |
-| --- | --- |
-| ESP32 with Wi-Fi | about 250 mA average, 500 mA peaks |
-| MAX490 driving the radio input | about 30 mA |
-| Two MAX3232 modules | a few mA |
-| **Total** | **about 0.3 A average** |
-
-At 12 V, assuming about 85 % UBEC efficiency:
-
-```math
-I_{12\text{ V}} \approx \frac{5\text{ V} \times 0.3\text{ A}}{12\text{ V} \times 0.85} \approx 0.15\text{ A}
-```
-
-Size F1 using the measured running current and switch-on inrush, the wire's allowable current and the fuse's time-current curve and DC interrupting rating ([fuse selection, S31](../research/sources.md#source-register)). The load estimate alone does not establish a fuse rating.
-
----
-
 <a id="bring-up"></a>
 
-## 6. 🧪 Bench bring-up
+## 5. 🧪 Bench bring-up
 
 Before connecting any device, work through this list in order:
 
@@ -244,8 +166,8 @@ Before connecting any device, work through this list in order:
 - [ ] **3.** Check continuity of both RS-232 modules against the [pad map](modules.md#rs232-module).
 - [ ] **4.** On the MAX490 board, identify RO and DI on the header and check the 120 Ω termination.
 - [ ] **5.** With the MAX490 powered and the radio line idle, measure GPIO16: about 3.0 V (high). Then hold B above A with a 1.5 V cell (+ to B, − to A) and check for a low below 0.5 V.
-- [ ] **6.** Measure the bridge's current and switch-on inrush at 12 V.
-- [ ] **7.** Before plugging in J1, check that the bridge ground and the radio's P1-13 and P1-25 each have low resistance (well under 1 Ω) to the common ground point.
+- [ ] **6.** Measure the bridge's current and switch-on inrush at 12 V, and update the [current assumptions](power.md#currents).
+- [ ] **7.** Before plugging in J1, check that the bridge ground and the radio's P1-13 and P1-25 each have low resistance (well under 1 Ω) to the common ground point ([why](power.md#wire-breaks)).
 - [ ] **8.** In the aircraft: listen for radio noise and check squelch with the bridge on and off.
 
 ---
