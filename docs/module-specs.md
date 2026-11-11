@@ -9,6 +9,13 @@
 | AZ-Delivery ESP32 WROOM dev module | 5 V input, 3.3 V regulator | — | — |
 | Hobbywing UBEC 3A (2–6S), 86010010 | 5.5–26 V input, jumper-selectable 5 V or 6 V at 3 A. Selected setting: 5 V | — | 43 × 17 × 7 mm (catalog) |
 
+<a id="hobbywing-ubec"></a>
+
+## Hobbywing UBEC 3A (2–6S)
+
+<img src="images/hobbywing-ubec-3a-product.png" alt="Hobbywing UBEC with voltage jumper, ferrite ring and leads" width="320">
+<img src="images/hobbywing-ubec-3a-dimensions.png" alt="Supplied UBEC image annotated 35 × 12 × 5 mm" width="320">
+
 Verify clearance on the delivered unit including the jumper, leads, ferrite ring and connector. The owner-supplied image marks 35 × 12 × 5 mm around the pictured body. The dimension boundaries are unverified.
 
 [Power module sources (S14, S16, S17, S19)](sources.md#source-register)
