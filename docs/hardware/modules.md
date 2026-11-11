@@ -21,7 +21,7 @@ Related: 🔌 [Signal wiring](wiring.md) · ⚡ [Power and grounding](power.md) 
 
 | Module | Use | Supply | Chip | Size |
 | --- | --- | --- | --- | --- |
-| [AZ-Delivery ESP32 WROOM dev module](#esp32-pinout) | Bridge controller | 5 V in, 3.3 V on board | ESP32-WROOM-32 | — |
+| [AZ-Delivery ESP32 WROOM dev module](#esp32-pinout) | Bridge controller | 5 V in, 3.3 V on board | ESP32-WROOM-32 | [Reference dimensions](housing.md#contents) |
 | [Hailege H-1-0290](#rs232-module) (2×) | RS-232 for Zander and FLARM | 3.3 V | MAX3232CSE | [Measured size](housing.md#contents) |
 | [RS-422 board](#rs422-board) | Becker radio | 5 V | MAX490 | 50 × 27 mm |
 | [Hobbywing UBEC 3A (2–6S)](#ubec), part 86010010 | 12 V → 5 V | 5.5–26 V in; 5 V or 6 V out (jumper) at 3 A | — | 43 × 17 × 7 mm |
