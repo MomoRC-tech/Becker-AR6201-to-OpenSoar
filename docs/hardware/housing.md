@@ -90,6 +90,8 @@ Keep the delivered-board measurements for mounting design. The model represents 
 
 **DE-9 (instruments)** — pin use: [signal wiring](wiring.md#overview)
 
+- Preliminary layout: [NorComp 171-009-203 STEP](https://content.norcomp.net/3d-drawings/step/171-y03series/171-009-203.step.zip) (S43). Model envelope: 30.80 × 12.60 × 15.27 mm (width × height × depth). Allow separate space for mounting hardware, mating plug and wiring.
+
 - Female socket on the housing, male cable plug with solder cups and screw locking.
 - Backshell and strain relief on the cable side.
 - Housing side: screw-lock threads and panel mounting still open.
