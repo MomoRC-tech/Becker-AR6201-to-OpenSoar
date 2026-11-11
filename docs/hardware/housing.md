@@ -75,6 +75,11 @@ Use the [STEP model](../../cad/reference/rs232-uart-ttl-mini-max3232/RS232_TTL/R
 
 Keep the delivered-board measurements for mounting design. The model represents a similar module, not an exact Hailege mechanical drawing; its height excludes soldered wires. Do not uniformly scale it to match the PCB, since that also changes component sizes. Physical fit checks belong to the [housing measurements](../project/open-items.md#housing).
 
+### 2.3 UBEC and resistor CAD references
+
+- [Hobbywing 3A UBEC SolidWorks reference](../../cad/reference/ubec-hobbywing-3a/README.md) (S44). Use the catalog dimensions above for preliminary layout.
+- [KiCad DIN0204 axial STEP models](../../cad/reference/kicad-din0204/README.md) (S45) give a 3.6 × Ø1.6 mm body with two options for horizontal leads. Use as placeholders for resistors of that body size.
+
 ---
 
 <a id="connectors"></a>
