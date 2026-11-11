@@ -21,7 +21,7 @@ Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md)
 
 - **Holds:** ESP32 board, 2 × RS-232 modules, MAX490 board, UBEC (with jumper, leads, ferrite ring), F1 fuse holder, RX divider and pull-up resistors.
 - **On the housing:** XT30 for power, DE-9 for the three instruments ([section 4](#connectors)).
-- **F1:** inside the housing, replaceable ([power](power.md#protection)).
+- **F1:** holder built into the housing wall, fuse replaceable from outside ([power](power.md#protection)).
 - **Wiring:** connector mating forces must not load solder joints.
 - **UBEC jumper:** must stay at 5 V — a 6 V setting is a hazard ([modules](modules.md#ubec)).
 - **USB:** never together with the UBEC supply; radio unplugged when on USB ([power](power.md#supply)).
@@ -42,7 +42,9 @@ Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md)
 | Split | Shallow base tray (floor, low side walls, full-height connector wall) and a deep hood as the cover; connectors stay on the base when the hood is off |
 | Cover | Hood held by M3 screws in heat-set inserts in the base |
 | PCB mounting | Snap-fits locate and hold every PCB; ribs inside the hood press the PCBs down when it is closed, so vibration loads go into the hood, not the hooks |
-| ESP32 | Component side up; its pre-soldered header pins point up, and wires are soldered directly to them from above (not replaceable) |
+| ESP32 | Component side up; its pre-soldered header pins point up, and wires are soldered directly to them from above (not replaceable). Lengthwise, antenna at the short end opposite the connectors |
+| Internal wiring | One snap-fit perfboard carries the RX divider, the pull-ups, the bridge ground point and the 3.3 V / 5 V distribution; wires run from it to the modules |
+| Access from outside | Connectors and the F1 fuse only. Micro-USB and the UBEC jumper are reachable only with the hood off; no USB opening in the hood |
 | Soldering | Every solder joint reachable with all PCBs fitted and the cover off |
 | Connectors | XT30 and DE-9 together on one short side |
 | XT30 | Press fit positions it; a shoulder in front and a hood rib behind capture it, so unplugging cannot pull it out; glue optional |
@@ -162,7 +164,7 @@ Use the [STEP model](../../cad/reference/rs422-to-ttl-max490/rs422-to-ttl-max490
 - Backshell and strain relief on the cable side.
 - Housing side: rigid, screwed panel mount; screw-lock threads: [open items](../project/open-items.md#bench-hardware).
 
-**F1 (fuse)** — inside the housing; holder, format and replacement access open.
+**F1 (fuse)** — panel-mount holder in the housing wall, fuse replaceable from outside; holder, format and position: [open items](../project/open-items.md#bench-hardware).
 
 ---
 
@@ -175,7 +177,8 @@ Not designed yet. Constraints from the wiring:
 - **Short wires:** RO → divider → GPIO16 and the pull-ups sit between the MAX490 board and the ESP32.
 - **Grounds:** one bridge ground; route the device signal grounds from the DE-9 to the module grounds ([grounding and loops](power.md#ground)).
 - **Power path:** XT30 → F1 → UBEC → ESP32 and MAX490 ([supply path](power.md#supply)).
-- **Access:** UBEC jumper and Micro-USB reachable or not — see [open items](../project/open-items.md#housing).
+- **ESP32:** lengthwise, antenna at the far short end; Micro-USB faces the connector end.
+- **Resistors and ground point:** on one snap-fit perfboard ([design rules](#rules)).
 
 ---
 

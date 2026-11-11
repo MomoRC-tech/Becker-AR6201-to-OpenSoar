@@ -34,7 +34,7 @@ Checks on the delivered parts before the bridge is connected to any device. Step
 | 10 | Radio noise | No audible noise or squelch opening caused by the bridge | Check in the aircraft |
 | 11 | Power connector fit and retention | Actual XT30 dimensions, printed pocket fit, adhesive compatibility with connector and housing materials, wire support and insulated terminations ([selected arrangement](../hardware/housing.md#connectors)) | Fit-test print and assembly check before final housing design |
 | 12 | Supply-cable protection | Owner confirmation of cable length, routing and wire specification; determine protection for the cable upstream of F1 ([power wiring](../hardware/power.md#supply)) | Owner supplies harness details; agree cable protection before aircraft connection |
-| 13 | F1 holder and fuse format — deferred | Exact holder, fuse format, mounting dimensions and replacement access; only the in-housing location is selected ([power wiring](../hardware/housing.md#connectors)) | Resume owner selection before housing cutout design |
+| 13 | F1 holder and fuse format | Panel-mount holder replaceable from outside is selected; exact holder, fuse format, mounting dimensions and position on the housing ([housing](../hardware/housing.md#connectors)) | Resume owner selection before housing cutout design |
 | 14 | Combined DE-9 instrument connection | Pin assignments for the nine signals; exact mating parts, wire-gauge compatibility, screw threads, backshell, strain relief and housing mounting; identify existing loose conductors and shield termination | Owner selects details; fit and continuity checks before connection |
 
 ---
@@ -68,14 +68,14 @@ Inputs still needed before the housing can be modelled. Selected rules: [housing
 | :-: | --- | --- | --- |
 | 12 | Hood screws and inserts | Insert type and size (length, outer diameter), screw head and length, number of screws | Owner, later |
 | 4 | Module layout and snap-fits | Where each PCB sits in the base tray; snap-fit style per PCB (edge hooks, clip posts through the MAX490 holes); how the UBEC, F1 holder and ferrite ring are held | Owner selection, fit test |
-| 14 | Internal wiring method | Point-to-point wires, or a small perfboard or carrier for the divider and pull-up resistors and the ground point; internal wire type and gauge; tie-down points and service loops | Owner selection |
+| 14 | Internal wiring details | Perfboard size and position; internal wire type and gauge; tie-down points and service loops | Owner selection |
 | 15 | Ventilation openings | Position and size of the openings; keep small parts and dirt out (slots, not open holes) | Owner selection |
 
 ### 2.4 Access, markings and targets
 
 | # | Item | What is needed | How it is closed |
 | :-: | --- | --- | --- |
-| 5 | Access | Whether the UBEC jumper, Micro-USB, F1 and the ESP32 EN/BOOT buttons are reachable without opening the housing; whether the power LED should be visible | Owner selection |
+| 5 | Access details | Whether the ESP32 EN/BOOT buttons need to be reachable, and whether the power LED should be visible from outside | Owner selection |
 | 16 | Markings | What is marked on the housing (connector names, pin-1 side, "5 V jumper", USB warning, version) and how (embossed, engraved, label) | Owner selection |
 | 17 | Size and weight targets | Priority between smallest housing and easiest assembly and service; any weight limit | Owner selection |
 | 1 | Part sizes | Compare the ESP32 with its [CAD reference](../hardware/housing.md#contents): PCB thickness, header spacing, overall length including antenna and USB protrusion, overall height with headers, USB-plug and wiring clearance; measure RS-232 PCB thickness, assembled height on both sides and soldered-wire clearance against its CAD reference on the same page; measure the RS-422 board's hole positions, PCB thickness and screw-terminal height against its CAD reference; measure XT30, DE-9 socket and UBEC with leads | Bench measurement |
