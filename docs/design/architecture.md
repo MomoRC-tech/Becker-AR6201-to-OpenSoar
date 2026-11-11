@@ -1,23 +1,40 @@
-# Architecture
+<a id="top"></a>
 
-[← Project overview](../../README.md)
+# 🏗️ Architecture
 
-How the bridge is split up, which hardware is selected and the decisions behind it. Selections are design decisions; implementation and physical acceptance are tracked separately.
+🏠 [Overview](../../README.md) › 🧩 Design › **Architecture**
 
-## Responsibilities and routing
+How the bridge is split up, which hardware is selected, and the decisions behind it.
 
-| Component | Responsibility |
-| --- | --- |
-| OpenSoar | Radio framing, channel conversion, state, responses |
-| ESP32 | Counted binary forwarding; separate radio/navigation/diagnostic paths |
-| Navigation | Preserve required messages, displays and return traffic |
-| Radio interface | ESP32 UART ↔ selected 5 V MAX490 full-duplex RS-422 board; [UART interface details and checks](../hardware/modules.md#becker-max490-board) |
+> [!NOTE]
+> **Status:** hardware design selected (ADR-04); firmware not selected. Building and testing are tracked in the [roadmap](../project/roadmap.md).
 
-[Wiring](../hardware/wiring.md) · [Modules and parts](../hardware/modules.md) · [Requirements](requirements.md)
+📑 **Contents**
+
+1. [Who does what](#responsibilities)
+2. [Hardware](#hardware)
+3. [Decisions](#decisions)
+
+Related: 🔌 [Wiring](../hardware/wiring.md) · 🧱 [Modules and parts](../hardware/modules.md) · 🎯 [Requirements](requirements.md)
 
 ---
 
-## Hardware — one ESP32
+<a id="responsibilities"></a>
+
+## 1. 🧩 Who does what
+
+| Component | Responsibility |
+| --- | --- |
+| 📱 OpenSoar | Understands the radio protocol: builds frames, converts channels, tracks radio state and replies |
+| 🧠 ESP32 bridge | Forwards bytes unchanged; keeps radio, navigation and diagnostic traffic on separate paths |
+| 📡📈 Navigation | FLARM and Zander data keep flowing as today, including any return traffic |
+| 📻 Radio interface | ESP32 UART ↔ 5 V MAX490 RS-422 board ([details](../hardware/modules.md#rs422-board)) |
+
+---
+
+<a id="hardware"></a>
+
+## 2. 🔧 Hardware — one ESP32
 
 | Item | Selection |
 | --- | --- |
@@ -26,33 +43,62 @@ How the bridge is split up, which hardware is selected and the decisions behind 
 | Becker | 5 V MAX490 RS-422 board; receiver output to the ESP32 through 10 kΩ |
 | UARTs | UART0 (remapped) Zander, UART1 FLARM, UART2 Becker |
 | Supply | 12 V battery → 2 A fuse → Hobbywing UBEC at 5 V → ESP32 and MAX490; ESP32 3.3 V → RS-232 modules |
-| Firmware | Not selected (software waits for the hardware design); candidates in [bridge firmware](../research/bridge-firmware.md) |
-| OpenSoar review baseline | 7.46.26, `b2e745cfddfe0150f6ed7db467ac18c321b38d01` (S09); installed build unknown |
+| Firmware | Not selected — software waits for the hardware. Candidates: [bridge firmware](../research/bridge-firmware.md) |
+| OpenSoar review baseline | 7.46.26, `b2e745cfddfe0150f6ed7db467ac18c321b38d01` (S09); the installed build is not known yet |
 
-Details: [wiring](../hardware/wiring.md) · [modules and parts](../hardware/modules.md).
-
-The installed equipment and its reported endpoints are in [existing installation](../project/existing-installation.md).
+Pin-by-pin details: [wiring](../hardware/wiring.md). Today's installation: [existing installation](../project/existing-installation.md).
 
 ---
 
-## Decision record
+<a id="decisions"></a>
 
-### ADR-00 — repository as project record
+## 3. 📝 Decisions
 
-One queue: [roadmap](../project/roadmap.md). Requirements: [requirements](requirements.md); missing evidence: [open items](../project/open-items.md); evidence: [sources](../research/sources.md); design: architecture/connections.
+| ADR | Decision | State |
+| --- | --- | --- |
+| [ADR-00](#adr-00) | The repository is the project record | ✅ Selected |
+| [ADR-01](#adr-01) | Separate, transparent radio path | 🟡 Proposed |
+| [ADR-02](#adr-02) | Firmware and reuse baseline | ⏸️ Open |
+| [ADR-03](#adr-03) | New hardware; existing setup kept as backup | ✅ Selected |
+| [ADR-04](#adr-04) | Bench hardware and power path | ✅ Selected |
 
-### ADR-01 — separate transparent radio path
+<a id="adr-00"></a>
 
-**Proposed:** one bidirectional radio endpoint; protocol/state in OpenSoar. Selection requires equipment interfaces and routing/resource/license review (WP1–WP3).
+### 3.1 ADR-00 — repository as project record
 
-### ADR-02 — implementation and reuse baseline
+One work queue: the [roadmap](../project/roadmap.md). Requirements live in [requirements](requirements.md), missing information in [open items](../project/open-items.md), evidence in [sources](../research/sources.md), design in this page and the hardware pages.
 
-**Open:** firmware selection. [Yuri/basic comparison](../research/reviews/2026-11-08-yuri-bridge.md): Yuri needs exclusive radio ownership, diagnostic isolation and checked bounded writes. DroneBridge remains an alternative; multi-UART capability unverified. Review compatibility, file licenses and reproducible build inputs before reuse. Plan targeted OpenSoar fixes under WP4.
+<a id="adr-01"></a>
 
-### ADR-03 — new hardware with the existing setup as backup
+### 3.2 ADR-01 — separate transparent radio path
 
-**Selected:** one ESP32 with separate interfaces, power and harness. Keep the existing hardware, firmware and configuration as backup. Match equipment interfaces before building.
+**Proposed.** The radio gets its own bidirectional TCP endpoint; all protocol and state handling stays in OpenSoar, and the bridge only forwards bytes. Final selection needs the installed equipment details and the firmware review.
 
-### ADR-04 — selected bench hardware and power path
+<a id="adr-02"></a>
 
-**Selected:** ESP32, two Hailege RS-232 modules and the Hobbywing UBEC at 5 V. Becker: 5 V MAX490 board, receiver output to GPIO16 through a 10 kΩ series resistor, J1-21 bonded to the board ground. UART plan: UART0 (remapped) Zander, UART1 FLARM, UART2 Becker. Power protection: 2 A fuse plus the UBEC's reverse-input protection. [Wiring and parts](../hardware/modules.md#parts-list).
+### 3.3 ADR-02 — firmware and reuse baseline
+
+**Open, on hold until the hardware is finished.** Yuri's ESP serial bridge is the first candidate; it needs exclusive radio ownership, separate diagnostics and checked writes ([review](../research/reviews/2026-11-08-yuri-bridge.md)). DroneBridge is an alternative. Check licenses and build inputs before reusing code. OpenSoar driver fixes are planned separately (WP4).
+
+<a id="adr-03"></a>
+
+### 3.4 ADR-03 — new hardware, existing setup as backup
+
+**Selected.** One new ESP32 with its own interfaces, power and wiring. The existing hardware, firmware and configuration stay untouched as a backup.
+
+<a id="adr-04"></a>
+
+### 3.5 ADR-04 — bench hardware and power path
+
+> [!TIP]
+> **Selected:**
+> - ESP32, two Hailege RS-232 modules and the Hobbywing UBEC at 5 V.
+> - Becker: 5 V MAX490 board; receiver output to GPIO16 through a 10 kΩ series resistor; J1-21 bonded to the board ground.
+> - UART plan: UART0 (remapped) Zander, UART1 FLARM, UART2 Becker.
+> - Power protection: 2 A fuse plus the UBEC's reverse-input protection.
+
+Parts: [parts list](../hardware/modules.md#parts-list).
+
+---
+
+⬆️ [Back to top](#top) · 🏠 [Overview](../../README.md)

@@ -1,54 +1,71 @@
-# Existing installation
+<a id="top"></a>
 
-[← Project overview](../../README.md)
+# 🛩️ Existing installation
 
-The WP1 record of the bridge already in the aircraft: DG200 Zander/FLARM → ESP32 Wi-Fi → OpenSoar, no working Becker integration (reported, S21). No measured baseline. The assembly stays as backup ([ADR-03](../design/architecture.md#adr-03--new-hardware-with-the-existing-setup-as-backup)); no component reuse planned.
+🏠 [Overview](../../README.md) › 📋 Project › **Existing installation**
 
-[Claim assessment and verification, 2026-11-09](../research/reviews/2026-11-09-installation-claims.md) · [Open items](open-items.md#installed-equipment-wp1) · [Evidence labels](../research/sources.md#evidence-labels)
+What is already in the glider (a DG200): Zander and FLARM → an ESP32 Wi-Fi bridge → OpenSoar. The Becker radio is not connected to it. This setup stays untouched as a backup ([ADR-03](../design/architecture.md#adr-03)); no parts are reused for the new bridge.
 
-## Reported equipment
+> [!NOTE]
+> **Status:** based on Tom's report (S21) and four photos (S13); nothing measured. Missing facts: [installed equipment](open-items.md#installed-equipment). Full assessment: [2026-11-09 review](../research/reviews/2026-11-09-installation-claims.md).
 
-| Item | Reported / known |
-| --- | --- |
-| Radio | AR6201-(022), ETSO-2C37e/2C38e reported (S21); consistent manual entry (S10) |
-| ESP32 | WROOM-family board, micro-USB, BOOT/RST (S13) |
-| Zander | ZS1; FLARM input unused, no FLARM connected, reported (S21) |
-| FLARM | Classic FLARM IGC, series 6 reported (S21); F6 manual candidate (S23) |
-| OpenSoar | Wi-Fi reception, drivers/endpoints reported (S21), below |
-| Converter | RS422 TO TTL board, Y/Z/B/A labels (S13 P1) |
-| Power | Nominal 12 V → Hobbywing UBEC 3A 2–6S → ESP32; separate FLARM/Zander supplies reported (S21) |
-| Wiring | Partial photos; unmatched Zander/FLARM diagrams (S25); absence of RS-232 conversion only conjectured |
-| Navigation | Reception reported |
+📑 **Contents**
 
-Missing evidence and owners: [open items](open-items.md#installed-equipment-wp1).
+1. [Equipment](#equipment)
+2. [OpenSoar configuration](#configuration)
+3. [Photos](#photos)
 
-> [!IMPORTANT]
-> Keep logs, identifiers, credentials and raw backups private. Preserve the backup hardware and harness.
+> [!WARNING]
+> Keep logs, device identifiers, credentials and configuration backups out of this public repository.
 
-## Reported configuration
+---
 
-| Device | Reported TCP endpoint | Reported OpenSoar driver |
+<a id="equipment"></a>
+
+## 1. 🧰 Equipment
+
+| Item | What is known | Source |
 | --- | --- | --- |
-| Zander | `10.10.10.10:10110` | `Zander / SDI` |
-| FLARM | `10.10.10.10:2000` | `FLARM` |
-| Becker | `10.10.10.10:4352` | `AR62xx`; entry/intention only, no integrated radio |
+| 📻 Radio | Becker AR6201-(022), ETSO-2C37e/2C38e; matches the Issue 06 manual | S21, S10 |
+| 📈 Zander | ZS1; its FLARM input is unused | S21 |
+| 📡 FLARM | Classic FLARM, IGC series 6 | S21, S23 |
+| 🧠 ESP32 | WROOM-family board with micro-USB and BOOT/RST buttons | S13 |
+| 🔁 Converter | Blue "RS422 TO TTL" board with Y/Z/B/A terminals (not connected to the radio) | S13 |
+| 🔋 Power | 12 V → Hobbywing UBEC 3A → ESP32; FLARM and Zander have their own supplies | S21 |
+| 🔌 Wiring | Partly visible in the photos; two unmatched wiring sketches (S25). Whether there is an RS-232 converter is not known | S13, S25 |
+| 📶 Navigation | Zander and FLARM data reach OpenSoar | S21 |
 
-Separate navigation paths reported. Wiring, return traffic, installed OpenSoar build and OpenVario’s role are open. Review baseline is OpenSoar 7.46.26 (S09/S24). See S24 for Zander fields consumed.
+---
 
-## Photo evidence
+<a id="configuration"></a>
 
-S13: four private photos from Tom, inspected 2026-11-08; visible features only. No powered/continuity tests or complete equipment-to-GPIO path.
+## 2. 🌐 OpenSoar configuration
 
-| Photo | Rechecked source: visible observation | Inference / limit |
+As reported by Tom (S21):
+
+| Device | TCP endpoint | OpenSoar driver |
 | --- | --- | --- |
-| P1 | Blue board marked RS422 TO TTL; four screw terminals marked Y, Z, B, A; VCC/GND markings at the wired header; IC marking too blurred to identify | Existing-installation evidence. Separate terminal pairs suggest a full-duplex module, but the IC/circuit must establish direction, polarity, supply, logic levels, termination and isolation. TTL wording does not establish 3.3 V compatibility. No connection to the radio or pictured ESP32 is traceable |
-| P2 | HOBBYWING UBEC-labelled module, visible 3A marking, blue jumper, stripboard and soldered wiring | Likely the bridge’s regulator; exact model/revision, jumper function/setting and delivered voltage are unverified. S14 describes a similar 5/6 V selectable product, not a measurement of this unit |
-| P3 | ESP32 WROOM-family development board; module marking appears to read ESP-WROOM-32; micro-USB, BOOT/RST buttons, pin labels and attached wiring visible | Supports the classic ESP32/WROOM family as a reuse lead. Does not establish an official DevKitC V4, WROOM-32E, board schematic, firmware, spare UARTs or complete GPIO assignments |
-| P4 | Wider view of the board, green enclosure and partly covered cable assembly | Supports assembly context; covered joins and off-frame endpoints prevent an end-to-end wiring map. Wire colour alone does not establish function or voltage |
+| 📈 Zander | `10.10.10.10:10110` | `Zander / SDI` |
+| 📡 FLARM | `10.10.10.10:2000` | `FLARM` |
+| 📻 Becker | `10.10.10.10:4352` | `AR62xx` — entry only, the radio is not connected |
 
-| Segment | Supported map | Unresolved endpoint / function |
+The installed OpenSoar build and the role of the OpenVario are not known. The review baseline is OpenSoar 7.46.26 (S09); which Zander fields it uses is in S24.
+
+---
+
+<a id="photos"></a>
+
+## 3. 📷 Photos
+
+Four private photos from Tom (S13). They show what is visible only — no wiring can be traced end to end.
+
+| Photo | What is visible | What it tells us |
 | --- | --- | --- |
-| Enclosure assembly | P2–P4 show the ESP32 board, stripboard, UBEC module and wiring as parts of the photographed assembly | Exact interconnections, supply entry, regulator output destination and any concealed interface circuits |
-| External harness | P3/P4 show conductors from the harness reaching the board area; sections are covered | Connector contacts, GPIOs, serial directions and which branch serves Zander or FLARM |
-| RS-422 module | P1 shows wires attached at its logic-side header and four labelled field terminals | Far ends of those wires, field-side cable, radio connection and relationship to the enclosure assembly |
-| Navigation over Wi-Fi | S21 reports separate Zander and FLARM TCP paths into OpenSoar | Live endpoint mapping, UART settings and return traffic remain unverified |
+| P1 | Blue "RS422 TO TTL" board, screw terminals Y/Z/B/A, VCC/GND at the header; chip marking unreadable | A full-duplex RS-422 module; how it is wired to the radio or ESP32 cannot be seen |
+| P2 | HOBBYWING UBEC with "3A" marking, blue jumper, stripboard, soldered wires | Probably the bridge's regulator; jumper setting and output voltage unknown |
+| P3 | ESP32 board, module marked ESP-WROOM-32, micro-USB, BOOT/RST, pin labels, wiring | A classic ESP32-WROOM board; exact board type and pin use unknown |
+| P4 | Wider view: board, green enclosure, partly covered cable assembly | Assembly context only; covered joints hide the wiring |
+
+---
+
+⬆️ [Back to top](#top) · 🏠 [Overview](../../README.md)

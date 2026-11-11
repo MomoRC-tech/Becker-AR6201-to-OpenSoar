@@ -1,49 +1,66 @@
-# Roadmap
+<a id="top"></a>
 
-[← Project overview](../../README.md)
+# 🗺️ Roadmap
 
-This is the single work queue. Current focus: hardware selection and wiring (WP3); software packages wait until it is finished. Implementation requires separate approval.
+🏠 [Overview](../../README.md) › 📋 Project › **Roadmap**
 
-## Work queue
+The single work queue: which work package comes next and what finishes it.
 
-| Package | Status | Prerequisite | Output / completion check |
+> [!NOTE]
+> **Status:** WP3 hardware is the current focus. Software packages (WP4–WP6) wait until the hardware is finished. Every implementation step needs the owner's approval.
+
+📑 **Contents**
+
+1. [Work packages](#work-packages)
+2. [Milestones](#milestones)
+3. [Test coverage for the software phase](#test-coverage)
+
+Related: ❓ [Open items](open-items.md) · 🎯 [Requirements](../design/requirements.md)
+
+---
+
+<a id="work-packages"></a>
+
+## 1. 📦 Work packages
+
+| Package | Status | Next step | Done when |
 | --- | --- | --- | --- |
-| WP0 Documentation | Complete; acceptance pending | Existing records | Current requirements, design, evidence and work queue |
-| WP1 Installation | Open; photos and equipment report assessed | Equipment/configuration evidence | Inventory, connector map, navigation baseline; gaps with owner/consequence |
-| WP2 Interfaces/protocol | Open; driver research complete | Radio identity | Matched manual, settings, framing, response rules, independent vectors |
-| WP3 Architecture/reuse | Open; bench design documented | WP1/WP2 | Board/interfaces, firmware, required fixes, licenses, build inputs |
-| WP4 Driver plan | Planned; send investigation complete | WP1–WP3 | One minimal change and regression check per increment |
-| WP5 Host verification | Partial: send regression only | WP2 expectations; approved WP4 scope | Framing, state, response and reconnect cases |
-| WP6 Bridge | Planned | Selected WP3 design; WP5 | Isolated bidirectional radio path; exact bytes, bounded/checked writes, single owner, navigation coexistence |
-| WP8 Aircraft integration | Deferred | Verified hardware and separate authorization | Installation, protection and approval requirements |
+| **WP3 Hardware** | 🟡 **Current focus** — parts and wiring decided ([wiring](../hardware/wiring.md), [parts](../hardware/modules.md#parts-list)) | Work through the [bench hardware checks](open-items.md#bench-hardware), then build and bring up the bench bridge | Bench bridge built and all bench checks passed |
+| WP1 Installed equipment | 🟡 Photos and equipment report reviewed ([review](../research/reviews/2026-11-09-installation-claims.md)) | Get the [installed-equipment facts](open-items.md#installed-equipment) from Tom | Inventory, connector map and navigation baseline complete |
+| WP0 Documentation | ✅ Done | — | — |
+| WP2 Interfaces and protocol | ⏸️ Driver research done ([Becker driver](../research/becker-driver.md)) | Matching radio protocol reference or independent captures | Manual, settings, framing and reply rules confirmed |
+| WP4 Driver plan | ⏸️ Send defect analysed | After hardware: counted-send fix and caller/state/UI mapping | One small change and regression test per step |
+| WP5 Host tests | ⏸️ Send regression only ([review](../research/reviews/2026-11-08-becker-send.md)) | After WP4 scope is approved | Framing, state, reply and reconnect cases pass |
+| WP6 Bridge firmware | ⏸️ Planned | After WP3 and WP5 | Radio path byte-exact, single owner, navigation unaffected |
+| WP8 Aircraft integration | ⬜ Later | Needs verified hardware and separate approval | Installation, protection and approval requirements met |
 
-## Milestones
-
-| Milestone | Gate | Status |
-| --- | --- | --- |
-| M1 | Installation/interfaces understood | Open |
-| M2 | Design and driver plan selected | Open |
-| M3 | Software verified | Open |
+Work loop for each step: read the current state → choose one small change → do it → check it → update the page that owns it → commit and push.
 
 ---
 
-## Current state
+<a id="milestones"></a>
 
-| Package | State | Next |
+## 2. 🏁 Milestones
+
+| Milestone | Reached when | Status |
 | --- | --- | --- |
-| WP1 | First priority. Photos (S13) and equipment report (S21) assessed in the [2026-11-09 review](../research/reviews/2026-11-09-installation-claims.md). No Becker integration established | Close the [installed-equipment items](open-items.md#installed-equipment-wp1); record values in the [existing installation](existing-installation.md) record and sources. Keep backups private |
-| WP2 | [Driver research](../research/becker-driver.md) complete (S11): implementation comparisons and protocol leads | Matched radio identity and protocol reference, or independent captures |
-| WP3 | **Current focus.** Hardware decisions recorded 2026-11-11: [wiring](../hardware/wiring.md), [modules and parts](../hardware/modules.md#parts-list) | Close the [bench hardware checks](open-items.md#bench-hardware-wp3); then build and bring up the bench bridge |
-| WP4 / WP5 | [Send truncation reproduced on host](../research/reviews/2026-11-08-becker-send.md) (S12); byte-span correction passes synthetic cases | Subject to implementation approval: counted-send patch and integration test; caller/state/UI mapping. Active-state freshness and real readback remain open |
+| M1 | Installed equipment and interfaces are understood | ⬜ Open |
+| M2 | Hardware design and driver plan are selected | 🟡 Hardware selected |
+| M3 | Software verified | ⬜ Open |
 
 ---
 
-## Verification coverage (WP5, WP6)
+<a id="test-coverage"></a>
 
-| Layer | Required checks |
+## 3. ✅ Test coverage for the software phase
+
+| Layer | Tests |
 | --- | --- |
-| Driver/protocol | Independent framing/CRC/channel vectors; zero/A5; short/invalid frames; unknown/stale state; local tuning; separate instances; reconnect; documented responses |
-| Bridge | Exact bytes/order; split/coalesced reads; bursts; slow clients; partial writes; disconnect; ownership; boot/debug isolation; concurrent navigation |
+| Driver and protocol | Independent framing, CRC and channel vectors; zero and A5 bytes; short or invalid frames; unknown or stale state; local tuning; two instances; reconnect; documented replies |
+| Bridge | Exact bytes and order; split and merged reads; bursts; slow clients; partial writes; disconnects; single writer; boot and debug output kept away from devices; navigation in parallel |
 
-> [!IMPORTANT]
-> Verify radio acceptance and response bytes independently. Use WP1/WP2 evidence for traffic, gap and timeout limits.
+Radio acceptance and reply bytes are checked on the real radio, not inferred from a successful write.
+
+---
+
+⬆️ [Back to top](#top) · 🏠 [Overview](../../README.md)

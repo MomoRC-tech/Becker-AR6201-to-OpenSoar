@@ -1,16 +1,30 @@
-# Wiring
+<a id="top"></a>
 
-[← Project overview](../../README.md)
+# 🔌 Wiring
 
-How the bridge connects to the Zander, the FLARM, the Becker radio and power. The device-side connectors and harness already exist in the aircraft; this page covers the bridge end only.
+🏠 [Overview](../../README.md) › 🔧 Hardware › **Wiring**
 
-**Status:** bench design. Nothing is built or measured yet. Open questions are in [open items](../project/open-items.md#bench-hardware-wp3).
+How the bridge connects to the Zander, the FLARM, the Becker radio and power — pin by pin. The device-side connectors and harness already exist in the aircraft; this page covers the bridge end only.
 
-[Modules and parts](modules.md) · [Sources](../research/sources.md)
+> [!NOTE]
+> **Status:** bench design. Parts and wiring are decided; nothing is built or measured yet. Open checks: [bench hardware](../project/open-items.md#bench-hardware).
+
+📑 **Contents**
+
+1. [Overview and UART plan](#overview)
+2. [Zander ZS1](#zander)
+3. [FLARM](#flarm)
+4. [Becker radio](#becker)
+5. [Power](#power)
+6. [Bench bring-up](#bring-up)
+
+Related: 🧱 [Modules and parts](modules.md) · 📚 [Sources](../research/sources.md)
 
 ---
 
-## Overview
+<a id="overview"></a>
+
+## 1. 🧭 Overview and UART plan
 
 ```mermaid
 flowchart LR
@@ -34,21 +48,23 @@ flowchart LR
 
 Dotted arrows are optional return paths to the navigation instruments. The Becker path must work in both directions.
 
-### UART plan
+### 1.1 UART plan
 
 The ESP32 has three UARTs; each device gets one.
 
 | Device | UART | ESP32 RX | ESP32 TX | Interface |
 | --- | --- | --- | --- | --- |
-| Zander ZS1 | UART0, remapped | GPIO32 | GPIO33 (optional) | RS-232-mod1 |
-| FLARM | UART1 | GPIO26 | GPIO27 (optional) | RS-232-mod2 |
-| Becker | UART2 | GPIO16, through 10 kΩ | GPIO17 | MAX490 RS-422 board |
+| 📈 Zander ZS1 | UART0, remapped | GPIO32 | GPIO33 (optional) | RS-232-mod1 |
+| 📡 FLARM | UART1 | GPIO26 | GPIO27 (optional) | RS-232-mod2 |
+| 📻 Becker | UART2 | GPIO16, through 10 kΩ | GPIO17 | MAX490 RS-422 board |
 
-UART0 is also the USB serial port. The firmware moves it to GPIO32/33 after boot, so there is no USB serial log in operation; diagnostics go over Wi-Fi. Boot messages only appear on GPIO1, so they never reach a device.
+UART0 is also the USB serial port. The firmware moves it to GPIO32/33 after boot, so there is no USB serial log in operation; diagnostics go over Wi-Fi. Boot messages appear only on GPIO1, so they never reach a device.
 
 ---
 
-## Zander ZS1
+<a id="zander"></a>
+
+## 2. 📈 Zander ZS1
 
 ![Zander to RS-232 module to ESP32](../images/wiring-zander.svg)
 
@@ -62,16 +78,13 @@ Use the ZS1 PC-cable DE9 ([ZS1 handbook pp.46/48](../reference/ZS1_Deutsch.pdf#p
 
 R1 always gets a 10 kΩ pull-up (R-Z) to 3.3 V, so the return line idles correctly while the ESP32 boots or when GPIO33 is not wired.
 
-<details>
-<summary>Zander PC-cable connector pin view</summary>
-
 <img src="../images/pinout-zander-de9.svg" width="420" alt="ZS1 PC-cable DE-9. Pin 2 TX, pin 3 optional RX, pin 5 ground.">
-
-</details>
 
 ---
 
-## FLARM
+<a id="flarm"></a>
+
+## 3. 📡 FLARM
 
 ![FLARM to RS-232 module to ESP32](../images/wiring-flarm.svg)
 
@@ -88,22 +101,19 @@ R1 gets a 10 kΩ pull-up (R-F) to 3.3 V, as for the Zander.
 > [!WARNING]
 > FLARM uses IGC pin numbering, which runs opposite to common RJ45 numbering. Pins 1–3 carry supply voltage: never connect them to the converter.
 
-<details>
-<summary>Classic FLARM Power/Data connector pin view</summary>
-
 <img src="../images/pinout-flarm-classic.svg" width="420" alt="Classic FLARM plug, latch down, IGC numbering. Pins 1 and 2 supply in, 3 auxiliary voltage out, 4, 7 and 8 ground, 5 TX, 6 RX.">
-
-</details>
 
 ---
 
-## Becker radio
+<a id="becker"></a>
+
+## 4. 📻 Becker radio
 
 ![Becker to RS-422 board to ESP32](../images/wiring-becker.svg)
 
 The radio's serial interface 2 on connector J1 ([Becker DV14307.03 Issue 06, p.59](https://www.becker-avionics.com/wp-content/uploads/00_Literature/6200_Series_IO_en.pdf#page=59), S10).
 
-**Radio side** — MAX490 board screw terminals:
+### 4.1 Radio side — board screw terminals
 
 | J1 pin | Radio signal | MAX490 terminal | Meaning |
 | --- | --- | --- | --- |
@@ -115,7 +125,7 @@ The radio's serial interface 2 on connector J1 ([Becker DV14307.03 Issue 06, p.5
 
 Run TX2± and RX2± as two separate twisted pairs in a shielded cable. Connect J1-21 to the board GND with a dedicated wire or the cable's drain wire.
 
-**ESP32 side** — MAX490 board header:
+### 4.2 ESP32 side — board header
 
 | Board signal | ESP32 |
 | --- | --- |
@@ -124,27 +134,24 @@ Run TX2± and RX2± as two separate twisted pairs in a shielded cable. Connect J
 | VCC | 5 V from the UBEC |
 | GND | GND |
 
-The board's TXD/RXD header labels may be named from either side; identify RO and DI on the board before wiring.
+The board's TXD/RXD header labels may be named from either side; identify RO and DI on the board before wiring. ESP32 TX at 3.3 V drives DI directly (the MAX490 needs 2.0 V for a logic high).
 
 > [!WARNING]
 > The MAX490 runs at 5 V, so RO idles near 5 V — above the ESP32's 3.6 V input limit. Never connect RO directly to GPIO16. The 10 kΩ resistor limits the current into the GPIO's protection diode to about 0.1 mA (owner decision; Espressif does not document an allowed injection current).
 
-ESP32 TX at 3.3 V drives DI directly; the MAX490 needs 2.0 V for a logic high.
+### 4.3 Connector reference
 
-<details>
-<summary>Becker rear connector and J1 pin view</summary>
-
-| Radio rear | J1 mating face |
+| Radio rear (callout 4 = J1) | J1 mating face |
 | --- | --- |
 | <img src="../images/becker-reference-connectors.png" width="275" alt="Becker rear drawing, P1 above J1. Callout 4 identifies the J1 connector."> | <img src="../images/pinout-becker-j1.svg" width="420" alt="Becker J1 DB-25 socket. Pins 2 and 9 TX pair, 3 and 10 RX pair, 21 digital ground."> |
 
-Callout 4 is J1. Socket numbering follows the [Winford BRKDD25F-R-FT mating-face drawing](https://www.winford.com/products/cad/brkdd25f-r-ft_rev_a_dwg.pdf).
-
-</details>
+Socket numbering follows the [Winford BRKDD25F-R-FT mating-face drawing](https://www.winford.com/products/cad/brkdd25f-r-ft_rev_a_dwg.pdf). Pin-view styling follows the [Pinout.xyz examples](https://github.com/pinout-xyz/Pinout.xyz/tree/main/graphics).
 
 ---
 
-## Power
+<a id="power"></a>
+
+## 5. ⚡ Power
 
 ```mermaid
 flowchart LR
@@ -163,12 +170,13 @@ flowchart LR
 | ESP32 3V3 ([J2-1](modules.md#esp32-pinout)) | R3 (+) on both RS-232 modules, and the two R1 pull-ups |
 | ESP32 GND | R4 (−) on both RS-232 modules, MAX490 board GND |
 
-Protection is the fuse plus the UBEC's own reverse-input protection (S14). Place F1 close to the battery on the bridge's positive feed.
+> [!TIP]
+> **Protection:** F1 (2 A) close to the battery on the bridge's positive feed, plus the UBEC's own reverse-input protection (S14). No further protection stages.
 
 > [!WARNING]
 > Never connect USB and the UBEC 5 V at the same time: the board has no power selection. Unplug the UBEC before using USB.
 
-### Load estimate
+### 5.1 Load estimate
 
 Estimate from typical datasheet values, not measured.
 
@@ -183,14 +191,20 @@ The 2 A fuse leaves margin for switch-on inrush ([fuse selection, S31](../resear
 
 ---
 
-## Bench bring-up
+<a id="bring-up"></a>
+
+## 6. 🧪 Bench bring-up
 
 Before connecting any device:
 
 1. Set the UBEC jumper to 5 V; measure the output with no load and with the ESP32 connected.
 2. Match the ESP32 board's headers and module marking to the [pinout](modules.md#esp32-pinout).
-3. Check continuity of both RS-232 modules against the [pad map](modules.md#hailege-board-pad-reference).
+3. Check continuity of both RS-232 modules against the [pad map](modules.md#rs232-module).
 4. On the MAX490 board, identify RO and DI on the header and check the 120 Ω termination.
 5. With the MAX490 powered, measure the voltage at GPIO16 behind the 10 kΩ resistor.
 6. Measure the bridge's current and switch-on inrush at 12 V.
 7. In the aircraft: listen for radio noise and check squelch with the bridge on and off.
+
+---
+
+⬆️ [Back to top](#top) · 🏠 [Overview](../../README.md)

@@ -43,6 +43,26 @@ Write for a person building the bridge, not for an auditor.
 - No decision narratives or chronology of owner choices; record the current selection.
 - README: goal, scope, status and where to start.
 
+## Page layout
+
+Pages must be easy to scan for a human reader. Every page in docs/ (except the frozen reviews) follows this pattern:
+
+| Element | Form |
+| --- | --- |
+| Title | `# <icon> Title`, preceded by `<a id="top"></a>` |
+| Breadcrumb | `🏠 [Overview](…) › <category icon> Category › **Page**` |
+| Purpose | One sentence on what the page is for |
+| Status | One `> [!NOTE]` box with **Status:** — the only status statement on the page |
+| Contents | Numbered list of the H2 sections when a page has three or more |
+| H2 sections | `## 1. <icon> Title`, each preceded by a stable `<a id="short-slug"></a>`; link to that id, never to the generated heading anchor |
+| H3 sections | `### 1.1 Title`, no icon |
+| Separators | `---` between H2 sections |
+| Alerts | `[!TIP]` for current selections/decisions, `[!WARNING]` for hazards only, at most one of each per section |
+| Collapsibles | Only for large reference images. Summary: `<summary><b>🖼️ Show …</b> (click to expand)</summary>` |
+| Footer | `⬆️ [Back to top](#top) · 🏠 [Overview](…)` |
+
+Category icons: 🔧 Hardware · 🧩 Design · 📋 Project · 🔬 Research.
+
 ---
 
 ## Preservation and delivery

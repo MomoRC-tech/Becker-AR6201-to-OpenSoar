@@ -1,46 +1,82 @@
-# FLARM, Zander and Becker to OpenSoar
+<a id="top"></a>
 
-One ESP32 Wi-Fi bridge that connects a FLARM, a Zander ZS1 and a Becker AR6201 radio to OpenSoar on Android.
+# ✈️ FLARM, Zander and Becker to OpenSoar
+
+One ESP32 Wi-Fi bridge that connects a FLARM, a Zander ZS1 vario and a Becker AR6201 radio to OpenSoar on an Android device in the glider.
+
+> [!NOTE]
+> **Status:** planning and bench design — nothing is built yet.
+> **Current focus:** 🔧 hardware selection and wiring. Software work waits until the hardware design is finished.
+
+📑 **Contents**
+
+1. [What it does](#what-it-does)
+2. [Project status](#status)
+3. [Documentation map](#documentation)
+4. [Safety](#safety)
+
+---
+
+<a id="what-it-does"></a>
+
+## 1. 🎯 What it does
 
 ```mermaid
 flowchart LR
-    F[FLARM] --> E[ESP32 + serial interfaces]
-    Z[Zander ZS1] --> E
-    B[Becker] <--> E
-    E <-->|Wi-Fi: separate device paths| O[OpenSoar Android]
+    F[📡 FLARM] --> E[ESP32 + serial interfaces]
+    Z[📈 Zander ZS1] --> E
+    B[📻 Becker AR6201] <--> E
+    E <-->|Wi-Fi: one path per device| O[📱 OpenSoar Android]
 ```
 
-## What it does
-
-| Device | Function |
+| Device | What the bridge does |
 | --- | --- |
-| FLARM | Traffic and navigation data to OpenSoar |
-| Zander ZS1 | Flight and navigation data to OpenSoar |
-| Becker AR6201 | Selected airfield frequency → standby; radio status where supported |
+| 📡 FLARM | Sends traffic and navigation data to OpenSoar |
+| 📈 Zander ZS1 | Sends flight and navigation data to OpenSoar |
+| 📻 Becker AR6201 | Puts the selected airfield frequency into standby; reports radio status where supported |
 
-The bridge preserves the active frequency, the radio's local controls and both navigation feeds. Not in scope: active tuning, swap, volume and squelch.
+The bridge never changes the active frequency, and the radio's own controls keep working. Not planned: active tuning, frequency swap, volume and squelch.
 
-## Status
+---
+
+<a id="status"></a>
+
+## 2. 🚦 Project status
 
 | Stage | Status |
 | --- | --- |
-| Research and documentation | ✅ Documented; Becker send defect reproduced on host |
-| Existing installation and interfaces | 🟡 Open: equipment identity and settings needed |
-| Bench hardware design | 🟡 Parts selected; electrical checks open |
-| Firmware and driver changes | ⬜ Planned; not approved |
-| Aircraft integration | ⬜ Deferred |
+| 🔬 Research and documentation | ✅ Done |
+| 🔧 Hardware selection and wiring | 🟡 **In progress** — parts and wiring decided, bench checks open |
+| 🛩️ Existing installation details | 🟡 Waiting for equipment information |
+| 💻 Firmware and driver changes | ⏸️ On hold until the hardware is finished |
+| ✈️ Aircraft integration | ⬜ Later |
 
-**Next step:** confirm the installed equipment — [open items, WP1](docs/project/open-items.md#installed-equipment-wp1).
+**Next step:** work through the [bench hardware checks](docs/project/open-items.md#bench-hardware).
+
+---
+
+<a id="documentation"></a>
+
+## 3. 🗺️ Documentation map
+
+| | Section | Pages | What you find there |
+| :-: | --- | --- | --- |
+| 🔧 | **Hardware** | [🔌 Wiring](docs/hardware/wiring.md) · [🧱 Modules and parts](docs/hardware/modules.md) | Pin-by-pin wiring, power, bench bring-up, module details, parts list |
+| 🧩 | **Design** | [🏗️ Architecture](docs/design/architecture.md) · [🎯 Requirements](docs/design/requirements.md) | How the bridge is built and why; requirements, assumptions, risks |
+| 📋 | **Project** | [🗺️ Roadmap](docs/project/roadmap.md) · [❓ Open items](docs/project/open-items.md) · [🛩️ Existing installation](docs/project/existing-installation.md) | Work plan, everything still missing, the bridge already in the aircraft |
+| 🔬 | **Research** | [📚 Sources](docs/research/sources.md) · [📻 Becker driver](docs/research/becker-driver.md) · [📶 Bridge firmware](docs/research/bridge-firmware.md) · [🗂️ Reviews](docs/research/reviews) | Evidence, driver and firmware analysis, dated review records |
+
+Working on the repository? Read the [work instructions](AGENTS.md) first.
+
+---
+
+<a id="safety"></a>
+
+## 4. ⚠️ Safety
 
 > [!WARNING]
-> Planning stage. Nothing is verified on hardware. Complete the [open hardware checks](docs/project/open-items.md#bench-hardware-wp3) before connecting anything.
+> Nothing here is verified on real hardware. Do the [bench checks](docs/project/open-items.md#bench-hardware) before connecting any aircraft equipment. The existing installation stays untouched as a backup.
 
-## Start here
+---
 
-| I want to… | Go to |
-| --- | --- |
-| Wire or build it | [Wiring](docs/hardware/wiring.md) · [Modules and parts](docs/hardware/modules.md) |
-| Understand the design | [Architecture](docs/design/architecture.md) · [Requirements and risks](docs/design/requirements.md) |
-| See what is open | [Open items](docs/project/open-items.md) · [Roadmap](docs/project/roadmap.md) · [Existing installation](docs/project/existing-installation.md) |
-| Check the evidence | [Sources](docs/research/sources.md) · [Becker driver research](docs/research/becker-driver.md) · [Reviews](docs/research/reviews) · [Bridge firmware candidates](docs/research/bridge-firmware.md) |
-| Contribute | [Work instructions](AGENTS.md) |
+⬆️ [Back to top](#top)
