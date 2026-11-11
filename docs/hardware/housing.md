@@ -46,6 +46,19 @@ Sizes from owner measurements, seller listings or datasheets; see the source col
 | DE-9 female socket | 1 | Standard D-sub shell | — | Exact part open |
 | Resistors (divider, pull-ups) | 5 | Small | — | R-B1, R-B2, R-Z, R-F, R-D |
 
+### 2.1 RS-232 CAD reference
+
+Use the [STEP model](../../cad/reference/rs232-uart-ttl-mini-max3232/RS232_TTL/RS232_TTL.STEP) for preliminary layout. The [original download files and attribution](../../cad/reference/rs232-uart-ttl-mini-max3232/README.md) include a Parasolid alternative (S41).
+
+| Dimension | CAD model (mm) | Delivered board (mm, S38) | Model minus measured (mm) |
+| --- | ---: | ---: | ---: |
+| PCB width | 9.6 | 9.2 | +0.4 |
+| PCB length | 15.8 | 15.6 | +0.2 |
+| PCB thickness | 1.2 | — | — |
+| Overall component height, both sides | 2.752 | — | — |
+
+Keep the delivered-board measurements for mounting design. The model represents a similar module, not an exact Hailege mechanical drawing; its height excludes soldered wires. Do not uniformly scale it to match the PCB, since that also changes component sizes. Physical fit checks belong to the [housing measurements](../project/open-items.md#housing).
+
 ---
 
 <a id="connectors"></a>
