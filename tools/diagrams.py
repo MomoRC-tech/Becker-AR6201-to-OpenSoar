@@ -54,11 +54,13 @@ class Svg:
             self.text(x + 12, y + 20, title, bold=True, anchor="start", size=13)
             return
         self.boxes.append(f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>')
-        n = 1 + len(subs)
+        titles = [title] if isinstance(title, str) else list(title)  # several bold lines allowed
+        n = len(titles) + len(subs)
         top = y + h / 2 - (n - 1) * 9 + 5
-        self.text(x + w / 2, top, title, bold=True, size=14)
+        for i, t in enumerate(titles):
+            self.text(x + w / 2, top + 18 * i, t, bold=True, size=14)
         for i, s in enumerate(subs):
-            self.text(x + w / 2, top + 18 * (i + 1), s, color=SUB, size=12)
+            self.text(x + w / 2, top + 18 * (len(titles) + i), s, color=SUB, size=12)
 
     def text(self, x, y, s, color=INK, size=12, bold=False, anchor="middle"):
         b = ' font-weight="700"' if bold else ""
@@ -186,21 +188,21 @@ s.line([(520, 175), (810, 175)], "gnd"); s.tag(665, 168, "GND", "gnd")
 s.legend(255, ["data", "sgnd", "gnd", "shield"], "Twisted pairs: TX2± and RX2±. Board VCC 5 V from the UBEC (see power).")
 s.save("wiring-becker.svg")
 # ------------------------------------------------------- README overview (no pins)
-s = Svg(900, 310, "What the bridge does",
+s = Svg(900, 345, "What the bridge does",
         "Vario Zander ZS1 sends flight data and collision warning Classic FLARM sends traffic to the Wi-Fi bridge. "
         "The radio Becker AR6201 exchanges standby frequency and status with the bridge in both directions. "
         "The bridge connects to the navigation app OpenSoar on Android over Wi-Fi.")
-s.box(20, 30, 300, 56, "Vario: Zander ZS1", ["sends flight data"])
-s.box(20, 110, 300, 56, "Collision warning: Classic FLARM", ["sends traffic"])
-s.box(20, 190, 300, 56, "Radio: Becker AR6201", ["standby frequency in, status out"])
-s.box(410, 90, 170, 126, "Wi-Fi bridge", ["ESP32"])
-s.box(680, 125, 200, 56, "Navigation: OpenSoar", ["Android"])
-s.line([(320, 58), (365, 58), (365, 115), (410, 115)], "data"); s.arrow(390, 115, "right", "data")
-s.line([(320, 138), (410, 138)], "data"); s.arrow(365, 138, "right", "data")
-s.line([(320, 218), (365, 218), (365, 190), (410, 190)], "data"); s.arrow(390, 190, "right", "data"); s.arrow(340, 218, "left", "data")
-s.line([(580, 153), (680, 153)], "wifi"); s.arrow(670, 153, "right", "wifi"); s.arrow(590, 153, "left", "wifi")
-s.tag(630, 143, "Wi-Fi", "wifi")
-s.legend(275, ["data", "wifi"], "Pins, levels and power: see the hardware pages.")
+s.box(20, 20, 300, 74, ["Vario:", "Zander ZS1"], ["sends flight data"])
+s.box(20, 113, 300, 74, ["Collision warning:", "Classic FLARM"], ["sends traffic"])
+s.box(20, 206, 300, 74, ["Radio:", "Becker AR6201"], ["standby frequency in, status out"])
+s.box(410, 80, 170, 140, ["Wi-Fi bridge:", "ESP32"])
+s.box(680, 122, 200, 56, ["Navigation:", "OpenSoar (Android)"])
+s.line([(320, 57), (365, 57), (365, 110), (410, 110)], "data"); s.arrow(390, 110, "right", "data")
+s.line([(320, 150), (410, 150)], "data"); s.arrow(365, 150, "right", "data")
+s.line([(320, 243), (365, 243), (365, 190), (410, 190)], "data"); s.arrow(390, 190, "right", "data"); s.arrow(340, 243, "left", "data")
+s.line([(580, 150), (680, 150)], "wifi"); s.arrow(670, 150, "right", "wifi"); s.arrow(590, 150, "left", "wifi")
+s.tag(630, 140, "Wi-Fi", "wifi")
+s.legend(310, ["data", "wifi"], "Pins, levels and power: see the hardware pages.")
 s.save("overview.svg")
 
 # ----------------------------------------------------------------- ground loops
