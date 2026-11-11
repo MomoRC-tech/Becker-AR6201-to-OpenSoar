@@ -126,7 +126,7 @@ Pin-view styling follows the [Pinout.xyz examples](https://github.com/pinout-xyz
 flowchart LR
     S["Nominal 12 V battery"] --> F1["F1 fuse (rating TBD)"]
     F1 --> P["Reverse protection: UNKNOWN"]
-    P --> I[Input node] --> B["BEC: 5 V"]
+    P --> I[Input node] --> B["Hobbywing UBEC set to 5 V"]
     I --- T["Transient clamp to return: UNKNOWN"]
     B --> V["Output protection if required: UNKNOWN"] --> E["ESP32 5 V input (ref. J2-19)"]
     E --> R[Board 3.3 V regulator]
@@ -150,13 +150,13 @@ flowchart LR
 >
 > - Place F1 near the battery on the bridge's positive feed. Use a separate reverse-polarity stage only if the exact BEC lacks adequate reverse-input protection.
 > - Coordinate any input transient clamp with the fuse and BEC limits. Evaluate output overvoltage cutoff against BEC faults and ESP32 input limits.
-> - Verify BEC polarity, tolerance and ripple. Check regulator current and temperature with Wi-Fi and the 3.3 V loads active. Spare 3.3 V capacity, source voltage range, BEC model and protection ratings remain open. [S16, S17, S19](sources.md#source-register)
+> - Verify UBEC polarity and 5 V output before connecting the ESP32. Check output tolerance and ripple under load. Check regulator current and temperature with Wi-Fi and the 3.3 V loads active. Spare 3.3 V capacity, source voltage range and protection ratings remain open. [S14, S16, S17, S19](sources.md#source-register)
 
 #### F1 sizing inputs
 
 | Needed | Check |
 | --- | --- |
-| BEC model and datasheet | Input range, any specified input fuse, and reverse-input protection |
+| UBEC and battery compatibility | Match delivered part and check actual source range against 5.5–26 V. Confirm input fuse requirements and reverse-input protection for that revision |
 | Bridge load on the BEC input | Worst-case running current and startup inrush magnitude and duration across the battery voltage range |
 | Battery and wiring | Maximum source voltage and prospective fault current. Smallest wire gauge, run length, connector and holder ratings, and temperature/bundling |
 
@@ -175,7 +175,7 @@ Parts for one bridge.
 | --- | --- | --- |
 | MCU / 1 | AZ-Delivery ESP32 WROOM dev module | [Candidate pinout](module-specs.md#esp32-pinout) · [Power](#power) |
 | RS-232-mod1, RS-232-mod2 / 2 | Hailege H-1-0290 | [Zander](#zander-zs1) and [FLARM](#flarm) |
-| PS1 / 1 | 5 V BEC | [Power](#power) |
+| PS1 / 1 | Hobbywing UBEC 3A (2–6S), 86010010 | Selected at 5 V. [Module specs](module-specs.md) · [Power](#power) |
 | RS-422 mod / 1 | Full-duplex RS-422 board, 3.3 V supply and ESP32-compatible UART logic | Model TBD. [Chip candidates](module-specs.md#becker-rs422-chips) · [Becker wiring](#becker-radio) |
 | R-Z, R-F / 2 | 10 kΩ, 1%, at least 0.125 W | Proposed idle pull-ups for the Zander and FLARM converter inputs |
 | F1 / 1 | DC blade fuse with inline holder (bench candidate: 32 V DC ATO/ATOF) | [Current rating TBD](#f1-sizing-inputs) |

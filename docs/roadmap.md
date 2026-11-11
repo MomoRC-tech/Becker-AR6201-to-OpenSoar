@@ -26,7 +26,7 @@
 
 ## WP3 — bench hardware
 
-[Wiring and parts](connections.md#parts-list). [ESP32 header reference](module-specs.md#esp32-pinout) checked against the DevKitC V4 guide. Open checks cover physical board match and regulator capacity, BEC/source limits, H-1-0290 continuity, 3.3 V full-duplex RS-422 board selection and electrical checks, power budget and protection values.
+[Wiring and parts](connections.md#parts-list). [ESP32 header reference](module-specs.md#esp32-pinout) checked against the DevKitC V4 guide. Open checks cover physical board match and regulator capacity, Hobbywing UBEC output and clearance, source voltage range, H-1-0290 continuity, 3.3 V full-duplex RS-422 board selection and electrical checks, power budget and protection values.
 
 The Becker board requires a 3.3 V supply and ESP32-compatible UART logic. [Chip candidates](module-specs.md#becker-rs422-chips) documented. Board model and 3.3 V rail remain open. Before connecting, verify pinout, UART levels in both directions, series resistance, termination, shielding and reference bonding. [Espressif GPIO limits](https://docs.espressif.com/projects/esp-faq/en/latest/hardware-related/hardware-design.html#what-is-the-voltage-tolerance-of-gpios-of-esp-chips)
 
@@ -61,7 +61,7 @@ The [power diagram](connections.md#power) shows F1 near the battery. [Sizing inp
 | Confirm Classic FLARM F6/IGC and ZS1 version; actual port/cable/conversion map; baud/output menus | Tom | Equipment wiring; resolve conjectured absence of RS-232 conversion |
 | Navigation routing/returns, update gaps, reconnect behavior | Tom/owner | Coexistence baseline |
 | OpenSoar build and evidence for reported drivers/endpoints; clarify OpenVario's role | Owner/Tom | App/bridge configuration |
-| Existing board/firmware, UBEC output/board input; separate new-build BEC/source limits | Tom/owner | Backup record and protection/current budget |
+| Existing board/firmware, UBEC output/board input; separate new-build UBEC/source checks | Tom/owner | Backup record and protection/current budget |
 
 Record supported values and gaps in the [inventory](project-baseline.md#existing-installation--wp1-record) and sources. Keep backups private. Scope is evidence review. M1 requires closure of interface-critical gaps.
 

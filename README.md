@@ -7,7 +7,7 @@ One ESP32 Wi-Fi bridge for Zander, FLARM and Becker in OpenSoar on Android.
 | Stage | Status |
 | --- | --- |
 | Research / bench design | Documented; send regression host-tested |
-| Next: finalize design | Equipment/board/BEC details, interfaces, protection and firmware open |
+| Next: finalize design | Equipment and board checks, interfaces, protection and firmware open |
 | Implementation | Pending |
 | Aircraft integration | Deferred |
 
@@ -41,7 +41,7 @@ flowchart LR
 | Item | Current state |
 | --- | --- |
 | Build | New bridge; existing assembly/harness retained as backup |
-| Selected hardware | AZ-Delivery WROOM-32; 2 × Hailege H-1-0290; 5 V BEC; board-derived 3.3 V for navigation converters |
+| Selected hardware | AZ-Delivery WROOM-32; 2 × Hailege H-1-0290; Hobbywing UBEC at 5 V; board-derived 3.3 V for navigation converters |
 | Radio interface | Full-duplex RS-422 board with 3.3 V supply and ESP32-compatible UART logic. Model TBD |
 | Deferred controls | Active tuning, swap, volume/squelch |
 

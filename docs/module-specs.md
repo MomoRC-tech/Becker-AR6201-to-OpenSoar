@@ -7,9 +7,11 @@
 | Hailege H-1-0290 (Zander and FLARM) | 3.3 V | MAX3232CSE (reported) | 9.4 × 15.9 mm |
 | Becker RS-422 board (model TBD) | 3.3 V required | [Chip candidates](#becker-rs422-chips) | TBD |
 | AZ-Delivery ESP32 WROOM dev module | 5 V input, 3.3 V regulator | — | — |
-| BEC (model TBD) | 2S–4S input reported, 5 V output | — | — |
+| Hobbywing UBEC 3A (2–6S), 86010010 | 5.5–26 V input, jumper-selectable 5 V or 6 V at 3 A. Selected setting: 5 V | — | 43 × 17 × 7 mm (catalog) |
 
-[Power module sources (S16, S17, S19)](sources.md#source-register)
+Verify clearance on the delivered unit including the jumper, leads, ferrite ring and connector. The owner-supplied image marks 35 × 12 × 5 mm around the pictured body. The dimension boundaries are unverified.
+
+[Power module sources (S14, S16, S17, S19)](sources.md#source-register)
 
 <a id="becker-rs422-chips"></a>
 
