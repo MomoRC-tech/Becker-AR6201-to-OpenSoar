@@ -174,6 +174,8 @@ flowchart LR
 
 > [!WARNING]
 > Never connect USB and the UBEC 5 V at the same time: the board has no power selection. Unplug the UBEC before using USB.
+>
+> Unplug J1 from the radio as well whenever USB is connected. On USB alone the MAX490 has no supply, but GPIO17 and R-D partly power it through DI, so its outputs to the radio are undefined. A laptop on its mains charger can also put leakage voltage on the USB ground, which would reach the radio through J1-21.
 
 <a id="ground"></a>
 
