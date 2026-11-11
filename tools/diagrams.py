@@ -5,8 +5,9 @@ Writes the SVGs into docs/images. Edit the diagram sections below, run the
 script, and check the result in a browser before committing.
 
 Output: overview.svg (README), power-supply.svg, ground-loops.svg, wiring-overview.svg,
-wiring-zander.svg, wiring-flarm.svg, wiring-becker.svg, pinout-rs422-to-ttl.svg.
+wiring-zander.svg, wiring-flarm.svg, wiring-becker.svg, pinout-rs422-to-ttl.svg, rs422-to-ttl-board.svg.
 """
+import base64
 import io
 import os
 import sys
@@ -251,31 +252,37 @@ s.save("ground-loops.svg")
 
 print("ok")
 
-# ------------------------------------------------------- RS-422 module pin view
-s = Svg(560, 350, "RS422 TO TTL · component side",
-        "Component-side view, header at top. Header left to right: TXD, RXD, GND, VCC. "
-        "TXD/RXD are printed labels, not a verified RO/DI assignment. "
-        "Bottom screw terminals left to right: Y driver output positive, Z driver output negative, "
-        "B receiver input negative, A receiver input positive. Supply is 5 V.")
+# Rotate both component-side views clockwise, preserving the supplied bitmap.
+photo_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "docs", "images", "rs422-to-ttl-supplied.png")
+with open(photo_path, "rb") as photo_file:
+    photo_data = base64.b64encode(photo_file.read()).decode("ascii")
+photo_svg = ('<svg xmlns="http://www.w3.org/2000/svg" width="3245" height="1661" viewBox="0 0 3245 1661">'
+             '<title>RS422 TO TTL · component side, header at right</title>'
+             '<image width="1661" height="3245" transform="translate(3245 0) rotate(90)" '
+             f'href="data:image/png;base64,{photo_data}"/></svg>\n')
+with io.open(os.path.join(OUT, "rs422-to-ttl-board.svg"), "w", encoding="utf-8", newline="\n") as photo_file:
+    photo_file.write(photo_svg)
+
+s = Svg(560, 280, "RS422 TO TTL · component side",
+        "Component-side view, rotated clockwise: screw terminals at left, header at right. "
+        "Left top to bottom: Y output positive, Z output negative, B input negative, A input positive. "
+        "Right top to bottom: TXD, RXD, GND, VCC. TXD/RXD are printed labels, not a verified RO/DI assignment.")
 s.text(18, 29, "RS422 TO TTL · component side", size=21, bold=True, anchor="start")
-s.text(18, 53, "Header at top · labels as printed (S34)", size=14, color=SUB, anchor="start")
-s.text(280, 83, "TTL header", size=16, bold=True)
-s.groups.append('<rect x="65" y="129" width="430" height="123" rx="8" fill="#eaf1fb" stroke="#9cb1cc"/>')
-for x, name, detail, kind in [(110, "TXD", "TTL signal", "data"),
-                              (223, "RXD", "TTL signal", "data"),
-                              (336, "GND", "Ground", "gnd"),
-                              (449, "VCC", "5 V supply", "v5")]:
-    s.text(x, 108, detail, size=14)
-    s.boxes.append(f'<rect x="{x-34}" y="119" width="68" height="28" rx="5" fill="{STYLE[kind]["color"]}"/>')
-    s.text(x, 139, name, color="white", size=16, bold=True)
-s.text(280, 190, "MAX490", size=18, bold=True)
-s.text(280, 216, "RO → divider → ESP32 · ESP32 → DI", size=14, color=SUB)
-for x, name, detail in [(110, "Y", "Output +"), (223, "Z", "Output −"),
-                         (336, "B", "Input −"), (449, "A", "Input +")]:
-    s.boxes.append(f'<rect x="{x-34}" y="238" width="68" height="28" rx="5" fill="{STYLE["data"]["color"]}"/>')
-    s.text(x, 258, name, color="white", size=16, bold=True)
-    s.text(x, 288, detail, size=14)
-s.text(166, 312, "To radio RX2", size=14, color=SUB)
-s.text(392, 312, "From radio TX2", size=14, color=SUB)
-s.text(280, 338, "RS-422 screw terminals", size=16, bold=True)
+s.text(18, 53, "Header at right · labels as printed (S34)", size=14, color=SUB, anchor="start")
+s.text(100, 83, "RS-422 terminals", size=16, bold=True)
+s.text(460, 83, "TTL header", size=16, bold=True)
+s.groups.append('<rect x="180" y="97" width="200" height="166" rx="8" fill="#eaf1fb" stroke="#9cb1cc"/>')
+s.text(280, 161, "MAX490", size=18, bold=True)
+s.text(280, 187, "RO → divider → ESP32", size=12, color=SUB)
+s.text(280, 207, "ESP32 → DI", size=12, color=SUB)
+left = [("Y", "Output +"), ("Z", "Output −"), ("B", "Input −"), ("A", "Input +")]
+right = [("TXD", "TTL signal", "data"), ("RXD", "TTL signal", "data"),
+         ("GND", "Ground", "gnd"), ("VCC", "5 V supply", "v5")]
+for i, ((lname, ldetail), (rname, rdetail, kind)) in enumerate(zip(left, right)):
+    y = 113 + i * 44
+    for x, name, color in [(180, lname, STYLE["data"]["color"]), (380, rname, STYLE[kind]["color"])]:
+        s.boxes.append(f'<rect x="{x-30}" y="{y-14}" width="60" height="28" rx="5" fill="{color}"/>')
+        s.text(x, y+6, name, color="white", size=15, bold=True)
+    s.text(138, y+5, ldetail, size=14, anchor="end")
+    s.text(422, y+5, rdetail, size=14, anchor="start")
 s.save("pinout-rs422-to-ttl.svg")

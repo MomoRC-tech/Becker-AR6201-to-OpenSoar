@@ -90,11 +90,11 @@ Hailege H-1-0290: a MAX3232 RS-232 ↔ 3.3 V converter with edge pads. The pad m
 
 A blue "RS422 TO TTL" board with a 4-pin header (TXD/RXD/GND/VCC) and four screw terminals (Y/Z/B/A), S34. The seller lists a MAX490, 5 V supply, 120 Ω termination and ESD protection.
 
-View from the component side, with the TTL header at the top and the screw terminals at the bottom.
+View from the component side, with the TTL header on the right and the screw terminals on the left.
 
 | Component side | Pin map |
 | --- | --- |
-| <img src="../images/rs422-to-ttl-supplied.png" width="200" alt="Selected blue RS422 TO TTL board, component side; TTL header at top and screw terminals at bottom."> | <img src="../images/pinout-rs422-to-ttl.svg" width="420" alt="RS-422 component-side pin map: top header left to right TXD, RXD, GND, VCC; bottom terminals left to right Y output positive, Z output negative, B input negative, A input positive. TXD/RXD are printed labels; RO/DI assignment requires the bench check."> |
+| <img src="../images/rs422-to-ttl-board.svg" width="320" alt="Selected blue RS422 TO TTL board, component side; TTL header at right and screw terminals at left."> | <img src="../images/pinout-rs422-to-ttl.svg" width="420" alt="RS-422 component-side pin map: right header top to bottom TXD, RXD, GND, VCC; left terminals top to bottom Y output positive, Z output negative, B input negative, A input positive. TXD/RXD are printed labels; RO/DI assignment requires the bench check."> |
 
 | Terminal | MAX490 function |
 | --- | --- |
