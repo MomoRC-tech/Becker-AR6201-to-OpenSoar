@@ -34,7 +34,7 @@
 
 ### OpenSoar baseline and pending inputs
 
-[WP1 inventory](project-baseline.md#existing-installation--wp1-record) records reported equipment and endpoints. [Open checks and owners](roadmap.md#wp1--existing-installation-first-priority). New-build network and serial settings remain open.
+[WP1 inventory](project-baseline.md#existing-installation--wp1-record) records reported equipment and endpoints. [Open items](open-items.md).
 
 ---
 

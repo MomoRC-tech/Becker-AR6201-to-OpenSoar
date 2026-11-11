@@ -187,14 +187,6 @@ Parts for one bridge.
 
 ---
 
-<a id="open-items"></a>
+### Open items
 
-### ❓ Open items
-
-| Needed | Resolves |
-| --- | --- |
-| Device connector photos + exact model/revisions | Correct pin view; FLARM/Zander/Becker applicability |
-| Both H-1-0290 sides, IC markings + continuity map | Confirm inferred L/R pad map; equipment cable mapping |
-| ESP32 header/regulator checks and BEC/source limits | Header positions, current budget, protection |
-| Return-traffic requirements + serial settings | Optional return wiring and port configuration |
-| Verify MAX490 board pinout, current draw, termination and UART RX voltage compliance through power-up and power-down | Becker wiring, power rail and reference |
+[Bench hardware checks](open-items.md#bench-hardware-wp3).

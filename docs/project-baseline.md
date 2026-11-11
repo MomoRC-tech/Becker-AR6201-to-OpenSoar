@@ -42,17 +42,19 @@ Deferred: active tuning, swap, volume/squelch, Larus, general XCSoar support, ai
 
 **Reported (S21):** DG200 Zander/FLARM → ESP32 Wi-Fi → OpenSoar; no working Becker integration. [2026-11-09 claim assessment](reviews/2026-11-09-installation-claims.md). No measured baseline.
 
-| Item | Known | Missing / owner / consequence |
-| --- | --- | --- |
-| Radio | AR6201-(022), ETSO-2C37e/2C38e reported (S21); consistent manual entry (S10) | Tom: type plate/article/HW/SW/connector occupancy → installed manual matching |
-| ESP32 | WROOM-family board, micro-USB, BOOT/RST (S13) | Tom: board/firmware/configuration → backup record |
-| Zander | ZS1; FLARM input unused, no FLARM connected, reported (S21) | Tom: program version, menu/baud, cable/levels/returns → compatible wiring |
-| FLARM | Classic FLARM IGC, series 6 reported (S21); F6 manual candidate (S23) | Tom: label/firmware, actual socket, baud/output/returns → interface match |
-| OpenSoar | Wi-Fi reception, drivers/endpoints reported (S21), below | Owner/Tom: installed build and configuration evidence → confirmation |
-| Converter | RS422 TO TTL board, Y/Z/B/A labels (S13 P1) | Tom: IC/supply/logic levels and installed status → baseline |
-| Power | Nominal 12 V → Hobbywing UBEC 3A 2–6S → ESP32; separate FLARM/Zander supplies reported (S21) | Tom: actual jumper/output, board input, source range/protection/grounding; no measurements |
-| Wiring | Partial photos; unmatched Zander/FLARM diagrams (S25); absence of RS-232 conversion only conjectured | Tom: trace each selected TX/reference through any conversion to GPIO; identify returns |
-| Navigation | Reception reported | Owner/Tom: data types, intervals/gaps, duration, reconnect → acceptance limits |
+| Item | Reported / known |
+| --- | --- |
+| Radio | AR6201-(022), ETSO-2C37e/2C38e reported (S21); consistent manual entry (S10) |
+| ESP32 | WROOM-family board, micro-USB, BOOT/RST (S13) |
+| Zander | ZS1; FLARM input unused, no FLARM connected, reported (S21) |
+| FLARM | Classic FLARM IGC, series 6 reported (S21); F6 manual candidate (S23) |
+| OpenSoar | Wi-Fi reception, drivers/endpoints reported (S21), below |
+| Converter | RS422 TO TTL board, Y/Z/B/A labels (S13 P1) |
+| Power | Nominal 12 V → Hobbywing UBEC 3A 2–6S → ESP32; separate FLARM/Zander supplies reported (S21) |
+| Wiring | Partial photos; unmatched Zander/FLARM diagrams (S25); absence of RS-232 conversion only conjectured |
+| Navigation | Reception reported |
+
+Missing evidence and owners: [open items](open-items.md#installed-equipment-wp1).
 
 > [!IMPORTANT]
 > Keep logs, identifiers, credentials and raw backups private. Preserve the backup hardware and harness.

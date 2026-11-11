@@ -30,10 +30,10 @@ The bridge preserves the active frequency, the radio's local controls and both n
 | Firmware and driver changes | ⬜ Planned; not approved |
 | Aircraft integration | ⬜ Deferred |
 
-**Next step:** confirm the installed equipment — [WP1](docs/roadmap.md#wp1--existing-installation-first-priority).
+**Next step:** confirm the installed equipment — [open items, WP1](docs/open-items.md#installed-equipment-wp1).
 
 > [!WARNING]
-> Planning stage. Nothing is verified on hardware. Complete the [wiring checks](docs/connections.md#open-items) before connecting anything.
+> Planning stage. Nothing is verified on hardware. Complete the [open hardware checks](docs/open-items.md#bench-hardware-wp3) before connecting anything.
 
 ## Start here
 
@@ -41,6 +41,6 @@ The bridge preserves the active frequency, the radio's local controls and both n
 | --- | --- |
 | Wire or build it | [Connections](docs/connections.md) · [Module specs](docs/module-specs.md) |
 | Understand the design | [Architecture](docs/architecture.md) · [Requirements and risks](docs/project-baseline.md) |
-| See what is open | [Roadmap](docs/roadmap.md) · [Existing installation](docs/project-baseline.md#existing-installation--wp1-record) |
+| See what is open | [Open items](docs/open-items.md) · [Roadmap](docs/roadmap.md) |
 | Check the evidence | [Sources](docs/sources.md) · [Investigation](docs/technical-investigation.md) · [Reviews](docs/reviews) · [Related projects](docs/related-projects.md) |
 | Contribute | [Work instructions](AGENTS.md) |

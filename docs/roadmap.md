@@ -55,13 +55,7 @@ The [power diagram](connections.md#power) shows F1 near the battery. [Sizing inp
 
 [2026-11-09 report verification](reviews/2026-11-09-installation-claims.md): supplied Zander PDFs retained; Classic FLARM references, driver field support and reported endpoints recorded. No Becker integration established. Source review complete for this increment; WP1/WP2/M1 remain open.
 
-| Needed | Owner | Blocks |
-| --- | --- | --- |
-| Confirm AR6201-(022): type plate/article/HW/SW, connector occupancy | Tom | Manual/interface matching |
-| Confirm Classic FLARM F6/IGC and ZS1 version; actual port/cable/conversion map; baud/output menus | Tom | Equipment wiring; resolve conjectured absence of RS-232 conversion |
-| Navigation routing/returns, update gaps, reconnect behavior | Tom/owner | Coexistence baseline |
-| OpenSoar build and evidence for reported drivers/endpoints; clarify OpenVario's role | Owner/Tom | App/bridge configuration |
-| Existing board/firmware, UBEC output/board input; separate new-build UBEC/source checks | Tom/owner | Backup record and protection/current budget |
+Open checks and owners: [open items](open-items.md#installed-equipment-wp1).
 
 Record supported values and gaps in the [inventory](project-baseline.md#existing-installation--wp1-record) and sources. Keep backups private. Scope is evidence review. M1 requires closure of interface-critical gaps.
 

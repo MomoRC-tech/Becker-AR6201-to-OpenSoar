@@ -110,19 +110,9 @@ Current design: [architecture](architecture.md). Candidate order: Yuri, basic Al
 
 ---
 
-## Detailed open checks
+## Open checks
 
-| Check | Evidence needed |
-| --- | --- |
-| Exact radio | Model label, hardware revision, firmware version, matching installation manual |
-| Electrical interface | Verified connector/pinout, serial settings, remote-control configuration, transceiver requirements |
-| ESP32 resources | Board/SoC, UART ownership, boot and USB/debug behavior, existing level converters and wiring |
-| Installed software | Firmware source/configuration and deployed OpenSoar version |
-| Application integration | AR62xx availability over TCP, simultaneous navigation connections, status presentation |
-| Protocol | Authoritative framing, ACK/NAK, CRC rules, status requests, and channel conversion vectors |
-| Bridge reliability | Bidirectional all-byte tests, oversized bursts, slow clients, partial writes, reconnects, and concurrent navigation |
-| Driver regression | Embedded zero/A5, short frames, invalid CRC, unknown initial state, two instances, absent/late responses |
-| Physical acceptance | Frequency change and status readback on the real radio while preserving local controls and navigation |
+[Open items](open-items.md#protocol-software-and-acceptance-wp2-wp4wp6).
 
 ---
 
