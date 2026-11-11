@@ -1,1 +1,4 @@
-*.SLDPRT binary
+*.step binary
+*.sldprt binary
+*.x_t binary
+*.png binary

@@ -1,5 +1,9 @@
-# UBEC HobbyWing 3A
+# Hobbywing UBEC 3A MAX 5A
 
-Unmodified [SolidWorks part](ubec%20hobbywing%203a.SLDPRT) by **Lucca Silva**, supplied in the project owner's GrabCAD snapshot. The [original model](https://grabcad.com/library/ubec-hobbywing-3a-1) is a third-party reference.
+Unmodified model by **Vinícius Leite**, supplied by the project owner as `hobbywing-ubec-3a-max-5a-1.snapshot.2.zip`. [Original GrabCAD model](https://grabcad.com/library/hobbywing-ubec-3a-max-5a-1)
 
-The archive contains no license file. [GrabCAD sharing guidance](https://help.grabcad.com/article/246-how-can-models-be-used-and-shared) permits attributed non-commercial public sharing and requires the designer's permission for commercial use. Retain the creator's name and original model link when sharing.
+- Open the [STEP model](Hobbywing%20UBEC%203A%20MAX%205A.step) in CAD software.
+- The SolidWorks part, Parasolid file and preview are also preserved unchanged.
+- See [housing](../../../docs/hardware/housing.md#contents) for dimensions and S44 in the [source register](../../../docs/research/sources.md#source-register) for validation.
+
+The archive contains no license file. [GrabCAD sharing guidance](https://help.grabcad.com/article/246-how-can-models-be-used-and-shared) permits attributed non-commercial public sharing and requires the designer's permission for commercial use.

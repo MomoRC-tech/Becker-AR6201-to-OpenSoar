@@ -77,7 +77,7 @@ Keep the delivered-board measurements for mounting design. The model represents 
 
 ### 2.3 UBEC and resistor CAD references
 
-- [Hobbywing 3A UBEC SolidWorks reference](../../cad/reference/ubec-hobbywing-3a/README.md) (S44). Use the catalog dimensions above for preliminary layout.
+- [Hobbywing UBEC 3A MAX 5A CAD reference](../../cad/reference/ubec-hobbywing-3a/README.md) (S44). The full model envelope is 54.40 × 24.00 × 9.50 mm, including the modeled jumper and wire ends. Use it for preliminary layout and measure the actual unit before sizing its mount.
 - [KiCad DIN0204 axial STEP models](../../cad/reference/kicad-din0204/README.md) (S45) give a 3.6 × Ø1.6 mm body with two options for horizontal leads. Use as placeholders for resistors of that body size.
 
 ---
