@@ -37,7 +37,7 @@ Sizes from owner measurements, seller listings or datasheets; see the source col
 
 | Part | Qty | Size (mm) | Source | Notes |
 | --- | :-: | --- | --- | --- |
-| ESP32 board (AZ-Delivery, DevKitC V4 layout) | 1 | 48.26 × 27.94 base PCB; 54.30 long including antenna overhang (reference) | S39 | Espressif reference layout; USB protrusion additional; antenna end free |
+| ESP32 board (AZ-Delivery, DevKitC V4 layout) | 1 | 48.5 × 28.5 base PCB, excluding antenna | S40 | Antenna end free; Micro-USB at the other end |
 | RS-232 module (Hailege H-1-0290) | 2 | 9.2 × 15.6 | S38 | Edge pads, soldered wires |
 | RS-422 board (MAX490) | 1 | 50 × 27 | S34 | Screw terminals A/B/Y/Z on one edge, header on the other |
 | UBEC (Hobbywing 3A) | 1 | 43 × 17 × 7 (catalog); body about 35 × 12 × 5 | S14 | Plus jumper, leads, ferrite ring |
