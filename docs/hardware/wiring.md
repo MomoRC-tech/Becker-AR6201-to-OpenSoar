@@ -37,7 +37,20 @@ flowchart LR
 
 Zander and FLARM are receive-only at the bridge. No return wires or connector contacts are fitted for their RX inputs. The Becker path works in both directions.
 
-### 1.1 UART plan
+### 1.1 Combined instrument connector
+
+Use one standard-density DE-9 connector for Becker, Zander and FLARM: a female socket on the housing and a mating male cable plug, with solder-cup contacts and screw locking. Terminate the existing instrument wires directly in the cable plug and support the cables with a backshell and strain relief. Power uses the separate [XT30 connector](power.md#supply).
+
+| Device | Signals through the connector | Contacts |
+| --- | --- | ---: |
+| Becker | Two differential pairs and signal ground | 5 |
+| Zander | Data to bridge and ground | 2 |
+| FLARM | Data to bridge and ground | 2 |
+| **Total** | **No spare contacts or navigation return lines** | **9** |
+
+This is a custom combined instrument connection, not a standard PC serial port. Connector pin assignments, exact parts and housing fit are tracked in [open items](../project/open-items.md#bench-hardware). Keep the Becker shield treatment described in [Becker wiring](#becker).
+
+### 1.2 UART plan
 
 The ESP32 has three UARTs; each device gets one.
 
