@@ -88,4 +88,4 @@ Supplied file SHA-256:
 
 ## Verification
 
-The ZS1 reference PDFs were extracted; Zander NMEA p.1/handbook p.46 and FLARM connector p.6/revision-history p.2 rendered and visually checked; both supplied diagrams inspected. Manufacturer sources and pinned parser functions checked; both saved PDFs hash-matched. No application builds/tests, live traffic, voltage/continuity measurements, firmware changes, radio commands or aircraft work. WP1/WP2 remain open; [remaining evidence](../roadmap.md#wp1--existing-installation-first-priority).
+The ZS1 reference PDFs were extracted; Zander NMEA p.1/handbook p.46 and FLARM connector p.6/revision-history p.2 rendered and visually checked; both supplied diagrams inspected. Manufacturer sources and pinned parser functions checked; both saved PDFs hash-matched. No application builds/tests, live traffic, voltage/continuity measurements, firmware changes, radio commands or aircraft work. WP1/WP2 remain open; [remaining evidence](../roadmap.md#current-state).

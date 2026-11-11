@@ -40,7 +40,7 @@ Design: [connections](connections.md) · [module specs](module-specs.md).
 
 | Item | Needed | Blocks |
 | --- | --- | --- |
-| Protocol | Authoritative framing, ACK/NAK, CRC rules, status requests, channel conversion vectors ([details](technical-investigation.md#protocol-details-to-validate-independently)) | Driver plan; independent test vectors |
+| Protocol | Authoritative framing, ACK/NAK, CRC rules, status requests, channel conversion vectors ([details](becker-driver.md#protocol-details-to-validate-independently)) | Driver plan; independent test vectors |
 | Radio configuration | Matching installation manual, serial settings, remote-control configuration | Wiring and port configuration |
 | Application integration | AR62xx availability over TCP, simultaneous navigation connections, status presentation | Driver plan |
 | Firmware selection | Candidate audit, file licenses, reproducible build inputs ([ADR-02](architecture.md#adr-02--implementation-and-reuse-baseline)) | Bridge implementation |

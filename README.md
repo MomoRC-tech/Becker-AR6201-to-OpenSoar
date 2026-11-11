@@ -42,5 +42,5 @@ The bridge preserves the active frequency, the radio's local controls and both n
 | Wire or build it | [Connections](docs/connections.md) · [Module specs](docs/module-specs.md) |
 | Understand the design | [Architecture](docs/architecture.md) · [Requirements and risks](docs/requirements.md) |
 | See what is open | [Open items](docs/open-items.md) · [Roadmap](docs/roadmap.md) · [Existing installation](docs/existing-installation.md) |
-| Check the evidence | [Sources](docs/sources.md) · [Investigation](docs/technical-investigation.md) · [Reviews](docs/reviews) · [Related projects](docs/related-projects.md) |
+| Check the evidence | [Sources](docs/sources.md) · [Becker driver research](docs/becker-driver.md) · [Reviews](docs/reviews) · [Bridge firmware candidates](docs/bridge-firmware.md) |
 | Contribute | [Work instructions](AGENTS.md) |

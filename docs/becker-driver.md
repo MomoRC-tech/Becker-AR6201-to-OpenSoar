@@ -1,18 +1,8 @@
-# Technical investigation
+# Becker driver research
 
-See [sources](sources.md) for evidence labels.
+What the OpenSoar AR62xx driver does, how other implementations differ and which protocol evidence is missing. Source inspection plus one host regression; no device tests. Application and device acceptance are open.
 
-> [!NOTE]
-> Application and device acceptance remain open.
-
-## Follow-up send reproduction — 2026-11-08
-
-[S12 host regression](reviews/2026-11-08-becker-send.md): zero-containing frames truncated to 4/10 or 6/10 bytes. The byte-span correction preserves 10/10.
-
-> [!NOTE]
-> The host regression uses synthetic transport data.
-
----
+[Sources](sources.md) · [Open items](open-items.md#protocol-software-and-acceptance-wp2-wp4wp6) · [Bridge firmware candidates](bridge-firmware.md)
 
 ## OpenSoar driver findings
 
@@ -28,6 +18,8 @@ Source: OpenSoar 7.46.26, [AR62xx.cpp](https://github.com/OpenSoaring/OpenSoar/b
 | Validation | Zero received CRC bypasses verification. Command-specific minimum lengths are unchecked before frequency fields are read. |
 | Readback | Conversion is suppressed during sending. Frequencies update private state, while `NMEAInfo` only receives an alive update. |
 
+Host regression ([S12](reviews/2026-11-08-becker-send.md), synthetic transport data): zero-containing frames are truncated to 4/10 or 6/10 bytes. The byte-span correction preserves 10/10.
+
 ### Protocol details to validate independently
 
 | Source implementation | Independent evidence needed |
@@ -41,11 +33,11 @@ Source: OpenSoar 7.46.26, [AR62xx.cpp](https://github.com/OpenSoaring/OpenSoar/b
 
 ---
 
-## Becker driver follow-up — 2026-11-08
+## Other implementations
 
-S11; R01/R03/R04/R07/R08. No candidate validated for operation.
+S11, checked 2026-11-08; R01/R03/R04/R07/R08. No candidate validated for operation.
 
-### Most useful additional reference: XCSoar PR 449
+### XCSoar PR 449
 
 [Werner86 AR62xx.cpp, 9854e3f](https://github.com/Werner86/XCSoar/blob/9854e3f3ba6ed92c2094cdaa4afa8278d67f8f0c/src/Device/Driver/AR62xx.cpp); [PR 449](https://github.com/XCSoar/XCSoar/pull/449): closed/unmerged at review.
 
@@ -59,7 +51,7 @@ S11; R01/R03/R04/R07/R08. No candidate validated for operation.
 
 **Reported**, source lines 39–48: single-frequency commands 1/2 may be undone by the control head; paired command 22/0x16 reportedly synchronizes it. Becker email/protocol revision unavailable. Binary A5/14 traffic; source comments calling it NMEA do not justify text processing.
 
-### LK8000 and the other candidates
+### LK8000 and other drivers
 
 | Source / functions | Useful findings | Limits |
 | --- | --- | --- |
@@ -72,6 +64,15 @@ S11; R01/R03/R04/R07/R08. No candidate validated for operation.
 
 Licenses inspected: OpenSoar/Werner/LK8000 driver GPL-2.0-or-later; RadioDriver Windows header GPL v2, Arduino header/repository license absent. File-level permission required; no code copied.
 
+Related: LK8000 [PR 941](https://github.com/LK8000/LK8000/pull/941), [PR 940](https://github.com/LK8000/LK8000/pull/940). RadioDriver also holds Teensy/controller and Windows serial examples.
+
+### Historical XCSoar work
+
+| Reference | Evidence / limit |
+| --- | --- |
+| [PR 189](https://github.com/XCSoar/XCSoar/pull/189), [190](https://github.com/XCSoar/XCSoar/pull/190), [449](https://github.com/XCSoar/XCSoar/pull/449) | Closed/unmerged at review. PR 189 reports AR6201 tuning/reconnect tests on Windows/UNIX; not current-build validation |
+| [Issue 1092](https://github.com/XCSoar/XCSoar/issues/1092) | Reported eku60 success and protocol-publication obstacle; current policy unknown |
+
 ### Protocol documentation lead
 
 [PR documentation report](https://github.com/XCSoar/XCSoar/pull/449#issuecomment-667976007) · [redesign report](https://github.com/XCSoar/XCSoar/pull/449#issuecomment-670971343) · [publication refusal report](https://github.com/XCSoar/XCSoar/pull/449#issuecomment-679080020) · [issue 1092](https://github.com/XCSoar/XCSoar/issues/1092).
@@ -80,46 +81,20 @@ Historical reports. Current access policy unknown. Contact lead: [Becker service
 
 Request after radio identification: matching remote-control protocol/revision; supported HW/SW; serial settings; status timing; paired/single-command behavior; framing/escaping/CRC; responses; channel vectors; publication permission. No independent protocol document/capture obtained.
 
-### Consequences for the next increment
+---
+
+## Consequences for WP4
 
 > [!IMPORTANT]
 > WP4 starts with caller, state and UI mapping. Counted send, state freshness, parsing and responses are separate increments. Fresh paired readback still leaves a local-tuning race.
 
 Source-derived cases: 118.000 → 00 00 (send truncation); 119.030 → 00 A5 (parser reset). Not independent protocol vectors. Test every split position and multiple frames per read after framing validation.
 
-**S11 verification:** pinned drivers, constructors, overloads, channel conversion and discussions inspected. No execution/device tests. S12 supplies separate host evidence.
-
 ---
 
-## ESP32 bridge comparison
+## Manuals and commercial adapters
 
-| Candidate | Source findings | Limits |
-| --- | --- | --- |
-| [AlphaLima basic sketch](https://github.com/AlphaLima/ESP32-Serial-Bridge/blob/bb42dc3db926f9baf1f5faa76cc21bad1dd80cdf/ESP32-Serial-Bridge.ino) | Separate TCP/UART paths; counted writes; no NMEA parser | Unconditional UART banners; drains beyond 1,023-byte capacity; unchecked writes; multiple writers; Bluetooth broadcasts |
-| [Basic config](https://github.com/AlphaLima/ESP32-Serial-Bridge/blob/bb42dc3db926f9baf1f5faa76cc21bad1dd80cdf/config.h) | 3 UARTs, TCP 8880–8882, 19200/8N1, AP/debug/OTA | Examples, not installed settings |
-| [Basic license](https://github.com/AlphaLima/ESP32-Serial-Bridge/blob/bb42dc3db926f9baf1f5faa76cc21bad1dd80cdf/LICENSE) | MIT | Preserve notices |
-| [Pro bf263c1](https://github.com/AlphaLima/ESP32-Serial-Bridge-Pro/blob/bf263c1880d7630cadef5264dac9aa9654e4096e/ESP32-Serial-Bridge-pro/ESP32_Serial_Bridge_pro.ino) | Persistent config/web/filtering/routes; counted UART chunks with filters off | TCP drains beyond 126 bytes; debug copy; unchecked writes; filters alter binary traffic; cross-port exclusion required |
-| Pro licensing/build | No standalone license found despite README reference | Permission, web/SPIFFS dependencies and reproducibility unresolved |
-| Installed bridge | Reported working navigation | Firmware/routing/returns unknown; preserve as backup |
-
----
-
-## Architecture recommendation from the investigation
-
-Current design: [architecture](architecture.md). Candidate order: Yuri, basic AlphaLima; no firmware selected. Required: bounded/checked forwarding, isolated diagnostics, exclusive command ownership, navigation coexistence.
-
----
-
-## Open checks
-
-[Open items](open-items.md#protocol-software-and-acceptance-wp2-wp4wp6).
-
----
-
-## Follow-up source verification (2026-11-08)
-
-> [!NOTE]
-> Manual details are from prior review unless rechecked in S09/S10. Confirm applicability to the installed equipment.
+Manual details are from prior review unless rechecked in S09/S10. Confirm applicability to the installed equipment.
 
 | Reference | Finding / limitation |
 | --- | --- |
@@ -127,10 +102,10 @@ Current design: [architecture](architecture.md). Candidate order: Yuri, basic Al
 | [First-design manual p.22](https://becker-avionics.com/wp-content/uploads/2017/08/AR6201_IO_SW3050149.pdf#page=22), [catalog](https://becker-avionics.com/manual-instructions-downloads/) | Older pin 2 direction conflicts (IN vs OUT+); Issue 06 OUT. J1-5 also revision-dependent. Match part/SW/connector view |
 | [LXNAV rev.21 v2.10 pp.10–11](https://www.lx-avionik.de/wp/download/manuals/lx232BridgeManualEnglishVer0210Rev21.pdf#page=10), [harness listing](https://www.navboys.com/lxnav-to-becker-ar6201-harness-for-radio-bridge-j1-plug.html) | AR6201 adapter on interface 2, ground pin 21; RT6201 adapter on interface 1, RCU on 2; product uses RS232↔RS422 adapter |
 | Same LXNAV manual | Remote control/Tandem; minimum bridge 1.16, Becker SCI1050S305 3.05 / SCI1051S305 1.49; product-specific |
-| [SD-Link prerequisites](https://sdlink.de/en/Manual/ar620x/) | Free J1, Tandem, AR6201 serial ≥3001 for its BLE adapter; not universal ESP32 requirements |
+| [SD-Link prerequisites](https://sdlink.de/en/Manual/ar620x/), [installation manual v1.0](https://sdlink.de/wp-content/uploads/2026/02/SD-AR620X-E-NG_en_easyvfr_installation_v1.0.pdf) | Free J1, Tandem, AR6201 serial ≥3001 for its BLE adapter; not universal ESP32 requirements. Commercial BLE integration; compare prerequisites against the exact radio and manufacturer documentation |
 
 ---
 
-## Original verification record
+## Verification
 
-Pinned driver/port, bridge sketches/config/licenses and LXNAV diagrams inspected. No full build, bridge/radio execution or interoperability evidence.
+Pinned drivers, port overloads, constructors, channel conversion, discussions and LXNAV diagrams inspected (S11). S12 supplies separate host evidence. No full build, radio execution or interoperability evidence.
