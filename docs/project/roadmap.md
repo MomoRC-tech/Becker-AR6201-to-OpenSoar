@@ -30,7 +30,17 @@ Related: ❓ [Open items](open-items.md) · 🎯 [Requirements](../design/requir
 | WP6 Bridge firmware | ⏸️ Planned | After WP3 and WP5 | Radio path byte-exact, single owner, navigation unaffected |
 | WP8 Aircraft integration | ⬜ Later | Needs verified hardware and separate approval | Installation, protection and approval requirements met |
 
-Work loop for each step: read the current state → choose one small change → do it → check it → update the page that owns it → commit and push.
+Work loop for each step:
+
+```mermaid
+flowchart LR
+    A[Read the current state] --> B[Choose one small change]
+    B --> C[Do it]
+    C --> D[Check it]
+    D --> E[Update the page that owns it]
+    E --> F[Commit and push]
+    F -.-> A
+```
 
 ---
 

@@ -46,6 +46,13 @@ Reviewed: OpenSoar 7.46.26, [AR62xx.cpp](https://github.com/OpenSoaring/OpenSoar
 | Channel conversion | Valid and invalid channel vectors |
 | Start-up and readback | Query, broadcast timing, freshness, display |
 
+The frame as the OpenSoar code builds it (byte order not confirmed):
+
+```text
+A5 14 05 16 | ch1 ch1 | ch2 ch2 | crc crc
+header        channel   channel   CRC-16
+```
+
 ---
 
 <a id="other-implementations"></a>

@@ -51,7 +51,10 @@ The ESP32 has three UARTs; each device gets one.
 | 📡 FLARM | UART1 | GPIO26 | GPIO27 (optional) | RS-232-mod2 |
 | 📻 Becker | UART2 | GPIO16, through a 2.2 kΩ / 3.3 kΩ divider | GPIO17 | MAX490 RS-422 board |
 
-UART0 is also the USB serial port. The firmware moves it to GPIO32/33 after boot, so there is no USB serial log in operation; diagnostics go over Wi-Fi. Boot messages appear only on GPIO1, so they never reach a device. The firmware must switch the UART0 log console off; otherwise log output would go to the Zander's GPS input (GPIO33). Keeping the radio off UART0 means a stray log line can never reach the radio.
+UART0 is also the USB serial port. The firmware moves it to GPIO32/33 after boot, so there is no USB serial log in operation; diagnostics go over Wi-Fi. Boot messages appear only on GPIO1, so they never reach a device. Keeping the radio off UART0 means a stray log line can never reach the radio.
+
+> [!IMPORTANT]
+> The firmware must switch the UART0 log console off; otherwise log output goes to the Zander's GPS input (GPIO33).
 
 ---
 
@@ -128,12 +131,19 @@ Run TX2± and RX2± as two separate twisted pairs in a shielded cable, as Becker
 | VCC | 5 V from the UBEC |
 | GND | GND |
 
-The board's TXD/RXD header labels may be named from either side; identify RO and DI on the board before wiring. ESP32 TX at 3.3 V drives DI directly (the MAX490 needs 2.0 V for a logic high). The pull-up R-D holds DI idle while the ESP32 boots, so no random bits reach the radio before the UART is set up.
+> [!IMPORTANT]
+> The board's TXD/RXD header labels may be named from either side. Identify RO and DI on the board before wiring.
+
+ESP32 TX at 3.3 V drives DI directly (the MAX490 needs 2.0 V for a logic high). The pull-up R-D holds DI idle while the ESP32 boots, so no random bits reach the radio before the UART is set up.
 
 > [!WARNING]
 > The MAX490 runs at 5 V, so RO idles near 5 V — above the ESP32's 3.6 V input limit (S34). Never connect RO directly to GPIO16.
 
-The divider brings RO's 5.0–5.25 V high level down to 3.0–3.15 V at GPIO16, inside the ESP32's input range, so no current flows into the pin's protection diode. A series resistor alone would rely on that diode, for which Espressif gives no current limit. The divider's low source impedance (about 1.3 kΩ) also keeps a clean logic low when the firmware enables the ESP32's internal RX pull-up (about 45 kΩ), as Arduino-ESP32 does by default (S35). RO is loaded with about 1 mA.
+$$
+V_{\text{GPIO16}} = V_{\text{RO}} \cdot \frac{3.3\,\text{k}\Omega}{2.2\,\text{k}\Omega + 3.3\,\text{k}\Omega} = 0.6 \cdot V_{\text{RO}} \quad\Rightarrow\quad 5.0\text{ to }5.25\,\text{V} \;\to\; 3.0\text{ to }3.15\,\text{V}
+$$
+
+The divider keeps GPIO16 inside the ESP32's input range, so no current flows into the pin's protection diode. A series resistor alone would rely on that diode, for which Espressif gives no current limit. The divider's low source impedance (about 1.3 kΩ) also keeps a clean logic low when the firmware enables the ESP32's internal RX pull-up (about 45 kΩ), as Arduino-ESP32 does by default (S35). RO is loaded with about 1 mA.
 
 ### 4.3 Connector reference
 
@@ -196,7 +206,13 @@ Estimate from typical datasheet values, not measured.
 | ESP32 with Wi-Fi | about 250 mA average, 500 mA peaks |
 | MAX490 driving the radio input | about 30 mA |
 | Two MAX3232 modules | a few mA |
-| **Total** | **about 0.3 A average** — about 0.15 A at 12 V |
+| **Total** | **about 0.3 A average** |
+
+At 12 V, assuming about 85 % UBEC efficiency:
+
+$$
+I_{12\,\text{V}} \approx \frac{5\,\text{V} \times 0.3\,\text{A}}{12\,\text{V} \times 0.85} \approx 0.15\,\text{A}
+$$
 
 Size F1 using the measured running current and switch-on inrush, the wire's allowable current and the fuse's time-current curve and DC interrupting rating ([fuse selection, S31](../research/sources.md#source-register)). The load estimate alone does not establish a fuse rating.
 
@@ -206,16 +222,16 @@ Size F1 using the measured running current and switch-on inrush, the wire's allo
 
 ## 6. 🧪 Bench bring-up
 
-Before connecting any device:
+Before connecting any device, work through this list in order:
 
-1. Set the UBEC jumper to 5 V; measure the output with no load and with the ESP32 connected. Check continuity between the UBEC's input and output ground.
-2. Match the ESP32 board's headers and module marking to the [pinout](modules.md#esp32-pinout).
-3. Check continuity of both RS-232 modules against the [pad map](modules.md#rs232-module).
-4. On the MAX490 board, identify RO and DI on the header and check the 120 Ω termination.
-5. With the MAX490 powered and the radio line idle, measure GPIO16: about 3.0 V (high). Then hold B above A with a 1.5 V cell (+ to B, − to A) and check for a low below 0.5 V.
-6. Measure the bridge's current and switch-on inrush at 12 V.
-7. Before plugging in J1, check that the bridge ground has low resistance (well under 1 Ω) to the radio's supply ground point.
-8. In the aircraft: listen for radio noise and check squelch with the bridge on and off.
+- [ ] **1.** Set the UBEC jumper to 5 V; measure the output with no load and with the ESP32 connected. Check continuity between the UBEC's input and output ground.
+- [ ] **2.** Match the ESP32 board's headers and module marking to the [pinout](modules.md#esp32-pinout).
+- [ ] **3.** Check continuity of both RS-232 modules against the [pad map](modules.md#rs232-module).
+- [ ] **4.** On the MAX490 board, identify RO and DI on the header and check the 120 Ω termination.
+- [ ] **5.** With the MAX490 powered and the radio line idle, measure GPIO16: about 3.0 V (high). Then hold B above A with a 1.5 V cell (+ to B, − to A) and check for a low below 0.5 V.
+- [ ] **6.** Measure the bridge's current and switch-on inrush at 12 V.
+- [ ] **7.** Before plugging in J1, check that the bridge ground has low resistance (well under 1 Ω) to the radio's supply ground point.
+- [ ] **8.** In the aircraft: listen for radio noise and check squelch with the bridge on and off.
 
 ---
 

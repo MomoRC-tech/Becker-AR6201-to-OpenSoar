@@ -79,7 +79,8 @@ Hailege H-1-0290: a MAX3232 RS-232 ↔ 3.3 V converter with edge pads. The pad m
 | --- | --- |
 | <img src="../images/hailege-h-1-0290-board.svg" width="240" alt="Hailege H-1-0290 board, chip side"> | <img src="../images/pinout-hailege.svg" width="420" alt="Hailege chip-side pad map. L1 ground, L2 supply, L3 RS-232 input, L4 RS-232 output. R1 TTL input, R2 TTL output, R3 supply, R4 ground."> |
 
-Both sides share one supply: connect 3.3 V and GND on the TTL side (R3/R4) only.
+> [!IMPORTANT]
+> Both sides share one supply: connect 3.3 V and GND on the TTL side (R3/R4) only.
 
 ---
 
@@ -111,7 +112,10 @@ A blue "RS422 TO TTL" board with a 4-pin header (TXD/RXD/GND/VCC) and four screw
   </tr>
 </table>
 
-Set the jumper to 5 V. The manual describes reverse-input protection (S14). Allow space for the jumper, leads and ferrite ring; the body alone is about 35 × 12 × 5 mm in the supplied image, 43 × 17 × 7 mm per the catalog.
+> [!WARNING]
+> Set the jumper to 5 V before connecting anything. At 6 V the MAX490 board runs above its 5.25 V supply range (S34), and the RX divider puts 3.6 V on GPIO16, the ESP32's absolute limit.
+
+The manual describes reverse-input protection (S14). Allow space for the jumper, leads and ferrite ring; the body alone is about 35 × 12 × 5 mm in the supplied image, 43 × 17 × 7 mm per the catalog.
 
 ---
 
