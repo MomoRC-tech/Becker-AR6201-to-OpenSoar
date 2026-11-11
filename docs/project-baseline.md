@@ -36,9 +36,6 @@ Deferred: active tuning, swap, volume/squelch, Larus, general XCSoar support, ai
 
 [Design](architecture.md) · [Wiring](connections.md) · [Parts list](connections.md#parts-list)
 
-> [!WARNING]
-> Disconnect BEC power before USB powering.
-
 ---
 
 ## Existing installation — WP1 record

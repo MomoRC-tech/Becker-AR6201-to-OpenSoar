@@ -101,7 +101,7 @@ flowchart LR
 | — | — | — | GND | — | GND contact |
 
 > [!WARNING]
-> † Confirm the installed J1 revision, moulded pin numbers and pair polarity. Use separate twisted pairs. Verify the selected 3.3 V board’s pinout, UART levels in both directions, series resistance, termination, shielding and reference bonding before connecting. [Espressif GPIO limits](https://docs.espressif.com/projects/esp-faq/en/latest/hardware-related/hardware-design.html#what-is-the-voltage-tolerance-of-gpios-of-esp-chips)
+> † Confirm the installed J1 revision, moulded pin numbers and pair polarity. Use separate twisted pairs.
 
 <details>
 <summary>Becker rear connector and J1 pin view</summary>
