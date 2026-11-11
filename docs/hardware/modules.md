@@ -7,7 +7,7 @@
 The modules the bridge is built from, how to orient them, and the shopping list for one bridge.
 
 > [!NOTE]
-> **Status:** all modules selected. Specs come from seller listings or datasheets; nothing is measured yet. Open checks: [bench hardware](../project/open-items.md#bench-hardware).
+> **Status:** all modules selected. Electrical specs come from seller listings or datasheets; physical sizes are recorded in [housing](housing.md#contents). Open checks: [bench hardware](../project/open-items.md#bench-hardware).
 
 📑 **On this page:** <kbd>[1 · 📋 Module overview](#module-overview)</kbd> <kbd>[2 · 🧠 ESP32 board](#esp32-pinout)</kbd> <kbd>[3 · 🔁 RS-232 modules (Zander, FLARM)](#rs232-module)</kbd> <kbd>[4 · 📻 RS-422 board (Becker)](#rs422-board)</kbd> <kbd>[5 · 🔋 Power module (UBEC)](#ubec)</kbd> <kbd>[6 · 🛒 Parts list](#parts-list)</kbd>
 
@@ -22,7 +22,7 @@ Related: 🔌 [Signal wiring](wiring.md) · ⚡ [Power and grounding](power.md) 
 | Module | Use | Supply | Chip | Size |
 | --- | --- | --- | --- | --- |
 | [AZ-Delivery ESP32 WROOM dev module](#esp32-pinout) | Bridge controller | 5 V in, 3.3 V on board | ESP32-WROOM-32 | — |
-| [Hailege H-1-0290](#rs232-module) (2×) | RS-232 for Zander and FLARM | 3.3 V | MAX3232CSE | 9.4 × 15.9 mm |
+| [Hailege H-1-0290](#rs232-module) (2×) | RS-232 for Zander and FLARM | 3.3 V | MAX3232CSE | [Measured size](housing.md#contents) |
 | [RS-422 board](#rs422-board) | Becker radio | 5 V | MAX490 | 50 × 27 mm |
 | [Hobbywing UBEC 3A (2–6S)](#ubec), part 86010010 | 12 V → 5 V | 5.5–26 V in; 5 V or 6 V out (jumper) at 3 A | — | 43 × 17 × 7 mm |
 
