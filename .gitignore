@@ -1,0 +1,3 @@
+# Local agent files
+.codex-remote-attachments/
+.claude/settings.local.json
