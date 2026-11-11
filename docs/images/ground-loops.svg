@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="930" height="510" viewBox="0 0 930 510" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="930" height="530" viewBox="0 0 930 530" role="img" aria-labelledby="title desc">
 <title id="title">Bridge power and ground loops</title>
-<desc id="desc">The battery feeds the bridge (F1, UBEC, ESP32 with MAX490 and RS-232 modules) and each device with +12 V. The battery minus, the bridge ground and each device's supply ground meet at the common ground point. Dashed signal grounds from the bridge to the Becker (J1-21), Zander (pin 5) and FLARM (pins 7/8) each close a ground loop: Loop B, Loop Z and Loop F.</desc>
-<rect width="930" height="510" fill="white"/>
+<desc id="desc">The battery feeds the bridge (F1, UBEC, ESP32 with MAX490 and RS-232 modules) and each device with +12 V; arrows show the normal current direction. The battery minus, the bridge ground and each device's supply ground meet at the common ground point. Dashed signal grounds from the bridge to the Becker (J1-21), Zander (pin 5) and FLARM (pins 7/8) each close a ground loop: Loop B, Loop Z and Loop F.</desc>
+<rect width="930" height="530" fill="white"/>
 <g font-family="Arial,sans-serif">
 
 <!-- Bridge group outline -->
@@ -33,9 +33,30 @@
 
 <!-- Signal grounds (loops) -->
 <g stroke="#1e88e5" stroke-width="2.5" stroke-dasharray="7 5" fill="none">
-  <path d="M445 240H560V98H660"/>
-  <path d="M445 275H580V213H660"/>
+  <path d="M445 240H520V98H660"/>
+  <path d="M445 275H560V213H660"/>
   <path d="M445 310H660"/>
+</g>
+
+<!-- Normal current direction -->
+<g>
+  <polygon points="90,62 100,62 95,53" fill="#d32f2f"/>
+  <polygon points="330,52 340,52 335,61" fill="#d32f2f"/>
+  <polygon points="330,125 340,125 335,134" fill="#d32f2f"/>
+  <polygon points="826,81 826,91 817,86" fill="#d32f2f"/>
+  <polygon points="826,196 826,206 817,201" fill="#d32f2f"/>
+  <polygon points="826,311 826,321 817,316" fill="#d32f2f"/>
+  <polygon points="330,188 340,188 335,197" fill="#ef6c00"/>
+  <polygon points="824,107 824,117 833,112" fill="#616161"/>
+  <polygon points="824,222 824,232 833,227" fill="#616161"/>
+  <polygon points="824,337 824,347 833,342" fill="#616161"/>
+  <polygon points="895,166 905,166 900,175" fill="#616161"/>
+  <polygon points="895,281 905,281 900,290" fill="#616161"/>
+  <polygon points="895,391 905,391 900,400" fill="#616161"/>
+  <polygon points="624,435 624,445 615,440" fill="#616161"/>
+  <polygon points="219,435 219,445 210,440" fill="#616161"/>
+  <polygon points="330,381 340,381 335,390" fill="#616161"/>
+  <polygon points="90,304 100,304 95,295" fill="#616161"/>
 </g>
 
 <!-- Boxes -->
@@ -62,7 +83,7 @@
 <g font-size="12" fill="#475569" text-anchor="middle">
   <text x="95" y="113">12 V</text>
   <text x="335" y="278">MAX490 board</text>
-  <text x="335" y="296">RS-232 modules</text>
+  <text x="335" y="296">RS-232 modules (3.3 V from ESP32)</text>
 </g>
 
 <!-- Line labels -->
@@ -73,7 +94,7 @@
   <text x="840" y="205">+12 V</text>
   <text x="840" y="320">+12 V</text>
 </g>
-<text x="343" y="203" font-size="12" fill="#ef6c00" font-weight="700">5 V / 3.3 V</text>
+<text x="343" y="203" font-size="12" fill="#ef6c00" font-weight="700">5 V</text>
 <g font-size="11" fill="#616161">
   <text x="845" y="106">P1-13/25</text>
   <text x="845" y="221">GND</text>
@@ -81,10 +102,13 @@
   <text x="343" y="405">Bridge GND</text>
   <text x="103" y="160">Battery −</text>
 </g>
-<g font-size="12" fill="#1565c0" font-weight="700" text-anchor="middle">
-  <text x="610" y="91">Loop B · J1-21</text>
-  <text x="614" y="206">Loop Z · pin 5</text>
-  <text x="600" y="303">Loop F · pins 7/8</text>
+<g font-size="12" fill="#1565c0" text-anchor="end">
+  <text x="652" y="75" font-weight="700">Loop B</text>
+  <text x="652" y="91">signal GND J1-21</text>
+  <text x="652" y="190" font-weight="700">Loop Z</text>
+  <text x="652" y="206">signal GND pin 5</text>
+  <text x="652" y="287" font-weight="700">Loop F</text>
+  <text x="652" y="303">signal GND pins 7/8</text>
 </g>
 <text x="497" y="462" font-size="13" fill="#424242" text-anchor="middle" font-weight="700">Common ground point (battery −)</text>
 
@@ -97,9 +121,10 @@
 </g>
 <g font-size="12" fill="#172b4d">
   <text x="66" y="496">+12 V supply</text>
-  <text x="206" y="496">5 V / 3.3 V in bridge</text>
+  <text x="206" y="496">5 V in bridge</text>
   <text x="366" y="496">Supply ground</text>
   <text x="536" y="496">Signal ground, closes a loop</text>
+  <text x="30" y="520" fill="#475569">Arrows show the normal current direction. Signal grounds carry small shares in either direction.</text>
 </g>
 </g>
 </svg>

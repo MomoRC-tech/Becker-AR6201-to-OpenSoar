@@ -56,15 +56,15 @@ flowchart LR
 
 Treat the UBEC's input and output ground as connected, which is usual for this kind of regulator ([bring-up](wiring.md#bring-up) step 1 checks it). The bridge ground, the battery minus and the devices' signal grounds are then one circuit. Run the bridge's supply ground to the same ground point as the radio's supply ground, with a solid crimped or screwed connection.
 
-J1-21 connects directly to the board GND, without a series resistor. Each device link has a signal ground as well as its own supply ground, so every link closes a loop through the ground point:
+J1-21 connects directly to the board GND, without a series resistor. Each loop is closed by a signal ground: every device has its own supply ground to the ground point, and its signal ground to the bridge adds a second, parallel path back to that point.
 
 ![Power and ground loops: battery, bridge and the three devices; supply grounds meet at the common ground point, and the dashed signal grounds to the Becker, Zander and FLARM close Loop B, Loop Z and Loop F](../images/ground-loops.svg)
 
-| Loop | Path | What flows in normal operation |
-| --- | --- | --- |
-| Loop B (Becker) | Bridge GND → J1-21 → radio → P1-13/25 → ground point → bridge ground wire | A share of the radio's return current: about 14 mA receiving, about 0.2 A transmitting ([estimate](#currents)) |
-| Loop Z (Zander) | Bridge GND → ZS1 pin 5 → Zander supply ground → ground point | A small share of the Zander's supply current |
-| Loop F (FLARM) | Bridge GND → FLARM pins 7/8 → FLARM supply ground (the same pins inside the FLARM, S23) → ground point | A small share of the FLARM's supply current |
+| Loop | Closed by signal ground | Path | What flows in normal operation |
+| --- | --- | --- | --- |
+| Loop B (Becker) | J1-21 (D_GND) | Bridge GND → J1-21 → radio → P1-13/25 → ground point → bridge ground wire | A share of the radio's return current: about 14 mA receiving, about 0.2 A transmitting ([estimate](#currents)) |
+| Loop Z (Zander) | ZS1 pin 5 | Bridge GND → ZS1 pin 5 → Zander supply ground → ground point | A small share of the Zander's supply current |
+| Loop F (FLARM) | FLARM pins 7/8 | Bridge GND → FLARM pins 7/8 → FLARM supply ground (the same pins inside the FLARM, S23) → ground point | A small share of the FLARM's supply current |
 
 The Becker cable shield is connected at the radio end only (J1-11) and the phone link is Wi-Fi, so neither forms a loop. Keep the device cables close to the bridge's power leads so the loops enclose little area.
 
