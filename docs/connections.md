@@ -181,7 +181,7 @@ Parts for one bridge.
 | MCU / 1 | AZ-Delivery ESP32 WROOM dev module | [Candidate pinout](module-specs.md#esp32-pinout) · [Power](#power) |
 | RS-232-mod1, RS-232-mod2 / 2 | Hailege H-1-0290 | [Zander](#zander-zs1) and [FLARM](#flarm) |
 | PS1 / 1 | 5 V BEC | [Power](#power) |
-| RS-422 mod / 1 | Full-duplex RS-422 board, 3.3 V supply and ESP32-compatible UART logic | Model TBD. [Becker](#becker-radio) |
+| RS-422 mod / 1 | Full-duplex RS-422 board, 3.3 V supply and ESP32-compatible UART logic | Model TBD. [Chip candidates](module-specs.md#becker-rs422-chips) · [Becker wiring](#becker-radio) |
 | R-Z, R-F / 2 | 10 kΩ, 1%, at least 0.125 W | Proposed idle pull-ups for the Zander and FLARM converter inputs |
 | F1 / 1 | DC blade fuse with inline holder (bench candidate: 32 V DC ATO/ATOF) | [Current rating TBD](#f1-sizing-inputs) |
 | Reverse-polarity stage / optional | Separate BEC input protection | Only if the BEC lacks adequate reverse-input protection |

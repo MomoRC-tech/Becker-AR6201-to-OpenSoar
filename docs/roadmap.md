@@ -28,7 +28,7 @@
 
 [Wiring and parts](connections.md#parts-list). [ESP32 header reference](module-specs.md#esp32-pinout) checked against the DevKitC V4 guide. Open checks cover physical board match and regulator capacity, BEC/source limits, H-1-0290 continuity, 3.3 V full-duplex RS-422 board selection and electrical checks, power budget and protection values.
 
-The Becker board requires a 3.3 V supply and ESP32-compatible UART logic. Model and 3.3 V rail remain open.
+The Becker board requires a 3.3 V supply and ESP32-compatible UART logic. [Chip candidates](module-specs.md#becker-rs422-chips) documented. Board model and 3.3 V rail remain open.
 
 The [Hailege pin map](module-specs.md#hailege-board-pad-reference) is inferred from the supplied image and S27. ZS1 D3029 pp.46/48 and Classic FLARM v221 pp.6/7 were rechecked. Confirm pad continuity on both boards, enclosure clearance, equipment connector views and signal references. Electrical and device checks remain open.
 

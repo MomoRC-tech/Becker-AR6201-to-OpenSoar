@@ -5,11 +5,28 @@
 | Module | Power | Chip | Reported size |
 | --- | --- | --- | --- |
 | Hailege H-1-0290 (Zander and FLARM) | 3.3 V | MAX3232CSE (reported) | 9.4 × 15.9 mm |
-| Becker RS-422 board (model TBD) | 3.3 V required | TBD | TBD |
+| Becker RS-422 board (model TBD) | 3.3 V required | [Chip candidates](#becker-rs422-chips) | TBD |
 | AZ-Delivery ESP32 WROOM dev module | 5 V input, 3.3 V regulator | — | — |
 | BEC (model TBD) | 2S–4S input reported, 5 V output | — | — |
 
 [Power module sources (S16, S17, S19)](sources.md#source-register)
+
+<a id="becker-rs422-chips"></a>
+
+## Becker 3.3 V RS-422 chip candidates
+
+The board needs a 3.3 V supply, ESP32-compatible UART logic and separate differential transmit and receive pairs for full duplex. These parts meet the chip-level supply and duplex requirements. Board selection and Becker compatibility checks remain open.
+
+| Chip | Rated data rate | Enable pins | Datasheet evidence |
+| --- | --- | --- | --- |
+| **MAX3490** (Analog Devices) | 10 Mbit/s | None | [Rev. 2, selection table and electrical characteristics](https://www.analog.com/media/en/technical-documentation/data-sheets/MAX3483-MAX3491.pdf#page=2) |
+| **SP3490** (MaxLinear) | 10 Mbit/s | None | [Rev. 1.0.3, pp. 1–2](https://www.maxlinear.com/ds/sp3490_sp3491.pdf?productId=9712) |
+| ADM3490 (Analog Devices) | 10 Mbit/s | None | [Rev. E, specifications and pin configuration](https://www.analog.com/media/en/technical-documentation/data-sheets/ADM3483_3485_3488_3490_3491.pdf) |
+| MAX3488 (Analog Devices) | 250 kbit/s | None | [Rev. 2, selection table](https://www.analog.com/media/en/technical-documentation/data-sheets/MAX3483-MAX3491.pdf#page=2). Slew-rate limited |
+| MAX3491 / SP3491 | 10 Mbit/s | DE and active-low RE | Same family datasheets as above. Check how the board drives both enables |
+| THVD1451 (Texas Instruments) | 50 Mbit/s | None | [Rev. E, device comparison and operating conditions](https://www.ti.com/lit/ds/symlink/thvd1451.pdf). Operates from 3.0 to 5.5 V. Verify 3.3 V operation on the board |
+
+Verify the assembled board's supply and UART levels in both directions, terminal polarity, termination, reference or isolation arrangement, and behavior when the bridge is unpowered. A two-wire half-duplex board (such as one based on MAX3485) cannot provide the two independent pairs. The chip rates are interface ratings. Use the serial settings matched to the Becker radio.
 
 <a id="esp32-pinout"></a>
 
