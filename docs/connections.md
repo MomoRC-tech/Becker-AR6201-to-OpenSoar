@@ -42,9 +42,14 @@ flowchart LR
 
 <a id="esp32-pinout"></a>
 
-### ESP32 DevKitC V4 pinout
+<details>
+<summary>ESP32 DevKitC V4 pinout</summary>
 
 **Candidate for the AZ-Delivery WROOM-32 board.** View from the component side with the antenna at the top and Micro-USB at the bottom. J2 is on the left and J3 on the right. Count both headers from the antenna end. Header labels below follow Espressif's reference. RX and TX are from the ESP32's perspective.
+
+![AZ-Delivery ESP32 Dev Kit C V4 pinout, component side with Micro-USB at the bottom](images/esp32-devkitc-v4-az-delivery-pinout.png)
+
+[AZ-Delivery pinout PDF, page 1](https://cdn.shopify.com/s/files/1/1509/1638/files/ESP32_DevKit_C_V4_Pinout.pdf?v=1615364529)
 
 | Position | J2 label | J2 bridge use | J3 label | J3 bridge use |
 | ---: | --- | --- | --- | --- |
@@ -71,7 +76,9 @@ flowchart LR
 > [!IMPORTANT]
 > Before wiring, match the board's module marking, two 19-pin headers, silkscreen and power contacts to the reference. The proposed Becker pins GPIO16/17 are available on WROOM boards and reserved internally on WROVER boards. Leave D0–D3, CMD and CLK free for flash. Verify regulator capacity for the navigation converters. The Becker board's 3.3 V rail is TBD.
 
-[Espressif header tables and pin layout](https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32/esp32-devkitc/user_guide.html#header-block) · [AZ-Delivery pinout](https://cdn.shopify.com/s/files/1/1509/1638/files/ESP32_DevKit_C_V4_Pinout.pdf?v=1615364529) · [Evidence (S32)](sources.md#source-register)
+[Espressif header tables and pin layout](https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32/esp32-devkitc/user_guide.html#header-block) · [Evidence (S32)](sources.md#source-register)
+
+</details>
 
 ---
 
