@@ -7,7 +7,7 @@
 | OpenSoar | Radio framing, channel conversion, state, responses |
 | ESP32 | Counted binary forwarding; separate radio/navigation/diagnostic paths |
 | Navigation | Preserve required messages, displays and return traffic |
-| Radio interface | ESP32 UART ↔ selected 5 V MAX490 full-duplex RS-422 board. Receive level conversion pending |
+| Radio interface | ESP32 UART ↔ selected 5 V MAX490 full-duplex RS-422 board. Owner-selected 1 kΩ series resistor on UART RX. GPIO voltage compliance unverified |
 
 [Overview](../README.md#architecture-overview) · [Connections](connections.md)
 

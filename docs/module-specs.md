@@ -28,7 +28,7 @@ Verify clearance on the delivered unit including the jumper, leads, ferrite ring
 
 **UART receive interface.** ESP32-WROOM-32 specifies VDD + 0.3 V as the upper input limit (3.6 V at nominal 3.3 V). A series resistor alone limits current only if there is a current path. The reviewed Espressif documents give no allowable continuous positive injection current for GPIO16 that would support sizing a resistor for a 5 V UART idle level. The seller's 10 Ω claim gives no basis for protecting this input.
 
-**Proposed interface.** Feed the module's receiver output into a SN74LVC1G17 powered from the ESP32 3.3 V rail, with a common UART ground. The buffer accepts up to 5.5 V and specifies partial-power-down behavior. The ESP32 TX can drive the MAX490 DI directly if the module header routes to DI without incompatible circuitry. The MAX490 DI high threshold is 2.0 V. Verify header routing and startup/shutdown behavior before connecting to the radio. [Evidence (S34)](sources.md#source-register)
+**Owner-selected configuration.** Place one 1 kΩ resistor in series from the module's UART receiver output to ESP32 GPIO16 (UART RX), with a shared UART ground. Verify GPIO voltage compliance before connecting. The series resistor alone does not establish compliance with the ESP32 input limit. The ESP32 TX can drive the MAX490 DI directly if the module header routes to DI without incompatible circuitry. The MAX490 DI high threshold is 2.0 V. Verify header routing and startup/shutdown behavior before connecting to the radio. [Evidence (S34)](sources.md#source-register)
 
 <a id="esp32-pinout"></a>
 

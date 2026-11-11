@@ -4,5 +4,5 @@
 <g fill="#eaf1fb" stroke="#9cb1cc"><rect x="1" y="7" width="180" height="34" rx="4"/><rect x="267" y="7" width="186" height="34" rx="4"/><rect x="539" y="7" width="180" height="34" rx="4"/></g>
 <g stroke="#52647b" stroke-width="1.5" marker-end="url(#arrow)"><path d="M189 18H259"/><path d="M461 18H531"/><path d="M259 31H189"/><path d="M531 31H461"/></g>
 <g font-family="Arial,sans-serif" font-size="13" text-anchor="middle" fill="#172b4d"><text x="91" y="29">Becker AR6201 (reported)</text><text x="360" y="29">RS-422 mod</text><text x="629" y="29">ESP32</text></g>
-<g font-family="Arial,sans-serif" font-size="11" fill="#475569" text-anchor="middle"><text x="224" y="60">RX for standby tuning</text><text x="496" y="60">Level conversion TBD</text></g>
+<g font-family="Arial,sans-serif" font-size="11" fill="#475569" text-anchor="middle"><text x="224" y="60">RX for standby tuning</text><text x="496" y="60">1 kΩ series on ESP32 RX</text></g>
 </svg>

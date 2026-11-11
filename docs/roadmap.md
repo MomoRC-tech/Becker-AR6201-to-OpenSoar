@@ -26,9 +26,9 @@
 
 ## WP3 — bench hardware
 
-[Wiring and parts](connections.md#parts-list). [ESP32 header reference](module-specs.md#esp32-pinout) checked against the DevKitC V4 guide. Open checks cover physical board match and regulator capacity, Hobbywing UBEC output and clearance, source voltage range, H-1-0290 continuity, MAX490 board and UART level conversion checks, power budget and protection values.
+[Wiring and parts](connections.md#parts-list). [ESP32 header reference](module-specs.md#esp32-pinout) checked against the DevKitC V4 guide. Open checks cover physical board match and regulator capacity, Hobbywing UBEC output and clearance, source voltage range, H-1-0290 continuity, MAX490 board and UART voltage checks, power budget and protection values.
 
-The [5 V MAX490 board](module-specs.md#becker-max490-board) is selected. A 3.3 V-powered UART receive buffer is proposed. The published ESP32 limits give no basis for a series-only resistor value. Before connecting, verify pinout, UART levels in both directions, series resistance, termination, shielding and reference bonding. [Espressif GPIO limits](https://docs.espressif.com/projects/esp-faq/en/latest/hardware-related/hardware-design.html#what-is-the-voltage-tolerance-of-gpios-of-esp-chips)
+The [5 V MAX490 board](module-specs.md#becker-max490-board) is selected. The owner selected a 1 kΩ series resistor on ESP32 UART RX. GPIO voltage compliance remains unverified. Before connecting, verify pinout, UART levels in both directions, series resistance, termination, shielding and reference bonding. [Espressif GPIO limits](https://docs.espressif.com/projects/esp-faq/en/latest/hardware-related/hardware-design.html#what-is-the-voltage-tolerance-of-gpios-of-esp-chips)
 
 The [Hailege pin map](module-specs.md#hailege-board-pad-reference) is inferred from the supplied image and S27. ZS1 D3029 pp.46/48 and Classic FLARM v221 pp.6/7 were rechecked. Confirm pad continuity on both boards, enclosure clearance, equipment connector views and signal references. Electrical and device checks remain open.
 
