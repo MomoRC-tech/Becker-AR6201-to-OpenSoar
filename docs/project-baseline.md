@@ -19,6 +19,7 @@ One new ESP32 bridge. Preserve the existing setup as backup.
 | R06 | P0 | Match electrical interface and serial configuration to the actual equipment. | WP2 records exact applicable manual, connector view, directions, levels and settings. No direct incompatible signals on ESP32 GPIO. |
 | R07 | P1 | Make results reproducible and minimize custom development. | WP3 compares reuse options and licenses; WP5–WP6 record versions, configuration, steps, expected/actual results and limitations. |
 | R08 | P1 | Receive radio state where supported, and specify what OpenSoar can display. | WP2/WP4 establish readback and UI capability; WP5 covers the supported software behavior and limitations. |
+| R09 | P0 | Use a full-duplex RS-422 board with a 3.3 V supply and ESP32-compatible UART logic for Becker. | WP3 board selection, pinout and electrical checks. |
 
 Deferred: active tuning, swap, volume/squelch, Larus, general XCSoar support, aircraft installation. Repository license undecided.
 
@@ -31,7 +32,7 @@ Deferred: active tuning, swap, volume/squelch, Larus, general XCSoar support, ai
 | ESP32 | AZ-Delivery ESP32 WROOM dev module (owner selection) | Confirm header positions, regulator limits and current/thermal budget |
 | Navigation | 2 × Hailege H-1-0290; reported MAX3232CSE, 9.4 × 15.9 mm (S26) | S27 inferred pad map; build operator: confirm IC/pad continuity, dimensions and 3.3 V operation |
 | Supply | Nominal 12 V battery → 2S–4S-rated BEC → 5 V ESP32 → 3.3 V navigation converters | Owner: BEC model, chemistry/voltage range; protection ratings |
-| Radio | Assembled RS422-to-TTL board (owner selection, S28) | 5 V and header directions in S29. MAX490ESA owner confirmed. Board dimensions of 50 × 27 mm reported in S30. ESP32 level interface and radio match pending |
+| Radio | 3.3 V full-duplex RS-422 board required. Model TBD | Verify ESP32 logic levels, power budget, pinout and radio match |
 
 [Design](architecture.md) · [Wiring](connections.md) · [Parts list](connections.md#parts-list)
 
@@ -75,7 +76,7 @@ S13: four private photos; visible features only. No powered/continuity tests or 
 
 | Photo | Rechecked source: visible observation | Inference / limit |
 | --- | --- | --- |
-| P1 | Blue board marked RS422 TO TTL; four screw terminals marked Y, Z, B, A; VCC/GND markings at the wired header; IC marking too blurred to identify | Relevant candidate for the proposed radio interface. Separate terminal pairs suggest a full-duplex module, but the IC/circuit must establish direction, polarity, supply, logic levels, termination and isolation. TTL wording does not establish 3.3 V compatibility. No connection to the radio or pictured ESP32 is traceable |
+| P1 | Blue board marked RS422 TO TTL; four screw terminals marked Y, Z, B, A; VCC/GND markings at the wired header; IC marking too blurred to identify | Existing-installation evidence. Separate terminal pairs suggest a full-duplex module, but the IC/circuit must establish direction, polarity, supply, logic levels, termination and isolation. TTL wording does not establish 3.3 V compatibility. No connection to the radio or pictured ESP32 is traceable |
 | P2 | HOBBYWING UBEC-labelled module, visible 3A marking, blue jumper, stripboard and soldered wiring | Likely the bridge’s regulator; exact model/revision, jumper function/setting and delivered voltage are unverified. S14 describes a similar 5/6 V selectable product, not a measurement of this unit |
 | P3 | ESP32 WROOM-family development board; module marking appears to read ESP-WROOM-32; micro-USB, BOOT/RST buttons, pin labels and attached wiring visible | Supports the classic ESP32/WROOM family as a reuse lead. Does not establish an official DevKitC V4, WROOM-32E, board schematic, firmware, spare UARTs or complete GPIO assignments |
 | P4 | Wider view of the board, green enclosure and partly covered cable assembly | Supports assembly context; covered joins and off-frame endpoints prevent an end-to-end wiring map. Wire colour alone does not establish function or voltage |

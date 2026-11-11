@@ -51,7 +51,7 @@ flowchart LR
 | Module | Power | Chip | Reported size |
 | --- | --- | --- | --- |
 | Hailege H-1-0290 (Zander and FLARM) | 3.3 V | MAX3232CSE (reported) | 9.4 × 15.9 mm |
-| RS422 TO TTL (Becker) | 5 V per schematic | MAX490ESA (owner-confirmed) | 50 × 27 mm |
+| Becker RS-422 board (model TBD) | 3.3 V required | TBD | TBD |
 | AZ-Delivery ESP32 WROOM dev module | 5 V input, 3.3 V regulator | — | — |
 | BEC (model TBD) | 2S–4S input reported, 5 V output | — | — |
 
@@ -65,7 +65,7 @@ flowchart LR
 
 [S26–S27](sources.md#source-register)
 
-#### RS422 TO TTL · RS-422
+#### Superseded 5 V RS-422 board reference
 
 | Chip-side reference | Module pin diagram |
 | --- | --- |
@@ -135,15 +135,15 @@ flowchart LR
 
 ![Proposed device to module to ESP32 path](images/wiring-becker.svg)
 
-| Becker J1 reference† | → / ← | RS-422 terminals | TTL header | → / ← | ESP32 |
+| Becker J1 reference† | → / ← | RS-422 board signals | 3.3 V UART signals | → / ← | ESP32 |
 | --- | :-: | --- | --- | :-: | --- |
-| 2 TX2+ / 9 TX2− | → | **A / B** input | **RXD** output | → | GPIO16 (<img src="images/pins/rx.svg" alt="RX" width="20" height="14">) via level conversion |
-| 3 RX2+ / 10 RX2− | ← | **Y / Z** output | **TXD** input | ← | GPIO17 (<img src="images/pins/tx.svg" alt="TX" width="20" height="14">) (interface TBD) |
+| 2 TX2+ / 9 TX2− | → | Differential receive pair | UART output | → | GPIO16 (<img src="images/pins/rx.svg" alt="RX" width="20" height="14">) |
+| 3 RX2+ / 10 RX2− | ← | Differential transmit pair | UART input | ← | GPIO17 (<img src="images/pins/tx.svg" alt="TX" width="20" height="14">) |
 | 21 D_GND | — | Bond **UNKNOWN** | — | — | — |
 | — | — | — | GND | — | GND contact |
 
 > [!WARNING]
-> † Confirm the installed J1 revision, moulded pin numbers and pair polarity. Use separate twisted pairs. Convert the 5 V-domain RXD before GPIO16. Verify GPIO17 compatibility, series resistance, termination, shielding and reference bonding before connecting. [S28–S30](sources.md#source-register) · [Espressif GPIO limits](https://docs.espressif.com/projects/esp-faq/en/latest/hardware-related/hardware-design.html#what-is-the-voltage-tolerance-of-gpios-of-esp-chips)
+> † Confirm the installed J1 revision, moulded pin numbers and pair polarity. Use separate twisted pairs. Verify the selected 3.3 V board’s pinout, UART levels in both directions, series resistance, termination, shielding and reference bonding before connecting. [Espressif GPIO limits](https://docs.espressif.com/projects/esp-faq/en/latest/hardware-related/hardware-design.html#what-is-the-voltage-tolerance-of-gpios-of-esp-chips)
 
 <details>
 <summary>Becker rear connector and J1 pin view</summary>
@@ -173,7 +173,7 @@ flowchart LR
     B --> V["Output protection if required: UNKNOWN"] --> E["ESP32 5 V input: position UNKNOWN"]
     E --> R[Board 3.3 V regulator]
     R --> C["RS-232-mod1 / RS-232-mod2"]
-    V --> Q["Becker module VCC: 5 V"]
+    TBD["3.3 V rail: source TBD"] --> Q["Becker RS-422 board"]
 ```
 
 | From | To | Status |
@@ -182,7 +182,7 @@ flowchart LR
 | BEC output return | ESP32 GND contact | Common logic ground; source return design pending |
 | ESP32 3.3 V contact **UNKNOWN** | RS-232-mod1 R3 (`+`) | Proposed; module check pending |
 | ESP32 3.3 V contact **UNKNOWN** | RS-232-mod2 R3 (`+`) | Proposed; module check pending |
-| Protected BEC 5 V output | RS-422 module VCC | 5 V per board schematic (S29) |
+| 3.3 V rail **TBD** | RS-422 board supply | Verify board current and regulator capacity |
 | ESP32 GND contact | RS-232-mod1 R4 (`−`) | Proposed; continuity pending |
 | ESP32 GND contact | RS-232-mod2 R4 (`−`) | Proposed; continuity pending |
 | ESP32 GND contact | RS-422 module GND contact | Proposed logic return |
@@ -218,7 +218,7 @@ Parts for one bridge.
 | MCU / 1 | AZ-Delivery ESP32 WROOM dev module | [Power](#power) |
 | RS-232-mod1, RS-232-mod2 / 2 | Hailege H-1-0290 | [Zander](#zander-zs1) and [FLARM](#flarm) |
 | PS1 / 1 | 5 V BEC | [Power](#power) |
-| RS-422 mod / 1 | Assembled RS422-to-TTL board | [Becker](#becker-radio) |
+| RS-422 mod / 1 | Full-duplex RS-422 board, 3.3 V supply and ESP32-compatible UART logic | Model TBD. [Becker](#becker-radio) |
 | R-Z, R-F / 2 | 10 kΩ, 1%, at least 0.125 W | Proposed idle pull-ups for the Zander and FLARM converter inputs |
 | F1 / 1 | DC blade fuse with inline holder (bench candidate: 32 V DC ATO/ATOF) | [Current rating TBD](#f1-sizing-inputs) |
 | Reverse-polarity stage / optional | Separate BEC input protection | Only if the BEC lacks adequate reverse-input protection |
@@ -238,4 +238,4 @@ Parts for one bridge.
 | Both H-1-0290 sides, IC markings + continuity map | Confirm inferred L/R pad map; equipment cable mapping |
 | ESP32 header/regulator checks and BEC/source limits | Header positions, current budget, protection |
 | Return-traffic requirements + serial settings | Optional return wiring and port configuration |
-| Confirm RS-422 interface levels, series resistance and effective termination | Becker level conversion, termination and reference |
+| Identify a 3.3 V full-duplex RS-422 board and verify pinout, logic levels, current draw, series resistance and termination | Becker wiring, power rail and reference |

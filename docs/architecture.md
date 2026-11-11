@@ -7,7 +7,7 @@
 | OpenSoar | Radio framing, channel conversion, state, responses |
 | ESP32 | Counted binary forwarding; separate radio/navigation/diagnostic paths |
 | Navigation | Preserve required messages, displays and return traffic |
-| Radio interface | ESP32 UART ↔ assembled RS422-to-TTL board. Logic compatibility and module pin functions open |
+| Radio interface | ESP32 UART ↔ full-duplex RS-422 board with 3.3 V supply and ESP32-compatible UART logic. Model and pinout TBD |
 
 [Overview](../README.md#architecture-overview) · [Connections](connections.md)
 
@@ -19,8 +19,8 @@
 | --- | --- |
 | Board | AZ-Delivery ESP32 WROOM dev module (owner selection). Verify header positions and regulator limits |
 | Navigation | 2 × Hailege H-1-0290 at 3.3 V (S26); continuity and interface checks pending |
-| Radio | Owner-selected assembled RS422-to-TTL board (S28). 5 V supply per S29. MAX490ESA owner confirmed (S30). RXD level conversion required for the documented circuit. TXD compatibility and isolation open |
-| Supply | Nominal 12 V battery → BEC (reported 2S–4S input), 5 V → ESP32 → 3.3 V navigation converters. Becker module from the protected 5 V rail |
+| Radio | 3.3 V full-duplex RS-422 board required. Model, pinout, termination and isolation open |
+| Supply | Nominal 12 V battery → BEC (reported 2S–4S input), 5 V → ESP32 → 3.3 V navigation converters. Becker module requires a 3.3 V supply. Rail selection depends on board current and regulator capacity |
 | Routing | Separate UART/device endpoints proposed; return traffic and GPS priority TBD |
 | Firmware | Unselected; Yuri first external candidate, AlphaLima basic comparator |
 | OpenSoar review baseline | 7.46.26, `b2e745cfddfe0150f6ed7db467ac18c321b38d01`; Becker WIP (S09); installed build unknown |
@@ -61,7 +61,7 @@ One queue: [roadmap](roadmap.md). Requirements: baseline; evidence: sources; des
 
 ### ADR-04 — selected bench hardware and power path
 
-**Selected:** boards and navigation power path above. The assembled RS-422 module supersedes the bare THVD1451D proposal. [Wiring and parts](connections.md#parts-list).
+**Selected:** ESP32, navigation converters and navigation power path above. The Becker RS-422 board selection is open. [Wiring and parts](connections.md#parts-list).
 
 > [!IMPORTANT]
 > Fuse, reverse-polarity and transient/overvoltage protection are proposed. Parts, ratings and electrical acceptance remain open.

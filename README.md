@@ -42,11 +42,11 @@ flowchart LR
 | --- | --- |
 | Build | New bridge; existing assembly/harness retained as backup |
 | Selected hardware | AZ-Delivery WROOM-32; 2 × Hailege H-1-0290; 5 V BEC; board-derived 3.3 V for navigation converters |
-| Radio interface | Assembled RS422-to-TTL board, 5 V per schematic |
+| Radio interface | Full-duplex RS-422 board with 3.3 V supply and ESP32-compatible UART logic. Model TBD |
 | Deferred controls | Active tuning, swap, volume/squelch |
 
 > [!WARNING]
-> The ESP32 logic interface to the RS-422 board still requires verification. See the [wiring checks](docs/connections.md#becker-radio).
+> Board selection and electrical compatibility checks are open. See the [wiring checks](docs/connections.md#becker-radio).
 
 ---
 
