@@ -197,7 +197,20 @@ flowchart LR
 
 ### 5.1 Ground
 
-Treat the UBEC's input and output ground as connected, which is usual for this kind of regulator (bring-up step 1 checks it). The bridge ground, the battery minus and the radio's D_GND (J1-21) are one circuit. Run the bridge's supply ground to the same ground point as the radio's supply ground, with a solid crimped or screwed connection. If that wire opened, the bridge's supply current would return through J1-21 and the radio's internal ground instead. J1-21 only carries the signal reference.
+Treat the UBEC's input and output ground as connected, which is usual for this kind of regulator (bring-up step 1 checks it). The bridge ground, the battery minus and the radio's D_GND (J1-21) are one circuit. Run the bridge's supply ground to the same ground point as the radio's supply ground, with a solid crimped or screwed connection. J1-21 connects directly to the board GND, without a series resistor. It carries the signal reference, plus a share of the radio's return current: the bridge ground runs parallel to the radio's own supply ground, so roughly a tenth of the radio's current (about 0.2 A of 1.8 A while transmitting, S10) can flow through J1-21 and the bridge. This is an estimate from typical wire resistances. The Zander and FLARM signal grounds form the same kind of loop, with much smaller currents.
+
+What a single broken wire does:
+
+| Broken wire | Effect | Risk |
+| --- | --- | --- |
+| Radio supply ground (P1-13/25) | The radio's whole return current, up to 3 A (S10), flows through J1-21, the MAX490 board, the ESP32 board and the bridge ground wire. The radio keeps working. | 🔴 Overheated wiring; see the warning below |
+| Bridge supply ground | The bridge's ~0.15 A returns through J1-21 and the Zander and FLARM grounds. The bridge keeps working. | 🟡 Low; bring-up step 7 catches a poor connection |
+| Zander or FLARM supply ground | That device's supply current returns through its RS-232 ground and the bridge. | 🟡 Low; small currents |
+| Bridge +12 V or F1 | The bridge switches off; its unpowered interfaces do not feed the devices. | 🟢 None |
+| One signal ground (J1-21, Zander, FLARM) | The link stays referenced through the supply grounds. | 🟢 None |
+
+> [!WARNING]
+> The direct J1-21 wire depends on the radio's own supply ground. If P1-13/25 lost their connection, up to 3 A of radio current would run through the bridge's thin signal wiring without any visible symptom. Make sure both P1 ground pins are wired to the ground point and check them before connecting the bridge (bring-up step 7).
 
 ### 5.2 Load estimate
 
@@ -232,7 +245,7 @@ Before connecting any device, work through this list in order:
 - [ ] **4.** On the MAX490 board, identify RO and DI on the header and check the 120 Ω termination.
 - [ ] **5.** With the MAX490 powered and the radio line idle, measure GPIO16: about 3.0 V (high). Then hold B above A with a 1.5 V cell (+ to B, − to A) and check for a low below 0.5 V.
 - [ ] **6.** Measure the bridge's current and switch-on inrush at 12 V.
-- [ ] **7.** Before plugging in J1, check that the bridge ground has low resistance (well under 1 Ω) to the radio's supply ground point.
+- [ ] **7.** Before plugging in J1, check that the bridge ground and the radio's P1-13 and P1-25 each have low resistance (well under 1 Ω) to the common ground point.
 - [ ] **8.** In the aircraft: listen for radio noise and check squelch with the bridge on and off.
 
 ---

@@ -57,6 +57,7 @@ Facts about the equipment already in the aircraft, mostly from Tom. What is know
 | 7 | Existing power | UBEC jumper/output, board input, grounding | Tom / owner | Backup record |
 | 8 | Navigation baseline | Data types, update gaps, reconnect behaviour of today's setup | Owner / Tom | Acceptance limits for the new bridge |
 | 9 | OpenSoar | Installed build, driver and endpoint settings, role of the OpenVario | Owner / Tom | App configuration |
+| 10 | Radio ground | Whether both P1 ground pins (13, 25) run to the battery minus, and whether the radio's grounding bolt is connected | Tom / owner | Confirms the radio cannot return its current through the bridge ([ground](../hardware/wiring.md#ground)) |
 
 ---
 
