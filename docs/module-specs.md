@@ -30,23 +30,6 @@ Verify clearance on the delivered unit including the jumper, leads, ferrite ring
 
 **Proposed interface.** Feed the module's receiver output into a SN74LVC1G17 powered from the ESP32 3.3 V rail, with a common UART ground. The buffer accepts up to 5.5 V and specifies partial-power-down behavior. The ESP32 TX can drive the MAX490 DI directly if the module header routes to DI without incompatible circuitry. The MAX490 DI high threshold is 2.0 V. Verify header routing and startup/shutdown behavior before connecting to the radio. [Evidence (S34)](sources.md#source-register)
 
-<a id="becker-rs422-chips"></a>
-
-## Becker 3.3 V RS-422 chip candidates
-
-Alternative chip candidates for a native 3.3 V board. These parts support separate differential transmit and receive pairs. The selected 5 V board is documented above.
-
-| Chip | Rated data rate | Enable pins | Datasheet evidence |
-| --- | --- | --- | --- |
-| **MAX3490** (Analog Devices) | 10 Mbit/s | None | [Rev. 2, selection table and electrical characteristics](https://www.analog.com/media/en/technical-documentation/data-sheets/MAX3483-MAX3491.pdf#page=2) |
-| **SP3490** (MaxLinear) | 10 Mbit/s | None | [Rev. 1.0.3, pp. 1–2](https://www.maxlinear.com/ds/sp3490_sp3491.pdf?productId=9712) |
-| ADM3490 (Analog Devices) | 10 Mbit/s | None | [Rev. E, specifications and pin configuration](https://www.analog.com/media/en/technical-documentation/data-sheets/ADM3483_3485_3488_3490_3491.pdf) |
-| MAX3488 (Analog Devices) | 250 kbit/s | None | [Rev. 2, selection table](https://www.analog.com/media/en/technical-documentation/data-sheets/MAX3483-MAX3491.pdf#page=2). Slew-rate limited |
-| MAX3491 / SP3491 | 10 Mbit/s | DE and active-low RE | Same family datasheets as above. Check how the board drives both enables |
-| THVD1451 (Texas Instruments) | 50 Mbit/s | None | [Rev. E, device comparison and operating conditions](https://www.ti.com/lit/ds/symlink/thvd1451.pdf). Operates from 3.0 to 5.5 V. Verify 3.3 V operation on the board |
-
-Verify the assembled board's supply and UART levels in both directions, terminal polarity, termination, reference or isolation arrangement, and behavior when the bridge is unpowered. A two-wire half-duplex board (such as one based on MAX3485) cannot provide the two independent pairs. The chip rates are interface ratings. Use the serial settings matched to the Becker radio.
-
 <a id="esp32-pinout"></a>
 
 ## ESP32 DevKitC V4 pinout
