@@ -72,7 +72,7 @@ Pick the element that makes the content easiest to scan, not plain paragraphs by
 | Mermaid diagrams | Signal flow, power tree, sequences, state |
 | Code blocks | Commands, configuration, serial frames; always with a language tag |
 | Images and badges | Wiring diagrams, pin views, photos; local SVG badges such as the pin labels |
-| Math (` ```math ` blocks, `$`…`$` inline) | Calculations such as dividers, currents and fuse sizing; use ` ```math ` blocks, since `$$` blocks lose backslashes on GitHub |
+| Math (` ```math ` blocks, `$`…`$` inline) | Calculations such as dividers, currents and fuse sizing; use ` ```math ` blocks, since `$$` blocks lose backslashes on GitHub; write units as `	ext{ V}`, not with `\,` |
 | Blockquotes | Short verbatim quotes from a source, with its source ID |
 
 ---
