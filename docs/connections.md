@@ -65,14 +65,6 @@ flowchart LR
 
 [S26–S27](sources.md#source-register)
 
-#### Superseded 5 V RS-422 board reference
-
-| Chip-side reference | Module pin diagram |
-| --- | --- |
-| <img src="images/rs422-to-ttl-supplied.png" width="160" alt="Supplied RS422 TO TTL board, chip side with the logic header above the green screw terminal block"> | <img src="images/pinout-rs422-to-ttl.svg" width="420" alt="Chip-side RS-422 module. Top left to right: TXD input, RXD output, GND, 5 V VCC. Bottom left to right: Y and Z outputs, B and A inputs."> |
-
-[S28–S30](sources.md#source-register)
-
 </details>
 
 ---

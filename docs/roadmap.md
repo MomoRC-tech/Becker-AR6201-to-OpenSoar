@@ -28,7 +28,7 @@
 
 [Wiring and parts](connections.md#parts-list). Open checks cover ESP32 headers and regulator, BEC/source limits, H-1-0290 continuity, 3.3 V full-duplex RS-422 board selection and electrical checks, power budget and protection values.
 
-The Becker board requires a 3.3 V supply and ESP32-compatible UART logic. Model and 3.3 V rail remain open. [S28–S30](sources.md#source-register) document the superseded 5 V board.
+The Becker board requires a 3.3 V supply and ESP32-compatible UART logic. Model and 3.3 V rail remain open.
 
 The [power diagram](connections.md#power) shows F1 near the battery. [Sizing inputs](connections.md#f1-sizing-inputs) are open. A separate reverse-polarity stage depends on the BEC's documented input protection.
 
