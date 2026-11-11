@@ -43,35 +43,35 @@ Checks on the delivered parts before the bridge is connected to any device. Step
 
 ## 2. 📦 Housing — current focus
 
-Inputs and design rules needed before the housing can be modelled ([housing](../hardware/housing.md)). Connector and F1 details are items 11, 13 and 14 above. Work top-down: each group sets limits for the next.
+Inputs still needed before the housing can be modelled. Selected rules: [housing design rules](../hardware/housing.md#rules). Connector and F1 details are items 11, 13 and 14 above. Work top-down: each group sets limits for the next.
 
 ### 2.1 Installation and environment
 
 | # | Item | What is needed | How it is closed |
 | :-: | --- | --- | --- |
-| 3 | Location in the aircraft | Where the bridge sits, maximum envelope (L × W × H) at that spot, orientation, and how it is attached (screws to existing structure, hook-and-loop, cable ties, bracket) | Owner / Tom; photo and measurement of the spot |
-| 7 | Cable exits | Direction from which the 12 V harness and the instrument cables arrive; whether XT30 and DE-9 sit on the same face or opposite faces; free space in front of each for the mating plug, backshell and bend radius | Owner selection, from item 3 |
-| 8 | Temperature and environment | Highest temperature at the location (sun on the canopy can heat cockpit parts well above ambient), moisture or condensation, vibration and handling loads | Owner estimate; sets the material in item 2 |
-| 9 | Distance to compass and radio antenna | Minimum distance from the magnetic compass (UBEC coil, ferrite ring, steel screws) and from the VHF antenna cable | Owner / Tom; compass check in the aircraft |
+| 3 | Location in the aircraft | Where the bridge sits, maximum envelope (L × W × H) at that spot, orientation, and which structure the cable ties go around | Owner / Tom; photo and measurement of the spot |
+| 7 | Cable exits | Direction from which the 12 V harness and the instrument cables arrive at the connector side; free space in front of it for the mating plugs, DE-9 backshell and cable bend radius | Owner, from item 3 |
+| 8 | Temperature and environment | Highest temperature at the location (shaded or in sun through the canopy), moisture or condensation | Owner estimate; decides item 2 |
+| 9 | Distance to compass and radio antenna | Minimum distance from the magnetic compass (UBEC coil, ferrite ring, steel screws and inserts) and from the VHF antenna cable | Owner / Tom; compass check in the aircraft |
 | 6 | Wi-Fi path | Antenna position relative to the phone and surrounding structure | Owner selection; check in the aircraft |
 
 ### 2.2 Manufacturing and print rules
 
 | # | Item | What is needed | How it is closed |
 | :-: | --- | --- | --- |
-| 2 | Material and manufacturing | Process (for example FDM print), printer and build volume, filament (PLA softens in a hot cockpit; PETG or ASA are common alternatives) | Owner selection |
-| 10 | Print design rules | Minimum wall thickness; clearance for sliding and press fits; hole compensation; minimum feature size; overhangs and support-free orientation; layer height. Use the owner's proven values or derive them from a calibration print | Owner values or test print |
+| 2 | Material | PETG (proposed) or ASA, based on the [material check](../hardware/housing.md#material) and item 8 | Owner selection |
+| 10 | Print dimensions | Wall, floor and cover thickness; snap-fit clearance and hook size; press-fit interference for the XT30; hole sizes for the M3 heat-set inserts and screws; minimum feature size; print orientation without supports | Owner values, then a calibration print |
 | 11 | CAD workflow | Tool (for example Fusion), units, which files go into the repository (source file, STEP, STL/3MF) and where (`cad/housing/`) | Owner selection |
 
 ### 2.3 Construction
 
 | # | Item | What is needed | How it is closed |
 | :-: | --- | --- | --- |
-| 12 | Enclosure split and closure | Box with lid, two half-shells or slide-in tray; closure by screws (into heat-set inserts or self-tapping) or snap-fit; which screw and insert sizes the owner has in stock | Owner selection |
-| 4 | Module mounting and layout | How each module is held (standoffs and screws for the MAX490 holes; pockets, clips or adhesive for the ESP32, RS-232 modules and UBEC) and where it sits | Owner selection, fit test |
+| 12 | Cover screws and inserts | Insert type and size in stock (length, outer diameter), screw head and length, number of screws | Owner selection |
+| 4 | Module layout and snap-fits | Where each PCB sits, snap-fit style per PCB (edge hooks, clip posts through the MAX490 holes); UBEC, F1 holder and ferrite ring held the same way or otherwise | Owner selection, fit test |
 | 13 | ESP32 replaceable or soldered | ESP32 plugged into female headers (replaceable, taller) or wires soldered to the pins (flatter, permanent) | Owner selection |
 | 14 | Internal wiring method | Point-to-point wires, or a small perfboard or carrier for the divider and pull-up resistors and the ground point; internal wire type and gauge; tie-down points and service loops | Owner selection |
-| 15 | Heat | Closed box or ventilation slots (dissipation is roughly 2 W, estimate from [currents](../hardware/power.md#currents)) | Owner selection |
+| 15 | Ventilation openings | Position and size of the openings; keep small parts and dirt out (slots, not open holes) | Owner selection |
 
 ### 2.4 Access, markings and targets
 

@@ -7,9 +7,9 @@
 Mechanical design of the bridge: what goes inside, part sizes, connectors on the housing, internal layout.
 
 > [!NOTE]
-> **Status:** not modelled yet. Selected so far: XT30 and DE-9 on the housing, F1 inside the housing. Inputs and design rules still needed before modelling: [open items](../project/open-items.md#housing).
+> **Status:** not modelled yet. Design rules selected ([section 2](#rules)); material, wall thickness and the remaining inputs: [open items](../project/open-items.md#housing).
 
-📑 **On this page:** <kbd>[1 · 🎯 Requirements](#requirements)</kbd> <kbd>[2 · 📏 Contents and sizes](#contents)</kbd> <kbd>[3 · 🔌 Connectors on the housing](#connectors)</kbd> <kbd>[4 · 🧩 Internal layout](#layout)</kbd>
+📑 **On this page:** <kbd>[1 · 🎯 Requirements](#requirements)</kbd> <kbd>[2 · 📐 Design rules](#rules)</kbd> <kbd>[3 · 📏 Contents and sizes](#contents)</kbd> <kbd>[4 · 🔌 Connectors on the housing](#connectors)</kbd> <kbd>[5 · 🧩 Internal layout](#layout)</kbd>
 
 Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md) · ⚡ [Power and grounding](power.md)
 
@@ -20,7 +20,7 @@ Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md)
 ## 1. 🎯 Requirements
 
 - **Holds:** ESP32 board, 2 × RS-232 modules, MAX490 board, UBEC (with jumper, leads, ferrite ring), F1 fuse holder, RX divider and pull-up resistors.
-- **On the housing:** XT30 for power, DE-9 for the three instruments ([section 3](#connectors)).
+- **On the housing:** XT30 for power, DE-9 for the three instruments ([section 4](#connectors)).
 - **F1:** inside the housing, replaceable ([power](power.md#protection)).
 - **Wiring:** connector mating forces must not load solder joints.
 - **UBEC jumper:** must stay at 5 V — a 6 V setting is a hazard ([modules](modules.md#ubec)).
@@ -29,9 +29,52 @@ Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md)
 
 ---
 
+<a id="rules"></a>
+
+## 2. 📐 Design rules
+
+> [!TIP]
+> Selected rules for the first housing version.
+
+| Topic | Rule |
+| --- | --- |
+| Manufacturing | 3D printed on a Bambu Lab P1S; material: [section 2.1](#material) |
+| Cover | Separate cover held by M3 screws in heat-set inserts |
+| PCB mounting | All PCBs held by snap-fits |
+| Soldering | Every solder joint reachable with all PCBs fitted and the cover off |
+| Connectors | XT30 and DE-9 together on one short side |
+| XT30 | Press fit is the design goal; glue only as a backup |
+| DE-9 | Rigid mount, screwed to the housing |
+| Walls | Thick enough for aircraft vibration — no thin walls (value: [open items](../project/open-items.md#housing)) |
+| Edges | Rounded outside edges and corners, no sharp corners |
+| Attachment | Cable-tie lugs on the housing to tie the closed housing to the aircraft |
+| Heat | Ventilation openings |
+
+<a id="material"></a>
+
+### 2.1 Material check: PETG
+
+PETG was proposed. Heat resistance compared with ASA, which the enclosed P1S can also print:
+
+| Bambu filament | HDT at 0.45 MPa | HDT at 1.8 MPa | Source |
+| --- | ---: | ---: | --- |
+| PETG HF | 69 °C | 62 °C | S47 |
+| ASA | 100 °C | 92 °C | S48 |
+
+- **PETG is fine** where the housing stays shaded and well below about 60 °C, for example behind the panel or under the seat.
+- **PETG is marginal** where sun through the canopy reaches the housing: a closed cockpit in the sun can get far hotter than the outside air, and focused sunlight has burnt instrument panels (S49). Snap-fits and press fits under constant load creep first.
+- **ASA** keeps about 30 °C more margin, but prints with fumes and more warping.
+- The choice depends on the location → [open items](../project/open-items.md#housing).
+
+### 2.2 Later optimizations
+
+- **DE-9 cable tie-down:** a lug below the DE-9 that sticks out past the mated plug, so the cable can be cable-tied to it. The cable then cannot lever the connector out of the housing.
+
+---
+
 <a id="contents"></a>
 
-## 2. 📏 Contents and sizes
+## 3. 📏 Contents and sizes
 
 Sizes from owner measurements, seller listings or datasheets; see the source column. Remaining measurements: [open items](../project/open-items.md#housing).
 
@@ -42,11 +85,11 @@ Sizes from owner measurements, seller listings or datasheets; see the source col
 | RS-422 board (MAX490) | 1 | 50 × 27 | S34 | Screw terminals A/B/Y/Z on one edge, header on the other |
 | UBEC (Hobbywing 3A) | 1 | 43 × 17 × 7 (catalog); body about 35 × 12 × 5 | S14 | Plus jumper, leads, ferrite ring |
 | F1 fuse holder | 1 | Open | — | Format not selected yet |
-| XT30 male, panel | 1 | To measure | — | Printed pocket ([section 3](#connectors)) |
+| XT30 male, panel | 1 | To measure | — | Press-fit pocket ([section 4](#connectors)) |
 | DE-9 female socket | 1 | Standard D-sub shell | — | Exact part open |
 | Resistors (divider, pull-ups) | 5 | Small | — | R-B1, R-B2, R-Z, R-F, R-D |
 
-### 2.1 ESP32 CAD reference
+### 3.1 ESP32 CAD reference
 
 Use the [STEP assembly](../../cad/reference/esp32-devkitc-v4/ESP-WROOM-32D-Export/ESP32-WROOM-32D-Assembly.STEP) for preliminary layout. The [original download files and attribution](../../cad/reference/esp32-devkitc-v4/README.md) include SolidWorks files, 3MF and a preview (S42).
 
@@ -62,7 +105,7 @@ Use the [STEP assembly](../../cad/reference/esp32-devkitc-v4/ESP-WROOM-32D-Expor
 - Model axes: X = width, Y = height, Z = length. The PCB underside is Y = 0; pins extend to Y = −8.89 mm and the top reaches Y = 5.34 mm.
 - Do not uniformly scale the assembly to match the PCB: that changes the header pitch and component sizes too. Allow separately for the USB plug and wiring; physical fit checks belong to the [housing measurements](../project/open-items.md#housing).
 
-### 2.2 RS-232 CAD reference
+### 3.2 RS-232 CAD reference
 
 Use the [STEP model](../../cad/reference/rs232-uart-ttl-mini-max3232/RS232_TTL/RS232_TTL.STEP) for preliminary layout. The [original download files and attribution](../../cad/reference/rs232-uart-ttl-mini-max3232/README.md) include a Parasolid alternative (S41).
 
@@ -75,12 +118,12 @@ Use the [STEP model](../../cad/reference/rs232-uart-ttl-mini-max3232/RS232_TTL/R
 
 Keep the delivered-board measurements for mounting design. The model represents a similar module, not an exact Hailege mechanical drawing; its height excludes soldered wires. Do not uniformly scale it to match the PCB, since that also changes component sizes. Physical fit checks belong to the [housing measurements](../project/open-items.md#housing).
 
-### 2.3 UBEC and resistor CAD references
+### 3.3 UBEC and resistor CAD references
 
 - [Hobbywing UBEC 3A MAX 5A CAD reference](../../cad/reference/ubec-hobbywing-3a/README.md) (S44). The full model envelope is 54.40 × 24.00 × 9.50 mm, including the modeled jumper and wire ends. Use it for preliminary layout and measure the actual unit before sizing its mount.
 - [KiCad DIN0204 axial STEP models](../../cad/reference/kicad-din0204/README.md) (S45) give a 3.6 × Ø1.6 mm body with two options for horizontal leads. Use as placeholders for resistors of that body size.
 
-### 2.4 RS-422 board CAD reference
+### 3.4 RS-422 board CAD reference
 
 Use the [STEP model](../../cad/reference/rs422-to-ttl-max490/rs422-to-ttl-max490.step) for preliminary layout. It is a simplified project model based on reference photos ([details](../../cad/reference/rs422-to-ttl-max490/README.md), S46).
 
@@ -101,12 +144,12 @@ Use the [STEP model](../../cad/reference/rs422-to-ttl-max490/rs422-to-ttl-max490
 
 <a id="connectors"></a>
 
-## 3. 🔌 Connectors on the housing
+## 4. 🔌 Connectors on the housing
 
 **XT30 (power)** — electrical side: [power](power.md#supply)
 
 - Male on the housing, female on the powered harness.
-- Snug printed pocket with retaining shoulder, plus adhesive.
+- Press-fit pocket with retaining shoulder; adhesive only as a backup.
 - Support the wires inside so mating forces don't load the solder joints.
 - Before the final pocket: measure the real connector, print a fit-test piece.
 
@@ -116,7 +159,7 @@ Use the [STEP model](../../cad/reference/rs422-to-ttl-max490/rs422-to-ttl-max490
 
 - Female socket on the housing, male cable plug with solder cups and screw locking.
 - Backshell and strain relief on the cable side.
-- Housing side: screw-lock threads and panel mounting still open.
+- Housing side: rigid, screwed panel mount; screw-lock threads: [open items](../project/open-items.md#bench-hardware).
 
 **F1 (fuse)** — inside the housing; holder, format and replacement access open.
 
@@ -124,7 +167,7 @@ Use the [STEP model](../../cad/reference/rs422-to-ttl-max490/rs422-to-ttl-max490
 
 <a id="layout"></a>
 
-## 4. 🧩 Internal layout
+## 5. 🧩 Internal layout
 
 Not designed yet. Constraints from the wiring:
 
