@@ -2,11 +2,11 @@
 
 ## Scope and starting point
 
-This project is in investigation/planning. Read README.md, the current package in docs/project/roadmap.md, and only the source/documents needed for that package. Check repository status and preserve unrelated edits. Do not repeat whole-repository audits for a narrow task.
+This project is in investigation/planning. Read README.md, the current package in docs/project/roadmap.md, and only the source/documents needed for that package. Check repository status and preserve unrelated edits.
 
 **Current focus: hardware selection and wiring.** No software, firmware or driver work until the hardware design is finished. Ask the owner for each hardware decision (part choice, circuit option, wiring choice) separately; present the options with a recommendation, then record the answer.
 
-The roadmap is the single work queue. A listed package, proposed ADR or recommendation is not implementation approval. Complete the user's authorized scope without repeated confirmation; ask only when missing information materially affects scope, cost, privacy, compatibility or an irreversible action. For a broad request to continue, use the next package and its stated boundaries.
+The roadmap is the single work queue. A listed package, proposed ADR or recommendation is not implementation approval. For a broad request to continue, use the next package and its stated boundaries.
 
 ---
 
@@ -15,11 +15,8 @@ The roadmap is the single work queue. A listed package, proposed ADR or recommen
 - Keep evidence detail in docs/research/sources.md: revision, page and what was checked. Other pages cite a source ID (for example S10) where it matters, without repeating evidence labels or caveats.
 - Base technical claims on a source; say plainly when something is an estimate or inference.
 - Match radio identity and hardware/software revision before choosing wiring or serial parameters. Never substitute candidate defaults for installed settings.
-- Do not infer radio acceptance from a TCP/serial write, nor infer actual acknowledgment bytes from constants in a driver.
-- Preserve active channel, navigation feeds and local controls. Treat unknown/stale state explicitly. Keep binary radio traffic and diagnostics separate.
 - Do not silently expand an analysis task into firmware implementation, flashing, hardware changes or aircraft work.
 - Reuse existing architecture/tools; review file-level licenses before copying code. Do not select a repository license without the owner's decision.
-- Do not incur paid API, CI or service charges or introduce infrastructure without authorization covering it.
 
 ---
 
@@ -27,7 +24,7 @@ The roadmap is the single work queue. A listed package, proposed ADR or recommen
 
 One question or behavior change per increment. Before changing logic, identify the affected requirement, expected outcome and suitable regression check. For broad later packages, choose a bounded subtask rather than implementing the whole plan.
 
-For documentation-only work, check consistency, relative links/anchors, source support and whitespace; do not build applications or run device tests. For logic changes, run relevant checks and record versions/results. State what was not tested. Simulation and static analysis are not physical acceptance. Do not add tests that only mirror the implementation's assumptions.
+For documentation-only work, check consistency, relative links/anchors, source support and whitespace; do not build applications or run device tests. State what was not tested. Simulation and static analysis are not physical acceptance.
 
 Update the document that owns the information: requirements for requirements/assumptions/risks; existing-installation for the installed inventory; open-items for missing evidence and owners; sources for evidence; architecture for decisions; wiring and modules for pinning, power and parts; roadmap for work status. Dated reviews in docs/research/reviews are frozen records. Keep documentation current. Remove superseded selections, guidance, references and assets once they no longer support the current project state. Use Git history for previous versions. Keep one concise verification summary per package, with detailed evidence only where useful.
 
@@ -36,7 +33,7 @@ Update the document that owns the information: requirements for requirements/ass
 Write for a person building the bridge, not for an auditor.
 
 - Plain, complete sentences and clear tables. Say what to do, then why if it is not obvious.
-- State a page's or section's verification status once, at the top. Do not append "unverified", "remains open" or "confirm…" to individual cells or sentences.
+- Do not append "unverified", "remains open" or "confirm…" to individual cells or sentences; the page's status box covers it.
 - Open questions live only in docs/project/open-items.md; other pages link to it.
 - Use warning boxes only for things that can damage hardware or affect flight safety, one box per hazard.
 - Each fact has one owning page; elsewhere, link to it instead of restating it.
@@ -57,7 +54,7 @@ Pages must be easy to scan for a human reader. Every page in docs/ (except the f
 | H2 sections | `## 1. <icon> Title`, each preceded by a stable `<a id="short-slug"></a>`; link to that id, never to the generated heading anchor |
 | H3 sections | `### 1.1 Title`, no icon |
 | Separators | `---` between H2 sections |
-| Alerts | `[!TIP]` for current selections/decisions (at most one per section), `[!WARNING]` for hazards only (one per hazard) |
+| Alerts | `[!TIP]` for current selections/decisions, `[!WARNING]` for hazards only (one per hazard) |
 | Collapsibles | Only for large reference images. Summary: `<summary><b>🖼️ Show …</b> (click to expand)</summary>` |
 | Footer | `<kbd>[⬆️ Back to top](#top)</kbd> <kbd>[🏠 Overview](…)</kbd>` |
 
