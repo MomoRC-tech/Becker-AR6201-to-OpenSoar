@@ -13,8 +13,12 @@
 
 ## Hobbywing UBEC 3A (2–6S)
 
-<img src="images/hobbywing-ubec-3a-product.png" alt="Hobbywing UBEC with voltage jumper, ferrite ring and leads" width="320">
-<img src="images/hobbywing-ubec-3a-dimensions.png" alt="Supplied UBEC image annotated 35 × 12 × 5 mm" width="320">
+<table>
+  <tr>
+    <td><img src="images/hobbywing-ubec-3a-product.png" alt="Hobbywing UBEC with voltage jumper, ferrite ring and leads" width="320"></td>
+    <td><img src="images/hobbywing-ubec-3a-dimensions.png" alt="Supplied UBEC image annotated 35 × 12 × 5 mm" width="320"></td>
+  </tr>
+</table>
 
 Verify clearance on the delivered unit including the jumper, leads, ferrite ring and connector. The owner-supplied image marks 35 × 12 × 5 mm around the pictured body. The dimension boundaries are unverified.
 
