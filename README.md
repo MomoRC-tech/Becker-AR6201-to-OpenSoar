@@ -1,34 +1,6 @@
 # FLARM, Zander and Becker to OpenSoar
 
-One ESP32 Wi-Fi bridge for Zander, FLARM and Becker in OpenSoar on Android.
-
-## Plan status
-
-| Stage | Status |
-| --- | --- |
-| Research / bench design | Documented; send regression host-tested |
-| Next: finalize design | Equipment and board checks, interfaces, protection and firmware open |
-| Implementation | Pending |
-| Aircraft integration | Deferred |
-
-[Work queue](docs/roadmap.md).
-
----
-
-## Scope
-
-| Device | Function |
-| --- | --- |
-| FLARM | Traffic/navigation input |
-| Zander ZS1 | Flight/navigation input |
-| Becker | Selected airfield → standby; radio status where supported |
-
-> [!IMPORTANT]
-> Preserve active frequency, local controls and navigation. Report unknown state and failures.
-
----
-
-## Architecture overview
+One ESP32 Wi-Fi bridge that connects a FLARM, a Zander ZS1 and a Becker AR6201 radio to OpenSoar on Android.
 
 ```mermaid
 flowchart LR
@@ -38,28 +10,37 @@ flowchart LR
     E <-->|Wi-Fi: separate device paths| O[OpenSoar Android]
 ```
 
-| Item | Current state |
+## What it does
+
+| Device | Function |
 | --- | --- |
-| Build | New bridge; existing assembly/harness retained as backup |
-| Selected hardware | AZ-Delivery WROOM-32; 2 × Hailege H-1-0290; Hobbywing UBEC at 5 V; board-derived 3.3 V for navigation converters |
-| Radio interface | Selected 5 V MAX490 full-duplex RS-422 board. UART receive protection unverified |
-| Deferred controls | Active tuning, swap, volume/squelch |
+| FLARM | Traffic and navigation data to OpenSoar |
+| Zander ZS1 | Flight and navigation data to OpenSoar |
+| Becker AR6201 | Selected airfield frequency → standby; radio status where supported |
+
+The bridge preserves the active frequency, the radio's local controls and both navigation feeds. Not in scope: active tuning, swap, volume and squelch.
+
+## Status
+
+| Stage | Status |
+| --- | --- |
+| Research and documentation | ✅ Documented; Becker send defect reproduced on host |
+| Existing installation and interfaces | 🟡 Open: equipment identity and settings needed |
+| Bench hardware design | 🟡 Parts selected; electrical checks open |
+| Firmware and driver changes | ⬜ Planned; not approved |
+| Aircraft integration | ⬜ Deferred |
+
+**Next step:** confirm the installed equipment — [WP1](docs/roadmap.md#wp1--existing-installation-first-priority).
 
 > [!WARNING]
-> Electrical compatibility checks are open. See the [wiring checks](docs/connections.md#becker-radio).
+> Planning stage. Nothing is verified on hardware. Complete the [wiring checks](docs/connections.md#open-items) before connecting anything.
 
----
+## Start here
 
-## Documentation
-
-| Document | Contents |
+| I want to… | Go to |
 | --- | --- |
-| [Connections](docs/connections.md) | Board pinouts, device wiring, power and parts list |
-| [Architecture](docs/architecture.md) | Current design and selections |
-| [Baseline](docs/project-baseline.md) | Requirements, inventory, risks |
-| [Installation claim review](docs/reviews/2026-11-09-installation-claims.md) | Tom's report, PDF versions, supported data and open questions |
-| [Roadmap](docs/roadmap.md) | Work queue |
-| [Sources](docs/sources.md) | Evidence and revisions |
-| [Investigation](docs/technical-investigation.md) | Driver and interface findings |
-| [Related projects](docs/related-projects.md) | Reuse candidates |
-| [Contributor instructions](AGENTS.md) | Workflow |
+| Wire or build it | [Connections](docs/connections.md) · [Module specs](docs/module-specs.md) |
+| Understand the design | [Architecture](docs/architecture.md) · [Requirements and risks](docs/project-baseline.md) |
+| See what is open | [Roadmap](docs/roadmap.md) · [Existing installation](docs/project-baseline.md#existing-installation--wp1-record) |
+| Check the evidence | [Sources](docs/sources.md) · [Investigation](docs/technical-investigation.md) · [Reviews](docs/reviews) · [Related projects](docs/related-projects.md) |
+| Contribute | [Work instructions](AGENTS.md) |
