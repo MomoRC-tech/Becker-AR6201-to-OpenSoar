@@ -162,8 +162,15 @@ Use the [STEP assembly](../../cad/reference/esp32-devkitc-v4/ESP-WROOM-32D-Expor
 | PCB thickness | 1.60 | 1.50 (owner measurement) | +0.10 |
 | Overall length, antenna and USB included | 54.86 | — | — |
 | Overall height, headers included | 14.23 | — | — |
+| A, B: bare edge at the antenna end, header strip to module, each side | 2.50 | — | — |
+| C, D: bare edge at the USB end, header strip to USB socket, each side | 7.50, with the EN or BOOT button in it | — | — |
+| Bare strip between USB socket and button, each side | 2.95 wide | — | — |
+| E: EN/BOOT button from the USB-end edge, near / far side | 0.77 / 5.79 | — | — |
+| F: USB socket beyond the PCB edge | 0.61 | — | — |
+| Module (antenna) beyond the PCB edge | 6.01 | — | — |
 
 - Keep the delivered-board measurements for mounting design; this simplified DevKitC V4/WROOM-32D model is not an exact AZ-Delivery mechanical drawing.
+- Measurement letters A–F: top view, USB end on the left, antenna end on the right; header strips 2.54 mm wide along both long edges, full length.
 - Model axes: X = width, Y = height, Z = length. The PCB underside is Y = 0; pins extend to Y = −8.89 mm and the top reaches Y = 5.34 mm.
 - Do not uniformly scale the assembly to match the PCB: that changes the header pitch and component sizes too. Allow separately for the USB plug and wiring; physical fit checks belong to the [housing measurements](../project/open-items.md#housing).
 
@@ -199,6 +206,7 @@ Use the [STEP model](../../cad/reference/rs422-to-ttl-max490/rs422-to-ttl-max490
 | Header pins past the PCB edge | 6.9 | Photo scale, right-angle header |
 | Overall envelope, pins included | 27.0 × 56.9 × 14.1 | — |
 
+- Measurement letters A–F: top view, USB end on the left, antenna end on the right; header strips 2.54 mm wide along both long edges, full length.
 - Model axes: X = width, Y = length (terminal edge Y = 0, header edge Y = 50), Z = up; PCB underside Z = 0, pins below reach Z = −2.5.
 - Measure the mounting holes, PCB thickness and terminal height before sizing the mount ([open items](../project/open-items.md#housing)).
 
