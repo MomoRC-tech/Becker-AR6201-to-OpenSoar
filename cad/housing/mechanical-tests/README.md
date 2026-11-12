@@ -17,7 +17,7 @@ Independent PETG prints modelled in Fusion. Start with the 3MF files in the supp
 
 ## ESP32 beam trial
 
-1. Inspect the PCB underside over the centre support. Seat the board and check that all supports touch bare PCB and the board sits flat.
+1. Seat the board on the flat 48.5 × 19.5 mm support between the header rows. Each side has a 4.5 mm wide relief channel with 3.5 mm depth below the PCB for the soldered posts. Check that the joints clear the support and the PCB sits flat before fitting the beam.
 2. Dry-fit the beam. Check that its tongue slides into the slot and the front end seats on the screw post. Verify that the raised section clears the antenna and the receiver sits beyond its tip. The receiver starts 8.5 mm beyond the carrier PCB edge, compared with an antenna overhang of about 6 mm on the reference model.
 3. Measure the gap between the beam and the metal module shield over the centre support. The reference model suggests about 2 mm. Attach a small piece of soft, nonconductive silicone foam to the beam, centred over the support, just thick enough to compress lightly when the beam seats. Check that the pad touches only the shield and the PCB stays flat. With the beam secured, check the board for lift or rocking. Compare Wi-Fi range with the beam fitted and removed.
 
