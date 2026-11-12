@@ -1,6 +1,6 @@
 # ESP32 holder v3 (RS-232 clamp)
 
-ESP32 holder variant for [layout v4](../layout-v4/README.md): the tested USB block, the antenna cap without foot ears, and a USB clamp that also carries both RS-232 boards above the ESP32. One M2.5 screw removes the clamp with both boards. Rules: [housing § 5](../../../docs/hardware/housing.md#layout). Built in Autodesk Fusion through MCP, 2026-11-12, from [esp32-holder](../esp32-holder/README.md) and [rs232-holder](../rs232-holder/README.md); not printed yet.
+ESP32 holder variant for [layout v4](../layout-v4/README.md): the tested USB block, the antenna cap without foot ears, and a USB clamp that also carries both RS-232 boards above the ESP32. One M2.5 screw removes the clamp with both boards. Rules: [housing § 5](../../../docs/hardware/housing.md#layout). Built in Autodesk Fusion through MCP, 2026-11-12, from [esp32-holder](../esp32-holder/README.md) and [rs232-holder](../rs232-holder/README.md); first print fit-tested and fits (2026-11-13).
 
 | File | Use |
 | --- | --- |

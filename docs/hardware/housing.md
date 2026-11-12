@@ -283,7 +283,7 @@ Use the [STEP model](../../cad/reference/xt30u-m/xt30u-m.step) of the AMASS XT30
 - **Length driver:** the ferrite ring; the ESP32 column ends 8 mm before the ring's far end.
 - **Width:** with 2.0 mm side walls the antenna cap sits 1.0 mm and the MAX490 board 0.5 mm from the inner side-wall faces; the ESP32 column cannot move much further away from the MAX490 column without widening the housing.
 - **Hood shape:** rounded top edges, a cut-off rear corner on the MAX490 side and a lower hood over the ring area. A curved hood saves little: the tallest items (ESP32 header wire rows, UBEC) sit close to both side walls.
-- **Fit tests needed:** the clamp prints top up, so its slot height comes from the 0.2 mm layers, its top needs bridging and the arm needs support; arm fit and tilt-in clearance in the antenna-cap tunnel.
+- **Fit test:** the first print of holder v3 fits (clamp printed top up with support under the arm and slot plate; arm tilts into the tunnel).
 - **Not modelled yet:** wire routing, MAX490 posts, UBEC bridge, ring wire turns. The UBEC model (24 × 43 × 8) is larger than the catalog size (17 × 43 × 7), so the real unit may free a few millimetres.
 
 Components in the Fusion layout:
