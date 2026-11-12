@@ -144,7 +144,7 @@ For one bridge, bridge end only — the device-side connectors and harness alrea
 | 8 | F1 | 1 | Supply fuse with housing-integrated holder; specification tracked in [open items](../project/open-items.md#bench-hardware) | [Power](power.md#supply) |
 | 9 | — | existing | Becker harness, reused from its loose bridge-side ends | Check against [Becker wiring](wiring.md#becker); [inventory](../project/existing-installation.md#equipment) |
 | 10 | — | 1 pair | Standard XT30 male housing connector and mating female harness connector | [Power](power.md#supply), [mounting](housing.md#connectors) |
-| 11 | — | 1 pair | DE-9 male housing connector and female cable connector, solder cups and screw locking, with cable backshell and strain relief | [Combined instrument connector](wiring.md#overview) |
+| 11 | — | 1 pair | DE-9 female housing socket and male cable plug, solder cups and screw locking, with cable backshell and strain relief | [Combined instrument connector](wiring.md#overview) |
 
 ---
 
