@@ -135,6 +135,10 @@ One small PETG coupon, printed before the housing is modelled: [print files and 
 
 - [ ] **ESP32 holder v3 (A, B, U, J):** fit the jig into the antenna cap like a board (EN side at the wide lip), set the USB block under its USB end and screw the USB cap on over the dummy socket; everything sits square without force. Then the real board: slides into the cap, lower the USB end, cap screwed down; no rattle, the bridge pad presses the shield lightly, the lips do not break.
 
+**Fit test 4:** [RS-232 slot holder](../../cad/housing/fit-test-4/README.md) (two pieces, about 0.7 cm³, printed standing, without supports).
+
+- [ ] **RS-232 slot holder (A 1.20 slot, B 1.25 slot):** slide the board in flat from either end. Pick the slot that holds the board tight by friction, slides in by hand without forcing and does not crack the lips. Both pad rows overhang the rails in free air; solder a test wire to an end pad with the board fitted and check the PETG stays undamaged.
+
 The [mechanical fit coupons](../../cad/housing/mechanical-tests/README.md) give three independent prints: an ESP32 cradle with keeper tabs that seat on the bosses, an RS-232 saddle with a removable keeper, and a combined DE-9/XT30 front plate.
 
 ### 2.4 Later optimizations
