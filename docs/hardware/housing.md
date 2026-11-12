@@ -84,7 +84,7 @@ Starting values for PETG on the P1S with a 0.4 mm nozzle and 0.2 mm layers. They
 | Walls | Printed solid: enough perimeters to fill the 2.5 mm wall, no infill inside walls |
 | Free fit (part drops in) | 0.2 mm gap per side |
 | Snug fit (PCB in its pocket) | 0.15 mm gap per side on the measured PCB outline |
-| Slot for a PCB edge | PCB thickness + 0.2 mm |
+| Slot for a PCB edge | PCB thickness + 0.15 mm (fit test: slides in by hand with minor play; the hood ribs take out the rest) |
 | Press fit (XT30) | 0.1 mm interference per side on the measured body |
 | M3 screw clearance hole | Ø3.4 mm (fit test: Ø3.3 is the smallest free hole; Ø3.4 leaves alignment margin for the four cover screws) |
 | Snap hook | At least 8 mm long, 1.5 mm thick, 0.6 mm undercut over the PCB edge, 1 mm fillet at the root |
@@ -109,7 +109,7 @@ One small PETG coupon, printed before the housing is modelled: [print files and 
 
 - [x] **Print accuracy:** F 19.9 × 19.9 × 1.56 mm, C 67.7 mm (about 0.5 % small in X/Y), no elephant foot.
 - [x] **M3 clearance holes (C):** screw Ø2.9 mm; Ø3.2 snug, Ø3.3 and larger free. Selected Ø3.4.
-- [ ] **PCB edge slots (D):** measure both PCB thicknesses first. Push each PCB edge into its four slots (+0.1 to +0.4 mm). Pick the tightest that slides in by hand and does not rattle when shaken.
+- [x] **PCB edge slots (D):** RS-232 (1.15 mm) in the 1.3 slot and a 1.55 mm test board in the 1.7 slot: both slide in by hand with minor play. The ESP32's header solder joints reach to within about 0.1 mm of its long edges, so it cannot be held in long-edge slots. MAX490 board not delivered yet.
 - [ ] **Snap hooks (E + F):** press plate F down into each hook pair (1.2, 1.5, 1.8 mm). Pick the one that snaps in by thumb, holds without play and shows no whitening or crack at the root after ten in-and-out cycles.
 - [ ] **XT30 pockets (B):** press the XT30 in from the back until its rib stops (0.05, 0.10, 0.15 mm interference). Pick the tightest that goes fully in by hand or a gentle vise squeeze without splitting the wall; then mate and pull the female plug ten times, the male must not move.
 - [ ] **DE-9 cutout (A):** pass the socket through from the inside face (the face without the raised "12V"). The shell must not rub and the flange must sit flat.
@@ -150,7 +150,7 @@ Use the [STEP assembly](../../cad/reference/esp32-devkitc-v4/ESP-WROOM-32D-Expor
 | --- | ---: | ---: | ---: |
 | Base PCB length | 48.26 | 48.5 | −0.24 |
 | Base PCB width | 28.10 | 28.5 | −0.40 |
-| PCB thickness | 1.60 | — | — |
+| PCB thickness | 1.60 | 1.50 (owner measurement) | +0.10 |
 | Overall length, antenna and USB included | 54.86 | — | — |
 | Overall height, headers included | 14.23 | — | — |
 
@@ -166,7 +166,7 @@ Use the [STEP model](../../cad/reference/rs232-uart-ttl-mini-max3232/RS232_TTL/R
 | --- | ---: | ---: | ---: |
 | PCB width | 9.6 | 9.2 | +0.4 |
 | PCB length | 15.8 | 15.6 | +0.2 |
-| PCB thickness | 1.2 | — | — |
+| PCB thickness | 1.2 | 1.15 (owner measurement) | +0.05 |
 | Overall component height, both sides | 2.752 | — | — |
 
 Keep the delivered-board measurements for mounting design. The model represents a similar module, not an exact Hailege mechanical drawing; its height excludes soldered wires. Do not uniformly scale it to match the PCB, since that also changes component sizes. Physical fit checks belong to the [housing measurements](../project/open-items.md#housing).
