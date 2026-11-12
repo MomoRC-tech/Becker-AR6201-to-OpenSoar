@@ -100,14 +100,16 @@ Starting values for PETG on the P1S with a 0.4 mm nozzle and 0.2 mm layers. They
 
 ### 2.3 Fit test print
 
-One small PETG coupon, printed before the housing is modelled. Check each feature and record the best value in [section 2.2](#print-values).
+One small PETG coupon, printed before the housing is modelled: [print files and feature map](../../cad/housing/fit-test-coupon/README.md) (112 × 60 mm plate, 28 mm wall section, prints without supports). Check each feature and record the best value in [section 2.2](#print-values).
 
 - [ ] **M3 clearance holes:** vertical holes Ø3.2–3.6 mm in 0.1 mm steps; pick the smallest an M3 screw passes freely.
 - [ ] **PCB edge slots:** slots for 1.6 mm (ESP32, MAX490, UBEC) and 1.2 mm (RS-232) PCBs, +0.1 to +0.4 mm in 0.1 mm steps; pick the one that holds without play or force.
 - [ ] **Snap hooks:** three hooks 1.2, 1.5 and 1.8 mm thick holding a 1.6 mm test plate; pick the one that snaps in by hand, holds firmly and does not whiten or crack after ten cycles.
 - [ ] **XT30 pocket:** three pockets at 0.05, 0.1 and 0.15 mm interference per side on the measured XT30 body; pick the one that presses in by hand and does not loosen when the plug is pulled ten times.
 - [ ] **Insert holes:** Ø3.9, 4.0 and 4.1 mm, 6.7 mm deep, in 2.0 mm walls; pick the one where the insert goes in straight and holds a tightened M3 screw without turning.
-- [ ] **Embossed text:** "12 V" and "FUSE" at 5 and 7 mm height; check legibility.
+- [ ] **DE-9 cutout:** D cutout with 0.4 mm clearance on the shell; the socket must pass through from the inside and its flange sit flat on the wall.
+- [ ] **Jackposts:** holes Ø3.1 and Ø3.3 at 25.0 mm spacing; the right hole sits in a Ø9 recess that leaves 1.6 mm of wall. Check which hole the jackpost thread passes and whether the thread reaches the nut through 3.5 mm or only through 1.6 mm of wall.
+- [ ] **Embossed text:** "12V" and "FUSE" at 5 and 7 mm height; check legibility.
 
 ### 2.4 Later optimizations
 
@@ -196,7 +198,7 @@ Use the [STEP model](../../cad/reference/xt30u-m/xt30u-m.step) of the AMASS XT30
 | Overall length with cups | 15.5 |
 | Solder cup diameter / centre spacing | 2.0 / 5.0 |
 
-- Model axes: Z = length, solder cups at +Z.
+- Model axes: Z = length, solder cups at +Z; the two corners at the Y = 0 end have 0.5 mm radii, the other end is chamfered.
 - Measure the real connector against this table before the final pocket; allow separately for wires and heat-shrink on the cups.
 
 ---
@@ -215,6 +217,7 @@ Use the [STEP model](../../cad/reference/xt30u-m/xt30u-m.step) of the AMASS XT30
 **DE-9 (instruments)** — pin use: [signal wiring](wiring.md#overview)
 
 - Preliminary layout: [NorComp 171-009-203 STEP](../../cad/reference/norcomp-171-009-203/171-009-203.STEP) (S43). Model envelope: 30.80 × 12.60 × 15.27 mm (width × height × depth). Allow separate space for mounting hardware, mating plug and wiring.
+- From the model: flange 30.8 × 12.6 × 0.9 mm; mounting holes Ø3.05 at 25.0 mm spacing on the flange centreline; D-shell outer 16.35 mm (wide side) × 14.95 mm (narrow side) × 7.9 mm high, corner radius 1.96 mm, sides at 10°; shell projects 6.0 mm in front of the flange.
 
 - Female socket on the housing, male cable plug with solder cups and screw locking.
 - Backshell and strain relief on the cable side.

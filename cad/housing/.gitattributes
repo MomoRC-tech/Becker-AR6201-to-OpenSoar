@@ -1,0 +1,3 @@
+# Project CAD exports; keep byte-for-byte, no text diffs.
+*.step binary
+*.3mf binary
