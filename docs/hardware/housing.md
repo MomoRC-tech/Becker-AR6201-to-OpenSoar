@@ -102,14 +102,20 @@ Starting values for PETG on the P1S with a 0.4 mm nozzle and 0.2 mm layers. They
 
 One small PETG coupon, printed before the housing is modelled: [print files and feature map](../../cad/housing/fit-test-coupon/README.md) (six small pieces, about 14.5 cm³, print without supports). Check each feature and record the best value in [section 2.2](#print-values).
 
-- [ ] **M3 clearance holes:** vertical holes Ø3.2–3.6 mm in 0.1 mm steps; pick the smallest an M3 screw passes freely.
-- [ ] **PCB edge slots:** slots for 1.6 mm (ESP32, MAX490, UBEC) and 1.2 mm (RS-232) PCBs, +0.1 to +0.4 mm in 0.1 mm steps; pick the one that holds without play or force.
-- [ ] **Snap hooks:** three hooks 1.2, 1.5 and 1.8 mm thick holding a 1.6 mm test plate; pick the one that snaps in by hand, holds firmly and does not whiten or crack after ten cycles.
-- [ ] **XT30 pocket:** three pockets at 0.05, 0.1 and 0.15 mm interference per side on the measured XT30 body; pick the one that presses in by hand and does not loosen when the plug is pulled ten times.
-- [ ] **Insert holes:** Ø3.9, 4.0 and 4.1 mm, 6.7 mm deep, in 2.0 mm walls; pick the one where the insert goes in straight and holds a tightened M3 screw without turning.
-- [ ] **DE-9 cutout:** D cutout with 0.4 mm clearance on the shell; the socket must pass through from the inside and its flange sit flat on the wall.
-- [ ] **Jackposts:** holes Ø3.1 and Ø3.3 at 25.0 mm spacing; the right hole sits in a Ø9 recess that leaves 1.6 mm of wall. Check which hole the jackpost thread passes and whether the thread reaches the nut through 3.5 mm or only through 1.6 mm of wall.
-- [ ] **Embossed text:** "12V", 5 mm high, raised 0.6 mm on a vertical wall face; check legibility.
+**You need:** calipers; one M3×8 screw and a hex key; three ruthex inserts and a soldering iron with an insert tip; the XT30 male and its female mate; the DE-9 socket, two jackposts with nuts and a male cable plug; edges of a 1.6 mm and a 1.2 mm PCB.
+
+**Order:** reversible tests first, the inserts last (they cannot be removed). Let the pieces cool fully and remove any brim first.
+
+- [ ] **Print accuracy:** measure piece F (20.0 × 20.0 × 1.6 mm) and the length of piece C (68.0 mm). Note any deviation and any flared first layer (elephant foot); both shift every fit below.
+- [ ] **M3 clearance holes (C):** push the M3 screw through each hole by hand, Ø3.2 to 3.6 mm. Pick the smallest it passes without force or thread cutting.
+- [ ] **PCB edge slots (D):** measure both PCB thicknesses first. Push each PCB edge into its four slots (+0.1 to +0.4 mm). Pick the tightest that slides in by hand and does not rattle when shaken.
+- [ ] **Snap hooks (E + F):** press plate F down into each hook pair (1.2, 1.5, 1.8 mm). Pick the one that snaps in by thumb, holds without play and shows no whitening or crack at the root after ten in-and-out cycles.
+- [ ] **XT30 pockets (B):** press the XT30 in from the back until its rib stops (0.05, 0.10, 0.15 mm interference). Pick the tightest that goes fully in by hand or a gentle vise squeeze without splitting the wall; then mate and pull the female plug ten times, the male must not move.
+- [ ] **DE-9 cutout (A):** pass the socket through from the inside face (the face without "12V"). The shell must not rub and the flange must sit flat.
+- [ ] **DE-9 mating (A):** with the socket held in place, plug in the male cable plug from outside. It must seat fully, as on the bare socket; if the wall stops it short, measure how far it goes in.
+- [ ] **Jackposts (A):** fit both jackposts with their nuts behind the flange. Note which hole (Ø3.1 / 3.3) the thread passes, and whether the nut gets a full grip through the 3.5 mm wall or only through the 1.6 mm recess.
+- [ ] **Embossed text (A):** "12V", 5 mm high, raised 0.6 mm; check it reads clearly at arm's length.
+- [ ] **Insert holes (C), last:** press one insert into each hole (Ø3.9, 4.0, 4.1 mm) with the iron at ruthex's PETG temperature, straight and flush. When cold, tighten the M3×8 firmly with the hex key. Pick the hole where the insert went in straight, does not turn or pull out, and the 2 mm boss wall did not crack or bulge.
 
 ### 2.4 Later optimizations
 
