@@ -12,8 +12,8 @@ Second PETG fit-test print: the XT30 and DE-9 pieces redesigned on the measured 
 
 | Piece | Size (mm) | Tests | Variants |
 | --- | --- | --- | --- |
-| G XT30 | 44 × 8 × 16 block | Press fit on the measured connector (10.55 × 5.25) | Pockets 0.15 / 0.10 / 0.05 / 0.00 mm larger per side than measured, left to right; chamfered end up with 0.9 × 1.1 chamfers (connector 1.3 × 1.6), so the chamfers have clearance; 8 mm deep: insert front first from the back face, the raised markings stop at the back face, the front stands 0.5 mm proud |
-| H DE-9 | 44 × 3 wall on a 10 × 2 foot, 20 high | Front mount | Flange recess 31.6 × 13.2 × 1.0 deep on the outside face; rear-body cutout 19.9 × 11.5; holes Ø3.2 (left) and Ø3.4 (right) at 25.0 spacing; hex nut pockets 6.65 across flats, 1.0 deep in the inside face (wall left at the nut 1.0 mm); cutout top is a 20 mm bridge |
+| G XT30 | 44 × 16 × 8 block, lying with the front face down, pockets vertical | Press fit on the measured connector (10.55 × 5.25) | Pockets 0.15 / 0.10 / 0.05 / 0.00 mm larger per side than measured, left to right; chamfered end up with 0.9 × 1.1 chamfers (connector 1.3 × 1.6), so the chamfers have clearance; 8 mm deep: insert front first from the top (back) face, the raised markings stop at that face, the front stands 0.5 mm proud below |
+| H DE-9 | 44 × 20 × 3 plate, lying with the inside face down | Front mount | Flange recess 31.6 × 13.2 × 1.0 deep on the outside face; rear-body cutout 19.9 × 11.5; holes Ø3.2 (left) and Ø3.4 (right) at 25.0 spacing; hex nut pockets 6.65 across flats, 1.0 deep in the inside face (wall left at the nut 1.0 mm), on the bed side |
 | J clip base, 1.6 mm PCB | 20 × 36 floor, 1.6 thick | Clip sockets for plate F (20 mm span) | Two dovetail sockets; any clip drops in from above |
 | K clip base, 1.2 mm PCB | 20 × 25 floor | Clip sockets for an RS-232 board across its 9.2 mm width | Same sockets, 9.2 mm span |
 | C1 | 8 long | Fixed lip, 1.6 mm PCB | Slot 1.7, lip 1.0 |

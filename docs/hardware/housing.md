@@ -122,7 +122,7 @@ One small PETG coupon, printed before the housing is modelled: [print files and 
 **Fit test 2:** [print files and piece map](../../cad/housing/fit-test-2/README.md) (fifteen small pieces, about 13 cm³, print without supports).
 
 - [ ] **XT30 (G):** press the connector in front first from the back face until the markings stop it; pick the tightest of the four pockets that goes fully in and does not move when the female plug is pulled ten times.
-- [ ] **DE-9 flange and cutout (H):** connector from the outside; the flange sits flush in its recess and the rear body passes the cutout without force; check the cutout top for bridge sag.
+- [ ] **DE-9 flange and cutout (H):** connector from the outside; the flange sits flush in its recess and the rear body passes the cutout without force; the XT30 and DE-9 pieces print lying flat, so their fits apply to a connector wall printed flat.
 - [ ] **DE-9 holes (H):** an M3 screw stands in for the 4-40 jackpost; note which hole (Ø3.2 / 3.4) it passes. Nut grip once the jackposts arrive.
 - [ ] **Clip sockets (J, K):** each clip drops into its socket by hand, sits without wobble and cannot be pulled straight up.
 - [ ] **Clips on plate F (J):** try fixed lip C1 + arm C2, C1 + C3, and the pair C3 + C4. Pick the combination that snaps in by thumb, holds without play and comes out again without breaking.
