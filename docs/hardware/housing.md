@@ -49,7 +49,7 @@ Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md)
 | Soldering | Every solder joint reachable with all PCBs fitted and the cover off |
 | Connector wall | XT30, DE-9 and the F1 fuse holder together on one short side |
 | XT30 | Press fit on the flat faces positions it, with clearance at the chamfered corners; a shoulder in front and a hood rib behind capture it, so unplugging cannot pull it out; glue optional |
-| DE-9 | Female socket on the housing, mounted from the front: flange set flush into a recess in the outer wall face, rear body through a rectangular cutout; jackposts (UNC 4-40) through flange and wall into nuts in printed pockets inside, wall thinned locally around the nuts if the thread is too short; the male cable plug locks onto the jackposts |
+| DE-9 | Male connector (pins) on the housing, mounted from the front: flange set flush into a recess in the outer wall face, rear body through a rectangular cutout; jackposts (UNC 4-40) through flange and wall into nuts in printed pockets inside, wall thinned locally around the nuts if the thread is too short; the female cable connector locks onto the jackposts |
 | Walls | 2.5 mm side walls, floor and cover; 3.0 mm connector wall (DE-9 screws, XT30 press fit); at least 2.0 mm of material around each M3 heat-set insert |
 | Edges | Rounded outside edges and corners, no sharp corners |
 | Location | Shaded spot in the cockpit, out of direct sun through the canopy |
@@ -104,7 +104,7 @@ Starting values for PETG on the P1S with a 0.4 mm nozzle and 0.2 mm layers. They
 
 One small PETG coupon, printed before the housing is modelled: [print files and feature map](../../cad/housing/fit-test-coupon/README.md) (six small pieces, about 14.5 cm³, print without supports). Check each feature and record the best value in [section 2.2](#print-values).
 
-**You need:** calipers; one M3×8 screw and a hex key; three ruthex inserts and a soldering iron with an insert tip; the XT30 male and its female mate; the DE-9 socket, two jackposts with nuts and a male cable plug; edges of a 1.6 mm and a 1.2 mm PCB.
+**You need:** calipers; one M3×8 screw and a hex key; three ruthex inserts and a soldering iron with an insert tip; the XT30 male and its female mate; the DE-9 male, two jackposts with nuts and a female cable connector; edges of a 1.6 mm and a 1.2 mm PCB.
 
 **Order:** reversible tests first, the inserts last (they cannot be removed). Let the pieces cool fully and remove any brim first.
 
@@ -113,7 +113,7 @@ One small PETG coupon, printed before the housing is modelled: [print files and 
 - [x] **PCB edge slots (D):** RS-232 (1.15 mm) in the 1.3 slot and a 1.55 mm test board in the 1.7 slot: both slide in by hand with minor play. The ESP32's header solder joints reach to within about 0.1 mm of its long edges, so it cannot be held in long-edge slots. MAX490 board not delivered yet.
 - [x] **Snap hooks (E + F):** 1.2 and 1.5 mm hold too weakly; 1.8 mm has the right force, but the 0.6 mm lip barely holds (the 19.9 mm plate leaves only about 0.4 mm overlap in the 20.3 mm gap). The 8.5 mm support height needed for the hook to flex wastes space under the PCB; next: clip trial print.
 - [ ] **XT30 pockets (B):** failed, the connector does not go into any pocket. The pockets were sized on the CAD model (10.25 mm), the delivered connector is 10.55 mm wide with a different end shape and no rib. Redesign on the measured connector and reprint.
-- [ ] **DE-9 cutout (A):** failed: the shell's base (17.85 × 9.2 mm) is larger than the NorComp model the cutout was sized on; the socket is now mounted from the front. Retest on the reprinted piece: rear body through the cutout, flange flat on the outer face.
+- [ ] **DE-9 cutout (A):** failed: the delivered connector is male (shell 17.85 × 9.2 mm), the cutout was sized on the female NorComp shell; it is now mounted from the front. Retest on the reprinted piece: rear body through the cutout, flange flat on the outer face.
 - [ ] **Jackposts (A):** on the reprinted piece: which hole the 4-40 thread passes, and whether the nut gets a full grip through flange plus 3.0 mm wall.
 - [x] **Embossed text (A):** "12V", 5 mm high, raised 0.6 mm on a vertical face; reads clearly.
 - [ ] **Insert holes (C), last:** press one insert into each hole (Ø3.9, 4.0, 4.1 mm) with the iron at ruthex's PETG temperature, straight and flush. When cold, tighten the M3×8 firmly with the hex key. Pick the hole where the insert went in straight, does not turn or pull out, and the 2 mm boss wall did not crack or bulge.
@@ -139,7 +139,7 @@ Sizes from owner measurements, seller listings or datasheets; see the source col
 | UBEC ferrite ring | 1 | Reserve 30 × 30 × 15 keep-out (estimate from the product photo, ring with wire turns) | — | On the UBEC 5 V output lead, as shipped; resize once measured |
 | F1 fuse holder | 1 | Open | — | Format not selected yet |
 | XT30 male, panel | 1 | 10.55 × 5.25 body; 10.8 × 5.66 over the raised markings at the solder-cup end (owner measurement) | S51 | Press-fit pocket ([section 4](#connectors)) |
-| DE-9 female socket | 1 | Flange 31 × 12.6; D shell 17.85 × 9.2 at its base; rear body behind the flange 19.3 × 10.9 (owner measurement) | S43 | Flange matches the NorComp model; hole spacing and rear depth still to measure |
+| DE-9 male, panel | 1 | Flange 31 × 12.6; D shell 17.85 × 9.2 outer; rear body behind the flange 19.3 × 10.9 (owner measurement) | S43 | Flange and rear side as the female NorComp model; hole spacing and rear depth still to measure |
 | Resistors (divider, pull-ups) | 5 | Small | — | R-B1, R-B2, R-Z, R-F, R-D |
 
 ### 3.1 ESP32 CAD reference
@@ -226,9 +226,9 @@ Use the [STEP model](../../cad/reference/xt30u-m/xt30u-m.step) of the AMASS XT30
 
 **DE-9 (instruments)** — pin use: [signal wiring](wiring.md#overview)
 
-- Preliminary layout: [NorComp 171-009-203 STEP](../../cad/reference/norcomp-171-009-203/171-009-203.STEP) (S43); the delivered socket's flange (31 × 12.6 mm) matches it, its shell measures 17.85 × 9.2 mm at the base (model 16.35 × 7.9).
-- Female socket on the housing, male cable plug with solder cups and screw locking.
-- Front mount: flange in a flush recess on the outer face, rear body (19.3 × 10.9 mm) through a rectangular cutout; the cable plug seats fully because no wall is in front of the flange.
+- Reference for the flange and rear side: [NorComp 171-009-203 STEP](../../cad/reference/norcomp-171-009-203/171-009-203.STEP) (S43), the female variant; the delivered male has the same flange (31 × 12.6 mm) and rear side, its D shell measures 17.85 × 9.2 mm.
+- Male connector (pins) on the housing, female cable connector with solder cups and screw locking.
+- Front mount: flange in a flush recess on the outer face, rear body (19.3 × 10.9 mm) through a rectangular cutout; the cable connector seats fully because no wall is in front of the flange.
 - Backshell and strain relief on the cable side.
 - Housing side: jackposts ([design rules](#rules)); exact jackpost and local wall thickness: [open items](../project/open-items.md#bench-hardware).
 
