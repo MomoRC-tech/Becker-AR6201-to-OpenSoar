@@ -234,7 +234,7 @@ s.save("overview.svg")
 # ----------------------------------------------------------------- ground loops
 s = Svg(930, 530, "Bridge power and ground loops",
         "The battery feeds the bridge (F1, UBEC, ESP32 with MAX490 and RS-232 modules) and each device with +12 V; arrows show the normal current direction. "
-        "The battery minus, the bridge ground and each device's supply ground meet at the common ground point. Dashed signal grounds from the bridge to the "
+        "The ESP32 ground (J2-14) returns through the UBEC; the bridge ground wire leaves from the UBEC input through the XT30. The battery minus, the bridge ground and each device's supply ground meet at the common ground point. Dashed signal grounds from the bridge to the "
         "Becker (J1-21), Zander (pin 5) and FLARM (pins 7/8) each close a ground loop: Loop B, Loop Z and Loop F.")
 s.box(200, 50, 270, 320, "Bridge", group=True)
 s.line([(95, 70), (95, 46)], "v12"); s.arrow(95, 58, "up", "v12"); s.tag(95, 40, "+12 V", "v12")
@@ -243,13 +243,14 @@ s.line([(335, 116), (335, 140)], "v12"); s.arrow(335, 129, "down", "v12")
 s.line([(335, 176), (335, 220)], "v5"); s.arrow(335, 192, "down", "v5"); s.tag(343, 203, "5 V", "v5", anchor="start")
 # Supply grounds back to the common ground point
 s.line([(95, 126), (95, 440)], "gnd"); s.arrow(95, 300, "up", "gnd")
-s.line([(335, 330), (335, 440)], "gnd"); s.arrow(335, 385, "down", "gnd")
+s.line([(270, 220), (270, 176)], "gnd"); s.arrow(270, 198, "up", "gnd"); s.tag(277, 202, "J2-14", "gnd", anchor="start", bold=False, size=11)
+s.line([(245, 158), (215, 158), (215, 440)], "gnd"); s.arrow(215, 385, "down", "gnd")
 s.line([(900, 112), (900, 440)], "gnd")
 for y in (170, 285, 395):
     s.arrow(900, y, "down", "gnd")
 s.line([(95, 440), (900, 440)], "gnd", width=4)
-s.arrow(620, 440, "left", "gnd"); s.arrow(215, 440, "left", "gnd")
-for x, y in ((95, 440), (335, 440), (900, 440)):
+s.arrow(620, 440, "left", "gnd"); s.arrow(160, 440, "left", "gnd")
+for x, y in ((95, 440), (215, 440), (900, 440)):
     s.dot(x, y, "gnd", r=5)
 s.dot(900, 227, "gnd"); s.dot(900, 342, "gnd")
 # Devices: +12 V stub, supply ground stub, signal ground (loop)
@@ -269,7 +270,7 @@ s.box(245, 80, 180, 36, "F1 fuse")
 s.box(245, 140, 180, 36, "UBEC 5 V")
 s.box(225, 220, 220, 110, "ESP32", ["MAX490 board", "RS-232 modules (3.3 V from ESP32)"])
 s.tag(103, 160, "Battery −", "gnd", anchor="start", bold=False, size=11)
-s.tag(343, 405, "Bridge GND", "gnd", anchor="start", bold=False, size=11)
+s.tag(223, 405, "Bridge GND wire (XT30 −)", "gnd", anchor="start", bold=False, size=11)
 s.text(497, 462, "Common ground point (battery −)", color="#424242", size=13, bold=True)
 s.legend(492, ["v12", ("v5", "5 V in bridge"), ("gnd", "Supply ground"), ("sgnd", "Signal ground, closes a loop")],
          "Arrows show the normal current direction. Signal grounds carry small shares in either direction.")
