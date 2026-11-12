@@ -275,6 +275,20 @@ Use the [STEP model](../../cad/reference/xt30u-m/xt30u-m.step) of the AMASS XT30
 - **Fit tests needed:** the slot rails now print lying down with the USB block, so the 1.25 mm slot height comes from the 0.2 mm layers instead of X/Y accuracy; the cut-off ears leave the antenna-cap foot ends square (round them when the holder is finalised).
 - **Not modelled yet:** wire routing, MAX490 posts, UBEC bridge, ring wire turns. The UBEC model (24 × 43 × 8) is larger than the catalog size (17 × 43 × 7), so the real unit may free a few millimetres.
 
+### 5.1 Candidate v4: RS-232 boards on the USB clamp
+
+Fusion document `Housing layout - compact v4`, with the holder variant `esp32 holder v3 (RS-232 clamp)`; repository copies in [cad/housing/layout-v4](../../cad/housing/layout-v4/README.md). Same envelope as v3 (about 87 × 59 × 20 mm inside); no collisions.
+
+| Change from v3 | Detail |
+| --- | --- |
+| RS-232 boards | On the USB clamp, turned 90°, one behind the other across the ESP32 between its header rows; boards at 13.8 above the floor, rails to 16.1 |
+| USB clamp | Carries both slots; one M2.5 screw removes the clamp with both boards. USB block back to the tested version |
+| ESP32 position | PCB USB edge at X = 17 (limited by the XT30 collar above the USB clamp and boss); antenna end X = 71 |
+
+- **Gain:** the ESP32 column ends 18 mm before the ferrite ring, leaving free space behind the antenna; the housing length is now set only by the MAX490 / UBEC / ring column.
+- **Assembly:** slide the pre-soldered RS-232 boards into the clamp on the bench, then screw the clamp on.
+- **Print risk:** the clamp now prints top up, with the slot height set by layers; fit test needed.
+
 Components in the Fusion layout:
 
 | Component | Source |
