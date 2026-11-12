@@ -73,7 +73,42 @@ PETG is selected because the housing sits in the shade. Heat resistance compared
 - **Keep it in the shade:** PETG is fine well below about 60 °C. Sun through the canopy can heat cockpit parts far above the outside air; focused sunlight has burnt instrument panels (S49).
 - **Loaded features creep first:** snap-fits and the XT30 press fit. If the housing has to move into the sun, switch to ASA (about 30 °C more margin).
 
-### 2.2 Later optimizations
+<a id="print-values"></a>
+
+### 2.2 Print starting values
+
+Starting values for PETG on the P1S with a 0.4 mm nozzle and 0.2 mm layers. They are estimates from common FDM practice; the [fit test print](#fit-test) replaces each one with a measured value.
+
+| Feature | Starting value |
+| --- | --- |
+| Walls | Printed solid: enough perimeters to fill the 2.5 mm wall, no infill inside walls |
+| Free fit (part drops in) | 0.2 mm gap per side |
+| Snug fit (PCB in its pocket) | 0.15 mm gap per side on the measured PCB outline |
+| Slot for a PCB edge | PCB thickness + 0.2 mm |
+| Press fit (XT30) | 0.1 mm interference per side on the measured body |
+| M3 screw clearance hole | Ø3.4 mm |
+| Snap hook | At least 8 mm long, 1.5 mm thick, 0.6 mm undercut over the PCB edge, 1 mm fillet at the root |
+| Hood hold-down ribs | 0.2 mm interference on the PCB top, ribs 1.2 mm wide so they flex instead of cracking the PCB |
+| Smallest feature | 0.8 mm (two extrusion lines) |
+| Overhangs | Up to 45° without support; bridges up to 10 mm |
+| Embossed text | 0.6 mm high or deep, characters at least 5 mm tall |
+
+- **Snap hooks standing up from the base** bend across the layer lines, their weakest direction. Keep the deflection small and the root fillet generous.
+- **Heat-set insert holes** are set once the inserts are chosen.
+
+<a id="fit-test"></a>
+
+### 2.3 Fit test print
+
+One small PETG coupon, printed before the housing is modelled. Check each feature and record the best value in [section 2.2](#print-values).
+
+- [ ] **M3 clearance holes:** vertical holes Ø3.2–3.6 mm in 0.1 mm steps; pick the smallest an M3 screw passes freely.
+- [ ] **PCB edge slots:** slots for 1.6 mm (ESP32, MAX490, UBEC) and 1.2 mm (RS-232) PCBs, +0.1 to +0.4 mm in 0.1 mm steps; pick the one that holds without play or force.
+- [ ] **Snap hooks:** three hooks 1.2, 1.5 and 1.8 mm thick holding a 1.6 mm test plate; pick the one that snaps in by hand, holds firmly and does not whiten or crack after ten cycles.
+- [ ] **XT30 pocket:** three pockets at 0.05, 0.1 and 0.15 mm interference per side on the measured XT30 body; pick the one that presses in by hand and does not loosen when the plug is pulled ten times.
+- [ ] **Embossed text:** "12 V" and "FUSE" at 5 and 7 mm height; check legibility.
+
+### 2.4 Later optimizations
 
 - **DE-9 cable tie-down:** a lug below the DE-9 that sticks out past the mated plug, so the cable can be cable-tied to it. The cable then cannot lever the connector out of the housing.
 

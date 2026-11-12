@@ -59,7 +59,7 @@ Inputs still needed before the housing can be modelled. Selected rules: [housing
 
 | # | Item | What is needed | How it is closed |
 | :-: | --- | --- | --- |
-| 10 | Print dimensions | Snap-fit clearance and hook size; press-fit interference for the XT30; hole sizes for the M3 heat-set inserts and screws; minimum feature size; print orientation without supports | Owner values, then a calibration print |
+| 10 | Print dimensions | Measured values replacing the [print starting values](../hardware/housing.md#print-values); needs the measured XT30 body (item 1) for the press-fit pockets | [Fit test print](../hardware/housing.md#fit-test) |
 
 ### 2.3 Construction
 
