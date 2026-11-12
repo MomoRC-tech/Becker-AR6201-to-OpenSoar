@@ -139,7 +139,7 @@ One small PETG coupon, printed before the housing is modelled: [print files and 
 
 - [ ] **RS-232 slot holder (A 1.20 slot, B 1.25 slot):** slide the board in flat from either end. Pick the slot that holds the board tight by friction, slides in by hand without forcing and does not crack the lips. Both pad rows overhang the rails in free air; solder a test wire to an end pad with the board fitted and check the PETG stays undamaged.
 
-The [mechanical fit coupons](../../cad/housing/mechanical-tests/README.md) give three independent prints: an ESP32 cradle with keeper tabs that seat on the bosses, an RS-232 saddle with a removable keeper, and a combined DE-9/XT30 front plate.
+The [mechanical fit coupons](../../cad/housing/mechanical-tests/README.md) give three independent prints: an ESP32 cradle with keeper tabs that seat on the bosses, an ESP32 hold-down beam, and a combined DE-9/XT30 front plate. The RS-232 board uses the [fit test 4 slot holder](../../cad/housing/fit-test-4/README.md).
 
 ### 2.4 Later optimizations
 
