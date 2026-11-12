@@ -128,7 +128,8 @@ Sizes from owner measurements, seller listings or datasheets; see the source col
 | ESP32 board (AZ-Delivery, DevKitC V4 layout) | 1 | 48.5 × 28.5 base PCB, excluding antenna | S40 | Antenna end free; Micro-USB at the other end |
 | RS-232 module (Hailege H-1-0290) | 2 | 9.2 × 15.6 | S38 | Edge pads, soldered wires |
 | RS-422 board (MAX490) | 1 | 50 × 27 | S34 | Screw terminals A/B/Y/Z on one edge, header on the other |
-| UBEC (Hobbywing 3A) | 1 | 43 × 17 × 7 (catalog); body about 35 × 12 × 5 | S14 | Plus jumper, leads, ferrite ring |
+| UBEC (Hobbywing 3A) | 1 | 43 × 17 × 7 (catalog); body about 35 × 12 × 5 | S14 | Plus jumper and leads |
+| UBEC ferrite ring | 1 | Reserve 30 × 30 × 15 keep-out (estimate from the product photo, ring with wire turns) | — | Stays on the UBEC lead it ships on; resize once measured |
 | F1 fuse holder | 1 | Open | — | Format not selected yet |
 | XT30 male, panel | 1 | 10.25 × 5.25 × 12.5 body; 15.5 long with solder cups (CAD model) | S51 | Press-fit pocket ([section 4](#connectors)) |
 | DE-9 female socket | 1 | Standard D-sub shell | — | Exact part open |
@@ -236,6 +237,7 @@ Not designed yet. Constraints from the wiring:
 - **Short wires:** RO → divider → GPIO16 and the pull-ups sit between the MAX490 board and the ESP32.
 - **Grounds:** one bridge ground; route the device signal grounds from the DE-9 to the module grounds ([grounding and loops](power.md#ground)).
 - **Power path:** XT30 → F1 → UBEC → ESP32 and MAX490 ([supply path](power.md#supply)).
+- **Ferrite ring:** keep its placeholder volume ([section 3](#contents)) next to the UBEC, on the lead it is wound on; the ring is not modelled in the UBEC CAD reference.
 - **ESP32:** lengthwise, antenna at the far short end; Micro-USB faces the connector end.
 - **Resistors and ground point:** on one snap-fit perfboard ([design rules](#rules)).
 
