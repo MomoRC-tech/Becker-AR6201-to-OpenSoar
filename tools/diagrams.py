@@ -51,6 +51,12 @@ class Svg:
         w, h = (10, 26) if vertical else (26, 10)
         self.boxes.append(f'<rect x="{cx - w / 2}" y="{cy - h / 2}" width="{w}" height="{h}" fill="white" stroke="{STYLE[kind]["color"]}" stroke-width="2"/>')
 
+    def ground(self, x, y):
+        """Ground symbol hanging below (x, y)."""
+        c = STYLE["gnd"]["color"]
+        for dy, half in ((0, 9), (4, 6), (8, 3)):
+            self.lines.append(f'<path d="M{x - half} {y + dy} H{x + half}" stroke="{c}" stroke-width="2"/>')
+
     def dot(self, x, y, kind, r=4):
         self.marks.append(f'<circle cx="{x}" cy="{y}" r="{r}" fill="{STYLE[kind]["color"]}"/>')
 
@@ -133,7 +139,7 @@ s.save("power-supply.svg")
 # ------------------------------------------------------------- signal overview
 s = Svg(1020, 380, "Bridge signal overview",
         "Zander ZS1 to RS-232-mod1 to ESP32 UART0 (receive only). Classic FLARM to RS-232-mod2 to ESP32 UART1 (receive only). "
-        "Becker AR6201 to and from the MAX490 RS-422 board and ESP32 UART2 in both directions. The ESP32 talks to OpenSoar over Wi-Fi.")
+        "Becker AR6201 to and from the MAX490 RS-422 board and ESP32 UART2 in both directions. Pull-ups R-Z and R-F from pad R1 to 3V3 on the RS-232 modules; RO through R-B1 to GPIO16 with R-B2 to ground; R-D from DI to 3V3. The ESP32 talks to OpenSoar over Wi-Fi.")
 s.box(20, 50, 150, 56, "Zander ZS1", ["RS-232"])
 s.box(20, 145, 150, 56, "Classic FLARM", ["RS-232"])
 s.box(20, 240, 150, 66, "Becker AR6201", ["RS-422, J1"])
@@ -146,15 +152,28 @@ for y, a, b in ((78, "TX → L3", "R2 → GPIO32 · UART0"), (173, "pin 5 TX →
     s.line([(170, y), (300, y)], "data"); s.arrow(235, y, "right", "data")
     s.line([(470, y), (660, y)], "data"); s.arrow(565, y, "right", "data")
     s.tag(235, y - 8, a, "data", bold=False); s.tag(565, y - 8, b, "data", bold=False)
+for y, rname in ((78, "R-Z"), (173, "R-F")):
+    # Pull-up from pad R1 to 3V3, soldered on the module
+    s.line([(470, y + 17), (535, y + 17)], "v33"); s.resistor(503, y + 17, "v33")
+    s.tag(474, y + 13, "R1", "v33", anchor="start", bold=False, size=10)
+    s.tag(540, y + 21, "3V3", "v33", anchor="start", size=11)
+    s.tag(503, y + 34, rname, "v33", bold=False, size=11)
 s.line([(170, 262), (300, 262)], "data"); s.arrow(235, 262, "right", "data")
 s.line([(300, 286), (170, 286)], "data"); s.arrow(235, 286, "left", "data")
-s.line([(470, 262), (660, 262)], "data"); s.arrow(565, 262, "right", "data")
-s.line([(660, 286), (470, 286)], "data"); s.arrow(565, 286, "left", "data")
+# DI with pull-up R-D to 3V3
+s.line([(660, 262), (470, 262)], "data"); s.arrow(495, 262, "left", "data"); s.dot(630, 262, "data")
+s.line([(630, 262), (630, 222)], "v33"); s.resistor(630, 242, "v33", vertical=True)
+s.tag(638, 246, "R-D", "v33", anchor="start", bold=False, size=11); s.tag(630, 216, "3V3", "v33", size=11)
+# RO through R-B1 to GPIO16, R-B2 to ground
+s.line([(470, 286), (660, 286)], "data"); s.arrow(648, 286, "right", "data"); s.resistor(530, 286, "data")
+s.dot(600, 286, "data"); s.line([(600, 286), (600, 326)], "data"); s.resistor(600, 306, "data", vertical=True); s.ground(600, 326)
+s.tag(530, 302, "R-B1", "data", bold=False, size=11); s.tag(608, 310, "R-B2", "data", anchor="start", bold=False, size=11)
 s.tag(235, 254, "TX2± → A/B", "data", bold=False); s.tag(235, 302, "RX2± ← Y/Z", "data", bold=False)
-s.tag(565, 254, "RO → divider → GPIO16", "data", bold=False); s.tag(565, 302, "DI ← GPIO17 · UART2", "data", bold=False)
+s.tag(550, 254, "DI ← GPIO17 · UART2", "data", bold=False, size=11)
+s.tag(486, 280, "RO", "data", anchor="start", bold=False, size=11); s.tag(632, 280, "GPIO16", "data", bold=False, size=11)
 s.line([(790, 176), (870, 176)], "wifi"); s.arrow(860, 176, "right", "wifi"); s.arrow(800, 176, "left", "wifi")
 s.tag(830, 166, "one TCP path", "wifi", bold=False); s.tag(830, 196, "per device", "wifi", bold=False)
-s.legend(345, ["data", "wifi"], "Zander and FLARM: receive only. Becker: both directions. Pin details: see each device section.")
+s.legend(345, ["data", "wifi", ("v33", "3.3 V")], "Zander and FLARM: receive only. Becker: both directions. Pins and resistor values: see each device section.")
 s.save("wiring-overview.svg")
 
 # --------------------------------------------------------------------- Zander

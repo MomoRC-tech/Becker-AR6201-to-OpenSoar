@@ -1,27 +1,37 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1020" height="380" viewBox="0 0 1020 380" role="img" aria-labelledby="title desc">
 <title id="title">Bridge signal overview</title>
-<desc id="desc">Zander ZS1 to RS-232-mod1 to ESP32 UART0 (receive only). Classic FLARM to RS-232-mod2 to ESP32 UART1 (receive only). Becker AR6201 to and from the MAX490 RS-422 board and ESP32 UART2 in both directions. The ESP32 talks to OpenSoar over Wi-Fi.</desc>
+<desc id="desc">Zander ZS1 to RS-232-mod1 to ESP32 UART0 (receive only). Classic FLARM to RS-232-mod2 to ESP32 UART1 (receive only). Becker AR6201 to and from the MAX490 RS-422 board and ESP32 UART2 in both directions. Pull-ups R-Z and R-F from pad R1 to 3V3 on the RS-232 modules; RO through R-B1 to GPIO16 with R-B2 to ground; R-D from DI to 3V3. The ESP32 talks to OpenSoar over Wi-Fi.</desc>
 <rect width="1020" height="380" fill="white"/>
 <g font-family="Arial,sans-serif">
 <path d="M170 78 L300 78" stroke="#37474f" stroke-width="2.5" fill="none"/>
 <path d="M470 78 L660 78" stroke="#37474f" stroke-width="2.5" fill="none"/>
 <path d="M170 173 L300 173" stroke="#37474f" stroke-width="2.5" fill="none"/>
 <path d="M470 173 L660 173" stroke="#37474f" stroke-width="2.5" fill="none"/>
+<path d="M470 95 L535 95" stroke="#8e24aa" stroke-width="2.5" fill="none"/>
+<path d="M470 190 L535 190" stroke="#8e24aa" stroke-width="2.5" fill="none"/>
 <path d="M170 262 L300 262" stroke="#37474f" stroke-width="2.5" fill="none"/>
 <path d="M300 286 L170 286" stroke="#37474f" stroke-width="2.5" fill="none"/>
-<path d="M470 262 L660 262" stroke="#37474f" stroke-width="2.5" fill="none"/>
-<path d="M660 286 L470 286" stroke="#37474f" stroke-width="2.5" fill="none"/>
+<path d="M660 262 L470 262" stroke="#37474f" stroke-width="2.5" fill="none"/>
+<path d="M630 262 L630 222" stroke="#8e24aa" stroke-width="2.5" fill="none"/>
+<path d="M470 286 L660 286" stroke="#37474f" stroke-width="2.5" fill="none"/>
+<path d="M600 286 L600 326" stroke="#37474f" stroke-width="2.5" fill="none"/>
+<path d="M591 326 H609" stroke="#616161" stroke-width="2"/>
+<path d="M594 330 H606" stroke="#616161" stroke-width="2"/>
+<path d="M597 334 H603" stroke="#616161" stroke-width="2"/>
 <path d="M790 176 L870 176" stroke="#00897b" stroke-width="2.5" fill="none" stroke-dasharray="8 5"/>
 <path d="M30 345 H60" stroke="#37474f" stroke-width="2.5"/>
 <path d="M268 345 H298" stroke="#00897b" stroke-width="2.5" stroke-dasharray="8 5"/>
+<path d="M373 345 H403" stroke="#8e24aa" stroke-width="2.5"/>
 <polygon points="231,73 231,83 240,78" fill="#37474f"/>
 <polygon points="561,73 561,83 570,78" fill="#37474f"/>
 <polygon points="231,168 231,178 240,173" fill="#37474f"/>
 <polygon points="561,168 561,178 570,173" fill="#37474f"/>
 <polygon points="231,257 231,267 240,262" fill="#37474f"/>
 <polygon points="239,281 239,291 230,286" fill="#37474f"/>
-<polygon points="561,257 561,267 570,262" fill="#37474f"/>
-<polygon points="569,281 569,291 560,286" fill="#37474f"/>
+<polygon points="499,257 499,267 490,262" fill="#37474f"/>
+<circle cx="630" cy="262" r="4" fill="#37474f"/>
+<polygon points="644,281 644,291 653,286" fill="#37474f"/>
+<circle cx="600" cy="286" r="4" fill="#37474f"/>
 <polygon points="856,171 856,181 865,176" fill="#00897b"/>
 <polygon points="804,171 804,181 795,176" fill="#00897b"/>
 <rect x="20" y="50" width="150" height="56" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
@@ -32,6 +42,11 @@
 <rect x="300" y="240" width="170" height="66" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
 <rect x="660" y="40" width="130" height="276" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
 <rect x="870" y="148" width="130" height="56" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
+<rect x="490.0" y="90.0" width="26" height="10" fill="white" stroke="#8e24aa" stroke-width="2"/>
+<rect x="490.0" y="185.0" width="26" height="10" fill="white" stroke="#8e24aa" stroke-width="2"/>
+<rect x="625.0" y="229.0" width="10" height="26" fill="white" stroke="#8e24aa" stroke-width="2"/>
+<rect x="517.0" y="281.0" width="26" height="10" fill="white" stroke="#37474f" stroke-width="2"/>
+<rect x="595.0" y="293.0" width="10" height="26" fill="white" stroke="#37474f" stroke-width="2"/>
 <text x="95.0" y="74.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">Zander ZS1</text>
 <text x="95.0" y="92.0" font-size="12" fill="#475569" text-anchor="middle">RS-232</text>
 <text x="95.0" y="169.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">Classic FLARM</text>
@@ -52,14 +67,26 @@
 <text x="565" y="70" font-size="12" fill="#37474f" text-anchor="middle">R2 → GPIO32 · UART0</text>
 <text x="235" y="165" font-size="12" fill="#37474f" text-anchor="middle">pin 5 TX → L3</text>
 <text x="565" y="165" font-size="12" fill="#37474f" text-anchor="middle">R2 → GPIO26 · UART1</text>
+<text x="474" y="91" font-size="10" fill="#8e24aa" text-anchor="start">R1</text>
+<text x="540" y="99" font-size="11" fill="#8e24aa" text-anchor="start" font-weight="700">3V3</text>
+<text x="503" y="112" font-size="11" fill="#8e24aa" text-anchor="middle">R-Z</text>
+<text x="474" y="186" font-size="10" fill="#8e24aa" text-anchor="start">R1</text>
+<text x="540" y="194" font-size="11" fill="#8e24aa" text-anchor="start" font-weight="700">3V3</text>
+<text x="503" y="207" font-size="11" fill="#8e24aa" text-anchor="middle">R-F</text>
+<text x="638" y="246" font-size="11" fill="#8e24aa" text-anchor="start">R-D</text>
+<text x="630" y="216" font-size="11" fill="#8e24aa" text-anchor="middle" font-weight="700">3V3</text>
+<text x="530" y="302" font-size="11" fill="#37474f" text-anchor="middle">R-B1</text>
+<text x="608" y="310" font-size="11" fill="#37474f" text-anchor="start">R-B2</text>
 <text x="235" y="254" font-size="12" fill="#37474f" text-anchor="middle">TX2± → A/B</text>
 <text x="235" y="302" font-size="12" fill="#37474f" text-anchor="middle">RX2± ← Y/Z</text>
-<text x="565" y="254" font-size="12" fill="#37474f" text-anchor="middle">RO → divider → GPIO16</text>
-<text x="565" y="302" font-size="12" fill="#37474f" text-anchor="middle">DI ← GPIO17 · UART2</text>
+<text x="550" y="254" font-size="11" fill="#37474f" text-anchor="middle">DI ← GPIO17 · UART2</text>
+<text x="486" y="280" font-size="11" fill="#37474f" text-anchor="start">RO</text>
+<text x="632" y="280" font-size="11" fill="#37474f" text-anchor="middle">GPIO16</text>
 <text x="830" y="166" font-size="12" fill="#00897b" text-anchor="middle">one TCP path</text>
 <text x="830" y="196" font-size="12" fill="#00897b" text-anchor="middle">per device</text>
 <text x="66" y="349" font-size="12" fill="#172b4d" text-anchor="start">Data (arrow = direction)</text>
 <text x="304" y="349" font-size="12" fill="#172b4d" text-anchor="start">Wi-Fi</text>
-<text x="30" y="369" font-size="12" fill="#475569" text-anchor="start">Zander and FLARM: receive only. Becker: both directions. Pin details: see each device section.</text>
+<text x="409" y="349" font-size="12" fill="#172b4d" text-anchor="start">3.3 V</text>
+<text x="30" y="369" font-size="12" fill="#475569" text-anchor="start">Zander and FLARM: receive only. Becker: both directions. Pins and resistor values: see each device section.</text>
 </g>
 </svg>
