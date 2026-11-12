@@ -34,7 +34,7 @@ Checks on the delivered parts before the bridge is connected to any device. Step
 | 10 | Radio noise | No audible noise or squelch opening caused by the bridge | Check in the aircraft |
 | 11 | Power connector fit and retention | Adhesive compatibility with the XT30 body and PETG, wire support and insulated terminations ([selected arrangement](../hardware/housing.md#connectors)) | Connector-panel print and assembly check |
 | 12 | Supply-cable protection | Owner confirmation of cable length, routing and wire specification; determine protection for the cable upstream of F1 ([power wiring](../hardware/power.md#supply)) | Owner supplies harness details; agree cable protection before aircraft connection |
-| 13 | F1 holder | 5 × 20 mm panel-mount holder on the connector wall is selected; exact holder part, panel cutout, depth behind the panel and wall-thickness range ([housing](../hardware/housing.md#connectors)) | Owner selection before the connector-wall design |
+| 13 | F1 holder | 5 × 20 mm panel-mount holder on the connector wall is selected; exact holder part, panel cutout, depth behind the panel and wall-thickness range ([housing](../hardware/housing.md#connectors)) | Owner selection at the end of the housing design |
 | 14 | Combined DE-9 instrument connection | Pin assignments for the nine signals; exact mating parts, wire-gauge compatibility, screw threads, backshell, strain relief and housing mounting; identify existing loose conductors and shield termination | Owner selects details; fit and continuity checks before connection |
 
 ---

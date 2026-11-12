@@ -7,7 +7,7 @@
 Mechanical design of the bridge: what goes inside, part sizes, connectors on the housing, internal layout.
 
 > [!NOTE]
-> **Status:** not modelled yet. Design rules, material and wall thickness selected ([section 2](#rules)); remaining inputs: [open items](../project/open-items.md#housing).
+> **Status:** layout started in Fusion (connector side placed, [section 5](#layout)). Design rules, material and wall thickness selected ([section 2](#rules)); remaining inputs: [open items](../project/open-items.md#housing).
 
 📑 **On this page:** <kbd>[1 · 🎯 Requirements](#requirements)</kbd> <kbd>[2 · 📐 Design rules](#rules)</kbd> <kbd>[3 · 📏 Contents and sizes](#contents)</kbd> <kbd>[4 · 🔌 Connectors on the housing](#connectors)</kbd> <kbd>[5 · 🧩 Internal layout](#layout)</kbd>
 
@@ -21,7 +21,7 @@ Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md)
 
 - **Holds:** ESP32 board, 2 × RS-232 modules, MAX490 board, UBEC (with jumper, leads, ferrite ring), F1 fuse holder. The five resistors sit on the module pads and ESP32 pins, so there is no extra board.
 - **On the housing:** XT30 for power, DE-9 for the three instruments ([section 4](#connectors)).
-- **F1:** 5 × 20 mm panel holder in the connector wall, fuse replaceable from outside ([power](power.md#protection)).
+- **F1:** 5 × 20 mm panel holder in the connector wall, fuse replaceable from outside ([power](power.md#protection)). Added last, after the rest of the housing is modelled.
 - **Wiring:** connector mating forces must not load solder joints.
 - **UBEC jumper:** must stay at 5 V — a 6 V setting is a hazard ([modules](modules.md#ubec)).
 - **USB:** never together with the UBEC supply; radio unplugged when on USB ([power](power.md#supply)).
@@ -57,7 +57,7 @@ Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md)
 | Ventilation | Narrow slots low and high in the hood side walls; no openings on top |
 | Status light | Small window in the hood over the ESP32 power LED |
 | Markings | Connector names on the connector wall (12 V, instrument DE-9, fuse); owner adds a multicolour logo on the hood later |
-| Shape | Preferred direction, not a fixed rule: narrow and long rather than square or wide; a better layout may differ. Height set once the layout is modelled |
+| Shape | Preferred direction, not a fixed rule: narrow and long rather than square or wide, but not too narrow; a better layout may differ. Height set once the layout is modelled |
 | Size | Space the modules for soldering-iron access and tidy wiring first; review the size once modelled |
 | CAD | Modelled in Fusion, millimetres. Each model's folder in `cad/housing/` holds the editable Fusion archive (`.f3d`, full timeline), a STEP and a print-ready 3MF; the owner's Fusion project keeps the same documents. After a change, export all three again and commit them together |
 
@@ -258,7 +258,16 @@ Use the [STEP model](../../cad/reference/xt30u-m/xt30u-m.step) of the AMASS XT30
 
 ## 5. 🧩 Internal layout
 
-Not designed yet. Constraints from the wiring:
+Layout in progress in Fusion: parts are placed as separate components, then arranged.
+
+| Placed | Notes |
+| --- | --- |
+| Connector side | Plate 69 × 25 × 3 mm with the tested DE-9 and XT30 features, no F1 yet; XT30 and DE-9 reference models fitted |
+
+- **Layout frame:** X along the housing length from the outside face of the connector wall; Y up from the floor top (2.5 mm floor below); Z across, centred.
+- **Plate parameters:** `plate_w`, `plate_h`, `wall_t`, `de9_recess`, `nut_pocket`, `xt30_collar`.
+
+Constraints from the wiring:
 
 - **Short wires:** keep the MAX490 board close to the ESP32's J3 header (RO, DI and GND wires); leave a tie-down point next to the ESP32 for the heat-shrunk R-B1 and R-D.
 - **Grounds:** one bridge ground; route the device signal grounds from the DE-9 to the module grounds ([grounding and loops](power.md#ground)).
