@@ -267,7 +267,15 @@ Use the [STEP model](../../cad/reference/xt30u-m/xt30u-m.step) of the AMASS XT30
 | MAX490 side (+Z) | DE-9 · MAX490 on the floor (terminal edge X = 17, PCB underside 4.5) with the UBEC on a bridge 10 mm above it from X = 28, jumper toward the wall · ferrite ring on edge behind the UBEC output end (X 83–89) |
 
 - **ESP32 holder:** tested USB block B (orange in Fusion), antenna cap A without foot ears (31.9 wide, blue), and a USB clamp UR carrying both RS-232 boards (green). The boards sit turned 90°, one behind the other across the ESP32 between its header rows, 13.8 above the floor (rails to 16.1). One M2.5 screw removes the clamp with both boards.
-- **Clamp arm:** a 6 × 2 mm arm runs from the clamp's free end over the ESP32 module (2.1 mm clear) into a short tunnel on top of the antenna cap's spring bridge (0.2 mm below, 0.3 mm above, 0.2 mm each side). The tunnel holds the free end from above and the sides without loading the spring bridge (cap top 14.9 above the floor).
+- **Clamp arm:** a 6 × 2 mm arm runs from the clamp's free end over the ESP32 module into a short tunnel on top of the antenna cap's spring bridge. It only locates the free end, without loading the spring bridge (cap top 15.4 above the floor). Gaps, sized for print tolerances and the ~0.4 mm lift of the bridge once the ESP32 is fitted:
+
+  | Gap (mm) | Modelled | ESP32 fitted |
+  | --- | --- | --- |
+  | Below the arm | 0.7 | about 0.3 |
+  | Above the arm | 0.3 | about 0.7 |
+  | Each side | 0.35 | 0.35 |
+  | Arm tip to tunnel end | 1.0 | 1.0 |
+
 - **Fitting the clamp:** push the arm tip into the tunnel with the USB end raised, then lower the clamp onto the USB socket and screw it down.
 - **Assembly order:** solder the RS-232 wires on the bench, slide the boards into the clamp, fit the ESP32, then screw the clamp on.
 - **UBEC bridge:** covers the MAX490 header joints and must lift off for soldering there; the UBEC jumper stays reachable from above with the hood off.
