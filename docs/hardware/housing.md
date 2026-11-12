@@ -272,12 +272,31 @@ Use the [STEP model](../../cad/reference/xt30u-m/xt30u-m.step) of the AMASS XT30
 - **Hood shape:** rounded top edges (about R6 on the ESP32 side, R2 on the MAX490 side), a cut-off rear corner on the MAX490 side (empty behind the ring) and a lower hood over the ring area. A curved hood saves little: the tallest items (ESP32 header wire rows, UBEC) sit close to both side walls.
 - **Not modelled yet:** wire routing, MAX490 posts, UBEC bridge, ring wire turns. The UBEC model (24 × 43 × 8) is larger than the catalog size (17 × 43 × 7), so the real unit may free a few millimetres.
 
+### 5.1 Candidate v3: RS-232 slots in the ESP32 holder
+
+Fusion document `Housing layout - compact v3` (a copy of v2), with the holder variant `esp32 holder v2 (RS-232 integrated)`. Inside about 87 × 66 × 20 mm, about 114 cm³ (v2: about 130 cm³); no collisions.
+
+| Change from v2 | Detail |
+| --- | --- |
+| One ESP32 holder | Both RS-232 slot holders joined to the USB block, one on each side of the USB cap; boards end 3 mm in front of the ESP32 PCB edge |
+| ESP32 at the wall | PCB USB edge at X = 25; the RS-232 boards (front end X = 6.3) and the slot rails reach under the XT30 |
+| Antenna cap | Foot ears outside the side walls removed: 31.9 wide instead of 38.5 |
+| XT30 | 4.5 mm higher (body from 11.9 above the floor, clear of the USB cap at 11.35); collar 11 tall instead of 13 |
+| DE-9 | 4.5 mm towards the MAX490 side, clear of the RS-232 slot and in front of the MAX490 terminals |
+| Ferrite ring | Standing on edge behind the UBEC output end (X 83–89) |
+| Plate | `plate_w` 70.5 |
+
+- **Assembly order:** solder the RS-232 wires on the bench, slide the boards into their slots from the ESP32 side, then fit the ESP32. The RS-232 side pads sit about 3 mm from the wall's inner face, under the XT30.
+- **Print risk:** the slot rails now print lying down with the USB block, so the 1.25 mm slot height comes from the 0.2 mm layers instead of X/Y accuracy; needs a fit test.
+- **Length driver:** the ferrite ring (ESP32 column ends at X = 79).
+- **Rounded corners:** the cut-off ears leave the antenna-cap foot ends square; round them when the holder is finalised.
+
 Components in the Fusion layout:
 
 | Component | Source |
 | --- | --- |
 | Connector side | Plate (`plate_w` 67, `plate_h` 25, `wall_t` 3 mm) with the tested DE-9 and XT30 features, no F1 yet; XT30 and DE-9 reference models |
-| ESP32 and holder | Antenna cap, USB block and USB cap derived (linked) from the Fusion `esp32 holder` document, with the ESP32 reference board. The reference model's header pins point down; the real ones point up |
+| ESP32 and holder | Antenna cap, USB block and USB cap derived (linked) from the Fusion `esp32 holder` document, with the ESP32 reference board. Header strips turned so the pins point up as on the real board (compact v2 and v3) |
 | RS-232 module and holder (2×) | Derived (linked) from the Fusion `rs232 slot holder` document, with the reference board |
 | MAX490 board | Linked Fusion document `MAX490 board - CHATGPT` |
 | UBEC (reference) | Repository STEP, body raised 1.5 mm for the jumper pins |
