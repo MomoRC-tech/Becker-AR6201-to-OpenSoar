@@ -17,6 +17,8 @@ Independent PETG prints modelled in Fusion. Start with the 3MF files in the supp
 
 ## ESP32 beam trial
 
+The beam has a 6.2 mm wide rounded spine with an underside rib. It widens at the screw, shield pad and locking tongue. Print it with the broad top face on the bed as supplied.
+
 1. Drop the board between the rounded locating stops onto the 6.5 × 19.5 mm support rib and four 3.5 × 5 mm end pads. The side stops are 3.0 mm thick and tie into widened feet. Check that the board drops in freely, the solder joints clear, and the PCB sits flat. The 3.5 mm gap stays open to the sides and to four 11 × 3.8 mm vents through the floor.
 2. Dry-fit the beam. Insert the rounded tongue high in the slot, then lower it until its tab drops into the recess and the USB end seats on the screw post. Check that a gentle straight pull catches on the tab. To remove the beam, undo the screw and lift the tongue clear of the recess before pulling forward. The receiver has a 3.15 mm roof, 2.75 mm nominal sidewalls and a broad foot. Preview the 9.5 mm slot bridge in the slicer. Verify that the raised beam clears the antenna. The receiver starts 8.2 mm beyond the carrier PCB edge, compared with an antenna overhang of about 6 mm on the reference model.
 3. Measure the gap between the beam and the metal module shield over the centre support. The reference model suggests about 2 mm. Attach a small piece of soft, nonconductive silicone foam to the beam, centred over the support, just thick enough to compress lightly when the beam seats. Check that the pad touches only the shield and the PCB stays flat. With the beam secured, check the board for lift or rocking. Compare Wi-Fi range with the beam fitted and removed.
