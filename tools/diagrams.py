@@ -113,11 +113,14 @@ s.line([(560, 73), (640, 73)], "v5"); s.arrow(600, 73, "right", "v5"); s.tag(600
 s.line([(700, 125), (700, 185)], "v5"); s.arrow(700, 155, "down", "v5"); s.tag(708, 159, "5 V from J2-19", "v5", anchor="start", bold=False, size=11)
 s.box(870, 25, 120, 44, "RS-232-mod1", ["with R-Z"])
 s.box(870, 85, 120, 44, "RS-232-mod2", ["with R-F"])
-s.box(870, 145, 120, 56, "Pull-up R-D", ["GPIO17 (DI)"])
 s.line([(810, 80), (845, 80)], "v33")
 s.line([(845, 47), (845, 173)], "v33")
-for y in (47, 107, 173):
+for y in (47, 107):
     s.line([(845, y), (870, y)], "v33"); s.arrow(860, y, "right", "v33")
+# R-D: pull-up from 3V3 to the MAX490 driver input DI (GPIO17)
+s.line([(845, 173), (940, 173)], "v33"); s.arrow(860, 173, "right", "v33")
+s.resistor(890, 173, "v33"); s.tag(890, 162, "R-D 10 kΩ", "v33")
+s.dot(940, 173, "v33"); s.tag(940, 192, "DI · GPIO17", "v33", bold=False, size=11)
 s.dot(845, 80, "v33"); s.tag(828, 72, "3.3 V", "v33")
 s.legend(285, ["v12", "v5", "v33"], "Arrows show current direction. Grounds and loops: see the ground diagram.")
 s.save("power-supply.svg")
