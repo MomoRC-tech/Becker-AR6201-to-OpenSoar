@@ -32,7 +32,7 @@ Checks on the delivered parts before the bridge is connected to any device. Step
 | 8 | Device connectors | Photos of the installed connectors and exact device models (from Tom) | Confirms the pin views in the wiring tables |
 | 9 | Becker J1 | Installed J1 revision, moulded pin numbers and which pins are already used | Confirms the J1 pins and the J1-21 ground |
 | 10 | Radio noise | No audible noise or squelch opening caused by the bridge | Check in the aircraft |
-| 11 | Power connector fit and retention | Actual XT30 dimensions, printed pocket fit, adhesive compatibility with connector and housing materials, wire support and insulated terminations ([selected arrangement](../hardware/housing.md#connectors)) | Fit-test print and assembly check before final housing design |
+| 11 | Power connector fit and retention | Adhesive compatibility with the XT30 body and PETG, wire support and insulated terminations ([selected arrangement](../hardware/housing.md#connectors)) | Connector-panel print and assembly check |
 | 12 | Supply-cable protection | Owner confirmation of cable length, routing and wire specification; determine protection for the cable upstream of F1 ([power wiring](../hardware/power.md#supply)) | Owner supplies harness details; agree cable protection before aircraft connection |
 | 13 | F1 holder | 5 × 20 mm panel-mount holder on the connector wall is selected; exact holder part, panel cutout, depth behind the panel and wall-thickness range ([housing](../hardware/housing.md#connectors)) | Owner selection before the connector-wall design |
 | 14 | Combined DE-9 instrument connection | Pin assignments for the nine signals; exact mating parts, wire-gauge compatibility, screw threads, backshell, strain relief and housing mounting; identify existing loose conductors and shield termination | Owner selects details; fit and continuity checks before connection |
@@ -59,7 +59,7 @@ Inputs still needed before the housing can be modelled. Selected rules: [housing
 
 | # | Item | What is needed | How it is closed |
 | :-: | --- | --- | --- |
-| 10 | Print dimensions | Measured values replacing the [print starting values](../hardware/housing.md#print-values); XT30 pockets sized on the CAD model until the real connector is measured (item 1) | [Fit test print](../hardware/housing.md#fit-test) |
+| 10 | Print dimensions | Free-fit and snug-fit gaps, smallest feature and bridge length are still [starting values](../hardware/housing.md#print-values) | Check on the first housing print |
 
 ### 2.3 Construction
 
@@ -73,7 +73,7 @@ Inputs still needed before the housing can be modelled. Selected rules: [housing
 
 | # | Item | What is needed | How it is closed |
 | :-: | --- | --- | --- |
-| 1 | Part sizes | Compare the ESP32 with its [CAD reference](../hardware/housing.md#contents): solder-joint height underneath, header spacing, overall length including antenna and USB protrusion, overall height with headers, USB-plug and wiring clearance; measure RS-232 assembled height on both sides and soldered-wire clearance against its CAD reference on the same page; measure the RS-422 board's hole positions, PCB thickness and screw-terminal height against its CAD reference; measure XT30 against its CAD reference; measure the DE-9 jackpost stud length once delivered; measure the UBEC with leads; measure the UBEC ferrite ring (outer and inner diameter, thickness, envelope with its wire turns) to replace its placeholder | Bench measurement |
+| 1 | Part sizes | Compare the ESP32 with its [CAD reference](../hardware/housing.md#contents): solder-joint height underneath, header spacing, overall length including antenna and USB protrusion, overall height with headers, USB-plug and wiring clearance; measure RS-232 assembled height on both sides and soldered-wire clearance against its CAD reference on the same page; measure the RS-422 board's hole positions, PCB thickness and screw-terminal height against its CAD reference; measure the DE-9 jackpost stud length once delivered; measure the UBEC with leads; measure the UBEC ferrite ring (outer and inner diameter, thickness, envelope with its wire turns) to replace its placeholder | Bench measurement |
 
 ---
 

@@ -41,11 +41,10 @@ Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md)
 | Manufacturing | 3D printed on a Bambu Lab P1S in PETG ([section 2.1](#material)) |
 | Split | Shallow base tray (floor, low side walls, full-height connector wall) and a deep hood as the cover; connectors stay on the base when the hood is off |
 | Cover | Hood held by four M3 × 8 stainless A2 cylinder-head screws (ISO 4762), one per corner, heads in counterbores, into ruthex RX-M3x5.7 brass heat-set inserts in corner bosses of the base (S50) |
-| PCB mounting | Snap-fit clips locate and hold every PCB; ribs inside the hood press the PCBs down when it is closed, so vibration loads go into the hood, not the hooks |
-| PCB clips | Printed as separate parts, lying flat so the hooks bend along the layer lines; each clip foot slides into a keyed (dovetail) socket in the floor that positions it and takes the load, a drop of glue only stops it sliding out. A misfitting clip is reprinted without reprinting the housing. Each PCB sits with its underside 2 mm above its tallest underside part; the clip type must not set that height, so no long vertical hooks |
+| PCB mounting | Each PCB type gets its own printed holder, shaped to the board and fixed to the housing floor, so a misfitting holder is reprinted without reprinting the housing. Each PCB sits with its underside at least 2 mm above its tallest underside part. Holders for the MAX490 board, the UBEC and the perfboard: [open items](../project/open-items.md#housing) |
 | ESP32 | Component side up; its pre-soldered header pins point up, and wires are soldered directly to them from above (not replaceable). Lengthwise, antenna at the short end opposite the connectors. Held at its short ends by two blocks glued onto the housing floor on broad feet, with the board underside 4.5 mm above the floor to clear the header solder tails, positioned by a printed gluing jig (a dummy board) while the glue cures. Antenna cap: one piece, printed standing on its antenna-facing side; side walls along both long edges, corner end walls, lips 1.7 mm thick over the bare edge between header strip and module (EN side 1.9 mm, BOOT side 1.5 mm wide), a chamfered ledge under the board, and a spring bridge whose pad reaches 2 mm onto the module shield with 0.3 mm pre-load; the antenna overhang passes through an open window, with the bridge about 3 mm above it. Above the header strips the bridge stays about 1.9 mm clear of the first header pins on each side (estimated from the CAD model), room for the soldered wires. USB end: a screw block with a ledge, two end stops and one boss directly in front of the USB socket; a USB cap covers the top and sides of the socket, presses 0.2 mm onto it and is held by one M2.5 metal screw cut straight into the boss (no insert); the USB socket is not usable with the cap fitted. Rounded outer edges. The board stays captured with the hood off; leave clearance above the header strips and wires |
 | RS-232 modules | Each slides flat into a printed holder of two grooved rails, held by friction on its long edges beside the chip feet; slot 1.25 mm for the 1.15 mm PCB, both pad rows free for soldering |
-| Internal wiring | One snap-fit perfboard carries the RX divider, the pull-ups, the bridge ground point and the 3.3 V / 5 V distribution; wires run from it to the modules |
+| Internal wiring | One perfboard carries the RX divider, the pull-ups, the bridge ground point and the 3.3 V / 5 V distribution; wires run from it to the modules |
 | Access from outside | Connectors and the F1 fuse only. UBEC jumper and the ESP32 EN/BOOT buttons only with the hood off, Micro-USB only with the hood and the ESP32 USB cap off; no USB opening in the hood |
 | Soldering | Every solder joint reachable with all PCBs fitted and the cover off |
 | Connector wall | XT30, DE-9 and the F1 fuse holder together on one short side |
@@ -59,7 +58,7 @@ Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md)
 | Status light | Small window in the hood over the ESP32 power LED |
 | Markings | Connector names on the connector wall (12 V, instrument DE-9, fuse); owner adds a multicolour logo on the hood later |
 | Size | Space the modules for soldering-iron access and tidy wiring first; review the size once modelled |
-| CAD | Modelled in Fusion, millimetres; STEP and print-ready 3MF committed to `cad/housing/`, parametric source kept in the owner's Fusion account |
+| CAD | Modelled in Fusion, millimetres. Each model's folder in `cad/housing/` holds the editable Fusion archive (`.f3d`, full timeline), a STEP and a print-ready 3MF; the owner's Fusion project keeps the same documents. After a change, export all three again and commit them together |
 
 <a id="material"></a>
 
@@ -73,31 +72,28 @@ PETG is selected because the housing sits in the shade. Heat resistance compared
 | ASA | 100 °C | 92 °C | S48 |
 
 - **Keep it in the shade:** PETG is fine well below about 60 °C. Sun through the canopy can heat cockpit parts far above the outside air; focused sunlight has burnt instrument panels (S49).
-- **Loaded features creep first:** snap-fits and the XT30 press fit. If the housing has to move into the sun, switch to ASA (about 30 °C more margin).
+- **Loaded features creep first:** the RS-232 friction slots, the ESP32 bridge spring and the XT30 press fit. If the housing has to move into the sun, switch to ASA (about 30 °C more margin).
 
 <a id="print-values"></a>
 
 ### 2.2 Print starting values
 
-Starting values for PETG on the P1S with a 0.4 mm nozzle and 0.2 mm layers. They are estimates from common FDM practice; the [fit test print](#fit-test) replaces each one with a measured value.
+Values for PETG on the P1S with a 0.4 mm nozzle and 0.2 mm layers. Values marked with a fit test are measured ([section 2.3](#fit-test)); the others are estimates from common FDM practice.
 
 | Feature | Starting value |
 | --- | --- |
 | Walls | Printed solid: enough perimeters to fill the 2.5 mm wall, no infill inside walls |
 | Free fit (part drops in) | 0.2 mm gap per side |
 | Snug fit (PCB in its pocket) | 0.15 mm gap per side on the measured PCB outline |
-| Slot for a PCB edge | PCB thickness + 0.15 mm (fit test: slides in by hand with minor play; the hood ribs take out the rest) |
+| Slot for a PCB edge | PCB thickness + 0.10 mm for a friction hold (RS-232 holder: 1.25 mm slot for the 1.15 mm PCB); + 0.15 mm slides in with minor play |
 | Press fit (XT30) | Pocket = measured body (10.55 × 5.25 mm), no allowance; the print undersize gives the press fit (fit test 2, printed flat: holds ten unplugging pulls, pushes out firmly, no damage) |
 | M2.5 screw directly into PETG | Pilot hole Ø2.2 mm (fit test 2), at least 5 mm thread engagement, at least 2 mm of material around the hole |
 | DE-9 front mount (printed flat) | Flange recess 31.6 × 13.2 × 1.0 mm (snug, flush); rear-body cutout 19.9 × 11.5 mm; flange holes Ø3.4 mm; nut pocket 5.6 mm across flats for the 5.45 mm nuts |
 | M3 screw clearance hole | Ø3.4 mm (fit test: Ø3.3 is the smallest free hole; Ø3.4 leaves alignment margin for the four cover screws) |
-| Snap hook | At least 8 mm long, 1.8 mm thick, 1.0 mm lip over the PCB edge, 0.1 mm gap per side to the PCB, 1 mm fillet at the root (fit test: 1.2 and 1.5 mm too weak; a 0.6 mm lip did not hold; recheck on the separate clips) |
-| Hood hold-down ribs | 0.2 mm interference on the PCB top, ribs 1.2 mm wide so they flex instead of cracking the PCB |
 | Smallest feature | 0.8 mm (two extrusion lines) |
 | Overhangs | Up to 60° from vertical without support; bridges up to 10 mm |
 | Embossed text | 0.6 mm raised, characters 5 mm tall (confirmed by the fit test) |
 
-- **Snap hooks printed standing up** (as on the fit-test coupon) bend across the layer lines, their weakest direction; the separate clips are printed lying flat instead, so the coupon results are on the safe side.
 - **Measured accuracy:** parts print about 0.5 % small in X/Y (0.3 mm over 68 mm), Z true, no elephant foot. No scaling: print the housing with the same filament and settings as the fit test, so the measured fits carry over.
 - **Heat-set insert hole** (ruthex RX-M3x5.7, S50): Ø4.0 mm (confirmed by the fit test), at least 6.7 mm deep (insert length + 1 mm), at least 2.0 mm of material around it (ruthex minimum 1.6 mm).
 
@@ -113,7 +109,7 @@ The fit-test prints are done; their results are the values in [section 2.2](#pri
 | M3 clearance hole | Ø3.3 smallest free, Ø3.4 selected |
 | M2.5 straight into PETG | Pilot hole Ø2.2 mm |
 | Heat-set insert hole | Ø4.0 mm |
-| PCB edge slots | PCB thickness + 0.15 mm; not usable on the ESP32 (solder joints at the long edges) |
+| PCB edge slots | PCB thickness + 0.15 mm slides with minor play; not usable on the ESP32 (solder joints at the long edges) |
 | Snap hooks (standing) | 1.8 mm thick needed, 0.6 mm lip too small; replaced by dedicated holders |
 | Embossed text | 5 mm characters, 0.6 mm raised, readable |
 | XT30 (printed flat) | Pocket = measured body 10.55 × 5.25 mm, chamfer clearance; holds unplugging, glued |
@@ -121,7 +117,7 @@ The fit-test prints are done; their results are the values in [section 2.2](#pri
 | ESP32 holder | Works after two changes: board underside 4.5 mm above the floor (header solder tails), bridge 1 mm narrower on each side at the first header pins |
 | RS-232 holder | Works with the 1.25 mm slot (PCB 1.15 mm): friction hold, slides in by hand |
 
-Current models in `cad/housing/`. Each selected holder keeps an editable Fusion archive (`.f3d`, full timeline), a STEP and a print-ready 3MF; the same designs are also saved in the owner's Fusion project. After changing a design, export all three again and commit them together.
+Current models in `cad/housing/` (files: [CAD rule](#rules)):
 
 | Model | Status |
 | --- | --- |
@@ -241,9 +237,8 @@ Use the [STEP model](../../cad/reference/xt30u-m/xt30u-m.step) of the AMASS XT30
 **XT30 (power)** — electrical side: [power](power.md#supply)
 
 - Male on the housing, female on the powered harness.
-- Press-fit pocket; front shoulder and a hood rib behind capture it ([design rules](#rules)); adhesive optional.
+- Press-fit pocket, markings stop it against the inner wall face, glued in ([design rules](#rules)); pocket size: [print values](#print-values).
 - Support the wires inside so mating forces don't load the solder joints.
-- Before the final pocket: measure the real connector, print a fit-test piece.
 
 **DE-9 (instruments)** — pin use: [signal wiring](wiring.md#overview)
 
@@ -269,7 +264,7 @@ Not designed yet. Constraints from the wiring:
 - **Power path:** XT30 → F1 → UBEC → ESP32 and MAX490 ([supply path](power.md#supply)).
 - **Ferrite ring:** keep its placeholder volume ([section 3](#contents)) at the UBEC's output end (opposite the jumper), on the 5 V lead towards the ESP32; the ring is not modelled in the UBEC CAD reference.
 - **ESP32:** lengthwise, antenna at the far short end; Micro-USB faces the connector end.
-- **Resistors and ground point:** on one snap-fit perfboard ([design rules](#rules)).
+- **Resistors and ground point:** on one perfboard ([design rules](#rules)).
 
 ---
 
