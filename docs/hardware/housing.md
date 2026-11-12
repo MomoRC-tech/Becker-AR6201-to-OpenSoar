@@ -56,7 +56,7 @@ Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md)
 | Attachment | Four slotted ears at the base corners, outside the hood footprint, for cable ties; the hood comes off while the base stays tied in |
 | Ventilation | Narrow slots low and high in the hood side walls; no openings on top |
 | Status light | Small window in the hood over the ESP32 power LED |
-| Markings | Connector names on the connector wall (12 V, instrument DE-9); owner adds a multicolour logo on the hood later |
+| Markings | Raised 0.6 mm on the connector wall's outer face: "12V" in 5 mm characters below the XT30, "INSTR" in 4 mm characters in the strip below the DE-9 flange (4 mm not fit-tested yet); owner adds a multicolour logo on the hood later |
 | Shape | Preferred direction, not a fixed rule: narrow and long rather than square or wide, but not too narrow; a better layout may differ. Height set once the layout is modelled |
 | Size | Space the modules for soldering-iron access and tidy wiring first; review the size once modelled |
 | CAD | Modelled in Fusion, millimetres. Each model's folder in `cad/housing/` holds the editable Fusion archive (`.f3d`, full timeline), a STEP and a print-ready 3MF; the owner's Fusion project keeps the same documents. After a change, export all three again and commit them together |
