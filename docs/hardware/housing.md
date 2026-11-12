@@ -41,8 +41,9 @@ Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md)
 | Manufacturing | 3D printed on a Bambu Lab P1S in PETG ([section 2.1](#material)) |
 | Split | Shallow base tray (floor, low side walls, full-height connector wall) and a deep hood as the cover; connectors stay on the base when the hood is off |
 | Cover | Hood held by four M3 × 8 stainless A2 cylinder-head screws (ISO 4762), one per corner, heads in counterbores, into ruthex RX-M3x5.7 brass heat-set inserts in corner bosses of the base (S50) |
-| PCB mounting | Snap-fits locate and hold every PCB; ribs inside the hood press the PCBs down when it is closed, so vibration loads go into the hood, not the hooks |
-| ESP32 | Component side up; its pre-soldered header pins point up, and wires are soldered directly to them from above (not replaceable). Lengthwise, antenna at the short end opposite the connectors. Held at its short ends only (the header solder joints leave no free long edge): rests on two ledges clear of the solder joints underneath, USB end in a pocket, antenna end under one snap hook; hood ribs press on both header strips |
+| PCB mounting | Snap-fit clips locate and hold every PCB; ribs inside the hood press the PCBs down when it is closed, so vibration loads go into the hood, not the hooks |
+| PCB clips | Printed as separate parts, lying flat so the hooks bend along the layer lines; each clip foot slides into a keyed (dovetail) socket in the floor that positions it and takes the load, a drop of glue only stops it sliding out. A misfitting clip is reprinted without reprinting the housing |
+| ESP32 | Component side up; its pre-soldered header pins point up, and wires are soldered directly to them from above (not replaceable). Lengthwise, antenna at the short end opposite the connectors. Held at its short ends only (the header solder joints leave no free long edge): rests on a ledge in the middle of each short end (the header solder joints sit at the corners underneath); USB end in a pocket clip with a notch for the USB socket; antenna end under two narrow hooks on the bare edge between the header strips and the module, no plastic over or around the antenna; hood ribs press on both header strips |
 | Internal wiring | One snap-fit perfboard carries the RX divider, the pull-ups, the bridge ground point and the 3.3 V / 5 V distribution; wires run from it to the modules |
 | Access from outside | Connectors and the F1 fuse only. Micro-USB, UBEC jumper and the ESP32 EN/BOOT buttons only with the hood off; no USB opening in the hood |
 | Soldering | Every solder joint reachable with all PCBs fitted and the cover off |
@@ -93,7 +94,7 @@ Starting values for PETG on the P1S with a 0.4 mm nozzle and 0.2 mm layers. They
 | Overhangs | Up to 60° from vertical without support; bridges up to 10 mm |
 | Embossed text | 0.6 mm raised, characters 5 mm tall (confirmed by the fit test) |
 
-- **Snap hooks standing up from the base** bend across the layer lines, their weakest direction. Keep the deflection small and the root fillet generous.
+- **Snap hooks printed standing up** (as on the fit-test coupon) bend across the layer lines, their weakest direction; the separate clips are printed lying flat instead, so the coupon results are on the safe side.
 - **Measured accuracy:** parts print about 0.5 % small in X/Y (0.3 mm over 68 mm), Z true, no elephant foot. No scaling: print the housing with the same filament and settings as the fit test, so the measured fits carry over.
 - **Heat-set insert hole** (ruthex RX-M3x5.7, S50): Ø4.0 mm, at least 6.7 mm deep (insert length + 1 mm), at least 2.0 mm of material around it (ruthex minimum 1.6 mm).
 
