@@ -274,6 +274,28 @@ Layout in progress in Fusion: parts are placed as separate components, then arra
 - **Interference check:** no part collisions except the intended holder contacts and the UBEC output lead entering the ferrite ring; the ESP32 reference model's downward header pins also cut into the holders (model artefact).
 - **Plate parameters:** `plate_w`, `plate_h`, `wall_t`, `de9_recess`, `nut_pocket`, `xt30_collar`.
 
+### 5.1 Compact layout candidates
+
+"Housing layout" stays the untouched master; each candidate is a copy in the same Fusion folder. Sizes are inside dimensions from the wall's inner face, measured from the parts in Fusion; the 20 mm height is an estimate for the ESP32 header wires.
+
+| Fusion document | Arrangement | Inside L × W × H (mm) | Volume |
+| --- | --- | --- | ---: |
+| Housing layout (master) | Single layer; MAX490 and UBEC side by side, ESP32 and RS-232 behind | 126 × 63 × 20 | ~158 cm³ |
+| Housing layout - compact v1 | Two columns; MAX490 on a deck over the UBEC, ring under the MAX490 header, RS-232 pair at the end | 109 × 66 × 20, 24 over the terminal block | ~146 cm³ |
+| Housing layout - compact v2 | Two columns; MAX490 on the floor with the UBEC on a bridge over its body, ring behind; RS-232 pair in front of the ESP32 | 105 × 62 × 20 | ~130 cm³ |
+
+v2 in detail:
+
+| Column | Parts, from the connector wall |
+| --- | --- |
+| ESP32 side (−Z) | XT30 · RS-232 pair side by side · ESP32 (USB edge X = 53.7, antenna at the far end, X = 108) |
+| MAX490 side (+Z) | DE-9 · MAX490 (terminal edge X = 17) with the UBEC 10 mm above it from X = 28, jumper toward the wall · ferrite ring |
+
+- **Gains:** no part above 18 mm, so the hood needs no raised section; UBEC jumper reachable from above; antenna end free; the ESP32 column sits 4.5 mm into the MAX490 column beside the narrow ESP32 board, only its antenna cap is full width.
+- **Costs:** the UBEC bridge covers the MAX490 header joints, so the bridge must lift off; XT30 wires cross over the RS-232 pair to the UBEC.
+- **Hood shape:** a curved hood saves little, because the tallest items (ESP32 header wire rows, UBEC) sit close to both side walls. Worth taking: rounded top edges (about R6 on the ESP32 side, R2 on the MAX490 side), a cut-off rear corner on the MAX490 side (empty behind the ring), and a lower hood over the ring area.
+- **Not modelled:** wire routing, the MAX490 posts and UBEC bridge, ring wire turns. The UBEC model (24 × 43 × 8) is larger than the catalog size (17 × 43 × 7), so the real unit may free a few millimetres.
+
 Constraints from the wiring:
 
 - **Short wires:** keep the MAX490 board close to the ESP32's J3 header (RO, DI and GND wires); leave a tie-down point next to the ESP32 for the heat-shrunk R-B1 and R-D.
