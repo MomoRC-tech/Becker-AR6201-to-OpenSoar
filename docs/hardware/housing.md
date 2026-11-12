@@ -7,7 +7,7 @@
 Mechanical design of the bridge: what goes inside, part sizes, connectors on the housing, internal layout.
 
 > [!NOTE]
-> **Status:** design rules selected ([section 2](#rules)). The [layout concept](#layout) is for review before CAD. Remaining inputs are in [open items](../project/open-items.md#housing).
+> **Status:** not modelled yet. Design rules, material and wall thickness selected ([section 2](#rules)); remaining inputs: [open items](../project/open-items.md#housing).
 
 📑 **On this page:** <kbd>[1 · 🎯 Requirements](#requirements)</kbd> <kbd>[2 · 📐 Design rules](#rules)</kbd> <kbd>[3 · 📏 Contents and sizes](#contents)</kbd> <kbd>[4 · 🔌 Connectors on the housing](#connectors)</kbd> <kbd>[5 · 🧩 Internal layout](#layout)</kbd>
 
@@ -264,13 +264,7 @@ Use the [STEP model](../../cad/reference/xt30u-m/xt30u-m.step) of the AMASS XT30
 
 ## 5. 🧩 Internal layout
 
-The proposed layout uses a single-layer tray with the ESP32 and MAX490 side by side. The example shell is **150 × 98 × 30 mm**, excluding tie-down ears and connector protrusions. The F1 reserve and the **23 × 15 mm** perfboard are placeholders.
-
-![Top view with hood removed, showing the connector wall, all module positions, service reserves and the Wi-Fi antenna](../images/housing-top-concept.svg)
-
-![Assembled view from the connector end, showing the DE-9, F1 and XT30 on one wall, side vents and tie-down ears](../images/housing-assembled-concept.svg)
-
-Placement constraints from the wiring:
+Not designed yet. Constraints from the wiring:
 
 - **Short wires:** RO → divider → GPIO16 and the pull-ups sit between the MAX490 board and the ESP32.
 - **Grounds:** one bridge ground; route the device signal grounds from the DE-9 to the module grounds ([grounding and loops](power.md#ground)).
