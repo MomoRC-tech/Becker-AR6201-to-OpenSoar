@@ -44,6 +44,7 @@ Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md)
 | PCB mounting | Snap-fit clips locate and hold every PCB; ribs inside the hood press the PCBs down when it is closed, so vibration loads go into the hood, not the hooks |
 | PCB clips | Printed as separate parts, lying flat so the hooks bend along the layer lines; each clip foot slides into a keyed (dovetail) socket in the floor that positions it and takes the load, a drop of glue only stops it sliding out. A misfitting clip is reprinted without reprinting the housing. Each PCB sits with its underside 2 mm above its tallest underside part; the clip type must not set that height, so no long vertical hooks |
 | ESP32 | Component side up; its pre-soldered header pins point up, and wires are soldered directly to them from above (not replaceable). Lengthwise, antenna at the short end opposite the connectors. Held at its short ends by two blocks glued onto the housing floor on broad feet, with the board underside 4.5 mm above the floor to clear the header solder tails, positioned by a printed gluing jig (a dummy board) while the glue cures. Antenna cap: one piece, printed standing on its antenna-facing side; side walls along both long edges, corner end walls, lips 1.7 mm thick over the bare edge between header strip and module (EN side 1.9 mm, BOOT side 1.5 mm wide), a chamfered ledge under the board, and a spring bridge whose pad reaches 2 mm onto the module shield with 0.3 mm pre-load; the antenna overhang passes through an open window, with the bridge about 3 mm above it. Above the header strips the bridge stays about 1.9 mm clear of the first header pins on each side (estimated from the CAD model), room for the soldered wires. USB end: a screw block with a ledge, two end stops and one boss directly in front of the USB socket; a USB cap covers the top and sides of the socket, presses 0.2 mm onto it and is held by one M2.5 metal screw cut straight into the boss (no insert); the USB socket is not usable with the cap fitted. Rounded outer edges. The board stays captured with the hood off; leave clearance above the header strips and wires |
+| RS-232 modules | Each slides flat into a printed holder of two grooved rails, held by friction on its long edges beside the chip feet; slot 1.25 mm for the 1.15 mm PCB, both pad rows free for soldering |
 | Internal wiring | One snap-fit perfboard carries the RX divider, the pull-ups, the bridge ground point and the 3.3 V / 5 V distribution; wires run from it to the modules |
 | Access from outside | Connectors and the F1 fuse only. UBEC jumper and the ESP32 EN/BOOT buttons only with the hood off, Micro-USB only with the hood and the ESP32 USB cap off; no USB opening in the hood |
 | Soldering | Every solder joint reachable with all PCBs fitted and the cover off |
@@ -117,23 +118,18 @@ The fit-test prints are done; their results are the values in [section 2.2](#pri
 | Embossed text | 5 mm characters, 0.6 mm raised, readable |
 | XT30 (printed flat) | Pocket = measured body 10.55 × 5.25 mm, chamfer clearance; holds unplugging, glued |
 | DE-9 front mount (printed flat) | Recess 31.6 × 13.2 × 1.0 mm snug and flush, cutout 19.9 × 11.5 mm, holes Ø3.4 mm, nut pockets 5.6 mm |
-| ESP32 holder | Fits; at the antenna end the header solder tails touched the base, so the board seat is raised 1 mm in both end blocks; the bridge between the first header pins is 1 mm narrower on each side |
-| RS-232 slot holder | Fits |
+| ESP32 holder | Works after two changes: board underside 4.5 mm above the floor (header solder tails), bridge 1 mm narrower on each side at the first header pins |
+| RS-232 holder | Works with the 1.25 mm slot (PCB 1.15 mm): friction hold, slides in by hand |
 
-Current models in `cad/housing/`:
+Current models in `cad/housing/`. Each selected holder keeps an editable Fusion archive (`.f3d`, full timeline), a STEP and a print-ready 3MF; the same designs are also saved in the owner's Fusion project. After changing a design, export all three again and commit them together.
 
 | Model | Status |
 | --- | --- |
-| [ESP32 holder](../../cad/housing/esp32-holder/README.md): antenna cap, USB block, USB cap, gluing jig | Board seat raised 1 mm, bridge narrowed at the pins; reprint the antenna cap and the USB block |
+| [ESP32 holder](../../cad/housing/esp32-holder/README.md): antenna cap, USB block, USB cap, gluing jig | Tested, selected |
+| [RS-232 holder](../../cad/housing/rs232-holder/README.md): grooved two-rail slot holder, 1.25 mm slot | Tested, selected; two needed |
 | [Connector panel](../../cad/housing/connector-panel/README.md): DE-9, XT30, space for F1 | Updated to the measured values; prints flat, front face down |
-| RS-232 holder | See below |
 
-- [ ] **ESP32 holder:** fit the jig into the antenna cap like a board (EN side at the wide lip), set the USB block under its USB end and screw the USB cap on over the dummy socket; everything sits square without force. Then the real board: slides into the cap, lower the USB end, cap screwed down; no rattle, the bridge pad presses the shield lightly, the lips do not break.
 - [ ] **Connector panel:** XT30 front first from the back until the markings stop it, DE-9 from the front into the flush recess, nuts in the pockets; mate both plugs and check backshell and tool clearance.
-
-**Fit test 4:** [RS-232 slot holder](../../cad/housing/fit-test-4/README.md) (two pieces, about 0.7 cm³, printed standing, without supports).
-
-- [ ] **RS-232 slot holder (A 1.20 slot, B 1.25 slot):** slide the board in flat from either end. Pick the slot that holds the board tight by friction, slides in by hand without forcing and does not crack the lips. Both pad rows overhang the rails in free air; solder a test wire to an end pad with the board fitted and check the PETG stays undamaged.
 
 ### 2.4 Later optimizations
 

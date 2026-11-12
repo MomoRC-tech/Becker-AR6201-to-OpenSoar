@@ -1,9 +1,10 @@
 # ESP32 holder
 
-Holds the ESP32 at its short ends: two end blocks glued onto the housing floor, a USB cap with one screw, and a gluing jig. Rules: [housing § 2](../../../docs/hardware/housing.md#rules); checks: [§ 2.3](../../../docs/hardware/housing.md#fit-test). Built in Autodesk Fusion through MCP, 2026-11-12; these exports are the repository copies.
+Holds the ESP32 at its short ends: two end blocks glued onto the housing floor, a USB cap with one screw, and a gluing jig. Rules: [housing § 2](../../../docs/hardware/housing.md#rules); checks: [§ 2.3](../../../docs/hardware/housing.md#fit-test). Built in Autodesk Fusion through MCP, 2026-11-12; tested and selected.
 
 | File | Use |
 | --- | --- |
+| `esp32-holder.f3d` | Editable Fusion archive with the full timeline; open with *File › Open › Open from my computer* |
 | `esp32-holder.3mf` | Print-ready mesh (high refinement), four pieces in print orientation |
 | `esp32-holder.step` | Solid model for checking dimensions or re-slicing |
 
