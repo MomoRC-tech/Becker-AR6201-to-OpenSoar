@@ -49,13 +49,13 @@ Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md)
 | Connector wall | XT30, DE-9 and the F1 fuse holder together on one short side |
 | XT30 | Press fit positions it; a shoulder in front and a hood rib behind capture it, so unplugging cannot pull it out; glue optional |
 | DE-9 | Rigid mount from inside: flange against the inner wall face, wall thinned locally around the cutout to suit the jackpost thread, jackposts (UNC 4-40) into nuts in printed pockets; the cable plug locks onto the jackposts |
-| Walls | 2.5 mm side walls, floor and cover; 3.5 mm connector wall (DE-9 screws, XT30 press fit); at least 2.0 mm of material around each M3 heat-set insert |
+| Walls | 2.5 mm side walls, floor and cover; 3.0 mm connector wall (DE-9 screws, XT30 press fit); at least 2.0 mm of material around each M3 heat-set insert |
 | Edges | Rounded outside edges and corners, no sharp corners |
 | Location | Shaded spot in the cockpit, out of direct sun through the canopy |
 | Attachment | Four slotted ears at the base corners, outside the hood footprint, for cable ties; the hood comes off while the base stays tied in |
 | Ventilation | Narrow slots low and high in the hood side walls; no openings on top |
 | Status light | Small window in the hood over the ESP32 power LED |
-| Markings | Connector names on the connector wall (12 V, instrument DE-9, fuse); owner adds a multicolour logo on the hood later |
+| Markings | None, except a multicolour logo the owner adds on the hood later |
 | Size | Space the modules for soldering-iron access and tidy wiring first; review the size once modelled |
 | CAD | Modelled in Fusion, millimetres; STEP and print-ready 3MF committed to `cad/housing/`, parametric source kept in the owner's Fusion account |
 
@@ -90,8 +90,8 @@ Starting values for PETG on the P1S with a 0.4 mm nozzle and 0.2 mm layers. They
 | Snap hook | At least 8 mm long, 1.5 mm thick, 0.6 mm undercut over the PCB edge, 1 mm fillet at the root |
 | Hood hold-down ribs | 0.2 mm interference on the PCB top, ribs 1.2 mm wide so they flex instead of cracking the PCB |
 | Smallest feature | 0.8 mm (two extrusion lines) |
-| Overhangs | Up to 45° without support; bridges up to 10 mm |
-| Embossed text | 0.6 mm high or deep, characters at least 5 mm tall |
+| Overhangs | Up to 60° from vertical without support; bridges up to 10 mm |
+| Embossed detail (logo) | 0.6 mm high or deep, lines at least 0.8 mm wide |
 
 - **Snap hooks standing up from the base** bend across the layer lines, their weakest direction. Keep the deflection small and the root fillet generous.
 - **Heat-set insert hole** (ruthex RX-M3x5.7, S50): Ø4.0 mm, at least 6.7 mm deep (insert length + 1 mm), at least 2.0 mm of material around it (ruthex minimum 1.6 mm).
@@ -111,10 +111,9 @@ One small PETG coupon, printed before the housing is modelled: [print files and 
 - [ ] **PCB edge slots (D):** measure both PCB thicknesses first. Push each PCB edge into its four slots (+0.1 to +0.4 mm). Pick the tightest that slides in by hand and does not rattle when shaken.
 - [ ] **Snap hooks (E + F):** press plate F down into each hook pair (1.2, 1.5, 1.8 mm). Pick the one that snaps in by thumb, holds without play and shows no whitening or crack at the root after ten in-and-out cycles.
 - [ ] **XT30 pockets (B):** press the XT30 in from the back until its rib stops (0.05, 0.10, 0.15 mm interference). Pick the tightest that goes fully in by hand or a gentle vise squeeze without splitting the wall; then mate and pull the female plug ten times, the male must not move.
-- [ ] **DE-9 cutout (A):** pass the socket through from the inside face (the face without "12V"). The shell must not rub and the flange must sit flat.
-- [ ] **DE-9 mating (A):** with the socket held in place, plug in the male cable plug from outside. It must seat fully, as on the bare socket; if the wall stops it short, measure how far it goes in.
-- [ ] **Jackposts (A):** fit both jackposts with their nuts behind the flange. Note which hole (Ø3.1 / 3.3) the thread passes, and whether the nut gets a full grip through the 3.5 mm wall or only through the 1.6 mm recess.
-- [ ] **Embossed text (A):** "12V", 5 mm high, raised 0.6 mm; check it reads clearly at arm's length.
+- [ ] **DE-9 cutout (A):** pass the socket through from the inside face (the face without the raised "12V"). The shell must not rub and the flange must sit flat.
+- [ ] **DE-9 mating (A):** with the socket held in place, plug in the male cable plug from outside. It must seat fully, as on the bare socket; if the wall stops it short, measure how far it goes in (the 3.0 mm housing wall gives 0.5 mm more than the coupon).
+- [ ] **Jackposts (A):** fit both jackposts with their nuts behind the flange. Note which hole (Ø3.1 / 3.3) the thread passes, and whether the nut gets a full grip through the coupon's 3.5 mm wall (the housing gets 3.0 mm) or only through the 1.6 mm recess.
 - [ ] **Insert holes (C), last:** press one insert into each hole (Ø3.9, 4.0, 4.1 mm) with the iron at ruthex's PETG temperature, straight and flush. When cold, tighten the M3×8 firmly with the hex key. Pick the hole where the insert went in straight, does not turn or pull out, and the 2 mm boss wall did not crack or bulge.
 
 ### 2.4 Later optimizations
