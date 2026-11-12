@@ -128,7 +128,7 @@ Sizes from owner measurements, seller listings or datasheets; see the source col
 | RS-422 board (MAX490) | 1 | 50 × 27 | S34 | Screw terminals A/B/Y/Z on one edge, header on the other |
 | UBEC (Hobbywing 3A) | 1 | 43 × 17 × 7 (catalog); body about 35 × 12 × 5 | S14 | Plus jumper, leads, ferrite ring |
 | F1 fuse holder | 1 | Open | — | Format not selected yet |
-| XT30 male, panel | 1 | To measure | — | Press-fit pocket ([section 4](#connectors)) |
+| XT30 male, panel | 1 | 10.25 × 5.25 × 12.5 body; 15.5 long with solder cups (CAD model) | S51 | Press-fit pocket ([section 4](#connectors)) |
 | DE-9 female socket | 1 | Standard D-sub shell | — | Exact part open |
 | Resistors (divider, pull-ups) | 5 | Small | — | R-B1, R-B2, R-Z, R-F, R-D |
 
@@ -182,6 +182,22 @@ Use the [STEP model](../../cad/reference/rs422-to-ttl-max490/rs422-to-ttl-max490
 
 - Model axes: X = width, Y = length (terminal edge Y = 0, header edge Y = 50), Z = up; PCB underside Z = 0, pins below reach Z = −2.5.
 - Measure the mounting holes, PCB thickness and terminal height before sizing the mount ([open items](../project/open-items.md#housing)).
+
+### 3.5 XT30 CAD reference
+
+Use the [STEP model](../../cad/reference/xt30u-m/xt30u-m.step) of the AMASS XT30U-M (male, solder cups) for the pocket design; [attribution and license](../../cad/reference/xt30u-m/README.md) (S51).
+
+| Dimension | CAD model (mm) |
+| --- | ---: |
+| Body cross-section | 10.25 × 5.25 |
+| Rib around the body (9.0–11.0 from the front) | 10.45 wide |
+| Body length | 12.5 |
+| Solder cups beyond the body | 3.0 |
+| Overall length with cups | 15.5 |
+| Solder cup diameter / centre spacing | 2.0 / 5.0 |
+
+- Model axes: Z = length, solder cups at +Z.
+- Measure the real connector against this table before the final pocket; allow separately for wires and heat-shrink on the cups.
 
 ---
 

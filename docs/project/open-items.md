@@ -59,7 +59,7 @@ Inputs still needed before the housing can be modelled. Selected rules: [housing
 
 | # | Item | What is needed | How it is closed |
 | :-: | --- | --- | --- |
-| 10 | Print dimensions | Measured values replacing the [print starting values](../hardware/housing.md#print-values); needs the measured XT30 body (item 1) for the press-fit pockets | [Fit test print](../hardware/housing.md#fit-test) |
+| 10 | Print dimensions | Measured values replacing the [print starting values](../hardware/housing.md#print-values); XT30 pockets sized on the CAD model until the real connector is measured (item 1) | [Fit test print](../hardware/housing.md#fit-test) |
 
 ### 2.3 Construction
 
@@ -73,7 +73,7 @@ Inputs still needed before the housing can be modelled. Selected rules: [housing
 
 | # | Item | What is needed | How it is closed |
 | :-: | --- | --- | --- |
-| 1 | Part sizes | Compare the ESP32 with its [CAD reference](../hardware/housing.md#contents): PCB thickness, header spacing, overall length including antenna and USB protrusion, overall height with headers, USB-plug and wiring clearance; measure RS-232 PCB thickness, assembled height on both sides and soldered-wire clearance against its CAD reference on the same page; measure the RS-422 board's hole positions, PCB thickness and screw-terminal height against its CAD reference; measure XT30, DE-9 socket and UBEC with leads | Bench measurement |
+| 1 | Part sizes | Compare the ESP32 with its [CAD reference](../hardware/housing.md#contents): PCB thickness, header spacing, overall length including antenna and USB protrusion, overall height with headers, USB-plug and wiring clearance; measure RS-232 PCB thickness, assembled height on both sides and soldered-wire clearance against its CAD reference on the same page; measure the RS-422 board's hole positions, PCB thickness and screw-terminal height against its CAD reference; measure XT30 against its CAD reference; measure DE-9 socket and UBEC with leads | Bench measurement |
 
 ---
 

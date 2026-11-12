@@ -1,0 +1,2 @@
+# Preserve third-party CAD exports byte-for-byte; suppress generated geometry diffs.
+*.step binary
