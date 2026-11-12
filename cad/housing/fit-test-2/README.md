@@ -1,13 +1,13 @@
 # Fit test 2
 
-Second PETG fit-test print: the XT30 and DE-9 pieces redesigned on the measured connectors, the first trial of separate PCB clips, and the ESP32 holder. Described in [housing § 2.3](../../../docs/hardware/housing.md#fit-test). Built in Autodesk Fusion through MCP, 2026-11-12; these exports are the repository copies.
+Second PETG fit-test print: the XT30 and DE-9 pieces redesigned on the measured connectors and the first trial of separate PCB clips, plus the M2.5 pilot-hole test. The ESP32 holder tried here is superseded by [fit test 3](../fit-test-3/README.md). Described in [housing § 2.3](../../../docs/hardware/housing.md#fit-test). Built in Autodesk Fusion through MCP, 2026-11-12; these exports are the repository copies.
 
 | File | Use |
 | --- | --- |
-| `fit-test-2.3mf` | Print-ready mesh (high refinement), fifteen separate pieces |
+| `fit-test-2.3mf` | Print-ready mesh (high refinement), twelve separate pieces |
 | `fit-test-2.step` | Solid model for checking dimensions or re-slicing |
 
-- Units: millimetres; Z is the print direction. Print every piece as placed, without supports; about 13 cm³ in total.
+- Units: millimetres; Z is the print direction. Print every piece as placed, without supports; about 10 cm³ in total.
 - The clips look alike: mark each with a pen as it comes off the plate (layout below, left to right in the clip row).
 
 | Piece | Size (mm) | Tests | Variants |
@@ -22,8 +22,6 @@ Second PETG fit-test print: the XT30 and DE-9 pieces redesigned on the measured 
 | C5 | 8 long | Fixed lip, 1.2 mm PCB | Slot 1.3 |
 | C6 | 16 long | Sideways arm 1.2 mm, 1.2 mm PCB | — |
 | C7 | 16 long | Sideways arm 1.5 mm, 1.2 mm PCB | — |
-| L ESP32 holder | 59.5 × 32.5 frame, 8 high | Holds the real ESP32 (48.5 × 28.5) | Ledge in the middle of each short end, PCB underside 3.5 above the floor; antenna end: two fixed corner pockets, lips 1.4 wide reaching 1.0 onto the PCB beside the module, window for the module overhang; USB end: two screw bosses with Ø2.1 pilot holes, 0.2 below the PCB top so the tabs press down, 0.3 gap to the board edge as end stop |
-| T1, T2 keeper tabs | 7.7 × 6.5 × 2.0 | ESP32 USB-end keeper | Ø2.8 clearance hole for M2.5; the tab reaches 1.2 onto the PCB in front of EN/BOOT |
 | M pilot holes | 20 × 6.5 × 8 block | M2.5 screw straight into PETG | Pilot holes Ø2.0 / 2.1 / 2.2, 7 deep |
 
 Common to all clips: PCB underside 3.0 mm above the floor (trial value), ledge 1.5 mm under the PCB edge, dovetail tongue 4 mm high in a socket with 0.2 mm clearance per side. The sideways arm springs parallel to the floor, so its length does not set the PCB height.

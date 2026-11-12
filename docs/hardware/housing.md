@@ -120,7 +120,7 @@ One small PETG coupon, printed before the housing is modelled: [print files and 
 - [x] **Embossed text (A):** "12V", 5 mm high, raised 0.6 mm on a vertical face; reads clearly.
 - [x] **Insert holes (C):** Ø4.0 mm works best.
 
-**Fit test 2:** [print files and piece map](../../cad/housing/fit-test-2/README.md) (fifteen small pieces, about 13 cm³, print without supports).
+**Fit test 2:** [print files and piece map](../../cad/housing/fit-test-2/README.md) (twelve small pieces, about 10 cm³, print without supports).
 
 - [x] **XT30 (G):** the 0.00 pocket (= measured body) fits; holds ten pulls, pushes out firmly, no damage. Glued in against plugging-in force.
 - [x] **DE-9 flange and cutout (H):** recess snug and flush, cutout passes.
@@ -129,7 +129,6 @@ One small PETG coupon, printed before the housing is modelled: [print files and 
 - [ ] **Clips on plate F (J):** try fixed lip C1 + arm C2, C1 + C3, and the pair C3 + C4. Pick the combination that snaps in by thumb, holds without play and comes out again without breaking.
 - [ ] **Clips on an RS-232 board (K):** same with C5 + C6 and C5 + C7, across the board's 9.2 mm width.
 - [x] **M2.5 pilot holes (M):** Ø2.2 mm fits best.
-- [x] **ESP32 holder (L, T1, T2):** board flat, no rattle, buttons and USB free. Changes: lips 0.5 mm wider and thicker, a spring bridge over the module shield, one keeper bar with one screw instead of two tabs.
 
 **Fit test 3:** [ESP32 holder v3](../../cad/housing/fit-test-3/README.md) (four pieces, about 3.8 cm³, print without supports).
 
