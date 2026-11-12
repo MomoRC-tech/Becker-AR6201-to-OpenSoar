@@ -48,7 +48,7 @@ Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md)
 | Access from outside | Connectors and the F1 fuse only. Micro-USB, UBEC jumper and the ESP32 EN/BOOT buttons only with the hood off; no USB opening in the hood |
 | Soldering | Every solder joint reachable with all PCBs fitted and the cover off |
 | Connector wall | XT30, DE-9 and the F1 fuse holder together on one short side |
-| XT30 | Inserted front first from inside; press fit on the flat faces, with clearance at the chamfered corners; the raised markings stop against the inner wall face, so unplugging cannot pull it out; a hood rib or clamp behind it stops plugging-in from pushing it into the housing; glue optional |
+| XT30 | Inserted front first from inside; press fit on the flat faces, with clearance at the chamfered corners; the raised markings stop against the inner wall face, so unplugging cannot pull it out; glued in, so plugging-in cannot push it into the housing |
 | DE-9 | Male connector (pins) on the housing, mounted from the front: flange set flush into a recess in the outer wall face, rear body through a rectangular cutout; jackposts (UNC 4-40) through flange and wall into nuts in printed pockets inside, wall thinned locally around the nuts if the thread is too short; the female cable connector locks onto the jackposts |
 | Walls | 2.5 mm side walls, floor and cover; 3.0 mm connector wall (DE-9 screws, XT30 press fit); at least 2.0 mm of material around each M3 heat-set insert |
 | Edges | Rounded outside edges and corners, no sharp corners |
@@ -121,7 +121,7 @@ One small PETG coupon, printed before the housing is modelled: [print files and 
 
 **Fit test 2:** [print files and piece map](../../cad/housing/fit-test-2/README.md) (fifteen small pieces, about 13 cm³, print without supports).
 
-- [x] **XT30 (G):** the 0.00 pocket (= measured body) fits; holds ten pulls, pushes out firmly, no damage. Needs a stop behind it.
+- [x] **XT30 (G):** the 0.00 pocket (= measured body) fits; holds ten pulls, pushes out firmly, no damage. Glued in against plugging-in force.
 - [ ] **DE-9 flange and cutout (H):** connector from the outside; the flange sits flush in its recess and the rear body passes the cutout without force; the XT30 and DE-9 pieces print lying flat, so their fits apply to a connector wall printed flat.
 - [ ] **DE-9 holes (H):** an M3 screw stands in for the 4-40 jackpost; note which hole (Ø3.2 / 3.4) it passes. Nut grip once the jackposts arrive.
 - [ ] **Clip sockets (J, K):** each clip drops into its socket by hand, sits without wobble and cannot be pulled straight up.
