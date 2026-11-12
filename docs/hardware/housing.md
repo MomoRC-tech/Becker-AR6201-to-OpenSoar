@@ -119,7 +119,7 @@ One small PETG coupon, printed before the housing is modelled: [print files and 
 - [x] **Embossed text (A):** "12V", 5 mm high, raised 0.6 mm on a vertical face; reads clearly.
 - [x] **Insert holes (C):** Ø4.0 mm works best.
 
-**Fit test 2:** [print files and piece map](../../cad/housing/fit-test-2/README.md) (eleven small pieces, about 10 cm³, print without supports).
+**Fit test 2:** [print files and piece map](../../cad/housing/fit-test-2/README.md) (fifteen small pieces, about 13 cm³, print without supports).
 
 - [ ] **XT30 (G):** press the connector in front first from the back face until the markings stop it; pick the tightest of the four pockets that goes fully in and does not move when the female plug is pulled ten times.
 - [ ] **DE-9 flange and cutout (H):** connector from the outside; the flange sits flush in its recess and the rear body passes the cutout without force; check the cutout top for bridge sag.
@@ -127,6 +127,8 @@ One small PETG coupon, printed before the housing is modelled: [print files and 
 - [ ] **Clip sockets (J, K):** each clip drops into its socket by hand, sits without wobble and cannot be pulled straight up.
 - [ ] **Clips on plate F (J):** try fixed lip C1 + arm C2, C1 + C3, and the pair C3 + C4. Pick the combination that snaps in by thumb, holds without play and comes out again without breaking.
 - [ ] **Clips on an RS-232 board (K):** same with C5 + C6 and C5 + C7, across the board's 9.2 mm width.
+- [ ] **M2.5 pilot holes (M):** screw an M2.5 into each hole (Ø2.0 / 2.1 / 2.2) and tighten firmly; pick the one that cuts its thread without cracking and does not strip.
+- [ ] **ESP32 holder (L, T1, T2):** slide the antenna end under the corner pockets, lower the USB end onto its ledge and screw both tabs down. The board sits flat, does not rattle, the buttons and USB socket stay free, and the module overhang does not touch the holder.
 
 ### 2.4 Later optimizations
 
