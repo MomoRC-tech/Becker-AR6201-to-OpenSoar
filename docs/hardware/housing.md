@@ -112,7 +112,7 @@ One small PETG coupon, printed before the housing is modelled: [print files and 
 - [x] **M3 clearance holes (C):** screw Ø2.9 mm; Ø3.2 snug, Ø3.3 and larger free. Selected Ø3.4.
 - [x] **PCB edge slots (D):** RS-232 (1.15 mm) in the 1.3 slot and a 1.55 mm test board in the 1.7 slot: both slide in by hand with minor play. The ESP32's header solder joints reach to within about 0.1 mm of its long edges, so it cannot be held in long-edge slots. MAX490 board not delivered yet.
 - [x] **Snap hooks (E + F):** 1.2 and 1.5 mm hold too weakly; 1.8 mm has the right force, but the 0.6 mm lip barely holds (the 19.9 mm plate leaves only about 0.4 mm overlap in the 20.3 mm gap). The 8.5 mm support height needed for the hook to flex wastes space under the PCB; next: clip trial print.
-- [ ] **XT30 pockets (B):** press the XT30 in from the back until its rib stops (0.05, 0.10, 0.15 mm interference). Pick the tightest that goes fully in by hand or a gentle vise squeeze without splitting the wall; then mate and pull the female plug ten times, the male must not move.
+- [ ] **XT30 pockets (B):** failed, the connector does not go into any pocket. The pockets were sized on the CAD model (10.25 mm), the delivered connector is 10.55 mm wide with a different end shape and no rib. Redesign on the measured connector and reprint.
 - [ ] **DE-9 cutout (A):** pass the socket through from the inside face (the face without the raised "12V"). The shell must not rub and the flange must sit flat.
 - [ ] **DE-9 mating (A):** with the socket held in place, plug in the male cable plug from outside. It must seat fully, as on the bare socket; if the wall stops it short, measure how far it goes in (the 3.0 mm housing wall gives 0.5 mm more than the coupon).
 - [ ] **Jackposts (A):** fit both jackposts with their nuts behind the flange. Note which hole (Ø3.1 / 3.3) the thread passes, and whether the nut gets a full grip through the coupon's 3.5 mm wall (the housing gets 3.0 mm) or only through the 1.6 mm recess.
@@ -139,7 +139,7 @@ Sizes from owner measurements, seller listings or datasheets; see the source col
 | UBEC (Hobbywing 3A) | 1 | 43 × 17 × 7 (catalog); body about 35 × 12 × 5 | S14 | Plus jumper and leads |
 | UBEC ferrite ring | 1 | Reserve 30 × 30 × 15 keep-out (estimate from the product photo, ring with wire turns) | — | On the UBEC 5 V output lead, as shipped; resize once measured |
 | F1 fuse holder | 1 | Open | — | Format not selected yet |
-| XT30 male, panel | 1 | 10.25 × 5.25 × 12.5 body; 15.5 long with solder cups (CAD model) | S51 | Press-fit pocket ([section 4](#connectors)) |
+| XT30 male, panel | 1 | 10.55 × 5.25 body; 10.8 × 5.66 over the raised markings at the solder-cup end (owner measurement) | S51 | Press-fit pocket ([section 4](#connectors)) |
 | DE-9 female socket | 1 | Standard D-sub shell | — | Exact part open |
 | Resistors (divider, pull-ups) | 5 | Small | — | R-B1, R-B2, R-Z, R-F, R-D |
 
@@ -198,15 +198,16 @@ Use the [STEP model](../../cad/reference/rs422-to-ttl-max490/rs422-to-ttl-max490
 
 Use the [STEP model](../../cad/reference/xt30u-m/xt30u-m.step) of the AMASS XT30U-M (male, solder cups) for the pocket design; [attribution and license](../../cad/reference/xt30u-m/README.md) (S51).
 
-| Dimension | CAD model (mm) |
-| --- | ---: |
-| Body cross-section | 10.25 × 5.25 |
-| Rib around the body (9.0–11.0 from the front) | 10.45 wide |
-| Body length | 12.5 |
-| Solder cups beyond the body | 3.0 |
-| Overall length with cups | 15.5 |
-| Solder cup diameter / centre spacing | 2.0 / 5.0 |
+| Dimension | CAD model (mm) | Delivered connector (mm, owner measurement) |
+| --- | ---: | ---: |
+| Body cross-section | 10.25 × 5.25 | 10.55 × 5.25 |
+| Rib around the body (9.0–11.0 from the front) | 10.45 wide | No rib; raised "XT30" markings at the solder-cup end, 10.8 × 5.66 over them |
+| Body length | 12.5 | — |
+| Solder cups beyond the body | 3.0 | — |
+| Overall length with cups | 15.5 | — |
+| Solder cup diameter / centre spacing | 2.0 / 5.0 | — |
 
+- **The delivered connector differs from the model:** design the pocket on the measured values.
 - Model axes: Z = length, solder cups at +Z; the two corners at the Y = 0 end have 0.5 mm radii, the other end is chamfered.
 - Measure the real connector against this table before the final pocket; allow separately for wires and heat-shrink on the cups.
 
