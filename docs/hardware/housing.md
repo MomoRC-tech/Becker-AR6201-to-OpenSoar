@@ -201,7 +201,8 @@ Use the [STEP model](../../cad/reference/xt30u-m/xt30u-m.step) of the AMASS XT30
 | Dimension | CAD model (mm) | Delivered connector (mm, owner measurement) |
 | --- | ---: | ---: |
 | Body cross-section | 10.25 × 5.25 | 10.55 × 5.25 |
-| Rib around the body (9.0–11.0 from the front) | 10.45 wide | No rib; raised "XT30" markings at the solder-cup end, 10.8 × 5.66 over them |
+| Rib around the body (9.0–11.0 from the front) | 10.45 wide | No rib; raised "XT30" markings from 8.5 mm behind the front face to the solder-cup end, 10.8 × 5.66 over them |
+| Shaped end | 0.5 mm radii at one end, chamfered corners at the other | Two chamfers, about 1.3 × 1.6 (along the short × long side) |
 | Body length | 12.5 | — |
 | Solder cups beyond the body | 3.0 | — |
 | Overall length with cups | 15.5 | — |
