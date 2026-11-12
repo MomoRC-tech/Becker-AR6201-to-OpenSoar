@@ -17,10 +17,10 @@ Independent PETG prints modelled in Fusion. Start with the 3MF files in the supp
 
 ## ESP32 beam trial
 
-The beam has a 6.2 mm wide rounded spine with an underside rib. It widens at the screw, shield pad and hook. Print it with the broad top face on the bed as supplied.
+The beam has a 6.2 mm wide spine with an underside rib. Print it on the flat side as supplied so each layer follows the hook profile. Use a 5 mm brim for bed adhesion. PrusaSlicer generated both parts with supports off, a 0.4 mm nozzle and 0.2 mm layers.
 
 1. Drop the board between the rounded locating stops onto the 6.5 × 19.5 mm support rib and four 3.5 × 5 mm end pads. The side stops are 3.0 mm thick and tie into widened feet. Check that the board drops in freely, the solder joints clear, and the PCB sits flat. The 3.5 mm gap stays open to the sides and to four 11 × 3.8 mm vents through the floor.
-2. Dry-fit the beam. Hold the USB end up at about 20°, slide the hook onto the crossbar along the tilted beam's axis, then lower the USB end onto the screw post. The lower hook jaw bears against the crossbar under upward load. The screw limits forward travel that would otherwise let the hook slide off. To remove it, undo the screw, raise the USB end and slide the beam back out. Preview the 9.5 mm crossbar span in the slicer and verify antenna clearance on the actual board.
+2. Dry-fit the beam. Hold the USB end up at about 20°, slide the hook onto the crossbar along the tilted beam's axis, then lower the USB end onto the screw post. The lower hook jaw bears against the crossbar under upward load. The screw limits forward travel that would otherwise let the hook slide off. To remove it, undo the screw, raise the USB end and slide the beam back out. The flat underside of the crossbar bridges 9.5 mm. Check the printed bridge for sag and verify antenna clearance on the actual board.
 3. Measure the gap between the beam and the metal module shield over the centre support. The reference model suggests about 2 mm. Attach a small piece of soft, nonconductive silicone foam to the beam, centred over the support, just thick enough to compress lightly when the beam seats. Check that the pad touches only the shield and the PCB stays flat. With the beam secured, check the board for lift or rocking. Compare Wi-Fi range with the beam fitted and removed.
 
 Fusion solid counts and the exported 3MF meshes were checked. PETG printing, physical fit and connector retention are bench checks.
