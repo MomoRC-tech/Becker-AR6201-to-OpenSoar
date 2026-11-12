@@ -267,14 +267,15 @@ Use the [STEP model](../../cad/reference/xt30u-m/xt30u-m.step) of the AMASS XT30
 | MAX490 side (+Z) | DE-9 · MAX490 on the floor (terminal edge X = 17, PCB underside 4.5) with the UBEC on a bridge 10 mm above it from X = 28, jumper toward the wall · ferrite ring on edge behind the UBEC output end (X 83–89) |
 
 - **ESP32 holder:** tested USB block B (orange in Fusion), antenna cap A without foot ears (31.9 wide, blue), and a USB clamp UR carrying both RS-232 boards (green). The boards sit turned 90°, one behind the other across the ESP32 between its header rows, 13.8 above the floor (rails to 16.1). One M2.5 screw removes the clamp with both boards.
-- **Clamp arm:** a 6 × 2 mm arm runs from the clamp's free end over the ESP32 module (2.1 mm clear) into a U-channel on top of the antenna cap's spring bridge. It drops in when the clamp is lowered and only locates the free end (0.2 mm clearance, no load on the spring bridge).
+- **Clamp arm:** a 6 × 2 mm arm runs from the clamp's free end over the ESP32 module (2.1 mm clear) into a short tunnel on top of the antenna cap's spring bridge (0.2 mm below, 0.3 mm above, 0.2 mm each side). The tunnel holds the free end from above and the sides without loading the spring bridge (cap top 14.9 above the floor).
+- **Fitting the clamp:** push the arm tip into the tunnel with the USB end raised, then lower the clamp onto the USB socket and screw it down.
 - **Assembly order:** solder the RS-232 wires on the bench, slide the boards into the clamp, fit the ESP32, then screw the clamp on.
 - **UBEC bridge:** covers the MAX490 header joints and must lift off for soldering there; the UBEC jumper stays reachable from above with the hood off.
 - **Wiring:** XT30 wires run over the USB clamp to the UBEC input.
 - **Length driver:** the ferrite ring; the ESP32 column ends 8 mm before the ring's far end.
 - **Width:** with 2.0 mm side walls the antenna cap sits 1.0 mm and the MAX490 board 0.5 mm from the inner side-wall faces; the ESP32 column cannot move much further away from the MAX490 column without widening the housing.
 - **Hood shape:** rounded top edges, a cut-off rear corner on the MAX490 side and a lower hood over the ring area. A curved hood saves little: the tallest items (ESP32 header wire rows, UBEC) sit close to both side walls.
-- **Fit tests needed:** the clamp prints top up, so its slot height comes from the 0.2 mm layers, its top needs bridging and the arm needs support; arm fit in the antenna-cap channel.
+- **Fit tests needed:** the clamp prints top up, so its slot height comes from the 0.2 mm layers, its top needs bridging and the arm needs support; arm fit and tilt-in clearance in the antenna-cap tunnel.
 - **Not modelled yet:** wire routing, MAX490 posts, UBEC bridge, ring wire turns. The UBEC model (24 × 43 × 8) is larger than the catalog size (17 × 43 × 7), so the real unit may free a few millimetres.
 
 Components in the Fusion layout:
