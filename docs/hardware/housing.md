@@ -21,7 +21,7 @@ Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md)
 
 - **Holds:** ESP32 board, 2 × RS-232 modules, MAX490 board, UBEC (with jumper, leads, ferrite ring), F1 fuse holder, RX divider and pull-up resistors.
 - **On the housing:** XT30 for power, DE-9 for the three instruments ([section 4](#connectors)).
-- **F1:** holder built into the housing wall, fuse replaceable from outside ([power](power.md#protection)).
+- **F1:** 5 × 20 mm panel holder in the connector wall, fuse replaceable from outside ([power](power.md#protection)).
 - **Wiring:** connector mating forces must not load solder joints.
 - **UBEC jumper:** must stay at 5 V — a 6 V setting is a hazard ([modules](modules.md#ubec)).
 - **USB:** never together with the UBEC supply; radio unplugged when on USB ([power](power.md#supply)).
@@ -44,16 +44,17 @@ Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md)
 | PCB mounting | Snap-fits locate and hold every PCB; ribs inside the hood press the PCBs down when it is closed, so vibration loads go into the hood, not the hooks |
 | ESP32 | Component side up; its pre-soldered header pins point up, and wires are soldered directly to them from above (not replaceable). Lengthwise, antenna at the short end opposite the connectors |
 | Internal wiring | One snap-fit perfboard carries the RX divider, the pull-ups, the bridge ground point and the 3.3 V / 5 V distribution; wires run from it to the modules |
-| Access from outside | Connectors and the F1 fuse only. Micro-USB and the UBEC jumper are reachable only with the hood off; no USB opening in the hood |
+| Access from outside | Connectors and the F1 fuse only. Micro-USB, UBEC jumper and the ESP32 EN/BOOT buttons only with the hood off; no USB opening in the hood |
 | Soldering | Every solder joint reachable with all PCBs fitted and the cover off |
-| Connectors | XT30 and DE-9 together on one short side |
+| Connector wall | XT30, DE-9 and the F1 fuse holder together on one short side |
 | XT30 | Press fit positions it; a shoulder in front and a hood rib behind capture it, so unplugging cannot pull it out; glue optional |
 | DE-9 | Rigid mount, screwed to the housing |
 | Walls | 2.5 mm side walls, floor and cover; 3.5 mm connector wall (DE-9 screws, XT30 press fit); at least 2.0 mm of material around each M3 heat-set insert |
 | Edges | Rounded outside edges and corners, no sharp corners |
 | Location | Shaded spot in the cockpit, out of direct sun through the canopy |
-| Attachment | Cable-tie lugs on the housing to tie the closed housing to the aircraft |
-| Heat | Ventilation openings |
+| Attachment | Four slotted ears at the base corners, outside the hood footprint, for cable ties; the hood comes off while the base stays tied in |
+| Ventilation | Narrow slots low and high in the hood side walls; no openings on top |
+| Status light | Small window in the hood over the ESP32 power LED |
 
 <a id="material"></a>
 
@@ -164,7 +165,7 @@ Use the [STEP model](../../cad/reference/rs422-to-ttl-max490/rs422-to-ttl-max490
 - Backshell and strain relief on the cable side.
 - Housing side: rigid, screwed panel mount; screw-lock threads: [open items](../project/open-items.md#bench-hardware).
 
-**F1 (fuse)** — panel-mount holder in the housing wall, fuse replaceable from outside; holder, format and position: [open items](../project/open-items.md#bench-hardware).
+**F1 (fuse)** — 5 × 20 mm fuse in a panel-mount holder on the connector wall, replaceable from outside. Exact holder and rating: [open items](../project/open-items.md#bench-hardware).
 
 ---
 
