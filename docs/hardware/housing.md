@@ -40,7 +40,7 @@ Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md)
 | --- | --- |
 | Manufacturing | 3D printed on a Bambu Lab P1S in PETG ([section 2.1](#material)) |
 | Split | Shallow base tray (floor, low side walls, full-height connector wall) and a deep hood as the cover; connectors stay on the base when the hood is off |
-| Cover | Hood held by M3 screws in heat-set inserts in the base |
+| Cover | Hood held by M3 screws in ruthex RX-M3x5.7 brass heat-set inserts in the base (S50) |
 | PCB mounting | Snap-fits locate and hold every PCB; ribs inside the hood press the PCBs down when it is closed, so vibration loads go into the hood, not the hooks |
 | ESP32 | Component side up; its pre-soldered header pins point up, and wires are soldered directly to them from above (not replaceable). Lengthwise, antenna at the short end opposite the connectors |
 | Internal wiring | One snap-fit perfboard carries the RX divider, the pull-ups, the bridge ground point and the 3.3 V / 5 V distribution; wires run from it to the modules |
@@ -94,7 +94,7 @@ Starting values for PETG on the P1S with a 0.4 mm nozzle and 0.2 mm layers. They
 | Embossed text | 0.6 mm high or deep, characters at least 5 mm tall |
 
 - **Snap hooks standing up from the base** bend across the layer lines, their weakest direction. Keep the deflection small and the root fillet generous.
-- **Heat-set insert holes** are set once the inserts are chosen.
+- **Heat-set insert hole** (ruthex RX-M3x5.7, S50): Ø4.0 mm, at least 6.7 mm deep (insert length + 1 mm), at least 2.0 mm of material around it (ruthex minimum 1.6 mm).
 
 <a id="fit-test"></a>
 
@@ -106,6 +106,7 @@ One small PETG coupon, printed before the housing is modelled. Check each featur
 - [ ] **PCB edge slots:** slots for 1.6 mm (ESP32, MAX490, UBEC) and 1.2 mm (RS-232) PCBs, +0.1 to +0.4 mm in 0.1 mm steps; pick the one that holds without play or force.
 - [ ] **Snap hooks:** three hooks 1.2, 1.5 and 1.8 mm thick holding a 1.6 mm test plate; pick the one that snaps in by hand, holds firmly and does not whiten or crack after ten cycles.
 - [ ] **XT30 pocket:** three pockets at 0.05, 0.1 and 0.15 mm interference per side on the measured XT30 body; pick the one that presses in by hand and does not loosen when the plug is pulled ten times.
+- [ ] **Insert holes:** Ø3.9, 4.0 and 4.1 mm, 6.7 mm deep, in 2.0 mm walls; pick the one where the insert goes in straight and holds a tightened M3 screw without turning.
 - [ ] **Embossed text:** "12 V" and "FUSE" at 5 and 7 mm height; check legibility.
 
 ### 2.4 Later optimizations

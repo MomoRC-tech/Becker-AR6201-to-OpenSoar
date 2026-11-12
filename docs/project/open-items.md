@@ -65,7 +65,7 @@ Inputs still needed before the housing can be modelled. Selected rules: [housing
 
 | # | Item | What is needed | How it is closed |
 | :-: | --- | --- | --- |
-| 12 | Hood screws and inserts | Insert type and size (length, outer diameter), screw head and length, number of screws | Owner, later |
+| 12 | Hood screws | Inserts selected (ruthex RX-M3x5.7); screw head type, length, material (compass distance) and number of screws | Owner selection |
 | 4 | Module layout and snap-fits | Where each PCB sits in the base tray; snap-fit style per PCB (edge hooks, clip posts through the MAX490 holes); how the UBEC, F1 holder and ferrite ring are held | Owner selection, fit test |
 | 14 | Internal wiring details | Perfboard size and position; internal wire type and gauge; tie-down points and service loops | Owner selection |
 | 15 | Ventilation slot size | Slot width and total area in the hood sides | Design proposal, owner review |
