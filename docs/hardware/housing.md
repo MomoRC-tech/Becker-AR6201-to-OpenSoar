@@ -43,7 +43,7 @@ Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md)
 | Cover | Hood held by four M3 × 8 stainless A2 cylinder-head screws (ISO 4762), one per corner, heads in counterbores, into ruthex RX-M3x5.7 brass heat-set inserts in corner bosses of the base (S50) |
 | PCB mounting | Each PCB type gets its own printed holder, shaped to the board and fixed to the housing floor, so a misfitting holder is reprinted without reprinting the housing. Each PCB sits with its underside at least 2 mm above its tallest underside part. The UBEC sits on a lift-off bridge over the MAX490 ([layout](#layout)). Holders for the MAX490 board and the UBEC: [open items](../project/open-items.md#housing) |
 | ESP32 | Component side up; its pre-soldered header pins point up, and wires are soldered directly to them from above (not replaceable). Lengthwise, antenna at the short end opposite the connectors. Held at its short ends by two blocks glued onto the housing floor on broad feet, with the board underside 4.5 mm above the floor to clear the header solder tails, positioned by a printed gluing jig (a dummy board) while the glue cures. Antenna cap: one piece, printed standing on its antenna-facing side; side walls along both long edges, corner end walls, lips 1.7 mm thick over the bare edge between header strip and module (EN side 1.9 mm, BOOT side 1.5 mm wide), a chamfered ledge under the board, and a spring bridge whose pad reaches 2 mm onto the module shield with 0.3 mm pre-load; the antenna overhang passes through an open window, with the bridge about 3 mm above it. Above the header strips the bridge stays about 1.9 mm clear of the first header pins on each side (estimated from the CAD model), room for the soldered wires. USB end: a screw block with a ledge, two end stops and one boss directly in front of the USB socket; a USB cap covers the top and sides of the socket, presses 0.2 mm onto it and is held by one M2.5 metal screw cut straight into the boss (no insert); the USB socket is not usable with the cap fitted. Rounded outer edges. The board stays captured with the hood off; leave clearance above the header strips and wires |
-| RS-232 modules | Each slides flat into a printed holder of two grooved rails, held by friction on its long edges beside the chip feet; slot 1.25 mm for the 1.15 mm PCB, both pad rows free for soldering |
+| RS-232 modules | Each slides flat into a slot of two grooved rails, held by friction on its long edges beside the chip feet; slot 1.25 mm for the 1.15 mm PCB, both pad rows free for soldering. Both slots are part of the ESP32 USB block ([layout](#layout)) |
 | Internal wiring | Wires are soldered directly to the module pads and ESP32 header pins (no plugs, nothing to shake loose); the resistors sit on those pads and pins ([signal wiring](wiring.md)), the ESP32 ground copper is the bridge ground ([supply path](power.md#supply)) |
 | Access from outside | Connectors and the F1 fuse only. UBEC jumper and the ESP32 EN/BOOT buttons only with the hood off, Micro-USB only with the hood and the ESP32 USB cap off; no USB opening in the hood |
 | Soldering | Every solder joint reachable with all PCBs fitted and the cover off, except the MAX490 header joints under the UBEC bridge: reachable with the bridge lifted |
@@ -259,51 +259,35 @@ Use the [STEP model](../../cad/reference/xt30u-m/xt30u-m.step) of the AMASS XT30
 ## 5. 🧩 Internal layout
 
 > [!TIP]
-> **Selected layout:** Fusion document `Housing layout - compact v2` in the Segelflug-WifiBridge folder. Inside about 105 × 62 × 20 mm (L × W × H, from the wall's inner face; the 20 mm height is an estimate for the ESP32 header wires). The document `Housing layout` keeps the parts in their first arrangement as the untouched master.
+> **Selected layout:** Fusion document `Housing layout - compact v3` in the Segelflug-WifiBridge folder, with the holder `esp32 holder v2 (RS-232 integrated)`. Inside about 87 × 59 × 20 mm (L × W × H, from the wall's inner face; the 20 mm height is an estimate for the ESP32 header wires). The document `Housing layout` keeps the parts in their first arrangement as the untouched master.
 
 | Column | Parts, from the connector wall |
 | --- | --- |
-| ESP32 side (−Z) | XT30 · RS-232 pair side by side (board centres X = 28.8, Z = −19.5 and −3.5) · ESP32 (USB edge X = 53.7, antenna end X = 108) |
-| MAX490 side (+Z) | DE-9 · MAX490 on the floor (terminal edge X = 17, PCB underside 4.5) with the UBEC on a bridge 10 mm above it from X = 28, jumper toward the wall · ferrite ring behind the UBEC output end (centre X = 89) |
+| ESP32 side (−Z) | XT30, 4.5 mm higher than the tested panel (body from 11.9 above the floor) · RS-232 pair side by side under it (board front ends X = 6.3) · ESP32 (USB edge X = 33, centre Z = −10.5, antenna end X = 87) |
+| MAX490 side (+Z) | DE-9 · MAX490 on the floor (terminal edge X = 17, PCB underside 4.5) with the UBEC on a bridge 10 mm above it from X = 28, jumper toward the wall · ferrite ring on edge behind the UBEC output end (X 83–89) |
 
-- **Why it is compact:** no part above 18 mm, so the hood needs no raised section; only the ESP32's antenna cap is full width, so the ESP32 column sits 4.5 mm into the MAX490 column beside the narrower board.
-- **UBEC bridge:** covers the MAX490 header joints and must lift off for soldering there; the UBEC jumper stays reachable from above with the hood off.
-- **Wiring:** XT30 wires cross over the RS-232 pair to the UBEC input.
-- **Hood shape:** rounded top edges (about R6 on the ESP32 side, R2 on the MAX490 side), a cut-off rear corner on the MAX490 side (empty behind the ring) and a lower hood over the ring area. A curved hood saves little: the tallest items (ESP32 header wire rows, UBEC) sit close to both side walls.
-- **Not modelled yet:** wire routing, MAX490 posts, UBEC bridge, ring wire turns. The UBEC model (24 × 43 × 8) is larger than the catalog size (17 × 43 × 7), so the real unit may free a few millimetres.
-
-### 5.1 Candidate v3: RS-232 slots in the ESP32 holder
-
-Fusion document `Housing layout - compact v3` (a copy of v2), with the holder variant `esp32 holder v2 (RS-232 integrated)`. Inside about 87 × 59 × 20 mm, about 103 cm³ (v2: about 130 cm³); no collisions.
-
-| Change from v2 | Detail |
-| --- | --- |
-| One ESP32 holder | Both RS-232 slot holders side by side ahead of the USB block, joined to its foot by a 1.5 mm base strip; boards end 3.3 mm in front of the USB block's boss |
-| ESP32 position | PCB USB edge at X = 33, centred at Z = −10.5; the RS-232 boards (front end X = 6.3) and the slot rails reach under the XT30 |
-| Antenna cap | Foot ears outside the side walls removed: 31.9 wide instead of 38.5 |
-| XT30 | 4.5 mm higher (body from 11.9 above the floor); tested pocket and 13 mm collar unchanged |
-| Ferrite ring | Standing on edge behind the UBEC output end (X 83–89) |
-| Plate | `plate_w` 64; DE-9 in its original position |
-
+- **One ESP32 holder:** both RS-232 slots sit side by side ahead of the USB block, joined to its foot by a 1.5 mm base strip; the boards end 3.3 mm in front of the USB block's boss. The antenna cap has no foot ears (31.9 wide).
 - **Assembly order:** solder the RS-232 wires on the bench, slide the boards into their slots from the ESP32 side, then fit the ESP32. The RS-232 side pads sit about 3 mm from the wall's inner face, under the XT30.
-- **Print risk:** the slot rails now print lying down with the USB block, so the 1.25 mm slot height comes from the 0.2 mm layers instead of X/Y accuracy; needs a fit test.
-- **Length driver:** the ferrite ring (ESP32 antenna end at X = 87).
-- **Rounded corners:** the cut-off ears leave the antenna-cap foot ends square; round them when the holder is finalised.
+- **UBEC bridge:** covers the MAX490 header joints and must lift off for soldering there; the UBEC jumper stays reachable from above with the hood off.
+- **Wiring:** XT30 wires run over the RS-232 slots and the ESP32's USB end to the UBEC input.
+- **Length driver:** the ferrite ring.
+- **Hood shape:** rounded top edges, a cut-off rear corner on the MAX490 side and a lower hood over the ring area. A curved hood saves little: the tallest items (ESP32 header wire rows, UBEC) sit close to both side walls.
+- **Fit tests needed:** the slot rails now print lying down with the USB block, so the 1.25 mm slot height comes from the 0.2 mm layers instead of X/Y accuracy; the cut-off ears leave the antenna-cap foot ends square (round them when the holder is finalised).
+- **Not modelled yet:** wire routing, MAX490 posts, UBEC bridge, ring wire turns. The UBEC model (24 × 43 × 8) is larger than the catalog size (17 × 43 × 7), so the real unit may free a few millimetres.
 
 Components in the Fusion layout:
 
 | Component | Source |
 | --- | --- |
-| Connector side | Plate (`plate_w` 67, `plate_h` 25, `wall_t` 3 mm) with the tested DE-9 and XT30 features, no F1 yet; XT30 and DE-9 reference models |
-| ESP32 and holder | Antenna cap, USB block and USB cap derived (linked) from the Fusion `esp32 holder` document, with the ESP32 reference board. Header strips turned so the pins point up as on the real board (compact v2 and v3) |
-| RS-232 module and holder (2×) | Derived (linked) from the Fusion `rs232 slot holder` document, with the reference board |
+| Connector side | Plate (`plate_w` 64, `plate_h` 25, `wall_t` 3 mm) with the tested DE-9 and XT30 features (XT30 raised), no F1 yet; XT30 and DE-9 reference models |
+| ESP32 and RS-232 holder | Antenna cap, USB block with RS-232 slots and USB cap derived (linked) from the Fusion `esp32 holder v2 (RS-232 integrated)` document, with the ESP32 and RS-232 reference boards. ESP32 header strips turned so the pins point up as on the real board |
 | MAX490 board | Linked Fusion document `MAX490 board - CHATGPT` |
 | UBEC (reference) | Repository STEP, body raised 1.5 mm for the jumper pins |
 | Ferrite ring (estimate) | Ø15 / Ø8 × 6 from the product photo (parameters `ferrite_od`, `ferrite_id`, `ferrite_h`) |
 
 - **Layout frame:** X along the housing length from the outside face of the connector wall; Y up from the floor top (2.5 mm floor below); Z across.
 - **Holder pieces:** each derived body is moved from its print position into its installed position by a *Place installed* move; a change in the holder document updates the layout.
-- **Interference check:** no collisions between components; only intended holder contacts, the UBEC output lead entering the ring and the reference model's downward header pins.
+- **Interference check:** no collisions between components; only intended holder contacts and the UBEC output lead entering the ring.
 
 Constraints from the wiring:
 
