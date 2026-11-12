@@ -274,21 +274,20 @@ Use the [STEP model](../../cad/reference/xt30u-m/xt30u-m.step) of the AMASS XT30
 
 ### 5.1 Candidate v3: RS-232 slots in the ESP32 holder
 
-Fusion document `Housing layout - compact v3` (a copy of v2), with the holder variant `esp32 holder v2 (RS-232 integrated)`. Inside about 87 × 66 × 20 mm, about 114 cm³ (v2: about 130 cm³); no collisions.
+Fusion document `Housing layout - compact v3` (a copy of v2), with the holder variant `esp32 holder v2 (RS-232 integrated)`. Inside about 87 × 59 × 20 mm, about 103 cm³ (v2: about 130 cm³); no collisions.
 
 | Change from v2 | Detail |
 | --- | --- |
-| One ESP32 holder | Both RS-232 slot holders joined to the USB block, one on each side of the USB cap; boards end 3 mm in front of the ESP32 PCB edge |
-| ESP32 at the wall | PCB USB edge at X = 25; the RS-232 boards (front end X = 6.3) and the slot rails reach under the XT30 |
+| One ESP32 holder | Both RS-232 slot holders side by side ahead of the USB block, joined to its foot by a 1.5 mm base strip; boards end 3.3 mm in front of the USB block's boss |
+| ESP32 position | PCB USB edge at X = 33, centred at Z = −10.5; the RS-232 boards (front end X = 6.3) and the slot rails reach under the XT30 |
 | Antenna cap | Foot ears outside the side walls removed: 31.9 wide instead of 38.5 |
-| XT30 | 4.5 mm higher (body from 11.9 above the floor, clear of the USB cap at 11.35); collar 11 tall instead of 13 |
-| DE-9 | 4.5 mm towards the MAX490 side, clear of the RS-232 slot and in front of the MAX490 terminals |
+| XT30 | 4.5 mm higher (body from 11.9 above the floor); tested pocket and 13 mm collar unchanged |
 | Ferrite ring | Standing on edge behind the UBEC output end (X 83–89) |
-| Plate | `plate_w` 70.5 |
+| Plate | `plate_w` 64; DE-9 in its original position |
 
 - **Assembly order:** solder the RS-232 wires on the bench, slide the boards into their slots from the ESP32 side, then fit the ESP32. The RS-232 side pads sit about 3 mm from the wall's inner face, under the XT30.
 - **Print risk:** the slot rails now print lying down with the USB block, so the 1.25 mm slot height comes from the 0.2 mm layers instead of X/Y accuracy; needs a fit test.
-- **Length driver:** the ferrite ring (ESP32 column ends at X = 79).
+- **Length driver:** the ferrite ring (ESP32 antenna end at X = 87).
 - **Rounded corners:** the cut-off ears leave the antenna-cap foot ends square; round them when the holder is finalised.
 
 Components in the Fusion layout:
