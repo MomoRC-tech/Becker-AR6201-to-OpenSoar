@@ -5,7 +5,8 @@ Writes the SVGs into docs/images. Edit the diagram sections below, run the
 script, and check the result in a browser before committing.
 
 Output: overview.svg (README), power-supply.svg, ground-loops.svg, wiring-overview.svg,
-wiring-zander.svg, wiring-flarm.svg, wiring-becker.svg, pinout-rs422-to-ttl.svg, rs422-to-ttl-board.svg.
+wiring-zander.svg, wiring-flarm.svg, wiring-becker.svg, pinout-rs422-to-ttl.svg, rs422-to-ttl-board.svg,
+housing-top-concept.svg, housing-assembled-concept.svg.
 """
 import base64
 import io
@@ -286,3 +287,186 @@ for i, ((lname, ldetail), (rname, rdetail, kind)) in enumerate(zip(left, right))
     s.text(138, y+5, ldetail, size=14, anchor="end")
     s.text(422, y+5, rdetail, size=14, anchor="start")
 s.save("pinout-rs422-to-ttl.svg")
+
+# ------------------------------------------------------------- housing concept
+def housing_concept():
+    """Draw the same proposed enclosure in plan and from the connector end."""
+    length, width, height = 150, 98, 30  # illustrative outside envelope in mm
+    wall, front_wall = 2.5, 3
+    front = {"DE-9": 25, "F1": 53, "XT30": 80}  # offsets across the short wall
+    corners = [(7, 7), (length - 7, 7), (7, width - 7), (length - 7, width - 7)]
+    board, power, accessory = "#ccece0", "#ffe4ac", "#dcd9fa"
+    outline, shell = "#33485f", "#bacadc"
+
+    s = Svg(1040, 728, "Housing concept · top view",
+            "Hood removed, with the connector wall at left. Both RS-232 modules, the MAX490, ESP32, "
+            "resistor perfboard, UBEC, ferrite ring, fuse holder, DE-9 and XT30 are shown.")
+    s.text(30, 42, s.title, size=30, bold=True, anchor="start")
+    s.text(30, 68, "Hood removed  /  Preliminary layout  /  Dimensions in mm", color=SUB, size=16, anchor="start")
+    ox, oy, scale = 144, 154, 4.8
+
+    def rect(x, y, w, h, fill, stroke=outline, dash="", radius=1):
+        s.boxes.append(
+            f'<rect x="{ox + x*scale:g}" y="{oy + y*scale:g}" width="{w*scale:g}" height="{h*scale:g}" '
+            f'rx="{radius*scale:g}" fill="{fill}" stroke="{stroke}" stroke-width="1.35" {dash}/>'
+        )
+
+    def label(x, y, value, **kwargs):
+        s.text(ox + x*scale, oy + y*scale, value, **kwargs)
+
+    def path(points, color=outline, stroke=1.3, dash=""):
+        coords = " ".join(f"{ox+x*scale:g},{oy+y*scale:g}" for x, y in points)
+        s.boxes.append(f'<polyline points="{coords}" fill="none" stroke="{color}" stroke-width="{stroke}" {dash}/>')
+
+    def circle(x, y, r, fill, stroke=outline):
+        s.boxes.append(f'<circle cx="{ox+x*scale:g}" cy="{oy+y*scale:g}" r="{r*scale:g}" fill="{fill}" stroke="{stroke}"/>')
+
+    dashed = 'stroke-dasharray="5 4"'
+    for x, y in corners:
+        ear_y = -7 if y < width / 2 else width - 0.6
+        rect(x - 5, ear_y, 10, 7.6, shell, radius=2.5)
+        rect(x - 3.5, -4.9 if y < width / 2 else width + 2.4, 7, 2.5, "white")
+    rect(0, 0, length, width, shell, radius=3)
+    rect(front_wall, wall, length - front_wall - wall, width - 2*wall, "#f1f5f9")
+    for x, y in corners:
+        circle(x, y, 4, shell)
+        circle(x, y, 1.6, "#f8fafc")
+
+    # Panel hardware and provisional service envelopes.
+    rect(-1.8, front["DE-9"] - 15.5, 1.8, 31, "#b3bdcc")
+    rect(0, front["DE-9"] - 9.65, 8, 19.3, "#a8b4c3")
+    rect(front_wall, front["F1"] - 9.5, 32, 19, "#fff4db", dash=dashed)
+    rect(-3, front["F1"] - 8, 6, 16, "#59687a")
+    rect(-2, front["XT30"] - 5.275, 12, 10.55, "#efbb56")
+    for name, y in front.items():
+        label(-6, y + 1, name, bold=True, size=17, anchor="end")
+    label(19, 52, "F1 holder", bold=True, size=15)
+    label(19, 55.6, "32 × 19 reserve", size=13, color=SUB)
+
+    # Signal boards. The MAX490 terminals face the DE-9 and the header faces inward.
+    rect(21, 10, 50, 27, board)
+    rect(21, 13.1, 8.3, 20.8, "#285e52")
+    for y in (15.88, 20.96, 26.04, 31.12):
+        circle(25.15, y, 1.1, "#ebf5e9", "none")
+    rect(68, 18.42, 9.9, 10.16, "#4f746c")
+    label(49, 21, "MAX490", size=19, bold=True)
+    label(49, 25.3, "RS-422 · 50 × 27", size=14, color=SUB)
+    label(49, 29.5, "Becker", size=14, color=SUB)
+
+    for y, device in ((45, "Zander"), (59, "FLARM")):
+        rect(47, y, 15.6, 9.2, board)
+        rect(52.1, y + 2, 5.4, 5.2, "#285e52", stroke="none", radius=0.4)
+        for pad_x in (48.4, 61.2):
+            for pad_y in (1.35, 3.52, 5.68, 7.85):
+                circle(pad_x, y + pad_y, 0.46, "#a56e26", "none")
+        label(65, y + 3.9, device, size=15, bold=True, anchor="start")
+        label(65, y + 7.3, "RS-232", size=13, color=SUB, anchor="start")
+
+    # ESP32 uses the measured PCB outline and reference antenna extension.
+    rect(78.5, 34.25, 11.5, 10, "none", dash=dashed)
+    rect(90, 25, 48.5, 28.5, board)
+    rect(90, 25, 41, 2.54, "#32594f", radius=0.4)
+    rect(90, 50.96, 41, 2.54, "#32594f", radius=0.4)
+    rect(89.5, 35.5, 6, 7.5, "#bdc8d4", radius=0.4)
+    rect(131, 29.25, 13.5, 20, "#61bda6", radius=0.7)
+    path([(138.5, 29.25), (138.5, 49.25)], dash=dashed)
+    label(113.5, 39, "ESP32", size=20, bold=True)
+    label(113.5, 43.3, "PCB 48.5 × 28.5", size=14, color=SUB)
+    label(79, 32.5, "USB", size=13, bold=True, anchor="start")
+    path([(127, 18.7), (137.8, 18.7), (137.8, 29.25)])
+    label(126, 19.7, "Wi-Fi antenna", size=15, bold=True, anchor="end")
+
+    rect(83, 57, 23, 15, accessory, dash=dashed)
+    label(94.5, 62, "Perfboard", size=16, bold=True)
+    label(94.5, 65.7, "Resistors +", size=13)
+    label(94.5, 69.1, "distribution", size=13)
+    rect(49, 76.5, 43, 17, power)
+    rect(50, 80.5, 5, 9, "#bf872e", stroke="none")
+    label(71, 84.5, "UBEC", size=18, bold=True)
+    label(71, 89, "43 × 17", size=14, color=SUB)
+    rect(109, 63.5, 30, 30, "#fff4db", dash=dashed)
+    circle(124, 78.5, 10.6, "#f4cb77", "none")
+    circle(124, 78.5, 6.2, "#fff4db", "none")
+    label(124, 78.7, "Ferrite ring", size=17, bold=True)
+    label(124, 82.6, "30 × 30 reserve", size=13)
+    path([(92, 85), (99, 85), (104, 79), (109, 79)], "#a56e26", stroke=2)
+    path([(124, 63.5), (124, 53.5)], "#a56e26", stroke=2)
+    path([(10, 80), (20, 80), (20, 67), (24, 57.5)], "#a56e26", stroke=2)
+    path([(30, 62), (30, 78), (36, 85), (49, 85)], "#a56e26", stroke=2)
+    label(30, 89.5, "Power route", size=13, color="#80551d")
+
+    path([(0, -8.3), (0, -13.5), (length, -13.5), (length, -8.3)])
+    label(length / 2, -15.1, "150 mm", bold=True, size=16)
+    path([(length + 1, 0), (length + 8, 0), (length + 8, width), (length + 1, width)])
+    label(length + 10, width / 2 + 1, "98 mm", bold=True, size=16, anchor="start")
+    label(1, width + 11.7, "Connector wall", bold=True, size=16, anchor="start")
+    label(length - 1, width + 11.7, "Antenna end", bold=True, size=16, anchor="end")
+    s.text(30, 709, "Dashed outlines show proposed reserves or envelopes. Leads, clips and service clearances need a fit check.",
+           size=15, color=SUB, anchor="start")
+    s.save("housing-top-concept.svg")
+
+    s = Svg(1040, 535, "Housing concept · assembled view",
+            "Closed PETG hood viewed from the connector end. The same DE-9, fuse and XT30 order "
+            "is shown on the full-height tray wall, along with four external cable-tie ears.")
+    s.text(30, 42, s.title, size=30, bold=True, anchor="start")
+    s.text(30, 68, f"Connector-end view  /  Illustrative body {length} × {width} × {height} mm, excluding ears",
+           size=16, color=SUB, anchor="start")
+
+    def project(x, y, z):
+        return 145 + 3.58*x + 2.03*y, 328 - 0.79*x + 1.48*y - 3.15*z
+
+    def surface(points, fill, stroke=outline):
+        coords = " ".join(f"{x:g},{y:g}" for x, y in (project(*p) for p in points))
+        s.boxes.append(f'<polygon points="{coords}" fill="{fill}" stroke="{stroke}" stroke-width="1.35" stroke-linejoin="round"/>')
+
+    def panel(y, z, points, fill, stroke=outline):
+        surface([(0, y + dy, z + dz) for dy, dz in points], fill, stroke)
+
+    def oval(x, y, z, rx, ry, fill):
+        px, py = project(x, y, z)
+        s.boxes.append(f'<ellipse cx="{px:g}" cy="{py:g}" rx="{rx}" ry="{ry}" fill="{fill}" stroke="{outline}"/>')
+
+    def floor_tab(x, y):
+        surface([(x - 5, y, 0), (x + 5, y, 0), (x + 5, y + 7, 0), (x - 5, y + 7, 0)], shell)
+        surface([(x - 3, y + 2.4, 0), (x + 3, y + 2.4, 0), (x + 3, y + 4.7, 0), (x - 3, y + 4.7, 0)], "white")
+
+    for x, y in corners:
+        if y < width / 2:
+            floor_tab(x, -7)
+    surface([(0, width, 0), (length, width, 0), (length, width, 6), (0, width, 6)], "#91a7bf")
+    surface([(0, width, 6), (length, width, 6), (length, width, height), (0, width, height)], "#b3c6da")
+    for z in (9.5, 23):
+        for x in range(26, 130, 16):
+            surface([(x, width, z), (x + 10, width, z), (x + 10, width, z + 1.1), (x, width, z + 1.1)],
+                    "#52677e", stroke="none")
+    surface([(0, 0, height), (length, 0, height), (length, width, height), (0, width, height)], "#d9e5ef")
+    for x, y in corners:
+        oval(x, y, height, 6, 3.4, "#8ca1b7")
+    oval(99, 40, height, 3, 2, "#66ba9f")  # illustrative status window position
+    surface([(0, 0, 0), (0, width, 0), (0, width, height), (0, 0, height)], "#dbe4ee")
+    for x, y in corners:
+        if y > width / 2:
+            floor_tab(x, width)
+
+    panel(front["DE-9"], 13, [(-15.5, -6.3), (15.5, -6.3), (15.5, 6.3), (-15.5, 6.3)], "#a1b3c6")
+    panel(front["DE-9"], 13, [(-7.1, -4.6), (7.1, -4.6), (8.925, 4.6), (-8.925, 4.6)], "#3e5168")
+    for dy in (-12.5, 12.5):
+        oval(0, front["DE-9"] + dy, 13, 2.6, 3, "#e8edf1")
+    for dz, contacts in ((1.7, 5), (-1.5, 4)):
+        for i in range(contacts):
+            oval(0, front["DE-9"] + 2.6*(i - (contacts - 1)/2), 13 + dz, 1.1, 1.4, "#ead28b")
+    oval(0, front["F1"], 13, 16, 21, "#54677c")
+    panel(front["F1"], 13, [(-4, -0.5), (4, -0.5), (4, 0.5), (-4, 0.5)], "#23374e", "none")
+    panel(front["XT30"], 13, [(-5.275, -1.2), (-3.9, -2.625), (5.275, -2.625), (5.275, 2.625),
+                            (-3.9, 2.625), (-5.275, 1.2)], "#efbb56")
+    for dy in (-2.5, 2.5):
+        oval(0, front["XT30"] + dy, 13, 2.5, 3, "#775825")
+    for name, y in front.items():
+        px, py = project(0, y, 23)
+        s.text(px, py, name if name != "XT30" else "12 V", size=15, bold=True)
+    s.text(30, 515, "Four slotted tie-down ears  /  Four hood screws  /  Side vents  /  External fuse access",
+           size=15, color=SUB, anchor="start")
+    s.save("housing-assembled-concept.svg")
+
+
+housing_concept()
