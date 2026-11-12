@@ -60,7 +60,6 @@ Inputs still needed before the housing can be modelled. Selected rules: [housing
 | # | Item | What is needed | How it is closed |
 | :-: | --- | --- | --- |
 | 10 | Print dimensions | Snap-fit clearance and hook size; press-fit interference for the XT30; hole sizes for the M3 heat-set inserts and screws; minimum feature size; print orientation without supports | Owner values, then a calibration print |
-| 11 | CAD workflow | Tool (for example Fusion), units, which files go into the repository (source file, STEP, STL/3MF) and where (`cad/housing/`) | Owner selection |
 
 ### 2.3 Construction
 
@@ -71,12 +70,10 @@ Inputs still needed before the housing can be modelled. Selected rules: [housing
 | 14 | Internal wiring details | Perfboard size and position; internal wire type and gauge; tie-down points and service loops | Owner selection |
 | 15 | Ventilation slot size | Slot width and total area in the hood sides | Design proposal, owner review |
 
-### 2.4 Access, markings and targets
+### 2.4 Measurements
 
 | # | Item | What is needed | How it is closed |
 | :-: | --- | --- | --- |
-| 16 | Markings | What is marked on the housing (connector names, pin-1 side, "5 V jumper", USB warning, version) and how (embossed, engraved, label) | Owner selection |
-| 17 | Size and weight targets | Priority between smallest housing and easiest assembly and service; any weight limit | Owner selection |
 | 1 | Part sizes | Compare the ESP32 with its [CAD reference](../hardware/housing.md#contents): PCB thickness, header spacing, overall length including antenna and USB protrusion, overall height with headers, USB-plug and wiring clearance; measure RS-232 PCB thickness, assembled height on both sides and soldered-wire clearance against its CAD reference on the same page; measure the RS-422 board's hole positions, PCB thickness and screw-terminal height against its CAD reference; measure XT30, DE-9 socket and UBEC with leads | Bench measurement |
 
 ---

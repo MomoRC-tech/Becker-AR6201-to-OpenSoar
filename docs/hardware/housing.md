@@ -48,13 +48,16 @@ Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md)
 | Soldering | Every solder joint reachable with all PCBs fitted and the cover off |
 | Connector wall | XT30, DE-9 and the F1 fuse holder together on one short side |
 | XT30 | Press fit positions it; a shoulder in front and a hood rib behind capture it, so unplugging cannot pull it out; glue optional |
-| DE-9 | Rigid mount, screwed to the housing |
+| DE-9 | Rigid mount from inside: flange against the inner wall face, wall thinned locally around the cutout to suit the jackpost thread, jackposts (UNC 4-40) into nuts in printed pockets; the cable plug locks onto the jackposts |
 | Walls | 2.5 mm side walls, floor and cover; 3.5 mm connector wall (DE-9 screws, XT30 press fit); at least 2.0 mm of material around each M3 heat-set insert |
 | Edges | Rounded outside edges and corners, no sharp corners |
 | Location | Shaded spot in the cockpit, out of direct sun through the canopy |
 | Attachment | Four slotted ears at the base corners, outside the hood footprint, for cable ties; the hood comes off while the base stays tied in |
 | Ventilation | Narrow slots low and high in the hood side walls; no openings on top |
 | Status light | Small window in the hood over the ESP32 power LED |
+| Markings | Connector names on the connector wall (12 V, instrument DE-9, fuse); owner adds a multicolour logo on the hood later |
+| Size | Space the modules for soldering-iron access and tidy wiring first; review the size once modelled |
+| CAD | Modelled in Fusion, millimetres; STEP and print-ready 3MF committed to `cad/housing/`, parametric source kept in the owner's Fusion account |
 
 <a id="material"></a>
 
@@ -163,7 +166,7 @@ Use the [STEP model](../../cad/reference/rs422-to-ttl-max490/rs422-to-ttl-max490
 
 - Female socket on the housing, male cable plug with solder cups and screw locking.
 - Backshell and strain relief on the cable side.
-- Housing side: rigid, screwed panel mount; screw-lock threads: [open items](../project/open-items.md#bench-hardware).
+- Housing side: mounted from inside on jackposts ([design rules](#rules)); exact jackpost and local wall thickness: [open items](../project/open-items.md#bench-hardware).
 
 **F1 (fuse)** — 5 × 20 mm fuse in a panel-mount holder on the connector wall, replaceable from outside. Exact holder and rating: [open items](../project/open-items.md#bench-hardware).
 
