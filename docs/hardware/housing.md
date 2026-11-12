@@ -265,10 +265,13 @@ Layout in progress in Fusion: parts are placed as separate components, then arra
 | Connector side | Plate 69 × 25 × 3 mm with the tested DE-9 and XT30 features, no F1 yet; XT30 and DE-9 reference models fitted |
 | ESP32 and holder | Antenna cap, USB block and USB cap derived from the Fusion `esp32 holder` document (linked), with the ESP32 reference board; USB edge at X = 75, PCB underside 4.5 above the floor. The reference model's header pins point down; the real ones point up |
 | RS-232 module and holder (2×) | Derived from the Fusion `rs232 slot holder` document (linked), with the reference board; beside the ESP32 J2 side, board centres at X = 93 and 113 |
+| MAX490 board | Linked Fusion document `MAX490 board - CHATGPT`; terminal edge at X = 10 toward the DE-9, header toward the ESP32 USB end, +Z side; PCB underside 4.5 above the floor (holder not designed) |
+| UBEC (reference) | Lying flat on the XT30 side (−Z), jumper end at X = 16, body raised 1.5 for the jumper pins |
+| Ferrite ring (estimate) | Lying flat at the UBEC output end, centre X = 77, Z = −12; Ø15 / Ø8 × 6 from the product photo (parameters `ferrite_od`, `ferrite_id`, `ferrite_h`); wire turns not modelled |
 
 - **Layout frame:** X along the housing length from the outside face of the connector wall; Y up from the floor top (2.5 mm floor below); Z across, centred.
 - **Holder pieces:** derived (linked) bodies, each moved from its print position into its installed position by a *Place installed* move; a change in the holder document updates the layout.
-- **Open zone:** X ≈ 15–60 is left free for the MAX490 board and the UBEC.
+- **Interference check:** no part collisions except the intended holder contacts and the UBEC output lead entering the ferrite ring; the ESP32 reference model's downward header pins also cut into the holders (model artefact).
 - **Plate parameters:** `plate_w`, `plate_h`, `wall_t`, `de9_recess`, `nut_pocket`, `xt30_collar`.
 
 Constraints from the wiring:
