@@ -1,6 +1,6 @@
-# Housing layout v4 (candidate)
+# Housing layout v4
 
-Layout candidate with the RS-232 boards on the ESP32's USB clamp ([housing § 5.1](../../../docs/hardware/housing.md#layout)). Exported from the owner's Fusion document `Housing layout - compact v4`, 2026-11-12, as a restore point. The editable model is the Fusion document itself: restore earlier states from its version history; this STEP keeps the part positions.
+Selected internal layout, with the RS-232 boards on the ESP32's USB clamp ([housing § 5](../../../docs/hardware/housing.md#layout)). Exported from the owner's Fusion document `Housing layout - compact v4`, 2026-11-12, as a restore point. The editable model is the Fusion document itself: restore earlier states from its version history; this STEP keeps the part positions.
 
 | File | Use |
 | --- | --- |

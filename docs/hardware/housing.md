@@ -50,7 +50,7 @@ Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md)
 | Connector wall | XT30, DE-9 and the F1 fuse holder together on one short side |
 | XT30 | Inserted front first from inside; press fit on the flat faces, with clearance at the chamfered corners; the raised markings stop against the inner wall face, so unplugging cannot pull it out; glued in, so plugging-in cannot push it into the housing |
 | DE-9 | Male connector (pins) on the housing, mounted from the front: flange set flush into a recess in the outer wall face, rear body through a rectangular cutout; jackposts (UNC 4-40) through flange and wall into nuts in printed pockets inside, wall thinned locally around the nuts if the thread is too short; the female cable connector locks onto the jackposts |
-| Walls | 2.5 mm side walls, floor and cover; 3.0 mm connector wall (DE-9 screws, XT30 press fit); at least 2.0 mm of material around each M3 heat-set insert |
+| Walls | 2.0 mm side walls; 2.5 mm floor and cover; 3.0 mm connector wall (DE-9 screws, XT30 press fit); at least 2.0 mm of material around each M3 heat-set insert |
 | Edges | Rounded outside edges and corners, no sharp corners |
 | Location | Shaded spot in the cockpit, out of direct sun through the canopy |
 | Attachment | Four slotted ears at the base corners, outside the hood footprint, for cable ties; the hood comes off while the base stays tied in |
@@ -83,7 +83,7 @@ Values for PETG on the P1S with a 0.4 mm nozzle and 0.2 mm layers. Values marked
 
 | Feature | Starting value |
 | --- | --- |
-| Walls | Printed solid: enough perimeters to fill the 2.5 mm wall, no infill inside walls |
+| Walls | Printed solid: enough perimeters to fill each wall, no infill inside walls |
 | Free fit (part drops in) | 0.2 mm gap per side |
 | Snug fit (PCB in its pocket) | 0.15 mm gap per side on the measured PCB outline |
 | Slot for a PCB edge | PCB thickness + 0.10 mm for a friction hold (RS-232 holder: 1.25 mm slot for the 1.15 mm PCB); + 0.15 mm slides in with minor play |
@@ -259,43 +259,29 @@ Use the [STEP model](../../cad/reference/xt30u-m/xt30u-m.step) of the AMASS XT30
 ## 5. 🧩 Internal layout
 
 > [!TIP]
-> **Selected layout:** Fusion document `Housing layout - compact v3` in the Segelflug-WifiBridge folder, with the holder `esp32 holder v2 (RS-232 integrated)`. Inside about 87 × 59 × 20 mm (L × W × H, from the wall's inner face; the 20 mm height is an estimate for the ESP32 header wires). The document `Housing layout` keeps the parts in their first arrangement as the untouched master.
+> **Selected layout:** Fusion document `Housing layout - compact v4` in the Segelflug-WifiBridge folder, with the holder `esp32 holder v3 (RS-232 clamp)`; repository copies in [cad/housing/layout-v4](../../cad/housing/layout-v4/README.md). Inside about 87 × 60 × 20 mm (L × W × H, from the walls' inner faces, with 2.0 mm side walls inside the 64 mm plate width; the 20 mm height is an estimate for the ESP32 header wires). The document `Housing layout` keeps the parts in their first arrangement as the untouched master.
 
 | Column | Parts, from the connector wall |
 | --- | --- |
-| ESP32 side (−Z) | XT30, 4.5 mm higher than the tested panel (body from 11.9 above the floor) · RS-232 pair side by side under it (board front ends X = 6.3) · ESP32 (USB edge X = 33, centre Z = −10.5, antenna end X = 87) |
+| ESP32 side (−Z) | XT30, 4.5 mm higher than the tested panel (body from 11.9 above the floor) · ESP32 (USB edge X = 27, centre Z = −10.5, antenna end X = 81) with both RS-232 boards on its USB clamp; the clamp starts 3.8 mm behind the XT30 body |
 | MAX490 side (+Z) | DE-9 · MAX490 on the floor (terminal edge X = 17, PCB underside 4.5) with the UBEC on a bridge 10 mm above it from X = 28, jumper toward the wall · ferrite ring on edge behind the UBEC output end (X 83–89) |
 
-- **One ESP32 holder:** both RS-232 slots sit side by side ahead of the USB block, joined to its foot by a 1.5 mm base strip; the boards end 3.3 mm in front of the USB block's boss. The antenna cap has no foot ears (31.9 wide).
-- **Assembly order:** solder the RS-232 wires on the bench, slide the boards into their slots from the ESP32 side, then fit the ESP32. The RS-232 side pads sit about 3 mm from the wall's inner face, under the XT30.
+- **ESP32 holder:** tested USB block, antenna cap without foot ears (31.9 wide), and a USB clamp carrying both RS-232 boards. The boards sit turned 90°, one behind the other across the ESP32 between its header rows, 13.8 above the floor (rails to 16.1). One M2.5 screw removes the clamp with both boards.
+- **Assembly order:** solder the RS-232 wires on the bench, slide the boards into the clamp, fit the ESP32, then screw the clamp on.
 - **UBEC bridge:** covers the MAX490 header joints and must lift off for soldering there; the UBEC jumper stays reachable from above with the hood off.
-- **Wiring:** XT30 wires run over the RS-232 slots and the ESP32's USB end to the UBEC input.
-- **Length driver:** the ferrite ring.
+- **Wiring:** XT30 wires run over the USB clamp to the UBEC input.
+- **Length driver:** the ferrite ring; the ESP32 column ends 8 mm before the ring's far end.
+- **Width:** with 2.0 mm side walls the antenna cap sits 1.0 mm and the MAX490 board 0.5 mm from the inner side-wall faces; the ESP32 column cannot move much further away from the MAX490 column without widening the housing.
 - **Hood shape:** rounded top edges, a cut-off rear corner on the MAX490 side and a lower hood over the ring area. A curved hood saves little: the tallest items (ESP32 header wire rows, UBEC) sit close to both side walls.
-- **Fit tests needed:** the slot rails now print lying down with the USB block, so the 1.25 mm slot height comes from the 0.2 mm layers instead of X/Y accuracy; the cut-off ears leave the antenna-cap foot ends square (round them when the holder is finalised).
+- **Fit tests needed:** the clamp prints top up, so its slot height comes from the 0.2 mm layers and its top needs bridging; the cut-off ears leave the antenna-cap foot ends square (round them when the holder is finalised).
 - **Not modelled yet:** wire routing, MAX490 posts, UBEC bridge, ring wire turns. The UBEC model (24 × 43 × 8) is larger than the catalog size (17 × 43 × 7), so the real unit may free a few millimetres.
-
-### 5.1 Candidate v4: RS-232 boards on the USB clamp
-
-Fusion document `Housing layout - compact v4`, with the holder variant `esp32 holder v3 (RS-232 clamp)`; repository copies in [cad/housing/layout-v4](../../cad/housing/layout-v4/README.md). Same envelope as v3 (about 87 × 59 × 20 mm inside); no collisions.
-
-| Change from v3 | Detail |
-| --- | --- |
-| RS-232 boards | On the USB clamp, turned 90°, one behind the other across the ESP32 between its header rows; boards at 13.8 above the floor, rails to 16.1 |
-| USB clamp | Carries both slots; one M2.5 screw removes the clamp with both boards. USB block back to the tested version |
-| ESP32 position | PCB USB edge at X = 27, antenna end X = 81; centre Z = −10.5 as in v3. The USB clamp starts 3.8 mm behind the XT30 body |
-
-- **Gain:** the ESP32 column ends 8 mm before the end of the ferrite ring; the housing length is still set only by the MAX490 / UBEC / ring column.
-- **Width:** no room for a side shift away from the MAX490 column; the antenna cap sits 0.5 mm from the inner side-wall face within the 64 mm plate.
-- **Assembly:** slide the pre-soldered RS-232 boards into the clamp on the bench, then screw the clamp on.
-- **Print risk:** the clamp now prints top up, with the slot height set by layers; fit test needed.
 
 Components in the Fusion layout:
 
 | Component | Source |
 | --- | --- |
 | Connector side | Plate (`plate_w` 64, `plate_h` 25, `wall_t` 3 mm) with the tested DE-9 and XT30 features (XT30 raised), no F1 yet; XT30 and DE-9 reference models |
-| ESP32 and RS-232 holder | Antenna cap, USB block with RS-232 slots and USB cap derived (linked) from the Fusion `esp32 holder v2 (RS-232 integrated)` document, with the ESP32 and RS-232 reference boards. ESP32 header strips turned so the pins point up as on the real board |
+| ESP32 and RS-232 holder | Antenna cap, USB block and USB clamp with RS-232 slots derived (linked) from the Fusion `esp32 holder v3 (RS-232 clamp)` document, with the ESP32 and RS-232 reference boards. ESP32 header strips turned so the pins point up as on the real board |
 | MAX490 board | Linked Fusion document `MAX490 board - CHATGPT` |
 | UBEC (reference) | Repository STEP, body raised 1.5 mm for the jumper pins |
 | Ferrite ring (estimate) | Ø15 / Ø8 × 6 from the product photo (parameters `ferrite_od`, `ferrite_id`, `ferrite_h`) |
