@@ -65,7 +65,7 @@ Inputs still needed before the housing can be modelled. Selected rules: [housing
 
 | # | Item | What is needed | How it is closed |
 | :-: | --- | --- | --- |
-| 4 | Module layout and snap-fits | Where each PCB sits in the base tray; snap-fit style per PCB (edge hooks, clip posts through the MAX490 holes); how the UBEC, F1 holder and ferrite ring are held; clip socket shape and a glue that holds on PETG; clip type chosen in a clip trial print (sideways-flexing arm, fixed lip plus one hook) | Owner selection, fit test |
+| 4 | Module layout and snap-fits | Where each PCB sits in the base tray; snap-fit style per PCB (edge hooks, clip posts through the MAX490 holes); how the UBEC, F1 holder and ferrite ring are held; clip socket shape and a glue that holds on PETG; clip type chosen in a clip trial print (sideways-flexing arm, fixed lip plus one hook); ESP32 keeper-tab screw size and how it anchors in the base | Owner selection, fit test |
 | 14 | Internal wiring details | Perfboard size and position; internal wire type and gauge; tie-down points and service loops | Owner selection |
 | 15 | Ventilation slot size | Slot width and total area in the hood sides | Design proposal, owner review |
 
@@ -73,7 +73,7 @@ Inputs still needed before the housing can be modelled. Selected rules: [housing
 
 | # | Item | What is needed | How it is closed |
 | :-: | --- | --- | --- |
-| 1 | Part sizes | Compare the ESP32 with its [CAD reference](../hardware/housing.md#contents): bare base-PCB edge between each header strip and the module at the antenna end (photo estimate 1.5–2 mm) and beside the USB socket at the USB end, USB socket overhang, solder-joint height underneath, header spacing, overall length including antenna and USB protrusion, overall height with headers, USB-plug and wiring clearance; measure RS-232 assembled height on both sides and soldered-wire clearance against its CAD reference on the same page; measure the RS-422 board's hole positions, PCB thickness and screw-terminal height against its CAD reference; measure XT30 against its CAD reference; measure the DE-9 jackpost stud length once delivered; measure the UBEC with leads; measure the UBEC ferrite ring (outer and inner diameter, thickness, envelope with its wire turns) to replace its placeholder | Bench measurement |
+| 1 | Part sizes | Compare the ESP32 with its [CAD reference](../hardware/housing.md#contents): bare base-PCB edge between each header strip and the module at the antenna end (photo estimate 1.5–2 mm) and beside the USB socket at the USB end (keeper tabs), EN/BOOT button positions, USB socket overhang, solder-joint height underneath, header spacing, overall length including antenna and USB protrusion, overall height with headers, USB-plug and wiring clearance; measure RS-232 assembled height on both sides and soldered-wire clearance against its CAD reference on the same page; measure the RS-422 board's hole positions, PCB thickness and screw-terminal height against its CAD reference; measure XT30 against its CAD reference; measure the DE-9 jackpost stud length once delivered; measure the UBEC with leads; measure the UBEC ferrite ring (outer and inner diameter, thickness, envelope with its wire turns) to replace its placeholder | Bench measurement |
 
 ---
 
