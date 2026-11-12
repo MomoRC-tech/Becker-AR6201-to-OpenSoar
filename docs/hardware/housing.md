@@ -283,9 +283,10 @@ Fusion document `Housing layout - compact v4`, with the holder variant `esp32 ho
 | --- | --- |
 | RS-232 boards | On the USB clamp, turned 90°, one behind the other across the ESP32 between its header rows; boards at 13.8 above the floor, rails to 16.1 |
 | USB clamp | Carries both slots; one M2.5 screw removes the clamp with both boards. USB block back to the tested version |
-| ESP32 position | PCB USB edge at X = 17 (limited by the XT30 collar above the USB clamp and boss); antenna end X = 71 |
+| ESP32 position | PCB USB edge at X = 27, antenna end X = 81; centre Z = −10.5 as in v3. The USB clamp starts 3.8 mm behind the XT30 body |
 
-- **Gain:** the ESP32 column ends 18 mm before the ferrite ring, leaving free space behind the antenna; the housing length is now set only by the MAX490 / UBEC / ring column.
+- **Gain:** the ESP32 column ends 8 mm before the end of the ferrite ring; the housing length is still set only by the MAX490 / UBEC / ring column.
+- **Width:** no room for a side shift away from the MAX490 column; the antenna cap sits 0.5 mm from the inner side-wall face within the 64 mm plate.
 - **Assembly:** slide the pre-soldered RS-232 boards into the clamp on the bench, then screw the clamp on.
 - **Print risk:** the clamp now prints top up, with the slot height set by layers; fit test needed.
 
