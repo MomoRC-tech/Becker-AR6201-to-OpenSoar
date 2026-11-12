@@ -86,7 +86,7 @@ Starting values for PETG on the P1S with a 0.4 mm nozzle and 0.2 mm layers. They
 | Snug fit (PCB in its pocket) | 0.15 mm gap per side on the measured PCB outline |
 | Slot for a PCB edge | PCB thickness + 0.2 mm |
 | Press fit (XT30) | 0.1 mm interference per side on the measured body |
-| M3 screw clearance hole | Ø3.4 mm |
+| M3 screw clearance hole | Ø3.4 mm (fit test: Ø3.3 is the smallest free hole; Ø3.4 leaves alignment margin for the four cover screws) |
 | Snap hook | At least 8 mm long, 1.5 mm thick, 0.6 mm undercut over the PCB edge, 1 mm fillet at the root |
 | Hood hold-down ribs | 0.2 mm interference on the PCB top, ribs 1.2 mm wide so they flex instead of cracking the PCB |
 | Smallest feature | 0.8 mm (two extrusion lines) |
@@ -108,7 +108,7 @@ One small PETG coupon, printed before the housing is modelled: [print files and 
 **Order:** reversible tests first, the inserts last (they cannot be removed). Let the pieces cool fully and remove any brim first.
 
 - [x] **Print accuracy:** F 19.9 × 19.9 × 1.56 mm, C 67.7 mm (about 0.5 % small in X/Y), no elephant foot.
-- [ ] **M3 clearance holes (C):** push the M3 screw through each hole by hand, Ø3.2 to 3.6 mm. Pick the smallest it passes without force or thread cutting.
+- [x] **M3 clearance holes (C):** screw Ø2.9 mm; Ø3.2 snug, Ø3.3 and larger free. Selected Ø3.4.
 - [ ] **PCB edge slots (D):** measure both PCB thicknesses first. Push each PCB edge into its four slots (+0.1 to +0.4 mm). Pick the tightest that slides in by hand and does not rattle when shaken.
 - [ ] **Snap hooks (E + F):** press plate F down into each hook pair (1.2, 1.5, 1.8 mm). Pick the one that snaps in by thumb, holds without play and shows no whitening or crack at the root after ten in-and-out cycles.
 - [ ] **XT30 pockets (B):** press the XT30 in from the back until its rib stops (0.05, 0.10, 0.15 mm interference). Pick the tightest that goes fully in by hand or a gentle vise squeeze without splitting the wall; then mate and pull the female plug ten times, the male must not move.
