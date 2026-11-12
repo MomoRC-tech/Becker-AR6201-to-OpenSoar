@@ -48,7 +48,7 @@ Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md)
 | Access from outside | Connectors and the F1 fuse only. Micro-USB, UBEC jumper and the ESP32 EN/BOOT buttons only with the hood off; no USB opening in the hood |
 | Soldering | Every solder joint reachable with all PCBs fitted and the cover off |
 | Connector wall | XT30, DE-9 and the F1 fuse holder together on one short side |
-| XT30 | Press fit positions it; a shoulder in front and a hood rib behind capture it, so unplugging cannot pull it out; glue optional |
+| XT30 | Press fit on the flat faces positions it, with clearance at the chamfered corners; a shoulder in front and a hood rib behind capture it, so unplugging cannot pull it out; glue optional |
 | DE-9 | Rigid mount from inside: flange against the inner wall face, wall thinned locally around the cutout to suit the jackpost thread, jackposts (UNC 4-40) into nuts in printed pockets; the cable plug locks onto the jackposts |
 | Walls | 2.5 mm side walls, floor and cover; 3.0 mm connector wall (DE-9 screws, XT30 press fit); at least 2.0 mm of material around each M3 heat-set insert |
 | Edges | Rounded outside edges and corners, no sharp corners |
@@ -113,7 +113,7 @@ One small PETG coupon, printed before the housing is modelled: [print files and 
 - [x] **PCB edge slots (D):** RS-232 (1.15 mm) in the 1.3 slot and a 1.55 mm test board in the 1.7 slot: both slide in by hand with minor play. The ESP32's header solder joints reach to within about 0.1 mm of its long edges, so it cannot be held in long-edge slots. MAX490 board not delivered yet.
 - [x] **Snap hooks (E + F):** 1.2 and 1.5 mm hold too weakly; 1.8 mm has the right force, but the 0.6 mm lip barely holds (the 19.9 mm plate leaves only about 0.4 mm overlap in the 20.3 mm gap). The 8.5 mm support height needed for the hook to flex wastes space under the PCB; next: clip trial print.
 - [ ] **XT30 pockets (B):** failed, the connector does not go into any pocket. The pockets were sized on the CAD model (10.25 mm), the delivered connector is 10.55 mm wide with a different end shape and no rib. Redesign on the measured connector and reprint.
-- [ ] **DE-9 cutout (A):** pass the socket through from the inside face (the face without the raised "12V"). The shell must not rub and the flange must sit flat.
+- [ ] **DE-9 cutout (A):** failed, the delivered socket's shell (17.85 × 9.2 mm) does not pass the cutout sized on the NorComp model. Redesign on the measured part and reprint.
 - [ ] **DE-9 mating (A):** with the socket held in place, plug in the male cable plug from outside. It must seat fully, as on the bare socket; if the wall stops it short, measure how far it goes in (the 3.0 mm housing wall gives 0.5 mm more than the coupon).
 - [ ] **Jackposts (A):** fit both jackposts with their nuts behind the flange. Note which hole (Ø3.1 / 3.3) the thread passes, and whether the nut gets a full grip through the coupon's 3.5 mm wall (the housing gets 3.0 mm) or only through the 1.6 mm recess.
 - [x] **Embossed text (A):** "12V", 5 mm high, raised 0.6 mm on a vertical face; reads clearly.
@@ -140,7 +140,7 @@ Sizes from owner measurements, seller listings or datasheets; see the source col
 | UBEC ferrite ring | 1 | Reserve 30 × 30 × 15 keep-out (estimate from the product photo, ring with wire turns) | — | On the UBEC 5 V output lead, as shipped; resize once measured |
 | F1 fuse holder | 1 | Open | — | Format not selected yet |
 | XT30 male, panel | 1 | 10.55 × 5.25 body; 10.8 × 5.66 over the raised markings at the solder-cup end (owner measurement) | S51 | Press-fit pocket ([section 4](#connectors)) |
-| DE-9 female socket | 1 | Standard D-sub shell | — | Exact part open |
+| DE-9 female socket | 1 | Delivered part: D shell 17.85 × 9.2 (owner measurement, outer rectangle) | — | Larger than the NorComp model (16.35 × 7.9); exact part open |
 | Resistors (divider, pull-ups) | 5 | Small | — | R-B1, R-B2, R-Z, R-F, R-D |
 
 ### 3.1 ESP32 CAD reference
