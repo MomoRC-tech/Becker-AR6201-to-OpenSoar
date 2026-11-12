@@ -25,7 +25,7 @@ Zander and FLARM are receive-only at the bridge. No return wires or connector co
 
 ### 1.1 Combined instrument connector
 
-Use one standard-density DE-9 connector for Becker, Zander and FLARM: a female socket on the housing and a mating male cable plug, with solder-cup contacts and screw locking. Terminate the existing instrument wires directly in the cable plug and support the cables with a backshell and strain relief. Power uses the separate [XT30 connector](power.md#supply).
+Use one standard-density DE-9 connector for Becker, Zander and FLARM: a male connector (pins) on the housing and a mating female cable connector, with solder-cup contacts and screw locking. Terminate the existing instrument wires directly in the cable connector and support the cables with a backshell and strain relief. Power uses the separate [XT30 connector](power.md#supply).
 
 | Device | Signals through the connector | Contacts |
 | --- | --- | ---: |
