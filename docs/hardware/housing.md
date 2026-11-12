@@ -94,6 +94,7 @@ Starting values for PETG on the P1S with a 0.4 mm nozzle and 0.2 mm layers. They
 | Embossed text | 0.6 mm raised, characters 5 mm tall (confirmed by the fit test) |
 
 - **Snap hooks standing up from the base** bend across the layer lines, their weakest direction. Keep the deflection small and the root fillet generous.
+- **Measured accuracy:** parts print about 0.5 % small in X/Y (0.3 mm over 68 mm), Z true, no elephant foot. No scaling: print the housing with the same filament and settings as the fit test, so the measured fits carry over.
 - **Heat-set insert hole** (ruthex RX-M3x5.7, S50): Ø4.0 mm, at least 6.7 mm deep (insert length + 1 mm), at least 2.0 mm of material around it (ruthex minimum 1.6 mm).
 
 <a id="fit-test"></a>
@@ -106,7 +107,7 @@ One small PETG coupon, printed before the housing is modelled: [print files and 
 
 **Order:** reversible tests first, the inserts last (they cannot be removed). Let the pieces cool fully and remove any brim first.
 
-- [ ] **Print accuracy:** measure piece F (20.0 × 20.0 × 1.6 mm) and the length of piece C (68.0 mm). Note any deviation and any flared first layer (elephant foot); both shift every fit below.
+- [x] **Print accuracy:** F 19.9 × 19.9 × 1.56 mm, C 67.7 mm (about 0.5 % small in X/Y), no elephant foot.
 - [ ] **M3 clearance holes (C):** push the M3 screw through each hole by hand, Ø3.2 to 3.6 mm. Pick the smallest it passes without force or thread cutting.
 - [ ] **PCB edge slots (D):** measure both PCB thicknesses first. Push each PCB edge into its four slots (+0.1 to +0.4 mm). Pick the tightest that slides in by hand and does not rattle when shaken.
 - [ ] **Snap hooks (E + F):** press plate F down into each hook pair (1.2, 1.5, 1.8 mm). Pick the one that snaps in by thumb, holds without play and shows no whitening or crack at the root after ten in-and-out cycles.
