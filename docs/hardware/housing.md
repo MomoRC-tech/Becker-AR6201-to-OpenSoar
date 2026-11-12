@@ -139,7 +139,7 @@ Sizes from owner measurements, seller listings or datasheets; see the source col
 | UBEC ferrite ring | 1 | Reserve 30 × 30 × 15 keep-out (estimate from the product photo, ring with wire turns) | — | On the UBEC 5 V output lead, as shipped; resize once measured |
 | F1 fuse holder | 1 | Open | — | Format not selected yet |
 | XT30 male, panel | 1 | 10.55 × 5.25 body; 10.8 × 5.66 over the raised markings at the solder-cup end (owner measurement) | S51 | Press-fit pocket ([section 4](#connectors)) |
-| DE-9 male, panel | 1 | Flange 31 × 12.6; D shell 17.85 × 9.2 outer; rear body behind the flange 19.3 × 10.9 (owner measurement) | S43 | Flange and rear side as the female NorComp model; hole spacing and rear depth still to measure |
+| DE-9 male, panel | 1 | Flange 31 × 12.6 × 1.0, holes Ø3.1 at 25.0 spacing; D shell 17.85 × 9.2 outer; rear body behind the flange 19.3 × 10.9 (owner measurement) | S43 | Flange and rear side as the female NorComp model; rear depth still to measure |
 | Resistors (divider, pull-ups) | 5 | Small | — | R-B1, R-B2, R-Z, R-F, R-D |
 
 ### 3.1 ESP32 CAD reference
