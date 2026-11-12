@@ -100,7 +100,7 @@ Starting values for PETG on the P1S with a 0.4 mm nozzle and 0.2 mm layers. They
 
 ### 2.3 Fit test print
 
-One small PETG coupon, printed before the housing is modelled: [print files and feature map](../../cad/housing/fit-test-coupon/README.md) (112 × 60 mm plate, 28 mm wall section, prints without supports). Check each feature and record the best value in [section 2.2](#print-values).
+One small PETG coupon, printed before the housing is modelled: [print files and feature map](../../cad/housing/fit-test-coupon/README.md) (six small pieces, about 14.5 cm³, print without supports). Check each feature and record the best value in [section 2.2](#print-values).
 
 - [ ] **M3 clearance holes:** vertical holes Ø3.2–3.6 mm in 0.1 mm steps; pick the smallest an M3 screw passes freely.
 - [ ] **PCB edge slots:** slots for 1.6 mm (ESP32, MAX490, UBEC) and 1.2 mm (RS-232) PCBs, +0.1 to +0.4 mm in 0.1 mm steps; pick the one that holds without play or force.
@@ -109,7 +109,7 @@ One small PETG coupon, printed before the housing is modelled: [print files and 
 - [ ] **Insert holes:** Ø3.9, 4.0 and 4.1 mm, 6.7 mm deep, in 2.0 mm walls; pick the one where the insert goes in straight and holds a tightened M3 screw without turning.
 - [ ] **DE-9 cutout:** D cutout with 0.4 mm clearance on the shell; the socket must pass through from the inside and its flange sit flat on the wall.
 - [ ] **Jackposts:** holes Ø3.1 and Ø3.3 at 25.0 mm spacing; the right hole sits in a Ø9 recess that leaves 1.6 mm of wall. Check which hole the jackpost thread passes and whether the thread reaches the nut through 3.5 mm or only through 1.6 mm of wall.
-- [ ] **Embossed text:** "12V" and "FUSE" at 5 and 7 mm height; check legibility.
+- [ ] **Embossed text:** "12V", 5 mm high, raised 0.6 mm on a vertical wall face; check legibility.
 
 ### 2.4 Later optimizations
 
