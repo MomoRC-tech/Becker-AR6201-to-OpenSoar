@@ -88,7 +88,7 @@ Starting values for PETG on the P1S with a 0.4 mm nozzle and 0.2 mm layers. They
 | Slot for a PCB edge | PCB thickness + 0.15 mm (fit test: slides in by hand with minor play; the hood ribs take out the rest) |
 | Press fit (XT30) | 0.1 mm interference per side on the measured body |
 | M3 screw clearance hole | Ø3.4 mm (fit test: Ø3.3 is the smallest free hole; Ø3.4 leaves alignment margin for the four cover screws) |
-| Snap hook | At least 8 mm long, 1.5 mm thick, 0.6 mm undercut over the PCB edge, 1 mm fillet at the root |
+| Snap hook | At least 8 mm long, 1.8 mm thick, 1.0 mm lip over the PCB edge, 0.1 mm gap per side to the PCB, 1 mm fillet at the root (fit test: 1.2 and 1.5 mm too weak; a 0.6 mm lip did not hold; recheck on the separate clips) |
 | Hood hold-down ribs | 0.2 mm interference on the PCB top, ribs 1.2 mm wide so they flex instead of cracking the PCB |
 | Smallest feature | 0.8 mm (two extrusion lines) |
 | Overhangs | Up to 60° from vertical without support; bridges up to 10 mm |
@@ -111,7 +111,7 @@ One small PETG coupon, printed before the housing is modelled: [print files and 
 - [x] **Print accuracy:** F 19.9 × 19.9 × 1.56 mm, C 67.7 mm (about 0.5 % small in X/Y), no elephant foot.
 - [x] **M3 clearance holes (C):** screw Ø2.9 mm; Ø3.2 snug, Ø3.3 and larger free. Selected Ø3.4.
 - [x] **PCB edge slots (D):** RS-232 (1.15 mm) in the 1.3 slot and a 1.55 mm test board in the 1.7 slot: both slide in by hand with minor play. The ESP32's header solder joints reach to within about 0.1 mm of its long edges, so it cannot be held in long-edge slots. MAX490 board not delivered yet.
-- [ ] **Snap hooks (E + F):** press plate F down into each hook pair (1.2, 1.5, 1.8 mm). Pick the one that snaps in by thumb, holds without play and shows no whitening or crack at the root after ten in-and-out cycles.
+- [x] **Snap hooks (E + F):** 1.2 and 1.5 mm hold too weakly; 1.8 mm has the right force, but the 0.6 mm lip barely holds (the 19.9 mm plate leaves only about 0.4 mm overlap in the 20.3 mm gap). Next: deeper lip on separate, flat-printed clips.
 - [ ] **XT30 pockets (B):** press the XT30 in from the back until its rib stops (0.05, 0.10, 0.15 mm interference). Pick the tightest that goes fully in by hand or a gentle vise squeeze without splitting the wall; then mate and pull the female plug ten times, the male must not move.
 - [ ] **DE-9 cutout (A):** pass the socket through from the inside face (the face without the raised "12V"). The shell must not rub and the flange must sit flat.
 - [ ] **DE-9 mating (A):** with the socket held in place, plug in the male cable plug from outside. It must seat fully, as on the bare socket; if the wall stops it short, measure how far it goes in (the 3.0 mm housing wall gives 0.5 mm more than the coupon).
