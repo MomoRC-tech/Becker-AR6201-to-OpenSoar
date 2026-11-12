@@ -1,11 +1,11 @@
-# Fit test 3
+# ESP32 holder
 
-ESP32 holder, third version: two end blocks glued onto the housing floor, with a gluing jig. Described in [housing § 2.3](../../../docs/hardware/housing.md#fit-test). Built in Autodesk Fusion through MCP, 2026-11-12; these exports are the repository copies.
+Holds the ESP32 at its short ends: two end blocks glued onto the housing floor, a USB cap with one screw, and a gluing jig. Rules: [housing § 2](../../../docs/hardware/housing.md#rules); checks: [§ 2.3](../../../docs/hardware/housing.md#fit-test). Built in Autodesk Fusion through MCP, 2026-11-12; these exports are the repository copies.
 
 | File | Use |
 | --- | --- |
-| `fit-test-3.3mf` | Print-ready mesh (high refinement), four pieces in print orientation |
-| `fit-test-3.step` | Solid model for checking dimensions or re-slicing |
+| `esp32-holder.3mf` | Print-ready mesh (high refinement), four pieces in print orientation |
+| `esp32-holder.step` | Solid model for checking dimensions or re-slicing |
 
 - Units: millimetres; Z is the print direction. Print every piece as placed, without supports; about 3.8 cm³.
 - Heights below are above the housing floor; PCB underside 3.5 mm.

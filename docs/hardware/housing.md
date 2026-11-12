@@ -102,43 +102,36 @@ Starting values for PETG on the P1S with a 0.4 mm nozzle and 0.2 mm layers. They
 
 <a id="fit-test"></a>
 
-### 2.3 Fit test print
+### 2.3 Fit tests and current models
 
-One small PETG coupon, printed before the housing is modelled: [print files and feature map](../../cad/housing/fit-test-coupon/README.md) (six small pieces, about 14.5 cm³, print without supports). Check each feature and record the best value in [section 2.2](#print-values).
+The fit-test prints are done; their results are the values in [section 2.2](#print-values). Old test models are in Git history.
 
-**You need:** calipers; one M3×8 screw and a hex key; three ruthex inserts and a soldering iron with an insert tip; the XT30 male and its female mate; the DE-9 male, two jackposts with nuts and a female cable connector; edges of a 1.6 mm and a 1.2 mm PCB.
+| Tested | Result |
+| --- | --- |
+| Print accuracy | About 0.5 % small in X/Y, Z true, no elephant foot |
+| M3 clearance hole | Ø3.3 smallest free, Ø3.4 selected |
+| M2.5 straight into PETG | Pilot hole Ø2.2 mm |
+| Heat-set insert hole | Ø4.0 mm |
+| PCB edge slots | PCB thickness + 0.15 mm; not usable on the ESP32 (solder joints at the long edges) |
+| Snap hooks (standing) | 1.8 mm thick needed, 0.6 mm lip too small; replaced by dedicated holders |
+| Embossed text | 5 mm characters, 0.6 mm raised, readable |
+| XT30 (printed flat) | Pocket = measured body 10.55 × 5.25 mm, chamfer clearance; holds unplugging, glued |
+| DE-9 front mount (printed flat) | Recess 31.6 × 13.2 × 1.0 mm snug and flush, cutout 19.9 × 11.5 mm, holes Ø3.4 mm, nut pockets 5.6 mm |
 
-**Order:** reversible tests first, the inserts last (they cannot be removed). Let the pieces cool fully and remove any brim first.
+Current models in `cad/housing/`:
 
-- [x] **Print accuracy:** F 19.9 × 19.9 × 1.56 mm, C 67.7 mm (about 0.5 % small in X/Y), no elephant foot.
-- [x] **M3 clearance holes (C):** screw Ø2.9 mm; Ø3.2 snug, Ø3.3 and larger free. Selected Ø3.4.
-- [x] **PCB edge slots (D):** RS-232 (1.15 mm) in the 1.3 slot and a 1.55 mm test board in the 1.7 slot: both slide in by hand with minor play. The ESP32's header solder joints reach to within about 0.1 mm of its long edges, so it cannot be held in long-edge slots. MAX490 board not delivered yet.
-- [x] **Snap hooks (E + F):** 1.2 and 1.5 mm hold too weakly; 1.8 mm has the right force, but the 0.6 mm lip barely holds (the 19.9 mm plate leaves only about 0.4 mm overlap in the 20.3 mm gap). The 8.5 mm support height needed for the hook to flex wastes space under the PCB; next: clip trial print.
-- [ ] **XT30 pockets (B):** failed, the connector does not go into any pocket. The pockets were sized on the CAD model (10.25 mm), the delivered connector is 10.55 mm wide with a different end shape and no rib. Redesign on the measured connector and reprint.
-- [ ] **DE-9 cutout (A):** failed: the delivered connector is male (shell 17.85 × 9.2 mm), the cutout was sized on the female NorComp shell; it is now mounted from the front. Retest on the reprinted piece: rear body through the cutout, flange flat on the outer face.
-- [ ] **Jackposts (A):** on the reprinted piece: which hole the 4-40 thread passes, and whether the nut gets a full grip through flange plus 3.0 mm wall.
-- [x] **Embossed text (A):** "12V", 5 mm high, raised 0.6 mm on a vertical face; reads clearly.
-- [x] **Insert holes (C):** Ø4.0 mm works best.
+| Model | Status |
+| --- | --- |
+| [ESP32 holder](../../cad/housing/esp32-holder/README.md): antenna cap, USB block, USB cap, gluing jig | Ready to print |
+| [Connector panel](../../cad/housing/connector-panel/README.md): DE-9, XT30, space for F1 | Updated to the measured values; prints flat, front face down |
+| RS-232 holder | See below |
 
-**Fit test 2:** [print files and piece map](../../cad/housing/fit-test-2/README.md) (twelve small pieces, about 10 cm³, print without supports).
-
-- [x] **XT30 (G):** the 0.00 pocket (= measured body) fits; holds ten pulls, pushes out firmly, no damage. Glued in against plugging-in force.
-- [x] **DE-9 flange and cutout (H):** recess snug and flush, cutout passes.
-- [x] **DE-9 holes (H):** Ø3.4 fits; nut pockets too big for the 5.45 mm nuts, reduce to 5.6 mm.
-- [ ] **Clip sockets (J, K):** each clip drops into its socket by hand, sits without wobble and cannot be pulled straight up.
-- [ ] **Clips on plate F (J):** try fixed lip C1 + arm C2, C1 + C3, and the pair C3 + C4. Pick the combination that snaps in by thumb, holds without play and comes out again without breaking.
-- [ ] **Clips on an RS-232 board (K):** same with C5 + C6 and C5 + C7, across the board's 9.2 mm width.
-- [x] **M2.5 pilot holes (M):** Ø2.2 mm fits best.
-
-**Fit test 3:** [ESP32 holder v3](../../cad/housing/fit-test-3/README.md) (four pieces, about 3.8 cm³, print without supports).
-
-- [ ] **ESP32 holder v3 (A, B, U, J):** fit the jig into the antenna cap like a board (EN side at the wide lip), set the USB block under its USB end and screw the USB cap on over the dummy socket; everything sits square without force. Then the real board: slides into the cap, lower the USB end, cap screwed down; no rattle, the bridge pad presses the shield lightly, the lips do not break.
+- [ ] **ESP32 holder:** fit the jig into the antenna cap like a board (EN side at the wide lip), set the USB block under its USB end and screw the USB cap on over the dummy socket; everything sits square without force. Then the real board: slides into the cap, lower the USB end, cap screwed down; no rattle, the bridge pad presses the shield lightly, the lips do not break.
+- [ ] **Connector panel:** XT30 front first from the back until the markings stop it, DE-9 from the front into the flush recess, nuts in the pockets; mate both plugs and check backshell and tool clearance.
 
 **Fit test 4:** [RS-232 slot holder](../../cad/housing/fit-test-4/README.md) (two pieces, about 0.7 cm³, printed standing, without supports).
 
 - [ ] **RS-232 slot holder (A 1.20 slot, B 1.25 slot):** slide the board in flat from either end. Pick the slot that holds the board tight by friction, slides in by hand without forcing and does not crack the lips. Both pad rows overhang the rails in free air; solder a test wire to an end pad with the board fitted and check the PETG stays undamaged.
-
-The [mechanical fit coupons](../../cad/housing/mechanical-tests/README.md) give three independent prints: an ESP32 cradle with keeper tabs that seat on the bosses, an ESP32 hold-down beam, and a combined DE-9/XT30 front plate. The RS-232 board uses the [fit test 4 slot holder](../../cad/housing/fit-test-4/README.md).
 
 ### 2.4 Later optimizations
 
