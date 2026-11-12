@@ -66,7 +66,7 @@ Start with the loose ends of the existing Zander harness ([installed wiring](../
 | TX from Zander | → | **L3** RS-232 input | **R2** TTL output | → | GPIO32 (<img src="../images/pins/rx.svg" alt="RX" width="20" height="14">) |
 | Signal GND | — | L1 GND | R4 GND | — | GND |
 
-Leave L4 and GPIO33 unconnected. Keep the existing 10 kΩ pull-up (R-Z) from R1 to 3.3 V to hold the unused converter driver input at a defined level.
+Leave L4 and GPIO33 unconnected. Solder the 10 kΩ pull-up R-Z directly on the module, from pad R1 to pad R3 (the module's 3.3 V supply). It holds the unused converter driver input at a defined level.
 
 ---
 
@@ -83,7 +83,7 @@ Use a free data port on the Classic FLARM ([installation manual v221 pp.6/7](htt
 | 5 (<img src="../images/pins/tx.svg" alt="TX" width="20" height="14">) | → | **L3** RS-232 input | **R2** TTL output | → | GPIO26 (<img src="../images/pins/rx.svg" alt="RX" width="20" height="14">) |
 | 7/8 (<img src="../images/pins/gnd.svg" alt="GND" width="23" height="14">) | — | L1 GND | R4 GND | — | GND |
 
-Leave L4, GPIO27 and the FLARM RX conductor unconnected. Keep the existing 10 kΩ pull-up (R-F) from R1 to 3.3 V, as for the Zander.
+Leave L4, GPIO27 and the FLARM RX conductor unconnected. Solder the 10 kΩ pull-up R-F from pad R1 to pad R3 on the module, as for the Zander.
 
 > [!WARNING]
 > FLARM uses IGC pin numbering, which runs opposite to common RJ45 numbering. Pins 1–3 carry supply voltage: never connect them to the converter.
@@ -119,10 +119,12 @@ Run TX2± and RX2± as two separate twisted pairs in a shielded cable, as Becker
 
 | Board signal | ESP32 |
 | --- | --- |
-| Receiver output (RO) | 2.2 kΩ (R-B1) to GPIO16; 3.3 kΩ (R-B2) from GPIO16 to GND (<img src="../images/pins/rx.svg" alt="RX" width="20" height="14">) |
-| Driver input (DI) | GPIO17, plus a 10 kΩ pull-up (R-D) to 3.3 V (<img src="../images/pins/tx.svg" alt="TX" width="20" height="14">) |
-| VCC | 5 V from the UBEC |
-| GND | GND |
+| Receiver output (RO) | 2.2 kΩ (R-B1) in the wire to GPIO16 (J3-12); 3.3 kΩ (R-B2) across the header pins J3-12 and J3-7 (GND) (<img src="../images/pins/rx.svg" alt="RX" width="20" height="14">) |
+| Driver input (DI) | GPIO17 (J3-11), plus a 10 kΩ pull-up (R-D) from J3-11 to 3V3 (J2-1) (<img src="../images/pins/tx.svg" alt="TX" width="20" height="14">) |
+| VCC | 5 V from the ESP32 5V pin (J2-19), which the UBEC feeds |
+| GND | ESP32 GND (J3-1) |
+
+R-B1 sits at the J3-12 end of the RO wire and R-D bridges J3-11 to J2-1 with an insulated lead. Cover each resistor and both its joints with heat-shrink and tie the wire down next to the ESP32, so vibration does not load the joints.
 
 > [!IMPORTANT]
 > The board's TXD/RXD header labels may be named from either side. Identify RO and DI on the board before wiring.

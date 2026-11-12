@@ -36,25 +36,25 @@ The AZ-Delivery board follows Espressif's DevKitC V4 layout (S32). View from the
 
 | Position | J2 label | J2 bridge use | J3 label | J3 bridge use |
 | ---: | --- | --- | --- | --- |
-| 1 | `3V3` | **3.3 V to RS-232 modules and the three pull-ups** | `GND` | Ground |
+| 1 | `3V3` | **3.3 V to both RS-232 modules (R3) and R-D** | `GND` | **Ground: MAX490 board** |
 | 2 | `EN` | — | `IO23` | — |
 | 3 | `VP` | — | `IO22` | — |
 | 4 | `VN` | — | `TX` | USB serial (boot only) |
 | 5 | `IO34` | — | `RX` | USB serial (boot only) |
 | 6 | `IO35` | — | `IO21` | — |
-| 7 | `IO32` | **Zander RX** (UART0) | `GND` | Ground |
+| 7 | `IO32` | **Zander RX** (UART0) | `GND` | **Ground: RS-232-mod1, R-B2** |
 | 8 | `IO33` | Not connected | `IO19` | — |
 | 9 | `IO25` | — | `IO18` | — |
 | 10 | `IO26` | **FLARM RX** (UART1) | `IO5` | — |
-| 11 | `IO27` | Not connected | `IO17` | **Becker TX** (UART2) |
-| 12 | `IO14` | — | `IO16` | **Becker RX** via divider (UART2) |
+| 11 | `IO27` | Not connected | `IO17` | **Becker TX** (UART2), R-D to J2-1 |
+| 12 | `IO14` | — | `IO16` | **Becker RX** via R-B1 (UART2), R-B2 to J3-7 |
 | 13 | `IO12` | — | `IO4` | — |
-| 14 | `GND` | Ground | `IO0` | — |
+| 14 | `GND` | **Ground: UBEC, RS-232-mod2** | `IO0` | — |
 | 15 | `IO13` | — | `IO2` | — |
 | 16 | `D2` | — | `IO15` | — |
 | 17 | `D3` | — | `D1` | — |
 | 18 | `CMD` | — | `D0` | — |
-| 19 | `5V` | **5 V from UBEC** | `CLK` | — |
+| 19 | `5V` | **5 V from UBEC; on to MAX490 VCC** | `CLK` | — |
 
 GPIO16/17 are free only on WROOM boards (WROVER boards use them for PSRAM). D0–D3, CMD and CLK belong to the flash; leave them free. The pin plan avoids the boot strapping pins (GPIO0, 2, 5, 12, 15). [Espressif header tables](https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32/esp32-devkitc/user_guide.html#header-block)
 
@@ -138,9 +138,9 @@ For one bridge, bridge end only — the device-side connectors and harness alrea
 | 2 | RS-232-mod1, mod2 | 2 | Hailege H-1-0290 | [Zander](wiring.md#zander), [FLARM](wiring.md#flarm) |
 | 3 | RS-422 mod | 1 | MAX490 RS-422 board, 5 V | [Becker](wiring.md#becker) |
 | 4 | PS1 | 1 | Hobbywing UBEC 3A (2–6S), 86010010, set to 5 V | [Power](power.md#supply) |
-| 5 | R-B1, R-B2 | 1 each | 2.2 kΩ and 3.3 kΩ resistors, 0.125 W | Divider, MAX490 RO → GPIO16 (R-B2 to GND) |
-| 6 | R-Z, R-F | 2 | 10 kΩ resistor, 0.125 W | Pull-up, RS-232 module R1 → 3.3 V |
-| 7 | R-D | 1 | 10 kΩ resistor, 0.125 W | Pull-up, MAX490 DI → 3.3 V (quiet radio line during boot) |
+| 5 | R-B1, R-B2 | 1 each | 2.2 kΩ and 3.3 kΩ resistors, 0.125 W | Divider: R-B1 in the RO wire at J3-12, R-B2 across J3-12 and J3-7 |
+| 6 | R-Z, R-F | 2 | 10 kΩ resistor, 0.125 W | Pull-up on each RS-232 module, pad R1 → R3 |
+| 7 | R-D | 1 | 10 kΩ resistor, 0.125 W | Pull-up J3-11 (GPIO17, DI) → J2-1 (3V3); quiet radio line during boot |
 | 8 | F1 | 1 | Supply fuse with housing-integrated holder; specification tracked in [open items](../project/open-items.md#bench-hardware) | [Power](power.md#supply) |
 | 9 | — | existing | Becker harness, reused from its loose bridge-side ends | Check against [Becker wiring](wiring.md#becker); [inventory](../project/existing-installation.md#equipment) |
 | 10 | — | 1 pair | Standard XT30 male housing connector and mating female harness connector | [Power](power.md#supply), [mounting](housing.md#connectors) |

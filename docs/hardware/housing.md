@@ -19,7 +19,7 @@ Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md)
 
 ## 1. 🎯 Requirements
 
-- **Holds:** ESP32 board, 2 × RS-232 modules, MAX490 board, UBEC (with jumper, leads, ferrite ring), F1 fuse holder, RX divider and pull-up resistors.
+- **Holds:** ESP32 board, 2 × RS-232 modules, MAX490 board, UBEC (with jumper, leads, ferrite ring), F1 fuse holder. The five resistors sit on the module pads and ESP32 pins, so there is no extra board.
 - **On the housing:** XT30 for power, DE-9 for the three instruments ([section 4](#connectors)).
 - **F1:** 5 × 20 mm panel holder in the connector wall, fuse replaceable from outside ([power](power.md#protection)).
 - **Wiring:** connector mating forces must not load solder joints.
@@ -41,10 +41,10 @@ Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md)
 | Manufacturing | 3D printed on a Bambu Lab P1S in PETG ([section 2.1](#material)) |
 | Split | Shallow base tray (floor, low side walls, full-height connector wall) and a deep hood as the cover; connectors stay on the base when the hood is off |
 | Cover | Hood held by four M3 × 8 stainless A2 cylinder-head screws (ISO 4762), one per corner, heads in counterbores, into ruthex RX-M3x5.7 brass heat-set inserts in corner bosses of the base (S50) |
-| PCB mounting | Each PCB type gets its own printed holder, shaped to the board and fixed to the housing floor, so a misfitting holder is reprinted without reprinting the housing. Each PCB sits with its underside at least 2 mm above its tallest underside part. Holders for the MAX490 board, the UBEC and the perfboard: [open items](../project/open-items.md#housing) |
+| PCB mounting | Each PCB type gets its own printed holder, shaped to the board and fixed to the housing floor, so a misfitting holder is reprinted without reprinting the housing. Each PCB sits with its underside at least 2 mm above its tallest underside part. Holders for the MAX490 board and the UBEC: [open items](../project/open-items.md#housing) |
 | ESP32 | Component side up; its pre-soldered header pins point up, and wires are soldered directly to them from above (not replaceable). Lengthwise, antenna at the short end opposite the connectors. Held at its short ends by two blocks glued onto the housing floor on broad feet, with the board underside 4.5 mm above the floor to clear the header solder tails, positioned by a printed gluing jig (a dummy board) while the glue cures. Antenna cap: one piece, printed standing on its antenna-facing side; side walls along both long edges, corner end walls, lips 1.7 mm thick over the bare edge between header strip and module (EN side 1.9 mm, BOOT side 1.5 mm wide), a chamfered ledge under the board, and a spring bridge whose pad reaches 2 mm onto the module shield with 0.3 mm pre-load; the antenna overhang passes through an open window, with the bridge about 3 mm above it. Above the header strips the bridge stays about 1.9 mm clear of the first header pins on each side (estimated from the CAD model), room for the soldered wires. USB end: a screw block with a ledge, two end stops and one boss directly in front of the USB socket; a USB cap covers the top and sides of the socket, presses 0.2 mm onto it and is held by one M2.5 metal screw cut straight into the boss (no insert); the USB socket is not usable with the cap fitted. Rounded outer edges. The board stays captured with the hood off; leave clearance above the header strips and wires |
 | RS-232 modules | Each slides flat into a printed holder of two grooved rails, held by friction on its long edges beside the chip feet; slot 1.25 mm for the 1.15 mm PCB, both pad rows free for soldering |
-| Internal wiring | One perfboard carries the RX divider, the pull-ups, the bridge ground point and the 3.3 V / 5 V distribution; wires run from it to the modules. Minimal board: only the resistor, power and ground nets land on it; the RS-232 data lines (R2 → GPIO32, GPIO26) run directly from the modules to the ESP32. Wires are soldered directly into the perfboard holes (no plugs, nothing to shake loose) and held by a cable tie through spare holes |
+| Internal wiring | Wires are soldered directly to the module pads and ESP32 header pins (no plugs, nothing to shake loose); the resistors sit on those pads and pins ([signal wiring](wiring.md)), the ESP32 ground copper is the bridge ground ([supply path](power.md#supply)) |
 | Access from outside | Connectors and the F1 fuse only. UBEC jumper and the ESP32 EN/BOOT buttons only with the hood off, Micro-USB only with the hood and the ESP32 USB cap off; no USB opening in the hood |
 | Soldering | Every solder joint reachable with all PCBs fitted and the cover off |
 | Connector wall | XT30, DE-9 and the F1 fuse holder together on one short side |
@@ -259,12 +259,11 @@ Use the [STEP model](../../cad/reference/xt30u-m/xt30u-m.step) of the AMASS XT30
 
 Not designed yet. Constraints from the wiring:
 
-- **Short wires:** RO → divider → GPIO16 and the pull-ups sit between the MAX490 board and the ESP32.
+- **Short wires:** keep the MAX490 board close to the ESP32's J3 header (RO, DI and GND wires); leave a tie-down point next to the ESP32 for the heat-shrunk R-B1 and R-D.
 - **Grounds:** one bridge ground; route the device signal grounds from the DE-9 to the module grounds ([grounding and loops](power.md#ground)).
 - **Power path:** XT30 → F1 → UBEC → ESP32 and MAX490 ([supply path](power.md#supply)).
 - **Ferrite ring:** keep its placeholder volume ([section 3](#contents)) at the UBEC's output end (opposite the jumper), on the 5 V lead towards the ESP32; the ring is not modelled in the UBEC CAD reference.
 - **ESP32:** lengthwise, antenna at the far short end; Micro-USB faces the connector end.
-- **Resistors and ground point:** on one perfboard ([design rules](#rules)). Schematic: [bridge-perfboard.sch](../../cad/perfboard/bridge-perfboard.sch), generated by [perfboard_schematic.py](../../tools/perfboard_schematic.py); open the .sch/.brd pair in Fusion Electronics.
 
 ---
 

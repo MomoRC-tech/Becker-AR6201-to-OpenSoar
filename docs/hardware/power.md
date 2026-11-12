@@ -29,10 +29,12 @@ Related: 🔌 [Signal wiring](wiring.md) · 🧱 [Modules and parts](modules.md)
 | From | To |
 | --- | --- |
 | UBEC input GND | The common ground point (where the radio's P1-13/25 return, S10), with its own wire |
-| UBEC 5 V | ESP32 5V pin ([J2-19](modules.md#esp32-pinout)) and MAX490 board VCC |
-| UBEC GND | ESP32 GND |
-| ESP32 3V3 ([J2-1](modules.md#esp32-pinout)) | R3 (+) on both RS-232 modules; the pull-ups R-Z, R-F and R-D |
-| ESP32 GND | R4 (−) on both RS-232 modules, MAX490 board GND |
+| UBEC 5 V | ESP32 5V pin ([J2-19](modules.md#esp32-pinout)); a second wire from J2-19 to the MAX490 board VCC |
+| UBEC GND | ESP32 GND (J2-14) |
+| ESP32 3V3 ([J2-1](modules.md#esp32-pinout)) | R3 (+) on both RS-232 modules (R-Z and R-F sit on the modules); the pull-up R-D |
+| ESP32 GND | R4 (−) of RS-232-mod1 (J3-7) and RS-232-mod2 (J2-14); MAX490 board GND (J3-1) |
+
+The ESP32 board's ground copper is the bridge ground: each ground wire gets its own GND pin, at most two per pin. There is no separate ground point or distribution board inside the housing.
 
 > [!WARNING]
 > Never connect USB and the UBEC 5 V at the same time: the board has no power selection. Unplug the UBEC before using USB.
