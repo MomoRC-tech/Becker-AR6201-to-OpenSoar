@@ -141,7 +141,7 @@ For one bridge, bridge end only — the device-side connectors and harness alrea
 | 5 | R-B1, R-B2 | 1 each | 2.2 kΩ and 3.3 kΩ resistors, 0.125 W | Divider: R-B1 in the RO wire at J3-12, R-B2 across J3-12 and J3-7 |
 | 6 | R-Z, R-F | 2 | 10 kΩ resistor, 0.125 W | Pull-up on each RS-232 module, pad R1 → R3 |
 | 7 | R-D | 1 | 10 kΩ resistor, 0.125 W | Pull-up J3-11 (GPIO17, DI) → J2-1 (3V3); quiet radio line during boot |
-| 8 | F1 | 1 | Supply fuse with housing-integrated holder; specification tracked in [open items](../project/open-items.md#bench-hardware) | [Power](power.md#supply) |
+| 8 | F1 | 1 | Supply fuse in an inline holder at the supply end of the 12 V harness; specification tracked in [open items](../project/open-items.md#bench-hardware) | [Power](power.md#supply) |
 | 9 | — | existing | Becker harness, reused from its loose bridge-side ends | Check against [Becker wiring](wiring.md#becker); [inventory](../project/existing-installation.md#equipment) |
 | 10 | — | 1 pair | Standard XT30 male housing connector and mating female harness connector | [Power](power.md#supply), [mounting](housing.md#connectors) |
 | 11 | — | 1 pair | DE-9 male housing connector and female cable connector, solder cups and screw locking, with cable backshell and strain relief | [Combined instrument connector](wiring.md#overview) |

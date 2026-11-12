@@ -19,9 +19,9 @@ Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md)
 
 ## 1. 🎯 Requirements
 
-- **Holds:** ESP32 board, 2 × RS-232 modules, MAX490 board, UBEC (with jumper, leads, ferrite ring), F1 fuse holder. The five resistors sit on the module pads and ESP32 pins, so there is no extra board.
+- **Holds:** ESP32 board, 2 × RS-232 modules, MAX490 board, UBEC (with jumper, leads, ferrite ring). The five resistors sit on the module pads and ESP32 pins, so there is no extra board.
 - **On the housing:** XT30 for power, DE-9 for the three instruments ([section 4](#connectors)).
-- **F1:** 5 × 20 mm panel holder in the connector wall, fuse replaceable from outside ([power](power.md#protection)). Added last, after the rest of the housing is modelled.
+- **F1:** in the 12 V harness at its supply end, not in the housing ([power](power.md#protection)).
 - **Wiring:** connector mating forces must not load solder joints.
 - **UBEC jumper:** must stay at 5 V — a 6 V setting is a hazard ([modules](modules.md#ubec)).
 - **USB:** never together with the UBEC supply; radio unplugged when on USB ([power](power.md#supply)).
@@ -45,9 +45,9 @@ Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md)
 | ESP32 | Component side up; its pre-soldered header pins point up, and wires are soldered directly to them from above (not replaceable). Lengthwise, antenna at the short end opposite the connectors. Held at its short ends by two blocks glued onto the housing floor on broad feet, with the board underside 4.5 mm above the floor to clear the header solder tails, positioned by a printed gluing jig (a dummy board) while the glue cures. Antenna cap: one piece, printed standing on its antenna-facing side; side walls along both long edges, corner end walls, lips 1.7 mm thick over the bare edge between header strip and module (EN side 1.9 mm, BOOT side 1.5 mm wide), a chamfered ledge under the board, and a spring bridge whose pad reaches 2 mm onto the module shield with 0.3 mm pre-load; the antenna overhang passes through an open window, with the bridge about 3 mm above it. Above the header strips the bridge stays about 1.9 mm clear of the first header pins on each side (estimated from the CAD model), room for the soldered wires. USB end: a screw block with a ledge, two end stops and one boss directly in front of the USB socket; a USB cap covers the top and sides of the socket, presses 0.2 mm onto it and is held by one M2.5 metal screw cut straight into the boss (no insert); the USB socket is not usable with the cap fitted. Rounded outer edges. The board stays captured with the hood off; leave clearance above the header strips and wires |
 | RS-232 modules | Each slides flat into a slot of two grooved rails, held by friction on its long edges beside the chip feet; slot 1.25 mm for the 1.15 mm PCB, both pad rows free for soldering. Both slots are part of the ESP32 USB block ([layout](#layout)) |
 | Internal wiring | Wires are soldered directly to the module pads and ESP32 header pins (no plugs, nothing to shake loose); the resistors sit on those pads and pins ([signal wiring](wiring.md)), the ESP32 ground copper is the bridge ground ([supply path](power.md#supply)) |
-| Access from outside | Connectors and the F1 fuse only. UBEC jumper and the ESP32 EN/BOOT buttons only with the hood off, Micro-USB only with the hood and the ESP32 USB cap off; no USB opening in the hood |
+| Access from outside | Connectors only. UBEC jumper and the ESP32 EN/BOOT buttons only with the hood off, Micro-USB only with the hood and the ESP32 USB cap off; no USB opening in the hood |
 | Soldering | Every solder joint reachable with all PCBs fitted and the cover off, except the MAX490 header joints under the UBEC bridge: reachable with the bridge lifted |
-| Connector wall | XT30, DE-9 and the F1 fuse holder together on one short side. The wall ends at the inside top like the corner posts; the hood top runs over it to the outer face, and the step lip continues up the wall's two vertical end edges where the hood side walls meet it |
+| Connector wall | XT30 and DE-9 together on one short side. The wall ends at the inside top like the corner posts; the hood top runs over it to the outer face, and the step lip continues up the wall's two vertical end edges where the hood side walls meet it |
 | XT30 | Inserted front first from inside; press fit on the flat faces, with clearance at the chamfered corners; the raised markings stop against the inner wall face, so unplugging cannot pull it out; glued in, so plugging-in cannot push it into the housing |
 | DE-9 | Male connector (pins) on the housing, mounted from the front: flange set flush into a recess in the outer wall face, rear body through a rectangular cutout; jackposts (UNC 4-40) through flange and wall into nuts in printed pockets inside, wall thinned locally around the nuts if the thread is too short; the female cable connector locks onto the jackposts |
 | Walls | 2.0 mm side walls; 2.5 mm floor and cover; 3.0 mm connector wall (DE-9 screws, XT30 press fit); at least 2.0 mm of material around each M3 heat-set insert |
@@ -56,7 +56,7 @@ Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md)
 | Attachment | Four slotted ears at the base corners, outside the hood footprint, for cable ties; the hood comes off while the base stays tied in |
 | Ventilation | Narrow slots low and high in the hood side walls; no openings on top |
 | Status light | Small window in the hood over the ESP32 power LED |
-| Markings | Connector names on the connector wall (12 V, instrument DE-9, fuse); owner adds a multicolour logo on the hood later |
+| Markings | Connector names on the connector wall (12 V, instrument DE-9); owner adds a multicolour logo on the hood later |
 | Shape | Preferred direction, not a fixed rule: narrow and long rather than square or wide, but not too narrow; a better layout may differ. Height set once the layout is modelled |
 | Size | Space the modules for soldering-iron access and tidy wiring first; review the size once modelled |
 | CAD | Modelled in Fusion, millimetres. Each model's folder in `cad/housing/` holds the editable Fusion archive (`.f3d`, full timeline), a STEP and a print-ready 3MF; the owner's Fusion project keeps the same documents. After a change, export all three again and commit them together |
@@ -147,7 +147,6 @@ Sizes from owner measurements, seller listings or datasheets; see the source col
 | RS-422 board (MAX490) | 1 | 50 × 27 | S34 | Screw terminals A/B/Y/Z on one edge, header on the other |
 | UBEC (Hobbywing 3A) | 1 | 43 × 17 × 7 (catalog); body about 35 × 12 × 5 | S14 | Plus jumper and leads |
 | UBEC ferrite ring | 1 | Reserve 30 × 30 × 15 keep-out (estimate from the product photo, ring with wire turns) | — | On the UBEC 5 V output lead, as shipped; resize once measured |
-| F1 fuse holder | 1 | Open | — | Format not selected yet |
 | XT30 male, panel | 1 | 10.55 × 5.25 body; 10.8 × 5.66 over the raised markings at the solder-cup end (owner measurement) | S51 | Press-fit pocket ([section 4](#connectors)) |
 | DE-9 male, panel | 1 | Flange 31 × 12.6 × 1.0, holes Ø3.1 at 25.0 spacing; D shell 17.85 × 9.2 outer; rear body behind the flange 19.3 × 10.9 × 5.0 deep, 8.0 including the solder cups (owner measurement) | S43 | Flange and rear side as the female NorComp model |
 | Resistors (divider, pull-ups) | 5 | Small | — | R-B1, R-B2, R-Z, R-F, R-D |
@@ -250,8 +249,6 @@ Use the [STEP model](../../cad/reference/xt30u-m/xt30u-m.step) of the AMASS XT30
 - Standard 4-40 jackposts (stud length about 4.8 mm, estimate; not delivered yet): through 1.0 mm flange and 2.0 mm wall, the nut pocket is sunk into the inner face so the nut gets full thread.
 - Housing side: jackposts ([design rules](#rules)); exact jackpost and local wall thickness: [open items](../project/open-items.md#bench-hardware).
 
-**F1 (fuse)** — 5 × 20 mm fuse in a panel-mount holder on the connector wall, replaceable from outside. Exact holder and rating: [open items](../project/open-items.md#bench-hardware).
-
 ---
 
 <a id="layout"></a>
@@ -281,6 +278,7 @@ Use the [STEP model](../../cad/reference/xt30u-m/xt30u-m.step) of the AMASS XT30
 - **UBEC bridge:** covers the MAX490 header joints and must lift off for soldering there; the UBEC jumper stays reachable from above with the hood off.
 - **Wiring:** XT30 wires run over the USB clamp to the UBEC input.
 - **Length driver:** the ferrite ring; the ESP32 column ends 8 mm before the ring's far end.
+- **Behind the connector wall:** 12–16 mm free depth before the ESP32 USB block, the USB clamp and the MAX490 (Fusion check), too short for a panel fuse holder; F1 sits in the harness ([protection](power.md#protection)).
 - **Corner posts:** the three posts away from the XT30 are clear of all parts (Fusion intersection check), except the ferrite-ring placeholder, which overlaps the far post on the MAX490 side by 1 mm; place the measured ring at least 1.5 mm further toward the middle.
 - **Width:** with 2.0 mm side walls the antenna cap sits 1.0 mm and the MAX490 board 0.5 mm from the inner side-wall faces; the ESP32 column cannot move much further away from the MAX490 column without widening the housing.
 - **Hood shape:** rounded top edges, a cut-off rear corner on the MAX490 side and a lower hood over the ring area. A curved hood saves little: the tallest items (ESP32 header wire rows, UBEC) sit close to both side walls.
@@ -291,7 +289,7 @@ Components in the Fusion layout:
 
 | Component | Source |
 | --- | --- |
-| Connector side | Plate (`plate_w` 64, `plate_h` 25, `wall_t` 3 mm) with the tested DE-9 and XT30 features (XT30 raised), no F1 yet; XT30 and DE-9 reference models |
+| Connector side | Plate (`plate_w` 64, `plate_h` 25, `wall_t` 3 mm) with the tested DE-9 and XT30 features (XT30 raised); XT30 and DE-9 reference models |
 | ESP32 and RS-232 holder | Antenna cap, USB block and USB clamp with RS-232 slots derived (linked) from the Fusion `esp32 holder v3 (RS-232 clamp)` document, with the ESP32 and RS-232 reference boards. ESP32 header strips turned so the pins point up as on the real board |
 | MAX490 board | Linked Fusion document `MAX490 board - CHATGPT` |
 | UBEC (reference) | Repository STEP, body raised 1.5 mm for the jumper pins |
@@ -305,7 +303,7 @@ Constraints from the wiring:
 
 - **Short wires:** keep the MAX490 board close to the ESP32's J3 header (RO, DI and GND wires); leave a tie-down point next to the ESP32 for the heat-shrunk R-B1 and R-D.
 - **Grounds:** one bridge ground; route the device signal grounds from the DE-9 to the module grounds ([grounding and loops](power.md#ground)).
-- **Power path:** XT30 → F1 → UBEC → ESP32 and MAX490 ([supply path](power.md#supply)).
+- **Power path:** F1 (harness) → XT30 → UBEC → ESP32 and MAX490 ([supply path](power.md#supply)).
 - **Ferrite ring:** keep its placeholder volume ([section 3](#contents)) at the UBEC's output end (opposite the jumper), on the 5 V lead towards the ESP32; the ring is not modelled in the UBEC CAD reference.
 - **ESP32:** lengthwise, antenna at the far short end; Micro-USB faces the connector end.
 

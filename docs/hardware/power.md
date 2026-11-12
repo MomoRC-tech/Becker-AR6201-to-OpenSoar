@@ -22,9 +22,10 @@ Related: 🔌 [Signal wiring](wiring.md) · 🧱 [Modules and parts](modules.md)
 - **Connector:** standard XT30 — male on the housing, female on the powered harness.
 - **Mounting:** printed pocket in the housing → [housing](housing.md#connectors).
 - **Existing feed:** about 22 AWG from the 12 V harness, no upstream fuse yet (owner).
+- **Fuse:** F1 in the harness at its supply end → [protection](#protection).
 - **Open:** connector fit and supply-cable protection → [open items](../project/open-items.md#bench-hardware).
 
-![Supply path: 12 V harness, XT30, F1 and UBEC; 5 V to the ESP32 5V pin and on to the MAX490 board; the ESP32 3.3 V regulator feeds both RS-232 modules, which carry R-Z and R-F, and the pull-up R-D](../images/power-supply.svg)
+![Supply path: F1 at the supply end of the 12 V harness, XT30 and UBEC; 5 V to the ESP32 5V pin and on to the MAX490 board; the ESP32 3.3 V regulator feeds both RS-232 modules, which carry R-Z and R-F, and the pull-up R-D](../images/power-supply.svg)
 
 | From | To |
 | --- | --- |
@@ -72,7 +73,7 @@ Datasheet values carry their source ID; everything else is an estimate until the
 
 | Branch | Wire | Normal | Peak | Worst single break | Basis |
 | --- | --- | --- | --- | --- | --- |
-| Bridge +12 V feed (XT30, F1, UBEC input) | About 22 AWG (owner) | ~0.15 A | Switch-on inrush, not measured | Short circuit, limited by F1 | Estimate |
+| Bridge +12 V feed (F1, harness, XT30, UBEC input) | About 22 AWG (owner) | ~0.15 A | Switch-on inrush, not measured | Short circuit, limited by F1 | Estimate |
 | UBEC 5 V → ESP32 | Board header | ~250 mA | ~500 mA (Wi-Fi) | — | Typical datasheet values |
 | UBEC 5 V → MAX490 board | Board header | ~30 mA | — | — | Typical datasheet value |
 | ESP32 3.3 V → RS-232 modules, pull-ups | Board header | A few mA | — | — | Estimate |
@@ -118,10 +119,10 @@ What a single broken wire does:
 ## 5. 🛡️ Protection
 
 > [!TIP]
-> **Selected:** integrate the F1 fuse holder into the housing, in the positive feed before the UBEC. The UBEC also has reverse-input protection (S14). Fuse specification and incoming-cable protection: [open items](../project/open-items.md#bench-hardware).
+> **Selected:** F1 in an inline fuse holder in the 12 V harness, at its supply end, so it protects the harness and the bridge. The housing has no fuse holder: a panel holder does not fit behind the connector wall ([housing layout](housing.md#layout)). The UBEC also has reverse-input protection (S14). Holder, fuse format and rating: [open items](../project/open-items.md#bench-hardware).
 
 > [!WARNING]
-> F1 does not protect the incoming cable against a short before the housing. Resolve supply-cable protection before connecting the bridge to the aircraft supply.
+> The wire between the supply connection and F1 is unprotected. Fit F1 directly at the supply connection and keep that wire as short as possible; agree the supply-cable details before connecting the bridge to the aircraft supply.
 
 Size F1 using the measured running current and switch-on inrush, the wire's allowable current and the fuse's time-current curve and DC interrupting rating ([fuse selection, S31](../research/sources.md#source-register)). The load estimate alone does not establish a fuse rating.
 

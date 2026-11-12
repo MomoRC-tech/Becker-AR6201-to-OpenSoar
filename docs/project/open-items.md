@@ -33,8 +33,8 @@ Checks on the delivered parts before the bridge is connected to any device. Step
 | 9 | Becker J1 | Installed J1 revision, moulded pin numbers and which pins are already used | Confirms the J1 pins and the J1-21 ground |
 | 10 | Radio noise | No audible noise or squelch opening caused by the bridge | Check in the aircraft |
 | 11 | Power connector fit and retention | Adhesive compatibility with the XT30 body and PETG, wire support and insulated terminations ([selected arrangement](../hardware/housing.md#connectors)) | Connector-panel print and assembly check |
-| 12 | Supply-cable protection | Owner confirmation of cable length, routing and wire specification; determine protection for the cable upstream of F1 ([power wiring](../hardware/power.md#supply)) | Owner supplies harness details; agree cable protection before aircraft connection |
-| 13 | F1 holder | 5 × 20 mm panel-mount holder on the connector wall is selected; exact holder part, panel cutout, depth behind the panel and wall-thickness range ([housing](../hardware/housing.md#connectors)) | Owner selection at the end of the housing design |
+| 12 | Supply-cable protection | Owner confirmation of cable length, routing and wire specification; where F1 sits at the supply end ([protection](../hardware/power.md#protection)) | Owner supplies harness details; agree cable protection before aircraft connection |
+| 13 | F1 holder | Inline holder in the 12 V harness at its supply end is selected; holder part and fuse format ([protection](../hardware/power.md#protection)) | Owner selection with item 6 |
 | 14 | Combined DE-9 instrument connection | Pin assignments for the nine signals; exact mating parts, wire-gauge compatibility, screw threads, backshell, strain relief and housing mounting; identify existing loose conductors and shield termination | Owner selects details; fit and continuity checks before connection |
 
 ---
@@ -43,7 +43,7 @@ Checks on the delivered parts before the bridge is connected to any device. Step
 
 ## 2. 📦 Housing — current focus
 
-Inputs still needed before the housing can be modelled. Selected rules: [housing design rules](../hardware/housing.md#rules). Connector and F1 details are items 11, 13 and 14 above. Work top-down: each group sets limits for the next.
+Inputs still needed before the housing can be modelled. Selected rules: [housing design rules](../hardware/housing.md#rules). Connector details are items 11 and 14 above. Work top-down: each group sets limits for the next.
 
 ### 2.1 Installation and environment
 
@@ -65,7 +65,7 @@ Inputs still needed before the housing can be modelled. Selected rules: [housing
 
 | # | Item | What is needed | How it is closed |
 | :-: | --- | --- | --- |
-| 4 | Holders | Layout selected ([housing](../hardware/housing.md#layout)); how the MAX490 board (mounting holes), the UBEC bridge, the F1 holder and the ferrite ring are held; a glue that holds on PETG (ESP32 holder, XT30) | Owner selection, fit test |
+| 4 | Holders | Layout selected ([housing](../hardware/housing.md#layout)); how the MAX490 board (mounting holes), the UBEC bridge and the ferrite ring are held; a glue that holds on PETG (ESP32 holder, XT30) | Owner selection, fit test |
 | 14 | Internal wiring details | Internal wire type and gauge; tie-down points (including for R-B1 and R-D) and service loops | Owner selection |
 | 15 | Ventilation slot size | Slot width and total area in the hood sides | Design proposal, owner review |
 

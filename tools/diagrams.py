@@ -104,13 +104,13 @@ class Svg:
 
 # ---------------------------------------------------------------- supply path
 s = Svg(1120, 320, "Bridge supply path",
-        "12 V from the harness through the XT30 connector and fuse F1 to the UBEC. The UBEC's 5 V feeds the ESP32 board's 5V pin; a second wire from that pin feeds the MAX490 board. "
+        "12 V through fuse F1 at the supply end of the harness, then the harness and the XT30 connector to the UBEC. The UBEC's 5 V feeds the ESP32 board's 5V pin; a second wire from that pin feeds the MAX490 board. "
         "The ESP32 board's 3.3 V regulator feeds pad R3 of both RS-232 modules; R-Z and R-F (10 kΩ, on the modules) run from R3 to pad R1, and R-D (10 kΩ) from 3V3 to the MAX490 driver input DI (GPIO17). Arrows show current direction.")
-s.box(20, 45, 120, 56, "12 V harness", ["about 22 AWG"])
-s.box(180, 45, 90, 56, "XT30")
-s.box(310, 45, 100, 56, "F1 fuse", ["in housing"])
+s.box(20, 45, 120, 56, "F1 fuse", ["harness, supply end"])
+s.box(175, 45, 125, 56, "12 V harness", ["about 22 AWG"])
+s.box(335, 45, 80, 56, "XT30")
 s.box(450, 45, 110, 56, "UBEC", ["5 V, 3 A"])
-for x1, x2 in ((140, 180), (270, 310), (410, 450)):
+for x1, x2 in ((140, 175), (300, 335), (415, 450)):
     s.line([(x1, 73), (x2, 73)], "v12"); s.arrow((x1 + x2) / 2, 73, "right", "v12")
 s.tag(160, 64, "+12 V", "v12")
 s.box(640, 35, 170, 90, "ESP32 board", ["5V pin (J2-19)", "3.3 V regulator → 3V3"])
@@ -252,18 +252,18 @@ s.save("overview.svg")
 
 # ----------------------------------------------------------------- ground loops
 s = Svg(930, 530, "Bridge power and ground loops",
-        "The battery feeds the bridge (F1, UBEC, ESP32 with MAX490 and RS-232 modules) and each device with +12 V; arrows show the normal current direction. "
+        "The battery feeds the bridge (UBEC, ESP32 with MAX490 and RS-232 modules) through fuse F1 in the harness, and each device with +12 V; arrows show the normal current direction. "
         "The ESP32 ground (J2-14) returns through the UBEC; the bridge ground wire leaves from the UBEC input through the XT30. The battery minus, the bridge ground and each device's supply ground meet at the common ground point. Dashed signal grounds from the bridge to the "
         "Becker (J1-21), Zander (pin 5) and FLARM (pins 7/8) each close a ground loop: Loop B, Loop Z and Loop F.")
-s.box(200, 50, 270, 320, "Bridge", group=True)
+s.box(200, 126, 270, 244, "Bridge", group=True)
 s.line([(95, 70), (95, 46)], "v12"); s.arrow(95, 58, "up", "v12"); s.tag(95, 40, "+12 V", "v12")
 s.line([(335, 24), (335, 80)], "v12"); s.arrow(335, 56, "down", "v12"); s.tag(343, 34, "+12 V", "v12", anchor="start")
-s.line([(335, 116), (335, 140)], "v12"); s.arrow(335, 129, "down", "v12")
-s.line([(335, 176), (335, 220)], "v5"); s.arrow(335, 192, "down", "v5"); s.tag(343, 203, "5 V", "v5", anchor="start")
+s.line([(335, 116), (335, 154)], "v12"); s.arrow(335, 135, "down", "v12")
+s.line([(335, 190), (335, 220)], "v5"); s.arrow(335, 202, "down", "v5"); s.tag(343, 210, "5 V", "v5", anchor="start")
 # Supply grounds back to the common ground point
 s.line([(95, 126), (95, 440)], "gnd"); s.arrow(95, 300, "up", "gnd")
-s.line([(270, 220), (270, 176)], "gnd"); s.arrow(270, 198, "up", "gnd"); s.tag(277, 202, "J2-14", "gnd", anchor="start", bold=False, size=11)
-s.line([(245, 158), (215, 158), (215, 440)], "gnd"); s.arrow(215, 385, "down", "gnd")
+s.line([(270, 220), (270, 190)], "gnd"); s.arrow(270, 205, "up", "gnd"); s.tag(277, 209, "J2-14", "gnd", anchor="start", bold=False, size=11)
+s.line([(245, 172), (215, 172), (215, 440)], "gnd"); s.arrow(215, 385, "down", "gnd")
 s.line([(900, 112), (900, 440)], "gnd")
 for y in (170, 285, 395):
     s.arrow(900, y, "down", "gnd")
@@ -285,8 +285,8 @@ for y, name, gnd_label, loop, sig, path in devices:
     label_y = path[-1][1]
     s.tag(652, label_y - 23, loop, "sgnd", anchor="end"); s.tag(652, label_y - 7, sig, "sgnd", anchor="end", bold=False)
 s.box(30, 70, 130, 56, "Battery", ["12 V"])
-s.box(245, 80, 180, 36, "F1 fuse")
-s.box(245, 140, 180, 36, "UBEC 5 V")
+s.box(245, 80, 180, 36, "F1 fuse (harness)")
+s.box(245, 154, 180, 36, "UBEC 5 V")
 s.box(225, 220, 220, 110, "ESP32", ["MAX490 board", "RS-232 modules (3.3 V from ESP32)"])
 s.tag(103, 160, "Battery −", "gnd", anchor="start", bold=False, size=11)
 s.tag(223, 405, "Bridge GND wire (XT30 −)", "gnd", anchor="start", bold=False, size=11)
