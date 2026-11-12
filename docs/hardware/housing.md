@@ -87,7 +87,7 @@ Starting values for PETG on the P1S with a 0.4 mm nozzle and 0.2 mm layers. They
 | Snug fit (PCB in its pocket) | 0.15 mm gap per side on the measured PCB outline |
 | Slot for a PCB edge | PCB thickness + 0.15 mm (fit test: slides in by hand with minor play; the hood ribs take out the rest) |
 | Press fit (XT30) | Pocket = measured body (10.55 × 5.25 mm), no allowance; the print undersize gives the press fit (fit test 2, printed flat: holds ten unplugging pulls, pushes out firmly, no damage) |
-| M2.5 screw directly into PETG | Pilot hole Ø2.1 mm, at least 5 mm thread engagement, at least 2 mm of material around the hole (estimate; to be checked in a fit test) |
+| M2.5 screw directly into PETG | Pilot hole Ø2.2 mm (fit test 2), at least 5 mm thread engagement, at least 2 mm of material around the hole |
 | DE-9 front mount (printed flat) | Flange recess 31.6 × 13.2 × 1.0 mm (snug, flush); rear-body cutout 19.9 × 11.5 mm; flange holes Ø3.4 mm; nut pocket 5.6 mm across flats for the 5.45 mm nuts |
 | M3 screw clearance hole | Ø3.4 mm (fit test: Ø3.3 is the smallest free hole; Ø3.4 leaves alignment margin for the four cover screws) |
 | Snap hook | At least 8 mm long, 1.8 mm thick, 1.0 mm lip over the PCB edge, 0.1 mm gap per side to the PCB, 1 mm fillet at the root (fit test: 1.2 and 1.5 mm too weak; a 0.6 mm lip did not hold; recheck on the separate clips) |
@@ -128,7 +128,7 @@ One small PETG coupon, printed before the housing is modelled: [print files and 
 - [ ] **Clip sockets (J, K):** each clip drops into its socket by hand, sits without wobble and cannot be pulled straight up.
 - [ ] **Clips on plate F (J):** try fixed lip C1 + arm C2, C1 + C3, and the pair C3 + C4. Pick the combination that snaps in by thumb, holds without play and comes out again without breaking.
 - [ ] **Clips on an RS-232 board (K):** same with C5 + C6 and C5 + C7, across the board's 9.2 mm width.
-- [ ] **M2.5 pilot holes (M):** screw an M2.5 into each hole (Ø2.0 / 2.1 / 2.2) and tighten firmly; pick the one that cuts its thread without cracking and does not strip.
+- [x] **M2.5 pilot holes (M):** Ø2.2 mm fits best.
 - [ ] **ESP32 holder (L, T1, T2):** slide the antenna end under the corner pockets, lower the USB end onto its ledge and screw both tabs down. The board sits flat, does not rattle, the buttons and USB socket stay free, and the module overhang does not touch the holder.
 
 The [mechanical fit coupons](../../cad/housing/mechanical-tests/README.md) give three independent prints: an ESP32 cradle with keeper tabs that seat on the bosses, an RS-232 saddle with a removable keeper, and a combined DE-9/XT30 front plate.
