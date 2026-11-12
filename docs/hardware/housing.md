@@ -118,6 +118,15 @@ One small PETG coupon, printed before the housing is modelled: [print files and 
 - [x] **Embossed text (A):** "12V", 5 mm high, raised 0.6 mm on a vertical face; reads clearly.
 - [x] **Insert holes (C):** Ø4.0 mm works best.
 
+**Fit test 2:** [print files and piece map](../../cad/housing/fit-test-2/README.md) (eleven small pieces, about 10 cm³, print without supports).
+
+- [ ] **XT30 (G):** press the connector in front first from the back face until the markings stop it; pick the tightest of the four pockets that goes fully in and does not move when the female plug is pulled ten times.
+- [ ] **DE-9 flange and cutout (H):** connector from the outside; the flange sits flush in its recess and the rear body passes the cutout without force; check the cutout top for bridge sag.
+- [ ] **DE-9 holes (H):** an M3 screw stands in for the 4-40 jackpost; note which hole (Ø3.2 / 3.4) it passes. Nut grip once the jackposts arrive.
+- [ ] **Clip sockets (J, K):** each clip drops into its socket by hand, sits without wobble and cannot be pulled straight up.
+- [ ] **Clips on plate F (J):** try fixed lip C1 + arm C2, C1 + C3, and the pair C3 + C4. Pick the combination that snaps in by thumb, holds without play and comes out again without breaking.
+- [ ] **Clips on an RS-232 board (K):** same with C5 + C6 and C5 + C7, across the board's 9.2 mm width.
+
 ### 2.4 Later optimizations
 
 - **DE-9 cable tie-down:** a lug below the DE-9 that sticks out past the mated plug, so the cable can be cable-tied to it. The cable then cannot lever the connector out of the housing.
