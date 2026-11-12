@@ -96,7 +96,7 @@ Starting values for PETG on the P1S with a 0.4 mm nozzle and 0.2 mm layers. They
 
 - **Snap hooks printed standing up** (as on the fit-test coupon) bend across the layer lines, their weakest direction; the separate clips are printed lying flat instead, so the coupon results are on the safe side.
 - **Measured accuracy:** parts print about 0.5 % small in X/Y (0.3 mm over 68 mm), Z true, no elephant foot. No scaling: print the housing with the same filament and settings as the fit test, so the measured fits carry over.
-- **Heat-set insert hole** (ruthex RX-M3x5.7, S50): Ø4.0 mm, at least 6.7 mm deep (insert length + 1 mm), at least 2.0 mm of material around it (ruthex minimum 1.6 mm).
+- **Heat-set insert hole** (ruthex RX-M3x5.7, S50): Ø4.0 mm (confirmed by the fit test), at least 6.7 mm deep (insert length + 1 mm), at least 2.0 mm of material around it (ruthex minimum 1.6 mm).
 
 <a id="fit-test"></a>
 
@@ -116,7 +116,7 @@ One small PETG coupon, printed before the housing is modelled: [print files and 
 - [ ] **DE-9 cutout (A):** failed: the delivered connector is male (shell 17.85 × 9.2 mm), the cutout was sized on the female NorComp shell; it is now mounted from the front. Retest on the reprinted piece: rear body through the cutout, flange flat on the outer face.
 - [ ] **Jackposts (A):** on the reprinted piece: which hole the 4-40 thread passes, and whether the nut gets a full grip through flange plus 3.0 mm wall.
 - [x] **Embossed text (A):** "12V", 5 mm high, raised 0.6 mm on a vertical face; reads clearly.
-- [ ] **Insert holes (C), last:** press one insert into each hole (Ø3.9, 4.0, 4.1 mm) with the iron at ruthex's PETG temperature, straight and flush. When cold, tighten the M3×8 firmly with the hex key. Pick the hole where the insert went in straight, does not turn or pull out, and the 2 mm boss wall did not crack or bulge.
+- [x] **Insert holes (C):** Ø4.0 mm works best.
 
 ### 2.4 Later optimizations
 
@@ -230,6 +230,7 @@ Use the [STEP model](../../cad/reference/xt30u-m/xt30u-m.step) of the AMASS XT30
 - Male connector (pins) on the housing, female cable connector with solder cups and screw locking.
 - Front mount: flange in a flush recess on the outer face, rear body (19.3 × 10.9 mm) through a rectangular cutout; the cable connector seats fully because no wall is in front of the flange.
 - Backshell and strain relief on the cable side.
+- Standard 4-40 jackposts (stud length about 4.8 mm, estimate; not delivered yet): through 1.0 mm flange and 2.0 mm wall, the nut pocket is sunk into the inner face so the nut gets full thread.
 - Housing side: jackposts ([design rules](#rules)); exact jackpost and local wall thickness: [open items](../project/open-items.md#bench-hardware).
 
 **F1 (fuse)** — 5 × 20 mm fuse in a panel-mount holder on the connector wall, replaceable from outside. Exact holder and rating: [open items](../project/open-items.md#bench-hardware).
