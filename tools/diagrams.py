@@ -97,9 +97,9 @@ class Svg:
 
 
 # ---------------------------------------------------------------- supply path
-s = Svg(1000, 320, "Bridge supply path",
+s = Svg(1120, 320, "Bridge supply path",
         "12 V from the harness through the XT30 connector and fuse F1 to the UBEC. The UBEC's 5 V feeds the ESP32 board's 5V pin; a second wire from that pin feeds the MAX490 board. "
-        "The ESP32 board's 3.3 V regulator feeds both RS-232 modules (with their pull-ups R-Z and R-F on the module) and the pull-up R-D. Arrows show current direction.")
+        "The ESP32 board's 3.3 V regulator feeds pad R3 of both RS-232 modules; R-Z and R-F (10 kΩ, on the modules) run from R3 to pad R1, and R-D (10 kΩ) from 3V3 to the MAX490 driver input DI (GPIO17). Arrows show current direction.")
 s.box(20, 45, 120, 56, "12 V harness", ["about 22 AWG"])
 s.box(180, 45, 90, 56, "XT30")
 s.box(310, 45, 100, 56, "F1 fuse", ["in housing"])
@@ -111,17 +111,22 @@ s.box(640, 35, 170, 90, "ESP32 board", ["5V pin (J2-19)", "3.3 V regulator → 3
 s.box(640, 185, 170, 56, "MAX490 board", ["VCC"])
 s.line([(560, 73), (640, 73)], "v5"); s.arrow(600, 73, "right", "v5"); s.tag(600, 64, "5 V", "v5")
 s.line([(700, 125), (700, 185)], "v5"); s.arrow(700, 155, "down", "v5"); s.tag(708, 159, "5 V from J2-19", "v5", anchor="start", bold=False, size=11)
-s.box(870, 25, 120, 44, "RS-232-mod1", ["with R-Z"])
-s.box(870, 85, 120, 44, "RS-232-mod2", ["with R-F"])
 s.line([(810, 80), (845, 80)], "v33")
-s.line([(845, 47), (845, 173)], "v33")
-for y in (47, 107):
-    s.line([(845, y), (870, y)], "v33"); s.arrow(860, y, "right", "v33")
-# R-D: pull-up from 3V3 to the MAX490 driver input DI (GPIO17)
-s.line([(845, 173), (940, 173)], "v33"); s.arrow(860, 173, "right", "v33")
-s.resistor(890, 173, "v33"); s.tag(890, 162, "R-D 10 kΩ", "v33")
-s.dot(940, 173, "v33"); s.tag(940, 192, "DI · GPIO17", "v33", bold=False, size=11)
+s.line([(845, 35), (845, 190)], "v33")
 s.dot(845, 80, "v33"); s.tag(828, 72, "3.3 V", "v33")
+# RS-232 modules: 3V3 to pad R3, pull-up R-Z / R-F from R3 to pad R1 (soldered on the module)
+for name, rname, top in (("RS-232-mod1", "R-Z", 20), ("RS-232-mod2", "R-F", 95)):
+    r3, r1 = top + 15, top + 45
+    s.box(960, top, 140, 60, name)
+    s.text(966, r3 + 4, "R3", color=SUB, size=11, anchor="start"); s.text(966, r1 + 4, "R1", color=SUB, size=11, anchor="start")
+    s.line([(845, r3), (960, r3)], "v33"); s.arrow(930, r3, "right", "v33")
+    s.dot(885, r3, "v33")
+    s.line([(885, r3), (885, r1), (960, r1)], "v33"); s.resistor(885, (r3 + r1) / 2, "v33", vertical=True)
+    s.tag(893, (r3 + r1) / 2 + 4, f"{rname} 10 kΩ", "v33", anchor="start", bold=False, size=11)
+# R-D: pull-up from 3V3 to the MAX490 driver input DI (GPIO17)
+s.line([(845, 190), (960, 190)], "v33"); s.arrow(860, 190, "right", "v33")
+s.resistor(905, 190, "v33"); s.tag(905, 179, "R-D 10 kΩ", "v33")
+s.dot(960, 190, "v33"); s.tag(960, 209, "DI · GPIO17", "v33", bold=False, size=11)
 s.legend(285, ["v12", "v5", "v33"], "Arrows show current direction. Grounds and loops: see the ground diagram.")
 s.save("power-supply.svg")
 

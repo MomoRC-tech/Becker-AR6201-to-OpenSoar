@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="320" viewBox="0 0 1000 320" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="320" viewBox="0 0 1120 320" role="img" aria-labelledby="title desc">
 <title id="title">Bridge supply path</title>
-<desc id="desc">12 V from the harness through the XT30 connector and fuse F1 to the UBEC. The UBEC's 5 V feeds the ESP32 board's 5V pin; a second wire from that pin feeds the MAX490 board. The ESP32 board's 3.3 V regulator feeds both RS-232 modules (with their pull-ups R-Z and R-F on the module) and the pull-up R-D. Arrows show current direction.</desc>
-<rect width="1000" height="320" fill="white"/>
+<desc id="desc">12 V from the harness through the XT30 connector and fuse F1 to the UBEC. The UBEC's 5 V feeds the ESP32 board's 5V pin; a second wire from that pin feeds the MAX490 board. The ESP32 board's 3.3 V regulator feeds pad R3 of both RS-232 modules; R-Z and R-F (10 kΩ, on the modules) run from R3 to pad R1, and R-D (10 kΩ) from 3V3 to the MAX490 driver input DI (GPIO17). Arrows show current direction.</desc>
+<rect width="1120" height="320" fill="white"/>
 <g font-family="Arial,sans-serif">
 <path d="M140 73 L180 73" stroke="#d32f2f" stroke-width="2.5" fill="none"/>
 <path d="M270 73 L310 73" stroke="#d32f2f" stroke-width="2.5" fill="none"/>
@@ -9,10 +9,12 @@
 <path d="M560 73 L640 73" stroke="#ef6c00" stroke-width="2.5" fill="none"/>
 <path d="M700 125 L700 185" stroke="#ef6c00" stroke-width="2.5" fill="none"/>
 <path d="M810 80 L845 80" stroke="#8e24aa" stroke-width="2.5" fill="none"/>
-<path d="M845 47 L845 173" stroke="#8e24aa" stroke-width="2.5" fill="none"/>
-<path d="M845 47 L870 47" stroke="#8e24aa" stroke-width="2.5" fill="none"/>
-<path d="M845 107 L870 107" stroke="#8e24aa" stroke-width="2.5" fill="none"/>
-<path d="M845 173 L940 173" stroke="#8e24aa" stroke-width="2.5" fill="none"/>
+<path d="M845 35 L845 190" stroke="#8e24aa" stroke-width="2.5" fill="none"/>
+<path d="M845 35 L960 35" stroke="#8e24aa" stroke-width="2.5" fill="none"/>
+<path d="M885 35 L885 65 L960 65" stroke="#8e24aa" stroke-width="2.5" fill="none"/>
+<path d="M845 110 L960 110" stroke="#8e24aa" stroke-width="2.5" fill="none"/>
+<path d="M885 110 L885 140 L960 140" stroke="#8e24aa" stroke-width="2.5" fill="none"/>
+<path d="M845 190 L960 190" stroke="#8e24aa" stroke-width="2.5" fill="none"/>
 <path d="M30 285 H60" stroke="#d32f2f" stroke-width="2.5"/>
 <path d="M184 285 H214" stroke="#ef6c00" stroke-width="2.5"/>
 <path d="M275 285 H305" stroke="#8e24aa" stroke-width="2.5"/>
@@ -21,20 +23,24 @@
 <polygon points="426.0,68 426.0,78 435.0,73" fill="#d32f2f"/>
 <polygon points="596,68 596,78 605,73" fill="#ef6c00"/>
 <polygon points="695,151 705,151 700,160" fill="#ef6c00"/>
-<polygon points="856,42 856,52 865,47" fill="#8e24aa"/>
-<polygon points="856,102 856,112 865,107" fill="#8e24aa"/>
-<polygon points="856,168 856,178 865,173" fill="#8e24aa"/>
-<circle cx="940" cy="173" r="4" fill="#8e24aa"/>
 <circle cx="845" cy="80" r="4" fill="#8e24aa"/>
+<polygon points="926,30 926,40 935,35" fill="#8e24aa"/>
+<circle cx="885" cy="35" r="4" fill="#8e24aa"/>
+<polygon points="926,105 926,115 935,110" fill="#8e24aa"/>
+<circle cx="885" cy="110" r="4" fill="#8e24aa"/>
+<polygon points="856,185 856,195 865,190" fill="#8e24aa"/>
+<circle cx="960" cy="190" r="4" fill="#8e24aa"/>
 <rect x="20" y="45" width="120" height="56" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
 <rect x="180" y="45" width="90" height="56" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
 <rect x="310" y="45" width="100" height="56" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
 <rect x="450" y="45" width="110" height="56" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
 <rect x="640" y="35" width="170" height="90" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
 <rect x="640" y="185" width="170" height="56" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
-<rect x="870" y="25" width="120" height="44" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
-<rect x="870" y="85" width="120" height="44" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
-<rect x="877.0" y="168.0" width="26" height="10" fill="white" stroke="#8e24aa" stroke-width="2"/>
+<rect x="960" y="20" width="140" height="60" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
+<rect x="880.0" y="37.0" width="10" height="26" fill="white" stroke="#8e24aa" stroke-width="2"/>
+<rect x="960" y="95" width="140" height="60" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
+<rect x="880.0" y="112.0" width="10" height="26" fill="white" stroke="#8e24aa" stroke-width="2"/>
+<rect x="892.0" y="185.0" width="26" height="10" fill="white" stroke="#8e24aa" stroke-width="2"/>
 <text x="80.0" y="69.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">12 V harness</text>
 <text x="80.0" y="87.0" font-size="12" fill="#475569" text-anchor="middle">about 22 AWG</text>
 <text x="225.0" y="78.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">XT30</text>
@@ -50,13 +56,17 @@
 <text x="725.0" y="227.0" font-size="12" fill="#475569" text-anchor="middle">VCC</text>
 <text x="600" y="64" font-size="12" fill="#ef6c00" text-anchor="middle" font-weight="700">5 V</text>
 <text x="708" y="159" font-size="11" fill="#ef6c00" text-anchor="start">5 V from J2-19</text>
-<text x="930.0" y="43.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">RS-232-mod1</text>
-<text x="930.0" y="61.0" font-size="12" fill="#475569" text-anchor="middle">with R-Z</text>
-<text x="930.0" y="103.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">RS-232-mod2</text>
-<text x="930.0" y="121.0" font-size="12" fill="#475569" text-anchor="middle">with R-F</text>
-<text x="890" y="162" font-size="12" fill="#8e24aa" text-anchor="middle" font-weight="700">R-D 10 kΩ</text>
-<text x="940" y="192" font-size="11" fill="#8e24aa" text-anchor="middle">DI · GPIO17</text>
 <text x="828" y="72" font-size="12" fill="#8e24aa" text-anchor="middle" font-weight="700">3.3 V</text>
+<text x="1030.0" y="55.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">RS-232-mod1</text>
+<text x="966" y="39" font-size="11" fill="#475569" text-anchor="start">R3</text>
+<text x="966" y="69" font-size="11" fill="#475569" text-anchor="start">R1</text>
+<text x="893" y="54.0" font-size="11" fill="#8e24aa" text-anchor="start">R-Z 10 kΩ</text>
+<text x="1030.0" y="130.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">RS-232-mod2</text>
+<text x="966" y="114" font-size="11" fill="#475569" text-anchor="start">R3</text>
+<text x="966" y="144" font-size="11" fill="#475569" text-anchor="start">R1</text>
+<text x="893" y="129.0" font-size="11" fill="#8e24aa" text-anchor="start">R-F 10 kΩ</text>
+<text x="905" y="179" font-size="12" fill="#8e24aa" text-anchor="middle" font-weight="700">R-D 10 kΩ</text>
+<text x="960" y="209" font-size="11" fill="#8e24aa" text-anchor="middle">DI · GPIO17</text>
 <text x="66" y="289" font-size="12" fill="#172b4d" text-anchor="start">+12 V supply</text>
 <text x="220" y="289" font-size="12" fill="#172b4d" text-anchor="start">5 V</text>
 <text x="311" y="289" font-size="12" fill="#172b4d" text-anchor="start">3.3 V</text>
