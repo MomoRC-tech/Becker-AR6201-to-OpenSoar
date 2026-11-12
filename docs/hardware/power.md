@@ -24,7 +24,7 @@ Related: 🔌 [Signal wiring](wiring.md) · 🧱 [Modules and parts](modules.md)
 - **Existing feed:** about 22 AWG from the 12 V harness, no upstream fuse yet (owner).
 - **Open:** connector fit and supply-cable protection → [open items](../project/open-items.md#bench-hardware).
 
-![Supply path: 12 V harness, XT30, F1 and UBEC; 5 V to the ESP32 board and the MAX490 board; the ESP32 3.3 V regulator feeds both RS-232 modules and the pull-ups](../images/power-supply.svg)
+![Supply path: 12 V harness, XT30, F1 and UBEC; 5 V to the ESP32 5V pin and on to the MAX490 board; the ESP32 3.3 V regulator feeds both RS-232 modules, which carry R-Z and R-F, and the pull-up R-D](../images/power-supply.svg)
 
 | From | To |
 | --- | --- |

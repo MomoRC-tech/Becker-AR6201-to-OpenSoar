@@ -1,13 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1000" height="320" viewBox="0 0 1000 320" role="img" aria-labelledby="title desc">
 <title id="title">Bridge supply path</title>
-<desc id="desc">12 V from the harness through the XT30 connector and fuse F1 to the UBEC. The UBEC's 5 V feeds the ESP32 board's 5V pin and the MAX490 board. The ESP32 board's 3.3 V regulator feeds both RS-232 modules and the pull-ups R-Z, R-F and R-D. Arrows show current direction.</desc>
+<desc id="desc">12 V from the harness through the XT30 connector and fuse F1 to the UBEC. The UBEC's 5 V feeds the ESP32 board's 5V pin; a second wire from that pin feeds the MAX490 board. The ESP32 board's 3.3 V regulator feeds both RS-232 modules (with their pull-ups R-Z and R-F on the module) and the pull-up R-D. Arrows show current direction.</desc>
 <rect width="1000" height="320" fill="white"/>
 <g font-family="Arial,sans-serif">
 <path d="M140 73 L180 73" stroke="#d32f2f" stroke-width="2.5" fill="none"/>
 <path d="M270 73 L310 73" stroke="#d32f2f" stroke-width="2.5" fill="none"/>
 <path d="M410 73 L450 73" stroke="#d32f2f" stroke-width="2.5" fill="none"/>
 <path d="M560 73 L640 73" stroke="#ef6c00" stroke-width="2.5" fill="none"/>
-<path d="M600 73 L600 213 L640 213" stroke="#ef6c00" stroke-width="2.5" fill="none"/>
+<path d="M700 125 L700 185" stroke="#ef6c00" stroke-width="2.5" fill="none"/>
 <path d="M810 80 L845 80" stroke="#8e24aa" stroke-width="2.5" fill="none"/>
 <path d="M845 47 L845 173" stroke="#8e24aa" stroke-width="2.5" fill="none"/>
 <path d="M845 47 L870 47" stroke="#8e24aa" stroke-width="2.5" fill="none"/>
@@ -19,10 +19,8 @@
 <polygon points="156.0,68 156.0,78 165.0,73" fill="#d32f2f"/>
 <polygon points="286.0,68 286.0,78 295.0,73" fill="#d32f2f"/>
 <polygon points="426.0,68 426.0,78 435.0,73" fill="#d32f2f"/>
-<polygon points="616,68 616,78 625,73" fill="#ef6c00"/>
-<polygon points="595,146 605,146 600,155" fill="#ef6c00"/>
-<polygon points="621,208 621,218 630,213" fill="#ef6c00"/>
-<circle cx="600" cy="73" r="4" fill="#ef6c00"/>
+<polygon points="596,68 596,78 605,73" fill="#ef6c00"/>
+<polygon points="695,151 705,151 700,160" fill="#ef6c00"/>
 <polygon points="856,42 856,52 865,47" fill="#8e24aa"/>
 <polygon points="856,102 856,112 865,107" fill="#8e24aa"/>
 <polygon points="856,168 856,178 865,173" fill="#8e24aa"/>
@@ -49,11 +47,14 @@
 <text x="725.0" y="103.0" font-size="12" fill="#475569" text-anchor="middle">3.3 V regulator → 3V3</text>
 <text x="725.0" y="209.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">MAX490 board</text>
 <text x="725.0" y="227.0" font-size="12" fill="#475569" text-anchor="middle">VCC</text>
-<text x="578" y="64" font-size="12" fill="#ef6c00" text-anchor="middle" font-weight="700">5 V</text>
-<text x="930.0" y="52.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">RS-232-mod1</text>
-<text x="930.0" y="112.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">RS-232-mod2</text>
-<text x="930.0" y="169.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">Pull-ups</text>
-<text x="930.0" y="187.0" font-size="12" fill="#475569" text-anchor="middle">R-Z, R-F, R-D</text>
+<text x="600" y="64" font-size="12" fill="#ef6c00" text-anchor="middle" font-weight="700">5 V</text>
+<text x="708" y="159" font-size="11" fill="#ef6c00" text-anchor="start">5 V from J2-19</text>
+<text x="930.0" y="43.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">RS-232-mod1</text>
+<text x="930.0" y="61.0" font-size="12" fill="#475569" text-anchor="middle">with R-Z</text>
+<text x="930.0" y="103.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">RS-232-mod2</text>
+<text x="930.0" y="121.0" font-size="12" fill="#475569" text-anchor="middle">with R-F</text>
+<text x="930.0" y="169.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">Pull-up R-D</text>
+<text x="930.0" y="187.0" font-size="12" fill="#475569" text-anchor="middle">GPIO17 (DI)</text>
 <text x="828" y="72" font-size="12" fill="#8e24aa" text-anchor="middle" font-weight="700">3.3 V</text>
 <text x="66" y="289" font-size="12" fill="#172b4d" text-anchor="start">+12 V supply</text>
 <text x="220" y="289" font-size="12" fill="#172b4d" text-anchor="start">5 V</text>

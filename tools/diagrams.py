@@ -93,8 +93,8 @@ class Svg:
 
 # ---------------------------------------------------------------- supply path
 s = Svg(1000, 320, "Bridge supply path",
-        "12 V from the harness through the XT30 connector and fuse F1 to the UBEC. The UBEC's 5 V feeds the ESP32 board's 5V pin and the MAX490 board. "
-        "The ESP32 board's 3.3 V regulator feeds both RS-232 modules and the pull-ups R-Z, R-F and R-D. Arrows show current direction.")
+        "12 V from the harness through the XT30 connector and fuse F1 to the UBEC. The UBEC's 5 V feeds the ESP32 board's 5V pin; a second wire from that pin feeds the MAX490 board. "
+        "The ESP32 board's 3.3 V regulator feeds both RS-232 modules (with their pull-ups R-Z and R-F on the module) and the pull-up R-D. Arrows show current direction.")
 s.box(20, 45, 120, 56, "12 V harness", ["about 22 AWG"])
 s.box(180, 45, 90, 56, "XT30")
 s.box(310, 45, 100, 56, "F1 fuse", ["in housing"])
@@ -104,12 +104,11 @@ for x1, x2 in ((140, 180), (270, 310), (410, 450)):
 s.tag(160, 64, "+12 V", "v12")
 s.box(640, 35, 170, 90, "ESP32 board", ["5V pin (J2-19)", "3.3 V regulator → 3V3"])
 s.box(640, 185, 170, 56, "MAX490 board", ["VCC"])
-s.line([(560, 73), (640, 73)], "v5"); s.arrow(620, 73, "right", "v5")
-s.line([(600, 73), (600, 213), (640, 213)], "v5"); s.arrow(600, 150, "down", "v5"); s.arrow(625, 213, "right", "v5")
-s.dot(600, 73, "v5"); s.tag(578, 64, "5 V", "v5")
-s.box(870, 25, 120, 44, "RS-232-mod1")
-s.box(870, 85, 120, 44, "RS-232-mod2")
-s.box(870, 145, 120, 56, "Pull-ups", ["R-Z, R-F, R-D"])
+s.line([(560, 73), (640, 73)], "v5"); s.arrow(600, 73, "right", "v5"); s.tag(600, 64, "5 V", "v5")
+s.line([(700, 125), (700, 185)], "v5"); s.arrow(700, 155, "down", "v5"); s.tag(708, 159, "5 V from J2-19", "v5", anchor="start", bold=False, size=11)
+s.box(870, 25, 120, 44, "RS-232-mod1", ["with R-Z"])
+s.box(870, 85, 120, 44, "RS-232-mod2", ["with R-F"])
+s.box(870, 145, 120, 56, "Pull-up R-D", ["GPIO17 (DI)"])
 s.line([(810, 80), (845, 80)], "v33")
 s.line([(845, 47), (845, 173)], "v33")
 for y in (47, 107, 173):
@@ -149,7 +148,7 @@ s.save("wiring-overview.svg")
 def rs232_device(name, dev, tx_pin, gnd_pin, gpio, uart, pull, note, fname, desc):
     s = Svg(930, 250, f"{dev} to RS-232 module to ESP32", desc)
     s.box(20, 40, 170, 130, dev, ["existing harness, via DE-9"])
-    s.box(340, 40, 220, 130, name, ["RS-232 ↔ 3.3 V TTL", f"R1: {pull} pull-up to 3.3 V"])
+    s.box(340, 40, 220, 130, name, ["RS-232 ↔ 3.3 V TTL", f"{pull}: pad R1 → R3 (3.3 V)"])
     s.box(710, 40, 200, 130, "ESP32", [f"{gpio} · {uart} RX", "GND"])
     s.line([(190, 70), (340, 70)], "data"); s.arrow(265, 70, "right", "data")
     s.tag(265, 62, f"{tx_pin} → L3", "data")
@@ -160,21 +159,21 @@ def rs232_device(name, dev, tx_pin, gnd_pin, gpio, uart, pull, note, fname, desc
     s.legend(215, ["data", "sgnd", "gnd"], note)
     s.save(fname)
 
-rs232_device("RS-232-mod1", "Zander ZS1", "TX", "Signal GND", "GPIO32", "UART0", "10 kΩ (R-Z)",
+rs232_device("RS-232-mod1", "Zander ZS1", "TX", "Signal GND", "GPIO32", "UART0", "R-Z 10 kΩ",
              "Receive only: L4 and GPIO33 stay unconnected. Supply via the 3.3 V rail (see power).", "wiring-zander.svg",
-             "Zander TX to pad L3, TTL output R2 to GPIO32 (UART0 receive). Signal ground to pads L1 and R4 and ESP32 GND. R1 has a 10 kΩ pull-up to 3.3 V. Receive only.")
-rs232_device("RS-232-mod2", "Classic FLARM", "pin 5 TX", "pins 7/8 GND", "GPIO26", "UART1", "10 kΩ (R-F)",
+             "Zander TX to pad L3, TTL output R2 to GPIO32 (UART0 receive). Signal ground to pads L1 and R4 and ESP32 GND. R-Z (10 kΩ) on the module from pad R1 to pad R3 (3.3 V). Receive only.")
+rs232_device("RS-232-mod2", "Classic FLARM", "pin 5 TX", "pins 7/8 GND", "GPIO26", "UART1", "R-F 10 kΩ",
              "Receive only: L4, GPIO27 and FLARM RX stay unconnected. Never connect FLARM pins 1–3 (supply).", "wiring-flarm.svg",
-             "FLARM pin 5 TX to pad L3, TTL output R2 to GPIO26 (UART1 receive). FLARM pins 7/8 ground to pads L1 and R4 and ESP32 GND. R1 has a 10 kΩ pull-up to 3.3 V. Receive only.")
+             "FLARM pin 5 TX to pad L3, TTL output R2 to GPIO26 (UART1 receive). FLARM pins 7/8 ground to pads L1 and R4 and ESP32 GND. R-F (10 kΩ) on the module from pad R1 to pad R3 (3.3 V). Receive only.")
 
 # --------------------------------------------------------------------- Becker
 s = Svg(980, 300, "Becker to RS-422 board to ESP32",
         "Becker J1 TX2+ and TX2- (pins 2, 9) to MAX490 receiver inputs A and B; MAX490 driver outputs Y and Z to J1 RX2+ and RX2- (pins 3, 10). "
         "J1-21 D_GND to the board GND. Cable shield to J1-11 at the radio end only. Receiver output RO through a 2.2 kΩ / 3.3 kΩ divider to GPIO16; "
-        "GPIO17 to driver input DI with a 10 kΩ pull-up to 3.3 V.")
+        "GPIO17 to driver input DI with a 10 kΩ pull-up R-D to 3.3 V. Board VCC 5 V from the ESP32 5V pin.")
 s.box(20, 30, 170, 190, "Becker J1", ["radio rear", "harness via DE-9"])
 s.box(330, 30, 190, 190, "MAX490 board", ["A B Y Z | RO DI", "5 V, 120 Ω term."])
-s.box(610, 50, 120, 56, "Divider", ["2.2 kΩ / 3.3 kΩ"])
+s.box(600, 42, 150, 72, "Divider", ["R-B1 2.2 kΩ", "R-B2 3.3 kΩ to GND"])
 s.box(810, 30, 150, 190, "ESP32", ["UART2"])
 s.line([(190, 55), (330, 55)], "data"); s.arrow(260, 55, "right", "data"); s.tag(260, 48, "2 TX2+ → A", "data", bold=False)
 s.line([(190, 80), (330, 80)], "data"); s.arrow(260, 80, "right", "data"); s.tag(260, 73, "9 TX2− → B", "data", bold=False)
@@ -182,11 +181,12 @@ s.line([(330, 115), (190, 115)], "data"); s.arrow(260, 115, "left", "data"); s.t
 s.line([(330, 140), (190, 140)], "data"); s.arrow(260, 140, "left", "data"); s.tag(260, 133, "10 RX2− ← Z", "data", bold=False)
 s.line([(190, 175), (330, 175)], "sgnd"); s.tag(260, 168, "21 D_GND → GND", "sgnd", bold=False)
 s.line([(190, 205), (290, 205)], "shield"); s.tag(198, 198, "11 shield, radio end only", "shield", bold=False, size=11, anchor="start")
-s.line([(520, 78), (610, 78)], "data"); s.arrow(565, 78, "right", "data"); s.tag(565, 70, "RO", "data")
-s.line([(730, 78), (810, 78)], "data"); s.arrow(770, 78, "right", "data"); s.tag(770, 70, "GPIO16", "data")
-s.line([(810, 140), (520, 140)], "data"); s.arrow(665, 140, "left", "data"); s.tag(665, 132, "DI ← GPIO17 (10 kΩ pull-up R-D)", "data")
-s.line([(520, 175), (810, 175)], "gnd"); s.tag(665, 168, "GND", "gnd")
-s.legend(255, ["data", "sgnd", "gnd", "shield"], "Twisted pairs: TX2± and RX2±. Board VCC 5 V from the UBEC (see power).")
+s.line([(520, 78), (600, 78)], "data"); s.arrow(560, 78, "right", "data"); s.tag(560, 70, "RO", "data")
+s.line([(750, 78), (810, 78)], "data"); s.arrow(790, 78, "right", "data"); s.tag(780, 70, "GPIO16", "data")
+s.line([(810, 140), (520, 140)], "data"); s.arrow(560, 140, "left", "data"); s.tag(665, 132, "DI ← GPIO17", "data")
+s.tag(665, 156, "10 kΩ pull-up R-D to 3.3 V", "data", bold=False, size=11)
+s.line([(520, 195), (810, 195)], "gnd"); s.tag(665, 188, "GND", "gnd")
+s.legend(255, ["data", "sgnd", "gnd", "shield"], "Twisted pairs: TX2± and RX2±. Board VCC 5 V from the ESP32 5V pin (see power).")
 s.save("wiring-becker.svg")
 # ------------------------------------------------------- README overview (no pins)
 s = Svg(900, 345, "What the bridge does",

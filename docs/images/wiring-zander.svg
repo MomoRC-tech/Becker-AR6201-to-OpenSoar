@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="930" height="250" viewBox="0 0 930 250" role="img" aria-labelledby="title desc">
 <title id="title">Zander ZS1 to RS-232 module to ESP32</title>
-<desc id="desc">Zander TX to pad L3, TTL output R2 to GPIO32 (UART0 receive). Signal ground to pads L1 and R4 and ESP32 GND. R1 has a 10 kΩ pull-up to 3.3 V. Receive only.</desc>
+<desc id="desc">Zander TX to pad L3, TTL output R2 to GPIO32 (UART0 receive). Signal ground to pads L1 and R4 and ESP32 GND. R-Z (10 kΩ) on the module from pad R1 to pad R3 (3.3 V). Receive only.</desc>
 <rect width="930" height="250" fill="white"/>
 <g font-family="Arial,sans-serif">
 <path d="M190 70 L340 70" stroke="#37474f" stroke-width="2.5" fill="none"/>
@@ -19,7 +19,7 @@
 <text x="105.0" y="119.0" font-size="12" fill="#475569" text-anchor="middle">existing harness, via DE-9</text>
 <text x="450.0" y="92.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">RS-232-mod1</text>
 <text x="450.0" y="110.0" font-size="12" fill="#475569" text-anchor="middle">RS-232 ↔ 3.3 V TTL</text>
-<text x="450.0" y="128.0" font-size="12" fill="#475569" text-anchor="middle">R1: 10 kΩ (R-Z) pull-up to 3.3 V</text>
+<text x="450.0" y="128.0" font-size="12" fill="#475569" text-anchor="middle">R-Z 10 kΩ: pad R1 → R3 (3.3 V)</text>
 <text x="810.0" y="92.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">ESP32</text>
 <text x="810.0" y="110.0" font-size="12" fill="#475569" text-anchor="middle">GPIO32 · UART0 RX</text>
 <text x="810.0" y="128.0" font-size="12" fill="#475569" text-anchor="middle">GND</text>

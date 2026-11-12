@@ -158,7 +158,7 @@ Before connecting any device, work through this list in order:
 
 - [ ] **1.** Set the UBEC jumper to 5 V; measure the output with no load and with the ESP32 connected. Check continuity between the UBEC's input and output ground.
 - [ ] **2.** Match the ESP32 board's headers and module marking to the [pinout](modules.md#esp32-pinout).
-- [ ] **3.** Check continuity of both RS-232 modules against the [pad map](modules.md#rs232-module).
+- [ ] **3.** Check continuity of both RS-232 modules against the [pad map](modules.md#rs232-module) before soldering R-Z and R-F onto them.
 - [ ] **4.** On the MAX490 board, identify RO and DI on the header and check the 120 Ω termination.
 - [ ] **5.** With the MAX490 powered and the radio line idle, measure GPIO16: about 3.0 V (high). Then hold B above A with a 1.5 V cell (+ to B, − to A) and check for a low below 0.5 V.
 - [ ] **6.** Measure the bridge's current and switch-on inrush at 12 V, and update the [current assumptions](power.md#currents).
