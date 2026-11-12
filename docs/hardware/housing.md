@@ -88,7 +88,7 @@ Starting values for PETG on the P1S with a 0.4 mm nozzle and 0.2 mm layers. They
 | Slot for a PCB edge | PCB thickness + 0.15 mm (fit test: slides in by hand with minor play; the hood ribs take out the rest) |
 | Press fit (XT30) | Pocket = measured body (10.55 × 5.25 mm), no allowance; the print undersize gives the press fit (fit test 2, printed flat: holds ten unplugging pulls, pushes out firmly, no damage) |
 | M2.5 screw directly into PETG | Pilot hole Ø2.1 mm, at least 5 mm thread engagement, at least 2 mm of material around the hole (estimate; to be checked in a fit test) |
-| DE-9 front mount (printed flat) | Flange recess 31.6 × 13.2 × 1.0 mm (snug, flush); rear-body cutout 19.9 × 11.5 mm; flange holes Ø3.4 mm; nut pocket 5.6 mm across flats for the 5.45 mm nuts (estimate, the 6.65 mm pocket was too big) |
+| DE-9 front mount (printed flat) | Flange recess 31.6 × 13.2 × 1.0 mm (snug, flush); rear-body cutout 19.9 × 11.5 mm; flange holes Ø3.4 mm; nut pocket 5.6 mm across flats for the 5.45 mm nuts |
 | M3 screw clearance hole | Ø3.4 mm (fit test: Ø3.3 is the smallest free hole; Ø3.4 leaves alignment margin for the four cover screws) |
 | Snap hook | At least 8 mm long, 1.8 mm thick, 1.0 mm lip over the PCB edge, 0.1 mm gap per side to the PCB, 1 mm fillet at the root (fit test: 1.2 and 1.5 mm too weak; a 0.6 mm lip did not hold; recheck on the separate clips) |
 | Hood hold-down ribs | 0.2 mm interference on the PCB top, ribs 1.2 mm wide so they flex instead of cracking the PCB |
