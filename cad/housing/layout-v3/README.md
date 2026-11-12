@@ -4,7 +4,7 @@ Selected internal layout ([housing § 5](../../../docs/hardware/housing.md#layou
 
 | File | Use |
 | --- | --- |
-| `housing-layout-v3.f3d` | Fusion archive, standalone: links to the holder and MAX490 documents broken into local copies; open with *File › Open › Open from my computer* |
+| `housing-layout-v3.f3d` | Fusion archive, standalone: links to the holder and MAX490 documents broken into local copies. Opening it through the Fusion API crashed Fusion twice; not confirmed to open. Restore from the STEP file or from the version history of the Fusion document instead |
 | `housing-layout-v3.step` | All parts as solids, for checking positions or other CAD tools |
 
 - Units: millimetres. Layout frame: X along the housing length from the outside face of the connector wall, Y up from the floor top, Z across.
