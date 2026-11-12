@@ -162,11 +162,11 @@ Use the [STEP assembly](../../cad/reference/esp32-devkitc-v4/ESP-WROOM-32D-Expor
 | PCB thickness | 1.60 | 1.50 (owner measurement) | +0.10 |
 | Overall length, antenna and USB included | 54.86 | — | — |
 | Overall height, headers included | 14.23 | — | — |
-| A, B: bare edge at the antenna end, header strip to module, each side | 2.50 | — | — |
-| C, D: bare edge at the USB end, header strip to USB socket, each side | 7.50, with the EN or BOOT button in it | — | — |
+| A, B: bare edge at the antenna end, header strip to module | 2.50 each | A 2.4, B 2.0 (owner measurement) | +0.10, +0.50 |
+| C, D: bare edge at the USB end, header strip to USB socket | 7.50 each, with the EN or BOOT button in it | 7.5 each | 0 |
 | Bare strip between USB socket and button, each side | 2.95 wide | — | — |
-| E: EN/BOOT button from the USB-end edge, near / far side | 0.77 / 5.79 | — | — |
-| F: USB socket beyond the PCB edge | 0.61 | — | — |
+| E: EN and BOOT button, near side from the USB-end edge | 0.77 | 1.5 both | −0.73 |
+| F: USB socket beyond the PCB edge | 0.61 | 0.5 | +0.11 |
 | Module (antenna) beyond the PCB edge | 6.01 | — | — |
 
 - Keep the delivered-board measurements for mounting design; this simplified DevKitC V4/WROOM-32D model is not an exact AZ-Delivery mechanical drawing.
