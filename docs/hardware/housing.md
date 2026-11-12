@@ -57,7 +57,7 @@ Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md)
 | Ventilation | Narrow slots low and high in the hood side walls; no openings on top |
 | Status light | Small window in the hood over the ESP32 power LED |
 | Markings | Connector names on the connector wall (12 V, instrument DE-9, fuse); owner adds a multicolour logo on the hood later |
-| Shape | Narrow and long: parts in a line along the length, not side by side; width kept as small as the widest part allows; height set once the layout is modelled |
+| Shape | Preferred direction, not a fixed rule: narrow and long rather than square or wide; a better layout may differ. Height set once the layout is modelled |
 | Size | Space the modules for soldering-iron access and tidy wiring first; review the size once modelled |
 | CAD | Modelled in Fusion, millimetres. Each model's folder in `cad/housing/` holds the editable Fusion archive (`.f3d`, full timeline), a STEP and a print-ready 3MF; the owner's Fusion project keeps the same documents. After a change, export all three again and commit them together |
 
