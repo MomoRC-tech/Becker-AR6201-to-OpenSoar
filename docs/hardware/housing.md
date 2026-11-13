@@ -7,7 +7,7 @@
 Mechanical design of the bridge: what goes inside, part sizes, connectors on the housing, internal layout.
 
 > [!NOTE]
-> **Status:** internal layout selected in Fusion ([section 5](#layout)); first housing-body prototype modelled, not printed ([section 2.3](#fit-test)). The 12 mm carrier-screw revision is selected; CAD exports still have the lowered seats and 8 mm screw stack ([section 2.4](#ubec-carrier)). Head clearance is the next input before that CAD revision: [open items](../project/open-items.md#housing).
+> **Status:** internal layout selected in Fusion ([section 5](#layout)); first housing-body prototype modelled, not printed ([section 2.3](#fit-test)). Carrier and base exports include flush seats, offset axes for the 12 mm screws and a 0.4 mm closed floor beneath the pilots ([section 2.4](#ubec-carrier)). Remaining fit checks: [open items](../project/open-items.md#housing).
 
 📑 **On this page:** <kbd>[1 · 🎯 Requirements](#requirements)</kbd> <kbd>[2 · 📐 Design rules](#rules)</kbd> <kbd>[3 · 📏 Contents and sizes](#contents)</kbd> <kbd>[4 · 🔌 Connectors on the housing](#connectors)</kbd> <kbd>[5 · 🧩 Internal layout](#layout)</kbd>
 
@@ -138,7 +138,7 @@ Current models in `cad/housing/` (files: [CAD rule](#rules)):
 ### 2.4 UBEC carrier and MAX490 mounting
 
 > [!TIP]
-> Four raised-head M2.5 screws hold both the carrier and MAX490 board; two small cable ties retain the UBEC. [CAD files and verification](../../cad/housing/ubec-carrier/README.md).
+> Four raised-head M2.5 × 12 screws hold both the carrier and MAX490 board; two small cable ties retain the UBEC. [CAD files and verification](../../cad/housing/ubec-carrier/README.md).
 
 Exported geometry, in the installed layout frame; owner measurements and Fusion checks: S53.
 
@@ -147,16 +147,14 @@ Exported geometry, in the installed layout frame; owner measurements and Fusion 
 | UBEC height | PCB underside 10.7 mm above the floor; cover top about 18.0, leaving 2.0 to the hood. A 1.0 mm tie over the top leaves about 1.0 to the hood |
 | Carrier plate | 1.5 mm thick, underside at 9.2; only a 19 mm length supports the UBEC, X 43.65–62.65 |
 | Solder clearance | No carrier under the PCB for 6.25 mm from the jumper end and 8.75 mm from the output end; connecting arms run outside its outline. The attached leads pass through these open ends |
-| Four mounting centres | X 29.7 / 64.5, Z 10.8 / 32.4; 34.8 × 21.6 mm hole pattern |
-| Carrier screw seats | Open, flat pads without raised pocket lips; 7.5 mm above the floor, bearing underneath on the MAX490 at 6.1; 1.4 mm pad thickness, Ø2.8 clearance holes. Head clearance allowance Ø4.5 × 2.5; screw reference solids omitted from the assembly |
-| Shared screws | 4 × M2.5 × 8 raised-head metal screws, directly into PETG; 5.0 mm engagement below the MAX490. Screw tips stop 1.0 mm above the pilot-hole bottoms |
-| Floor posts | Ø6.2 × 4.5 high, Ø2.2 pilot holes 6.0 deep, leaving 1.0 mm of floor beneath. The two outer posts join the side wall through short solid webs; the two inner posts have R1 fillets at the floor |
+| PCB holes / post centres | X 29.7 / 64.5, Z 10.8 / 32.4; 34.8 × 21.6 mm pattern. PCB holes Ø3.2, confirmed by owner |
+| Screw axes | X 29.7 / 64.5, Z 10.6 / 32.6; carrier holes and floor pilots offset 0.2 mm outward from the PCB-hole centres. An M2.5 shaft has 0.15 mm nominal radial clearance at the nearest PCB-hole edge |
+| Carrier screw seats | Flush with the carrier top at 10.7 mm above the floor; legs bear on the MAX490 at 6.1, giving 4.6 mm seat thickness. Ø2.8 clearance holes; no raised pocket lips or screw reference solids |
+| Shared screws | 4 × M2.5 × 12 raised-head metal screws, directly into PETG; owner-measured head Ø4.4, height allowance 2.5. Nominal rear-head gaps to the UBEC: 0.2 mm on the ESP32 side, 0.4 mm on the wall side. Engagement 5.8 mm below the MAX490; tips stop 0.8 mm above the pilot-hole bottoms |
+| Floor posts | Ø6.6 × 4.5 high, Ø2.2 pilot holes 6.6 deep, leaving 0.4 mm of floor beneath. The offset pilots retain at least 2.0 mm of post wall. The two outer posts join the side wall through short solid webs; the two inner posts have R1 fillets at the floor |
 | Cable ties | 2 × 2.5 mm-wide ties, about 1.0 mm thick; centres X 47.5 and 58.5. Four 3.2 × 1.6 slots, R0.3 corners and R0.2 top entries; underside channels 0.5 deep leave 1.0 mm of plate beneath the UBEC |
 | Tie heads | Place beside the UBEC on the housing-wall side, not on top; cut off the tails. The assembly includes an estimated 4 × 4 × 3 head envelope |
-| Printing | Print the carrier with its UBEC contact face down, as in the 3MF. Add support beneath all four projecting screw-seat pads: their undersides start 3.2 mm above the bed, with 5.0 mm overhangs at the jumper end and 6.2 mm at the output end. Print the base floor down; the post-root fillets rise with it |
-
-> [!TIP]
-> **Selected next revision:** four M2.5 × 12 raised-head screws and a 0.4 mm closed floor beneath the pilot holes. With screw seats flush at 10.7 mm above the floor, the stack above the posts is 6.2 mm: 5.8 mm screw engagement and 0.8 mm tip clearance in Ø2.2 × 6.6 mm-deep pilots (S53).
+| Printing | Print the carrier with its UBEC contact face down, as in the 3MF, supports off. The full-height legs start on the bed, with vertical screw holes; no projecting screw-seat roofs. Print the base floor down; the 0.4 mm floor beneath each pilot is two nominal 0.2 mm layers |
 
 - Fit the MAX490 on the floor posts, place the carrier over it, and tighten the four shared screws gently.
 - Thread the ties through the underside channels before placing the UBEC; check the end solder joints clear the plate, then tighten only enough to hold the module without deforming it.
@@ -236,7 +234,7 @@ Use the [STEP model](../../cad/reference/rs422-to-ttl-max490/rs422-to-ttl-max490
 | --- | ---: | --- |
 | PCB | 50.0 × 27.0 | Seller size (S34) |
 | PCB thickness | 1.6 | Assumed standard thickness |
-| Mounting holes | 4 × Ø3.2, spacing 21.6 × 34.8 | Photo scale |
+| Mounting holes | 4 × Ø3.2, spacing 21.6 × 34.8 | Diameter confirmed by owner (S53); spacing from photo scale |
 | Hole centres from edges | 2.8 and 2.6 from the long sides, 2.5 from the header edge, 12.7 from the terminal edge | Photo scale |
 | Screw terminal | 20.8 × 8.3, housing top 10.0 above the PCB | Photo scale, 5.08 mm pitch |
 | Header pins past the PCB edge | 6.9 | Photo scale, right-angle header |
