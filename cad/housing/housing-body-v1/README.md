@@ -2,7 +2,7 @@
 
 First housing prototype on [layout v4](../layout-v4/README.md): base tray with connector wall and corner posts, and the hood. Rules: [housing § 2](../../../docs/hardware/housing.md#rules). Built in Autodesk Fusion through MCP, 2026-11-13, in the document `Housing body - prototype v1` (a copy of `Housing layout - compact v4` with the XT30 moved 4.2 mm inward, the DE-9 4 mm toward the XT30 and the ferrite-ring placeholder 2 mm inward; the holder v3 pieces are local copies of its version 7, link broken). Not printed yet.
 
-![Closed housing: hood with flush screw counterbores and side vents, connector wall with XT30 and DE-9, cable-tie ears](preview-closed.png)
+![Closed housing: hood with flush screw counterbores and side vents, connector wall with XT30 and DE-9, tie loops on the base sides](preview-closed.png)
 
 <details>
 <summary><b>🖼️ Show the base with the hood off</b> (click to expand)</summary>
@@ -22,7 +22,7 @@ First housing prototype on [layout v4](../layout-v4/README.md): base tray with c
 
 | Part | Main dimensions (mm) |
 | --- | --- |
-| Base tray | Outside 92 × 64 (104 long with the ears), floor 2.5, side walls to 10 above the floor top plus a 1.75 mm seam lip (inner 0.9); connector wall 3.0 and its corners full height to 19.75. Set 0.25 back from the hood wherever it is not a seat: lip top, connector-wall top and the two corner ends where the hood side walls butt on; the hood sits only on the post tops and on the wall shoulder at Y 10 |
+| Base tray | Outside 92 × 64 (72 wide over the tie loops), floor 2.5, side walls to 10 above the floor top plus a 1.75 mm seam lip (inner 0.9); connector wall 3.0 and its corners full height to 19.75. Set 0.25 back from the hood wherever it is not a seat: lip top, connector-wall top and the two corner ends where the hood side walls butt on; the hood sits only on the post tops and on the wall shoulder at Y 10 |
 | Hood | Outside 92 × 64, top 22.5 above the floor top, top 2.5 thick with four thick spots 4.6 thick (down to 17.9) over the posts, top edges R3, vertical corners R6 (inner corners R4); skirt 0.9 over the lip with 0.2 gap |
 | Corner posts | 8 × 8 (far posts rounded R3.8 to follow the inner corner, 2.0 mm around each insert), tops 17.9 above the floor, inserts Ø4.0 × 6.7 deep; at the connector end the side and connector walls stay full height (19.75) around the post top. Insert centres (X, Z): (7, −24.5), (7, 28.5), (85.8, −23.3), (85.8, 28.3). Posts hang from the walls: free faces end 8 above the floor, the underside rises 45° from the walls to there (printable without support); free vertical edges R2. The XT30 corner post sits on the XT30 collar |
 | Cover screws | DIN 912 M3 × 6 (head Ø5.4 × 2.9), counterbore Ø6.0 × 3.1 in the hood thick spots, heads flush, 1.5 under the head, Ø3.4 clearance; screw reaches 4.5 into the insert, tip 2.2 above the hole bottom |
@@ -30,7 +30,7 @@ First housing prototype on [layout v4](../layout-v4/README.md): base tray with c
 | Labels | Engraved 0.6 deep in Arial Black: "7-20V" (3.6 mm) above the XT30, "INSTR" (4 mm) below the DE-9. On the hood top, "7-20V" (5 mm, Arial Black) as a 0.6 mm dark grey insert flush with the top, above the XT30 between the logo and the connector-end edge, readable from the connector end |
 | Logo | MomoRC logo Ø56, a 0.6 mm dark grey insert flush with the hood top (two-colour print, the hood has the matching 0.6 mm recess), centred, upright seen from the connector end; traced from the owner's bitmap with white lines widened and black slivers removed so every feature is at least 0.8 wide |
 | Vents | 2 rows × 5 slots per long side, 10 × 1.5, 2 mm ribs, 12.5 and 16.5 above the floor top |
-| Ears | 4 × (6 out × 10 wide × 2.5, flush with the floor underside and the side faces) off both short ends, slots 5.4 × 1.9 for 4.8 mm ties, 2 mm from the wall face |
+| Tie loops | 4 × rounded pads on the long side walls, centres X 14 and 78: 12 long × 4 out, floor underside to Y 8.5 (half-round top R6), outer edges R1.5, wall blend R1.5; vertical tunnel 5.4 × 1.9 against the wall face, open top and bottom, corners R0.5, entries rounded R0.6 (top) and R0.5 (bed side), for 4.8 mm ties |
 
 - Colours in Fusion and STEP: base dark green, hood a lighter green. Logo insert dark grey.
 - Units: millimetres. Layout frame: X from the outer face of the connector wall, Y up from the floor top, Z across.
