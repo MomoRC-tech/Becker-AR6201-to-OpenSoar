@@ -82,6 +82,16 @@ Pick the element that makes the content easiest to scan, not plain paragraphs by
 > [!IMPORTANT]
 > This repository is public. Do not commit credentials, private firmware/configuration backups, identifying device logs or other private datasets. Use sanitized findings and synthetic fixtures.
 
-Review the diff and stage only task files. Commit and push relevant, verified changes to the project remote at the end of each task. Never reset/overwrite unrelated changes or force-push to simplify publication. Confirm the remote base before writing and handle concurrent changes explicitly. Report failed commits or pushes and any unsaved work.
+Commit and push relevant, verified changes to `main` on the project remote at the end of each task, following these steps:
+
+1. **Review:** `git status --short`, `git diff --stat`, and read `git diff` for the task's text files. For binary files (CAD, images), check only that they belong to the task.
+2. **Stop and report, without committing, if:** a changed file may not belong to the task (leave it unstaged), the diff contains private data (see the box above), or `git diff --check` reports whitespace errors.
+3. **Stage** the task's paths only, never `git add -A` or `git add .`.
+4. **Commit:** subject of at most 72 characters in the imperative, a blank line, then what changed and why, and what was verified. English. Add the co-author line your tool requires.
+5. **Sync:** `git fetch origin`. If `origin/main` has new commits, check the files they change (`git diff --stat HEAD...origin/main`). No overlap with the task's files: `git rebase origin/main`. Overlap or a rebase conflict: abort and report.
+6. **Push:** `git push origin HEAD:main`, as a fast-forward.
+7. **Report** the commit hash, the files committed, the push result, and anything left unstaged or unsaved.
+
+Never force-push, reset, check out over or clean away changes, amend pushed commits, skip hooks (`--no-verify`), or use a bare `git stash` / `git stash pop` (the stash is shared with other worktrees).
 
 Finish with a concise outcome, meaningful verification, commit/publication status and unresolved items. Include a very brief emoji summary. Keep the existing English documentation language unless the user requests otherwise; communicate with the user in their chosen language.
