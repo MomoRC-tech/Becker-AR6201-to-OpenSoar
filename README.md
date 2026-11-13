@@ -1,8 +1,14 @@
 <a id="top"></a>
 
-# ✈️ FLARM, Zander and Becker to OpenSoar
+# ✈️ Wi-Fi Bridge: Glider Avionics to OpenSoar
 
-One ESP32 Wi-Fi bridge that connects a FLARM, a Zander ZS1 vario and a Becker AR6201 radio to OpenSoar on an Android device in the glider.
+**FLARM · Zander ZS1 glider computer · Becker AR6201 radio → OpenSoar on Android**
+
+A small ESP32 box in the glider that collects data from the cockpit instruments and sends it over Wi-Fi to OpenSoar on a phone or tablet. No cables run to the Android device.
+
+- 📡 **Traffic:** FLARM collision-warning and position data appear in OpenSoar.
+- 📈 **Flight data:** the Zander ZS1 sends flight and navigation data.
+- 📻 **Radio:** pick an airfield in OpenSoar and its frequency goes into the Becker radio's standby slot.
 
 > [!NOTE]
 > **Status:** planning and bench design — nothing is built yet.
