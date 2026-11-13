@@ -55,7 +55,7 @@ Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md)
 | Location | Shaded spot in the cockpit, out of direct sun through the canopy |
 | Attachment | Four slotted ears at the base corners, outside the hood footprint, for 4.8 mm cable ties; the hood comes off while the base stays tied in. The ears stick out lengthwise from both short ends at floor level (about 10 mm out, 14 mm wide, 3 mm thick, rounded), each with a vertical slot about 5.4 × 1.9 mm (tie width and thickness + 0.6 mm) running parallel to the end wall, at least 2 mm of material around it. The front pair sits under the outer edges of the mated plugs |
 | Ventilation | Narrow slots low and high in the hood side walls; no openings on top |
-| Status light | Small window in the hood over the ESP32 power LED |
+| Status light | No window in the hood; the ESP32 power LED shows through the vent slots |
 | Markings | Raised 0.6 mm on the connector wall's outer face: "12V" in 5 mm characters below the XT30, "INSTR" in 4 mm characters in the strip below the DE-9 flange (4 mm not fit-tested yet); owner adds a multicolour logo on the hood later |
 | Shape | Preferred direction, not a fixed rule: narrow and long rather than square or wide, but not too narrow; a better layout may differ. Height set once the layout is modelled |
 | Size | Space the modules for soldering-iron access and tidy wiring first; review the size once modelled |
@@ -131,6 +131,7 @@ Current models in `cad/housing/` (files: [CAD rule](#rules)):
 ### 2.4 Later optimizations
 
 - **DE-9 cable tie-down:** a lug below the DE-9 that sticks out past the mated plug, so the cable can be cable-tied to it. The cable then cannot lever the connector out of the housing.
+- **Status LED:** a dedicated LED in a hole drilled into the finished hood, if one is ever wanted.
 
 ---
 
