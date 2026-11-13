@@ -31,7 +31,7 @@ First housing prototype on [layout v4](../layout-v4/README.md): base tray with c
 | Vents | 2 rows × 5 slots per long side, 10 × 1.5, 2 mm ribs, 12.5 and 16.5 above the floor top |
 | Ears | 4 × (6 out × 10 wide × 2.5, flush with the floor underside and the side faces) off both short ends, slots 5.4 × 1.9 for 4.8 mm ties, 2 mm from the wall face |
 
-- Colours in Fusion and STEP: base dark green, hood a lighter green.
+- Colours in Fusion and STEP: base dark green, hood a lighter green. The logo shows dark grey through a 0.1 mm visual-only body (`Logo colour` in the Fusion document) on the recess floor; it is not part of the print files.
 - Units: millimetres. Layout frame: X from the outer face of the connector wall, Y up from the floor top, Z across.
 - Clash check in Fusion: no intersection with the holders, boards or connectors, except 0.3 mm³ with the XT30 reference model at its top face (model tolerance) and 0.5 mm³ with a small part of the oversized UBEC reference model at the far post on the MAX490 side.
 - Placeholders: inside height 20 mm and the UBEC, MAX490 and ring positions come from layout v4 before the parts were measured. MAX490 posts, UBEC bridge and wire routing are not modelled; the hood is flat (no lower ring area or cut-off corner yet).
