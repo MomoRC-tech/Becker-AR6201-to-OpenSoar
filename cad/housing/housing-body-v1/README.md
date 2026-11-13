@@ -7,7 +7,7 @@ First housing prototype on [layout v4](../layout-v4/README.md): base tray with c
 <details>
 <summary><b>🖼️ Show the base with the hood off</b> (click to expand)</summary>
 
-![Hood top with the dark grey MomoRC logo insert](preview-top.png)
+![Hood top with the dark grey MomoRC logo and "7-20V" inserts](preview-top.png)
 
 ![Base tray with the ESP32 holder, RS-232 clamp, MAX490, UBEC, ferrite ring placeholder and the four corner posts](preview-open.png)
 
@@ -17,7 +17,7 @@ First housing prototype on [layout v4](../layout-v4/README.md): base tray with c
 | --- | --- |
 | `housing-base.f3d`, `housing-hood.f3d` | Fusion archives of the two parts; open with *File › Open › Open from my computer* |
 | `housing-base.3mf`, `housing-hood.3mf`, `housing-logo-insert.3mf` | Print-ready meshes, Z up: base floor down; hood and logo insert top down in the same coordinates. Load hood and logo insert together as one object with two parts (dark grey filament for the logo) |
-| `housing-logo-insert.f3d`, `housing-logo-insert.step` | Logo insert as its own part |
+| `housing-logo-insert.f3d`, `housing-logo-insert.step` | Logo and "7-20V" insert as its own part |
 | `housing-base.step`, `housing-hood.step` | Solid models in the layout frame |
 
 | Part | Main dimensions (mm) |
@@ -27,7 +27,7 @@ First housing prototype on [layout v4](../layout-v4/README.md): base tray with c
 | Corner posts | 8 × 8 (far posts rounded R3.8 to follow the inner corner, 2.0 mm around each insert), tops 17.9 above the floor, inserts Ø4.0 × 6.7 deep; at the connector end the side and connector walls stay full height (19.75) around the post top. Insert centres (X, Z): (7, −24.5), (7, 28.5), (85.8, −23.3), (85.8, 28.3). Posts hang from the walls: free faces end 8 above the floor, the underside rises 45° from the walls to there (printable without support); free vertical edges R2. The XT30 corner post sits on the XT30 collar |
 | Cover screws | DIN 912 M3 × 6 (head Ø5.4 × 2.9), counterbore Ø6.0 × 3.1 in the hood thick spots, heads flush, 1.5 under the head, Ø3.4 clearance; screw reaches 4.5 into the insert, tip 2.2 above the hole bottom |
 | Connector wall | XT30 pocket 10.55 × 5.25 through wall and collar (centre Z −15.3, Y 6.5), its two corners at the chamfered side filled 45° with 1.3 legs (0.2 clear of the chamfers); collar 5 mm deep, from the floor to 2 above the pocket, 2 mm wall toward the corner post, top free edge R2; DE-9 (centre Z 8.5, Y 10) recess 31.6 × 13.2 × 1.0, D-shaped cutout 11.5 high, 19.9 wide for the top 2.5 and narrowing to 16.7 at the bottom (sides 10° like the rear body, 0.25 clear), holes Ø3.4 at 25.0, nut pockets 5.6 across flats × 1.0 deep from the inner face |
-| Labels | Raised 0.6: "7..20V" (4 mm) above the XT30, "INSTR" (4 mm) below the DE-9 |
+| Labels | Engraved 0.6 deep in Arial Black: "7-20V" (3.6 mm) above the XT30, "INSTR" (4 mm) below the DE-9. On the hood top, "7-20V" (5 mm, Arial Black) as a 0.6 mm dark grey insert flush with the top, above the XT30 between the logo and the connector-end edge, readable from the connector end |
 | Logo | MomoRC logo Ø56, a 0.6 mm dark grey insert flush with the hood top (two-colour print, the hood has the matching 0.6 mm recess), centred, upright seen from the connector end; traced from the owner's bitmap with white lines widened and black slivers removed so every feature is at least 0.8 wide |
 | Vents | 2 rows × 5 slots per long side, 10 × 1.5, 2 mm ribs, 12.5 and 16.5 above the floor top |
 | Ears | 4 × (6 out × 10 wide × 2.5, flush with the floor underside and the side faces) off both short ends, slots 5.4 × 1.9 for 4.8 mm ties, 2 mm from the wall face |

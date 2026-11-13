@@ -10,6 +10,8 @@ A small ESP32 box in the glider that collects data from the cockpit instruments 
 - 📈 **Flight data:** the Zander ZS1 sends flight and navigation data.
 - 📻 **Radio:** pick an airfield in OpenSoar and its frequency goes into the Becker radio's standby slot.
 
+[![Housing prototype v1, closed: MomoRC logo and 7-20V on the hood, XT30 power socket and DE-9 instrument connector on the end wall](cad/housing/housing-body-v1/preview-closed.png)](cad/housing/housing-body-v1/README.md)
+
 > [!NOTE]
 > **Status:** planning and bench design — nothing is built yet.
 > **Current focus:** 🔧 hardware selection and wiring. Software work waits until the hardware design is finished.
