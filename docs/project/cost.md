@@ -2,14 +2,14 @@
 
 # 💶 Hardware cost
 
-🏠 [Overview](../../README.md) › 🔧 Hardware › **Hardware cost**
+🏠 [Overview](../../README.md) › 📋 Project › **Hardware cost**
 
 Cost calculation for one complete bridge using the selected hardware.
 
 > [!NOTE]
 > **Status:** budget based on owner-supplied prices on 13 November 2026; shipping excluded.
 
-Related: 🧱 [Modules and parts](modules.md#parts-list) · 📦 [Housing](housing.md)
+Related: 🧱 [Modules and parts](../hardware/modules.md#parts-list) · 📦 [Housing](../hardware/housing.md)
 
 ---
 
