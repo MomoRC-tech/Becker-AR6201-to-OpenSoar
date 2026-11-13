@@ -9,14 +9,23 @@ First housing prototype on [layout v4](../layout-v4/README.md): base tray with c
 
 ![Hood top with the dark grey MomoRC logo and "7-20V" inserts](preview-top.png)
 
-![Base tray with the ESP32 holder, RS-232 clamp, MAX490, UBEC, ferrite ring placeholder and the four corner posts](preview-open.png)
+![Base tray with the ESP32 holder, RS-232 clamp, MAX490, UBEC, retained ferrite ring and four corner posts](preview-open.png)
+
+</details>
+
+<details>
+<summary><b>🖼️ Show the ferrite cradle and tie routing</b> (click to expand)</summary>
+
+![Integral ferrite saddle with two rounded tie tunnels above the intact housing floor](preview-ferrite-cradle.png)
+
+![Bare ferrite reference seated upright with two through-centre tie envelopes and staggered head allowances; wire turns are not shown](preview-ferrite-installed.png)
 
 </details>
 
 | File | Use |
 | --- | --- |
 | [housing-assembly.f3d](housing-assembly.f3d) | Full editable Fusion assembly with the [measured UBEC](../../reference/ubec-hobbywing-3a/README.md), [measured ferrite ring](../../../docs/hardware/housing.md#contents) and a local copy of the MAX490 board. Open with *File › Open › Open from my computer*. |
-| `housing-base.f3d`, `housing-hood.f3d` | Fusion archives of the two parts; the base includes the MAX490 floor posts. Open with *File › Open › Open from my computer* |
+| `housing-base.f3d`, `housing-hood.f3d` | Fusion archives of the two parts; the base includes the MAX490 floor posts and integral ferrite cradle. Open with *File › Open › Open from my computer* |
 | `housing-base.3mf`, `housing-hood.3mf`, `housing-logo-insert.3mf` | Print-ready meshes, Z up: base floor down; hood and logo insert top down in the same coordinates. Load hood and logo insert together as one object with two parts (dark grey filament for the logo) |
 | `housing-logo-insert.f3d`, `housing-logo-insert.step` | Logo and "7-20V" insert as its own part |
 | `housing-base.step`, `housing-hood.step` | Solid models in the layout frame |
@@ -35,7 +44,9 @@ First housing prototype on [layout v4](../layout-v4/README.md): base tray with c
 
 - Colours in Fusion and STEP: base dark green, hood a lighter green. Logo insert dark grey.
 - Units: millimetres. Layout frame: X from the outer face of the connector wall, Y up from the floor top, Z across.
-- Fusion archive: 67 occurrences, including the MAX490 board’s 150 bodies, the UBEC carrier with flush, offset screw seats and simplified cable-tie envelopes. The four screw reference solids are omitted. Archive and fit verification: [carrier model notes](../ubec-carrier/README.md).
+- Fusion archive: 68 occurrences and 309 timeline items, including the MAX490 board’s 150 bodies, the UBEC carrier with flush, offset screw seats, the upright ferrite and both pairs of cable-tie fit envelopes. The four screw reference solids are omitted. Carrier/post verification: [carrier model notes](../ubec-carrier/README.md).
 - Mating plug: the [XT30PB-F](../../reference/amass-xt30-family/README.md) STEP model sits plugged onto the XT30 on the outside of the connector wall (reference component `XT30 female (reference)` in the Connector side group): mating face against the male front face (0.5 mm outside the wall), centred on the pocket, turned 180° about the plug axis from the first placement so the polarity matches the male, solder tails pointing away from the box; no intersection with the base, hood, connector plate, DE-9 or XT30 male (Fusion check). Included in the full Fusion assembly.
-- Layout: inside height 20 mm. The UBEC and ring use measured dimensions; the UBEC now sits on the [four-screw carrier](../ubec-carrier/README.md). The base includes its shared MAX490 floor posts. Wire routing is not modelled; the hood is flat (no lower ring area or cut-off corner yet).
+- Layout: inside height 20 mm. The UBEC sits on the [four-screw carrier](../ubec-carrier/README.md); the ferrite sits upright in the [integral cradle](../../../docs/hardware/housing.md#ferrite-cradle), with two ties through its centre. The ring model is the bare core; the winding envelope was checked separately. Actual wire turns and lead routing are not modelled. The hood is flat.
 - Print checks: printed floor down, the DE-9 cutout top is a 19.9 mm bridge and the XT30 pocket top a 10.55 mm bridge (both were fit-tested printed flat, and the rule limit is 10 mm). The connector face has 2.7 mm of wall between the XT30 pocket and the DE-9 recess; the XT30 collar stays 0.8 mm clear of the nearer DE-9 nut pocket.
+
+- **Ferrite cradle verification, 2026-11-13:** Fusion recompute and new features passed; ring/tie collision checks passed, and all 480 bodies outside the base and ring retain their previous geometry. Reopened assembly and base match the live geometry; STEP validity, tunnel/seat checks and closed print-mesh checks passed. The original floor remains intact; 183 documentation links/anchors and whitespace checks passed. The base archive retains the two inherited engraving-reference warnings; evidence and limits: S54 in [sources](../../../docs/research/sources.md#source-register). Slicing, physical wire clearance, printed tie passage, retention, vibration and loaded temperature were not tested. Assembly dimensions and exposed-core orientation: [housing § 2.5](../../../docs/hardware/housing.md#ferrite-cradle); [fit checklist](../../../docs/project/open-items.md#housing).

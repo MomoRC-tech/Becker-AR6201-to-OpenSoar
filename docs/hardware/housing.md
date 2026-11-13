@@ -7,7 +7,7 @@
 Mechanical design of the bridge: what goes inside, part sizes, connectors on the housing, internal layout.
 
 > [!NOTE]
-> **Status:** internal layout selected in Fusion ([section 5](#layout)); first housing-body prototype modelled, not printed ([section 2.3](#fit-test)). Carrier and base exports include flush seats, offset axes for the 12 mm screws and a 0.4 mm closed floor beneath the pilots ([section 2.4](#ubec-carrier)). Upright ferrite cradle selected, not yet modelled ([section 2.5](#ferrite-cradle)). Remaining inputs and fit checks: [open items](../project/open-items.md#housing).
+> **Status:** internal layout selected in Fusion ([section 5](#layout)); first housing-body prototype modelled, not printed ([section 2.3](#fit-test)). Carrier and base exports include flush seats, offset axes for the 12 mm screws and a 0.4 mm closed floor beneath the pilots ([section 2.4](#ubec-carrier)). Integral ferrite cradle and two through-centre tie paths modelled ([section 2.5](#ferrite-cradle)). Remaining inputs and fit checks: [open items](../project/open-items.md#housing).
 
 📑 **On this page:** <kbd>[1 · 🎯 Requirements](#requirements)</kbd> <kbd>[2 · 📐 Design rules](#rules)</kbd> <kbd>[3 · 📏 Contents and sizes](#contents)</kbd> <kbd>[4 · 🔌 Connectors on the housing](#connectors)</kbd> <kbd>[5 · 🧩 Internal layout](#layout)</kbd>
 
@@ -168,9 +168,21 @@ Exported geometry, in the installed layout frame; owner measurements and Fusion 
 > [!TIP]
 > Hold the ferrite upright in a cradle integral with the base, retained by two 2.5 mm-wide cable ties (S54).
 
-- Support the ring with a rounded saddle and low side stops; leave reliefs for the wire turns.
-- Anchor both ties to the base so the ring stays captured with the hood removed. Keep clearance to the hood rather than using it to compress the wires.
-- Size the cradle around the [measured wound envelope](#contents). Tie routing and fit checks: [open items](../project/open-items.md#housing).
+[CAD files and verification](../../cad/housing/housing-body-v1/README.md). Dimensions in the installed layout frame; S54.
+
+| Feature | Dimension / construction |
+| --- | --- |
+| Integral cradle | 8.6 × 9.4 mm footprint, 4.4 mm high; outside vertical corners R0.6, exposed top edges R0.2 |
+| Core seat | Concave R7.1 saddle, 5.8 mm between the side cheeks: 0.2 mm axial clearance per side of the bare core. Lowest contact 2.9 mm above the floor |
+| Ring position | Upright, bore along X; centre X 83.5, Y 10.0, Z 16.5. The [wound envelope](#contents) reaches Y 18.75, leaving 1.25 mm beneath the hood |
+| Tie tunnels | Two 3.2 mm-wide × 1.6 mm-high passages along X through the cradle, centred at Z 14.5 / 18.5; bottoms 0.4 mm above the floor, at least 0.9 mm of roof. Corners and entry lips R0.2. The original 2.5 mm housing floor stays intact |
+| Tie routing | One tie per tunnel, up the two axial faces and through the ring centre. Both anchor to the base; the hood does not clamp the ring |
+| Tie fit envelopes | 2.5 mm-wide straps with a 1.0 mm thickness allowance. Estimated 3 × 4 × 4 mm heads staggered on the UBEC-facing side; nominal rear strap-to-wall gap 0.45 mm |
+| Printing | Base floor down, as placed in the 3MF; PETG, 0.4 mm nozzle, 0.2 mm layers. The tie tunnels have short 3.2 mm ceiling spans |
+
+- Orient the exposed core sector downward into the saddle. Keep the wire turns out of the seat and side cheeks; the CAD ring shows the bare core, not the windings.
+- Thread both ties through the cradle and ring centre, with their heads on the accessible UBEC side. Tighten only enough to remove movement without squeezing the wires.
+- Check that the ring stays captured with the hood removed. Wire routing, actual tie-head fit and print checks: [open items](../project/open-items.md#housing).
 
 ### 2.6 Later optimizations
 

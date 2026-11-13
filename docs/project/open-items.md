@@ -66,7 +66,7 @@ Inputs still needed before the housing can be modelled. Selected rules: [housing
 | # | Item | What is needed | How it is closed |
 | :-: | --- | --- | --- |
 | 4 | Holders | Slice, print and fit the [UBEC carrier](../hardware/housing.md#ubec-carrier): check support-free legs, end solder clearance, 19 mm support, tie threading and actual tie-head size, hood clearance, M2.5 × 12 head/driver access, the offset shafts through the PCB holes and thread holding; check the base's R1 post roots and 0.4 mm pilot-hole floors. Choose a glue that holds on PETG (ESP32 holder, XT30) | Owner / fit test; remaining selections separately |
-| 15 | Ferrite cradle | Check whether two selected ties can pass through the wound centre without squeezing the wires; establish their paths and head clearance, then model the [selected cradle](../hardware/housing.md#ferrite-cradle). Check support on exposed core, wire reliefs, lead exits, hood clearance, tie threading and head access; print and check retention with the hood removed and under vibration | Owner checks tie passage; CAD and physical fit test |
+| 15 | Ferrite cradle | Slice and fit-print the [cradle](../hardware/housing.md#ferrite-cradle). Check the exposed core sector seats without trapping wire turns; confirm lead exits, hood and rear-strap clearance, actual tie thickness/head size, threading through the printed tunnels and tool access. Check retention with the hood removed, under vibration and at the expected loaded temperature | Owner / physical fit test |
 | 14 | Internal wiring details | Internal wire type and gauge; tie-down points (including for R-B1 and R-D) and service loops | Owner selection |
 
 ### 2.4 Measurements
