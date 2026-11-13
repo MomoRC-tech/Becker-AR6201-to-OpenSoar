@@ -2,7 +2,7 @@
 
 First housing prototype on [layout v4](../layout-v4/README.md): base tray with connector wall and corner posts, and the hood. Rules: [housing § 2](../../../docs/hardware/housing.md#rules). Built in Autodesk Fusion through MCP, 2026-11-13, in the document `Housing body - prototype v1` (a copy of `Housing layout - compact v4` with the XT30 moved 3.2 mm inward and the ferrite-ring placeholder 2 mm inward; the holder v3 pieces are local copies of its version 7, link broken). Not printed yet.
 
-![Closed housing: hood with countersunk screws and side vents, connector wall with XT30 and DE-9, cable-tie ears](preview-closed.png)
+![Closed housing: hood with counterbored screw holes and side vents, connector wall with XT30 and DE-9, cable-tie ears](preview-closed.png)
 
 <details>
 <summary><b>🖼️ Show the base with the hood off</b> (click to expand)</summary>
