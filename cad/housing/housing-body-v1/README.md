@@ -7,7 +7,7 @@ First housing prototype on [layout v4](../layout-v4/README.md): base tray with c
 <details>
 <summary><b>🖼️ Show the base with the hood off</b> (click to expand)</summary>
 
-![Hood top with the debossed MomoRC logo](preview-top.png)
+![Hood top with the dark grey MomoRC logo insert](preview-top.png)
 
 ![Base tray with the ESP32 holder, RS-232 clamp, MAX490, UBEC, ferrite ring placeholder and the four corner posts](preview-open.png)
 
@@ -16,7 +16,8 @@ First housing prototype on [layout v4](../layout-v4/README.md): base tray with c
 | File | Use |
 | --- | --- |
 | `housing-base.f3d`, `housing-hood.f3d` | Fusion archives of the two parts; open with *File › Open › Open from my computer* |
-| `housing-base.3mf`, `housing-hood.3mf` | Print-ready meshes: base floor down, hood top down |
+| `housing-base.3mf`, `housing-hood.3mf`, `housing-logo-insert.3mf` | Print-ready meshes, Z up: base floor down; hood and logo insert top down in the same coordinates. Load hood and logo insert together as one object with two parts (dark grey filament for the logo) |
+| `housing-logo-insert.f3d`, `housing-logo-insert.step` | Logo insert as its own part |
 | `housing-base.step`, `housing-hood.step` | Solid models in the layout frame |
 
 | Part | Main dimensions (mm) |
@@ -27,11 +28,11 @@ First housing prototype on [layout v4](../layout-v4/README.md): base tray with c
 | Cover screws | ISO 10642 M3 × 8 countersunk, 90° countersink about Ø7.0 in the hood top, Ø3.4 clearance |
 | Connector wall | XT30 pocket 10.55 × 5.25 through wall and collar (centre Z −16.3, Y 14.5), collar 5 mm deep with R2 edges; DE-9 recess 31.6 × 13.2 × 1.0, cutout 19.9 × 11.5, holes Ø3.4 at 25.0, nut pockets 5.6 across flats × 1.0 deep from the inner face |
 | Labels | Raised 0.6: "12V" (5 mm) below the XT30, "INSTR" (4 mm) below the DE-9 |
-| Logo | MomoRC logo Ø56 debossed 0.6 into the hood top, centred, upright seen from the connector end; traced from the owner's bitmap with white lines widened and black slivers removed so every feature is at least 0.8 wide |
+| Logo | MomoRC logo Ø56, a 0.6 mm dark grey insert flush with the hood top (two-colour print, the hood has the matching 0.6 mm recess), centred, upright seen from the connector end; traced from the owner's bitmap with white lines widened and black slivers removed so every feature is at least 0.8 wide |
 | Vents | 2 rows × 5 slots per long side, 10 × 1.5, 2 mm ribs, 12.5 and 16.5 above the floor top |
 | Ears | 4 × (6 out × 10 wide × 2.5, flush with the floor underside and the side faces) off both short ends, slots 5.4 × 1.9 for 4.8 mm ties, 2 mm from the wall face |
 
-- Colours in Fusion and STEP: base dark green, hood a lighter green. The logo shows dark grey through a 0.1 mm visual-only body (`Logo colour` in the Fusion document) on the recess floor; it is not part of the print files.
+- Colours in Fusion and STEP: base dark green, hood a lighter green. Logo insert dark grey.
 - Units: millimetres. Layout frame: X from the outer face of the connector wall, Y up from the floor top, Z across.
 - Clash check in Fusion: no intersection with the holders, boards or connectors, except 0.3 mm³ with the XT30 reference model at its top face (model tolerance) and 0.5 mm³ with a small part of the oversized UBEC reference model at the far post on the MAX490 side.
 - Placeholders: inside height 20 mm and the UBEC, MAX490 and ring positions come from layout v4 before the parts were measured. MAX490 posts, UBEC bridge and wire routing are not modelled; the hood is flat (no lower ring area or cut-off corner yet).
