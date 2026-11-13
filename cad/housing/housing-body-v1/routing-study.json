@@ -1,0 +1,781 @@
+{
+  "units": "mm",
+  "frame": "X from connector-wall outside face along housing; Y up from floor top; Z across",
+  "status": "Provisional routing study; not a wire-gauge selection or cutting list",
+  "geometry_source": "housing-assembly.f3d: Cable harness - routing study",
+  "points_note": "Construction waypoints, not samples of the rounded or fitted centreline. Measured lengths and circular arc radii come from the Fusion paths.",
+  "length_exclusions": [
+    "Termination and stripping allowance",
+    "Service slack",
+    "Ferrite winding length"
+  ],
+  "endpoint_limits": [
+    "XT30 and UBEC A/B are spatial labels without verified polarity",
+    "MAX490 RO/DI pin assignment pending",
+    "RS-232 pad mapping inferred",
+    "No ferrite winding count modelled",
+    "DE-9 fan-out not modelled"
+  ],
+  "routes": [
+    {
+      "name": "UBEC output A to ferrite approach - polarity unassigned",
+      "points_mm": [
+        [
+          74.4,
+          10.2,
+          23.5
+        ],
+        [
+          76,
+          11.5,
+          24
+        ],
+        [
+          78,
+          14,
+          23.5
+        ]
+      ],
+      "group": "5 V power",
+      "od_mm": 1.5,
+      "centreline_mm": 5.4,
+      "smallest_arc_radius_mm": null
+    },
+    {
+      "name": "UBEC output B to ferrite approach - polarity unassigned",
+      "points_mm": [
+        [
+          74.4,
+          10.2,
+          26.5
+        ],
+        [
+          76,
+          13,
+          27
+        ],
+        [
+          78,
+          16,
+          24.5
+        ]
+      ],
+      "group": "5 V power",
+      "od_mm": 1.5,
+      "centreline_mm": 7.79,
+      "smallest_arc_radius_mm": null
+    },
+    {
+      "name": "Ferrite departure to ESP32 J2-19 5V",
+      "points_mm": [
+        [
+          78,
+          15.5,
+          9
+        ],
+        [
+          76,
+          15.5,
+          9
+        ],
+        [
+          76,
+          1.5,
+          9
+        ],
+        [
+          76,
+          1.5,
+          6.4
+        ],
+        [
+          32,
+          1.5,
+          6.4
+        ],
+        [
+          32,
+          1.5,
+          -25.5
+        ],
+        [
+          28.27,
+          1.5,
+          -25.5
+        ],
+        [
+          28.27,
+          14.9,
+          -25.5
+        ],
+        [
+          28.27,
+          14.9,
+          -23.28
+        ]
+      ],
+      "group": "5 V power",
+      "od_mm": 1.5,
+      "centreline_mm": 109.66,
+      "smallest_arc_radius_mm": 0.8
+    },
+    {
+      "name": "Ferrite departure to ESP32 J2-14 GND",
+      "points_mm": [
+        [
+          78,
+          13,
+          7.5
+        ],
+        [
+          76.5,
+          13,
+          5
+        ],
+        [
+          68,
+          13,
+          4.5
+        ],
+        [
+          68,
+          1.5,
+          4.5
+        ],
+        [
+          40.97,
+          1.5,
+          4.5
+        ],
+        [
+          40.97,
+          1.5,
+          -25.5
+        ],
+        [
+          40.97,
+          14.9,
+          -25.5
+        ],
+        [
+          40.97,
+          14.9,
+          -23.28
+        ]
+      ],
+      "group": "5 V power",
+      "od_mm": 1.5,
+      "centreline_mm": 89.86,
+      "smallest_arc_radius_mm": 0.89
+    },
+    {
+      "name": "ESP32 J2-19 5V to MAX490 VCC",
+      "points_mm": [
+        [
+          28.27,
+          14.9,
+          -23.28
+        ],
+        [
+          28.27,
+          17,
+          -25.5
+        ],
+        [
+          35.89,
+          17,
+          -25.5
+        ],
+        [
+          35.89,
+          1.5,
+          -25.5
+        ],
+        [
+          35.89,
+          1.5,
+          -21
+        ],
+        [
+          39,
+          3.3,
+          -21
+        ],
+        [
+          60.0,
+          3.3,
+          -21
+        ],
+        [
+          60.0,
+          3.3,
+          25.31
+        ],
+        [
+          63,
+          1.1,
+          25.31
+        ],
+        [
+          73.9,
+          1.1,
+          25.31
+        ],
+        [
+          73.9,
+          7.92,
+          25.31
+        ]
+      ],
+      "group": "5 V power",
+      "od_mm": 1.5,
+      "centreline_mm": 116.62,
+      "smallest_arc_radius_mm": 1.22
+    },
+    {
+      "name": "ESP32 J3-1 GND to MAX490 GND",
+      "points_mm": [
+        [
+          73.99,
+          14.9,
+          2.28
+        ],
+        [
+          73.99,
+          14.9,
+          7
+        ],
+        [
+          73.99,
+          5.8,
+          7
+        ],
+        [
+          73.99,
+          5.8,
+          22.77
+        ],
+        [
+          73.9,
+          7.92,
+          22.77
+        ]
+      ],
+      "group": "5 V power",
+      "od_mm": 1.5,
+      "centreline_mm": 29.25,
+      "smallest_arc_radius_mm": 0.85
+    },
+    {
+      "name": "R-B1 to J3-12 GPIO16",
+      "points_mm": [
+        [
+          48,
+          16.8,
+          5.5
+        ],
+        [
+          46.1,
+          16.5,
+          5
+        ],
+        [
+          46.05,
+          14.9,
+          2.28
+        ]
+      ],
+      "group": "Resistors",
+      "od_mm": 1.0,
+      "centreline_mm": 5.32,
+      "smallest_arc_radius_mm": null
+    },
+    {
+      "name": "RO pending identification to R-B1",
+      "points_mm": [
+        [
+          73.9,
+          7.92,
+          18.96
+        ],
+        [
+          71.7,
+          6.5,
+          18.96
+        ],
+        [
+          71.7,
+          6.5,
+          6
+        ],
+        [
+          51.6,
+          6.5,
+          6
+        ],
+        [
+          51.6,
+          16.8,
+          5.5
+        ]
+      ],
+      "group": "Resistors",
+      "od_mm": 1.0,
+      "centreline_mm": 42.97,
+      "smallest_arc_radius_mm": 1.05
+    },
+    {
+      "name": "R-B2 to J3-12 GPIO16",
+      "points_mm": [
+        [
+          52,
+          18,
+          2.28
+        ],
+        [
+          49,
+          18,
+          2.28
+        ],
+        [
+          46.05,
+          14.9,
+          2.28
+        ]
+      ],
+      "group": "Resistors",
+      "od_mm": 1.0,
+      "centreline_mm": 7.42,
+      "smallest_arc_radius_mm": null
+    },
+    {
+      "name": "R-B2 to J3-7 GND",
+      "points_mm": [
+        [
+          55.6,
+          18,
+          2.28
+        ],
+        [
+          58,
+          17,
+          2.28
+        ],
+        [
+          58.75,
+          14.9,
+          2.28
+        ]
+      ],
+      "group": "Resistors",
+      "od_mm": 1.0,
+      "centreline_mm": 4.93,
+      "smallest_arc_radius_mm": null
+    },
+    {
+      "name": "R-D to J3-11 GPIO17",
+      "points_mm": [
+        [
+          49,
+          17,
+          -1
+        ],
+        [
+          48,
+          16.5,
+          0
+        ],
+        [
+          48.59,
+          14.9,
+          2.28
+        ]
+      ],
+      "group": "Resistors",
+      "od_mm": 1.0,
+      "centreline_mm": 4.46,
+      "smallest_arc_radius_mm": null
+    },
+    {
+      "name": "R-D to J2-1 3V3",
+      "points_mm": [
+        [
+          52.6,
+          17,
+          -1
+        ],
+        [
+          56,
+          15.5,
+          -1
+        ],
+        [
+          72,
+          15.5,
+          -1
+        ],
+        [
+          72,
+          15.5,
+          -23.28
+        ],
+        [
+          73.99,
+          14.9,
+          -23.28
+        ]
+      ],
+      "group": "Resistors",
+      "od_mm": 1.0,
+      "centreline_mm": 42.41,
+      "smallest_arc_radius_mm": 0.83
+    },
+    {
+      "name": "R-Z to R1 inferred pad",
+      "points_mm": [
+        [
+          28.042,
+          15.05,
+          -3.557
+        ],
+        [
+          28.042,
+          16.2,
+          -3.557
+        ],
+        [
+          28.64,
+          17,
+          -3.557
+        ]
+      ],
+      "group": "Resistors",
+      "od_mm": 1.0,
+      "centreline_mm": 2.18,
+      "smallest_arc_radius_mm": null
+    },
+    {
+      "name": "R-Z to R3 inferred pad",
+      "points_mm": [
+        [
+          32.837,
+          15.05,
+          -3.557
+        ],
+        [
+          32.837,
+          16.2,
+          -3.557
+        ],
+        [
+          32.24,
+          17,
+          -3.557
+        ]
+      ],
+      "group": "Resistors",
+      "od_mm": 1.0,
+      "centreline_mm": 2.18,
+      "smallest_arc_radius_mm": null
+    },
+    {
+      "name": "R-F to R1 inferred pad",
+      "points_mm": [
+        [
+          40.517,
+          15.05,
+          -3.557
+        ],
+        [
+          40.517,
+          16.2,
+          -3.557
+        ],
+        [
+          41.115,
+          17,
+          -3.557
+        ]
+      ],
+      "group": "Resistors",
+      "od_mm": 1.0,
+      "centreline_mm": 2.18,
+      "smallest_arc_radius_mm": null
+    },
+    {
+      "name": "R-F to R3 inferred pad",
+      "points_mm": [
+        [
+          45.312000000000005,
+          15.05,
+          -3.557
+        ],
+        [
+          45.312000000000005,
+          16.2,
+          -3.557
+        ],
+        [
+          44.715,
+          17,
+          -3.557
+        ]
+      ],
+      "group": "Resistors",
+      "od_mm": 1.0,
+      "centreline_mm": 2.18,
+      "smallest_arc_radius_mm": null
+    },
+    {
+      "name": "J3-11 GPIO17 to DI pending identification",
+      "group": "Resistors",
+      "points_mm": [
+        [
+          48.59,
+          14.9,
+          2.28
+        ],
+        [
+          48.59,
+          14.9,
+          7.1
+        ],
+        [
+          48.59,
+          8.5,
+          7.1
+        ],
+        [
+          72.3,
+          8.5,
+          7.1
+        ],
+        [
+          72.3,
+          10.5,
+          18.96
+        ],
+        [
+          74,
+          10.5,
+          18.96
+        ]
+      ],
+      "od_mm": 1.0,
+      "centreline_mm": 45.15,
+      "smallest_arc_radius_mm": 0.68
+    },
+    {
+      "name": "Input A - spatial route only",
+      "group": "12 V input - polarity unassigned",
+      "points_mm": [
+        [
+          14,
+          7.5,
+          -17.93
+        ],
+        [
+          14,
+          3,
+          -17.93
+        ],
+        [
+          11.5,
+          3,
+          -17.93
+        ],
+        [
+          11.5,
+          3,
+          -8
+        ],
+        [
+          11.5,
+          4,
+          -5
+        ],
+        [
+          11.5,
+          4,
+          30
+        ],
+        [
+          13,
+          4,
+          32.4
+        ],
+        [
+          13,
+          17.3,
+          32.4
+        ],
+        [
+          25.5,
+          17.3,
+          32.4
+        ],
+        [
+          25.5,
+          17.3,
+          23.5
+        ],
+        [
+          35.4,
+          17.3,
+          23.5
+        ],
+        [
+          35.4,
+          10.2,
+          23.5
+        ]
+      ],
+      "od_mm": 1.5,
+      "centreline_mm": 103.13,
+      "smallest_arc_radius_mm": 1.0
+    },
+    {
+      "name": "Input B - spatial route only",
+      "group": "12 V input - polarity unassigned",
+      "points_mm": [
+        [
+          14,
+          7.5,
+          -12.93
+        ],
+        [
+          14,
+          4,
+          -12.93
+        ],
+        [
+          13.5,
+          4,
+          -9
+        ],
+        [
+          13.5,
+          4,
+          30
+        ],
+        [
+          15.5,
+          4,
+          34.2
+        ],
+        [
+          15.5,
+          19,
+          34.2
+        ],
+        [
+          25.5,
+          19,
+          34.2
+        ],
+        [
+          25.5,
+          19,
+          26.5
+        ],
+        [
+          35.4,
+          19,
+          26.5
+        ],
+        [
+          35.4,
+          10.2,
+          26.5
+        ]
+      ],
+      "od_mm": 1.5,
+      "centreline_mm": 95.94,
+      "smallest_arc_radius_mm": 1.4
+    }
+  ],
+  "resistors": [
+    {
+      "name": "R-Z 10k",
+      "ends_mm": [
+        [
+          28.64,
+          17,
+          -3.557
+        ],
+        [
+          32.24,
+          17,
+          -3.557
+        ]
+      ],
+      "diameter_mm": 1.6
+    },
+    {
+      "name": "R-F 10k",
+      "ends_mm": [
+        [
+          41.115,
+          17,
+          -3.557
+        ],
+        [
+          44.715,
+          17,
+          -3.557
+        ]
+      ],
+      "diameter_mm": 1.6
+    },
+    {
+      "name": "R-B1 2k2",
+      "ends_mm": [
+        [
+          48,
+          16.8,
+          5.5
+        ],
+        [
+          51.6,
+          16.8,
+          5.5
+        ]
+      ],
+      "diameter_mm": 1.6
+    },
+    {
+      "name": "R-B2 3k3",
+      "ends_mm": [
+        [
+          52,
+          18,
+          2.28
+        ],
+        [
+          55.6,
+          18,
+          2.28
+        ]
+      ],
+      "diameter_mm": 1.6
+    },
+    {
+      "name": "R-D 10k",
+      "ends_mm": [
+        [
+          49,
+          17,
+          -1
+        ],
+        [
+          52.6,
+          17,
+          -1
+        ]
+      ],
+      "diameter_mm": 1.6
+    }
+  ],
+  "power_od_mm": 1.5,
+  "signal_od_mm": 1.0
+}

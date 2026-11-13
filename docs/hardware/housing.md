@@ -7,7 +7,7 @@
 Mechanical design of the bridge: what goes inside, part sizes, connectors on the housing, internal layout.
 
 > [!NOTE]
-> **Status:** internal layout selected in Fusion ([section 5](#layout)); first housing-body prototype modelled, not printed ([section 2.3](#fit-test)). Carrier and base exports include flush seats, offset axes for the 12 mm screws and a 0.4 mm closed floor beneath the pilots ([section 2.4](#ubec-carrier)). Integral ferrite cradle and two through-centre tie paths modelled ([section 2.5](#ferrite-cradle)). Remaining inputs and fit checks: [open items](../project/open-items.md#housing).
+> **Status:** housing prototype and [internal routing study](#internal-routing) modelled, not printed. The study includes power routes, all five resistors and two integral cable saddles. Wire sizes, bends and termination envelopes are provisional; physical acceptance is tracked in [open items](../project/open-items.md#housing).
 
 📑 **On this page:** <kbd>[1 · 🎯 Requirements](#requirements)</kbd> <kbd>[2 · 📐 Design rules](#rules)</kbd> <kbd>[3 · 📏 Contents and sizes](#contents)</kbd> <kbd>[4 · 🔌 Connectors on the housing](#connectors)</kbd> <kbd>[5 · 🧩 Internal layout](#layout)</kbd>
 
@@ -322,7 +322,7 @@ Use the [STEP model](../../cad/reference/xt30u-m/xt30u-m.step) of the AMASS XT30
 | MAX490 side (+Z) | DE-9, in the housing body 4 mm closer to the XT30 than in layout v4 (centre Z 8.5), so its nut pocket clears the corner post · in the housing body this side is 3 mm wider than in layout v4, and the MAX490 and UBEC sit 3 mm further out (MAX490 board Z 8–35) · MAX490 on the floor (terminal edge X = 17, PCB underside 4.5) with the UBEC on the [four-screw carrier](#ubec-carrier), jumper toward the wall · ferrite ring on edge behind the UBEC output end |
 
 - **ESP32 holder:** layout v4 uses the tested USB block B. In the housing prototype the USB boss, PCB ledge and end stops are part of the base tray, with the broad glue foot removed. Both layouts use antenna cap A without foot ears (31.9 wide, blue) and USB clamp UR carrying both RS-232 boards (green). The boards sit turned 90°, one behind the other across the ESP32 between its header rows, 13.8 above the floor (rails to 16.1). One M2.5 screw removes the clamp with both boards.
-- **USB seating ledge:** in Fusion v55 the continuous seating face is 12 mm wide at 4.5 mm above the floor. Two floor-supported webs connect it to the end-stop feet up to 2.6 mm above the floor (S58). The repository CAD and print files show the preceding geometry.
+- **USB seating ledge:** the continuous seating face is 12 mm wide at 4.5 mm above the floor. Two floor-supported webs connect it to the end-stop feet up to 2.6 mm above the floor (S58). The repository CAD and print files include this geometry.
 - **Clamp arm:** a 6 × 2 mm arm runs from the clamp's free end over the ESP32 module into a short tunnel on top of the antenna cap's spring bridge. It only locates the free end, without loading the spring bridge (cap top 15.0 above the floor). Gaps, sized for print tolerances and the ~0.4 mm lift of the bridge once the ESP32 is fitted:
 
   | Gap (mm) | Modelled | ESP32 fitted |
@@ -335,14 +335,14 @@ Use the [STEP model](../../cad/reference/xt30u-m/xt30u-m.step) of the AMASS XT30
 - **Fitting the clamp:** push the arm tip into the tunnel with the USB end raised, then lower the clamp onto the USB socket and screw it down.
 - **Assembly order:** solder the RS-232 wires on the bench, slide the boards into the clamp, fit the ESP32, then screw the clamp on.
 - **UBEC carrier:** lift it off for access to the MAX490 header joints. Mounting and tie routing: [section 2.4](#ubec-carrier).
-- **Wiring:** XT30 wires run over the USB clamp to the UBEC input. With the XT30 low, its solder cups end level with the ESP32 USB screw block (top 9.25, 0.3 mm behind the cups), so the wires must bend up right at the cups; not modelled yet.
+- **Wiring:** the modelled XT30 pair follows the connector-side floor and passes around the MAX490 terminal block. See the [routing study](#internal-routing) for the separate harness, saddles and space allowances.
 - **Ferrite ring placement:** in the housing prototype the measured ring stands on the floor at X 83–88.4. The wire turns still need clearance.
 - **Behind the connector wall:** 12–16 mm free depth before the ESP32 USB block, the USB clamp and the MAX490 (Fusion check), too short for a panel fuse holder; F1 sits in the harness ([protection](power.md#protection)).
 - **Corner posts:** the measured ferrite ring clears the far post on the MAX490 side in Fusion.
 - **Width:** the housing body is 67 mm wide, 3 mm more than layout v4 on the MAX490 side. With 2.0 mm side walls the antenna cap sits 1.0 mm and the MAX490 board 0.5 mm from the inner side-wall faces; the gap between the ESP32 and MAX490 columns is 3 mm larger than in layout v4.
 - **Hood shape:** rounded top edges, a cut-off rear corner on the MAX490 side and a lower hood over the ring area. A curved hood saves little: the tallest items (ESP32 header wire rows, UBEC) sit close to both side walls.
 - **Fit test:** the first print of holder v3 fits (clamp printed top up with support under the arm and slot plate; arm tilts into the tunnel).
-- **Not modelled yet:** internal wire routing and ring wire turns.
+- **Ferrite representation:** bare core and retained tie envelopes; the routing study stops at separate approach/departure points and does not depict wire turns.
 
 Components in the Fusion layout v4. The [housing prototype archive](../../cad/housing/housing-body-v1/README.md) uses the measured UBEC and ferrite ring and embeds the MAX490 board.
 
@@ -365,6 +365,45 @@ Constraints from the wiring:
 - **Power path:** F1 (harness) → XT30 → UBEC → ESP32 and MAX490 ([supply path](power.md#supply)).
 - **Ferrite ring:** keep its placeholder volume ([section 3](#contents)) at the UBEC's output end (opposite the jumper), on the 5 V lead towards the ESP32; the ring is not modelled in the UBEC CAD reference.
 - **ESP32:** lengthwise, antenna at the far short end; Micro-USB faces the connector end.
+
+<a id="internal-routing"></a>
+
+### 5.1 Internal routing study
+
+Use the hideable **Cable harness - routing study** component in the [housing assembly](../../cad/housing/housing-body-v1/README.md). It contains separate 12 V, 5 V, resistor and insulation-allowance groups. Geometry checks: S59.
+
+| Item | Modelled arrangement |
+| --- | --- |
+| Routing style | Straight runs with rounded corners; power uses the floor and central gap where possible, with rises at the terminals |
+| Power wires | Provisional Ø1.5 mm **including insulation**; this is not a copper cross-section or selected wire gauge |
+| Signal/resistor connections | Provisional Ø1.0 mm including insulation |
+| 12 V pair | From the XT30 along the connector wall, through two open saddles, then around the terminal block to the UBEC input; the upper bends avoid the four carrier screw-driver paths |
+| 5 V pair | UBEC output approaches the ferrite; separate departure segments run along the central gap, then below the ESP32 to its supply/ground pins. The MAX490 branch returns below the boards |
+| Endpoint labels | Input/output A and B are spatial labels, without assigned UBEC/XT30 polarity. RO and DI leads stop short of an assigned MAX490 signal pin. RS-232 resistor pad positions follow the inferred reference map |
+| Resistors | Five Ø1.6 × 3.6 mm DIN0204-size placeholders: R-Z/R-F at the RS-232 pads; R-B1/R-B2 and R-D beside the ESP32 header |
+| Insulation/joints | Separate hideable Ø2.4 × 5.2 mm resistor heat-shrink allowances; Ø3 mm supply-joint allowances and Ø2.4 mm allowances at the adjacent GPIO16/17 joints. These are space estimates, not selected parts |
+| Tight geometry | Minimum nominal hood clearance 0.25 mm at the upper 12 V bend; the floor 5 V branch clears the nearby J3-7 ground pin by 0.19 mm. Smallest circular centreline bends: 0.80 mm for power, 0.68 mm for signal. These describe the model, not permissible wire bend radii |
+
+The DE-9 signal fan-out is outside this first routing increment; its contact assignments remain with the [connector work](../project/open-items.md#bench-hardware).
+
+**Two integral open saddles for the 12 V pair:**
+
+- Centres at X 12.5, Z 6 / 22 mm in the layout frame; wires at X 11.5 / 13.5 and Y 4 mm.
+- Each saddle: 5.7 × 6 mm footprint, 4.5 mm high; open trough 4.1 mm wide, floor at Y 3 mm, side walls 0.8 mm.
+- Tie passage across the saddle: 3.2 × 1.6 mm, bottom 0.4 mm above the housing floor; 1.0 mm roof below the trough. Rounded edges R0.2.
+- Use the existing 2.5 mm-wide, approximately 1 mm-thick tie envelope for the fit study. Actual tie threading and head placement belong to the [fit checks](../project/open-items.md#housing).
+- Print with the base floor down, PETG, 0.4 mm nozzle and 0.2 mm layers. The tie-passage roof spans 3.2 mm; fit-print before assembling the boards.
+
+**Approximate centreline lengths**, rounded to the nearest millimetre:
+
+| Segment | Length |
+| --- | ---: |
+| XT30 → UBEC input A / B | 103 / 96 mm |
+| UBEC output approaches to ferrite boundary A / B | 5 / 8 mm |
+| Ferrite boundary → ESP32 5V / GND | 110 / 90 mm |
+| ESP32 → MAX490 VCC / GND | 117 / 29 mm |
+
+These are routing lengths, **not cutting lengths**. Account separately for termination/stripping allowance, service slack and the actual ferrite winding length. The [route data](../../cad/housing/housing-body-v1/routing-study.json) contains the individual wire-section measurements and provisional endpoints; use [open items](../project/open-items.md#housing) for physical acceptance.
 
 ---
 

@@ -1,0 +1,509 @@
+{
+  "source_id": "S59",
+  "date": "2026-11-14",
+  "scope": "Native Fusion geometry and export checks; no physical acceptance",
+  "live_checks": {
+    "recompute": true,
+    "preserved_body_count": 476,
+    "changed_baseline_bodies": [
+      "Base tray:1/Base tray"
+    ],
+    "routes": [
+      {
+        "name": "Input B - spatial route only",
+        "od_mm": 1.5,
+        "centreline_mm": 95.94,
+        "volume_length_error_mm": -0.0,
+        "smallest_arc_radius_mm": 1.4
+      },
+      {
+        "name": "Input A - spatial route only",
+        "od_mm": 1.5,
+        "centreline_mm": 103.13,
+        "volume_length_error_mm": 0.0,
+        "smallest_arc_radius_mm": 1.0
+      },
+      {
+        "name": "UBEC output A to ferrite approach - polarity unassigned",
+        "od_mm": 1.5,
+        "centreline_mm": 5.4,
+        "volume_length_error_mm": 1e-05,
+        "smallest_arc_radius_mm": null
+      },
+      {
+        "name": "UBEC output B to ferrite approach - polarity unassigned",
+        "od_mm": 1.5,
+        "centreline_mm": 7.79,
+        "volume_length_error_mm": 5e-05,
+        "smallest_arc_radius_mm": null
+      },
+      {
+        "name": "ESP32 J3-1 GND to MAX490 GND",
+        "od_mm": 1.5,
+        "centreline_mm": 29.25,
+        "volume_length_error_mm": 0.0,
+        "smallest_arc_radius_mm": 0.85
+      },
+      {
+        "name": "Ferrite departure to ESP32 J2-19 5V",
+        "od_mm": 1.5,
+        "centreline_mm": 109.66,
+        "volume_length_error_mm": -0.0,
+        "smallest_arc_radius_mm": 0.8
+      },
+      {
+        "name": "Ferrite departure to ESP32 J2-14 GND",
+        "od_mm": 1.5,
+        "centreline_mm": 89.86,
+        "volume_length_error_mm": 0.0,
+        "smallest_arc_radius_mm": 0.89
+      },
+      {
+        "name": "ESP32 J2-19 5V to MAX490 VCC",
+        "od_mm": 1.5,
+        "centreline_mm": 116.62,
+        "volume_length_error_mm": 0.0,
+        "smallest_arc_radius_mm": 1.22
+      },
+      {
+        "name": "R-B1 to J3-12 GPIO16",
+        "od_mm": 1.0,
+        "centreline_mm": 5.32,
+        "volume_length_error_mm": -3e-05,
+        "smallest_arc_radius_mm": null
+      },
+      {
+        "name": "R-B2 to J3-12 GPIO16",
+        "od_mm": 1.0,
+        "centreline_mm": 7.42,
+        "volume_length_error_mm": -0.0,
+        "smallest_arc_radius_mm": null
+      },
+      {
+        "name": "R-B2 to J3-7 GND",
+        "od_mm": 1.0,
+        "centreline_mm": 4.93,
+        "volume_length_error_mm": -0.0,
+        "smallest_arc_radius_mm": null
+      },
+      {
+        "name": "R-D to J3-11 GPIO17",
+        "od_mm": 1.0,
+        "centreline_mm": 4.46,
+        "volume_length_error_mm": -1e-05,
+        "smallest_arc_radius_mm": null
+      },
+      {
+        "name": "R-Z to R1 inferred pad",
+        "od_mm": 1.0,
+        "centreline_mm": 2.18,
+        "volume_length_error_mm": -0.0,
+        "smallest_arc_radius_mm": null
+      },
+      {
+        "name": "R-Z to R3 inferred pad",
+        "od_mm": 1.0,
+        "centreline_mm": 2.18,
+        "volume_length_error_mm": -0.0,
+        "smallest_arc_radius_mm": null
+      },
+      {
+        "name": "R-F to R1 inferred pad",
+        "od_mm": 1.0,
+        "centreline_mm": 2.18,
+        "volume_length_error_mm": -0.0,
+        "smallest_arc_radius_mm": null
+      },
+      {
+        "name": "R-F to R3 inferred pad",
+        "od_mm": 1.0,
+        "centreline_mm": 2.18,
+        "volume_length_error_mm": -0.0,
+        "smallest_arc_radius_mm": null
+      },
+      {
+        "name": "RO pending identification to R-B1",
+        "od_mm": 1.0,
+        "centreline_mm": 42.97,
+        "volume_length_error_mm": 0.0,
+        "smallest_arc_radius_mm": 1.05
+      },
+      {
+        "name": "R-D to J2-1 3V3",
+        "od_mm": 1.0,
+        "centreline_mm": 42.41,
+        "volume_length_error_mm": -0.0,
+        "smallest_arc_radius_mm": 0.83
+      },
+      {
+        "name": "J3-11 GPIO17 to DI pending identification",
+        "od_mm": 1.0,
+        "centreline_mm": 45.15,
+        "volume_length_error_mm": 0.0,
+        "smallest_arc_radius_mm": 0.68
+      }
+    ],
+    "contacts": [
+      {
+        "item": "Input B - spatial route only",
+        "obstacle": "Connector side:1+XT30 male (reference):1+XT30_Stecker:1/Body1",
+        "mm3": 0.692326
+      },
+      {
+        "item": "Input B - spatial route only",
+        "obstacle": "ubec-measured:1+ubec (1):1+id5 (1):1/Body1",
+        "mm3": 0.276805
+      },
+      {
+        "item": "Input A - spatial route only",
+        "obstacle": "Connector side:1+XT30 male (reference):1+XT30_Stecker:1/Body1",
+        "mm3": 0.526389
+      },
+      {
+        "item": "Input A - spatial route only",
+        "obstacle": "ubec-measured:1+ubec (1):1+id8 (1):1/Body1",
+        "mm3": 0.276805
+      },
+      {
+        "item": "UBEC output A to ferrite approach - polarity unassigned",
+        "obstacle": "ubec-measured:1+ubec (1):1+id23 (1):1/Body1",
+        "mm3": 0.069854
+      },
+      {
+        "item": "UBEC output B to ferrite approach - polarity unassigned",
+        "obstacle": "ubec-measured:1+ubec (1):1+id20 (1):1/Body1",
+        "mm3": 0.158333
+      },
+      {
+        "item": "ESP32 J3-1 GND to MAX490 GND",
+        "obstacle": "MAX490 board - CHATGPT:1/TTL pins TXD RXD GND VCC 01",
+        "mm3": 0.140368
+      },
+      {
+        "item": "ESP32 J3-1 GND to MAX490 GND",
+        "obstacle": "ESP32 holder with RS-232 clamp:1+ESP32 board (reference):1+ESP-WROOM-32D-Assembly:1+zl201-19_p2-54_l48-3_w2-54_h8-9:2/Body1",
+        "mm3": 0.131008
+      },
+      {
+        "item": "Ferrite departure to ESP32 J2-19 5V",
+        "obstacle": "ESP32 holder with RS-232 clamp:1+ESP32 board (reference):1+ESP-WROOM-32D-Assembly:1+zl201-19_p2-54_l48-3_w2-54_h8-9:1/Body1",
+        "mm3": 0.131008
+      },
+      {
+        "item": "Ferrite departure to ESP32 J2-14 GND",
+        "obstacle": "ESP32 holder with RS-232 clamp:1+ESP32 board (reference):1+ESP-WROOM-32D-Assembly:1+zl201-19_p2-54_l48-3_w2-54_h8-9:1/Body7",
+        "mm3": 0.131008
+      },
+      {
+        "item": "ESP32 J2-19 5V to MAX490 VCC",
+        "obstacle": "MAX490 board - CHATGPT:1/TTL pins TXD RXD GND VCC 04",
+        "mm3": 0.148803
+      },
+      {
+        "item": "ESP32 J2-19 5V to MAX490 VCC",
+        "obstacle": "ESP32 holder with RS-232 clamp:1+ESP32 board (reference):1+ESP-WROOM-32D-Assembly:1+zl201-19_p2-54_l48-3_w2-54_h8-9:1/Body1",
+        "mm3": 0.019738
+      },
+      {
+        "item": "R-B1 to J3-12 GPIO16",
+        "obstacle": "ESP32 holder with RS-232 clamp:1+ESP32 board (reference):1+ESP-WROOM-32D-Assembly:1+zl201-19_p2-54_l48-3_w2-54_h8-9:2/Body13",
+        "mm3": 0.033942
+      },
+      {
+        "item": "R-B2 to J3-12 GPIO16",
+        "obstacle": "ESP32 holder with RS-232 clamp:1+ESP32 board (reference):1+ESP-WROOM-32D-Assembly:1+zl201-19_p2-54_l48-3_w2-54_h8-9:2/Body13",
+        "mm3": 0.010639
+      },
+      {
+        "item": "R-B2 to J3-7 GND",
+        "obstacle": "ESP32 holder with RS-232 clamp:1+ESP32 board (reference):1+ESP-WROOM-32D-Assembly:1+zl201-19_p2-54_l48-3_w2-54_h8-9:2/Body8",
+        "mm3": 0.007898
+      },
+      {
+        "item": "R-D to J3-11 GPIO17",
+        "obstacle": "ESP32 holder with RS-232 clamp:1+ESP32 board (reference):1+ESP-WROOM-32D-Assembly:1+zl201-19_p2-54_l48-3_w2-54_h8-9:2/Body12",
+        "mm3": 0.028284
+      },
+      {
+        "item": "R-Z to R1 inferred pad",
+        "obstacle": "ESP32 holder with RS-232 clamp:1+RS-232 board 1 (reference):1+RS232_TTL:1/Body2",
+        "mm3": 0.003706
+      },
+      {
+        "item": "R-Z to R1 inferred pad",
+        "obstacle": "ESP32 holder with RS-232 clamp:1+RS-232 board 1 (reference):1+RS232_TTL:1/Body20",
+        "mm3": 0.014153
+      },
+      {
+        "item": "R-Z to R3 inferred pad",
+        "obstacle": "ESP32 holder with RS-232 clamp:1+RS-232 board 1 (reference):1+RS232_TTL:1/Body2",
+        "mm3": 0.003842
+      },
+      {
+        "item": "R-Z to R3 inferred pad",
+        "obstacle": "ESP32 holder with RS-232 clamp:1+RS-232 board 1 (reference):1+RS232_TTL:1/Body22",
+        "mm3": 0.014104
+      },
+      {
+        "item": "R-F to R1 inferred pad",
+        "obstacle": "ESP32 holder with RS-232 clamp:1+RS-232 board 2 (reference):1+RS232_TTL (1):1/Body2",
+        "mm3": 0.003706
+      },
+      {
+        "item": "R-F to R1 inferred pad",
+        "obstacle": "ESP32 holder with RS-232 clamp:1+RS-232 board 2 (reference):1+RS232_TTL (1):1/Body20",
+        "mm3": 0.014153
+      },
+      {
+        "item": "R-F to R3 inferred pad",
+        "obstacle": "ESP32 holder with RS-232 clamp:1+RS-232 board 2 (reference):1+RS232_TTL (1):1/Body2",
+        "mm3": 0.003842
+      },
+      {
+        "item": "R-F to R3 inferred pad",
+        "obstacle": "ESP32 holder with RS-232 clamp:1+RS-232 board 2 (reference):1+RS232_TTL (1):1/Body22",
+        "mm3": 0.014104
+      },
+      {
+        "item": "R-D to J2-1 3V3",
+        "obstacle": "ESP32 holder with RS-232 clamp:1+ESP32 board (reference):1+ESP-WROOM-32D-Assembly:1+zl201-19_p2-54_l48-3_w2-54_h8-9:1/Body20",
+        "mm3": 0.050087
+      },
+      {
+        "item": "J3-11 GPIO17 to DI pending identification",
+        "obstacle": "ESP32 holder with RS-232 clamp:1+ESP32 board (reference):1+ESP-WROOM-32D-Assembly:1+zl201-19_p2-54_l48-3_w2-54_h8-9:2/Body12",
+        "mm3": 0.075304
+      },
+      {
+        "item": "XT30 cup A allowance diameter 3",
+        "obstacle": "Connector side:1+XT30 male (reference):1+XT30_Stecker:1/Body1",
+        "mm3": 0.894944
+      },
+      {
+        "item": "XT30 cup B allowance diameter 3",
+        "obstacle": "Connector side:1+XT30 male (reference):1+XT30_Stecker:1/Body1",
+        "mm3": 0.983202
+      },
+      {
+        "item": "J2-19 shared 5V joint allowance diameter 3",
+        "obstacle": "ESP32 holder with RS-232 clamp:1+ESP32 board (reference):1+ESP-WROOM-32D-Assembly:1+zl201-19_p2-54_l48-3_w2-54_h8-9:1/Body1",
+        "mm3": 0.57908
+      },
+      {
+        "item": "J2-14 shared GND joint allowance diameter 3",
+        "obstacle": "ESP32 holder with RS-232 clamp:1+ESP32 board (reference):1+ESP-WROOM-32D-Assembly:1+zl201-19_p2-54_l48-3_w2-54_h8-9:1/Body7",
+        "mm3": 0.57908
+      },
+      {
+        "item": "J3-12 divider joint allowance diameter 2.4",
+        "obstacle": "ESP32 holder with RS-232 clamp:1+ESP32 board (reference):1+ESP-WROOM-32D-Assembly:1+zl201-19_p2-54_l48-3_w2-54_h8-9:2/Body13",
+        "mm3": 0.449741
+      },
+      {
+        "item": "J3-11 DI pull-up joint allowance diameter 2.4",
+        "obstacle": "ESP32 holder with RS-232 clamp:1+ESP32 board (reference):1+ESP-WROOM-32D-Assembly:1+zl201-19_p2-54_l48-3_w2-54_h8-9:2/Body12",
+        "mm3": 0.449741
+      }
+    ],
+    "wire_contacts": [
+      {
+        "a": "Ferrite departure to ESP32 J2-19 5V",
+        "b": "ESP32 J2-19 5V to MAX490 VCC",
+        "mm3": 1.40384
+      },
+      {
+        "a": "R-B1 to J3-12 GPIO16",
+        "b": "R-B2 to J3-12 GPIO16",
+        "mm3": 0.230376
+      },
+      {
+        "a": "R-B1 to J3-12 GPIO16",
+        "b": "R-B1 2k2 body 3.6 x 1.6 mm placeholder",
+        "mm3": 0.010056
+      },
+      {
+        "a": "R-B2 to J3-12 GPIO16",
+        "b": "R-B2 3k3 body 3.6 x 1.6 mm placeholder",
+        "mm3": 0.030689
+      },
+      {
+        "a": "R-B2 to J3-7 GND",
+        "b": "R-B2 3k3 body 3.6 x 1.6 mm placeholder",
+        "mm3": 0.012003
+      },
+      {
+        "a": "R-D to J3-11 GPIO17",
+        "b": "R-D 10k body 3.6 x 1.6 mm placeholder",
+        "mm3": 0.033713
+      },
+      {
+        "a": "R-D to J3-11 GPIO17",
+        "b": "J3-11 GPIO17 to DI pending identification",
+        "mm3": 0.064299
+      },
+      {
+        "a": "R-Z to R1 inferred pad",
+        "b": "R-Z 10k body 3.6 x 1.6 mm placeholder",
+        "mm3": 0.067558
+      },
+      {
+        "a": "R-Z to R3 inferred pad",
+        "b": "R-Z 10k body 3.6 x 1.6 mm placeholder",
+        "mm3": 0.067738
+      },
+      {
+        "a": "R-F to R1 inferred pad",
+        "b": "R-F 10k body 3.6 x 1.6 mm placeholder",
+        "mm3": 0.067558
+      },
+      {
+        "a": "R-F to R3 inferred pad",
+        "b": "R-F 10k body 3.6 x 1.6 mm placeholder",
+        "mm3": 0.067738
+      },
+      {
+        "a": "R-B1 2k2 body 3.6 x 1.6 mm placeholder",
+        "b": "RO pending identification to R-B1",
+        "mm3": 0.297867
+      },
+      {
+        "a": "R-D 10k body 3.6 x 1.6 mm placeholder",
+        "b": "R-D to J2-1 3V3",
+        "mm3": 0.036765
+      }
+    ],
+    "carrier_driver_collisions": [],
+    "minimum_hood_clearance": {
+      "name": "Input B - spatial route only",
+      "mm": 0.25
+    },
+    "referenced_components": [],
+    "timeline_messages": [
+      {
+        "name": "Position19",
+        "message": "Capture Position has no positions for current Components and JointsCompute FailedPosition19"
+      },
+      {
+        "name": "Position20",
+        "message": "Capture Position has no positions for current Components and JointsCompute FailedPosition20"
+      }
+    ]
+  },
+  "saddle_boolean_comparison": {
+    "removed_mm3": 0.0,
+    "added_mm3": 174.90469072255226,
+    "base_mm3": 29571.17791005205,
+    "target": "Base tray",
+    "tool_count": 2
+  },
+  "final_joint_allowances": {
+    "adjacent_joint_diameter_mm": 2.4,
+    "adjacent_joint_nominal_gap_mm": 0.14,
+    "allowance_intersections": [],
+    "change": "Two spherical joint allowances reduced concentrically from 3.0 to 2.4 mm; no larger occupied envelope."
+  },
+  "assembly_and_step_reopen": {
+    "assembly_recompute": true,
+    "matching_body_records": 512,
+    "occurrences": 73,
+    "timeline": 374,
+    "housing-base.step": {
+      "solid_count": 1,
+      "volume_mm3": 29571.158507939814,
+      "difference_from_fusion_mm3": -0.019402112237003166
+    },
+    "ubec-carrier.step": {
+      "solid_count": 1,
+      "volume_mm3": 1370.0191351279473,
+      "difference_from_fusion_mm3": 0.0005521279472304741
+    },
+    "5V_branch_to_J3_7_GND_clearance_mm": 0.1871
+  },
+  "base_archive_reopen": {
+    "recompute": true,
+    "bodies": 1,
+    "volume_mm3": 29571.17791005205,
+    "timeline_count": 92,
+    "messages": [],
+    "saved": true
+  },
+  "base_root_export": {
+    "saved": true,
+    "modified": false,
+    "complete": true,
+    "root_export": true
+  },
+  "carrier_archive_reopen": {
+    "bodies": 1,
+    "volume_mm3": 1370.018582921629,
+    "recompute": true
+  },
+  "meshes": [
+    {
+      "file": "housing-base.3mf",
+      "vertices": 27829,
+      "triangles": 55702,
+      "closed": true,
+      "consistent_orientation": true,
+      "degenerate_triangles": 0,
+      "bounds_mm": [
+        [
+          0.0,
+          92.0
+        ],
+        [
+          -41.5,
+          33.5
+        ],
+        [
+          0.0,
+          22.5
+        ]
+      ],
+      "volume_mm3": 29567.685
+    },
+    {
+      "file": "ubec-carrier.3mf",
+      "vertices": 20668,
+      "triangles": 41364,
+      "closed": true,
+      "consistent_orientation": true,
+      "degenerate_triangles": 0,
+      "bounds_mm": [
+        [
+          27.3,
+          68.1
+        ],
+        [
+          7.8,
+          35.2
+        ],
+        [
+          0.0,
+          4.6
+        ]
+      ],
+      "volume_mm3": 1370.225
+    }
+  ],
+  "contact_interpretation": "Listed intersections are intended terminal/pad, shared electrical node, own-resistor or own-allowance contacts. No unintended wire/obstacle or separate-net intersections found.",
+  "joint_check_order": "Full final geometry check includes the final diameter 2.4 mm GPIO16/17 joint allowances. The separate allowance-pair check found no intersections.",
+  "limitations": [
+    "Wire diameters and circular bends are provisional",
+    "Minimum hood gap 0.25 mm requires review",
+    "No actual ferrite winding or turn count",
+    "Unassigned terminal polarity and RO/DI endpoints",
+    "No service slack or termination-length allowance",
+    "No slicing, printing, physical wiring, maintenance, vibration or thermal acceptance",
+    "Nominal 0.1871 mm floor-branch to J3-7 pin clearance requires physical review"
+  ],
+  "documentation": {
+    "checked_local_links": 193,
+    "errors": []
+  },
+  "final_save": {
+    "saved": true,
+    "modified": false,
+    "complete": true
+  }
+}

@@ -27,7 +27,7 @@ Checks on the delivered parts before the bridge is connected to any device. Step
 | 2 | GPIO16 input | High and low level at GPIO16 behind the divider, also at power-up and power-down | Bench measurement |
 | 3 | RS-232 modules | Continuity of both modules against the inferred pad map; IC marking | Bench check |
 | 4 | ESP32 board | Module marking and header positions match the DevKitC V4 reference | Visual check |
-| 5 | UBEC | 5 V output with and without load; fit in the enclosure | Bench measurement |
+| 5 | UBEC | 5 V output with and without load; match the physical input/output polarity and XT30 cups to the labelled routing endpoints; fit in the enclosure | Bench measurement |
 | 6 | Current and fuse | Running current and switch-on inrush at 12 V; select fuse rating and speed using these measurements and the wire protection requirements | Bench measurement and owner selection |
 | 8 | Device connectors | Photos of the installed connectors and exact device models (from Tom) | Confirms the pin views in the wiring tables |
 | 9 | Becker J1 | Installed J1 revision, moulded pin numbers and which pins are already used | Confirms the J1 pins and the J1-21 ground |
@@ -67,7 +67,8 @@ Inputs still needed before the housing can be modelled. Selected rules: [housing
 | :-: | --- | --- | --- |
 | 4 | Holders | Slice, print and fit the [UBEC carrier](../hardware/housing.md#ubec-carrier): check support-free legs, end solder clearance, 19 mm support, tie threading and actual tie-head size, hood clearance, M2.5 × 12 head/driver access, the offset shafts through the PCB holes and thread holding; check the base's R1 post roots and 0.4 mm pilot-hole floors. Choose a glue that holds on PETG (ESP32 holder, XT30) | Owner / fit test; remaining selections separately |
 | 15 | Ferrite cradle | Slice and fit-print the [cradle](../hardware/housing.md#ferrite-cradle). Check the exposed core sector seats without trapping wire turns; confirm lead exits, hood and rear-strap clearance, actual tie thickness/head size, threading through the printed tunnels and tool access. Check retention with the hood removed, under vibration and at the expected loaded temperature | Owner / physical fit test |
-| 14 | Internal wiring details | Internal wire type and gauge; tie-down points (including for R-B1 and R-D) and service loops | Owner selection |
+| 14 | Internal wiring details | Select actual wire type/gauge and allowable bends; review the [routing study](../hardware/housing.md#internal-routing), especially the 0.25 mm hood gap, 0.19 mm pin clearance and tight terminal bends. Establish termination allowance, service slack and ferrite winding length; complete restraint beside R-B1/R-D and the remaining harness routes | Owner selection and physical routing/maintenance check |
+| 16 | Internal cable saddles | Slice and fit-print the two open 12 V saddles; thread the actual ties through the 3.2 × 1.6 mm passages, check tie-head placement, insulation clearance and access with the hood off | Owner / fit test |
 
 ### 2.4 Measurements
 
