@@ -56,7 +56,7 @@ Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md)
 | Attachment | Four slotted ears at the base corners, outside the hood footprint, for 4.8 mm cable ties; the hood comes off while the base stays tied in. The ears stick out lengthwise from both short ends at floor level, flush with the floor underside and the side faces (6 mm out, 10 mm wide, 2.5 mm thick, rounded), each with a vertical slot about 5.4 × 1.9 mm (tie width and thickness + 0.6 mm) running parallel to the end wall, 2 mm of material around it. The front pair sits under the outer edges of the mated plugs |
 | Ventilation | Two rows of horizontal slots in both hood side walls, none on top: low just above the seam lip, high just under the top-edge rounding. Slots 1.5 mm high, about 10 mm long (bridge limit), 2 mm ribs, clear of the corner posts; five slots per row, about 300 mm² open area in total |
 | Status light | No window in the hood; the ESP32 power LED shows through the vent slots |
-| Markings | Raised 0.6 mm on the connector wall's outer face: "12V" in 5 mm characters below the XT30, "INSTR" in 4 mm characters in the strip below the DE-9 flange (4 mm not fit-tested yet); owner adds a multicolour logo on the hood later |
+| Markings | Raised 0.6 mm on the connector wall's outer face: "12V" in 5 mm characters below the XT30, "INSTR" in 4 mm characters in the strip below the DE-9 flange (4 mm not fit-tested yet); MomoRC logo (Ø56 mm) debossed 0.6 mm into the hood top, features at least 0.8 mm |
 | Shape | Preferred direction, not a fixed rule: narrow and long rather than square or wide, but not too narrow; a better layout may differ. Height set once the layout is modelled |
 | Size | Space the modules for soldering-iron access and tidy wiring first; review the size once modelled |
 | CAD | Modelled in Fusion, millimetres. Each model's folder in `cad/housing/` holds the editable Fusion archive (`.f3d`, full timeline), a STEP and a print-ready 3MF; the owner's Fusion project keeps the same documents. After a change, export all three again and commit them together |
@@ -128,7 +128,7 @@ Current models in `cad/housing/` (files: [CAD rule](#rules)):
 | [Housing body v1](../../cad/housing/housing-body-v1/README.md): base tray and hood on layout v4 | Prototype, not printed; inside height and part positions are placeholders until the UBEC, MAX490 and ring are measured |
 
 - [ ] **Connector panel:** XT30 front first from the back until the markings stop it, DE-9 from the front into the flush recess, nuts in the pockets; mate both plugs and check backshell and tool clearance.
-- [ ] **Housing body v1:** print base and hood; check the hood over the seam lip (0.2 gap), the four inserts and flush countersunk screws, the DE-9 and XT30 openings printed standing (19.9 and 10.55 mm bridges), the hanging post over the DE-9 nut, the 4 mm "INSTR" label and the fit of the holders and boards.
+- [ ] **Housing body v1:** print base and hood; check the hood over the seam lip (0.2 gap), the four inserts and flush countersunk screws, the DE-9 and XT30 openings printed standing (19.9 and 10.55 mm bridges), the hanging post over the DE-9 nut, the 4 mm "INSTR" label, the debossed logo on the bed face and the fit of the holders and boards.
 
 ### 2.4 Later optimizations
 

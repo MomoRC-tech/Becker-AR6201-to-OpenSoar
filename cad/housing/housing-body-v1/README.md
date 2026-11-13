@@ -1,11 +1,13 @@
 # Housing body v1 (prototype)
 
-First housing prototype on [layout v4](../layout-v4/README.md): base tray with connector wall and corner posts, and the hood. Rules: [housing § 2](../../../docs/hardware/housing.md#rules). Built in Autodesk Fusion through MCP, 2026-11-13, in the document `Housing body - prototype v1` (a copy of `Housing layout - compact v4` with the XT30 moved 3.2 mm inward and the ferrite-ring placeholder 2 mm inward). Not printed yet.
+First housing prototype on [layout v4](../layout-v4/README.md): base tray with connector wall and corner posts, and the hood. Rules: [housing § 2](../../../docs/hardware/housing.md#rules). Built in Autodesk Fusion through MCP, 2026-11-13, in the document `Housing body - prototype v1` (a copy of `Housing layout - compact v4` with the XT30 moved 3.2 mm inward and the ferrite-ring placeholder 2 mm inward; the holder v3 pieces are local copies of its version 7, link broken). Not printed yet.
 
 ![Closed housing: hood with countersunk screws and side vents, connector wall with XT30 and DE-9, cable-tie ears](preview-closed.png)
 
 <details>
 <summary><b>🖼️ Show the base with the hood off</b> (click to expand)</summary>
+
+![Hood top with the debossed MomoRC logo](preview-top.png)
 
 ![Base tray with the ESP32 holder, RS-232 clamp, MAX490, UBEC, ferrite ring placeholder and the four corner posts](preview-open.png)
 
@@ -25,6 +27,7 @@ First housing prototype on [layout v4](../layout-v4/README.md): base tray with c
 | Cover screws | ISO 10642 M3 × 8 countersunk, 90° countersink about Ø7.0 in the hood top, Ø3.4 clearance |
 | Connector wall | XT30 pocket 10.55 × 5.25 through wall and collar (centre Z −16.3, Y 14.5), collar 5 mm deep with R2 edges; DE-9 recess 31.6 × 13.2 × 1.0, cutout 19.9 × 11.5, holes Ø3.4 at 25.0, nut pockets 5.6 across flats × 1.0 deep from the inner face |
 | Labels | Raised 0.6: "12V" (5 mm) below the XT30, "INSTR" (4 mm) below the DE-9 |
+| Logo | MomoRC logo Ø56 debossed 0.6 into the hood top, centred, upright seen from the connector end; traced from the owner's bitmap with white lines widened and black slivers removed so every feature is at least 0.8 wide |
 | Vents | 2 rows × 5 slots per long side, 10 × 1.5, 2 mm ribs, 12.5 and 16.5 above the floor top |
 | Ears | 4 × (6 out × 10 wide × 2.5, flush with the floor underside and the side faces) off both short ends, slots 5.4 × 1.9 for 4.8 mm ties, 2 mm from the wall face |
 
