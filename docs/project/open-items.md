@@ -67,7 +67,6 @@ Inputs still needed before the housing can be modelled. Selected rules: [housing
 | :-: | --- | --- | --- |
 | 4 | Holders | Layout selected ([housing](../hardware/housing.md#layout)); how the MAX490 board (mounting holes), the UBEC bridge and the ferrite ring are held; a glue that holds on PETG (ESP32 holder, XT30) | Owner selection, fit test |
 | 14 | Internal wiring details | Internal wire type and gauge; tie-down points (including for R-B1 and R-D) and service loops | Owner selection |
-| 15 | Ventilation slot size | Slot width and total area in the hood sides | Design proposal, owner review |
 
 ### 2.4 Measurements
 

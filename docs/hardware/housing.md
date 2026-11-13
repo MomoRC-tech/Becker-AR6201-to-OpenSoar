@@ -54,7 +54,7 @@ Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md)
 | Edges | Rounded outside edges and corners, no sharp corners |
 | Location | Shaded spot in the cockpit, out of direct sun through the canopy |
 | Attachment | Four slotted ears at the base corners, outside the hood footprint, for 4.8 mm cable ties; the hood comes off while the base stays tied in. The ears stick out lengthwise from both short ends at floor level (about 10 mm out, 14 mm wide, 3 mm thick, rounded), each with a vertical slot about 5.4 × 1.9 mm (tie width and thickness + 0.6 mm) running parallel to the end wall, at least 2 mm of material around it. The front pair sits under the outer edges of the mated plugs |
-| Ventilation | Narrow slots low and high in the hood side walls; no openings on top |
+| Ventilation | Two rows of horizontal slots in both hood side walls, none on top: low just above the seam lip, high just under the top-edge rounding. Slots 1.5 mm high, about 10 mm long (bridge limit), 2 mm ribs, clear of the corner posts; about 360 mm² open area in total (estimate) |
 | Status light | No window in the hood; the ESP32 power LED shows through the vent slots |
 | Markings | Raised 0.6 mm on the connector wall's outer face: "12V" in 5 mm characters below the XT30, "INSTR" in 4 mm characters in the strip below the DE-9 flange (4 mm not fit-tested yet); owner adds a multicolour logo on the hood later |
 | Shape | Preferred direction, not a fixed rule: narrow and long rather than square or wide, but not too narrow; a better layout may differ. Height set once the layout is modelled |
