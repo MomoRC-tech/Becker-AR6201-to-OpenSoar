@@ -10,11 +10,11 @@
     "Ferrite winding length"
   ],
   "endpoint_limits": [
-    "XT30 and UBEC A/B are spatial labels without verified polarity",
+    "Physical UBEC/XT30 polarity and cup matching pending; colors follow the UBEC CAD reference",
     "MAX490 RO/DI pin assignment pending",
     "RS-232 pad mapping inferred",
     "No ferrite winding count modelled",
-    "DE-9 fan-out not modelled"
+    "DE-9 pin assignments and ground fan-out not modelled; three instrument branches reserved at GND-J"
   ],
   "routes": [
     {
@@ -64,207 +64,6 @@
       "od_mm": 1.5,
       "centreline_mm": 7.79,
       "smallest_arc_radius_mm": null
-    },
-    {
-      "name": "Ferrite departure to ESP32 J2-19 5V",
-      "points_mm": [
-        [
-          78,
-          15.5,
-          9
-        ],
-        [
-          76,
-          15.5,
-          9
-        ],
-        [
-          76,
-          1.5,
-          9
-        ],
-        [
-          76,
-          1.5,
-          6.4
-        ],
-        [
-          32,
-          1.5,
-          6.4
-        ],
-        [
-          32,
-          1.5,
-          -25.5
-        ],
-        [
-          28.27,
-          1.5,
-          -25.5
-        ],
-        [
-          28.27,
-          14.9,
-          -25.5
-        ],
-        [
-          28.27,
-          14.9,
-          -23.28
-        ]
-      ],
-      "group": "5 V power",
-      "od_mm": 1.5,
-      "centreline_mm": 109.66,
-      "smallest_arc_radius_mm": 0.8
-    },
-    {
-      "name": "Ferrite departure to ESP32 J2-14 GND",
-      "points_mm": [
-        [
-          78,
-          13,
-          7.5
-        ],
-        [
-          76.5,
-          13,
-          5
-        ],
-        [
-          68,
-          13,
-          4.5
-        ],
-        [
-          68,
-          1.5,
-          4.5
-        ],
-        [
-          40.97,
-          1.5,
-          4.5
-        ],
-        [
-          40.97,
-          1.5,
-          -25.5
-        ],
-        [
-          40.97,
-          14.9,
-          -25.5
-        ],
-        [
-          40.97,
-          14.9,
-          -23.28
-        ]
-      ],
-      "group": "5 V power",
-      "od_mm": 1.5,
-      "centreline_mm": 89.86,
-      "smallest_arc_radius_mm": 0.89
-    },
-    {
-      "name": "ESP32 J2-19 5V to MAX490 VCC",
-      "points_mm": [
-        [
-          28.27,
-          14.9,
-          -23.28
-        ],
-        [
-          28.27,
-          17,
-          -25.5
-        ],
-        [
-          35.89,
-          17,
-          -25.5
-        ],
-        [
-          35.89,
-          1.5,
-          -25.5
-        ],
-        [
-          35.89,
-          1.5,
-          -21
-        ],
-        [
-          39,
-          3.3,
-          -21
-        ],
-        [
-          60.0,
-          3.3,
-          -21
-        ],
-        [
-          60.0,
-          3.3,
-          25.31
-        ],
-        [
-          63,
-          1.1,
-          25.31
-        ],
-        [
-          73.9,
-          1.1,
-          25.31
-        ],
-        [
-          73.9,
-          7.92,
-          25.31
-        ]
-      ],
-      "group": "5 V power",
-      "od_mm": 1.5,
-      "centreline_mm": 116.62,
-      "smallest_arc_radius_mm": 1.22
-    },
-    {
-      "name": "ESP32 J3-1 GND to MAX490 GND",
-      "points_mm": [
-        [
-          73.99,
-          14.9,
-          2.28
-        ],
-        [
-          73.99,
-          14.9,
-          7
-        ],
-        [
-          73.99,
-          5.8,
-          7
-        ],
-        [
-          73.99,
-          5.8,
-          22.77
-        ],
-        [
-          73.9,
-          7.92,
-          22.77
-        ]
-      ],
-      "group": "5 V power",
-      "od_mm": 1.5,
-      "centreline_mm": 29.25,
-      "smallest_arc_radius_mm": 0.85
     },
     {
       "name": "R-B1 to J3-12 GPIO16",
@@ -322,7 +121,7 @@
       "group": "Resistors",
       "od_mm": 1.0,
       "centreline_mm": 42.97,
-      "smallest_arc_radius_mm": 1.05
+      "smallest_arc_radius_mm": 1.047
     },
     {
       "name": "R-B2 to J3-12 GPIO16",
@@ -428,7 +227,7 @@
       "group": "Resistors",
       "od_mm": 1.0,
       "centreline_mm": 42.41,
-      "smallest_arc_radius_mm": 0.83
+      "smallest_arc_radius_mm": 0.831
     },
     {
       "name": "R-Z to R1 inferred pad",
@@ -692,6 +491,386 @@
       "od_mm": 1.5,
       "centreline_mm": 95.94,
       "smallest_arc_radius_mm": 1.4
+    },
+    {
+      "name": "Ferrite departure to central 5V",
+      "points_mm": [
+        [
+          78,
+          15.5,
+          9
+        ],
+        [
+          76,
+          15.5,
+          9
+        ],
+        [
+          76,
+          4.3,
+          9
+        ],
+        [
+          76,
+          4.3,
+          6.4
+        ],
+        [
+          40,
+          4.3,
+          6.4
+        ],
+        [
+          40,
+          2,
+          5.5
+        ]
+      ],
+      "group": "5 V power",
+      "od_mm": 1.5,
+      "net": "5V",
+      "centreline_mm": 52.61,
+      "smallest_arc_radius_mm": 0.8
+    },
+    {
+      "name": "Ferrite departure to central GND",
+      "points_mm": [
+        [
+          78,
+          13,
+          7.5
+        ],
+        [
+          76.5,
+          13,
+          5
+        ],
+        [
+          68,
+          13,
+          4.5
+        ],
+        [
+          68,
+          2,
+          4.5
+        ],
+        [
+          65,
+          2,
+          4.5
+        ],
+        [
+          64,
+          2,
+          5.5
+        ]
+      ],
+      "group": "5 V power",
+      "od_mm": 1.5,
+      "net": "GND",
+      "centreline_mm": 24.8,
+      "smallest_arc_radius_mm": 1.2
+    },
+    {
+      "name": "Central 5V to ESP32 J2-19",
+      "points_mm": [
+        [
+          34,
+          2,
+          5.5
+        ],
+        [
+          32,
+          2,
+          5.5
+        ],
+        [
+          32,
+          1.5,
+          -25.5
+        ],
+        [
+          28.27,
+          1.5,
+          -25.5
+        ],
+        [
+          28.27,
+          14.9,
+          -25.5
+        ],
+        [
+          28.27,
+          14.9,
+          -23.28
+        ]
+      ],
+      "group": "5 V power",
+      "od_mm": 1.5,
+      "net": "5V",
+      "centreline_mm": 50.35,
+      "smallest_arc_radius_mm": 0.8
+    },
+    {
+      "name": "Central GND to ESP32 J2-14",
+      "points_mm": [
+        [
+          47,
+          2,
+          5.5
+        ],
+        [
+          43,
+          2,
+          5.5
+        ],
+        [
+          43,
+          1.5,
+          -25.5
+        ],
+        [
+          40.97,
+          1.5,
+          -25.5
+        ],
+        [
+          40.97,
+          14.9,
+          -25.5
+        ],
+        [
+          40.97,
+          14.9,
+          -23.28
+        ]
+      ],
+      "group": "5 V power",
+      "od_mm": 1.5,
+      "net": "GND",
+      "centreline_mm": 50.89,
+      "smallest_arc_radius_mm": 0.812
+    },
+    {
+      "name": "Central 5V to MAX490 VCC",
+      "points_mm": [
+        [
+          39,
+          2,
+          5.5
+        ],
+        [
+          39,
+          1.1,
+          25.31
+        ],
+        [
+          73.9,
+          1.1,
+          25.31
+        ],
+        [
+          73.9,
+          7.92,
+          25.31
+        ]
+      ],
+      "group": "5 V power",
+      "od_mm": 1.5,
+      "net": "5V",
+      "centreline_mm": 59.09,
+      "smallest_arc_radius_mm": 2.728
+    },
+    {
+      "name": "Central GND to MAX490 GND",
+      "points_mm": [
+        [
+          59.5,
+          2,
+          5.5
+        ],
+        [
+          59.5,
+          1.1,
+          22.77
+        ],
+        [
+          73.9,
+          1.1,
+          22.77
+        ],
+        [
+          73.9,
+          7.92,
+          22.77
+        ]
+      ],
+      "group": "5 V power",
+      "od_mm": 1.5,
+      "net": "GND",
+      "centreline_mm": 36.05,
+      "smallest_arc_radius_mm": 2.728
+    },
+    {
+      "name": "ESP32 J2-1 3V3 to RS232-mod2 R3",
+      "points_mm": [
+        [
+          73.99,
+          14.9,
+          -23.28
+        ],
+        [
+          71,
+          17.3,
+          -23.28
+        ],
+        [
+          71,
+          17.3,
+          -13
+        ],
+        [
+          45.312,
+          17.3,
+          -13
+        ],
+        [
+          45.312,
+          17.3,
+          -3.557
+        ],
+        [
+          45.312,
+          15.05,
+          -3.557
+        ]
+      ],
+      "group": "3.3 V and RS232 ground",
+      "od_mm": 1.0,
+      "net": "3V3",
+      "centreline_mm": 47.88,
+      "smallest_arc_radius_mm": 0.9
+    },
+    {
+      "name": "RS232-mod2 R3 to mod1 R3 - 3V3 chain",
+      "points_mm": [
+        [
+          45.312,
+          15.05,
+          -3.557
+        ],
+        [
+          45.312,
+          17.3,
+          -3.557
+        ],
+        [
+          45.312,
+          17.3,
+          -6
+        ],
+        [
+          32.837,
+          17.3,
+          -6
+        ],
+        [
+          32.837,
+          17.3,
+          -3.557
+        ],
+        [
+          32.837,
+          15.05,
+          -3.557
+        ]
+      ],
+      "group": "3.3 V and RS232 ground",
+      "od_mm": 1.0,
+      "net": "3V3",
+      "centreline_mm": 20.25,
+      "smallest_arc_radius_mm": 0.9
+    },
+    {
+      "name": "ESP32 J3-7 GND to RS232-mod2 R4",
+      "points_mm": [
+        [
+          58.75,
+          14.9,
+          2.28
+        ],
+        [
+          61,
+          16.8,
+          2.28
+        ],
+        [
+          61,
+          17.3,
+          -11
+        ],
+        [
+          47.981,
+          17.3,
+          -11
+        ],
+        [
+          47.981,
+          17.3,
+          -3.557
+        ],
+        [
+          47.981,
+          15.05,
+          -3.557
+        ]
+      ],
+      "group": "3.3 V and RS232 ground",
+      "od_mm": 1.0,
+      "net": "GND",
+      "centreline_mm": 35.51,
+      "smallest_arc_radius_mm": 0.9
+    },
+    {
+      "name": "RS232-mod2 R4 to mod1 R4 - GND chain",
+      "points_mm": [
+        [
+          47.981,
+          15.05,
+          -3.557
+        ],
+        [
+          47.981,
+          19,
+          -3.557
+        ],
+        [
+          47.981,
+          19,
+          -8.5
+        ],
+        [
+          35.506,
+          19,
+          -8.5
+        ],
+        [
+          35.506,
+          19,
+          -3.557
+        ],
+        [
+          35.506,
+          15.05,
+          -3.557
+        ]
+      ],
+      "group": "3.3 V and RS232 ground",
+      "od_mm": 1.0,
+      "net": "GND",
+      "centreline_mm": 27.21,
+      "smallest_arc_radius_mm": 1.58
     }
   ],
   "resistors": [
@@ -777,5 +956,70 @@
     }
   ],
   "power_od_mm": 1.5,
-  "signal_od_mm": 1.0
+  "signal_od_mm": 1.0,
+  "junctions": [
+    {
+      "name": "Central 5V junction - space envelope only",
+      "net": "5V",
+      "centre_mm": [
+        37,
+        2,
+        5.5
+      ],
+      "size_xyz_mm": [
+        9,
+        2.4,
+        2.6
+      ]
+    },
+    {
+      "name": "Central GND junction - space envelope only",
+      "net": "GND",
+      "centre_mm": [
+        55,
+        2,
+        5.5
+      ],
+      "size_xyz_mm": [
+        20,
+        2.4,
+        2.6
+      ]
+    }
+  ],
+  "ground_tree": {
+    "source": "UBEC output through ferrite",
+    "branches": {
+      "central GND": [
+        "ESP32 J2-14",
+        "MAX490 GND",
+        "Becker signal GND via unassigned DE9 contact",
+        "Zander signal GND via unassigned DE9 contact",
+        "FLARM signal GND via unassigned DE9 contact"
+      ],
+      "ESP32 J3-7": [
+        "RS232-mod2 R4"
+      ],
+      "RS232-mod2 R4": [
+        "RS232-mod1 R4"
+      ]
+    },
+    "local_return": "R-B2 stays at ESP32 J3-7",
+    "excluded_connections": [
+      "No direct RS232 ground to central junction",
+      "No MAX490 to ESP32 ground link",
+      "No extra UBEC input-to-output ground bypass",
+      "No separate instrument-ground connection to RS232 L1"
+    ]
+  },
+  "wire_colors": {
+    "GND": "black",
+    "12V": "red",
+    "5V": "orange",
+    "3V3": "violet",
+    "logic": "blue"
+  },
+  "color_basis": "UBEC reference face colors: input A black, B red; output A red (displayed orange for 5V), B black. This is CAD evidence only; physical polarity and XT30 terminal matching are not confirmed.",
+  "diameter_note": "Main 12V/5V supplies and returns: provisional 1.5 mm insulated OD. Local RS232 3V3/GND chain and logic/resistor connections: provisional 1.0 mm. Not selected conductor gauges.",
+  "junction_hardware": "Insulated space envelopes only. Actual junction, mounting and strain relief not selected."
 }

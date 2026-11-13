@@ -57,14 +57,15 @@ UART0 is also the USB serial port. The firmware remaps its receive input to GPIO
 
 ## 2. 📈 Zander ZS1
 
-![Zander TX to RS-232-mod1 pad L3, R2 to GPIO32; signal ground to L1, R4 to ESP32 GND; receive only](../images/wiring-zander.svg)
+![Zander TX to mod1 L3 and R2 to GPIO32; instrument ground goes to GND-J; mod1 supply and ground arrive through mod2](../images/wiring-zander.svg)
 
 Start with the loose ends of the existing Zander harness ([installed wiring](../project/existing-installation.md#equipment)). The table identifies the required RS-232 signals, not a connector at the bridge. Match each loose conductor to its signal before connecting it; see [open items](../project/open-items.md#bench-hardware). Signal functions follow the ZS1 handbook (S22).
 
 | Zander harness signal | → / ← | RS-232 pads | TTL pads | → / ← | ESP32 |
 | --- | :-: | --- | --- | :-: | --- |
 | TX from Zander | → | **L3** RS-232 input | **R2** TTL output | → | GPIO32 (<img src="../images/pins/rx.svg" alt="RX" width="20" height="14">) |
-| Signal GND | — | L1 GND | R4 GND | — | GND |
+
+Connect the Zander signal-ground conductor to GND-J. The module receives 3.3 V and ground through mod2; see the [supply chain](power.md#supply). Leave L1 without an extra ground wire.
 
 Leave L4 and GPIO33 unconnected. Solder the 10 kΩ pull-up R-Z directly on the module, from pad R1 to pad R3 (the module's 3.3 V supply). It holds the unused converter driver input at a defined level.
 
@@ -74,14 +75,15 @@ Leave L4 and GPIO33 unconnected. Solder the 10 kΩ pull-up R-Z directly on the m
 
 ## 3. 📡 FLARM
 
-![FLARM pin 5 TX to RS-232-mod2 pad L3, R2 to GPIO26; pins 7/8 ground to L1, R4 to ESP32 GND; receive only](../images/wiring-flarm.svg)
+![FLARM TX to mod2 L3 and R2 to GPIO26; instrument ground goes to GND-J; mod2 supply and ground arrive from ESP32 and continue to mod1](../images/wiring-flarm.svg)
 
 Use a free data port on the Classic FLARM ([installation manual v221 pp.6/7](https://www.flarm.com/wp-content/uploads/2024/04/FLARM_InstallationManual_D.pdf#page=6), S23).
 
 | FLARM Power/Data | → / ← | RS-232 pads | TTL pads | → / ← | ESP32 |
 | --- | :-: | --- | --- | :-: | --- |
 | 5 (<img src="../images/pins/tx.svg" alt="TX" width="20" height="14">) | → | **L3** RS-232 input | **R2** TTL output | → | GPIO26 (<img src="../images/pins/rx.svg" alt="RX" width="20" height="14">) |
-| 7/8 (<img src="../images/pins/gnd.svg" alt="GND" width="23" height="14">) | — | L1 GND | R4 GND | — | GND |
+
+Connect the FLARM signal-ground conductor (pins 7/8) to GND-J. Mod2 receives 3.3 V and ground from the ESP32 and passes both on to mod1; see the [supply chain](power.md#supply). Leave L1 without an extra ground wire.
 
 Leave L4, GPIO27 and the FLARM RX conductor unconnected. Solder the 10 kΩ pull-up R-F from pad R1 to pad R3 on the module, as for the Zander.
 
@@ -96,7 +98,7 @@ Leave L4, GPIO27 and the FLARM RX conductor unconnected. Solder the 10 kΩ pull-
 
 ## 4. 📻 Becker radio
 
-![Becker J1 TX2 pair to MAX490 A/B, RX2 pair from Y/Z, D_GND to GND, shield at radio end only; RO through the divider to GPIO16, GPIO17 to DI](../images/wiring-becker.svg)
+![Becker TX2 and RX2 pairs to MAX490; D_GND goes directly to GND-J; MAX490 has its own central supply and return branches](../images/wiring-becker.svg)
 
 The radio's serial interface 2 on connector J1 ([Becker DV14307.03 Issue 06, p.59](https://www.becker-avionics.com/wp-content/uploads/00_Literature/6200_Series_IO_en.pdf#page=59), S10).
 
@@ -104,25 +106,25 @@ Start at the loose ends of the existing Becker harness ([installed wiring](../pr
 
 ### 4.1 Radio side — board screw terminals
 
-| J1 pin | Radio signal | MAX490 terminal | Meaning |
+| J1 pin | Radio signal | Bridge connection | Meaning |
 | --- | --- | --- | --- |
 | 2 | TX2+ | A | Receiver input + |
 | 9 | TX2− | B | Receiver input − |
 | 3 | RX2+ | Y | Driver output + |
 | 10 | RX2− | Z | Driver output − |
 | 11 | SHIELD_2 | — (cable shield) | Shield of the auxiliary control interface |
-| 21 | D_GND | GND | Signal reference |
+| 21 | D_GND | Central GND-J | Signal reference |
 
-Run TX2± and RX2± as two separate twisted pairs in a shielded cable, as Becker requires for the interface lines (S10). Connect the shield to J1-11 at the radio end only and leave it unconnected at the bridge end, so it carries no ground current. Connect J1-21 to the board GND with a separate wire in the same cable, not the shield or drain wire. J1-21 also closes ground loop B; see [grounding and loops](power.md#ground).
+Run TX2± and RX2± as two separate twisted pairs in a shielded cable, as Becker requires for the interface lines (S10). Connect the shield to J1-11 at the radio end only and leave it unconnected at the bridge end, so it carries no ground current. Connect J1-21 to GND-J with a separate wire in the same cable, not the shield or drain wire. J1-21 also closes ground loop B; see [grounding and loops](power.md#ground).
 
-### 4.2 ESP32 side — board header
+### 4.2 TTL side — board header
 
-| Board signal | ESP32 |
+| Board signal | Bridge connection |
 | --- | --- |
 | Receiver output (RO) | 2.2 kΩ (R-B1) in the wire to GPIO16 (J3-12); 3.3 kΩ (R-B2) across the header pins J3-12 and J3-7 (GND) (<img src="../images/pins/rx.svg" alt="RX" width="20" height="14">) |
 | Driver input (DI) | GPIO17 (J3-11), plus a 10 kΩ pull-up (R-D) from J3-11 to 3V3 (J2-1) (<img src="../images/pins/tx.svg" alt="TX" width="20" height="14">) |
-| VCC | 5 V from the ESP32 5V pin (J2-19), which the UBEC feeds |
-| GND | ESP32 GND (J3-1) |
+| VCC | Own branch from central 5V-J |
+| GND | Own branch from central GND-J; no extra wire to ESP32 |
 
 R-B1 sits at the J3-12 end of the RO wire and R-D bridges J3-11 to J2-1 with an insulated lead. Cover each resistor and both its joints with heat-shrink and tie the wire down next to the ESP32, so vibration does not load the joints.
 

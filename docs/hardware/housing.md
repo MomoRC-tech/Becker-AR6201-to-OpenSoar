@@ -44,7 +44,7 @@ Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md)
 | PCB mounting | The ESP32 sits on an integral USB support and a separate antenna cap. The removable USB clamp carries the RS-232 boards. The MAX490 sits on posts built into the base floor. Each PCB sits with its underside at least 2 mm above its tallest underside part. The UBEC sits on a removable carrier sharing the MAX490's four mounting screws ([section 2.4](#ubec-carrier)); the carrier can be reprinted separately |
 | ESP32 | Component side up; its pre-soldered header pins point up, and wires are soldered directly to them from above (not replaceable). Lengthwise, antenna at the short end opposite the connectors. Held at its short ends by the glued antenna cap and the USB support printed into the base tray. The PCB underside sits 4.5 mm above the floor to clear the header solder tails. Use the printed gluing jig to locate the antenna cap against the integral USB support while the glue cures. Antenna cap: one piece, printed standing on its antenna-facing side; side walls along both long edges, corner end walls, lips 1.7 mm thick over the bare edge between header strip and module (EN side 1.9 mm, BOOT side 1.5 mm wide), a chamfered ledge under the board, and a spring bridge whose pad reaches 2 mm onto the module shield with 0.3 mm pre-load; the antenna overhang passes through an open window, with the bridge about 3 mm above it. Above the header strips the bridge stays about 1.9 mm clear of the first header pins on each side (estimated from the CAD model), room for the soldered wires. USB end: an integral screw boss, a PCB ledge and two end stops rise from the floor on local supports. The boss is directly in front of the USB socket and has a Ø2.2 mm blind pilot; a USB cap covers the top and sides of the socket, presses 0.2 mm onto it and is held by one M2.5 metal screw cut straight into the boss (no insert); the USB socket is not usable with the cap fitted. Rounded outer edges. The board stays captured with the hood off; leave clearance above the header strips and wires |
 | RS-232 modules | Each slides flat into a slot of two grooved rails, held by friction on its long edges beside the chip feet; slot 1.25 mm for the 1.15 mm PCB, both pad rows free for soldering. Both slots are part of the ESP32 USB clamp ([layout](#layout)) |
-| Internal wiring | Wires are soldered directly to the module pads and ESP32 header pins (no plugs, nothing to shake loose); the resistors sit on those pads and pins ([signal wiring](wiring.md)), the ESP32 ground copper is the bridge ground ([supply path](power.md#supply)) |
+| Internal wiring | Wires are soldered directly to the module pads and ESP32 header pins (no plugs, nothing to shake loose); the resistors sit on those pads and pins ([signal wiring](wiring.md)), main supply and instrument returns meet at the central GND junction; the RS-232 supply/return chain comes from the ESP32 ([supply path](power.md#supply)) |
 | Access from outside | Connectors only. UBEC jumper and the ESP32 EN/BOOT buttons only with the hood off, Micro-USB only with the hood and the ESP32 USB cap off; no USB opening in the hood |
 | Soldering | Every solder joint reachable with all PCBs fitted and the cover off, except the MAX490 header joints under the UBEC bridge: reachable with the bridge lifted |
 | Connector wall | XT30 and DE-9 together on one short side. The wall ends at the inside top like the corner posts; the hood top runs over it to the outer face, and the step lip continues up the wall's two vertical end edges where the hood side walls meet it |
@@ -360,8 +360,8 @@ Components in the Fusion layout v4. The [housing prototype archive](../../cad/ho
 
 Constraints from the wiring:
 
-- **Short wires:** keep the MAX490 board close to the ESP32's J3 header (RO, DI and GND wires); leave a tie-down point next to the ESP32 for the heat-shrunk R-B1 and R-D.
-- **Grounds:** one bridge ground; route the device signal grounds from the DE-9 to the module grounds ([grounding and loops](power.md#ground)).
+- **Short wires:** keep the MAX490 board close to the ESP32's J3 header (RO and DI wires); leave a tie-down point next to the ESP32 for the heat-shrunk R-B1 and R-D.
+- **Grounds:** one bridge ground; route the device signal grounds from the DE-9 to GND-J ([grounding and loops](power.md#ground)).
 - **Power path:** F1 (harness) → XT30 → UBEC → ESP32 and MAX490 ([supply path](power.md#supply)).
 - **Ferrite ring:** keep its placeholder volume ([section 3](#contents)) at the UBEC's output end (opposite the jumper), on the 5 V lead towards the ESP32; the ring is not modelled in the UBEC CAD reference.
 - **ESP32:** lengthwise, antenna at the far short end; Micro-USB faces the connector end.
@@ -370,21 +370,24 @@ Constraints from the wiring:
 
 ### 5.1 Internal routing study
 
-Use the hideable **Cable harness - routing study** component in the [housing assembly](../../cad/housing/housing-body-v1/README.md). It contains separate 12 V, 5 V, resistor and insulation-allowance groups. Geometry checks: S59.
+Use the hideable **Cable harness - routing study** component in the [housing assembly](../../cad/housing/housing-body-v1/README.md). It contains separate 12 V, 5 V, local RS-232 supply/return, resistor, junction-envelope and insulation-allowance groups. Geometry checks: S61. Electrical connections: [power and grounding](power.md#supply).
 
 | Item | Modelled arrangement |
 | --- | --- |
 | Routing style | Straight runs with rounded corners; power uses the floor and central gap where possible, with rises at the terminals |
-| Power wires | Provisional Ø1.5 mm **including insulation**; this is not a copper cross-section or selected wire gauge |
-| Signal/resistor connections | Provisional Ø1.0 mm including insulation |
+| Main supply/return wires | Provisional Ø1.5 mm **including insulation** for 12 V and 5 V; this is not a copper cross-section or selected wire gauge |
+| Local RS-232 supply/return and signal/resistor connections | Provisional Ø1.0 mm including insulation; actual ground-wire sizing still follows the current/fault assessment |
+| Wire colors | GND black; +12 V red; +5 V orange; 3.3 V violet; logic blue |
 | 12 V pair | From the XT30 along the connector wall, through two open saddles, then around the terminal block to the UBEC input; the upper bends avoid the four carrier screw-driver paths |
-| 5 V pair | UBEC output approaches the ferrite; separate departure segments run along the central gap, then below the ESP32 to its supply/ground pins. The MAX490 branch returns below the boards |
-| Endpoint labels | Input/output A and B are spatial labels, without assigned UBEC/XT30 polarity. RO and DI leads stop short of an assigned MAX490 signal pin. RS-232 resistor pad positions follow the inferred reference map |
+| 5 V distribution | Ferrite departure segments feed separate 5V-J and GND-J envelopes in the central channel. Each junction has its own branches to ESP32 and MAX490; floor runs pass below the boards |
+| RS-232 supply chain | ESP32 feeds mod2, then short links join mod2 R3/R4 to mod1 R3/R4. The local 3.3 V and ground feeds share a short parallel corridor above the boards; pad approaches stay clear of the clamp |
+| Junction space | 5V-J: 9 × 2.4 × 2.6 mm (X/Y/Z), centre (37, 2, 5.5). GND-J: 20 × 2.4 × 2.6 mm, centre (55, 2, 5.5). These are insulated-space placeholders, not selected connectors or mounting designs |
+| Endpoint labels | Input/output A and B remain spatial labels. Colors follow the UBEC reference leads; physical UBEC/XT30 polarity and cup matching need the bench check. RO and DI leads stop short of an assigned MAX490 signal pin. RS-232 resistor pad positions follow the inferred reference map |
 | Resistors | Five Ø1.6 × 3.6 mm DIN0204-size placeholders: R-Z/R-F at the RS-232 pads; R-B1/R-B2 and R-D beside the ESP32 header |
 | Insulation/joints | Separate hideable Ø2.4 × 5.2 mm resistor heat-shrink allowances; Ø3 mm supply-joint allowances and Ø2.4 mm allowances at the adjacent GPIO16/17 joints. These are space estimates, not selected parts |
-| Tight geometry | Minimum nominal hood clearance 0.25 mm at the upper 12 V bend; the floor 5 V branch clears the nearby J3-7 ground pin by 0.19 mm. Smallest circular centreline bends: 0.80 mm for power, 0.68 mm for signal. These describe the model, not permissible wire bend radii |
+| Tight geometry | Minimum nominal hood clearance remains 0.25 mm at the upper 12 V bend; the new RS-232 ground link has 0.50 mm. The former long ESP32-to-MAX490 5 V branch is removed. Smallest circular centreline bends: 0.80 mm for power, 0.68 mm for signal. These describe the model, not permissible wire bend radii |
 
-The DE-9 signal fan-out is outside this first routing increment; its contact assignments remain with the [connector work](../project/open-items.md#bench-hardware).
+GND-J reserves the three instrument-ground branches. Their DE-9 fan-out remains outside this routing increment until the [connector assignments](../project/open-items.md#bench-hardware) are selected. Junction hardware and attachment are tracked in the [housing open items](../project/open-items.md#housing).
 
 **Two integral open saddles for the 12 V pair:**
 
@@ -400,8 +403,11 @@ The DE-9 signal fan-out is outside this first routing increment; its contact ass
 | --- | ---: |
 | XT30 → UBEC input A / B | 103 / 96 mm |
 | UBEC output approaches to ferrite boundary A / B | 5 / 8 mm |
-| Ferrite boundary → ESP32 5V / GND | 110 / 90 mm |
-| ESP32 → MAX490 VCC / GND | 117 / 29 mm |
+| Ferrite boundary → 5V-J / GND-J | 53 / 25 mm |
+| Junctions → ESP32 5V / GND | 50 / 51 mm |
+| Junctions → MAX490 VCC / GND | 59 / 36 mm |
+| ESP32 → RS-232-mod2 3V3 / GND | 48 / 36 mm |
+| RS-232-mod2 → mod1 3V3 / GND | 20 / 27 mm |
 
 These are routing lengths, **not cutting lengths**. Account separately for termination/stripping allowance, service slack and the actual ferrite winding length. The [route data](../../cad/housing/housing-body-v1/routing-study.json) contains the individual wire-section measurements and provisional endpoints; use [open items](../project/open-items.md#housing) for physical acceptance.
 

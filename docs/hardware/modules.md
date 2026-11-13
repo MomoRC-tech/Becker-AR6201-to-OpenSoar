@@ -36,25 +36,25 @@ The AZ-Delivery board follows Espressif's DevKitC V4 layout (S32). View from the
 
 | Position | J2 label | J2 bridge use | J3 label | J3 bridge use |
 | ---: | --- | --- | --- | --- |
-| 1 | `3V3` | **3.3 V to both RS-232 modules (R3) and R-D** | `GND` | **Ground: MAX490 board** |
+| 1 | `3V3` | **3.3 V to RS-232-mod2 R3, then mod1; R-D** | `GND` | — |
 | 2 | `EN` | — | `IO23` | — |
 | 3 | `VP` | — | `IO22` | — |
 | 4 | `VN` | — | `TX` | USB serial (boot only) |
 | 5 | `IO34` | — | `RX` | USB serial (boot only) |
 | 6 | `IO35` | — | `IO21` | — |
-| 7 | `IO32` | **Zander RX** (UART0) | `GND` | **Ground: RS-232-mod1, R-B2** |
+| 7 | `IO32` | **Zander RX** (UART0) | `GND` | **Ground: RS-232-mod2 R4, then mod1; R-B2** |
 | 8 | `IO33` | Not connected | `IO19` | — |
 | 9 | `IO25` | — | `IO18` | — |
 | 10 | `IO26` | **FLARM RX** (UART1) | `IO5` | — |
 | 11 | `IO27` | Not connected | `IO17` | **Becker TX** (UART2), R-D to J2-1 |
 | 12 | `IO14` | — | `IO16` | **Becker RX** via R-B1 (UART2), R-B2 to J3-7 |
 | 13 | `IO12` | — | `IO4` | — |
-| 14 | `GND` | **Ground: UBEC, RS-232-mod2** | `IO0` | — |
+| 14 | `GND` | **Ground: central GND-J** | `IO0` | — |
 | 15 | `IO13` | — | `IO2` | — |
 | 16 | `D2` | — | `IO15` | — |
 | 17 | `D3` | — | `D1` | — |
 | 18 | `CMD` | — | `D0` | — |
-| 19 | `5V` | **5 V from UBEC; on to MAX490 VCC** | `CLK` | — |
+| 19 | `5V` | **5 V from central 5V-J** | `CLK` | — |
 
 GPIO16/17 are free only on WROOM boards (WROVER boards use them for PSRAM). D0–D3, CMD and CLK belong to the flash; leave them free. The pin plan avoids the boot strapping pins (GPIO0, 2, 5, 12, 15). [Espressif header tables](https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32/esp32-devkitc/user_guide.html#header-block)
 
@@ -80,7 +80,7 @@ Hailege H-1-0290: a MAX3232 RS-232 ↔ 3.3 V converter with edge pads. The pad m
 | <img src="../images/hailege-h-1-0290-board.svg" width="240" alt="Hailege H-1-0290 board, chip side"> | <img src="../images/pinout-hailege.svg" width="420" alt="Hailege chip-side pad map. L1 ground, L2 supply, L3 RS-232 input, L4 RS-232 output. R1 TTL input, R2 TTL output, R3 supply, R4 ground."> |
 
 > [!IMPORTANT]
-> Both sides share one supply: connect 3.3 V and GND on the TTL side (R3/R4) only.
+> Both sides share one supply: connect 3.3 V and GND on the TTL side (R3/R4) only. Follow the [ESP32-fed daisy chain](power.md#supply); leave L1 without an extra ground wire.
 
 ---
 

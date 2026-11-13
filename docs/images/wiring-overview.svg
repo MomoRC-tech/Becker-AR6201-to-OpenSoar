@@ -15,9 +15,9 @@
 <path d="M630 262 L630 222" stroke="#8e24aa" stroke-width="2.5" fill="none"/>
 <path d="M470 286 L660 286" stroke="#37474f" stroke-width="2.5" fill="none"/>
 <path d="M600 286 L600 326" stroke="#37474f" stroke-width="2.5" fill="none"/>
-<path d="M591 326 H609" stroke="#616161" stroke-width="2"/>
-<path d="M594 330 H606" stroke="#616161" stroke-width="2"/>
-<path d="M597 334 H603" stroke="#616161" stroke-width="2"/>
+<path d="M591 326 H609" stroke="#171717" stroke-width="2"/>
+<path d="M594 330 H606" stroke="#171717" stroke-width="2"/>
+<path d="M597 334 H603" stroke="#171717" stroke-width="2"/>
 <path d="M790 176 L870 176" stroke="#00897b" stroke-width="2.5" fill="none" stroke-dasharray="8 5"/>
 <path d="M30 345 H60" stroke="#37474f" stroke-width="2.5"/>
 <path d="M268 345 H298" stroke="#00897b" stroke-width="2.5" stroke-dasharray="8 5"/>

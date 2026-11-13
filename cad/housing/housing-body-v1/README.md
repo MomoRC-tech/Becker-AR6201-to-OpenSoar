@@ -30,7 +30,7 @@ First housing prototype on [layout v4](../layout-v4/README.md): base tray with c
 | `housing-logo-insert.f3d`, `housing-logo-insert.step` | Logo and "7-20V" insert as its own part |
 | `housing-base.step`, `housing-hood.step` | Solid models in the layout frame |
 | [routing-study.json](routing-study.json) | Provisional diameters, construction waypoints and measured centreline lengths; not cutting lengths |
-| [routing-verification.json](routing-verification.json) | Native geometry, preservation and export-check evidence for S59 |
+| [routing-verification.json](routing-verification.json) | Native geometry, preservation, topology and export-check evidence for S61 |
 
 | Part | Main dimensions (mm) |
 | --- | --- |
@@ -46,16 +46,18 @@ First housing prototype on [layout v4](../layout-v4/README.md): base tray with c
 
 - Colours in Fusion and STEP: base dark green, hood a lighter green. Logo insert dark grey.
 - Units: millimetres. Layout frame: X from the outer face of the connector wall, Y up from the floor top, Z across.
-- Fusion archive: 73 occurrences and 374 timeline items, including the hideable harness, all five resistors, the MAX490 board’s 150 bodies, UBEC carrier, upright ferrite and cable-tie fit envelopes. The four screw reference solids are omitted. Carrier/post verification: [carrier model notes](../ubec-carrier/README.md).
+- Fusion archive: 75 occurrences and 389 timeline items, including the hideable harness, separate 5V-J/GND-J space envelopes, all five resistors, the MAX490 board’s 150 bodies, UBEC carrier, upright ferrite and cable-tie fit envelopes. The four screw reference solids are omitted. Carrier/post verification: [carrier model notes](../ubec-carrier/README.md).
 - Mating plug: the [XT30PB-F](../../reference/amass-xt30-family/README.md) STEP model sits plugged onto the XT30 on the outside of the connector wall (reference component `XT30 female (reference)` in the Connector side group): mating face against the male front face (0.5 mm outside the wall), centred on the pocket, turned 180° about the plug axis from the first placement so the polarity matches the male, solder tails pointing away from the box; no intersection with the base, hood, connector plate, DE-9 or XT30 male (Fusion check). Included in the full Fusion assembly.
 - Layout: inside height 20 mm. The UBEC sits on the [four-screw carrier](../ubec-carrier/README.md); the ferrite sits upright in the [integral cradle](../../../docs/hardware/housing.md#ferrite-cradle), with two ties through its centre. The ring model is the bare core; the winding envelope was checked separately. Lead approaches and departures are modelled; actual ferrite turns are not. The hood is flat.
 - Print checks: printed floor down, the DE-9 cutout top is a 19.9 mm bridge and the XT30 pocket top a 10.55 mm bridge (both were fit-tested printed flat, and the rule limit is 10 mm). The connector face has 2.7 mm of wall between the XT30 pocket and the DE-9 recess; the XT30 collar stays 0.8 mm clear of the nearer DE-9 nut pocket.
 
-- **Routing package verification, 2026-11-14:** Fusion recompute, intended-contact review and reopened assembly/part checks passed. The 476 pre-existing bodies outside the base retain their volumes and bounds; only the two saddles add base material. STEP reimports and closed, bed-oriented meshes passed the recorded checks. The two inherited assembly position warnings remain. Evidence: S59 in the [source register](../../../docs/research/sources.md#source-register). This is a routing study, not physical acceptance; see the [routing dimensions and limitations](../../../docs/hardware/housing.md#internal-routing) and [fit checks](../../../docs/project/open-items.md#housing).
+- **Central distribution verification, 2026-11-14:** the reopened assembly recomputes and matches all 520 live body records. All 477 bodies outside the harness and 31 retained harness bodies keep their geometry; four old power sections were replaced. New routes clear unrelated bodies and the four carrier driver paths. The planned internal ground network forms a tree; external ground loops remain. Evidence: S61 in the [source register](../../../docs/research/sources.md#source-register). The two inherited position warnings remain. Junction hardware, wire sizes, bends and physical access need the [fit checks](../../../docs/project/open-items.md#housing); [routing dimensions and lengths](../../../docs/hardware/housing.md#internal-routing).
+
+- Harness colors: **GND black, +12 V red, +5 V orange**, 3.3 V violet, logic blue. Input/output A/B colors follow the UBEC CAD reference; they do not confirm physical terminal polarity. The junction bodies reserve space only; the base and its print exports are unchanged in this increment.
 
 <details>
 <summary><b>🖼️ Show the floor routing and cable saddles</b> (click to expand)</summary>
 
-![Power routes with selected boards and the resistor group hidden to expose the floor runs and two connector-side saddles](preview-routing.png)
+![Power routes and central junction envelopes with boards and local RS-232 wiring hidden to expose the floor runs](preview-routing.png)
 
 </details>

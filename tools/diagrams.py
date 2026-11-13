@@ -4,7 +4,7 @@ Usage (from the repository root):  python tools/diagrams.py
 Writes the SVGs into docs/images. Edit the diagram sections below, run the
 script, and check the result in a browser before committing.
 
-Output: overview.svg (README), power-supply.svg, ground-loops.svg, wiring-overview.svg,
+Output: overview.svg (README), power-supply.svg, ground-loops.svg, ground-distribution.svg, wiring-overview.svg,
 wiring-zander.svg, wiring-flarm.svg, wiring-becker.svg, pinout-rs422-to-ttl.svg, rs422-to-ttl-board.svg.
 """
 import base64
@@ -20,8 +20,8 @@ STYLE = {
     "v5":     dict(color="#ef6c00", dash=None, width=2.5, label="5 V"),
     "v33":    dict(color="#8e24aa", dash=None, width=2.5, label="3.3 V"),
     "data":   dict(color="#37474f", dash=None, width=2.5, label="Data (arrow = direction)"),
-    "gnd":    dict(color="#616161", dash=None, width=2.5, label="Bridge ground"),
-    "sgnd":   dict(color="#1e88e5", dash="7 5", width=2.5, label="Signal ground"),
+    "gnd":    dict(color="#171717", dash=None, width=2.5, label="Bridge ground"),
+    "sgnd":   dict(color="#171717", dash="7 5", width=2.5, label="Signal ground"),
     "shield": dict(color="#9e9e9e", dash="2 4", width=2.5, label="Cable shield"),
     "wifi":   dict(color="#00897b", dash="8 5", width=2.5, label="Wi-Fi"),
 }
@@ -103,38 +103,52 @@ class Svg:
 
 
 # ---------------------------------------------------------------- supply path
-s = Svg(1120, 320, "Bridge supply path",
-        "12 V through fuse F1 at the supply end of the harness, then the harness and the XT30 connector to the UBEC. The UBEC's 5 V feeds the ESP32 board's 5V pin; a second wire from that pin feeds the MAX490 board. "
-        "The ESP32 board's 3.3 V regulator feeds pad R3 of both RS-232 modules; R-Z and R-F (10 kΩ, on the modules) run from R3 to pad R1, and R-D (10 kΩ) from 3V3 to the MAX490 driver input DI (GPIO17). Arrows show current direction.")
-s.box(20, 45, 120, 56, "F1 fuse", ["harness, supply end"])
-s.box(175, 45, 125, 56, "12 V harness", ["about 22 AWG"])
-s.box(335, 45, 80, 56, "XT30")
-s.box(450, 45, 110, 56, "UBEC", ["5 V, 3 A"])
-for x1, x2 in ((140, 175), (300, 335), (415, 450)):
-    s.line([(x1, 73), (x2, 73)], "v12"); s.arrow((x1 + x2) / 2, 73, "right", "v12")
-s.tag(160, 64, "+12 V", "v12")
-s.box(640, 35, 170, 90, "ESP32 board", ["5V pin (J2-19)", "3.3 V regulator → 3V3"])
-s.box(640, 185, 170, 56, "MAX490 board", ["VCC"])
-s.line([(560, 73), (640, 73)], "v5"); s.arrow(600, 73, "right", "v5"); s.tag(600, 64, "5 V", "v5")
-s.line([(700, 125), (700, 185)], "v5"); s.arrow(700, 155, "down", "v5"); s.tag(708, 159, "5 V from J2-19", "v5", anchor="start", bold=False, size=11)
-s.line([(810, 80), (845, 80)], "v33")
-s.line([(845, 35), (845, 190)], "v33")
-s.dot(845, 80, "v33"); s.tag(828, 72, "3.3 V", "v33")
-# RS-232 modules: 3V3 to pad R3, pull-up R-Z / R-F from R3 to pad R1 (soldered on the module)
-for name, rname, top in (("RS-232-mod1", "R-Z", 20), ("RS-232-mod2", "R-F", 95)):
-    r3, r1 = top + 15, top + 45
-    s.box(960, top, 140, 60, name)
-    s.text(966, r3 + 4, "R3", color=SUB, size=11, anchor="start"); s.text(966, r1 + 4, "R1", color=SUB, size=11, anchor="start")
-    s.line([(845, r3), (960, r3)], "v33"); s.arrow(930, r3, "right", "v33")
-    s.dot(885, r3, "v33")
-    s.line([(885, r3), (885, r1), (960, r1)], "v33"); s.resistor(885, (r3 + r1) / 2, "v33", vertical=True)
-    s.tag(893, (r3 + r1) / 2 + 4, f"{rname} 10 kΩ", "v33", anchor="start", bold=False, size=11)
-# R-D: pull-up from 3V3 to the MAX490 driver input DI (GPIO17)
-s.line([(845, 190), (960, 190)], "v33"); s.arrow(860, 190, "right", "v33")
-s.resistor(905, 190, "v33"); s.tag(905, 179, "R-D 10 kΩ", "v33")
-s.dot(960, 190, "v33"); s.tag(960, 209, "DI · GPIO17", "v33", bold=False, size=11)
-s.legend(285, ["v12", "v5", "v33"], "Arrows show current direction. Grounds and loops: see the ground diagram.")
+s = Svg(1120, 390, "Bridge supply distribution",
+        "UBEC output through the existing ferrite to 5V-J, with separate branches to ESP32 and MAX490. ESP32 3.3 V feeds RS-232-mod2 then mod1, electrically in parallel, and R-D. Grounds are shown separately.")
+for x,w,title,subs in [(20,120,"F1 fuse",["harness, supply end"]),(175,125,"12 V harness",["about 22 AWG"]),(335,80,"XT30",[]),(450,110,"UBEC",["5 V, 3 A"])]:
+    s.box(x,45,w,56,title,subs)
+for x1,x2 in [(140,175),(300,335),(415,450)]:
+    s.line([(x1,73),(x2,73)],"v12");s.arrow((x1+x2)/2,73,"right","v12")
+s.box(660,35,170,90,"ESP32",["5V input J2-19","3V3 output J2-1"])
+s.box(660,195,170,56,"MAX490",["VCC"])
+s.line([(560,73),(660,73)],"v5");s.dot(610,73,"v5")
+s.line([(610,73),(610,223),(660,223)],"v5")
+s.tag(605,145,"5V-J","v5",anchor="end");s.tag(605,162,"separate branches","v5",anchor="end",bold=False,size=11)
+s.text(500,120,"Output leads through ferrite",size=11,color=SUB)
+s.line([(830,80),(850,80),(850,35),(960,35)],"v33")
+s.line([(850,80),(850,280),(960,280)],"v33");s.dot(850,80,"v33")
+# The physical chain terminates at mod2 R3, then continues to mod1 R3.
+s.line([(960,35),(935,35),(935,165),(960,165)],"v33");s.dot(935,35,"v33")
+s.tag(943,116,"R3 chain","v33",anchor="start",size=11)
+for name,rname,top in [("RS-232-mod2","R-F",20),("RS-232-mod1","R-Z",150)]:
+    r3,r1=top+15,top+45
+    s.box(960,top,140,60,name)
+    s.text(966,r3+4,"R3",size=11,color=SUB,anchor="start");s.text(966,r1+4,"R1",size=11,color=SUB,anchor="start")
+    s.line([(935,r3),(905,r3),(905,r1),(960,r1)],"v33")
+    s.resistor(905,(r3+r1)/2,"v33",vertical=True);s.tag(1030,r1+25,f"{rname} 10 kΩ","v33",bold=False,size=11)
+s.resistor(905,280,"v33");s.tag(905,269,"R-D 10 kΩ","v33")
+s.dot(960,280,"v33");s.tag(970,284,"DI / GPIO17","v33",anchor="start",size=11)
+s.legend(340,["v12","v5","v33"],"RS-232 boards: 3.3 V, electrically parallel. GND-J is separate from 5V-J; see the ground tree.")
 s.save("power-supply.svg")
+
+# ------------------------------------------------------ internal ground tree
+s = Svg(1120,490,"Internal ground tree",
+        "UBEC output ground through the ferrite to GND-J. Separate branches to ESP32, MAX490 and each instrument signal ground. ESP32 J3-7 feeds RS-232-mod2 R4 then mod1 R4. R-B2 remains local. No additional module-to-junction or MAX490-to-ESP32 ground links.")
+s.box(20,185,170,75,"UBEC output GND",["through existing ferrite"])
+s.box(245,185,150,75,"GND-J",["insulated junction"])
+s.line([(190,222),(245,222)],"gnd")
+s.line([(395,222),(450,222)],"gnd");s.line([(450,65),(450,385)],"gnd",width=4);s.dot(450,222,"gnd")
+branches=[(65,"ESP32",["J2-14 main return"]),(145,"MAX490",["own GND branch"]),(225,"Becker signal GND",["via DE-9; J1-21"]),(305,"Zander signal GND",["via DE-9"]),(385,"FLARM signal GND",["via DE-9"])]
+for y,title,subs in branches:
+    s.line([(450,y),(510,y)],"gnd");s.dot(450,y,"gnd");s.box(510,y-27,190,54,title,subs)
+s.box(760,38,150,54,"RS-232-mod2",["R4"]);s.box(950,38,150,54,"RS-232-mod1",["R4"])
+s.line([(700,65),(760,65)],"gnd");s.tag(730,30,"J3-7","gnd",size=11)
+s.line([(910,65),(950,65)],"gnd");s.tag(930,30,"R4 link","gnd",size=11)
+s.text(790,120,"R-B2 stays on ESP32 J3-7.",anchor="start",size=12)
+s.text(790,145,"No extra RS-232 L1 ground wires.",anchor="start",size=12)
+s.text(790,170,"5V-J is a separate electrical node.",anchor="start",size=12)
+s.legend(450,["gnd"],"Internal wiring tree only. Instrument supply grounds still create external return paths; see ground-loops.svg.")
+s.save("ground-distribution.svg")
 
 # ------------------------------------------------------------- signal overview
 s = Svg(1020, 380, "Bridge signal overview",
@@ -176,38 +190,31 @@ s.tag(830, 166, "one TCP path", "wifi", bold=False); s.tag(830, 196, "per device
 s.legend(345, ["data", "wifi", ("v33", "3.3 V")], "Zander and FLARM: receive only. Becker: both directions. Pins and resistor values: see each device section.")
 s.save("wiring-overview.svg")
 
-# --------------------------------------------------------------------- Zander
-def rs232_device(name, dev, tx_pin, gnd_pin, gpio, uart, pull, note, fname, desc):
-    s = Svg(930, 250, f"{dev} to RS-232 module to ESP32", desc)
-    s.box(20, 40, 170, 130, dev, ["existing harness, via DE-9"])
-    s.box(340, 40, 220, 130, name, ["RS-232 ↔ 3.3 V TTL", "pads R1–R4 at right"])
-    s.box(710, 40, 200, 130, "ESP32", [f"{gpio} · {uart} RX", "3V3 (J2-1)", "GND"])
-    s.line([(190, 70), (340, 70)], "data"); s.arrow(265, 70, "right", "data")
-    s.tag(265, 62, f"{tx_pin} → L3", "data")
-    s.line([(560, 70), (710, 70)], "data"); s.arrow(635, 70, "right", "data")
-    s.tag(635, 62, f"R2 → {gpio}", "data")
-    s.line([(190, 145), (340, 145)], "sgnd"); s.tag(265, 137, f"{gnd_pin} → L1", "sgnd")
-    # Pull-up from pad R1 to pad R3 (3.3 V supply of the module), soldered on the module
-    s.line([(560, 95), (640, 95), (640, 130)], "v33"); s.tag(566, 90, "R1", "v33", anchor="start", size=11)
-    s.resistor(640, 112, "v33", vertical=True); s.tag(630, 116, pull, "v33", anchor="end", bold=False, size=11)
-    s.line([(710, 130), (560, 130)], "v33"); s.arrow(690, 130, "left", "v33"); s.dot(640, 130, "v33")
-    s.tag(682, 123, "3V3 → R3", "v33", size=11)
-    s.line([(560, 160), (710, 160)], "gnd"); s.tag(600, 155, "R4 → GND", "gnd", size=11)
-    s.legend(215, ["data", "sgnd", "gnd", ("v33", "3.3 V")], note)
+# -------------------------------------------------------------- RS-232 links
+def rs232_device(name,dev,tx_pin,gpio,pull,source,fname):
+    s=Svg(930,365,f"{dev} through {name}",f"Instrument TX to L3, R2 to {gpio}; instrument ground directly to GND-J. Module R3/R4 supplied through {source}. L1 has no extra ground wire.")
+    s.box(20,40,170,130,dev,["existing harness / DE-9"])
+    s.box(330,40,240,130,name,["RS-232 / 3.3 V TTL"])
+    s.box(720,40,190,90,"ESP32",[gpio])
+    s.line([(190,65),(330,65)],"data");s.arrow(260,65,"right","data");s.tag(260,57,f"{tx_pin} → L3","data")
+    s.line([(570,65),(720,65)],"data");s.arrow(690,65,"right","data");s.tag(645,57,f"R2 → {gpio}","data")
+    s.box(330,210,240,65,"Central GND-J",["instrument ground branch"])
+    s.line([(190,140),(250,140),(250,242),(330,242)],"sgnd");s.tag(245,132,"signal GND","sgnd",anchor="end",size=11)
+    s.box(720,210,190,80,source,["3V3 / R3","GND / R4"])
+    s.line([(720,235),(675,235),(675,115),(570,115)],"v33");s.tag(580,108,"R3","v33",anchor="start",size=11)
+    s.line([(570,85),(625,85),(625,115)],"v33");s.resistor(625,100,"v33",vertical=True);s.dot(625,115,"v33")
+    s.tag(620,145,pull,"v33",size=11)
+    s.line([(720,270),(650,270),(650,160),(570,160)],"gnd");s.tag(580,155,"R4","gnd",anchor="start",size=11)
+    s.legend(320,["data","sgnd","gnd",("v33","3.3 V")],"Receive only. Supply/return chain: ESP32 → mod2 → mod1; boards remain electrically parallel.")
     s.save(fname)
-
-rs232_device("RS-232-mod1", "Zander ZS1", "TX", "Signal GND", "GPIO32", "UART0", "R-Z 10 kΩ",
-             "Receive only: L4 and GPIO33 stay unconnected. Supply via the 3.3 V rail (see power).", "wiring-zander.svg",
-             "Zander TX to pad L3, TTL output R2 to GPIO32 (UART0 receive). Signal ground to pads L1 and R4 and ESP32 GND. ESP32 3V3 to pad R3; R-Z (10 kΩ) on the module from pad R1 to pad R3. Receive only.")
-rs232_device("RS-232-mod2", "Classic FLARM", "pin 5 TX", "pins 7/8 GND", "GPIO26", "UART1", "R-F 10 kΩ",
-             "Receive only: L4, GPIO27 and FLARM RX stay unconnected. Never connect FLARM pins 1–3 (supply).", "wiring-flarm.svg",
-             "FLARM pin 5 TX to pad L3, TTL output R2 to GPIO26 (UART1 receive). FLARM pins 7/8 ground to pads L1 and R4 and ESP32 GND. ESP32 3V3 to pad R3; R-F (10 kΩ) on the module from pad R1 to pad R3. Receive only.")
+rs232_device("RS-232-mod1","Zander ZS1","TX","GPIO32","R-Z 10 kΩ","RS-232-mod2","wiring-zander.svg")
+rs232_device("RS-232-mod2","Classic FLARM","pin 5 TX","GPIO26","R-F 10 kΩ","ESP32 J2-1 / J3-7","wiring-flarm.svg")
 
 # --------------------------------------------------------------------- Becker
 s = Svg(980, 300, "Becker to RS-422 board to ESP32",
         "Becker J1 TX2+ and TX2- (pins 2, 9) to MAX490 receiver inputs A and B; MAX490 driver outputs Y and Z to J1 RX2+ and RX2- (pins 3, 10). "
-        "J1-21 D_GND to the board GND. Cable shield to J1-11 at the radio end only. Receiver output RO through R-B1 (2.2 kΩ) to GPIO16, "
-        "with R-B2 (3.3 kΩ) from GPIO16 to GND. GPIO17 to driver input DI, with R-D (10 kΩ) from DI to 3V3. Board VCC 5 V from the ESP32 5V pin.")
+        "J1-21 D_GND directly to GND-J. Cable shield to J1-11 at the radio end only. Receiver output RO through R-B1 (2.2 kΩ) to GPIO16, "
+        "with R-B2 (3.3 kΩ) from GPIO16 to GND. GPIO17 to driver input DI, with R-D (10 kΩ) from DI to 3V3. Board VCC and GND have separate branches from 5V-J and GND-J.")
 s.box(20, 30, 170, 190, "Becker J1", ["radio rear", "harness via DE-9"])
 s.box(330, 30, 190, 190, "MAX490 board", ["A B Y Z | RO DI", "5 V, 120 Ω term."])
 s.box(810, 30, 150, 190, "ESP32", ["UART2"])
@@ -215,7 +222,7 @@ s.line([(190, 55), (330, 55)], "data"); s.arrow(260, 55, "right", "data"); s.tag
 s.line([(190, 80), (330, 80)], "data"); s.arrow(260, 80, "right", "data"); s.tag(260, 73, "9 TX2− → B", "data", bold=False)
 s.line([(330, 115), (190, 115)], "data"); s.arrow(260, 115, "left", "data"); s.tag(260, 108, "3 RX2+ ← Y", "data", bold=False)
 s.line([(330, 140), (190, 140)], "data"); s.arrow(260, 140, "left", "data"); s.tag(260, 133, "10 RX2− ← Z", "data", bold=False)
-s.line([(190, 175), (330, 175)], "sgnd"); s.tag(260, 168, "21 D_GND → GND", "sgnd", bold=False)
+s.line([(190, 175), (280, 175), (280, 235)], "sgnd"); s.tag(285, 232, "21 → GND-J", "sgnd", anchor="start", bold=False, size=11)
 s.line([(190, 205), (290, 205)], "shield"); s.tag(198, 198, "11 shield, radio end only", "shield", bold=False, size=11, anchor="start")
 # 3V3 rail and R-D (pull-up on DI)
 s.line([(810, 45), (640, 45), (640, 85)], "v33"); s.arrow(770, 45, "left", "v33"); s.tag(740, 38, "3V3 (J2-1)", "v33")
@@ -229,8 +236,9 @@ s.resistor(600, 135, "data"); s.tag(600, 124, "R-B1 2.2 kΩ", "data", bold=False
 s.dot(720, 135, "data"); s.tag(765, 128, "GPIO16 (J3-12)", "data", size=11)
 s.line([(720, 135), (720, 195)], "data"); s.resistor(720, 165, "data", vertical=True)
 s.tag(730, 169, "R-B2 3.3 kΩ", "data", anchor="start", bold=False); s.dot(720, 195, "gnd")
-s.line([(520, 195), (810, 195)], "gnd"); s.tag(600, 188, "GND", "gnd")
-s.legend(255, ["data", "sgnd", "gnd", "shield", ("v33", "3.3 V")], "Twisted pairs: TX2± and RX2±. Board VCC 5 V from the ESP32 5V pin (see power).")
+s.line([(720, 195), (810, 195)], "gnd"); s.tag(765, 188, "local J3-7", "gnd", size=11)
+s.line([(520, 195), (590, 195)], "gnd"); s.tag(555, 215, "to GND-J", "gnd", size=11)
+s.legend(255, ["data", "sgnd", "gnd", "shield", ("v33", "3.3 V")], "Twisted pairs: TX2± and RX2±. VCC from 5V-J; GND from GND-J. No extra MAX490-to-ESP32 GND wire.")
 s.save("wiring-becker.svg")
 # ------------------------------------------------------- README overview (no pins)
 s = Svg(900, 345, "What the bridge does",
@@ -253,7 +261,7 @@ s.save("overview.svg")
 # ----------------------------------------------------------------- ground loops
 s = Svg(930, 530, "Bridge power and ground loops",
         "The battery feeds the bridge (UBEC, ESP32 with MAX490 and RS-232 modules) through fuse F1 in the harness, and each device with +12 V; arrows show the normal current direction. "
-        "The ESP32 ground (J2-14) returns through the UBEC; the bridge ground wire leaves from the UBEC input through the XT30. The battery minus, the bridge ground and each device's supply ground meet at the common ground point. Dashed signal grounds from the bridge to the "
+        "GND-J collects the module and instrument returns and connects through the UBEC output return; the bridge ground wire leaves from the UBEC input through the XT30. The battery minus, the bridge ground and each device's supply ground meet at the common ground point. Dashed signal grounds from the bridge to the "
         "Becker (J1-21), Zander (pin 5) and FLARM (pins 7/8) each close a ground loop: Loop B, Loop Z and Loop F.")
 s.box(200, 126, 270, 244, "Bridge", group=True)
 s.line([(95, 70), (95, 46)], "v12"); s.arrow(95, 58, "up", "v12"); s.tag(95, 40, "+12 V", "v12")
@@ -262,7 +270,7 @@ s.line([(335, 116), (335, 154)], "v12"); s.arrow(335, 135, "down", "v12")
 s.line([(335, 190), (335, 220)], "v5"); s.arrow(335, 202, "down", "v5"); s.tag(343, 210, "5 V", "v5", anchor="start")
 # Supply grounds back to the common ground point
 s.line([(95, 126), (95, 440)], "gnd"); s.arrow(95, 300, "up", "gnd")
-s.line([(270, 220), (270, 190)], "gnd"); s.arrow(270, 205, "up", "gnd"); s.tag(277, 209, "J2-14", "gnd", anchor="start", bold=False, size=11)
+s.line([(270, 220), (270, 190)], "gnd"); s.arrow(270, 205, "up", "gnd"); s.tag(277, 209, "GND-J", "gnd", anchor="start", bold=False, size=11)
 s.line([(245, 172), (215, 172), (215, 440)], "gnd"); s.arrow(215, 385, "down", "gnd")
 s.line([(900, 112), (900, 440)], "gnd")
 for y in (170, 285, 395):
@@ -287,7 +295,7 @@ for y, name, gnd_label, loop, sig, path in devices:
 s.box(30, 70, 130, 56, "Battery", ["12 V"])
 s.box(245, 80, 180, 36, "F1 fuse (harness)")
 s.box(245, 154, 180, 36, "UBEC 5 V")
-s.box(225, 220, 220, 110, "ESP32", ["MAX490 board", "RS-232 modules (3.3 V from ESP32)"])
+s.box(225, 220, 220, 110, "GND-J / bridge loads", ["ESP32, MAX490", "RS-232 chain via ESP32"])
 s.tag(103, 160, "Battery −", "gnd", anchor="start", bold=False, size=11)
 s.tag(223, 405, "Bridge GND wire (XT30 −)", "gnd", anchor="start", bold=False, size=11)
 s.text(497, 462, "Common ground point (battery −)", color="#424242", size=13, bold=True)

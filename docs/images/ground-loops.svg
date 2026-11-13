@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="930" height="530" viewBox="0 0 930 530" role="img" aria-labelledby="title desc">
 <title id="title">Bridge power and ground loops</title>
-<desc id="desc">The battery feeds the bridge (UBEC, ESP32 with MAX490 and RS-232 modules) through fuse F1 in the harness, and each device with +12 V; arrows show the normal current direction. The ESP32 ground (J2-14) returns through the UBEC; the bridge ground wire leaves from the UBEC input through the XT30. The battery minus, the bridge ground and each device's supply ground meet at the common ground point. Dashed signal grounds from the bridge to the Becker (J1-21), Zander (pin 5) and FLARM (pins 7/8) each close a ground loop: Loop B, Loop Z and Loop F.</desc>
+<desc id="desc">The battery feeds the bridge (UBEC, ESP32 with MAX490 and RS-232 modules) through fuse F1 in the harness, and each device with +12 V; arrows show the normal current direction. GND-J collects the module and instrument returns and connects through the UBEC output return; the bridge ground wire leaves from the UBEC input through the XT30. The battery minus, the bridge ground and each device's supply ground meet at the common ground point. Dashed signal grounds from the bridge to the Becker (J1-21), Zander (pin 5) and FLARM (pins 7/8) each close a ground loop: Loop B, Loop Z and Loop F.</desc>
 <rect width="930" height="530" fill="white"/>
 <g font-family="Arial,sans-serif">
 <rect x="200" y="126" width="270" height="244" rx="8" fill="#f7f9fc" stroke="#9cb1cc" stroke-width="1.5" stroke-dasharray="6 4"/>
@@ -8,47 +8,47 @@
 <path d="M335 24 L335 80" stroke="#d32f2f" stroke-width="2.5" fill="none"/>
 <path d="M335 116 L335 154" stroke="#d32f2f" stroke-width="2.5" fill="none"/>
 <path d="M335 190 L335 220" stroke="#ef6c00" stroke-width="2.5" fill="none"/>
-<path d="M95 126 L95 440" stroke="#616161" stroke-width="2.5" fill="none"/>
-<path d="M270 220 L270 190" stroke="#616161" stroke-width="2.5" fill="none"/>
-<path d="M245 172 L215 172 L215 440" stroke="#616161" stroke-width="2.5" fill="none"/>
-<path d="M900 112 L900 440" stroke="#616161" stroke-width="2.5" fill="none"/>
-<path d="M95 440 L900 440" stroke="#616161" stroke-width="4" fill="none"/>
+<path d="M95 126 L95 440" stroke="#171717" stroke-width="2.5" fill="none"/>
+<path d="M270 220 L270 190" stroke="#171717" stroke-width="2.5" fill="none"/>
+<path d="M245 172 L215 172 L215 440" stroke="#171717" stroke-width="2.5" fill="none"/>
+<path d="M900 112 L900 440" stroke="#171717" stroke-width="2.5" fill="none"/>
+<path d="M95 440 L900 440" stroke="#171717" stroke-width="4" fill="none"/>
 <path d="M810 86 L835 86" stroke="#d32f2f" stroke-width="2.5" fill="none"/>
-<path d="M810 112 L900 112" stroke="#616161" stroke-width="2.5" fill="none"/>
-<path d="M445 240 L520 240 L520 98 L660 98" stroke="#1e88e5" stroke-width="2.5" fill="none" stroke-dasharray="7 5"/>
+<path d="M810 112 L900 112" stroke="#171717" stroke-width="2.5" fill="none"/>
+<path d="M445 240 L520 240 L520 98 L660 98" stroke="#171717" stroke-width="2.5" fill="none" stroke-dasharray="7 5"/>
 <path d="M810 201 L835 201" stroke="#d32f2f" stroke-width="2.5" fill="none"/>
-<path d="M810 227 L900 227" stroke="#616161" stroke-width="2.5" fill="none"/>
-<path d="M445 275 L560 275 L560 213 L660 213" stroke="#1e88e5" stroke-width="2.5" fill="none" stroke-dasharray="7 5"/>
+<path d="M810 227 L900 227" stroke="#171717" stroke-width="2.5" fill="none"/>
+<path d="M445 275 L560 275 L560 213 L660 213" stroke="#171717" stroke-width="2.5" fill="none" stroke-dasharray="7 5"/>
 <path d="M810 316 L835 316" stroke="#d32f2f" stroke-width="2.5" fill="none"/>
-<path d="M810 342 L900 342" stroke="#616161" stroke-width="2.5" fill="none"/>
-<path d="M445 310 L660 310" stroke="#1e88e5" stroke-width="2.5" fill="none" stroke-dasharray="7 5"/>
+<path d="M810 342 L900 342" stroke="#171717" stroke-width="2.5" fill="none"/>
+<path d="M445 310 L660 310" stroke="#171717" stroke-width="2.5" fill="none" stroke-dasharray="7 5"/>
 <path d="M30 492 H60" stroke="#d32f2f" stroke-width="2.5"/>
 <path d="M184 492 H214" stroke="#ef6c00" stroke-width="2.5"/>
-<path d="M345 492 H375" stroke="#616161" stroke-width="2.5"/>
-<path d="M506 492 H536" stroke="#1e88e5" stroke-width="2.5" stroke-dasharray="7 5"/>
+<path d="M345 492 H375" stroke="#171717" stroke-width="2.5"/>
+<path d="M506 492 H536" stroke="#171717" stroke-width="2.5" stroke-dasharray="7 5"/>
 <polygon points="90,62 100,62 95,53" fill="#d32f2f"/>
 <polygon points="330,52 340,52 335,61" fill="#d32f2f"/>
 <polygon points="330,131 340,131 335,140" fill="#d32f2f"/>
 <polygon points="330,198 340,198 335,207" fill="#ef6c00"/>
-<polygon points="90,304 100,304 95,295" fill="#616161"/>
-<polygon points="265,209 275,209 270,200" fill="#616161"/>
-<polygon points="210,381 220,381 215,390" fill="#616161"/>
-<polygon points="895,166 905,166 900,175" fill="#616161"/>
-<polygon points="895,281 905,281 900,290" fill="#616161"/>
-<polygon points="895,391 905,391 900,400" fill="#616161"/>
-<polygon points="624,435 624,445 615,440" fill="#616161"/>
-<polygon points="164,435 164,445 155,440" fill="#616161"/>
-<circle cx="95" cy="440" r="5" fill="#616161"/>
-<circle cx="215" cy="440" r="5" fill="#616161"/>
-<circle cx="900" cy="440" r="5" fill="#616161"/>
-<circle cx="900" cy="227" r="4" fill="#616161"/>
-<circle cx="900" cy="342" r="4" fill="#616161"/>
+<polygon points="90,304 100,304 95,295" fill="#171717"/>
+<polygon points="265,209 275,209 270,200" fill="#171717"/>
+<polygon points="210,381 220,381 215,390" fill="#171717"/>
+<polygon points="895,166 905,166 900,175" fill="#171717"/>
+<polygon points="895,281 905,281 900,290" fill="#171717"/>
+<polygon points="895,391 905,391 900,400" fill="#171717"/>
+<polygon points="624,435 624,445 615,440" fill="#171717"/>
+<polygon points="164,435 164,445 155,440" fill="#171717"/>
+<circle cx="95" cy="440" r="5" fill="#171717"/>
+<circle cx="215" cy="440" r="5" fill="#171717"/>
+<circle cx="900" cy="440" r="5" fill="#171717"/>
+<circle cx="900" cy="227" r="4" fill="#171717"/>
+<circle cx="900" cy="342" r="4" fill="#171717"/>
 <polygon points="826,81 826,91 817,86" fill="#d32f2f"/>
-<polygon points="824,107 824,117 833,112" fill="#616161"/>
+<polygon points="824,107 824,117 833,112" fill="#171717"/>
 <polygon points="826,196 826,206 817,201" fill="#d32f2f"/>
-<polygon points="824,222 824,232 833,227" fill="#616161"/>
+<polygon points="824,222 824,232 833,227" fill="#171717"/>
 <polygon points="826,311 826,321 817,316" fill="#d32f2f"/>
-<polygon points="824,337 824,347 833,342" fill="#616161"/>
+<polygon points="824,337 824,347 833,342" fill="#171717"/>
 <rect x="660" y="70" width="150" height="56" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
 <rect x="660" y="185" width="150" height="56" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
 <rect x="660" y="300" width="150" height="56" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
@@ -60,31 +60,31 @@
 <text x="95" y="40" font-size="12" fill="#d32f2f" text-anchor="middle" font-weight="700">+12 V</text>
 <text x="343" y="34" font-size="12" fill="#d32f2f" text-anchor="start" font-weight="700">+12 V</text>
 <text x="343" y="210" font-size="12" fill="#ef6c00" text-anchor="start" font-weight="700">5 V</text>
-<text x="277" y="209" font-size="11" fill="#616161" text-anchor="start">J2-14</text>
+<text x="277" y="209" font-size="11" fill="#171717" text-anchor="start">GND-J</text>
 <text x="735.0" y="103.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">Becker AR6201</text>
 <text x="840" y="90" font-size="12" fill="#d32f2f" text-anchor="start" font-weight="700">+12 V</text>
-<text x="845" y="106" font-size="11" fill="#616161" text-anchor="start">P1-13/25</text>
-<text x="652" y="75" font-size="12" fill="#1e88e5" text-anchor="end" font-weight="700">Loop B</text>
-<text x="652" y="91" font-size="12" fill="#1e88e5" text-anchor="end">signal GND J1-21</text>
+<text x="845" y="106" font-size="11" fill="#171717" text-anchor="start">P1-13/25</text>
+<text x="652" y="75" font-size="12" fill="#171717" text-anchor="end" font-weight="700">Loop B</text>
+<text x="652" y="91" font-size="12" fill="#171717" text-anchor="end">signal GND J1-21</text>
 <text x="735.0" y="218.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">Zander ZS1</text>
 <text x="840" y="205" font-size="12" fill="#d32f2f" text-anchor="start" font-weight="700">+12 V</text>
-<text x="845" y="221" font-size="11" fill="#616161" text-anchor="start">GND</text>
-<text x="652" y="190" font-size="12" fill="#1e88e5" text-anchor="end" font-weight="700">Loop Z</text>
-<text x="652" y="206" font-size="12" fill="#1e88e5" text-anchor="end">signal GND pin 5</text>
+<text x="845" y="221" font-size="11" fill="#171717" text-anchor="start">GND</text>
+<text x="652" y="190" font-size="12" fill="#171717" text-anchor="end" font-weight="700">Loop Z</text>
+<text x="652" y="206" font-size="12" fill="#171717" text-anchor="end">signal GND pin 5</text>
 <text x="735.0" y="333.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">FLARM</text>
 <text x="840" y="320" font-size="12" fill="#d32f2f" text-anchor="start" font-weight="700">+12 V</text>
-<text x="845" y="336" font-size="11" fill="#616161" text-anchor="start">GND</text>
-<text x="652" y="287" font-size="12" fill="#1e88e5" text-anchor="end" font-weight="700">Loop F</text>
-<text x="652" y="303" font-size="12" fill="#1e88e5" text-anchor="end">signal GND pins 7/8</text>
+<text x="845" y="336" font-size="11" fill="#171717" text-anchor="start">GND</text>
+<text x="652" y="287" font-size="12" fill="#171717" text-anchor="end" font-weight="700">Loop F</text>
+<text x="652" y="303" font-size="12" fill="#171717" text-anchor="end">signal GND pins 7/8</text>
 <text x="95.0" y="94.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">Battery</text>
 <text x="95.0" y="112.0" font-size="12" fill="#475569" text-anchor="middle">12 V</text>
 <text x="335.0" y="103.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">F1 fuse (harness)</text>
 <text x="335.0" y="177.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">UBEC 5 V</text>
-<text x="335.0" y="262.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">ESP32</text>
-<text x="335.0" y="280.0" font-size="12" fill="#475569" text-anchor="middle">MAX490 board</text>
-<text x="335.0" y="298.0" font-size="12" fill="#475569" text-anchor="middle">RS-232 modules (3.3 V from ESP32)</text>
-<text x="103" y="160" font-size="11" fill="#616161" text-anchor="start">Battery −</text>
-<text x="223" y="405" font-size="11" fill="#616161" text-anchor="start">Bridge GND wire (XT30 −)</text>
+<text x="335.0" y="262.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">GND-J / bridge loads</text>
+<text x="335.0" y="280.0" font-size="12" fill="#475569" text-anchor="middle">ESP32, MAX490</text>
+<text x="335.0" y="298.0" font-size="12" fill="#475569" text-anchor="middle">RS-232 chain via ESP32</text>
+<text x="103" y="160" font-size="11" fill="#171717" text-anchor="start">Battery −</text>
+<text x="223" y="405" font-size="11" fill="#171717" text-anchor="start">Bridge GND wire (XT30 −)</text>
 <text x="497" y="462" font-size="13" fill="#424242" text-anchor="middle" font-weight="700">Common ground point (battery −)</text>
 <text x="66" y="496" font-size="12" fill="#172b4d" text-anchor="start">+12 V supply</text>
 <text x="220" y="496" font-size="12" fill="#172b4d" text-anchor="start">5 V in bridge</text>

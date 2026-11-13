@@ -1,46 +1,48 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="930" height="250" viewBox="0 0 930 250" role="img" aria-labelledby="title desc">
-<title id="title">Classic FLARM to RS-232 module to ESP32</title>
-<desc id="desc">FLARM pin 5 TX to pad L3, TTL output R2 to GPIO26 (UART1 receive). FLARM pins 7/8 ground to pads L1 and R4 and ESP32 GND. ESP32 3V3 to pad R3; R-F (10 kΩ) on the module from pad R1 to pad R3. Receive only.</desc>
-<rect width="930" height="250" fill="white"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="930" height="365" viewBox="0 0 930 365" role="img" aria-labelledby="title desc">
+<title id="title">Classic FLARM through RS-232-mod2</title>
+<desc id="desc">Instrument TX to L3, R2 to GPIO26; instrument ground directly to GND-J. Module R3/R4 supplied through ESP32 J2-1 / J3-7. L1 has no extra ground wire.</desc>
+<rect width="930" height="365" fill="white"/>
 <g font-family="Arial,sans-serif">
-<path d="M190 70 L340 70" stroke="#37474f" stroke-width="2.5" fill="none"/>
-<path d="M560 70 L710 70" stroke="#37474f" stroke-width="2.5" fill="none"/>
-<path d="M190 145 L340 145" stroke="#1e88e5" stroke-width="2.5" fill="none" stroke-dasharray="7 5"/>
-<path d="M560 95 L640 95 L640 130" stroke="#8e24aa" stroke-width="2.5" fill="none"/>
-<path d="M710 130 L560 130" stroke="#8e24aa" stroke-width="2.5" fill="none"/>
-<path d="M560 160 L710 160" stroke="#616161" stroke-width="2.5" fill="none"/>
-<path d="M30 215 H60" stroke="#37474f" stroke-width="2.5"/>
-<path d="M268 215 H298" stroke="#1e88e5" stroke-width="2.5" stroke-dasharray="7 5"/>
-<path d="M429 215 H459" stroke="#616161" stroke-width="2.5"/>
-<path d="M590 215 H620" stroke="#8e24aa" stroke-width="2.5"/>
-<polygon points="261,65 261,75 270,70" fill="#37474f"/>
-<polygon points="631,65 631,75 640,70" fill="#37474f"/>
-<polygon points="694,125 694,135 685,130" fill="#8e24aa"/>
-<circle cx="640" cy="130" r="4" fill="#8e24aa"/>
+<path d="M190 65 L330 65" stroke="#37474f" stroke-width="2.5" fill="none"/>
+<path d="M570 65 L720 65" stroke="#37474f" stroke-width="2.5" fill="none"/>
+<path d="M190 140 L250 140 L250 242 L330 242" stroke="#171717" stroke-width="2.5" fill="none" stroke-dasharray="7 5"/>
+<path d="M720 235 L675 235 L675 115 L570 115" stroke="#8e24aa" stroke-width="2.5" fill="none"/>
+<path d="M570 85 L625 85 L625 115" stroke="#8e24aa" stroke-width="2.5" fill="none"/>
+<path d="M720 270 L650 270 L650 160 L570 160" stroke="#171717" stroke-width="2.5" fill="none"/>
+<path d="M30 320 H60" stroke="#37474f" stroke-width="2.5"/>
+<path d="M268 320 H298" stroke="#171717" stroke-width="2.5" stroke-dasharray="7 5"/>
+<path d="M429 320 H459" stroke="#171717" stroke-width="2.5"/>
+<path d="M590 320 H620" stroke="#8e24aa" stroke-width="2.5"/>
+<polygon points="256,60 256,70 265,65" fill="#37474f"/>
+<polygon points="686,60 686,70 695,65" fill="#37474f"/>
+<circle cx="625" cy="115" r="4" fill="#8e24aa"/>
 <rect x="20" y="40" width="170" height="130" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
-<rect x="340" y="40" width="220" height="130" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
-<rect x="710" y="40" width="200" height="130" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
-<rect x="635.0" y="99.0" width="10" height="26" fill="white" stroke="#8e24aa" stroke-width="2"/>
+<rect x="330" y="40" width="240" height="130" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
+<rect x="720" y="40" width="190" height="90" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
+<rect x="330" y="210" width="240" height="65" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
+<rect x="720" y="210" width="190" height="80" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
+<rect x="620.0" y="87.0" width="10" height="26" fill="white" stroke="#8e24aa" stroke-width="2"/>
 <text x="105.0" y="101.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">Classic FLARM</text>
-<text x="105.0" y="119.0" font-size="12" fill="#475569" text-anchor="middle">existing harness, via DE-9</text>
-<text x="450.0" y="92.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">RS-232-mod2</text>
-<text x="450.0" y="110.0" font-size="12" fill="#475569" text-anchor="middle">RS-232 ↔ 3.3 V TTL</text>
-<text x="450.0" y="128.0" font-size="12" fill="#475569" text-anchor="middle">pads R1–R4 at right</text>
-<text x="810.0" y="83.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">ESP32</text>
-<text x="810.0" y="101.0" font-size="12" fill="#475569" text-anchor="middle">GPIO26 · UART1 RX</text>
-<text x="810.0" y="119.0" font-size="12" fill="#475569" text-anchor="middle">3V3 (J2-1)</text>
-<text x="810.0" y="137.0" font-size="12" fill="#475569" text-anchor="middle">GND</text>
-<text x="265" y="62" font-size="12" fill="#37474f" text-anchor="middle" font-weight="700">pin 5 TX → L3</text>
-<text x="635" y="62" font-size="12" fill="#37474f" text-anchor="middle" font-weight="700">R2 → GPIO26</text>
-<text x="265" y="137" font-size="12" fill="#1e88e5" text-anchor="middle" font-weight="700">pins 7/8 GND → L1</text>
-<text x="566" y="90" font-size="11" fill="#8e24aa" text-anchor="start" font-weight="700">R1</text>
-<text x="630" y="116" font-size="11" fill="#8e24aa" text-anchor="end">R-F 10 kΩ</text>
-<text x="682" y="123" font-size="11" fill="#8e24aa" text-anchor="middle" font-weight="700">3V3 → R3</text>
-<text x="600" y="155" font-size="11" fill="#616161" text-anchor="middle" font-weight="700">R4 → GND</text>
-<text x="66" y="219" font-size="12" fill="#172b4d" text-anchor="start">Data (arrow = direction)</text>
-<text x="304" y="219" font-size="12" fill="#172b4d" text-anchor="start">Signal ground</text>
-<text x="465" y="219" font-size="12" fill="#172b4d" text-anchor="start">Bridge ground</text>
-<text x="626" y="219" font-size="12" fill="#172b4d" text-anchor="start">3.3 V</text>
-<text x="30" y="239" font-size="12" fill="#475569" text-anchor="start">Receive only: L4, GPIO27 and FLARM RX stay unconnected. Never connect FLARM pins 1–3 (supply).</text>
+<text x="105.0" y="119.0" font-size="12" fill="#475569" text-anchor="middle">existing harness / DE-9</text>
+<text x="450.0" y="101.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">RS-232-mod2</text>
+<text x="450.0" y="119.0" font-size="12" fill="#475569" text-anchor="middle">RS-232 / 3.3 V TTL</text>
+<text x="815.0" y="81.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">ESP32</text>
+<text x="815.0" y="99.0" font-size="12" fill="#475569" text-anchor="middle">GPIO26</text>
+<text x="260" y="57" font-size="12" fill="#37474f" text-anchor="middle" font-weight="700">pin 5 TX → L3</text>
+<text x="645" y="57" font-size="12" fill="#37474f" text-anchor="middle" font-weight="700">R2 → GPIO26</text>
+<text x="450.0" y="238.5" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">Central GND-J</text>
+<text x="450.0" y="256.5" font-size="12" fill="#475569" text-anchor="middle">instrument ground branch</text>
+<text x="245" y="132" font-size="11" fill="#171717" text-anchor="end" font-weight="700">signal GND</text>
+<text x="815.0" y="237.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">ESP32 J2-1 / J3-7</text>
+<text x="815.0" y="255.0" font-size="12" fill="#475569" text-anchor="middle">3V3 / R3</text>
+<text x="815.0" y="273.0" font-size="12" fill="#475569" text-anchor="middle">GND / R4</text>
+<text x="580" y="108" font-size="11" fill="#8e24aa" text-anchor="start" font-weight="700">R3</text>
+<text x="620" y="145" font-size="11" fill="#8e24aa" text-anchor="middle" font-weight="700">R-F 10 kΩ</text>
+<text x="580" y="155" font-size="11" fill="#171717" text-anchor="start" font-weight="700">R4</text>
+<text x="66" y="324" font-size="12" fill="#172b4d" text-anchor="start">Data (arrow = direction)</text>
+<text x="304" y="324" font-size="12" fill="#172b4d" text-anchor="start">Signal ground</text>
+<text x="465" y="324" font-size="12" fill="#172b4d" text-anchor="start">Bridge ground</text>
+<text x="626" y="324" font-size="12" fill="#172b4d" text-anchor="start">3.3 V</text>
+<text x="30" y="344" font-size="12" fill="#475569" text-anchor="start">Receive only. Supply/return chain: ESP32 → mod2 → mod1; boards remain electrically parallel.</text>
 </g>
 </svg>

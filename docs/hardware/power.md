@@ -7,7 +7,7 @@
 How the bridge is supplied and grounded, where ground loops close, which currents each wire carries, and what a broken wire does.
 
 > [!NOTE]
-> **Status:** bench design. The supply path and ground rule are selected; all currents are datasheet values or estimates, nothing is measured yet. Open checks: [bench hardware](../project/open-items.md#bench-hardware).
+> **Status:** bench design. Separate central 5 V/GND distribution and the ESP32-fed RS-232 supply chain are selected; all currents are datasheet values or estimates, nothing is measured yet. Open checks: [bench hardware](../project/open-items.md#bench-hardware).
 
 📑 **On this page:** <kbd>[1 · 🔋 Supply path](#supply)</kbd> <kbd>[2 · ⏚ Grounding and loops](#ground)</kbd> <kbd>[3 · 📊 Current assumptions](#currents)</kbd> <kbd>[4 · ✂️ Wire-break cases](#wire-breaks)</kbd> <kbd>[5 · 🛡️ Protection](#protection)</kbd>
 
@@ -25,23 +25,29 @@ Related: 🔌 [Signal wiring](wiring.md) · 🧱 [Modules and parts](modules.md)
 - **Fuse:** F1 in the harness at its supply end → [protection](#protection).
 - **Open:** connector fit and supply-cable protection → [open items](../project/open-items.md#bench-hardware).
 
-![Supply path: F1 at the supply end of the 12 V harness, XT30 and UBEC; 5 V to the ESP32 5V pin and on to the MAX490 board; the ESP32 3.3 V regulator feeds both RS-232 modules, which carry R-Z and R-F, and the pull-up R-D](../images/power-supply.svg)
+![Supply path: UBEC to central 5 V junction, separate branches to ESP32 and MAX490; ESP32 3.3 V to RS-232-mod2 then mod1 and to R-D](../images/power-supply.svg)
 
 | From | To |
 | --- | --- |
 | UBEC input GND | The common ground point (where the radio's P1-13/25 return, S10), with its own wire |
-| UBEC 5 V | ESP32 5V pin ([J2-19](modules.md#esp32-pinout)); a second wire from J2-19 to the MAX490 board VCC |
-| UBEC GND | ESP32 GND (J2-14) |
-| ESP32 3V3 ([J2-1](modules.md#esp32-pinout)) | R3 (+) on both RS-232 modules (R-Z and R-F sit on the modules); the pull-up R-D |
-| ESP32 GND | R4 (−) of RS-232-mod1 (J3-7) and RS-232-mod2 (J2-14); MAX490 board GND (J3-1) |
+| UBEC 5 V, after the ferrite | Central **5V-J** junction; separate branches to ESP32 5V ([J2-19](modules.md#esp32-pinout)) and MAX490 VCC |
+| UBEC output GND, after the ferrite | Central **GND-J** junction; separate branches to ESP32 GND (J2-14), MAX490 GND and the three instrument signal grounds at the DE-9 |
+| ESP32 3V3 ([J2-1](modules.md#esp32-pinout)) | RS-232-mod2 R3 → RS-232-mod1 R3; R-D retains its own local feed |
+| ESP32 GND (J3-7) | RS-232-mod2 R4 → RS-232-mod1 R4; R-B2 retains its local J3-7 return |
 
-The ESP32 board's ground copper is the bridge ground: each ground wire gets its own GND pin, at most two per pin. There is no separate ground point or distribution board inside the housing.
+**5V-J and GND-J are separate insulated junctions.** Keep the UBEC input return on the XT30 input circuit; do not add a wire from GND-J to XT30 minus that bypasses the ferrite output return.
+
+The RS-232 boards are daisy-chained physically and connected **in parallel electrically**, at **3.3 V**. Feed the nearer module (mod2), then link R3 to R3 and R4 to R4 across to mod1. Their ground comes from the ESP32, not from an additional branch to GND-J. Do not add a separate MAX490-to-ESP32 ground wire or instrument-ground wires to RS-232 L1. This gives one internal ground tree; it does not remove the external loops in [section 2](#ground).
+
+![Internal ground tree: GND-J branches to ESP32, MAX490 and the three instrument grounds; ESP32 J3-7 feeds mod2 R4 and then mod1 R4; R-B2 remains local](../images/ground-distribution.svg)
+
+Keep supply and return runs alongside one another where practical. Junction placement and the provisional routing envelopes: [housing](housing.md#internal-routing). Actual junction hardware, conductor sizes and physical fit: [open items](../project/open-items.md#housing).
 
 > [!WARNING]
 > Never connect USB and the UBEC 5 V at the same time: the board has no power selection. Unplug the UBEC before using USB.
 
 > [!WARNING]
-> Unplug J1 from the radio whenever USB is connected. On USB alone the MAX490 has no supply, but GPIO17 and R-D partly power it through DI, so its outputs to the radio are undefined. A laptop on its mains charger can also put leakage voltage on the USB ground, which would reach the radio through J1-21.
+> Unplug the combined instrument connector whenever USB is connected. Do not rely on a defined interface power or output state during USB connection and boot. A laptop on its mains charger can also put leakage voltage on the USB ground, which would reach the radio through J1-21.
 
 ---
 
@@ -51,7 +57,7 @@ The ESP32 board's ground copper is the bridge ground: each ground wire gets its 
 
 Treat the UBEC's input and output ground as connected, which is usual for this kind of regulator ([bring-up](wiring.md#bring-up) step 1 checks it). The bridge ground, the battery minus and the devices' signal grounds are then one circuit. Run the bridge's supply ground to the same ground point as the radio's supply ground, with a solid crimped or screwed connection.
 
-J1-21 connects directly to the board GND, without a series resistor. Each loop is closed by a signal ground: every device has its own supply ground to the ground point, and its signal ground to the bridge adds a second, parallel path back to that point.
+J1-21 connects directly to GND-J, without a series resistor. Each loop is closed by a signal ground: every device has its own supply ground to the ground point, and its signal ground to the bridge adds a second, parallel path back to that point.
 
 ![Power and ground loops: battery, bridge and the three devices; supply grounds meet at the common ground point, and the dashed signal grounds to the Becker, Zander and FLARM close Loop B, Loop Z and Loop F](../images/ground-loops.svg)
 
@@ -103,14 +109,14 @@ What a single broken wire does:
 
 | Broken wire | Effect | Risk |
 | --- | --- | --- |
-| Radio supply ground (P1-13/25) | The radio's whole return current, up to 3 A (S10), flows through J1-21, the MAX490 board, the ESP32 board and the bridge ground wire. The radio keeps working. | 🔴 Overheated wiring; see the warning below |
+| Radio supply ground (P1-13/25) | The radio's whole return current, up to 3 A (S10), flows through J1-21, GND-J, the UBEC ground path and the bridge ground wire. The radio keeps working. | 🔴 Overheated wiring; see the warning below |
 | Bridge supply ground | The bridge's ~0.15 A returns through J1-21 and the Zander and FLARM grounds. The bridge keeps working. | 🟡 Low; bring-up step 7 catches a poor connection |
 | Zander or FLARM supply ground | That device's supply current returns through its RS-232 ground and the bridge. | 🟡 Low; small currents |
 | Bridge +12 V or F1 | The bridge switches off; its unpowered interfaces do not feed the devices. | 🟢 None |
 | One signal ground (J1-21, Zander, FLARM) | The link stays referenced through the supply grounds. | 🟢 None |
 
 > [!WARNING]
-> The direct J1-21 wire depends on the radio's own supply ground. If P1-13/25 lost their connection, up to 3 A of radio current would run through the bridge's thin signal wiring without any visible symptom. Make sure both P1 ground pins are wired to the ground point and check them before connecting the bridge ([bring-up](wiring.md#bring-up) step 7).
+> The direct J1-21 wire depends on the radio's own supply ground. If P1-13/25 lost their connection, up to 3 A of radio current would run through the instrument-ground wiring, junction and UBEC return path without any visible symptom. Size and verify the whole return path for this case; an internal ground junction does not provide isolation. Make sure both P1 ground pins are wired to the ground point and check them before connecting the bridge ([bring-up](wiring.md#bring-up) step 7).
 
 ---
 
