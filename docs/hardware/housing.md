@@ -153,7 +153,7 @@ Sizes from owner measurements, seller listings or datasheets; see the source col
 | UBEC (Hobbywing 3A) | 1 | 43 × 17 × 7 (catalog); body about 35 × 12 × 5 | S14 | Plus jumper and leads |
 | UBEC ferrite ring | 1 | Reserve 30 × 30 × 15 keep-out (estimate from the product photo, ring with wire turns) | — | On the UBEC 5 V output lead, as shipped; resize once measured |
 | XT30 male, panel | 1 | 10.55 × 5.25 body; 10.8 × 5.66 over the raised markings at the solder-cup end (owner measurement) | S51 | Press-fit pocket ([section 4](#connectors)) |
-| DE-9 male, panel | 1 | Flange 31 × 12.6 × 1.0, holes Ø3.1 at 25.0 spacing; D shell 17.85 × 9.2 outer; rear body behind the flange 19.3 × 10.9 × 5.0 deep, 8.0 including the solder cups (owner measurement) | S43 | Flange and rear side as the female NorComp model |
+| DE-9 male, panel | 1 | Flange 31 × 12.6 × 1.0, holes Ø3.1 at 25.0 spacing; D shell 17.85 × 9.2 outer; rear body behind the flange 19.3 × 10.9 × 5.0 deep, 8.0 including the solder cups (owner measurement) | S43 | Flange and rear side as the female plug model |
 | Resistors (divider, pull-ups) | 5 | Small | — | R-B1, R-B2, R-Z, R-F, R-D |
 
 ### 3.1 ESP32 CAD reference
@@ -247,11 +247,11 @@ Use the [STEP model](../../cad/reference/xt30u-m/xt30u-m.step) of the AMASS XT30
 
 **DE-9 (instruments)** — pin use: [signal wiring](wiring.md#overview)
 
-- Reference for the flange and rear side: [NorComp 171-009-203 STEP](../../cad/reference/norcomp-171-009-203/171-009-203.STEP) (S43), the female variant; the delivered male has the same flange (31 × 12.6 mm) and rear side, its D shell measures 17.85 × 9.2 mm.
+- Reference for the flange and rear side: [female plug STEP](../../cad/reference/dsub-9pin/DSUB_9pin_female_plug.STEP) (S43), the female variant; the delivered male has the same flange (31 × 12.6 mm) and rear side, its D shell measures 17.85 × 9.2 mm.
 - Male connector (pins) on the housing, female cable connector with solder cups and screw locking.
 - Front mount: flange in a flush recess on the outer face, rear body (19.3 × 10.9 mm) through a D-shaped cutout that follows its tapered sides; the cable connector seats fully because no wall is in front of the flange.
 - Backshell and strain relief on the cable side.
-- Cable-side clearance references: the same [NorComp 171-009-203 STEP](../../cad/reference/norcomp-171-009-203/171-009-203.STEP) for the female cable connector (S43), and the [NorComp 973-009-010R011 STEP](../../cad/reference/norcomp-973-009-010R011/973-009-010R011.STEP), a straight plastic backshell with 4-40 thumbscrews, about 31.5 × 38.1 × 15.2 mm (S52).
+- Cable-side clearance references: the same [female plug STEP](../../cad/reference/dsub-9pin/DSUB_9pin_female_plug.STEP) for the female cable connector (S43), and the [backshell STEP](../../cad/reference/dsub-9pin/DSUB_9pin_backshell.STEP), a straight plastic backshell with 4-40 thumbscrews, about 31.5 × 38.1 × 15.2 mm (S52).
 - Standard 4-40 jackposts (stud length about 4.8 mm, estimate; not delivered yet): through 1.0 mm flange and 2.0 mm wall, the nut pocket is sunk into the inner face so the nut gets full thread.
 - Housing side: jackposts ([design rules](#rules)); exact jackpost and local wall thickness: [open items](../project/open-items.md#bench-hardware).
 

@@ -7,5 +7,5 @@ Selected internal layout, with the RS-232 boards on the ESP32's USB clamp ([hous
 | `housing-layout-v4.step` | All parts as solids, for checking positions or other CAD tools |
 
 - Units: millimetres. Layout frame: X along the housing length from the outside face of the connector wall, Y up from the floor top, Z across.
-- Includes third-party reference geometry. See the [CAD downloads and credits](../../reference/README.md) for the ESP32, RS-232, XT30, NorComp DE-9 and UBEC sources and reuse terms.
+- Includes third-party reference geometry. See the [CAD downloads and credits](../../reference/README.md) for the ESP32, RS-232, XT30, DE-9 and UBEC sources and reuse terms.
 - Holder in this layout: [esp32-holder-v3](../esp32-holder-v3/README.md).
