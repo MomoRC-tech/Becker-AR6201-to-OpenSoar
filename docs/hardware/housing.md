@@ -249,6 +249,7 @@ Use the [STEP model](../../cad/reference/xt30u-m/xt30u-m.step) of the AMASS XT30
 - Male connector (pins) on the housing, female cable connector with solder cups and screw locking.
 - Front mount: flange in a flush recess on the outer face, rear body (19.3 × 10.9 mm) through a rectangular cutout; the cable connector seats fully because no wall is in front of the flange.
 - Backshell and strain relief on the cable side.
+- Cable-side clearance references: the same [NorComp 171-009-203 STEP](../../cad/reference/norcomp-171-009-203/171-009-203.STEP) for the female cable connector (S43), and the [NorComp 953-009-030R121 STEP](../../cad/reference/norcomp-953-009-030R121/953-009-030R121.STEP), a 35° die-cast backshell with 4-40 thumbscrews, about 32 × 52 × 15.5 mm (S52).
 - Standard 4-40 jackposts (stud length about 4.8 mm, estimate; not delivered yet): through 1.0 mm flange and 2.0 mm wall, the nut pocket is sunk into the inner face so the nut gets full thread.
 - Housing side: jackposts ([design rules](#rules)); exact jackpost and local wall thickness: [open items](../project/open-items.md#bench-hardware).
 
