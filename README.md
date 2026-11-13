@@ -53,6 +53,7 @@ The bridge never changes the active frequency, and the radio's own controls keep
 | 🔧 | **Hardware** | [🔌 Signal wiring](docs/hardware/wiring.md) | Pin-by-pin signal wiring and bench bring-up |
 | | | [⚡ Power and grounding](docs/hardware/power.md) | Supply, ground loops and currents |
 | | | [🧱 Modules and parts](docs/hardware/modules.md) | Module details, parts list |
+| | | [💶 Hardware cost](docs/hardware/cost.md) | Cost breakdown for one bridge |
 | | | [📦 Housing](docs/hardware/housing.md) | Mechanical design |
 | 🧩 | **Design** | [🏗️ Architecture](docs/design/architecture.md) | How the bridge is built and why |
 | | | [🎯 Requirements](docs/design/requirements.md) | Requirements, assumptions, risks |
