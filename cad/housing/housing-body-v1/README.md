@@ -19,14 +19,14 @@ First housing prototype on [layout v4](../layout-v4/README.md): base tray with c
 
 | Part | Main dimensions (mm) |
 | --- | --- |
-| Base tray | Outside 92 × 64 (112 long with the ears), floor 2.5, side walls to 10 above the floor top plus a 2 mm seam lip (inner 0.9); connector wall 3.0 and its corners full height to 20 |
+| Base tray | Outside 92 × 64 (104 long with the ears), floor 2.5, side walls to 10 above the floor top plus a 2 mm seam lip (inner 0.9); connector wall 3.0 and its corners full height to 20 |
 | Hood | Outside 92 × 64, top 22.5 above the floor top, top 2.5 thick, top edges R1.5, vertical corners R3; skirt 0.9 over the lip with 0.2 gap |
 | Corner posts | 8 × 8, inserts Ø4.0 × 6.7 deep from the post tops (20 above the floor); XT30 corner merged with the XT30 collar; DE-9 corner hangs from 13.3 above the floor on a 45° gusset, insert hole open at the bottom |
 | Cover screws | ISO 10642 M3 × 8 countersunk, 90° countersink about Ø7.0 in the hood top, Ø3.4 clearance |
 | Connector wall | XT30 pocket 10.55 × 5.25 through wall and collar (centre Z −16.3, Y 14.5), collar 5 mm deep with R2 edges; DE-9 recess 31.6 × 13.2 × 1.0, cutout 19.9 × 11.5, holes Ø3.4 at 25.0, nut pockets 5.6 across flats × 1.0 deep from the inner face |
 | Labels | Raised 0.6: "12V" (5 mm) below the XT30, "INSTR" (4 mm) below the DE-9 |
 | Vents | 2 rows × 5 slots per long side, 10 × 1.5, 2 mm ribs, 12.5 and 16.5 above the floor top |
-| Ears | 4 × (11 × 14 × 3) off both short ends, slots 5.4 × 1.9 for 4.8 mm ties |
+| Ears | 4 × (6 out × 10 wide × 2.5, flush with the floor underside and the side faces) off both short ends, slots 5.4 × 1.9 for 4.8 mm ties, 2 mm from the wall face |
 
 - Units: millimetres. Layout frame: X from the outer face of the connector wall, Y up from the floor top, Z across.
 - Clash check in Fusion: no intersection with the holders, boards or connectors, except 0.3 mm³ with the XT30 reference model at its top face (model tolerance) and 0.5 mm³ with a small part of the oversized UBEC reference model at the far post on the MAX490 side.
