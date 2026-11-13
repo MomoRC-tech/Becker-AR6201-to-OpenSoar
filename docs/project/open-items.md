@@ -65,7 +65,7 @@ Inputs still needed before the housing can be modelled. Selected rules: [housing
 
 | # | Item | What is needed | How it is closed |
 | :-: | --- | --- | --- |
-| 4 | Holders | Print and fit the [UBEC carrier](../hardware/housing.md#ubec-carrier): check end solder clearance, 19 mm support, tie threading and actual tie-head size, hood clearance, support-free screw-seat bridges, M2.5 × 8 head/driver access and thread holding. Choose the ferrite-ring retention and a glue that holds on PETG (ESP32 holder, XT30) | Owner / fit test; remaining selections separately |
+| 4 | Holders | Slice, print and fit the [UBEC carrier](../hardware/housing.md#ubec-carrier): check support placement/removal beneath the four screw-seat pads, end solder clearance, 19 mm support, tie threading and actual tie-head size, hood clearance, M2.5 × 8 head/driver access and thread holding; check the base's R1 post roots. Choose the ferrite-ring retention and a glue that holds on PETG (ESP32 holder, XT30) | Owner / fit test; remaining selections separately |
 | 14 | Internal wiring details | Internal wire type and gauge; tie-down points (including for R-B1 and R-D) and service loops | Owner selection |
 
 ### 2.4 Measurements

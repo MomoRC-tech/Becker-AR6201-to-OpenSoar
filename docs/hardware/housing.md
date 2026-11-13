@@ -148,12 +148,12 @@ Dimensions in the installed layout frame; owner measurements and Fusion checks: 
 | Carrier plate | 1.5 mm thick, underside at 9.2; only a 19 mm length supports the UBEC, X 43.65–62.65 |
 | Solder clearance | No carrier under the PCB for 6.25 mm from the jumper end and 8.75 mm from the output end; connecting arms run outside its outline. The attached leads pass through these open ends |
 | Four mounting centres | X 29.7 / 64.5, Z 10.8 / 32.4; 34.8 × 21.6 mm hole pattern |
-| Carrier screw seats | 7.5 mm above the floor, bearing underneath on the MAX490 at 6.1; Ø2.8 clearance holes. Open Ø5.2 head pockets keep raised heads below the UBEC; modelled head envelope Ø4.5 × 2.5 |
+| Carrier screw seats | Open, flat pads without raised pocket lips; 7.5 mm above the floor, bearing underneath on the MAX490 at 6.1; 1.4 mm pad thickness, Ø2.8 clearance holes. Head clearance allowance Ø4.5 × 2.5; screw reference solids omitted from the assembly |
 | Shared screws | 4 × M2.5 × 8 raised-head metal screws, directly into PETG; 5.0 mm engagement below the MAX490. Screw tips stop 1.0 mm above the pilot-hole bottoms |
-| Floor posts | Ø6.2 × 4.5 high, Ø2.2 pilot holes 6.0 deep, leaving 1.0 mm of floor beneath. The two outer posts join the side wall through short solid webs |
+| Floor posts | Ø6.2 × 4.5 high, Ø2.2 pilot holes 6.0 deep, leaving 1.0 mm of floor beneath. The two outer posts join the side wall through short solid webs; the two inner posts have R1 fillets at the floor |
 | Cable ties | 2 × 2.5 mm-wide ties, about 1.0 mm thick; centres X 47.5 and 58.5. Four 3.2 × 1.6 slots, R0.3 corners and R0.2 top entries; underside channels 0.5 deep leave 1.0 mm of plate beneath the UBEC |
 | Tie heads | Place beside the UBEC on the housing-wall side, not on top; cut off the tails. The assembly includes an estimated 4 × 4 × 3 head envelope |
-| Printing | Print the carrier with its UBEC contact face down, as in the 3MF. The four lowered screw seats point up; their roofs bridge at most 5.2 mm. No supports intended |
+| Printing | Print the carrier with its UBEC contact face down, as in the 3MF. Add support beneath all four projecting screw-seat pads: their undersides start 3.2 mm above the bed, with 5.0 mm overhangs at the jumper end and 6.2 mm at the output end. Print the base floor down; the post-root fillets rise with it |
 
 - Fit the MAX490 on the floor posts, place the carrier over it, and tighten the four shared screws gently.
 - Thread the ties through the underside channels before placing the UBEC; check the end solder joints clear the plate, then tighten only enough to hold the module without deforming it.
