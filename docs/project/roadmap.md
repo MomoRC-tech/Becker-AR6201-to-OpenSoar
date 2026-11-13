@@ -27,7 +27,7 @@ Related: ❓ [Open items](open-items.md) · 🎯 [Requirements](../design/requir
 | WP2 Interfaces and protocol | ⏸️ Driver research done ([Becker driver](../research/becker-driver.md)) | Matching radio protocol reference or independent captures | Manual, settings, framing and reply rules confirmed |
 | WP4 Driver plan | ⏸️ Send defect analysed | After hardware: counted-send fix and caller/state/UI mapping | One small change and regression test per step |
 | WP5 Host tests | ⏸️ Send regression only ([review](../research/reviews/2026-11-08-becker-send.md)) | After WP4 scope is approved | Framing, state, reply and reconnect cases pass |
-| WP6 Bridge firmware | ⏸️ Planned | After WP3 and WP5 | Radio path byte-exact, single owner, navigation unaffected |
+| WP6 Bridge firmware | ⏸️ Planned | After WP3 and WP5, assess Wi-Fi link monitoring ([R10](../design/requirements.md#requirements)) during firmware planning | Radio path byte-exact, single owner, navigation unaffected. Verify link monitoring if included in the approved scope |
 | WP8 Aircraft integration | ⬜ Later | Needs verified hardware and separate approval | Installation, protection and approval requirements met |
 
 Work loop for each step:
