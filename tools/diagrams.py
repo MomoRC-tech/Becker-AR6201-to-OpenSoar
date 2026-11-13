@@ -234,10 +234,10 @@ s.legend(255, ["data", "sgnd", "gnd", "shield", ("v33", "3.3 V")], "Twisted pair
 s.save("wiring-becker.svg")
 # ------------------------------------------------------- README overview (no pins)
 s = Svg(900, 345, "What the bridge does",
-        "Vario Zander ZS1 sends flight data and collision warning Classic FLARM sends traffic to the Wi-Fi bridge. "
+        "Glider computer Zander ZS1 sends flight data and collision warning Classic FLARM sends traffic to the Wi-Fi bridge. "
         "The radio Becker AR6201 exchanges standby frequency and status with the bridge in both directions. "
         "The bridge connects to the navigation app OpenSoar on Android over Wi-Fi.")
-s.box(20, 20, 300, 74, ["Vario:", "Zander ZS1"], ["sends flight data"])
+s.box(20, 20, 300, 74, ["Glider computer:", "Zander ZS1"], ["sends flight data"])
 s.box(20, 113, 300, 74, ["Collision warning:", "Classic FLARM"], ["sends traffic"])
 s.box(20, 206, 300, 74, ["Radio:", "Becker AR6201"], ["standby frequency in, status out"])
 s.box(410, 80, 170, 140, ["Wi-Fi bridge:", "ESP32"])

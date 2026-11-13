@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="900" height="345" viewBox="0 0 900 345" role="img" aria-labelledby="title desc">
 <title id="title">What the bridge does</title>
-<desc id="desc">Vario Zander ZS1 sends flight data and collision warning Classic FLARM sends traffic to the Wi-Fi bridge. The radio Becker AR6201 exchanges standby frequency and status with the bridge in both directions. The bridge connects to the navigation app OpenSoar on Android over Wi-Fi.</desc>
+<desc id="desc">Glider computer Zander ZS1 sends flight data and collision warning Classic FLARM sends traffic to the Wi-Fi bridge. The radio Becker AR6201 exchanges standby frequency and status with the bridge in both directions. The bridge connects to the navigation app OpenSoar on Android over Wi-Fi.</desc>
 <rect width="900" height="345" fill="white"/>
 <g font-family="Arial,sans-serif">
 <path d="M320 57 L365 57 L365 110 L410 110" stroke="#37474f" stroke-width="2.5" fill="none"/>
@@ -20,7 +20,7 @@
 <rect x="20" y="206" width="300" height="74" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
 <rect x="410" y="80" width="170" height="140" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
 <rect x="680" y="122" width="200" height="56" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
-<text x="170.0" y="44.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">Vario:</text>
+<text x="170.0" y="44.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">Glider computer:</text>
 <text x="170.0" y="62.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">Zander ZS1</text>
 <text x="170.0" y="80.0" font-size="12" fill="#475569" text-anchor="middle">sends flight data</text>
 <text x="170.0" y="137.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">Collision warning:</text>
