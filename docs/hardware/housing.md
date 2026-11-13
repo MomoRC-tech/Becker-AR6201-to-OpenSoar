@@ -48,7 +48,7 @@ Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md)
 | Access from outside | Connectors only. UBEC jumper and the ESP32 EN/BOOT buttons only with the hood off, Micro-USB only with the hood and the ESP32 USB cap off; no USB opening in the hood |
 | Soldering | Every solder joint reachable with all PCBs fitted and the cover off, except the MAX490 header joints under the UBEC bridge: reachable with the bridge lifted |
 | Connector wall | XT30 and DE-9 together on one short side. The wall ends at the inside top like the corner posts; the hood top runs over it to the outer face, and the step lip continues up the wall's two vertical end edges where the hood side walls meet it |
-| XT30 | Inserted front first from inside; press fit on the flat faces, with clearance at the chamfered corners; the raised markings stop against the inner wall face, so unplugging cannot pull it out; glued in, so plugging-in cannot push it into the housing |
+| XT30 | Inserted front first from inside; press fit on the flat faces; the pocket follows the two chamfered corners with 0.2 mm clearance; the raised markings stop against the inner wall face, so unplugging cannot pull it out; glued in, so plugging-in cannot push it into the housing |
 | DE-9 | Male connector (pins) on the housing, mounted from the front: flange set flush into a recess in the outer wall face, rear body through a rectangular cutout; jackposts (UNC 4-40) through flange and wall into nuts in printed pockets inside, wall thinned locally around the nuts if the thread is too short; the female cable connector locks onto the jackposts |
 | Walls | 2.0 mm side walls; 2.5 mm floor and cover; 3.0 mm connector wall (DE-9 screws, XT30 press fit); at least 2.0 mm of material around each M3 heat-set insert |
 | Edges | Rounded outside edges and corners, no sharp corners: vertical corners R6 (inner R4, keeping the 2 mm walls), hood top edges R3 |
@@ -89,7 +89,7 @@ Values for PETG on the P1S with a 0.4 mm nozzle and 0.2 mm layers. Values marked
 | Slot for a PCB edge | PCB thickness + 0.10 mm for a friction hold (RS-232 holder: 1.25 mm slot for the 1.15 mm PCB); + 0.15 mm slides in with minor play |
 | Press fit (XT30) | Pocket = measured body (10.55 × 5.25 mm), no allowance; the print undersize gives the press fit (fit test 2, printed flat: holds ten unplugging pulls, pushes out firmly, no damage) |
 | M2.5 screw directly into PETG | Pilot hole Ø2.2 mm (fit test 2), at least 5 mm thread engagement, at least 2 mm of material around the hole |
-| DE-9 front mount (printed flat) | Flange recess 31.6 × 13.2 × 1.0 mm (snug, flush); rear-body cutout 19.9 × 11.5 mm; flange holes Ø3.4 mm; nut pocket 5.6 mm across flats for the 5.45 mm nuts |
+| DE-9 front mount (printed flat) | Flange recess 31.6 × 13.2 × 1.0 mm (snug, flush); rear-body cutout 19.9 × 11.5 mm (rectangle on the fit-test panel; D-shaped in the housing body); flange holes Ø3.4 mm; nut pocket 5.6 mm across flats for the 5.45 mm nuts |
 | M3 screw clearance hole | Ø3.4 mm (fit test: Ø3.3 is the smallest free hole; Ø3.4 leaves alignment margin for the four cover screws) |
 | Smallest feature | 0.8 mm (two extrusion lines) |
 | Overhangs | Up to 60° from vertical without support; bridges up to 10 mm |
@@ -247,7 +247,7 @@ Use the [STEP model](../../cad/reference/xt30u-m/xt30u-m.step) of the AMASS XT30
 
 - Reference for the flange and rear side: [NorComp 171-009-203 STEP](../../cad/reference/norcomp-171-009-203/171-009-203.STEP) (S43), the female variant; the delivered male has the same flange (31 × 12.6 mm) and rear side, its D shell measures 17.85 × 9.2 mm.
 - Male connector (pins) on the housing, female cable connector with solder cups and screw locking.
-- Front mount: flange in a flush recess on the outer face, rear body (19.3 × 10.9 mm) through a rectangular cutout; the cable connector seats fully because no wall is in front of the flange.
+- Front mount: flange in a flush recess on the outer face, rear body (19.3 × 10.9 mm) through a D-shaped cutout that follows its tapered sides; the cable connector seats fully because no wall is in front of the flange.
 - Backshell and strain relief on the cable side.
 - Cable-side clearance references: the same [NorComp 171-009-203 STEP](../../cad/reference/norcomp-171-009-203/171-009-203.STEP) for the female cable connector (S43), and the [NorComp 973-009-010R011 STEP](../../cad/reference/norcomp-973-009-010R011/973-009-010R011.STEP), a straight plastic backshell with 4-40 thumbscrews, about 31.5 × 38.1 × 15.2 mm (S52).
 - Standard 4-40 jackposts (stud length about 4.8 mm, estimate; not delivered yet): through 1.0 mm flange and 2.0 mm wall, the nut pocket is sunk into the inner face so the nut gets full thread.
