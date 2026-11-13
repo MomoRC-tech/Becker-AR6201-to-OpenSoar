@@ -15,6 +15,7 @@ First housing prototype on [layout v4](../layout-v4/README.md): base tray with c
 
 | File | Use |
 | --- | --- |
+| [housing-assembly.f3d](housing-assembly.f3d) | Full editable Fusion assembly with the [measured UBEC](../../reference/ubec-hobbywing-3a/README.md), [measured ferrite ring](../../../docs/hardware/housing.md#contents) and a local copy of the MAX490 board. Open with *File › Open › Open from my computer*. |
 | `housing-base.f3d`, `housing-hood.f3d` | Fusion archives of the two parts; open with *File › Open › Open from my computer* |
 | `housing-base.3mf`, `housing-hood.3mf`, `housing-logo-insert.3mf` | Print-ready meshes, Z up: base floor down; hood and logo insert top down in the same coordinates. Load hood and logo insert together as one object with two parts (dark grey filament for the logo) |
 | `housing-logo-insert.f3d`, `housing-logo-insert.step` | Logo and "7-20V" insert as its own part |
@@ -34,7 +35,7 @@ First housing prototype on [layout v4](../layout-v4/README.md): base tray with c
 
 - Colours in Fusion and STEP: base dark green, hood a lighter green. Logo insert dark grey.
 - Units: millimetres. Layout frame: X from the outer face of the connector wall, Y up from the floor top, Z across.
-- Clash check in Fusion: no intersection with the holders, boards or connectors, except 0.3 mm³ with the XT30 reference model at its top face (model tolerance) and 0.3 mm³ with a small part of the oversized UBEC reference model at the far post on the MAX490 side.
-- Mating plug: the [XT30PB-F](../../reference/amass-xt30-family/README.md) STEP model sits plugged onto the XT30 on the outside of the connector wall (reference component `XT30 female (reference)` in the Connector side group): mating face against the male front face (0.5 mm outside the wall), centred on the pocket, turned 180° about the plug axis from the first placement so the polarity matches the male, solder tails pointing away from the box; no intersection with the base, hood, connector plate, DE-9 or XT30 male (Fusion check). Fusion document only; not exported to the housing files.
-- Placeholders: inside height 20 mm and the UBEC, MAX490 and ring positions come from layout v4 before the parts were measured. MAX490 posts, UBEC bridge and wire routing are not modelled; the hood is flat (no lower ring area or cut-off corner yet).
+- Fusion archive check: reopened with no external references. All 65 occurrences matched the source assembly, including the MAX490 board’s 150 bodies and placement after unlinking. Physical fit has not been tested.
+- Mating plug: the [XT30PB-F](../../reference/amass-xt30-family/README.md) STEP model sits plugged onto the XT30 on the outside of the connector wall (reference component `XT30 female (reference)` in the Connector side group): mating face against the male front face (0.5 mm outside the wall), centred on the pocket, turned 180° about the plug axis from the first placement so the polarity matches the male, solder tails pointing away from the box; no intersection with the base, hood, connector plate, DE-9 or XT30 male (Fusion check). Included in the full Fusion assembly.
+- Layout: inside height 20 mm. The UBEC and ring use measured dimensions. MAX490 posts, UBEC bridge and wire routing are not modelled; the hood is flat (no lower ring area or cut-off corner yet).
 - Print checks: printed floor down, the DE-9 cutout top is a 19.9 mm bridge and the XT30 pocket top a 10.55 mm bridge (both were fit-tested printed flat, and the rule limit is 10 mm). The connector face has 2.7 mm of wall between the XT30 pocket and the DE-9 recess; the XT30 collar stays 0.8 mm clear of the nearer DE-9 nut pocket.

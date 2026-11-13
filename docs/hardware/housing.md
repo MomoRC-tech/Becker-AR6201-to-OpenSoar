@@ -150,8 +150,8 @@ Sizes from owner measurements, seller listings or datasheets; see the source col
 | ESP32 board (AZ-Delivery, DevKitC V4 layout) | 1 | 48.5 × 28.5 base PCB, excluding antenna | S40 | Antenna end free; Micro-USB at the other end |
 | RS-232 module (Hailege H-1-0290) | 2 | 9.2 × 15.6 | S38 | Edge pads, soldered wires |
 | RS-422 board (MAX490) | 1 | 50 × 27 | S34 | Screw terminals A/B/Y/Z on one edge, header on the other |
-| UBEC (Hobbywing 3A) | 1 | 43 × 17 × 7 (catalog); body about 35 × 12 × 5 | S14 | Plus jumper and leads |
-| UBEC ferrite ring | 1 | Reserve 30 × 30 × 15 keep-out (estimate from the product photo, ring with wire turns) | — | On the UBEC 5 V output lead, as shipped; resize once measured |
+| UBEC (Hobbywing 3A) | 1 | PCB and cover dimensions in the [measured model notes](../../cad/reference/ubec-hobbywing-3a/README.md) | Owner measurements | Allow extra space for the jumper and leads. |
+| UBEC ferrite ring | 1 | Ø14.2 outside × 5.4 axial, 2.9 radial wall (Ø8.4 bore calculated) | Owner measurements | On the UBEC 5 V output lead. Reserve 30 × 30 × 15 for the ring and wire turns pending measurement of the wired envelope. |
 | XT30 male, panel | 1 | 10.55 × 5.25 body; 10.8 × 5.66 over the raised markings at the solder-cup end (owner measurement) | S51 | Press-fit pocket ([section 4](#connectors)) |
 | DE-9 male, panel | 1 | Flange 31 × 12.6 × 1.0, holes Ø3.1 at 25.0 spacing; D shell 17.85 × 9.2 outer; rear body behind the flange 19.3 × 10.9 × 5.0 deep, 8.0 including the solder cups (owner measurement) | S43 | Flange and rear side as the female plug model |
 | Resistors (divider, pull-ups) | 5 | Small | — | R-B1, R-B2, R-Z, R-F, R-D |
@@ -267,7 +267,7 @@ Use the [STEP model](../../cad/reference/xt30u-m/xt30u-m.step) of the AMASS XT30
 | Column | Parts, from the connector wall |
 | --- | --- |
 | ESP32 side (−Z) | XT30 low in the wall (body from 3.9 above the floor, collar standing on the floor); in the housing body 4.2 mm further from the side wall than in layout v4 (body from 7.0 inside the inner side-wall face, so the corner post keeps 2.0 mm around its insert with the screw 5 mm from the side face), with a smaller, rounded collar · ESP32 (USB edge X = 27, centre Z = −10.5, antenna end X = 81) with both RS-232 boards on its USB clamp; the clamp starts 3.8 mm behind the XT30 body |
-| MAX490 side (+Z) | DE-9, in the housing body 4 mm closer to the XT30 than in layout v4 (centre Z 8.5), so its nut pocket clears the corner post · in the housing body this side is 3 mm wider than in layout v4, and the MAX490 and UBEC sit 3 mm further out (MAX490 board Z 8–35) · MAX490 on the floor (terminal edge X = 17, PCB underside 4.5) with the UBEC on a bridge 10 mm above it from X = 28, jumper toward the wall · ferrite ring on edge behind the UBEC output end (X 83–89) |
+| MAX490 side (+Z) | DE-9, in the housing body 4 mm closer to the XT30 than in layout v4 (centre Z 8.5), so its nut pocket clears the corner post · in the housing body this side is 3 mm wider than in layout v4, and the MAX490 and UBEC sit 3 mm further out (MAX490 board Z 8–35) · MAX490 on the floor (terminal edge X = 17, PCB underside 4.5) with the UBEC on a bridge 10 mm above it from X = 28, jumper toward the wall · ferrite ring on edge behind the UBEC output end |
 
 - **ESP32 holder:** tested USB block B (orange in Fusion), antenna cap A without foot ears (31.9 wide, blue), and a USB clamp UR carrying both RS-232 boards (green). The boards sit turned 90°, one behind the other across the ESP32 between its header rows, 13.8 above the floor (rails to 16.1). One M2.5 screw removes the clamp with both boards.
 - **Clamp arm:** a 6 × 2 mm arm runs from the clamp's free end over the ESP32 module into a short tunnel on top of the antenna cap's spring bridge. It only locates the free end, without loading the spring bridge (cap top 15.0 above the floor). Gaps, sized for print tolerances and the ~0.4 mm lift of the bridge once the ESP32 is fitted:
@@ -283,15 +283,15 @@ Use the [STEP model](../../cad/reference/xt30u-m/xt30u-m.step) of the AMASS XT30
 - **Assembly order:** solder the RS-232 wires on the bench, slide the boards into the clamp, fit the ESP32, then screw the clamp on.
 - **UBEC bridge:** covers the MAX490 header joints and must lift off for soldering there; the UBEC jumper stays reachable from above with the hood off.
 - **Wiring:** XT30 wires run over the USB clamp to the UBEC input. With the XT30 low, its solder cups end level with the ESP32 USB screw block (top 9.25, 0.3 mm behind the cups), so the wires must bend up right at the cups; not modelled yet.
-- **Length driver:** the ferrite ring; the ESP32 column ends 8 mm before the ring's far end.
+- **Ferrite ring placement:** in the housing prototype the measured ring stands on the floor at X 83–88.4. The wire turns still need clearance.
 - **Behind the connector wall:** 12–16 mm free depth before the ESP32 USB block, the USB clamp and the MAX490 (Fusion check), too short for a panel fuse holder; F1 sits in the harness ([protection](power.md#protection)).
-- **Corner posts:** in the housing body the three posts away from the XT30 are clear of all parts (Fusion intersection check), including the ferrite-ring placeholder, which ends 3.3 mm before the far post on the MAX490 side.
+- **Corner posts:** the measured ferrite ring clears the far post on the MAX490 side in Fusion.
 - **Width:** the housing body is 67 mm wide, 3 mm more than layout v4 on the MAX490 side. With 2.0 mm side walls the antenna cap sits 1.0 mm and the MAX490 board 0.5 mm from the inner side-wall faces; the gap between the ESP32 and MAX490 columns is 3 mm larger than in layout v4.
 - **Hood shape:** rounded top edges, a cut-off rear corner on the MAX490 side and a lower hood over the ring area. A curved hood saves little: the tallest items (ESP32 header wire rows, UBEC) sit close to both side walls.
 - **Fit test:** the first print of holder v3 fits (clamp printed top up with support under the arm and slot plate; arm tilts into the tunnel).
-- **Not modelled yet:** wire routing, MAX490 posts, UBEC bridge, ring wire turns. The UBEC model (24 × 43 × 8) is larger than the catalog size (17 × 43 × 7), so the real unit may free a few millimetres.
+- **Not modelled yet:** wire routing, MAX490 posts, UBEC bridge, ring wire turns.
 
-Components in the Fusion layout:
+Components in the Fusion layout v4. The [housing prototype archive](../../cad/housing/housing-body-v1/README.md) uses the measured UBEC and ferrite ring and embeds the MAX490 board.
 
 | Component | Source |
 | --- | --- |

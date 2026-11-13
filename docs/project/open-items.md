@@ -72,7 +72,7 @@ Inputs still needed before the housing can be modelled. Selected rules: [housing
 
 | # | Item | What is needed | How it is closed |
 | :-: | --- | --- | --- |
-| 1 | Part sizes | Compare the ESP32 with its [CAD reference](../hardware/housing.md#contents): solder-joint height underneath, header spacing, overall length including antenna and USB protrusion, overall height with headers, USB-plug and wiring clearance; measure RS-232 assembled height on both sides and soldered-wire clearance against its CAD reference on the same page; measure the RS-422 board's hole positions, PCB thickness and screw-terminal height against its CAD reference; measure the DE-9 jackpost stud length once delivered; measure the UBEC with leads; measure the UBEC ferrite ring (outer and inner diameter, thickness, envelope with its wire turns) to replace its placeholder | Bench measurement |
+| 1 | Part sizes | Compare the ESP32 with its [CAD reference](../hardware/housing.md#contents): solder-joint height underneath, header spacing, overall length including antenna and USB protrusion, overall height with headers, USB-plug and wiring clearance; measure RS-232 assembled height on both sides and soldered-wire clearance against its CAD reference on the same page; measure the RS-422 board's hole positions, PCB thickness and screw-terminal height against its CAD reference; measure the DE-9 jackpost stud length once delivered; measure the UBEC and ferrite ring envelopes with leads and wire turns | Bench measurement |
 
 ---
 
