@@ -18,6 +18,7 @@ The roadmap is the single work queue. A listed package, proposed ADR or recommen
 - Do not silently expand an analysis task into firmware implementation, flashing, hardware changes or aircraft work.
 - Reuse existing architecture/tools; review file-level licenses before copying code. Do not select a repository license without the owner's decision.
 - Keep the board references embedded as local components in the standalone Fusion housing assembly.
+- Always save the Fusion design and verify that the save succeeded before exporting.
 - For every Fusion cut, explicitly select and verify the intended bodies under **Objects to Cut**, or set and verify `participantBodies` in the API. Preserve or recheck those targets when editing an existing cut. Avoid **Auto-Select** and visibility-based targeting.
 
 ---
