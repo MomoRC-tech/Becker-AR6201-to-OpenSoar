@@ -7,7 +7,7 @@
 Mechanical design of the bridge: what goes inside, part sizes, connectors on the housing, internal layout.
 
 > [!NOTE]
-> **Status:** internal layout selected in Fusion ([section 5](#layout)); first housing-body prototype modelled, not printed ([section 2.3](#fit-test)). Carrier and base exports include flush seats, offset axes for the 12 mm screws and a 0.4 mm closed floor beneath the pilots ([section 2.4](#ubec-carrier)). Remaining fit checks: [open items](../project/open-items.md#housing).
+> **Status:** internal layout selected in Fusion ([section 5](#layout)); first housing-body prototype modelled, not printed ([section 2.3](#fit-test)). Carrier and base exports include flush seats, offset axes for the 12 mm screws and a 0.4 mm closed floor beneath the pilots ([section 2.4](#ubec-carrier)). Upright ferrite cradle selected, not yet modelled ([section 2.5](#ferrite-cradle)). Remaining inputs and fit checks: [open items](../project/open-items.md#housing).
 
 📑 **On this page:** <kbd>[1 · 🎯 Requirements](#requirements)</kbd> <kbd>[2 · 📐 Design rules](#rules)</kbd> <kbd>[3 · 📏 Contents and sizes](#contents)</kbd> <kbd>[4 · 🔌 Connectors on the housing](#connectors)</kbd> <kbd>[5 · 🧩 Internal layout](#layout)</kbd>
 
@@ -161,7 +161,18 @@ Exported geometry, in the installed layout frame; owner measurements and Fusion 
 - Keep the jumper accessible. Leave enough slack in the attached leads to lift the carrier after removing the four screws; the MAX490 is also released when those screws come out.
 - Work through the carrier, tie-head and screw checks in [open items](../project/open-items.md#housing).
 
-### 2.5 Later optimizations
+<a id="ferrite-cradle"></a>
+
+### 2.5 Ferrite cradle
+
+> [!TIP]
+> Hold the ferrite upright in a cradle integral with the base, retained by two 2.5 mm-wide cable ties (S54).
+
+- Support the ring with a rounded saddle and low side stops; leave reliefs for the wire turns.
+- Anchor both ties to the base so the ring stays captured with the hood removed. Keep clearance to the hood rather than using it to compress the wires.
+- Size the cradle around the [measured wound envelope](#contents). Tie routing and fit checks: [open items](../project/open-items.md#housing).
+
+### 2.6 Later optimizations
 
 - **DE-9 cable tie-down:** a lug below the DE-9 that sticks out past the mated plug, so the cable can be cable-tied to it. The cable then cannot lever the connector out of the housing.
 - **Status LED:** a dedicated LED in a hole drilled into the finished hood, if one is ever wanted.
@@ -180,7 +191,7 @@ Sizes from owner measurements, seller listings or datasheets; see the source col
 | RS-232 module (Hailege H-1-0290) | 2 | 9.2 × 15.6 | S38 | Edge pads, soldered wires |
 | RS-422 board (MAX490) | 1 | 50 × 27 | S34 | Screw terminals A/B/Y/Z on one edge, header on the other |
 | UBEC (Hobbywing 3A) | 1 | PCB and cover dimensions in the [measured model notes](../../cad/reference/ubec-hobbywing-3a/README.md) | Owner measurements | Allow extra space for the jumper and leads. |
-| UBEC ferrite ring | 1 | Ø14.2 outside × 5.4 axial, 2.9 radial wall (Ø8.4 bore calculated) | Owner measurements | On the UBEC 5 V output lead. Reserve 30 × 30 × 15 for the ring and wire turns pending measurement of the wired envelope. |
+| UBEC ferrite ring | 1 | Bare core: Ø14.2 outside × 5.4 axial, 2.9 radial wall (Ø8.4 bore calculated). Including wire turns: Ø17.5 outside × 9.5 axial | Owner measurements; S54 | On the UBEC 5 V output lead; upright in the [integral cradle](#ferrite-cradle). Allow separately for the entering and leaving leads. |
 | XT30 male, panel | 1 | 10.55 × 5.25 body; 10.8 × 5.66 over the raised markings at the solder-cup end (owner measurement) | S51 | Press-fit pocket ([section 4](#connectors)) |
 | DE-9 male, panel | 1 | Flange 31 × 12.6 × 1.0, holes Ø3.1 at 25.0 spacing; D shell 17.85 × 9.2 outer; rear body behind the flange 19.3 × 10.9 × 5.0 deep, 8.0 including the solder cups (owner measurement) | S43 | Flange and rear side as the female plug model |
 | Resistors (divider, pull-ups) | 5 | Small | — | R-B1, R-B2, R-Z, R-F, R-D |
