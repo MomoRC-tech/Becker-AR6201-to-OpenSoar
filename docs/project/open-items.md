@@ -67,6 +67,7 @@ Inputs still needed before the housing can be modelled. Selected rules: [housing
 | :-: | --- | --- | --- |
 | 4 | Holders | Slice, print and fit the [UBEC carrier](../hardware/housing.md#ubec-carrier): check support placement/removal beneath the four screw-seat pads, end solder clearance, 19 mm support, tie threading and actual tie-head size, hood clearance, M2.5 × 8 head/driver access and thread holding; check the base's R1 post roots. Choose the ferrite-ring retention and a glue that holds on PETG (ESP32 holder, XT30) | Owner / fit test; remaining selections separately |
 | 14 | Internal wiring details | Internal wire type and gauge; tie-down points (including for R-B1 and R-D) and service loops | Owner selection |
+| 15 | Raised carrier seats: screw-head clearance | Actual head diameter of the selected M2.5 × 12 screws. At flush seat height, the Ø4.5 mm head allowance overlaps the UBEC edge by 0.05 mm at the rear screw nearest the ESP32 (S53); resolve this before changing the seats | Owner supplies the screw measurement; agree any clearance change separately, then update the carrier, base and exports |
 
 ### 2.4 Measurements
 

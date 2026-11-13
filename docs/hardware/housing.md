@@ -7,7 +7,7 @@
 Mechanical design of the bridge: what goes inside, part sizes, connectors on the housing, internal layout.
 
 > [!NOTE]
-> **Status:** internal layout selected in Fusion ([section 5](#layout)); first housing-body prototype modelled, not printed ([section 2.3](#fit-test)). Design rules, material and wall thickness selected ([section 2](#rules)); remaining inputs: [open items](../project/open-items.md#housing).
+> **Status:** internal layout selected in Fusion ([section 5](#layout)); first housing-body prototype modelled, not printed ([section 2.3](#fit-test)). The 12 mm carrier-screw revision is selected; CAD exports still have the lowered seats and 8 mm screw stack ([section 2.4](#ubec-carrier)). Head clearance is the next input before that CAD revision: [open items](../project/open-items.md#housing).
 
 📑 **On this page:** <kbd>[1 · 🎯 Requirements](#requirements)</kbd> <kbd>[2 · 📐 Design rules](#rules)</kbd> <kbd>[3 · 📏 Contents and sizes](#contents)</kbd> <kbd>[4 · 🔌 Connectors on the housing](#connectors)</kbd> <kbd>[5 · 🧩 Internal layout](#layout)</kbd>
 
@@ -140,7 +140,7 @@ Current models in `cad/housing/` (files: [CAD rule](#rules)):
 > [!TIP]
 > Four raised-head M2.5 screws hold both the carrier and MAX490 board; two small cable ties retain the UBEC. [CAD files and verification](../../cad/housing/ubec-carrier/README.md).
 
-Dimensions in the installed layout frame; owner measurements and Fusion checks: S53.
+Exported geometry, in the installed layout frame; owner measurements and Fusion checks: S53.
 
 | Feature | Dimension / construction |
 | --- | --- |
@@ -154,6 +154,9 @@ Dimensions in the installed layout frame; owner measurements and Fusion checks: 
 | Cable ties | 2 × 2.5 mm-wide ties, about 1.0 mm thick; centres X 47.5 and 58.5. Four 3.2 × 1.6 slots, R0.3 corners and R0.2 top entries; underside channels 0.5 deep leave 1.0 mm of plate beneath the UBEC |
 | Tie heads | Place beside the UBEC on the housing-wall side, not on top; cut off the tails. The assembly includes an estimated 4 × 4 × 3 head envelope |
 | Printing | Print the carrier with its UBEC contact face down, as in the 3MF. Add support beneath all four projecting screw-seat pads: their undersides start 3.2 mm above the bed, with 5.0 mm overhangs at the jumper end and 6.2 mm at the output end. Print the base floor down; the post-root fillets rise with it |
+
+> [!TIP]
+> **Selected next revision:** four M2.5 × 12 raised-head screws and a 0.4 mm closed floor beneath the pilot holes. With screw seats flush at 10.7 mm above the floor, the stack above the posts is 6.2 mm: 5.8 mm screw engagement and 0.8 mm tip clearance in Ø2.2 × 6.6 mm-deep pilots (S53).
 
 - Fit the MAX490 on the floor posts, place the carrier over it, and tighten the four shared screws gently.
 - Thread the ties through the underside channels before placing the UBEC; check the end solder joints clear the plate, then tighten only enough to hold the module without deforming it.
