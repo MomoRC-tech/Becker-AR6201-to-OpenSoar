@@ -181,6 +181,7 @@ Exported geometry, in the installed layout frame; owner measurements and Fusion 
 | Tie fit envelopes | 2.5 mm-wide straps with a 1.0 mm thickness allowance. Estimated 3 × 4 × 4 mm heads staggered on the UBEC-facing side; nominal rear strap-to-wall gap 0.45 mm |
 | Printing | Base floor down, as placed in the 3MF; PETG, 0.4 mm nozzle, 0.2 mm layers. The tie tunnels have short 3.2 mm ceiling spans |
 
+- **Move the ring close to the UBEC (selected):** cut off the servo plug, unwind the turns from the free end, slide the ring along the factory output lead until it sits in the cradle with about 10–15 mm of lead from the UBEC output end, and rewind the same number of turns in the same sense. The UBEC stays closed. Cut the departure leads to length for the junctions.
 - Orient the exposed core sector downward into the saddle. Keep the wire turns out of the seat and side cheeks; the CAD ring shows the bare core, not the windings.
 - Thread both ties through the cradle and ring centre, with their heads on the accessible UBEC side. Tighten only enough to remove movement without squeezing the wires.
 - Check that the ring stays captured with the hood removed. Wire routing, actual tie-head fit and print checks: [open items](../project/open-items.md#housing).
@@ -388,6 +389,7 @@ Use the hideable **Cable harness - routing study** component in the [housing ass
 
 - **Crossings:** each wire crosses the centre channel at most once. The only floor crossing under a board is the ESP32 power pair, lying on the floor at one station.
 - **No floor joints between boards:** junctions and splices are made on the bench and laid in.
+- **Ferrite (selected):** the ring is moved along the UBEC output lead so the approach leads stay short and above the floor ([ferrite cradle](#ferrite-cradle)); the modelled floor loop between UBEC and ring is superseded.
 - **5V-J and GND-J (selected):** inline solder splices with heat-shrink, made on the bench as part of the power harness and laid into the floor bus at the far end of the channel, X about 58–67, near the ferrite. The modelled junction envelopes below still sit mid-channel.
 
 The [revised power-routing assembly](../../cad/housing/housing-body-v1/housing-power-routing.f3d) replaces six wire envelopes from that baseline (S70). The XT30 input pair turns inward at the connector side and crosses toward the UBEC pads on the ESP32 side of the MAX490 terminal block. Both the UBEC-to-ferrite and ferrite-to-junction pairs run near the base plate, with rises at the ends. The [route data](../../cad/housing/housing-body-v1/routing-study.json) gives the waypoints and approximate lengths.
