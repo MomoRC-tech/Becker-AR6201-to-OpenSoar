@@ -17,7 +17,7 @@ The roadmap is the single work queue. A listed package, proposed ADR or recommen
 - Match radio identity and hardware/software revision before choosing wiring or serial parameters. Never substitute candidate defaults for installed settings.
 - Do not silently expand an analysis task into firmware implementation, flashing, hardware changes or aircraft work.
 - Reuse existing architecture/tools; review file-level licenses before copying code. Do not select a repository license without the owner's decision.
-- For Fusion work, follow the `momorc-fusion360-workflow` skill (cut targets, editing, verification). These project rules take precedence:
+- Fusion work requires the `momorc-fusion360-workflow` skill from the owner's skills repository `MomoRC-tech/Momos-AI-Skills-and-plugins`. Check that it is installed before any Fusion edit; if it is missing, install it from that repository or ask the owner, and do not work in Fusion without it. Follow it for cut targets, editing and verification. These project rules take precedence:
   - Keep the board references embedded as local components in the standalone Fusion housing assembly.
   - Always save the Fusion design and verify that the save succeeded before exporting.
 
