@@ -25,8 +25,8 @@ The housing uses [layout v4](../layout-v4/README.md) with a base tray, connector
 | File | Use |
 | --- | --- |
 | [housing-assembly.f3d](housing-assembly.f3d) | Full editable Fusion assembly with a hideable cable-harness component, the [measured UBEC](../../reference/ubec-hobbywing-3a/README.md), [measured ferrite ring](../../../docs/hardware/housing.md#contents) and a local copy of the MAX490 board. Open with *File › Open › Open from my computer*. |
-| [housing-power-routing.f3d](housing-power-routing.f3d) | Standalone Fusion v12 archive with power and signal routing on the hideable lanes (S76–S78), including the Becker pairs and on-pad pull-ups. Open it to review the current harness. |
-| `housing-base.f3d`, `housing-hood.f3d` | Fusion archives of the two parts; the base includes the ESP32 USB support, MAX490 floor posts, ferrite cradle and two cable saddles. Open with *File › Open › Open from my computer* |
+| [housing-power-routing.f3d](housing-power-routing.f3d) | Standalone Fusion v13 archive with routing (S76–S78) and the [open floor guide ribs](../../../docs/hardware/housing.md#floor-guide) (S79). Open it to review the current harness and base fit. |
+| `housing-base.f3d`, `housing-hood.f3d` | Fusion archives of the two parts; the base includes the ESP32 USB support, MAX490 floor posts, ferrite cradle, two cable saddles and the v13 floor guide ribs. Open with *File › Open › Open from my computer* |
 | `housing-base.3mf`, `housing-hood.3mf`, `housing-logo-insert.3mf` | Print-ready meshes, Z up: base floor down; hood and logo insert top down in the same coordinates. Load hood and logo insert together as one object with two parts (dark grey filament for the logo) |
 | `housing-logo-insert.f3d`, `housing-logo-insert.step` | Logo and "7-20V" insert as its own part |
 | `housing-base.step`, `housing-hood.step` | Solid models in the layout frame |

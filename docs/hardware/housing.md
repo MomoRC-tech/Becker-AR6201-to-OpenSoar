@@ -443,9 +443,25 @@ Junction hardware and attachment are tracked in the [housing open items](../proj
 - Tie passage across the saddle: 3.2 × 1.6 mm, bottom 3.4 mm above the housing floor; 1.0 mm roof below the trough. Rounded edges R0.2.
 - Print with the base floor down, PETG, 0.4 mm nozzle and 0.2 mm layers. The tie-passage roof spans 3.2 mm.
 
+<a id="floor-guide"></a>
+
+### 5.2 Open floor guide
+
+Three pairs of integral ribs keep the floor wires in the route corridor and leave the side exits and both bench splices accessible (S79).
+
+| Feature | Layout-frame dimensions (mm) |
+| --- | --- |
+| Rib pairs | X 22–25, 44–47 and 51–54 |
+| ESP32-side ribs | Z 0.0–0.9 |
+| MAX490-side ribs | Z 9.3–10.2 |
+| Rib height and ends | 2.5 above the interior floor at Y −3.0. Corners clipped by 0.2 in plan |
+| Clear width between ribs | 8.4 |
+
+Print the base floor down in PETG on the P1S with the 0.4 mm nozzle and 0.20 mm layers. Lay the wires in from above. Check access to the side exits and splices with the actual bundle during the [base fit-print](../project/open-items.md#housing).
+
 <a id="harness-cutting"></a>
 
-### 5.2 Harness cutting table
+### 5.3 Harness cutting table
 
 Use the [current route data](../../cad/housing/housing-body-v1/routing-study.json) and the [build order](../research/reviews/2026-11-14-wire-routing.md#build-order). Lengths are in millimetres. A plus sign separates routed segments or resistor leads.
 
