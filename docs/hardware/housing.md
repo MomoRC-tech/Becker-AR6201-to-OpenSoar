@@ -420,7 +420,7 @@ Use the hideable **Cable harness - routing study** component in the [housing ass
 
 - **Clearance:** highest power wire Y 16.55, 3.45 mm under the hood; power wires touch only their end pads, joint allowances and splice envelopes (S77).
 
-**Wire colours (S71):** ground black, 12 V red, 5 V orange, 3.3 V violet, and logic blue. Keep both insulated leads of each resistor branch the same colour. The R-B1 series signal stays blue, the R-B2 ground branch stays black, and the R-D, R-Z and R-F pull-up branches stay violet.
+**Wire colours (S81)** — red for 12 V, orange for 5 V, pink for 3.3 V and black for ground. Use the individual signal colours in the [cutting table](#harness-cutting). Keep the RO signal blue on both sides of R-B1.
 
 <a id="signals-on-lanes"></a>
 
@@ -436,28 +436,21 @@ Use the hideable **Cable harness - routing study** component in the [housing ass
 
 Junction hardware and attachment are tracked in the [housing open items](../project/open-items.md#housing).
 
-**Two integral open saddles in the base:** no wire runs through them since the power re-route; whether to keep them is [open item 16](../project/open-items.md#housing).
-
-- Centres at X 12.5, Z 6 / 22 mm in the layout frame.
-- Each saddle: 5.7 × 6 mm footprint, 7.5 mm high; open trough 4.1 mm wide, floor at Y 3 mm, side walls 0.8 mm.
-- Tie passage across the saddle: 3.2 × 1.6 mm, bottom 3.4 mm above the housing floor; 1.0 mm roof below the trough. Rounded edges R0.2.
-- Print with the base floor down, PETG, 0.4 mm nozzle and 0.2 mm layers. The tie-passage roof spans 3.2 mm.
-
 <a id="floor-guide"></a>
 
-### 5.2 Open floor guide
+### 5.2 Floor guide and cable-tie eyes
 
-Three pairs of integral ribs keep the floor wires in the route corridor and leave the side exits and both bench splices accessible (S79).
+The centre-floor guide has three rib pairs. Two pairs have staggered fingers that retain the wires and leave an opening for side entry (S79, S81).
 
 | Feature | Layout-frame dimensions (mm) |
 | --- | --- |
-| Rib pairs | X 22–25, 44–47 and 51–54 |
-| ESP32-side ribs | Z 0.0–0.9 |
-| MAX490-side ribs | Z 9.3–10.2 |
-| Rib height and ends | 2.5 above the interior floor at Y −3.0. Corners clipped by 0.2 in plan |
-| Clear width between ribs | 8.4 |
+| Rib pairs | X 22–25, 44–47 and 51–54. Clear width 8.4 between the ribs. Top 2.5 above the floor |
+| Staggered fingers | Station centres X 23.5 and 52.5. One 1.2-wide finger on each side, with a 2.0 gap along X. Tips reach 4.6 into the channel and overlap by 0.8 in plan |
+| Cable-tie eyes | X 29.5 on the ESP32 side and X 39.5 on the MAX490 side. Use 2.5-wide ties in the 3.2 × 1.6 through-passages. The base floor is closed |
 
-Print the base floor down in PETG on the P1S with the 0.4 mm nozzle and 0.20 mm layers. Lay the wires in from above. Check access to the side exits and splices with the actual bundle during the [base fit-print](../project/open-items.md#housing).
+- Pass each wire under one finger at a time, then straighten it along the channel. Remove it by reversing the sequence. Leave the splice and branch exits accessible.
+- Thread the ties before laying the bundle. Support the wires without pinching the insulation and leave service slack at the terminals.
+- Print the base floor down in PETG on the P1S with a 0.4 mm nozzle and 0.20 mm layers. The finger undersides rise at about 55° from vertical, and the eye roofs bridge 3.2 mm. Fit-print both details with the actual wire and ties. See the [housing checks](../project/open-items.md#housing).
 
 <a id="harness-cutting"></a>
 
@@ -477,29 +470,29 @@ Use the [current route data](../../cad/housing/housing-body-v1/routing-study.jso
 | Bench | UBEC output GND → ferrite → GND-J | Black | UBEC factory | Ferrite / floor | 7.4 + 27.2 | Measure at ends | Fit | Retain factory lead |
 | Bench | DE-9 cups 3–6–7 bridge | Tinned | Tinned jumper | Connector cups | — | — | — | Form at cups |
 | Bench | DE-9 ground bridge → GND-J | Black | 22 AWG PTFE | Wall / floor | 61.8 | Measure | Fit | Calculate |
-| Bench | R-Z at mod1 R1 → R3 | Violet sleeve | DIN0204 axial | Pin top | 2.4 + 2.4 | — | — | Form at pads |
-| Bench | R-F at mod2 R1 → R3 | Violet sleeve | DIN0204 axial | Pin top | 2.4 + 2.4 | — | — | Form at pads |
-| Bench | J2-1 → mod2 R3 | Violet | 26 AWG PTFE | J2 | 34.9 | Measure | Fit | Calculate |
+| Bench | R-Z at mod1 R1 → R3 | Pink sleeve | DIN0204 axial | Pin top | 2.4 + 2.4 | — | — | Form at pads |
+| Bench | R-F at mod2 R1 → R3 | Pink sleeve | DIN0204 axial | Pin top | 2.4 + 2.4 | — | — | Form at pads |
+| Bench | J2-1 → mod2 R3 | Pink | 26 AWG PTFE | J2 | 34.9 | Measure | Fit | Calculate |
 | Bench | J2-14 → mod2 R4 | Black | 26 AWG PTFE | J2 | 26.7 | Measure | Fit | Calculate |
-| Bench | mod2 R3 → mod1 R3 | Violet | 26 AWG PTFE | Pin top | 16.1 | Measure | Fit | Calculate |
+| Bench | mod2 R3 → mod1 R3 | Pink | 26 AWG PTFE | Pin top | 16.1 | Measure | Fit | Calculate |
 | Bench | mod2 R4 → mod1 R4 | Black | 26 AWG PTFE | Pin top | 16.0 | Measure | Fit | Calculate |
 | Floor | 5V-J → ESP32 J2-19 | Orange | 22 AWG PTFE | Floor / J2 | 76.5 | Measure | Fit | Calculate |
 | Floor | GND-J → ESP32 J2-14 | Black | 22 AWG PTFE | Floor / J2 | 76.4 | Measure | Fit | Calculate |
 | Boards | 5V-J → MAX490 VCC | Orange | 22 AWG PTFE | Floor / MAX490 header | 52.4 | Measure | Fit | Calculate |
 | Boards | GND-J → MAX490 GND | Black | 22 AWG PTFE | Floor / MAX490 header | 38.6 | Measure | Fit | Calculate |
-| Signals | DE-9 1 → mod1 L3 | Blue | 26 AWG PTFE | Centre bus | 39.6 | Measure | Fit | Calculate |
-| Signals | DE-9 2 → mod2 L3 | Blue | 26 AWG PTFE | Centre bus | 52.1 | Measure | Fit | Calculate |
-| Signals | mod1 R2 → ESP32 J2-7 | Blue | 26 AWG PTFE | J2 | 34.9 | Measure | Fit | Calculate |
-| Signals | mod2 R2 → ESP32 J2-10 | Blue | 26 AWG PTFE | J2 | 16.3 | Measure | Fit | Calculate |
-| Signals | ESP32 J3-11 → MAX490 DI | Blue | 26 AWG PTFE | Centre bus / header | 50.0 | Measure | Fit | Calculate |
+| Signals | DE-9 1 → mod1 L3 | Brown | 26 AWG PTFE | Centre bus | 39.6 | Measure | Fit | Calculate |
+| Signals | DE-9 2 → mod2 L3 | Beige | 26 AWG PTFE | Centre bus | 52.1 | Measure | Fit | Calculate |
+| Signals | mod1 R2 → ESP32 J2-7 | Light blue | 26 AWG PTFE | J2 | 34.9 | Measure | Fit | Calculate |
+| Signals | mod2 R2 → ESP32 J2-10 | Mint green | 26 AWG PTFE | J2 | 16.3 | Measure | Fit | Calculate |
+| Signals | ESP32 J3-11 → MAX490 DI | Turquoise | 26 AWG PTFE | Centre bus / header | 50.0 | Measure | Fit | Calculate |
 | Signals | MAX490 RO → R-B1 splice | Blue | 26 AWG PTFE | Centre bus / header | 38.0 | Measure | Fit | Calculate |
-| Signals | DE-9 8 → MAX490 Y | Blue | 26 AWG PTFE | Wall, pair 8/9 | 16.5 | Measure | Fit | Measure after twisting |
-| Signals | DE-9 9 → MAX490 Z | Blue | 26 AWG PTFE | Wall, pair 8/9 | 18.6 | Measure | Fit | Measure after twisting |
-| Signals | DE-9 4 → MAX490 A | Blue | 26 AWG PTFE | Wall, pair 4/5 | 30.2 | Measure | Fit | Measure after twisting |
-| Signals | DE-9 5 → MAX490 B | Blue | 26 AWG PTFE | Wall, pair 4/5 | 23.3 | Measure | Fit | Measure after twisting |
+| Signals | DE-9 8 → MAX490 Y | White | 26 AWG PTFE | Wall, pair 8/9 | 16.5 | Measure | Fit | Measure after twisting |
+| Signals | DE-9 9 → MAX490 Z | Green | 26 AWG PTFE | Wall, pair 8/9 | 18.6 | Measure | Fit | Measure after twisting |
+| Signals | DE-9 4 → MAX490 A | Yellow | 26 AWG PTFE | Wall, pair 4/5 | 30.2 | Measure | Fit | Measure after twisting |
+| Signals | DE-9 5 → MAX490 B | Violet | 26 AWG PTFE | Wall, pair 4/5 | 23.3 | Measure | Fit | Measure after twisting |
 | Signals | R-B1 between J3-12 and RO splice | Blue | 26 AWG PTFE / axial | Pin top / centre bus | 11.1 + 2.6 | Measure | Fit | Calculate |
 | Signals | R-B2 between J3-12 and J3-7 | Black | 26 AWG PTFE / axial | Pin top | 7.2 + 7.2 | Measure | Fit | Calculate |
-| Signals | R-D between J3-11 and mod2 L2 | Violet | 26 AWG PTFE / axial | Pin top | 2.5 + 7.4 | Measure | Fit | Calculate |
+| Signals | R-D between J3-11 and mod2 L2 | Pink | 26 AWG PTFE / axial | Pin top | 2.5 + 7.4 | Measure | Fit | Calculate |
 
 ---
 

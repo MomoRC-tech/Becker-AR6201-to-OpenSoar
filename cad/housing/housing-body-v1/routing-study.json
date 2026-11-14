@@ -5,8 +5,8 @@
     "GND": "black",
     "12V": "red",
     "5V": "orange",
-    "3V3": "violet",
-    "logic": "blue"
+    "3V3": "pink",
+    "logic": "per route"
   },
   "routing_lanes": {
     "source_id": "S76, S77",
@@ -454,7 +454,7 @@
     },
     {
       "endpoints": "R-Z at mod1 R1 → R3",
-      "colour": "Violet sleeve",
+      "colour": "Pink sleeve",
       "material": "DIN0204 axial",
       "lane": "Pin top",
       "build_step": "Bench",
@@ -486,7 +486,7 @@
     },
     {
       "endpoints": "R-F at mod2 R1 → R3",
-      "colour": "Violet sleeve",
+      "colour": "Pink sleeve",
       "material": "DIN0204 axial",
       "lane": "Pin top",
       "build_step": "Bench",
@@ -518,7 +518,7 @@
     },
     {
       "endpoints": "J2-1 → mod2 R3",
-      "colour": "Violet",
+      "colour": "Pink",
       "material": "26 AWG PTFE",
       "lane": "J2",
       "build_step": "Bench",
@@ -567,7 +567,7 @@
     },
     {
       "endpoints": "mod2 R3 → mod1 R3",
-      "colour": "Violet",
+      "colour": "Pink",
       "material": "26 AWG PTFE",
       "lane": "Pin top",
       "build_step": "Bench",
@@ -714,7 +714,7 @@
     },
     {
       "endpoints": "DE-9 1 → mod1 L3",
-      "colour": "Blue",
+      "colour": "Brown",
       "material": "26 AWG PTFE",
       "lane": "Centre bus",
       "build_step": "Signals",
@@ -739,7 +739,7 @@
     },
     {
       "endpoints": "DE-9 2 → mod2 L3",
-      "colour": "Blue",
+      "colour": "Beige",
       "material": "26 AWG PTFE",
       "lane": "Centre bus",
       "build_step": "Signals",
@@ -765,7 +765,7 @@
     },
     {
       "endpoints": "mod1 R2 → ESP32 J2-7",
-      "colour": "Blue",
+      "colour": "Light blue",
       "material": "26 AWG PTFE",
       "lane": "J2",
       "build_step": "Signals",
@@ -794,7 +794,7 @@
     },
     {
       "endpoints": "mod2 R2 → ESP32 J2-10",
-      "colour": "Blue",
+      "colour": "Mint green",
       "material": "26 AWG PTFE",
       "lane": "J2",
       "build_step": "Signals",
@@ -819,7 +819,7 @@
     },
     {
       "endpoints": "ESP32 J3-11 → MAX490 DI",
-      "colour": "Blue",
+      "colour": "Turquoise",
       "material": "26 AWG PTFE",
       "lane": "Centre bus / header",
       "build_step": "Signals",
@@ -867,7 +867,7 @@
     },
     {
       "endpoints": "DE-9 8 → MAX490 Y",
-      "colour": "Blue",
+      "colour": "White",
       "material": "26 AWG PTFE",
       "lane": "Wall, pair 8/9",
       "build_step": "Signals",
@@ -890,7 +890,7 @@
     },
     {
       "endpoints": "DE-9 9 → MAX490 Z",
-      "colour": "Blue",
+      "colour": "Green",
       "material": "26 AWG PTFE",
       "lane": "Wall, pair 8/9",
       "build_step": "Signals",
@@ -913,7 +913,7 @@
     },
     {
       "endpoints": "DE-9 4 → MAX490 A",
-      "colour": "Blue",
+      "colour": "Yellow",
       "material": "26 AWG PTFE",
       "lane": "Wall, pair 4/5",
       "build_step": "Signals",
@@ -936,7 +936,7 @@
     },
     {
       "endpoints": "DE-9 5 → MAX490 B",
-      "colour": "Blue",
+      "colour": "Violet",
       "material": "26 AWG PTFE",
       "lane": "Wall, pair 4/5",
       "build_step": "Signals",
@@ -1028,7 +1028,7 @@
     },
     {
       "endpoints": "R-D between J3-11 and mod2 L2",
-      "colour": "Violet",
+      "colour": "Pink",
       "material": "26 AWG PTFE / axial",
       "lane": "Pin top",
       "build_step": "Signals",

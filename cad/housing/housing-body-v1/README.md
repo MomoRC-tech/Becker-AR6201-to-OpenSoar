@@ -25,9 +25,9 @@ The housing uses [layout v4](../layout-v4/README.md) with a base tray, connector
 | File | Use |
 | --- | --- |
 | [housing-assembly.f3d](housing-assembly.f3d) | Full editable Fusion assembly with a hideable cable-harness component, the [measured UBEC](../../reference/ubec-hobbywing-3a/README.md), [measured ferrite ring](../../../docs/hardware/housing.md#contents) and a local copy of the MAX490 board. Open with *File › Open › Open from my computer*. |
-| [housing-power-routing.f3d](housing-power-routing.f3d) | Standalone Fusion v13 archive with routing (S76–S78) and the [open floor guide ribs](../../../docs/hardware/housing.md#floor-guide) (S79). Open it to review the current harness and base fit. |
-| `housing-base.f3d`, `housing-hood.f3d` | Fusion archives of the two parts; the base includes the ESP32 USB support, MAX490 floor posts, ferrite cradle, two cable saddles and the v13 floor guide ribs. Open with *File › Open › Open from my computer* |
-| `housing-base.3mf`, `housing-hood.3mf`, `housing-logo-insert.3mf` | Print-ready meshes, Z up: base floor down; hood and logo insert top down in the same coordinates. Load hood and logo insert together as one object with two parts (dark grey filament for the logo) |
+| [housing-power-routing.f3d](housing-power-routing.f3d) | Standalone Fusion v20 archive with the current harness, [staggered floor fingers and tie eyes](../../../docs/hardware/housing.md#floor-guide) (S81) |
+| [housing-base.f3d](housing-base.f3d), `housing-hood.f3d` | Fusion part archives. Open with *File › Open › Open from my computer* |
+| [housing-base.3mf](housing-base.3mf), [housing-hood.3mf](housing-hood.3mf), [housing-logo-insert.3mf](housing-logo-insert.3mf) | Print meshes at Z = 0. Base floor down. Hood and logo top down in shared coordinates. Load hood and logo together as one object with two parts (dark grey filament for the logo) |
 | `housing-logo-insert.f3d`, `housing-logo-insert.step` | Logo and "7-20V" insert as its own part |
 | `housing-base.step`, `housing-hood.step` | Solid models in the layout frame |
 | [routing-study.json](routing-study.json) | Current power and signal waypoints, lane envelopes and [harness cutting table](../../../docs/hardware/housing.md#harness-cutting) inputs |
@@ -54,10 +54,10 @@ The housing uses [layout v4](../layout-v4/README.md) with a base tray, connector
 
 - **Resize verification:** the hood seats without solid overlap. The ESP32 and MAX490 PCB undersides are 7.5 mm above the floor, with a 7.45 mm gap between the facing PCB edges. The adjusted harness envelopes clear the enclosure and carrier driver paths. See S64 in the [source register](../../../docs/research/sources.md#source-register) and the [physical fit checks](../../../docs/project/open-items.md#housing).
 
-- Harness colors: **GND black, +12 V red, +5 V orange**, 3.3 V violet, logic blue. XT30 input colors match the molded +/− marks and the UBEC reference leads; output A/B colors follow the UBEC reference. Physical polarity still needs a bench check. The junction bodies reserve space only.
+- Harness colors: **GND black, +12 V red, +5 V orange**, 3.3 V pink, [individual signal colours](../../../docs/hardware/housing.md#harness-cutting). XT30 input colors match the molded +/− marks and the UBEC reference leads; output A/B colors follow the UBEC reference. Physical polarity still needs a bench check. The junction bodies reserve space only.
 
 <details>
-<summary><b>🖼️ Show the floor routing and cable saddles</b> (click to expand)</summary>
+<summary><b>🖼️ Show the prototype floor routing and cable saddles</b> (click to expand)</summary>
 
 ![Power routes and central junction envelopes with boards and local RS-232 wiring hidden to expose the floor runs](preview-routing.png)
 
