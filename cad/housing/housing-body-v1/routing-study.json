@@ -1,2123 +1,12 @@
 {
   "units": "mm",
   "frame": "X from the connector-wall outside face; Y up from the layout datum, 3 mm above the prototype floor; Z across",
-  "status": "Provisional routing study; not a wire-gauge selection or cutting list",
-  "geometry_source": "housing-assembly.f3d: Cable harness - routing study",
-  "points_note": "Construction waypoints for v76. For v77, apply the listed piecewise lateral shifts to affected solid envelopes. Lengths and circular arc radii for these routes are v76 references.",
-  "length_exclusions": [
-    "Termination and stripping allowance",
-    "Service slack",
-    "Ferrite winding length"
-  ],
-  "endpoint_limits": [
-    "XT30 CAD molded +/− markings matched to UBEC reference red/black input leads; physical connector and UBEC polarity still require bench verification",
-    "MAX490 RO/DI pin assignment pending",
-    "RS232 CAD +/− pad row verified; signal-pad functions follow the S26/S27 inferred plan, pending physical continuity",
-    "No ferrite winding count modelled",
-    "See docs/hardware/wiring.md#de9-pinout for the selected contacts. The routing study reserves three instrument branches at GND-J and stops short of the DE-9 fan-out."
-  ],
-  "routes": [
-    {
-      "name": "UBEC output A to ferrite approach - polarity unassigned",
-      "points_mm": [
-        [
-          74.4,
-          10.2,
-          23.5
-        ],
-        [
-          76,
-          11.5,
-          24
-        ],
-        [
-          78,
-          14,
-          23.5
-        ]
-      ],
-      "group": "5 V power",
-      "od_mm": 1.5,
-      "centreline_mm": 5.4,
-      "smallest_arc_radius_mm": null
-    },
-    {
-      "name": "UBEC output B to ferrite approach - polarity unassigned",
-      "points_mm": [
-        [
-          74.4,
-          10.2,
-          26.5
-        ],
-        [
-          76,
-          13,
-          27
-        ],
-        [
-          78,
-          16,
-          24.5
-        ]
-      ],
-      "group": "5 V power",
-      "od_mm": 1.5,
-      "centreline_mm": 7.79,
-      "smallest_arc_radius_mm": null
-    },
-    {
-      "name": "R-B1 to J3-12 GPIO16",
-      "points_mm": [
-        [
-          48,
-          16.8,
-          5.5
-        ],
-        [
-          46.1,
-          16.5,
-          5
-        ],
-        [
-          46.05,
-          14.9,
-          2.28
-        ]
-      ],
-      "group": "Resistors",
-      "od_mm": 1.0,
-      "centreline_mm": 5.32,
-      "smallest_arc_radius_mm": null
-    },
-    {
-      "name": "RO pending identification to R-B1",
-      "points_mm": [
-        [
-          73.9,
-          7.92,
-          18.96
-        ],
-        [
-          71.7,
-          6.5,
-          18.96
-        ],
-        [
-          71.7,
-          6.5,
-          6
-        ],
-        [
-          51.6,
-          6.5,
-          6
-        ],
-        [
-          51.6,
-          16.8,
-          5.5
-        ]
-      ],
-      "group": "Resistors",
-      "od_mm": 1.0,
-      "centreline_mm": 42.97,
-      "smallest_arc_radius_mm": 1.047
-    },
-    {
-      "name": "R-B2 to J3-12 GPIO16",
-      "points_mm": [
-        [
-          52,
-          18,
-          2.28
-        ],
-        [
-          49,
-          18,
-          2.28
-        ],
-        [
-          46.05,
-          14.9,
-          2.28
-        ]
-      ],
-      "group": "Resistors",
-      "od_mm": 1.0,
-      "centreline_mm": 7.42,
-      "smallest_arc_radius_mm": null
-    },
-    {
-      "name": "R-B2 to J3-7 GND",
-      "points_mm": [
-        [
-          55.6,
-          18,
-          2.28
-        ],
-        [
-          58,
-          17,
-          2.28
-        ],
-        [
-          58.75,
-          14.9,
-          2.28
-        ]
-      ],
-      "group": "Resistors",
-      "od_mm": 1.0,
-      "centreline_mm": 4.93,
-      "smallest_arc_radius_mm": null
-    },
-    {
-      "name": "R-D to J3-11 GPIO17",
-      "points_mm": [
-        [
-          49,
-          17,
-          -1
-        ],
-        [
-          48,
-          16.5,
-          0
-        ],
-        [
-          48.59,
-          14.9,
-          2.28
-        ]
-      ],
-      "group": "Resistors",
-      "od_mm": 1.0,
-      "centreline_mm": 4.46,
-      "smallest_arc_radius_mm": null
-    },
-    {
-      "name": "R-D to J2-1 3V3",
-      "points_mm": [
-        [
-          52.6,
-          17,
-          -1
-        ],
-        [
-          56,
-          15.5,
-          -1
-        ],
-        [
-          72,
-          15.5,
-          -1
-        ],
-        [
-          72,
-          15.5,
-          -23.28
-        ],
-        [
-          73.99,
-          14.9,
-          -23.28
-        ]
-      ],
-      "group": "Resistors",
-      "od_mm": 1.0,
-      "centreline_mm": 42.41,
-      "smallest_arc_radius_mm": 0.831
-    },
-    {
-      "name": "R-Z to R1 inferred pad",
-      "points_mm": [
-        [
-          28.042,
-          15.05,
-          -17.327
-        ],
-        [
-          28.042,
-          16.2,
-          -17.327
-        ],
-        [
-          28.64,
-          17,
-          -17.327
-        ]
-      ],
-      "group": "Resistors",
-      "od_mm": 1.0,
-      "centreline_mm": 2.18,
-      "smallest_arc_radius_mm": null
-    },
-    {
-      "name": "R-Z to R3 inferred pad",
-      "points_mm": [
-        [
-          32.837,
-          15.05,
-          -17.327
-        ],
-        [
-          32.837,
-          16.2,
-          -17.327
-        ],
-        [
-          32.24,
-          17,
-          -17.327
-        ]
-      ],
-      "group": "Resistors",
-      "od_mm": 1.0,
-      "centreline_mm": 2.18,
-      "smallest_arc_radius_mm": null
-    },
-    {
-      "name": "R-F to R1 inferred pad",
-      "points_mm": [
-        [
-          40.517,
-          15.05,
-          -17.327
-        ],
-        [
-          40.517,
-          16.2,
-          -17.327
-        ],
-        [
-          41.115,
-          17,
-          -17.327
-        ]
-      ],
-      "group": "Resistors",
-      "od_mm": 1.0,
-      "centreline_mm": 2.18,
-      "smallest_arc_radius_mm": null
-    },
-    {
-      "name": "R-F to R3 inferred pad",
-      "points_mm": [
-        [
-          45.312000000000005,
-          15.05,
-          -17.327
-        ],
-        [
-          45.312000000000005,
-          16.2,
-          -17.327
-        ],
-        [
-          44.715,
-          17,
-          -17.327
-        ]
-      ],
-      "group": "Resistors",
-      "od_mm": 1.0,
-      "centreline_mm": 2.18,
-      "smallest_arc_radius_mm": null
-    },
-    {
-      "name": "J3-11 GPIO17 to DI pending identification",
-      "group": "Resistors",
-      "points_mm": [
-        [
-          48.59,
-          14.9,
-          2.28
-        ],
-        [
-          48.59,
-          14.9,
-          7.1
-        ],
-        [
-          48.59,
-          8.5,
-          7.1
-        ],
-        [
-          72.3,
-          8.5,
-          7.1
-        ],
-        [
-          72.3,
-          10.5,
-          18.96
-        ],
-        [
-          74,
-          10.5,
-          18.96
-        ]
-      ],
-      "od_mm": 1.0,
-      "centreline_mm": 45.15,
-      "smallest_arc_radius_mm": 0.68
-    },
-    {
-      "name": "XT30 positive to UBEC input positive",
-      "group": "12 V input",
-      "points_mm": [
-        [
-          14,
-          7.5,
-          -17.93
-        ],
-        [
-          14,
-          3,
-          -17.93
-        ],
-        [
-          11.5,
-          3,
-          -17.93
-        ],
-        [
-          11.5,
-          3,
-          -8
-        ],
-        [
-          11.5,
-          4,
-          -5
-        ],
-        [
-          11.5,
-          4,
-          30
-        ],
-        [
-          13,
-          4,
-          32.4
-        ],
-        [
-          13,
-          17.3,
-          32.4
-        ],
-        [
-          25.5,
-          17.3,
-          32.4
-        ],
-        [
-          25.5,
-          17.3,
-          26.5
-        ],
-        [
-          35.4,
-          17.3,
-          26.5
-        ],
-        [
-          35.4,
-          10.2,
-          26.5
-        ]
-      ],
-      "od_mm": 1.5,
-      "centreline_mm": 100.68,
-      "smallest_arc_radius_mm": 1.0,
-      "net": "12V"
-    },
-    {
-      "name": "XT30 negative to UBEC input ground",
-      "group": "12 V input",
-      "points_mm": [
-        [
-          14,
-          7.5,
-          -12.93
-        ],
-        [
-          14,
-          4,
-          -12.93
-        ],
-        [
-          13.5,
-          4,
-          -9
-        ],
-        [
-          13.5,
-          4,
-          30
-        ],
-        [
-          15.5,
-          4,
-          34.2
-        ],
-        [
-          15.5,
-          19,
-          34.2
-        ],
-        [
-          25.5,
-          19,
-          34.2
-        ],
-        [
-          25.5,
-          19,
-          23.5
-        ],
-        [
-          35.4,
-          19,
-          23.5
-        ],
-        [
-          35.4,
-          10.2,
-          23.5
-        ]
-      ],
-      "od_mm": 1.5,
-      "centreline_mm": 98.94,
-      "smallest_arc_radius_mm": 1.4,
-      "net": "GND"
-    },
-    {
-      "name": "Ferrite departure to central 5V",
-      "points_mm": [
-        [
-          78,
-          15.5,
-          9
-        ],
-        [
-          76,
-          15.5,
-          9
-        ],
-        [
-          76,
-          4.3,
-          9
-        ],
-        [
-          76,
-          4.3,
-          6.4
-        ],
-        [
-          40,
-          4.3,
-          6.4
-        ],
-        [
-          40,
-          2,
-          5.5
-        ]
-      ],
-      "group": "5 V power",
-      "od_mm": 1.5,
-      "net": "5V",
-      "centreline_mm": 52.61,
-      "smallest_arc_radius_mm": 0.8
-    },
-    {
-      "name": "Ferrite departure to central GND",
-      "points_mm": [
-        [
-          78,
-          13,
-          7.5
-        ],
-        [
-          76.5,
-          13,
-          5
-        ],
-        [
-          68,
-          13,
-          4.5
-        ],
-        [
-          68,
-          2,
-          4.5
-        ],
-        [
-          65,
-          2,
-          4.5
-        ],
-        [
-          64,
-          2,
-          5.5
-        ]
-      ],
-      "group": "5 V power",
-      "od_mm": 1.5,
-      "net": "GND",
-      "centreline_mm": 24.8,
-      "smallest_arc_radius_mm": 1.2
-    },
-    {
-      "name": "Central 5V to ESP32 J2-19",
-      "points_mm": [
-        [
-          34,
-          2,
-          5.5
-        ],
-        [
-          32,
-          2,
-          5.5
-        ],
-        [
-          32,
-          1.5,
-          -25.5
-        ],
-        [
-          28.27,
-          1.5,
-          -25.5
-        ],
-        [
-          28.27,
-          14.9,
-          -25.5
-        ],
-        [
-          28.27,
-          14.9,
-          -23.28
-        ]
-      ],
-      "group": "5 V power",
-      "od_mm": 1.5,
-      "net": "5V",
-      "centreline_mm": 50.35,
-      "smallest_arc_radius_mm": 0.8
-    },
-    {
-      "name": "Central GND to ESP32 J2-14",
-      "points_mm": [
-        [
-          47,
-          2,
-          5.5
-        ],
-        [
-          43,
-          2,
-          5.5
-        ],
-        [
-          43,
-          1.5,
-          -25.5
-        ],
-        [
-          40.97,
-          1.5,
-          -25.5
-        ],
-        [
-          40.97,
-          14.9,
-          -25.5
-        ],
-        [
-          40.97,
-          14.9,
-          -23.28
-        ]
-      ],
-      "group": "5 V power",
-      "od_mm": 1.5,
-      "net": "GND",
-      "centreline_mm": 50.89,
-      "smallest_arc_radius_mm": 0.812
-    },
-    {
-      "name": "Central 5V to MAX490 VCC",
-      "points_mm": [
-        [
-          39,
-          2,
-          5.5
-        ],
-        [
-          39,
-          1.1,
-          25.31
-        ],
-        [
-          73.9,
-          1.1,
-          25.31
-        ],
-        [
-          73.9,
-          7.92,
-          25.31
-        ]
-      ],
-      "group": "5 V power",
-      "od_mm": 1.5,
-      "net": "5V",
-      "centreline_mm": 59.09,
-      "smallest_arc_radius_mm": 2.728
-    },
-    {
-      "name": "Central GND to MAX490 GND",
-      "points_mm": [
-        [
-          59.5,
-          2,
-          5.5
-        ],
-        [
-          59.5,
-          1.1,
-          22.77
-        ],
-        [
-          73.9,
-          1.1,
-          22.77
-        ],
-        [
-          73.9,
-          7.92,
-          22.77
-        ]
-      ],
-      "group": "5 V power",
-      "od_mm": 1.5,
-      "net": "GND",
-      "centreline_mm": 36.05,
-      "smallest_arc_radius_mm": 2.728
-    },
-    {
-      "name": "ESP32 J2-1 3V3 to RS232-mod2 R3",
-      "points_mm": [
-        [
-          73.99,
-          14.9,
-          -23.28
-        ],
-        [
-          71,
-          17.3,
-          -23.28
-        ],
-        [
-          71,
-          17.3,
-          -20
-        ],
-        [
-          45.312,
-          17.3,
-          -20
-        ],
-        [
-          45.312,
-          17.3,
-          -17.327
-        ],
-        [
-          45.312,
-          15.05,
-          -17.327
-        ]
-      ],
-      "group": "3.3 V and RS232 ground",
-      "od_mm": 1.0,
-      "net": "3V3",
-      "centreline_mm": 35.75,
-      "smallest_arc_radius_mm": 0.9
-    },
-    {
-      "name": "RS232-mod2 R3 to mod1 R3 - 3V3 chain",
-      "points_mm": [
-        [
-          45.312,
-          15.05,
-          -17.327
-        ],
-        [
-          45.312,
-          17.3,
-          -17.327
-        ],
-        [
-          45.312,
-          17.3,
-          -14.5
-        ],
-        [
-          32.837,
-          17.3,
-          -14.5
-        ],
-        [
-          32.837,
-          17.3,
-          -17.327
-        ],
-        [
-          32.837,
-          15.05,
-          -17.327
-        ]
-      ],
-      "group": "3.3 V and RS232 ground",
-      "od_mm": 1.0,
-      "net": "3V3",
-      "centreline_mm": 20.89,
-      "smallest_arc_radius_mm": 0.9
-    },
-    {
-      "name": "ESP32 J3-7 GND to RS232-mod2 R4",
-      "points_mm": [
-        [
-          58.75,
-          14.9,
-          2.28
-        ],
-        [
-          61,
-          16.8,
-          2.28
-        ],
-        [
-          61,
-          17.3,
-          -12
-        ],
-        [
-          47.981,
-          17.3,
-          -12
-        ],
-        [
-          47.981,
-          17.3,
-          -17.327
-        ],
-        [
-          47.981,
-          15.05,
-          -17.327
-        ]
-      ],
-      "group": "3.3 V and RS232 ground",
-      "od_mm": 1.0,
-      "net": "GND",
-      "centreline_mm": 34.75,
-      "smallest_arc_radius_mm": 0.9
-    },
-    {
-      "name": "RS232-mod2 R4 to mod1 R4 - GND chain",
-      "points_mm": [
-        [
-          47.981,
-          15.05,
-          -17.327
-        ],
-        [
-          47.981,
-          19,
-          -17.327
-        ],
-        [
-          47.981,
-          19,
-          -12
-        ],
-        [
-          35.506,
-          19,
-          -12
-        ],
-        [
-          35.506,
-          19,
-          -17.327
-        ],
-        [
-          35.506,
-          15.05,
-          -17.327
-        ]
-      ],
-      "group": "3.3 V and RS232 ground",
-      "od_mm": 1.0,
-      "net": "GND",
-      "centreline_mm": 27.84,
-      "smallest_arc_radius_mm": 1.58
-    }
-  ],
-  "resistors": [
-    {
-      "name": "R-Z 10k",
-      "ends_mm": [
-        [
-          28.64,
-          17,
-          -17.327
-        ],
-        [
-          32.24,
-          17,
-          -17.327
-        ]
-      ],
-      "diameter_mm": 1.6
-    },
-    {
-      "name": "R-F 10k",
-      "ends_mm": [
-        [
-          41.115,
-          17,
-          -17.327
-        ],
-        [
-          44.715,
-          17,
-          -17.327
-        ]
-      ],
-      "diameter_mm": 1.6
-    },
-    {
-      "name": "R-B1 2k2",
-      "ends_mm": [
-        [
-          48,
-          16.8,
-          5.5
-        ],
-        [
-          51.6,
-          16.8,
-          5.5
-        ]
-      ],
-      "diameter_mm": 1.6
-    },
-    {
-      "name": "R-B2 3k3",
-      "ends_mm": [
-        [
-          52,
-          18,
-          2.28
-        ],
-        [
-          55.6,
-          18,
-          2.28
-        ]
-      ],
-      "diameter_mm": 1.6
-    },
-    {
-      "name": "R-D 10k",
-      "ends_mm": [
-        [
-          49,
-          17,
-          -1
-        ],
-        [
-          52.6,
-          17,
-          -1
-        ]
-      ],
-      "diameter_mm": 1.6
-    }
-  ],
-  "power_od_mm": 1.5,
-  "signal_od_mm": 1.0,
-  "junctions": [
-    {
-      "name": "Central 5V junction - space envelope only",
-      "net": "5V",
-      "centre_mm": [
-        37,
-        2,
-        5.5
-      ],
-      "size_xyz_mm": [
-        9,
-        2.4,
-        2.6
-      ]
-    },
-    {
-      "name": "Central GND junction - space envelope only",
-      "net": "GND",
-      "centre_mm": [
-        55,
-        2,
-        5.5
-      ],
-      "size_xyz_mm": [
-        20,
-        2.4,
-        2.6
-      ]
-    }
-  ],
-  "ground_tree": {
-    "source": "UBEC output through ferrite",
-    "branches": {
-      "central GND": [
-        "ESP32 J2-14",
-        "MAX490 GND",
-        "Instrument-ground wire to DE-9 cups 3, 6 and 7 (bridged)"
-      ],
-      "ESP32 J2-14": [
-        "RS232-mod2 R4"
-      ],
-      "RS232-mod2 R4": [
-        "RS232-mod1 R4"
-      ],
-      "DE-9 ground bridge": [
-        "Becker signal GND, pin 3 (J1-21)",
-        "Zander signal GND, pin 6",
-        "FLARM signal GND, pin 7"
-      ]
-    },
-    "local_return": "R-B2 stays at ESP32 J3-7",
-    "excluded_connections": [
-      "No direct RS232 ground to central junction",
-      "No MAX490 to ESP32 ground link",
-      "No extra UBEC input-to-output ground bypass",
-      "No separate instrument-ground connection to RS232 L1"
-    ]
-  },
   "wire_colors": {
     "GND": "black",
     "12V": "red",
     "5V": "orange",
     "3V3": "violet",
     "logic": "blue"
-  },
-  "color_basis": "XT30 positive at square end (Z -17.93 mm) is red and joins UBEC reference red input (Z 26.5 mm). XT30 negative at chamfered end (Z -12.93 mm) is black and joins UBEC reference black input (Z 23.5 mm). Both connector halves show matching molded +/− marks. Output A orange / B black follow UBEC reference colors. CAD evidence only; physical polarity not tested.",
-  "diameter_note": "Main 12V/5V supplies and returns: provisional 1.5 mm insulated OD. Local RS232 3V3/GND chain and logic/resistor connections: provisional 1.0 mm. Not selected conductor gauges.",
-  "junction_hardware": "Insulated space envelopes only. Actual junction, mounting and strain relief not selected.",
-  "xt30_polarity": {
-    "source_id": "S62",
-    "basis": "Molded + and − marks on both embedded connector halves, visually inspected in Fusion",
-    "positive": {
-      "color": "red",
-      "xt30_route_endpoint_mm": [
-        14,
-        7.5,
-        -17.93
-      ],
-      "ubec_route_endpoint_mm": [
-        35.4,
-        10.2,
-        26.5
-      ]
-    },
-    "negative": {
-      "color": "black",
-      "xt30_route_endpoint_mm": [
-        14,
-        7.5,
-        -12.93
-      ],
-      "ubec_route_endpoint_mm": [
-        35.4,
-        10.2,
-        23.5
-      ]
-    }
-  },
-  "rs232_pad_mapping": {
-    "source_id": "S62",
-    "row_z_mm": -17.327,
-    "surface_y_mm": 15.05,
-    "module_1": {
-      "R1_x_mm": 28.042,
-      "R3_positive_x_mm": 32.837,
-      "R4_ground_x_mm": 35.506
-    },
-    "module_2": {
-      "R1_x_mm": 40.517,
-      "R3_positive_x_mm": 45.312,
-      "R4_ground_x_mm": 47.981
-    },
-    "evidence": "CAD +/− marks and circular pad centers; supply is 3.3 V from ESP32. R1 follows the inferred S26/S27 signal map; CAD signal arrows differ from the supplied photo and are not electrical evidence."
-  },
-  "enclosure_resize_v77": {
-    "floor_top_y_mm": -3,
-    "positive_wall_shift_mm": 3,
-    "mapping": "For the listed routes, add 0 below the lower Z limit, ramp linearly to +3 mm over the interval, and add +3 mm above the upper limit. This maps the solid envelope as well as its centreline. Resweep with actual wire diameters after routing is settled.",
-    "transition_z_mm": {
-      "XT30 positive to UBEC input positive": [
-        0,
-        20
-      ],
-      "XT30 negative to UBEC input ground": [
-        0,
-        20
-      ],
-      "UBEC output A to ferrite approach - polarity unassigned": [
-        0,
-        10
-      ],
-      "UBEC output B to ferrite approach - polarity unassigned": [
-        0,
-        10
-      ],
-      "Central 5V to MAX490 VCC": [
-        7,
-        19.5
-      ],
-      "Central GND to MAX490 GND": [
-        7,
-        19.5
-      ],
-      "Ferrite departure to central 5V": [
-        6.8,
-        8.8
-      ],
-      "Ferrite departure to central GND": [
-        5.1,
-        7.4
-      ],
-      "RO pending identification to R-B1": [
-        7,
-        16
-      ],
-      "J3-11 GPIO17 to DI pending identification": [
-        7.7,
-        16
-      ]
-    }
-  },
-  "power_routing_revision": {
-    "archive": "housing-power-routing.f3d",
-    "source_id": "S70",
-    "model": "Housing body - revised power routing v1",
-    "baseline": "housing-assembly.f3d (v80)",
-    "nominal_insulated_wire_od_mm": 1.5,
-    "length_note": "Approximate from envelope volume. Excludes terminal allowance, service slack and ferrite winding.",
-    "routes": {
-      "input positive": {
-        "waypoints_mm": [
-          [
-            14,
-            7.5,
-            -17.93
-          ],
-          [
-            14,
-            3,
-            -17.93
-          ],
-          [
-            11.5,
-            3,
-            -17.93
-          ],
-          [
-            11.5,
-            3,
-            -8
-          ],
-          [
-            11.5,
-            4,
-            -5
-          ],
-          [
-            12.5,
-            4,
-            0
-          ],
-          [
-            15,
-            4,
-            -2
-          ],
-          [
-            19,
-            5,
-            0
-          ],
-          [
-            25,
-            10,
-            2
-          ],
-          [
-            33.2,
-            13,
-            6
-          ],
-          [
-            33.2,
-            13,
-            29.5
-          ],
-          [
-            35.4,
-            13,
-            29.5
-          ],
-          [
-            35.4,
-            10.2,
-            29.5
-          ]
-        ],
-        "approximate_length_mm": 75.2
-      },
-      "input ground": {
-        "waypoints_mm": [
-          [
-            14,
-            7.5,
-            -12.93
-          ],
-          [
-            15.9,
-            6.1,
-            -12.93
-          ],
-          [
-            16.1,
-            7.7,
-            2
-          ],
-          [
-            18,
-            8.5,
-            7
-          ],
-          [
-            21,
-            10,
-            7
-          ],
-          [
-            30,
-            15.5,
-            7
-          ],
-          [
-            36,
-            16,
-            10
-          ],
-          [
-            36,
-            16,
-            24
-          ],
-          [
-            35.4,
-            14,
-            26.5
-          ],
-          [
-            35.4,
-            10.2,
-            26.5
-          ]
-        ],
-        "approximate_length_mm": 63.0
-      },
-      "approach A": {
-        "waypoints_mm": [
-          [
-            74.4,
-            10.2,
-            26.5
-          ],
-          [
-            76.2,
-            10.2,
-            26.5
-          ],
-          [
-            76.4,
-            -1.5,
-            26.5
-          ],
-          [
-            79.2,
-            -1.5,
-            26.5
-          ],
-          [
-            79.2,
-            8,
-            26.5
-          ],
-          [
-            78,
-            14,
-            26.5
-          ]
-        ],
-        "approximate_length_mm": 30.4
-      },
-      "approach B": {
-        "waypoints_mm": [
-          [
-            74.4,
-            10.2,
-            29.5
-          ],
-          [
-            76.8,
-            10.2,
-            29.5
-          ],
-          [
-            77,
-            -1.5,
-            29.5
-          ],
-          [
-            81,
-            -1.5,
-            29.5
-          ],
-          [
-            81,
-            8,
-            29.5
-          ],
-          [
-            78,
-            16,
-            27.5
-          ]
-        ],
-        "approximate_length_mm": 34.2
-      },
-      "departure V": {
-        "waypoints_mm": [
-          [
-            78,
-            15.5,
-            12
-          ],
-          [
-            75.8,
-            11,
-            11.5
-          ],
-          [
-            76,
-            5,
-            10
-          ],
-          [
-            73,
-            -1.5,
-            8.6
-          ],
-          [
-            67,
-            -1.5,
-            8.6
-          ],
-          [
-            45,
-            -1.5,
-            8.6
-          ],
-          [
-            42,
-            -1.5,
-            8.6
-          ],
-          [
-            42,
-            2,
-            5.5
-          ],
-          [
-            40,
-            2,
-            5.5
-          ]
-        ],
-        "approximate_length_mm": 54.8
-      },
-      "departure G": {
-        "waypoints_mm": [
-          [
-            78,
-            13,
-            10.45
-          ],
-          [
-            77,
-            10,
-            8
-          ],
-          [
-            75,
-            4,
-            8
-          ],
-          [
-            72,
-            -1.5,
-            7
-          ],
-          [
-            67,
-            -1.5,
-            6.4
-          ],
-          [
-            64,
-            2,
-            5.5
-          ]
-        ],
-        "approximate_length_mm": 26.0
-      }
-    }
-  },
-  "signal_routing_revision": {
-    "archive": "housing-power-routing.f3d",
-    "source_id": "S73",
-    "wire_od_mm": 1.0,
-    "resistor_body_length_mm": 6.3,
-    "resistor_body_od_mm": 2.4,
-    "resistor_lead_od_mm": 0.55,
-    "trimmed_axial_lead_length_per_end_mm": 3.0,
-    "solder_lap_length_per_end_mm": 2.0,
-    "solder_lap_od_mm": 1.35,
-    "sleeve_length_mm": 14.3,
-    "sleeve_od_mm": 3.2,
-    "resistor_centres_mm": {
-      "R-Z": [
-        29.5,
-        18,
-        -8.8
-      ],
-      "R-F": [
-        46,
-        18,
-        -8.8
-      ],
-      "R-B1": [
-        50,
-        17.7,
-        6.4
-      ],
-      "R-B2": [
-        53.1,
-        18.3,
-        2.05
-      ],
-      "R-D": [
-        53,
-        17.4,
-        -4
-      ]
-    },
-    "routes": {
-      "R-Z A to mod1 R1": {
-        "waypoints_mm": [
-          [
-            24.450000000000003,
-            18,
-            -8.8
-          ],
-          [
-            22.2,
-            18,
-            -8.8
-          ],
-          [
-            22.5,
-            17,
-            -19
-          ],
-          [
-            28.042,
-            17,
-            -19
-          ],
-          [
-            28.042,
-            16.3,
-            -17.327
-          ],
-          [
-            28.042,
-            15.05,
-            -17.327
-          ]
-        ],
-        "colour": "violet"
-      },
-      "R-Z B to mod1 R3": {
-        "waypoints_mm": [
-          [
-            34.55,
-            18,
-            -8.8
-          ],
-          [
-            35.8,
-            18,
-            -8.8
-          ],
-          [
-            36.7,
-            17.3,
-            -11
-          ],
-          [
-            36.4,
-            16.8,
-            -13
-          ],
-          [
-            34,
-            16.8,
-            -12.7
-          ],
-          [
-            32.2,
-            17.2,
-            -12.7
-          ],
-          [
-            31.65,
-            17.5,
-            -13.8
-          ],
-          [
-            31.65,
-            17.6,
-            -17.1
-          ],
-          [
-            31.3,
-            17.55,
-            -16.95
-          ],
-          [
-            31.55,
-            16.85,
-            -17.35
-          ],
-          [
-            31.86,
-            15.98,
-            -17.48
-          ]
-        ],
-        "colour": "violet"
-      },
-      "R-F A to mod2 R1": {
-        "waypoints_mm": [
-          [
-            40.95,
-            18,
-            -8.8
-          ],
-          [
-            38.85,
-            18,
-            -8.8
-          ],
-          [
-            38.8,
-            16.8,
-            -9.8
-          ],
-          [
-            39.2,
-            16.8,
-            -11.2
-          ],
-          [
-            40.55,
-            16.64,
-            -13
-          ],
-          [
-            40.68,
-            16.4,
-            -14.5
-          ],
-          [
-            40.517,
-            16.45,
-            -15.8
-          ],
-          [
-            40.517,
-            16.5,
-            -17.327
-          ],
-          [
-            40.517,
-            15.05,
-            -17.327
-          ]
-        ],
-        "colour": "violet"
-      },
-      "R-F B to mod2 R3": {
-        "waypoints_mm": [
-          [
-            51.05,
-            18,
-            -8.8
-          ],
-          [
-            53.7,
-            18,
-            -8.8
-          ],
-          [
-            55.5,
-            17.4,
-            -9
-          ],
-          [
-            59.5,
-            17.4,
-            -9
-          ],
-          [
-            59.5,
-            19.1,
-            -11
-          ],
-          [
-            59.4,
-            19.1,
-            -15
-          ],
-          [
-            51,
-            19.25,
-            -18.1
-          ],
-          [
-            44.1,
-            19.15,
-            -19.2
-          ],
-          [
-            43.9,
-            18.4,
-            -17.6
-          ],
-          [
-            44.3,
-            16.8,
-            -18
-          ],
-          [
-            44.25,
-            16.7,
-            -18.55
-          ],
-          [
-            44.5,
-            16.25,
-            -18.35
-          ],
-          [
-            44,
-            15.85,
-            -17.327
-          ],
-          [
-            44.425,
-            15.6,
-            -17.327
-          ]
-        ],
-        "colour": "violet"
-      },
-      "R-B1 A to GPIO16": {
-        "waypoints_mm": [
-          [
-            44.95,
-            17.7,
-            6.4
-          ],
-          [
-            42.5,
-            17.7,
-            6.4
-          ],
-          [
-            42.5,
-            16.5,
-            3.7
-          ],
-          [
-            46.05,
-            16.5,
-            3.7
-          ],
-          [
-            46.05,
-            15.7,
-            2.28
-          ],
-          [
-            46.05,
-            14.99,
-            2.28
-          ]
-        ],
-        "colour": "blue"
-      },
-      "R-B1 B to MAX490 RO provisional": {
-        "waypoints_mm": [
-          [
-            55.05,
-            17.7,
-            6.4
-          ],
-          [
-            59,
-            17.7,
-            6.4
-          ],
-          [
-            64,
-            12,
-            6.5
-          ],
-          [
-            71,
-            8.8,
-            8
-          ],
-          [
-            74,
-            8.8,
-            10
-          ],
-          [
-            74,
-            8.8,
-            19.4
-          ]
-        ],
-        "colour": "blue"
-      },
-      "R-B2 A to GPIO16": {
-        "waypoints_mm": [
-          [
-            48.050000000000004,
-            18.3,
-            2.05
-          ],
-          [
-            45.2,
-            18.3,
-            2.05
-          ],
-          [
-            45.2,
-            17.2,
-            1.5
-          ],
-          [
-            46.05,
-            15.7,
-            1.7
-          ],
-          [
-            46.05,
-            14.99,
-            2.28
-          ]
-        ],
-        "colour": "black"
-      },
-      "R-B2 B to J3-7 ground": {
-        "waypoints_mm": [
-          [
-            58.15,
-            18.3,
-            2.05
-          ],
-          [
-            60.8,
-            17.8,
-            2.28
-          ],
-          [
-            60.8,
-            18.2,
-            4.3
-          ],
-          [
-            58.75,
-            17.6,
-            4.3
-          ],
-          [
-            58.75,
-            15.9,
-            2.28
-          ],
-          [
-            58.75,
-            14.99,
-            2.28
-          ]
-        ],
-        "colour": "black"
-      },
-      "R-D A to GPIO17": {
-        "waypoints_mm": [
-          [
-            47.95,
-            17.4,
-            -4
-          ],
-          [
-            48.2,
-            17.5,
-            -3.6
-          ],
-          [
-            48.59,
-            16.6,
-            -0.5
-          ],
-          [
-            48.59,
-            15.7,
-            1.8
-          ],
-          [
-            48.59,
-            14.99,
-            2.28
-          ]
-        ],
-        "colour": "violet"
-      },
-      "R-D B to J2-1 3V3": {
-        "waypoints_mm": [
-          [
-            58.05,
-            17.4,
-            -4
-          ],
-          [
-            60.8,
-            18.7,
-            -4
-          ],
-          [
-            63.5,
-            18.5,
-            -3.9
-          ],
-          [
-            68,
-            18.5,
-            -4
-          ],
-          [
-            68,
-            18.5,
-            -24.8
-          ],
-          [
-            73.99,
-            17.7,
-            -24.8
-          ],
-          [
-            73.99,
-            16,
-            -23.28
-          ],
-          [
-            73.99,
-            14.99,
-            -23.28
-          ]
-        ],
-        "colour": "violet"
-      },
-      "GPIO17 to MAX490 DI provisional": {
-        "waypoints_mm": [
-          [
-            48.59,
-            14.99,
-            2.28
-          ],
-          [
-            48.59,
-            15.8,
-            4.5
-          ],
-          [
-            52,
-            14.5,
-            7.8
-          ],
-          [
-            59,
-            13.8,
-            8
-          ],
-          [
-            66,
-            10,
-            8
-          ],
-          [
-            74,
-            10.5,
-            10
-          ],
-          [
-            74,
-            10.5,
-            19.4
-          ]
-        ],
-        "colour": "blue"
-      },
-      "DE-9 1 to mod1 L3": {
-        "waypoints_mm": [
-          [
-            9.1,
-            11.27,
-            3.001
-          ],
-          [
-            12,
-            11.27,
-            3.001
-          ],
-          [
-            17,
-            13,
-            -2
-          ],
-          [
-            20,
-            16.5,
-            -4
-          ],
-          [
-            27,
-            16.5,
-            -4
-          ],
-          [
-            32.837,
-            16.5,
-            -3.557
-          ],
-          [
-            32.837,
-            15.05,
-            -3.557
-          ]
-        ],
-        "colour": "blue"
-      },
-      "DE-9 2 to mod2 L3": {
-        "waypoints_mm": [
-          [
-            9.1,
-            11.27,
-            5.769
-          ],
-          [
-            12,
-            11.27,
-            5.769
-          ],
-          [
-            19,
-            14.5,
-            0.5
-          ],
-          [
-            23,
-            17.7,
-            -1.3
-          ],
-          [
-            33,
-            17.7,
-            -1.3
-          ],
-          [
-            43,
-            18.3,
-            0.8
-          ],
-          [
-            45.312,
-            18.3,
-            0.8
-          ],
-          [
-            45.312,
-            16.2,
-            -3.557
-          ],
-          [
-            45.312,
-            15.05,
-            -3.557
-          ]
-        ],
-        "colour": "blue"
-      },
-      "Mod1 R2 to ESP32 GPIO32": {
-        "waypoints_mm": [
-          [
-            30.451,
-            15.05,
-            -17.327
-          ],
-          [
-            30.451,
-            16,
-            -17.327
-          ],
-          [
-            30.451,
-            16.6,
-            -18.5
-          ],
-          [
-            31,
-            16.6,
-            -22.5
-          ],
-          [
-            36,
-            16.6,
-            -25.8
-          ],
-          [
-            57.74,
-            16.6,
-            -25.8
-          ],
-          [
-            58.75,
-            16,
-            -23.28
-          ],
-          [
-            58.75,
-            14.99,
-            -23.28
-          ]
-        ],
-        "colour": "blue",
-        "end_pin": "J2-7 GPIO32",
-        "source_id": "S75"
-      },
-      "Mod2 R2 to ESP32 GPIO26": {
-        "waypoints_mm": [
-          [
-            42.926,
-            15.05,
-            -17.327
-          ],
-          [
-            42.926,
-            16,
-            -17.327
-          ],
-          [
-            42.926,
-            17.8,
-            -19
-          ],
-          [
-            43,
-            18.1,
-            -22.2
-          ],
-          [
-            44,
-            18.1,
-            -24.7
-          ],
-          [
-            50.5,
-            17.9,
-            -24.7
-          ],
-          [
-            51.13,
-            16,
-            -23.28
-          ],
-          [
-            51.13,
-            14.99,
-            -23.28
-          ]
-        ],
-        "colour": "blue"
-      }
-    },
-    "r3_termination_and_keeper": {
-      "source_id": "S74",
-      "r3_shared_solder_envelope_mm": {
-        "diameter": 2.25,
-        "height": 1.5
-      },
-      "keeper": {
-        "type": "removable wrap",
-        "arm_x_mm": 56.75,
-        "width_mm": 2.5,
-        "nominal_wall_mm": 0.6,
-        "retained_wire": "R-F B to mod2 R3",
-        "release": "Open with the hood off before withdrawing the clamp"
-      }
-    }
   },
   "routing_lanes": {
     "source_id": "S76, S77",
@@ -2363,438 +252,812 @@
       ]
     }
   },
-  "lane_power_routing": {
-    "source_id": "S77",
-    "archive": "housing-power-routing.f3d",
-    "note": "Current power routes on the selected lanes. Supersedes the power entries in routes and power_routing_revision. Lengths are centrelines, not cutting lengths.",
-    "wire_od_mm": 1.5,
-    "floor_wire_centre_y_mm": -2.2,
-    "floor_bus_tracks_z_mm": {
-      "ESP32 GND": 1.8,
-      "ESP32 5V": 3.4,
-      "instrument ground": 5.0,
-      "XT30 negative": 6.6,
-      "XT30 positive": 8.2
+  "geometry_source": "housing-power-routing.f3d, Fusion version 12 (S77, S78)",
+  "junction_envelopes": {
+    "Central 5V junction - bench splice envelope": {
+      "box_mm": [
+        55.5,
+        59.5,
+        -2.95,
+        -0.35,
+        2.85,
+        5.45
+      ]
     },
-    "routes": {
-      "XT30 positive to UBEC input positive": {
-        "colour": "red",
-        "waypoints_mm": [
-          [
-            14,
-            7.5,
-            -17.93
-          ],
-          [
-            16.4,
-            7.5,
-            -17.93
-          ],
-          [
-            16.4,
-            -2.2,
-            -17.93
-          ],
-          [
-            16.4,
-            -2.2,
-            8.2
-          ],
-          [
-            33.2,
-            -2.2,
-            8.2
-          ],
-          [
-            33.2,
-            13.0,
-            8.2
-          ],
-          [
-            33.2,
-            13.0,
-            29.5
-          ],
-          [
-            35.4,
-            13.0,
-            29.5
-          ],
-          [
-            35.4,
-            10.2,
-            29.5
-          ]
-        ],
-        "centreline_mm": 96.5
-      },
-      "XT30 negative to UBEC input ground": {
-        "colour": "black",
-        "waypoints_mm": [
-          [
-            14,
-            7.5,
-            -12.93
-          ],
-          [
-            18.0,
-            7.5,
-            -12.93
-          ],
-          [
-            18.0,
-            -2.2,
-            -12.93
-          ],
-          [
-            18.0,
-            -2.2,
-            6.6
-          ],
-          [
-            34.4,
-            -2.2,
-            6.6
-          ],
-          [
-            34.9,
-            -2.2,
-            7.3
-          ],
-          [
-            34.9,
-            13.0,
-            7.3
-          ],
-          [
-            34.9,
-            13.0,
-            26.5
-          ],
-          [
-            35.4,
-            12.2,
-            26.5
-          ],
-          [
-            35.4,
-            10.2,
-            26.5
-          ]
-        ],
-        "centreline_mm": 87.8
-      },
-      "UBEC output A to ferrite approach": {
-        "colour": "orange",
-        "waypoints_mm": [
-          [
-            74.4,
-            10.2,
-            26.5
-          ],
-          [
-            75.2,
-            12.0,
-            26.5
-          ],
-          [
-            78.0,
-            14.0,
-            26.5
-          ]
-        ],
-        "centreline_mm": 5.4
-      },
-      "UBEC output B to ferrite approach": {
-        "colour": "black",
-        "waypoints_mm": [
-          [
-            74.4,
-            10.2,
-            29.5
-          ],
-          [
-            75.5,
-            13.0,
-            29.5
-          ],
-          [
-            78.0,
-            16.0,
-            27.5
-          ]
-        ],
-        "centreline_mm": 7.4
-      },
-      "Ferrite departure to central 5V": {
-        "colour": "orange",
-        "waypoints_mm": [
-          [
-            78,
-            15.5,
-            12
-          ],
-          [
-            75.4,
-            13.5,
-            9.8
-          ],
-          [
-            75.4,
-            1.6,
-            8.5
-          ],
-          [
-            62.0,
-            1.6,
-            8.0
-          ],
-          [
-            60.5,
-            1.6,
-            4.15
-          ],
-          [
-            58.5,
-            1.6,
-            4.15
-          ],
-          [
-            58.5,
-            -0.35,
-            4.15
-          ]
-        ],
-        "centreline_mm": 37.4
-      },
-      "Ferrite departure to central GND": {
-        "colour": "black",
-        "waypoints_mm": [
-          [
-            78,
-            13,
-            10.4
-          ],
-          [
-            77.0,
-            11.5,
-            8.5
-          ],
-          [
-            77.0,
-            -2.2,
-            7.5
-          ],
-          [
-            72.0,
-            -2.2,
-            6.9
-          ],
-          [
-            67.8,
-            -2.2,
-            6.9
-          ],
-          [
-            66.5,
-            -2.2,
-            6.0
-          ]
-        ],
-        "centreline_mm": 27.2
-      },
-      "Central 5V to ESP32 J2-19": {
-        "colour": "orange",
-        "waypoints_mm": [
-          [
-            55.5,
-            -2.2,
-            4.15
-          ],
-          [
-            54.5,
-            -2.2,
-            3.4
-          ],
-          [
-            35.3,
-            -2.2,
-            3.4
-          ],
-          [
-            35.3,
-            -2.2,
-            -25.9
-          ],
-          [
-            28.27,
-            -2.2,
-            -25.9
-          ],
-          [
-            28.27,
-            14.9,
-            -25.9
-          ],
-          [
-            28.27,
-            14.9,
-            -23.28
-          ]
-        ],
-        "centreline_mm": 76.5
-      },
-      "Central GND to ESP32 J2-14": {
-        "colour": "black",
-        "waypoints_mm": [
-          [
-            61.5,
-            -2.2,
-            2.6
-          ],
-          [
-            60.5,
-            -2.2,
-            1.8
-          ],
-          [
-            36.9,
-            -2.2,
-            1.8
-          ],
-          [
-            36.9,
-            -2.2,
-            -25.9
-          ],
-          [
-            40.97,
-            -2.2,
-            -25.9
-          ],
-          [
-            40.97,
-            14.9,
-            -25.9
-          ],
-          [
-            40.97,
-            14.9,
-            -23.28
-          ]
-        ],
-        "centreline_mm": 76.4
-      },
-      "Central 5V to MAX490 VCC": {
-        "colour": "orange",
-        "waypoints_mm": [[56.5, -0.35, 4.15], [56.5, 3.2, 4.15], [57.5, 3.2, 6.6], [69.0, 3.2, 6.6], [69.0, 3.2, 28.31], [75.4, 3.2, 28.31], [75.4, 7.6, 28.31], [73.2, 7.6, 28.31]],
-        "centreline_mm": 52.4
-      },
-      "Central GND to MAX490 GND": {
-        "colour": "black",
-        "waypoints_mm": [[66.5, -2.2, 3.5], [67.5, -0.6, 5.5], [68.5, -0.6, 8.4], [69.5, -2.2, 8.4], [70.4, -2.2, 8.4], [70.4, -2.2, 25.77], [73.2, -2.2, 25.77], [73.2, 7.6, 25.77]],
-        "centreline_mm": 38.6
-      },
-      "Instrument ground - DE-9 bridge to GND-J": {
-        "colour": "black",
-        "waypoints_mm": [
-          [
-            9.6,
-            8.6,
-            6.5
-          ],
-          [
-            12.5,
-            6.5,
-            6.0
-          ],
-          [
-            19.6,
-            6.5,
-            5.0
-          ],
-          [
-            20.4,
-            5.8,
-            5.0
-          ],
-          [
-            20.4,
-            -2.2,
-            5.0
-          ],
-          [
-            53.0,
-            -2.2,
-            5.0
-          ],
-          [
-            54.5,
-            -2.2,
-            6.5
-          ],
-          [
-            60.5,
-            -2.2,
-            6.5
-          ],
-          [
-            61.5,
-            -2.2,
-            5.8
-          ]
-        ],
-        "centreline_mm": 61.8
-      }
-    },
-    "junction_envelopes": {
-      "Central 5V junction - bench splice envelope": {
-        "box_mm": [
-          55.5,
-          59.5,
-          -2.95,
-          -0.35,
-          2.85,
-          5.45
-        ]
-      },
-      "Central GND junction - bench splice envelope": {
-        "box_mm": [
-          61.5,
-          66.5,
-          -2.95,
-          -0.35,
-          2.0,
-          6.5
-        ]
-      }
+    "Central GND junction - bench splice envelope": {
+      "box_mm": [
+        61.5,
+        66.5,
+        -2.95,
+        -0.35,
+        2.0,
+        6.5
+      ]
     }
   },
-  "lane_signal_routing": {
-    "source_id": "S78",
-    "archive": "housing-power-routing.f3d",
-    "fusion_version": 12,
-    "coordinate_note": "Millimetres in the layout frame. Separate paths for resistor leads. Becker conductors show clearance routes without twist pitch. See Step 6 for cutting lengths.",
-    "routes": {
-      "DE-9 1 to mod1 L3 (1)": [[[32.837, 15.55, -3.56], [32.837, 16.6, -2.6], [32.837, 16.6, 4.95], [32.837, 10.6, 4.95], [13.6, 10.6, 4.95], [11.6, 11.27, 3.0], [9.1, 11.27, 3.0]]],
-      "DE-9 2 to mod2 L3 (1)": [[[45.312, 15.55, -3.56], [45.312, 15.85, -2.4], [44.3, 15.85, 1.0], [44.3, 15.85, 5.95], [44.3, 9.5, 5.95], [12.0, 9.5, 5.95], [10.6, 11.27, 5.77], [9.1, 11.27, 5.77]]],
-      "Mod1 R2 to ESP32 J2-7 GPIO32": [[[30.451, 15.55, -17.327], [30.451, 15.55, -18.6], [30.451, 15.8, -19.4], [30.451, 15.8, -21.65], [38.8, 15.8, -21.65], [39.8, 15.6, -21.2], [41.6, 15.6, -21.2], [42.0, 15.8, -21.65], [58.75, 15.8, -21.65], [58.75, 15.8, -22.6], [58.75, 15.18, -23.28]]],
-      "Mod2 R2 to ESP32 J2-10 GPIO26": [[[51.13, 15.18, -23.28], [51.13, 17.1, -22.6], [51.13, 17.1, -20.9], [42.926, 17.1, -20.9], [42.926, 15.8, -20.15], [42.926, 15.55, -19.2], [42.926, 15.55, -17.327]]],
-      "J3-11 GPIO17 to MAX490 TXD - DI per bench check": [[[73.1, 8.74, 20.69], [73.1, 9.5, 20.69], [73.1, 9.5, 4.95], [48.59, 9.5, 4.95], [48.59, 15.7, 4.95], [48.59, 15.7, 3.2], [48.59, 15.18, 2.28]]],
-      "MAX490 RXD to R-B1 - RO per bench check": [[[73.7, 8.74, 23.23], [73.7, 9.6, 23.23], [74.0, 11.2, 23.23], [74.0, 11.2, 6.1], [55.6, 11.2, 6.1]]],
-      "DE-9 8 to MAX490 Y - RX2+": [[[18.2, 9.8, 16.88], [17.0, 9.8, 16.88], [15.6, 8.6, 16.88], [15.6, 8.6, 9.925], [9.1, 8.6, 9.925]]],
-      "DE-9 9 to MAX490 Z - RX2-": [[[18.2, 9.8, 21.96], [17.0, 9.8, 21.96], [14.55, 8.6, 21.96], [14.55, 8.6, 12.695], [9.1, 8.6, 12.695]]],
-      "DE-9 4 to MAX490 A - TX2+": [[[18.2, 9.8, 32.12], [17.0, 9.8, 32.12], [12.9, 11.3, 32.12], [12.9, 11.3, 11.31], [9.1, 11.27, 11.31]]],
-      "DE-9 5 to MAX490 B - TX2-": [[[18.2, 9.8, 27.04], [17.0, 9.8, 27.04], [14.3, 12.35, 27.04], [12.9, 12.35, 27.04], [12.9, 12.35, 14.08], [11.5, 12.35, 14.08], [9.1, 11.27, 14.08]]],
-      "R-Z leads - on pads R1 to R3": [[[28.042, 15.3, -17.327], [28.042, 17.1, -17.327], [28.6395, 17.1, -17.327]], [[32.837, 15.3, -17.327], [32.837, 17.1, -17.327], [32.2395, 17.1, -17.327]]],
-      "R-F leads - on pads R1 to R3": [[[40.517, 15.3, -17.327], [40.517, 17.1, -17.327], [41.1145, 17.1, -17.327]], [[45.312, 15.3, -17.327], [45.312, 17.1, -17.327], [44.7145, 17.1, -17.327]]],
-      "R-B1 leads - J3-12 and RO splice": [[[46.05, 14.93, 2.28], [46.05, 15.3, 3.2], [46.3, 15.3, 6.1], [46.3, 11.2, 6.1], [49.4, 11.2, 6.1]], [[53.0, 11.2, 6.1], [55.6, 11.2, 6.1]]],
-      "R-B2 leads - J3-12 to J3-7": [[[46.05, 14.93, 2.28], [46.05, 16.9, 2.28], [46.05, 16.9, 3.0], [50.6, 16.9, 3.0]], [[58.75, 14.93, 2.28], [58.75, 16.9, 2.28], [58.75, 16.9, 3.0], [54.2, 16.9, 3.0]]],
-      "R-D leads - J3-11 to mod2 L2": [[[48.59, 14.93, 2.28], [48.59, 15.5, 1.8], [48.59, 17.0, 0.9]], [[42.926, 15.3, -3.56], [42.926, 17.0, -3.56], [43.6, 17.0, -3.56], [48.59, 17.0, -2.7]]],
-      "ESP32 J2-1 3V3 to RS232-mod2 R3": [[[45.312, 15.55, -17.327], [45.312, 15.55, -19.4], [45.312, 15.8, -20.15], [73.99, 15.8, -20.15], [73.99, 15.8, -22.6], [73.99, 15.18, -23.28]]],
-      "ESP32 J2-14 GND to RS232-mod2 R4": [[[47.981, 15.55, -17.327], [47.981, 17.4, -17.327], [52.8, 17.4, -17.327], [52.8, 17.4, -23.65], [41.9, 17.4, -23.65], [40.97, 16.75, -23.28], [40.97, 15.18, -23.28]]],
-      "RS232-mod2 R3 to mod1 R3 - 3V3 chain": [[[32.837, 15.55, -17.327], [32.837, 16.7, -15.9], [45.312, 16.7, -15.9], [45.312, 15.55, -17.327]]],
-      "RS232-mod1 R4 to mod2 R4 - GND chain": [[[35.506, 15.55, -17.327], [36.25, 15.55, -17.327], [36.9, 16.7, -19.0], [47.981, 16.7, -19.0], [47.981, 15.55, -17.327]]]
+  "floor_bus_tracks_z_mm": {
+    "ESP32 GND": 1.8,
+    "ESP32 5V": 3.4,
+    "instrument ground": 5.0,
+    "XT30 negative": 6.6,
+    "XT30 positive": 8.2
+  },
+  "wire_envelope_od_mm": {
+    "power": 1.5,
+    "signal": 1.0
+  },
+  "cutting_note": "Power lengths are from the v12 route records. Signal lengths are sums of straight construction segments. Null values need bench measurements. The route length excludes end allowances, service slack, twist allowance and ferrite turns.",
+  "routes": [
+    {
+      "endpoints": "XT30 + → UBEC input +",
+      "colour": "Red",
+      "material": "UBEC factory",
+      "lane": "Wall / floor",
+      "build_step": "Bench",
+      "paths": [
+        {
+          "waypoints_mm": [
+            [14, 7.5, -17.93],
+            [16.4, 7.5, -17.93],
+            [16.4, -2.2, -17.93],
+            [16.4, -2.2, 8.2],
+            [33.2, -2.2, 8.2],
+            [33.2, 13.0, 8.2],
+            [33.2, 13.0, 29.5],
+            [35.4, 13.0, 29.5],
+            [35.4, 10.2, 29.5]
+          ],
+          "cad_length_mm": 96.5,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        }
+      ],
+      "cut_method": "retain factory lead"
+    },
+    {
+      "endpoints": "XT30 − → UBEC input GND",
+      "colour": "Black",
+      "material": "UBEC factory",
+      "lane": "Wall / floor",
+      "build_step": "Bench",
+      "paths": [
+        {
+          "waypoints_mm": [
+            [14, 7.5, -12.93],
+            [18.0, 7.5, -12.93],
+            [18.0, -2.2, -12.93],
+            [18.0, -2.2, 6.6],
+            [34.4, -2.2, 6.6],
+            [34.9, -2.2, 7.3],
+            [34.9, 13.0, 7.3],
+            [34.9, 13.0, 26.5],
+            [35.4, 12.2, 26.5],
+            [35.4, 10.2, 26.5]
+          ],
+          "cad_length_mm": 87.8,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        }
+      ],
+      "cut_method": "retain factory lead"
+    },
+    {
+      "endpoints": "UBEC output + → ferrite → 5V-J",
+      "colour": "Orange in CAD",
+      "material": "UBEC factory",
+      "lane": "Ferrite / floor",
+      "build_step": "Bench",
+      "paths": [
+        {
+          "waypoints_mm": [
+            [74.4, 10.2, 26.5],
+            [75.2, 12.0, 26.5],
+            [78.0, 14.0, 26.5]
+          ],
+          "cad_length_mm": 5.4,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        },
+        {
+          "waypoints_mm": [
+            [78, 15.5, 12],
+            [75.4, 13.5, 9.8],
+            [75.4, 1.6, 8.5],
+            [62.0, 1.6, 8.0],
+            [60.5, 1.6, 4.15],
+            [58.5, 1.6, 4.15],
+            [58.5, -0.35, 4.15]
+          ],
+          "cad_length_mm": 37.4,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        }
+      ],
+      "cut_method": "retain factory lead",
+      "note": "CAD lengths exclude the actual turns."
+    },
+    {
+      "endpoints": "UBEC output GND → ferrite → GND-J",
+      "colour": "Black",
+      "material": "UBEC factory",
+      "lane": "Ferrite / floor",
+      "build_step": "Bench",
+      "paths": [
+        {
+          "waypoints_mm": [
+            [74.4, 10.2, 29.5],
+            [75.5, 13.0, 29.5],
+            [78.0, 16.0, 27.5]
+          ],
+          "cad_length_mm": 7.4,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        },
+        {
+          "waypoints_mm": [
+            [78, 13, 10.4],
+            [77.0, 11.5, 8.5],
+            [77.0, -2.2, 7.5],
+            [72.0, -2.2, 6.9],
+            [67.8, -2.2, 6.9],
+            [66.5, -2.2, 6.0]
+          ],
+          "cad_length_mm": 27.2,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        }
+      ],
+      "cut_method": "retain factory lead",
+      "note": "CAD lengths exclude the actual turns."
+    },
+    {
+      "endpoints": "DE-9 cups 3–6–7 bridge",
+      "colour": "Tinned",
+      "material": "Tinned jumper",
+      "lane": "Connector cups",
+      "build_step": "Bench",
+      "paths": [],
+      "cut_method": "form at cups"
+    },
+    {
+      "endpoints": "DE-9 ground bridge → GND-J",
+      "colour": "Black",
+      "material": "22 AWG PTFE",
+      "lane": "Wall / floor",
+      "build_step": "Bench",
+      "paths": [
+        {
+          "waypoints_mm": [
+            [9.6, 8.6, 6.5],
+            [12.5, 6.5, 6.0],
+            [19.6, 6.5, 5.0],
+            [20.4, 5.8, 5.0],
+            [20.4, -2.2, 5.0],
+            [53.0, -2.2, 5.0],
+            [54.5, -2.2, 6.5],
+            [60.5, -2.2, 6.5],
+            [61.5, -2.2, 5.8]
+          ],
+          "cad_length_mm": 61.8,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        }
+      ],
+      "cut_method": "fit and calculate"
+    },
+    {
+      "endpoints": "R-Z at mod1 R1 → R3",
+      "colour": "Violet sleeve",
+      "material": "DIN0204 axial",
+      "lane": "Pin top",
+      "build_step": "Bench",
+      "paths": [
+        {
+          "waypoints_mm": [
+            [28.042, 15.3, -17.327],
+            [28.042, 17.1, -17.327],
+            [28.6395, 17.1, -17.327]
+          ],
+          "cad_length_mm": 2.4,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        },
+        {
+          "waypoints_mm": [
+            [32.837, 15.3, -17.327],
+            [32.837, 17.1, -17.327],
+            [32.2395, 17.1, -17.327]
+          ],
+          "cad_length_mm": 2.4,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        }
+      ],
+      "cut_method": "form at pads"
+    },
+    {
+      "endpoints": "R-F at mod2 R1 → R3",
+      "colour": "Violet sleeve",
+      "material": "DIN0204 axial",
+      "lane": "Pin top",
+      "build_step": "Bench",
+      "paths": [
+        {
+          "waypoints_mm": [
+            [40.517, 15.3, -17.327],
+            [40.517, 17.1, -17.327],
+            [41.1145, 17.1, -17.327]
+          ],
+          "cad_length_mm": 2.4,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        },
+        {
+          "waypoints_mm": [
+            [45.312, 15.3, -17.327],
+            [45.312, 17.1, -17.327],
+            [44.7145, 17.1, -17.327]
+          ],
+          "cad_length_mm": 2.4,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        }
+      ],
+      "cut_method": "form at pads"
+    },
+    {
+      "endpoints": "J2-1 → mod2 R3",
+      "colour": "Violet",
+      "material": "26 AWG PTFE",
+      "lane": "J2",
+      "build_step": "Bench",
+      "paths": [
+        {
+          "waypoints_mm": [
+            [45.312, 15.55, -17.327],
+            [45.312, 15.55, -19.4],
+            [45.312, 15.8, -20.15],
+            [73.99, 15.8, -20.15],
+            [73.99, 15.8, -22.6],
+            [73.99, 15.18, -23.28]
+          ],
+          "cad_length_mm": 34.9,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        }
+      ],
+      "cut_method": "fit and calculate"
+    },
+    {
+      "endpoints": "J2-14 → mod2 R4",
+      "colour": "Black",
+      "material": "26 AWG PTFE",
+      "lane": "J2",
+      "build_step": "Bench",
+      "paths": [
+        {
+          "waypoints_mm": [
+            [47.981, 15.55, -17.327],
+            [47.981, 17.4, -17.327],
+            [52.8, 17.4, -17.327],
+            [52.8, 17.4, -23.65],
+            [41.9, 17.4, -23.65],
+            [40.97, 16.75, -23.28],
+            [40.97, 15.18, -23.28]
+          ],
+          "cad_length_mm": 26.7,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        }
+      ],
+      "cut_method": "fit and calculate"
+    },
+    {
+      "endpoints": "mod2 R3 → mod1 R3",
+      "colour": "Violet",
+      "material": "26 AWG PTFE",
+      "lane": "Pin top",
+      "build_step": "Bench",
+      "paths": [
+        {
+          "waypoints_mm": [
+            [32.837, 15.55, -17.327],
+            [32.837, 16.7, -15.9],
+            [45.312, 16.7, -15.9],
+            [45.312, 15.55, -17.327]
+          ],
+          "cad_length_mm": 16.1,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        }
+      ],
+      "cut_method": "fit and calculate"
+    },
+    {
+      "endpoints": "mod2 R4 → mod1 R4",
+      "colour": "Black",
+      "material": "26 AWG PTFE",
+      "lane": "Pin top",
+      "build_step": "Bench",
+      "paths": [
+        {
+          "waypoints_mm": [
+            [35.506, 15.55, -17.327],
+            [36.25, 15.55, -17.327],
+            [36.9, 16.7, -19.0],
+            [47.981, 16.7, -19.0],
+            [47.981, 15.55, -17.327]
+          ],
+          "cad_length_mm": 16.0,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        }
+      ],
+      "cut_method": "fit and calculate"
+    },
+    {
+      "endpoints": "5V-J → ESP32 J2-19",
+      "colour": "Orange",
+      "material": "22 AWG PTFE",
+      "lane": "Floor / J2",
+      "build_step": "Floor",
+      "paths": [
+        {
+          "waypoints_mm": [
+            [55.5, -2.2, 4.15],
+            [54.5, -2.2, 3.4],
+            [35.3, -2.2, 3.4],
+            [35.3, -2.2, -25.9],
+            [28.27, -2.2, -25.9],
+            [28.27, 14.9, -25.9],
+            [28.27, 14.9, -23.28]
+          ],
+          "cad_length_mm": 76.5,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        }
+      ],
+      "cut_method": "fit and calculate"
+    },
+    {
+      "endpoints": "GND-J → ESP32 J2-14",
+      "colour": "Black",
+      "material": "22 AWG PTFE",
+      "lane": "Floor / J2",
+      "build_step": "Floor",
+      "paths": [
+        {
+          "waypoints_mm": [
+            [61.5, -2.2, 2.6],
+            [60.5, -2.2, 1.8],
+            [36.9, -2.2, 1.8],
+            [36.9, -2.2, -25.9],
+            [40.97, -2.2, -25.9],
+            [40.97, 14.9, -25.9],
+            [40.97, 14.9, -23.28]
+          ],
+          "cad_length_mm": 76.4,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        }
+      ],
+      "cut_method": "fit and calculate"
+    },
+    {
+      "endpoints": "5V-J → MAX490 VCC",
+      "colour": "Orange",
+      "material": "22 AWG PTFE",
+      "lane": "Floor / MAX490 header",
+      "build_step": "Boards",
+      "paths": [
+        {
+          "waypoints_mm": [
+            [56.5, -0.35, 4.15],
+            [56.5, 3.2, 4.15],
+            [57.5, 3.2, 6.6],
+            [69.0, 3.2, 6.6],
+            [69.0, 3.2, 28.31],
+            [75.4, 3.2, 28.31],
+            [75.4, 7.6, 28.31],
+            [73.2, 7.6, 28.31]
+          ],
+          "cad_length_mm": 52.4,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        }
+      ],
+      "cut_method": "fit and calculate"
+    },
+    {
+      "endpoints": "GND-J → MAX490 GND",
+      "colour": "Black",
+      "material": "22 AWG PTFE",
+      "lane": "Floor / MAX490 header",
+      "build_step": "Boards",
+      "paths": [
+        {
+          "waypoints_mm": [
+            [66.5, -2.2, 3.5],
+            [67.5, -0.6, 5.5],
+            [68.5, -0.6, 8.4],
+            [69.5, -2.2, 8.4],
+            [70.4, -2.2, 8.4],
+            [70.4, -2.2, 25.77],
+            [73.2, -2.2, 25.77],
+            [73.2, 7.6, 25.77]
+          ],
+          "cad_length_mm": 38.6,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        }
+      ],
+      "cut_method": "fit and calculate"
+    },
+    {
+      "endpoints": "DE-9 1 → mod1 L3",
+      "colour": "Blue",
+      "material": "26 AWG PTFE",
+      "lane": "Centre bus",
+      "build_step": "Signals",
+      "paths": [
+        {
+          "waypoints_mm": [
+            [32.837, 15.55, -3.56],
+            [32.837, 16.6, -2.6],
+            [32.837, 16.6, 4.95],
+            [32.837, 10.6, 4.95],
+            [13.6, 10.6, 4.95],
+            [11.6, 11.27, 3.0],
+            [9.1, 11.27, 3.0]
+          ],
+          "cad_length_mm": 39.6,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        }
+      ],
+      "cut_method": "fit and calculate"
+    },
+    {
+      "endpoints": "DE-9 2 → mod2 L3",
+      "colour": "Blue",
+      "material": "26 AWG PTFE",
+      "lane": "Centre bus",
+      "build_step": "Signals",
+      "paths": [
+        {
+          "waypoints_mm": [
+            [45.312, 15.55, -3.56],
+            [45.312, 15.85, -2.4],
+            [44.3, 15.85, 1.0],
+            [44.3, 15.85, 5.95],
+            [44.3, 9.5, 5.95],
+            [12.0, 9.5, 5.95],
+            [10.6, 11.27, 5.77],
+            [9.1, 11.27, 5.77]
+          ],
+          "cad_length_mm": 52.1,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        }
+      ],
+      "cut_method": "fit and calculate"
+    },
+    {
+      "endpoints": "mod1 R2 → ESP32 J2-7",
+      "colour": "Blue",
+      "material": "26 AWG PTFE",
+      "lane": "J2",
+      "build_step": "Signals",
+      "paths": [
+        {
+          "waypoints_mm": [
+            [30.451, 15.55, -17.327],
+            [30.451, 15.55, -18.6],
+            [30.451, 15.8, -19.4],
+            [30.451, 15.8, -21.65],
+            [38.8, 15.8, -21.65],
+            [39.8, 15.6, -21.2],
+            [41.6, 15.6, -21.2],
+            [42.0, 15.8, -21.65],
+            [58.75, 15.8, -21.65],
+            [58.75, 15.8, -22.6],
+            [58.75, 15.18, -23.28]
+          ],
+          "cad_length_mm": 34.9,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        }
+      ],
+      "cut_method": "fit and calculate"
+    },
+    {
+      "endpoints": "mod2 R2 → ESP32 J2-10",
+      "colour": "Blue",
+      "material": "26 AWG PTFE",
+      "lane": "J2",
+      "build_step": "Signals",
+      "paths": [
+        {
+          "waypoints_mm": [
+            [51.13, 15.18, -23.28],
+            [51.13, 17.1, -22.6],
+            [51.13, 17.1, -20.9],
+            [42.926, 17.1, -20.9],
+            [42.926, 15.8, -20.15],
+            [42.926, 15.55, -19.2],
+            [42.926, 15.55, -17.327]
+          ],
+          "cad_length_mm": 16.3,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        }
+      ],
+      "cut_method": "fit and calculate"
+    },
+    {
+      "endpoints": "ESP32 J3-11 → MAX490 DI",
+      "colour": "Blue",
+      "material": "26 AWG PTFE",
+      "lane": "Centre bus / header",
+      "build_step": "Signals",
+      "paths": [
+        {
+          "waypoints_mm": [
+            [73.1, 8.74, 20.69],
+            [73.1, 9.5, 20.69],
+            [73.1, 9.5, 4.95],
+            [48.59, 9.5, 4.95],
+            [48.59, 15.7, 4.95],
+            [48.59, 15.7, 3.2],
+            [48.59, 15.18, 2.28]
+          ],
+          "cad_length_mm": 50.0,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        }
+      ],
+      "cut_method": "fit and calculate"
+    },
+    {
+      "endpoints": "MAX490 RO → R-B1 splice",
+      "colour": "Blue",
+      "material": "26 AWG PTFE",
+      "lane": "Centre bus / header",
+      "build_step": "Signals",
+      "paths": [
+        {
+          "waypoints_mm": [
+            [73.7, 8.74, 23.23],
+            [73.7, 9.6, 23.23],
+            [74.0, 11.2, 23.23],
+            [74.0, 11.2, 6.1],
+            [55.6, 11.2, 6.1]
+          ],
+          "cad_length_mm": 38.0,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        }
+      ],
+      "cut_method": "fit and calculate"
+    },
+    {
+      "endpoints": "DE-9 8 → MAX490 Y",
+      "colour": "Blue",
+      "material": "26 AWG PTFE",
+      "lane": "Wall, pair 8/9",
+      "build_step": "Signals",
+      "paths": [
+        {
+          "waypoints_mm": [
+            [18.2, 9.8, 16.88],
+            [17.0, 9.8, 16.88],
+            [15.6, 8.6, 16.88],
+            [15.6, 8.6, 9.925],
+            [9.1, 8.6, 9.925]
+          ],
+          "cad_length_mm": 16.5,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        }
+      ],
+      "cut_method": "measure after twisting"
+    },
+    {
+      "endpoints": "DE-9 9 → MAX490 Z",
+      "colour": "Blue",
+      "material": "26 AWG PTFE",
+      "lane": "Wall, pair 8/9",
+      "build_step": "Signals",
+      "paths": [
+        {
+          "waypoints_mm": [
+            [18.2, 9.8, 21.96],
+            [17.0, 9.8, 21.96],
+            [14.55, 8.6, 21.96],
+            [14.55, 8.6, 12.695],
+            [9.1, 8.6, 12.695]
+          ],
+          "cad_length_mm": 18.6,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        }
+      ],
+      "cut_method": "measure after twisting"
+    },
+    {
+      "endpoints": "DE-9 4 → MAX490 A",
+      "colour": "Blue",
+      "material": "26 AWG PTFE",
+      "lane": "Wall, pair 4/5",
+      "build_step": "Signals",
+      "paths": [
+        {
+          "waypoints_mm": [
+            [18.2, 9.8, 32.12],
+            [17.0, 9.8, 32.12],
+            [12.9, 11.3, 32.12],
+            [12.9, 11.3, 11.31],
+            [9.1, 11.27, 11.31]
+          ],
+          "cad_length_mm": 30.2,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        }
+      ],
+      "cut_method": "measure after twisting"
+    },
+    {
+      "endpoints": "DE-9 5 → MAX490 B",
+      "colour": "Blue",
+      "material": "26 AWG PTFE",
+      "lane": "Wall, pair 4/5",
+      "build_step": "Signals",
+      "paths": [
+        {
+          "waypoints_mm": [
+            [18.2, 9.8, 27.04],
+            [17.0, 9.8, 27.04],
+            [14.3, 12.35, 27.04],
+            [12.9, 12.35, 27.04],
+            [12.9, 12.35, 14.08],
+            [11.5, 12.35, 14.08],
+            [9.1, 11.27, 14.08]
+          ],
+          "cad_length_mm": 23.3,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        }
+      ],
+      "cut_method": "measure after twisting"
+    },
+    {
+      "endpoints": "R-B1 between J3-12 and RO splice",
+      "colour": "Blue",
+      "material": "26 AWG PTFE / axial",
+      "lane": "Pin top / centre bus",
+      "build_step": "Signals",
+      "paths": [
+        {
+          "waypoints_mm": [
+            [46.05, 14.93, 2.28],
+            [46.05, 15.3, 3.2],
+            [46.3, 15.3, 6.1],
+            [46.3, 11.2, 6.1],
+            [49.4, 11.2, 6.1]
+          ],
+          "cad_length_mm": 11.1,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        },
+        {
+          "waypoints_mm": [
+            [53.0, 11.2, 6.1],
+            [55.6, 11.2, 6.1]
+          ],
+          "cad_length_mm": 2.6,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        }
+      ],
+      "cut_method": "fit and calculate"
+    },
+    {
+      "endpoints": "R-B2 between J3-12 and J3-7",
+      "colour": "Black",
+      "material": "26 AWG PTFE / axial",
+      "lane": "Pin top",
+      "build_step": "Signals",
+      "paths": [
+        {
+          "waypoints_mm": [
+            [46.05, 14.93, 2.28],
+            [46.05, 16.9, 2.28],
+            [46.05, 16.9, 3.0],
+            [50.6, 16.9, 3.0]
+          ],
+          "cad_length_mm": 7.2,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        },
+        {
+          "waypoints_mm": [
+            [58.75, 14.93, 2.28],
+            [58.75, 16.9, 2.28],
+            [58.75, 16.9, 3.0],
+            [54.2, 16.9, 3.0]
+          ],
+          "cad_length_mm": 7.2,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        }
+      ],
+      "cut_method": "fit and calculate"
+    },
+    {
+      "endpoints": "R-D between J3-11 and mod2 L2",
+      "colour": "Violet",
+      "material": "26 AWG PTFE / axial",
+      "lane": "Pin top",
+      "build_step": "Signals",
+      "paths": [
+        {
+          "waypoints_mm": [
+            [48.59, 14.93, 2.28],
+            [48.59, 15.5, 1.8],
+            [48.59, 17.0, 0.9]
+          ],
+          "cad_length_mm": 2.5,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        },
+        {
+          "waypoints_mm": [
+            [42.926, 15.3, -3.56],
+            [42.926, 17.0, -3.56],
+            [43.6, 17.0, -3.56],
+            [48.59, 17.0, -2.7]
+          ],
+          "cad_length_mm": 7.4,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        }
+      ],
+      "cut_method": "fit and calculate"
     }
-  }
+  ]
 }

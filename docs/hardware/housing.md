@@ -7,7 +7,7 @@
 Mechanical design of the bridge: what goes inside, part sizes, connectors on the housing, internal layout.
 
 > [!NOTE]
-> **Status:** housing prototype and [internal routing study](#internal-routing) modelled, not printed. The study includes power routes, all five resistors and two integral cable saddles. The selected lanes are modelled as space envelopes; the power wires follow them, the signal and resistor routes do not yet. Wire sizes, bends and termination envelopes are provisional; physical acceptance is tracked in [open items](../project/open-items.md#housing).
+> **Status:** housing prototype and [internal routing study](#internal-routing) modelled, not printed. The study includes power routes, all five resistors and two integral cable saddles. Power, signal and resistor routes follow the selected lanes. The [cutting table](#harness-cutting) gives CAD lengths and bench inputs; physical acceptance is tracked in [open items](../project/open-items.md#housing).
 
 📑 **On this page:** <kbd>[1 · 🎯 Requirements](#requirements)</kbd> <kbd>[2 · 📐 Design rules](#rules)</kbd> <kbd>[3 · 📏 Contents and sizes](#contents)</kbd> <kbd>[4 · 🔌 Connectors on the housing](#connectors)</kbd> <kbd>[5 · 🧩 Internal layout](#layout)</kbd>
 
@@ -398,7 +398,7 @@ Use the hideable **Cable harness - routing study** component in the [housing ass
 
 <a id="power-on-lanes"></a>
 
-**Power routes on the lanes (S77).** All power wires are 22 AWG PTFE or UBEC leads in the Ø1.5 mm envelope. Floor runs lie at wire centre Y −2.2 in fixed tracks; the [route data](../../cad/housing/housing-body-v1/routing-study.json) (`lane_power_routing`) holds every waypoint.
+**Power routes on the lanes (S77).** All power wires are 22 AWG PTFE or UBEC leads in the Ø1.5 mm envelope. Floor runs lie at wire centre Y −2.2 in fixed tracks; the [route data](../../cad/housing/housing-body-v1/routing-study.json) holds the current waypoints.
 
 | Floor-bus track (wire centre Z) | Wire |
 | ---: | --- |
@@ -419,16 +419,6 @@ Use the hideable **Cable harness - routing study** component in the [housing ass
 | Instrument ground | From the bridged DE-9 cups 3-6-7 down to track 5.0 and along the floor bus to GND-J |
 
 - **Clearance:** highest power wire Y 16.55, 3.45 mm under the hood; power wires touch only their end pads, joint allowances and splice envelopes (S77).
-- **Centreline lengths (mm):** these are routing lengths, **not cutting lengths**; add termination, stripping, service slack and the actual ferrite winding.
-
-| Segment | Length |
-| --- | ---: |
-| XT30 → UBEC input + / − | 96.5 / 87.8 |
-| UBEC output → ferrite approach 5V / GND | 5.4 / 7.4 |
-| Ferrite departure → 5V-J / GND-J | 37.4 / 27.2 |
-| Splices → ESP32 5V / GND | 76.5 / 76.4 |
-| Splices → MAX490 VCC / GND | 52.4 / 38.6 |
-| DE-9 bridge → GND-J (instrument ground) | 61.8 |
 
 **Wire colours (S71):** ground black, 12 V red, 5 V orange, 3.3 V violet, and logic blue. Keep both insulated leads of each resistor branch the same colour. The R-B1 series signal stays blue, the R-B2 ground branch stays black, and the R-D, R-Z and R-F pull-up branches stay violet.
 
@@ -452,6 +442,48 @@ Junction hardware and attachment are tracked in the [housing open items](../proj
 - Each saddle: 5.7 × 6 mm footprint, 7.5 mm high; open trough 4.1 mm wide, floor at Y 3 mm, side walls 0.8 mm.
 - Tie passage across the saddle: 3.2 × 1.6 mm, bottom 3.4 mm above the housing floor; 1.0 mm roof below the trough. Rounded edges R0.2.
 - Print with the base floor down, PETG, 0.4 mm nozzle and 0.2 mm layers. The tie-passage roof spans 3.2 mm.
+
+<a id="harness-cutting"></a>
+
+### 5.2 Harness cutting table
+
+Use the [current route data](../../cad/housing/housing-body-v1/routing-study.json) and the [build order](../research/reviews/2026-11-14-wire-routing.md#build-order). Lengths are in millimetres. A plus sign separates routed segments or resistor leads.
+
+- **Cut length = fitted route length + both end allowances + service slack.** Measure the end allowance against each cup, pad or terminal. Count the stripped portion once. Fit enough slack to lift the carrier or the RS-232 modules where needed.
+- Twist and dress the Becker pairs before measuring each conductor. Count the ferrite turns before rewinding the factory output leads. Form the DE-9 tinned bridge and the on-pad axial leads against the real contacts.
+- Record the measurements from [housing items 14 and 21–23](../project/open-items.md#housing) before cutting. For R-B1, R-B2 and R-D, fit the insulated leads and axial overlaps individually.
+
+| Build step | From → to | Colour | Wire | Lane | CAD length | Strip / end allowance | Service slack | Cut |
+| --- | --- | --- | --- | --- | ---: | --- | --- | --- |
+| Bench | XT30 + → UBEC input + | Red | UBEC factory | Wall / floor | 96.5 | Measure at ends | Fit | Retain factory lead |
+| Bench | XT30 − → UBEC input GND | Black | UBEC factory | Wall / floor | 87.8 | Measure at ends | Fit | Retain factory lead |
+| Bench | UBEC output + → ferrite → 5V-J | Orange in CAD | UBEC factory | Ferrite / floor | 5.4 + 37.4 | Measure at ends | Fit | Retain factory lead |
+| Bench | UBEC output GND → ferrite → GND-J | Black | UBEC factory | Ferrite / floor | 7.4 + 27.2 | Measure at ends | Fit | Retain factory lead |
+| Bench | DE-9 cups 3–6–7 bridge | Tinned | Tinned jumper | Connector cups | — | — | — | Form at cups |
+| Bench | DE-9 ground bridge → GND-J | Black | 22 AWG PTFE | Wall / floor | 61.8 | Measure | Fit | Calculate |
+| Bench | R-Z at mod1 R1 → R3 | Violet sleeve | DIN0204 axial | Pin top | 2.4 + 2.4 | — | — | Form at pads |
+| Bench | R-F at mod2 R1 → R3 | Violet sleeve | DIN0204 axial | Pin top | 2.4 + 2.4 | — | — | Form at pads |
+| Bench | J2-1 → mod2 R3 | Violet | 26 AWG PTFE | J2 | 34.9 | Measure | Fit | Calculate |
+| Bench | J2-14 → mod2 R4 | Black | 26 AWG PTFE | J2 | 26.7 | Measure | Fit | Calculate |
+| Bench | mod2 R3 → mod1 R3 | Violet | 26 AWG PTFE | Pin top | 16.1 | Measure | Fit | Calculate |
+| Bench | mod2 R4 → mod1 R4 | Black | 26 AWG PTFE | Pin top | 16.0 | Measure | Fit | Calculate |
+| Floor | 5V-J → ESP32 J2-19 | Orange | 22 AWG PTFE | Floor / J2 | 76.5 | Measure | Fit | Calculate |
+| Floor | GND-J → ESP32 J2-14 | Black | 22 AWG PTFE | Floor / J2 | 76.4 | Measure | Fit | Calculate |
+| Boards | 5V-J → MAX490 VCC | Orange | 22 AWG PTFE | Floor / MAX490 header | 52.4 | Measure | Fit | Calculate |
+| Boards | GND-J → MAX490 GND | Black | 22 AWG PTFE | Floor / MAX490 header | 38.6 | Measure | Fit | Calculate |
+| Signals | DE-9 1 → mod1 L3 | Blue | 26 AWG PTFE | Centre bus | 39.6 | Measure | Fit | Calculate |
+| Signals | DE-9 2 → mod2 L3 | Blue | 26 AWG PTFE | Centre bus | 52.1 | Measure | Fit | Calculate |
+| Signals | mod1 R2 → ESP32 J2-7 | Blue | 26 AWG PTFE | J2 | 34.9 | Measure | Fit | Calculate |
+| Signals | mod2 R2 → ESP32 J2-10 | Blue | 26 AWG PTFE | J2 | 16.3 | Measure | Fit | Calculate |
+| Signals | ESP32 J3-11 → MAX490 DI | Blue | 26 AWG PTFE | Centre bus / header | 50.0 | Measure | Fit | Calculate |
+| Signals | MAX490 RO → R-B1 splice | Blue | 26 AWG PTFE | Centre bus / header | 38.0 | Measure | Fit | Calculate |
+| Signals | DE-9 8 → MAX490 Y | Blue | 26 AWG PTFE | Wall, pair 8/9 | 16.5 | Measure | Fit | Measure after twisting |
+| Signals | DE-9 9 → MAX490 Z | Blue | 26 AWG PTFE | Wall, pair 8/9 | 18.6 | Measure | Fit | Measure after twisting |
+| Signals | DE-9 4 → MAX490 A | Blue | 26 AWG PTFE | Wall, pair 4/5 | 30.2 | Measure | Fit | Measure after twisting |
+| Signals | DE-9 5 → MAX490 B | Blue | 26 AWG PTFE | Wall, pair 4/5 | 23.3 | Measure | Fit | Measure after twisting |
+| Signals | R-B1 between J3-12 and RO splice | Blue | 26 AWG PTFE / axial | Pin top / centre bus | 11.1 + 2.6 | Measure | Fit | Calculate |
+| Signals | R-B2 between J3-12 and J3-7 | Black | 26 AWG PTFE / axial | Pin top | 7.2 + 7.2 | Measure | Fit | Calculate |
+| Signals | R-D between J3-11 and mod2 L2 | Violet | 26 AWG PTFE / axial | Pin top | 2.5 + 7.4 | Measure | Fit | Calculate |
 
 ---
 

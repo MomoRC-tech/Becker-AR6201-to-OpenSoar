@@ -30,7 +30,7 @@ The housing uses [layout v4](../layout-v4/README.md) with a base tray, connector
 | `housing-base.3mf`, `housing-hood.3mf`, `housing-logo-insert.3mf` | Print-ready meshes, Z up: base floor down; hood and logo insert top down in the same coordinates. Load hood and logo insert together as one object with two parts (dark grey filament for the logo) |
 | `housing-logo-insert.f3d`, `housing-logo-insert.step` | Logo and "7-20V" insert as its own part |
 | `housing-base.step`, `housing-hood.step` | Solid models in the layout frame |
-| [routing-study.json](routing-study.json) | Current power and signal waypoints, resistor envelopes, and baseline route data |
+| [routing-study.json](routing-study.json) | Current power and signal waypoints, lane envelopes and [harness cutting table](../../../docs/hardware/housing.md#harness-cutting) inputs |
 | [routing-verification.json](routing-verification.json) | Native geometry and export checks for S64 |
 
 | Part | Main dimensions (mm) |
