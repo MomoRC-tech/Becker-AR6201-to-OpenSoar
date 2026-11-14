@@ -157,6 +157,7 @@ Exported geometry, in the installed layout frame; owner measurements and Fusion 
 | Printing | Print the carrier with its UBEC contact face down, as in the 3MF, supports off. The full-height legs start on the bed, with vertical screw holes; no projecting screw-seat roofs. Print the base floor down; the 0.4 mm floor beneath each pilot is two nominal 0.2 mm layers |
 
 - Fit the MAX490 on the floor posts, place the carrier over it, and tighten the four shared screws gently.
+- In Fusion, a rigid as-built joint mounts `MAX490 and UBEC stack` to the pinned base tray. The rigid group holds the embedded MAX490 board, measured UBEC, carrier and tie fit envelopes at their installed positions (S66).
 - Thread the ties through the underside channels before placing the UBEC; check the end solder joints clear the plate, then tighten only enough to hold the module without deforming it.
 - Keep the jumper accessible. Leave enough slack in the attached leads to lift the carrier after removing the four screws; the MAX490 is also released when those screws come out.
 - Work through the carrier, tie-head and screw checks in [open items](../project/open-items.md#housing).
