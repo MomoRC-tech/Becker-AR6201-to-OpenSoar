@@ -392,6 +392,7 @@ Use the hideable **Cable harness - routing study** component in the [housing ass
 - **Ferrite (selected):** the ring is moved along the UBEC output lead so the approach leads stay short and above the floor ([ferrite cradle](#ferrite-cradle)); the modelled floor loop between UBEC and ring is superseded.
 - **Pull-ups R-Z and R-F (selected):** directly on the module pads R1 → R3, leads bent over the R2 joint, soldered on the bench before the module slides into the clamp. The modelled flying-lead resistors and the bridge wrap for the FLARM pull-up lead are superseded.
 - **Local taps (selected):** RS-232 module ground from J2-14, and R-D takes 3.3 V from the mod2 L2 pad ([supply path](power.md#supply)).
+- **Wire (selected):** 26 AWG stranded PTFE for signals and the local 3.3 V/ground chain, inside the Ø1.0 mm envelope; 22 AWG stranded PTFE for the power branches and the instrument-ground wire, inside the Ø1.5 mm envelope; the UBEC's factory input and output leads where they reach ([parts](modules.md#parts-list)).
 - **5V-J and GND-J (selected):** inline solder splices with heat-shrink, made on the bench as part of the power harness and laid into the floor bus at the far end of the channel, X about 58–67, near the ferrite. The modelled junction envelopes below still sit mid-channel.
 
 The [revised power-routing assembly](../../cad/housing/housing-body-v1/housing-power-routing.f3d) replaces six wire envelopes from that baseline (S70). The XT30 input pair turns inward at the connector side and crosses toward the UBEC pads on the ESP32 side of the MAX490 terminal block. Both the UBEC-to-ferrite and ferrite-to-junction pairs run near the base plate, with rises at the ends. The [route data](../../cad/housing/housing-body-v1/routing-study.json) gives the waypoints and approximate lengths.
@@ -412,8 +413,8 @@ The table below describes the baseline.
 | Item | Modelled arrangement |
 | --- | --- |
 | Routing style | Straight runs with rounded corners; power uses the floor and central gap where possible, with rises at the terminals |
-| Main supply/return wires | Provisional Ø1.5 mm **including insulation** for 12 V and 5 V; this is not a copper cross-section or selected wire gauge |
-| Local RS-232 supply/return and signal/resistor connections | Provisional Ø1.0 mm including insulation; actual ground-wire sizing still follows the current/fault assessment |
+| Main supply/return wires | Ø1.5 mm envelope **including insulation** for 12 V and 5 V; holds the selected 22 AWG PTFE wire and the UBEC leads |
+| Local RS-232 supply/return and signal/resistor connections | Ø1.0 mm envelope including insulation; holds the selected 26 AWG PTFE wire |
 | 12 V pair | From the XT30 along the connector wall, through two open saddles, then around the terminal block to the UBEC input; the upper bends avoid the four carrier screw-driver paths |
 | 5 V distribution | Ferrite departure segments feed separate 5V-J and GND-J envelopes in the central channel. Each junction has its own branches to ESP32 and MAX490; floor runs pass below the boards |
 | RS-232 supply chain | ESP32 feeds mod2, then short links join mod2 R3/R4 to mod1 R3/R4. Local feeds approach the marked pad row above the boards; short parallel inter-board links stay clear of the clamp |
