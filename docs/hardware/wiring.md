@@ -118,7 +118,7 @@ Leave L4, GPIO27 and the FLARM RX conductor unconnected. Solder the 10 kΩ pull-
 
 The radio's serial interface 2 on connector J1 ([Becker DV14307.03 Issue 06, p.59](https://www.becker-avionics.com/wp-content/uploads/00_Literature/6200_Series_IO_en.pdf#page=59), S10).
 
-Start at the loose ends of the existing Becker harness ([installed wiring](../project/existing-installation.md#equipment)). The J1 numbers below identify radio-side signal origins, not a bridge-side connector. Bridge termination is tracked in [open items](../project/open-items.md#bench-hardware).
+Start at the loose ends of the existing Becker harness ([installed wiring](../project/existing-installation.md#equipment)). The J1 numbers below identify radio-side signal origins, not a bridge-side connector. Terminate the bridge end using the [selected DE-9 pinout](#de9-pinout).
 
 ### 4.1 Radio side — board screw terminals
 
@@ -180,7 +180,7 @@ Before connecting any device, work through this list in order:
 - [ ] **4.** On the MAX490 board, identify RO and DI on the header and check the 120 Ω termination.
 - [ ] **5.** With the MAX490 powered and the radio line idle, measure GPIO16: about 3.0 V (high). Then hold B above A with a 1.5 V cell (+ to B, − to A) and check for a low below 0.5 V.
 - [ ] **6.** Measure the bridge's current and switch-on inrush at 12 V, and update the [current assumptions](power.md#currents).
-- [ ] **7.** With power off and the instruments disconnected, check continuity through each contact of the mated DE-9 against the [pinout](#de9-pinout). Check for shorts between signal contacts and to GND-J or the shell. The three ground contacts share GND-J.
+- [ ] **7.** With power off and the instruments disconnected, use the moulded contact numbers to check each loose harness conductor end to end through the mated DE-9 against the [pinout](#de9-pinout). Check for unintended connections between signals and from signals to GND-J or the shell. Allow for the MAX490 receive termination and the three ground contacts that share GND-J.
 - [ ] **8.** Before plugging in J1, check that the bridge ground and the radio's P1-13 and P1-25 each have low resistance (well under 1 Ω) to the common ground point ([why](power.md#wire-breaks)).
 - [ ] **9.** In the aircraft: listen for radio noise and check squelch with the bridge on and off.
 

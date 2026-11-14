@@ -14,7 +14,7 @@
     "MAX490 RO/DI pin assignment pending",
     "RS232 CAD +/− pad row verified; signal-pad functions follow the S26/S27 inferred plan, pending physical continuity",
     "No ferrite winding count modelled",
-    "DE-9 pin assignments and ground fan-out not modelled; three instrument branches reserved at GND-J"
+    "See docs/hardware/wiring.md#de9-pinout for the selected contacts. The routing study reserves three instrument branches at GND-J and stops short of the DE-9 fan-out."
   ],
   "routes": [
     {
@@ -995,9 +995,9 @@
       "central GND": [
         "ESP32 J2-14",
         "MAX490 GND",
-        "Becker signal GND via unassigned DE9 contact",
-        "Zander signal GND via unassigned DE9 contact",
-        "FLARM signal GND via unassigned DE9 contact"
+        "Becker signal GND via DE-9 pin 3",
+        "Zander signal GND via DE-9 pin 6",
+        "FLARM signal GND via DE-9 pin 7"
       ],
       "ESP32 J3-7": [
         "RS232-mod2 R4"

@@ -387,7 +387,7 @@ Use the hideable **Cable harness - routing study** component in the [housing ass
 | Insulation/joints | Separate hideable Ø2.4 × 5.2 mm resistor heat-shrink allowances; Ø3 mm supply-joint allowances and Ø2.4 mm allowances at the adjacent GPIO16/17 joints. These are space estimates, not selected parts |
 | Tight geometry | Minimum nominal hood clearance remains 0.25 mm at the upper 12 V bend; the new RS-232 ground link has 0.50 mm. The v77 study uses laterally adjusted wire envelopes. Set the final bend radii after selecting the wire |
 
-GND-J reserves the three instrument-ground branches. Their DE-9 fan-out remains outside this routing increment until the [connector assignments](../project/open-items.md#bench-hardware) are selected. Junction hardware and attachment are tracked in the [housing open items](../project/open-items.md#housing).
+GND-J reserves the three instrument-ground branches. The routing study reserves space for these branches. Use the [selected DE-9 pinout](wiring.md#de9-pinout) to lay out the fan-out. Junction hardware and attachment are tracked in the [housing open items](../project/open-items.md#housing).
 
 **Two integral open saddles for the 12 V pair:**
 
