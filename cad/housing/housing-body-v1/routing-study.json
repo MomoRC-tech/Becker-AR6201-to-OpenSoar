@@ -1,9 +1,9 @@
 {
   "units": "mm",
-  "frame": "X from connector-wall outside face along housing; Y up from floor top; Z across",
+  "frame": "X from the connector-wall outside face; Y up from the layout datum, 3 mm above the prototype floor; Z across",
   "status": "Provisional routing study; not a wire-gauge selection or cutting list",
   "geometry_source": "housing-assembly.f3d: Cable harness - routing study",
-  "points_note": "Construction waypoints, not samples of the rounded or fitted centreline. Measured lengths and circular arc radii come from the Fusion paths.",
+  "points_note": "Construction waypoints for v76. For v77, apply the listed piecewise lateral shifts to affected solid envelopes. Lengths and circular arc radii for these routes are v76 references.",
   "length_exclusions": [
     "Termination and stripping allowance",
     "Service slack",
@@ -1069,5 +1069,52 @@
       "R4_ground_x_mm": 47.981
     },
     "evidence": "CAD +/− marks and circular pad centers; supply is 3.3 V from ESP32. R1 follows the inferred S26/S27 signal map; CAD signal arrows differ from the supplied photo and are not electrical evidence."
+  },
+  "enclosure_resize_v77": {
+    "floor_top_y_mm": -3,
+    "positive_wall_shift_mm": 3,
+    "mapping": "For the listed routes, add 0 below the lower Z limit, ramp linearly to +3 mm over the interval, and add +3 mm above the upper limit. This maps the solid envelope as well as its centreline. Resweep with actual wire diameters after routing is settled.",
+    "transition_z_mm": {
+      "XT30 positive to UBEC input positive": [
+        0,
+        20
+      ],
+      "XT30 negative to UBEC input ground": [
+        0,
+        20
+      ],
+      "UBEC output A to ferrite approach - polarity unassigned": [
+        0,
+        10
+      ],
+      "UBEC output B to ferrite approach - polarity unassigned": [
+        0,
+        10
+      ],
+      "Central 5V to MAX490 VCC": [
+        7,
+        19.5
+      ],
+      "Central GND to MAX490 GND": [
+        7,
+        19.5
+      ],
+      "Ferrite departure to central 5V": [
+        6.8,
+        8.8
+      ],
+      "Ferrite departure to central GND": [
+        5.1,
+        7.4
+      ],
+      "RO pending identification to R-B1": [
+        7,
+        16
+      ],
+      "J3-11 GPIO17 to DI pending identification": [
+        7.7,
+        16
+      ]
+    }
   }
 }
