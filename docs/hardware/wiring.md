@@ -138,11 +138,11 @@ Run TX2± and RX2± as two separate twisted pairs in a shielded cable, as Becker
 | Board signal | Bridge connection |
 | --- | --- |
 | Receiver output (RO) | 2.2 kΩ (R-B1) in the wire to GPIO16 (J3-12); 3.3 kΩ (R-B2) across the header pins J3-12 and J3-7 (GND) (<img src="../images/pins/rx.svg" alt="RX" width="20" height="14">) |
-| Driver input (DI) | GPIO17 (J3-11), plus a 10 kΩ pull-up (R-D) from J3-11 to 3V3 (J2-1) (<img src="../images/pins/tx.svg" alt="TX" width="20" height="14">) |
+| Driver input (DI) | GPIO17 (J3-11), plus a 10 kΩ pull-up (R-D) from J3-11 to 3V3 at the RS-232-mod2 L2 pad (<img src="../images/pins/tx.svg" alt="TX" width="20" height="14">) |
 | VCC | Own branch from central 5V-J |
 | GND | Own branch from central GND-J; no extra wire to ESP32 |
 
-R-B1 sits at the J3-12 end of the RO wire and R-D bridges J3-11 to J2-1 with an insulated lead. Cover each resistor and both its joints with heat-shrink and tie the wire down next to the ESP32, so vibration does not load the joints.
+R-B1 sits at the J3-12 end of the RO wire and R-D bridges J3-11 to the RS-232-mod2 L2 pad with an insulated lead. Cover each resistor and both its joints with heat-shrink and tie the wire down next to the ESP32, so vibration does not load the joints.
 
 > [!IMPORTANT]
 > The board's TXD/RXD header labels may be named from either side. Identify RO and DI on the board before wiring.

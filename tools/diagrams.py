@@ -103,8 +103,8 @@ class Svg:
 
 
 # ---------------------------------------------------------------- supply path
-s = Svg(1120, 390, "Bridge supply distribution",
-        "UBEC output through the existing ferrite to 5V-J, with separate branches to ESP32 and MAX490. ESP32 3.3 V feeds RS-232-mod2 then mod1, electrically in parallel, and R-D. Grounds are shown separately.")
+s = Svg(1180, 390, "Bridge supply distribution",
+        "UBEC output through the existing ferrite to 5V-J, with separate branches to ESP32 and MAX490. ESP32 3.3 V feeds RS-232-mod2 then mod1, electrically in parallel; R-D takes 3.3 V from the mod2 L2 pad. Grounds are shown separately.")
 for x,w,title,subs in [(20,120,"F1 fuse",["harness, supply end"]),(175,125,"12 V harness",["about 22 AWG"]),(335,80,"XT30",[]),(450,110,"UBEC",["5 V, 3 A"])]:
     s.box(x,45,w,56,title,subs)
 for x1,x2 in [(140,175),(300,335),(415,450)]:
@@ -116,7 +116,8 @@ s.line([(610,73),(610,223),(660,223)],"v5")
 s.tag(605,145,"5V-J","v5",anchor="end");s.tag(605,162,"separate branches","v5",anchor="end",bold=False,size=11)
 s.text(500,120,"Output leads through ferrite",size=11,color=SUB)
 s.line([(830,80),(850,80),(850,35),(960,35)],"v33")
-s.line([(850,80),(850,280),(960,280)],"v33");s.dot(850,80,"v33")
+# R-D takes 3.3 V from mod2 L2, the same net as R3.
+s.line([(1100,50),(1140,50),(1140,280),(960,280)],"v33");s.tag(1106,44,"L2","v33",anchor="start",size=11)
 # The physical chain terminates at mod2 R3, then continues to mod1 R3.
 s.line([(960,35),(935,35),(935,165),(960,165)],"v33");s.dot(935,35,"v33")
 s.tag(943,116,"R3 chain","v33",anchor="start",size=11)
@@ -126,14 +127,14 @@ for name,rname,top in [("RS-232-mod2","R-F",20),("RS-232-mod1","R-Z",150)]:
     s.text(966,r3+4,"R3",size=11,color=SUB,anchor="start");s.text(966,r1+4,"R1",size=11,color=SUB,anchor="start")
     s.line([(935,r3),(905,r3),(905,r1),(960,r1)],"v33")
     s.resistor(905,(r3+r1)/2,"v33",vertical=True);s.tag(1030,r1+25,f"{rname} 10 kΩ","v33",bold=False,size=11)
-s.resistor(905,280,"v33");s.tag(905,269,"R-D 10 kΩ","v33")
-s.dot(960,280,"v33");s.tag(970,284,"DI / GPIO17","v33",anchor="start",size=11)
+s.resistor(1050,280,"v33");s.tag(1050,269,"R-D 10 kΩ","v33")
+s.dot(960,280,"v33");s.tag(950,284,"DI / GPIO17","v33",anchor="end",size=11)
 s.legend(340,["v12","v5","v33"],"RS-232 boards: 3.3 V, electrically parallel. GND-J is separate from 5V-J; see the ground tree.")
 s.save("power-supply.svg")
 
 # ------------------------------------------------------ internal ground tree
 s = Svg(1120,490,"Internal ground tree",
-        "UBEC output ground through the ferrite to GND-J. Separate branches to ESP32 and MAX490, and one instrument-ground wire to the DE-9, where cups 3, 6 and 7 are bridged for the Becker, Zander and FLARM signal grounds. ESP32 J3-7 feeds RS-232-mod2 R4 then mod1 R4. R-B2 remains local. No additional module-to-junction or MAX490-to-ESP32 ground links.")
+        "UBEC output ground through the ferrite to GND-J. Separate branches to ESP32 and MAX490, and one instrument-ground wire to the DE-9, where cups 3, 6 and 7 are bridged for the Becker, Zander and FLARM signal grounds. ESP32 J2-14 feeds RS-232-mod2 R4 then mod1 R4. R-B2 remains local. No additional module-to-junction or MAX490-to-ESP32 ground links.")
 s.box(20,185,170,75,"UBEC output GND",["through existing ferrite"])
 s.box(245,185,150,75,"GND-J",["bench-made splice"])
 s.line([(190,222),(245,222)],"gnd")
@@ -145,7 +146,7 @@ s.line([(700,305),(730,305)],"gnd");s.line([(730,242),(730,382)],"gnd",width=4);
 for y,title,subs in [(242,"Becker signal GND",["pin 3, J1-21"]),(312,"Zander signal GND",["pin 6"]),(382,"FLARM signal GND",["pin 7"])]:
     s.line([(730,y),(760,y)],"gnd");s.dot(730,y,"gnd");s.box(760,y-27,190,54,title,subs)
 s.box(760,38,150,54,"RS-232-mod2",["R4"]);s.box(950,38,150,54,"RS-232-mod1",["R4"])
-s.line([(700,65),(760,65)],"gnd");s.tag(730,30,"J3-7","gnd",size=11)
+s.line([(700,65),(760,65)],"gnd");s.tag(730,30,"J2-14","gnd",size=11)
 s.line([(910,65),(950,65)],"gnd");s.tag(930,30,"R4 link","gnd",size=11)
 s.text(790,120,"R-B2 stays on ESP32 J3-7.",anchor="start",size=12)
 s.text(790,145,"No extra RS-232 L1 ground wires.",anchor="start",size=12)
@@ -211,7 +212,7 @@ def rs232_device(name,dev,tx_pin,gpio,pull,source,fname):
     s.legend(320,["data","sgnd","gnd",("v33","3.3 V")],"Receive only. Supply/return chain: ESP32 → mod2 → mod1; boards remain electrically parallel.")
     s.save(fname)
 rs232_device("RS-232-mod1","Zander ZS1","TX","GPIO32","R-Z 10 kΩ","RS-232-mod2","wiring-zander.svg")
-rs232_device("RS-232-mod2","Classic FLARM","pin 5 TX","GPIO26","R-F 10 kΩ","ESP32 J2-1 / J3-7","wiring-flarm.svg")
+rs232_device("RS-232-mod2","Classic FLARM","pin 5 TX","GPIO26","R-F 10 kΩ","ESP32 J2-1 / J2-14","wiring-flarm.svg")
 
 # --------------------------------------------------------------------- Becker
 s = Svg(980, 300, "Becker to RS-422 board to ESP32",
@@ -228,7 +229,7 @@ s.line([(330, 140), (190, 140)], "data"); s.arrow(260, 140, "left", "data"); s.t
 s.line([(190, 175), (280, 175), (280, 235)], "sgnd"); s.tag(285, 232, "21 → GND-J", "sgnd", anchor="start", bold=False, size=11)
 s.line([(190, 205), (290, 205)], "shield"); s.tag(198, 198, "11 shield, radio end only", "shield", bold=False, size=11, anchor="start")
 # 3V3 rail and R-D (pull-up on DI)
-s.line([(810, 45), (640, 45), (640, 85)], "v33"); s.arrow(770, 45, "left", "v33"); s.tag(740, 38, "3V3 (J2-1)", "v33")
+s.line([(810, 45), (640, 45), (640, 85)], "v33"); s.arrow(770, 45, "left", "v33"); s.tag(740, 38, "3V3 (mod2 L2)", "v33")
 s.resistor(640, 65, "v33", vertical=True); s.tag(630, 69, "R-D 10 kΩ", "v33", anchor="end")
 s.line([(810, 85), (520, 85)], "data"); s.arrow(570, 85, "left", "data"); s.dot(640, 85, "data")
 s.tag(745, 78, "DI ← GPIO17 (J3-11)", "data")

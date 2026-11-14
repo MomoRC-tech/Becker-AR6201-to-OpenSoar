@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="390" viewBox="0 0 1120 390" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="390" viewBox="0 0 1180 390" role="img" aria-labelledby="title desc">
 <title id="title">Bridge supply distribution</title>
-<desc id="desc">UBEC output through the existing ferrite to 5V-J, with separate branches to ESP32 and MAX490. ESP32 3.3 V feeds RS-232-mod2 then mod1, electrically in parallel, and R-D. Grounds are shown separately.</desc>
-<rect width="1120" height="390" fill="white"/>
+<desc id="desc">UBEC output through the existing ferrite to 5V-J, with separate branches to ESP32 and MAX490. ESP32 3.3 V feeds RS-232-mod2 then mod1, electrically in parallel; R-D takes 3.3 V from the mod2 L2 pad. Grounds are shown separately.</desc>
+<rect width="1180" height="390" fill="white"/>
 <g font-family="Arial,sans-serif">
 <path d="M140 73 L175 73" stroke="#d32f2f" stroke-width="2.5" fill="none"/>
 <path d="M300 73 L335 73" stroke="#d32f2f" stroke-width="2.5" fill="none"/>
@@ -9,7 +9,7 @@
 <path d="M560 73 L660 73" stroke="#ef6c00" stroke-width="2.5" fill="none"/>
 <path d="M610 73 L610 223 L660 223" stroke="#ef6c00" stroke-width="2.5" fill="none"/>
 <path d="M830 80 L850 80 L850 35 L960 35" stroke="#8e24aa" stroke-width="2.5" fill="none"/>
-<path d="M850 80 L850 280 L960 280" stroke="#8e24aa" stroke-width="2.5" fill="none"/>
+<path d="M1100 50 L1140 50 L1140 280 L960 280" stroke="#8e24aa" stroke-width="2.5" fill="none"/>
 <path d="M960 35 L935 35 L935 165 L960 165" stroke="#8e24aa" stroke-width="2.5" fill="none"/>
 <path d="M935 35 L905 35 L905 65 L960 65" stroke="#8e24aa" stroke-width="2.5" fill="none"/>
 <path d="M935 165 L905 165 L905 195 L960 195" stroke="#8e24aa" stroke-width="2.5" fill="none"/>
@@ -20,7 +20,6 @@
 <polygon points="313.5,68 313.5,78 322.5,73" fill="#d32f2f"/>
 <polygon points="428.5,68 428.5,78 437.5,73" fill="#d32f2f"/>
 <circle cx="610" cy="73" r="4" fill="#ef6c00"/>
-<circle cx="850" cy="80" r="4" fill="#8e24aa"/>
 <circle cx="935" cy="35" r="4" fill="#8e24aa"/>
 <circle cx="960" cy="280" r="4" fill="#8e24aa"/>
 <rect x="20" y="45" width="120" height="56" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
@@ -33,7 +32,7 @@
 <rect x="900.0" y="37.0" width="10" height="26" fill="white" stroke="#8e24aa" stroke-width="2"/>
 <rect x="960" y="150" width="140" height="60" rx="5" fill="#eaf1fb" stroke="#9cb1cc" stroke-width="1.5"/>
 <rect x="900.0" y="167.0" width="10" height="26" fill="white" stroke="#8e24aa" stroke-width="2"/>
-<rect x="892.0" y="275.0" width="26" height="10" fill="white" stroke="#8e24aa" stroke-width="2"/>
+<rect x="1037.0" y="275.0" width="26" height="10" fill="white" stroke="#8e24aa" stroke-width="2"/>
 <text x="80.0" y="69.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">F1 fuse</text>
 <text x="80.0" y="87.0" font-size="12" fill="#475569" text-anchor="middle">harness, supply end</text>
 <text x="237.5" y="69.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">12 V harness</text>
@@ -49,6 +48,7 @@
 <text x="605" y="145" font-size="12" fill="#ef6c00" text-anchor="end" font-weight="700">5V-J</text>
 <text x="605" y="162" font-size="11" fill="#ef6c00" text-anchor="end">separate branches</text>
 <text x="500" y="120" font-size="11" fill="#475569" text-anchor="middle">Output leads through ferrite</text>
+<text x="1106" y="44" font-size="11" fill="#8e24aa" text-anchor="start" font-weight="700">L2</text>
 <text x="943" y="116" font-size="11" fill="#8e24aa" text-anchor="start" font-weight="700">R3 chain</text>
 <text x="1030.0" y="55.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">RS-232-mod2</text>
 <text x="966" y="39" font-size="11" fill="#475569" text-anchor="start">R3</text>
@@ -58,8 +58,8 @@
 <text x="966" y="169" font-size="11" fill="#475569" text-anchor="start">R3</text>
 <text x="966" y="199" font-size="11" fill="#475569" text-anchor="start">R1</text>
 <text x="1030" y="220" font-size="11" fill="#8e24aa" text-anchor="middle">R-Z 10 kΩ</text>
-<text x="905" y="269" font-size="12" fill="#8e24aa" text-anchor="middle" font-weight="700">R-D 10 kΩ</text>
-<text x="970" y="284" font-size="11" fill="#8e24aa" text-anchor="start" font-weight="700">DI / GPIO17</text>
+<text x="1050" y="269" font-size="12" fill="#8e24aa" text-anchor="middle" font-weight="700">R-D 10 kΩ</text>
+<text x="950" y="284" font-size="11" fill="#8e24aa" text-anchor="end" font-weight="700">DI / GPIO17</text>
 <text x="66" y="344" font-size="12" fill="#172b4d" text-anchor="start">+12 V supply</text>
 <text x="220" y="344" font-size="12" fill="#172b4d" text-anchor="start">5 V</text>
 <text x="311" y="344" font-size="12" fill="#172b4d" text-anchor="start">3.3 V</text>

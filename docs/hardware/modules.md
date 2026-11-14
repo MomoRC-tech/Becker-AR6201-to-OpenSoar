@@ -36,20 +36,20 @@ The AZ-Delivery board follows Espressif's DevKitC V4 layout (S32). View from the
 
 | Position | J2 label | J2 bridge use | J3 label | J3 bridge use |
 | ---: | --- | --- | --- | --- |
-| 1 | `3V3` | **3.3 V to RS-232-mod2 R3, then mod1; R-D** | `GND` | — |
+| 1 | `3V3` | **3.3 V to RS-232-mod2 R3, then mod1** | `GND` | — |
 | 2 | `EN` | — | `IO23` | — |
 | 3 | `VP` | — | `IO22` | — |
 | 4 | `VN` | — | `TX` | USB serial (boot only) |
 | 5 | `IO34` | — | `RX` | USB serial (boot only) |
 | 6 | `IO35` | — | `IO21` | — |
-| 7 | `IO32` | **Zander RX** (UART0) | `GND` | **Ground: RS-232-mod2 R4, then mod1; R-B2** |
+| 7 | `IO32` | **Zander RX** (UART0) | `GND` | **Ground: R-B2** |
 | 8 | `IO33` | Not connected | `IO19` | — |
 | 9 | `IO25` | — | `IO18` | — |
 | 10 | `IO26` | **FLARM RX** (UART1) | `IO5` | — |
-| 11 | `IO27` | Not connected | `IO17` | **Becker TX** (UART2), R-D to J2-1 |
+| 11 | `IO27` | Not connected | `IO17` | **Becker TX** (UART2), R-D to RS-232-mod2 L2 |
 | 12 | `IO14` | — | `IO16` | **Becker RX** via R-B1 (UART2), R-B2 to J3-7 |
 | 13 | `IO12` | — | `IO4` | — |
-| 14 | `GND` | **Ground: central GND-J** | `IO0` | — |
+| 14 | `GND` | **Ground: central GND-J; RS-232-mod2 R4, then mod1** | `IO0` | — |
 | 15 | `IO13` | — | `IO2` | — |
 | 16 | `D2` | — | `IO15` | — |
 | 17 | `D3` | — | `D1` | — |
@@ -80,7 +80,7 @@ Hailege H-1-0290: a MAX3232 RS-232 ↔ 3.3 V converter with edge pads. The pad m
 | <img src="../images/hailege-h-1-0290-board.svg" width="240" alt="Hailege H-1-0290 board, chip side"> | <img src="../images/pinout-hailege.svg" width="420" alt="Hailege chip-side pad map. L1 ground, L2 supply, L3 RS-232 input, L4 RS-232 output. R1 TTL input, R2 TTL output, R3 supply, R4 ground."> |
 
 > [!IMPORTANT]
-> The RS-232 and TTL sides share one 3.3 V net (L2 ↔ R3) and one ground net (L1 ↔ R4). Use R3 and R4 on each board for the [ESP32-fed daisy chain](power.md#supply). Leave L2 and L1 unwired.
+> The RS-232 and TTL sides share one 3.3 V net (L2 ↔ R3) and one ground net (L1 ↔ R4). Use R3 and R4 on each board for the [ESP32-fed daisy chain](power.md#supply). Mod2 L2 feeds only R-D; leave L1 and the mod1 L2 unwired.
 
 ---
 
@@ -140,7 +140,7 @@ For one bridge, bridge end only — the device-side connectors and harness alrea
 | 4 | PS1 | 1 | Hobbywing UBEC 3A (2–6S), 86010010, set to 5 V | [Power](power.md#supply) |
 | 5 | R-B1, R-B2 | 1 each | 2.2 kΩ and 3.3 kΩ resistors, 0.125 W, DIN0204 axial (body about Ø1.6 × 3.6 mm) | Divider: R-B1 in the RO wire at J3-12, R-B2 across J3-12 and J3-7 |
 | 6 | R-Z, R-F | 2 | 10 kΩ resistor, 0.125 W, DIN0204 axial | Pull-up on each RS-232 module, directly on the pads R1 → R3 |
-| 7 | R-D | 1 | 10 kΩ resistor, 0.125 W, DIN0204 axial | Pull-up J3-11 (GPIO17, DI) → J2-1 (3V3); quiet radio line during boot |
+| 7 | R-D | 1 | 10 kΩ resistor, 0.125 W, DIN0204 axial | Pull-up J3-11 (GPIO17, DI) → RS-232-mod2 L2 (3V3); quiet radio line during boot |
 | 8 | F1 | 1 | Supply fuse in an inline holder at the supply end of the 12 V harness; specification tracked in [open items](../project/open-items.md#bench-hardware) | [Power](power.md#supply) |
 | 9 | — | existing | Becker harness, reused from its loose bridge-side ends | Check against [Becker wiring](wiring.md#becker); [inventory](../project/existing-installation.md#equipment) |
 | 10 | — | 1 pair | Standard XT30 male housing connector and mating female harness connector | [Power](power.md#supply), [mounting](housing.md#connectors) |

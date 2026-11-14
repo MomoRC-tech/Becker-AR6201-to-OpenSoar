@@ -385,12 +385,13 @@ Use the hideable **Cable harness - routing study** component in the [housing ass
 | Centre-axis signal bus | Same channel, mid height (Y about 9–12) | DE-9 pins 1/2 to the module L3 pads; MAX490 RO/DI to J3-12/J3-11 | ESP32 half (Z 4.5–6.5, clear of the J3 pins); rise only at the station |
 | Pin-top level | Y 15–18 | Terminations, resistors, hops up to about 15 mm | Nothing above Y 18, at least 2 mm under the hood |
 | Connector-wall lane | X 11–17 | XT30 pair down to the floor; Becker pairs 4/5 and 8/9 to the terminal entries | Pairs stay twisted to the terminals |
-| J2-side lane | Between the module R pads (Z −17.3) and the J2 header (Z −23.3) | Module receive outputs to GPIO32/GPIO26, 3.3 V feed from J2-1, module ground | Pin-top level |
+| J2-side lane | Between the module R pads (Z −17.3) and the J2 header (Z −23.3) | Module receive outputs to GPIO32/GPIO26, 3.3 V feed from J2-1, module ground from J2-14 | Pin-top level |
 
 - **Crossings:** each wire crosses the centre channel at most once. The only floor crossing under a board is the ESP32 power pair, lying on the floor at one station.
 - **No floor joints between boards:** junctions and splices are made on the bench and laid in.
 - **Ferrite (selected):** the ring is moved along the UBEC output lead so the approach leads stay short and above the floor ([ferrite cradle](#ferrite-cradle)); the modelled floor loop between UBEC and ring is superseded.
 - **Pull-ups R-Z and R-F (selected):** directly on the module pads R1 → R3, leads bent over the R2 joint, soldered on the bench before the module slides into the clamp. The modelled flying-lead resistors and the bridge wrap for the FLARM pull-up lead are superseded.
+- **Local taps (selected):** RS-232 module ground from J2-14, and R-D takes 3.3 V from the mod2 L2 pad ([supply path](power.md#supply)).
 - **5V-J and GND-J (selected):** inline solder splices with heat-shrink, made on the bench as part of the power harness and laid into the floor bus at the far end of the channel, X about 58–67, near the ferrite. The modelled junction envelopes below still sit mid-channel.
 
 The [revised power-routing assembly](../../cad/housing/housing-body-v1/housing-power-routing.f3d) replaces six wire envelopes from that baseline (S70). The XT30 input pair turns inward at the connector side and crosses toward the UBEC pads on the ESP32 side of the MAX490 terminal block. Both the UBEC-to-ferrite and ferrite-to-junction pairs run near the base plate, with rises at the ends. The [route data](../../cad/housing/housing-body-v1/routing-study.json) gives the waypoints and approximate lengths.
