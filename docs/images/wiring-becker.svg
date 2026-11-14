@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="980" height="300" viewBox="0 0 980 300" role="img" aria-labelledby="title desc">
 <title id="title">Becker to RS-422 board to ESP32</title>
-<desc id="desc">Becker J1 TX2+ and TX2- (pins 2, 9) to MAX490 receiver inputs A and B; MAX490 driver outputs Y and Z to J1 RX2+ and RX2- (pins 3, 10). J1-21 D_GND directly to GND-J. Cable shield to J1-11 at the radio end only. Receiver output RO through R-B1 (2.2 kΩ) to GPIO16, with R-B2 (3.3 kΩ) from GPIO16 to GND. GPIO17 to driver input DI, with R-D (10 kΩ) from DI to 3V3. Board VCC and GND have separate branches from 5V-J and GND-J.</desc>
+<desc id="desc">Becker J1 TX2+ and TX2- (pins 2, 9) to MAX490 receiver inputs A and B; MAX490 driver outputs Y and Z to J1 RX2+ and RX2- (pins 3, 10). J1-21 D_GND to GND-J through the DE-9 ground bridge, without a series resistor. Cable shield to J1-11 at the radio end only. Receiver output RO through R-B1 (2.2 kΩ) to GPIO16, with R-B2 (3.3 kΩ) from GPIO16 to GND. GPIO17 to driver input DI, with R-D (10 kΩ) from DI to 3V3. Board VCC and GND have separate branches from 5V-J and GND-J.</desc>
 <rect width="980" height="300" fill="white"/>
 <g font-family="Arial,sans-serif">
 <path d="M190 55 L330 55" stroke="#37474f" stroke-width="2.5" fill="none"/>

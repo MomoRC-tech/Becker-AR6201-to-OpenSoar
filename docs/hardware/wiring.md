@@ -50,7 +50,7 @@ XT30 side                         MAX490 side
 | 8 | Becker J1-3 RX2+ | MAX490 Y |
 | 9 | Becker J1-10 RX2− | MAX490 Z |
 
-Keep pins 4/5 and 8/9 as separate twisted pairs up to the solder cups. Follow the [Becker shield termination](#becker) and insulate the drain at the bridge end. Use the dedicated instrument harness with this custom pinout. See [housing](housing.md#connectors) for mounting and [open items](../project/open-items.md#bench-hardware) for parts and fit checks.
+Inside the bridge, link solder cups 3, 6 and 7 with a short tinned bridge and run one instrument-ground wire from it to GND-J, sized for the [fault current](power.md#currents). Keep pins 4/5 and 8/9 as separate twisted pairs up to the solder cups. Follow the [Becker shield termination](#becker) and insulate the drain at the bridge end. Use the dedicated instrument harness with this custom pinout. See [housing](housing.md#connectors) for mounting and [open items](../project/open-items.md#bench-hardware) for parts and fit checks.
 
 ### 1.2 UART plan
 

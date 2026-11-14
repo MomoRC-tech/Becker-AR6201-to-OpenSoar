@@ -133,14 +133,17 @@ s.save("power-supply.svg")
 
 # ------------------------------------------------------ internal ground tree
 s = Svg(1120,490,"Internal ground tree",
-        "UBEC output ground through the ferrite to GND-J. Separate branches to ESP32, MAX490 and each instrument signal ground. ESP32 J3-7 feeds RS-232-mod2 R4 then mod1 R4. R-B2 remains local. No additional module-to-junction or MAX490-to-ESP32 ground links.")
+        "UBEC output ground through the ferrite to GND-J. Separate branches to ESP32 and MAX490, and one instrument-ground wire to the DE-9, where cups 3, 6 and 7 are bridged for the Becker, Zander and FLARM signal grounds. ESP32 J3-7 feeds RS-232-mod2 R4 then mod1 R4. R-B2 remains local. No additional module-to-junction or MAX490-to-ESP32 ground links.")
 s.box(20,185,170,75,"UBEC output GND",["through existing ferrite"])
-s.box(245,185,150,75,"GND-J",["insulated junction"])
+s.box(245,185,150,75,"GND-J",["bench-made splice"])
 s.line([(190,222),(245,222)],"gnd")
-s.line([(395,222),(450,222)],"gnd");s.line([(450,65),(450,385)],"gnd",width=4);s.dot(450,222,"gnd")
-branches=[(65,"ESP32",["J2-14 main return"]),(145,"MAX490",["own GND branch"]),(225,"Becker signal GND",["via DE-9; J1-21"]),(305,"Zander signal GND",["via DE-9"]),(385,"FLARM signal GND",["via DE-9"])]
+s.line([(395,222),(450,222)],"gnd");s.line([(450,65),(450,305)],"gnd",width=4);s.dot(450,222,"gnd")
+branches=[(65,"ESP32",["J2-14 main return"]),(145,"MAX490",["own GND branch"]),(305,"DE-9 ground bridge",["cups 3, 6, 7; one wire"])]
 for y,title,subs in branches:
     s.line([(450,y),(510,y)],"gnd");s.dot(450,y,"gnd");s.box(510,y-27,190,54,title,subs)
+s.line([(700,305),(730,305)],"gnd");s.line([(730,242),(730,382)],"gnd",width=4);s.dot(730,305,"gnd")
+for y,title,subs in [(242,"Becker signal GND",["pin 3, J1-21"]),(312,"Zander signal GND",["pin 6"]),(382,"FLARM signal GND",["pin 7"])]:
+    s.line([(730,y),(760,y)],"gnd");s.dot(730,y,"gnd");s.box(760,y-27,190,54,title,subs)
 s.box(760,38,150,54,"RS-232-mod2",["R4"]);s.box(950,38,150,54,"RS-232-mod1",["R4"])
 s.line([(700,65),(760,65)],"gnd");s.tag(730,30,"J3-7","gnd",size=11)
 s.line([(910,65),(950,65)],"gnd");s.tag(930,30,"R4 link","gnd",size=11)
@@ -192,13 +195,13 @@ s.save("wiring-overview.svg")
 
 # -------------------------------------------------------------- RS-232 links
 def rs232_device(name,dev,tx_pin,gpio,pull,source,fname):
-    s=Svg(930,365,f"{dev} through {name}",f"Instrument TX to L3, R2 to {gpio}; instrument ground directly to GND-J. Module R3/R4 supplied through {source}. L1 has no extra ground wire.")
+    s=Svg(930,365,f"{dev} through {name}",f"Instrument TX to L3, R2 to {gpio}; instrument ground to GND-J through the DE-9 ground bridge. Module R3/R4 supplied through {source}. L1 has no extra ground wire.")
     s.box(20,40,170,130,dev,["existing harness / DE-9"])
     s.box(330,40,240,130,name,["RS-232 / 3.3 V TTL"])
     s.box(720,40,190,90,"ESP32",[gpio])
     s.line([(190,65),(330,65)],"data");s.arrow(260,65,"right","data");s.tag(260,57,f"{tx_pin} → L3","data")
     s.line([(570,65),(720,65)],"data");s.arrow(690,65,"right","data");s.tag(645,57,f"R2 → {gpio}","data")
-    s.box(330,210,240,65,"Central GND-J",["instrument ground branch"])
+    s.box(330,210,240,65,"Central GND-J",["via DE-9 ground bridge"])
     s.line([(190,140),(250,140),(250,242),(330,242)],"sgnd");s.tag(245,132,"signal GND","sgnd",anchor="end",size=11)
     s.box(720,210,190,80,source,["3V3 / R3","GND / R4"])
     s.line([(720,235),(675,235),(675,115),(570,115)],"v33");s.tag(580,108,"R3","v33",anchor="start",size=11)
@@ -213,7 +216,7 @@ rs232_device("RS-232-mod2","Classic FLARM","pin 5 TX","GPIO26","R-F 10 kΩ","ESP
 # --------------------------------------------------------------------- Becker
 s = Svg(980, 300, "Becker to RS-422 board to ESP32",
         "Becker J1 TX2+ and TX2- (pins 2, 9) to MAX490 receiver inputs A and B; MAX490 driver outputs Y and Z to J1 RX2+ and RX2- (pins 3, 10). "
-        "J1-21 D_GND directly to GND-J. Cable shield to J1-11 at the radio end only. Receiver output RO through R-B1 (2.2 kΩ) to GPIO16, "
+        "J1-21 D_GND to GND-J through the DE-9 ground bridge, without a series resistor. Cable shield to J1-11 at the radio end only. Receiver output RO through R-B1 (2.2 kΩ) to GPIO16, "
         "with R-B2 (3.3 kΩ) from GPIO16 to GND. GPIO17 to driver input DI, with R-D (10 kΩ) from DI to 3V3. Board VCC and GND have separate branches from 5V-J and GND-J.")
 s.box(20, 30, 170, 190, "Becker J1", ["radio rear", "harness via DE-9"])
 s.box(330, 30, 190, 190, "MAX490 board", ["A B Y Z | RO DI", "5 V, 120 Ω term."])

@@ -995,15 +995,18 @@
       "central GND": [
         "ESP32 J2-14",
         "MAX490 GND",
-        "Becker signal GND via DE-9 pin 3",
-        "Zander signal GND via DE-9 pin 6",
-        "FLARM signal GND via DE-9 pin 7"
+        "Instrument-ground wire to DE-9 cups 3, 6 and 7 (bridged)"
       ],
       "ESP32 J3-7": [
         "RS232-mod2 R4"
       ],
       "RS232-mod2 R4": [
         "RS232-mod1 R4"
+      ],
+      "DE-9 ground bridge": [
+        "Becker signal GND, pin 3 (J1-21)",
+        "Zander signal GND, pin 6",
+        "FLARM signal GND, pin 7"
       ]
     },
     "local_return": "R-B2 stays at ESP32 J3-7",

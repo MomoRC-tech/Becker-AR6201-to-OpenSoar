@@ -31,7 +31,7 @@ Related: 🔌 [Signal wiring](wiring.md) · 🧱 [Modules and parts](modules.md)
 | --- | --- |
 | UBEC input GND | The common ground point (where the radio's P1-13/25 return, S10), with its own wire |
 | UBEC 5 V, after the ferrite | Central **5V-J** junction; separate branches to ESP32 5V ([J2-19](modules.md#esp32-pinout)) and MAX490 VCC |
-| UBEC output GND, after the ferrite | Central **GND-J** junction; separate branches to ESP32 GND (J2-14), MAX490 GND and the three instrument signal grounds at the DE-9 |
+| UBEC output GND, after the ferrite | Central **GND-J** junction; separate branches to ESP32 GND (J2-14), MAX490 GND and one instrument-ground wire to the DE-9, where cups 3, 6 and 7 are bridged ([pinout](wiring.md#de9-pinout)) |
 | ESP32 3V3 ([J2-1](modules.md#esp32-pinout)) | RS-232-mod2 R3 → RS-232-mod1 R3; R-D retains its own local feed |
 | ESP32 GND (J3-7) | RS-232-mod2 R4 → RS-232-mod1 R4; R-B2 retains its local J3-7 return |
 
@@ -39,7 +39,7 @@ Related: 🔌 [Signal wiring](wiring.md) · 🧱 [Modules and parts](modules.md)
 
 The RS-232 boards are daisy-chained physically and connected **in parallel electrically**, at **3.3 V**. Feed the nearer module (mod2), then link R3 to R3 and R4 to R4 across to mod1. Their ground comes from the ESP32, not from an additional branch to GND-J. Do not add a separate MAX490-to-ESP32 ground wire or instrument-ground wires to RS-232 L1. This gives one internal ground tree; it does not remove the external loops in [section 2](#ground).
 
-![Internal ground tree: GND-J branches to ESP32, MAX490 and the three instrument grounds; ESP32 J3-7 feeds mod2 R4 and then mod1 R4; R-B2 remains local](../images/ground-distribution.svg)
+![Internal ground tree: GND-J branches to ESP32, MAX490 and one wire to the DE-9 ground bridge, which joins the Becker, Zander and FLARM signal grounds on cups 3, 6 and 7; ESP32 J3-7 feeds mod2 R4 and then mod1 R4; R-B2 remains local](../images/ground-distribution.svg)
 
 Keep supply and return runs alongside one another where practical. Junction form and placement (bench-made inline splices near the ferrite) and the routing envelopes: [housing](housing.md#internal-routing). Conductor sizes and physical fit: [open items](../project/open-items.md#housing).
 
@@ -84,6 +84,7 @@ Datasheet values carry their source ID; everything else is an estimate until the
 | UBEC 5 V → MAX490 board | Board header | ~30 mA | — | — | Typical datasheet value |
 | ESP32 3.3 V → RS-232 modules, pull-ups | Board header | A few mA | — | — | Estimate |
 | Bridge ground wire | Not yet selected | ~0.15 A + radio share | ~0.35 A while the radio transmits | ~3.2 A if the radio's P1 ground breaks | Estimate, S10 |
+| Instrument-ground wire (DE-9 bridge → GND-J) | Not yet selected | ~14 mA radio share + small Zander and FLARM shares | ~0.2 A while the radio transmits | ~3.2 A if the radio's P1 ground breaks | Estimate, S10 |
 | J1-21 | Becker harness (gauge open) | ~14 mA radio share | ~0.2 A while the radio transmits | Up to 3 A if the radio's P1 ground breaks | Estimate, S10 |
 | Zander pin 5 | Zander harness (gauge open) | Small share | — | The Zander's supply current | Not given in the ZS1 handbook (S22) |
 | FLARM pins 7/8 | FLARM cable | Small share | — | The FLARM's supply current, below 500 mA | FLARM fuse requirement (S23) |
@@ -114,6 +115,7 @@ What a single broken wire does:
 | Zander or FLARM supply ground | That device's supply current returns through its RS-232 ground and the bridge. | 🟡 Low; small currents |
 | Bridge +12 V or F1 | The bridge switches off; its unpowered interfaces do not feed the devices. | 🟢 None |
 | One signal ground (J1-21, Zander, FLARM) | The link stays referenced through the supply grounds. | 🟢 None |
+| Instrument-ground wire (DE-9 bridge → GND-J) | All three links lose their bridge-side signal ground at once and stay referenced through the supply grounds. | 🟢 None; bring-up step 7 catches it |
 
 > [!WARNING]
 > The direct J1-21 wire depends on the radio's own supply ground. If P1-13/25 lost their connection, up to 3 A of radio current would run through the instrument-ground wiring, junction and UBEC return path without any visible symptom. Size and verify the whole return path for this case; an internal ground junction does not provide isolation. Make sure both P1 ground pins are wired to the ground point and check them before connecting the bridge ([bring-up](wiring.md#bring-up) step 7).
