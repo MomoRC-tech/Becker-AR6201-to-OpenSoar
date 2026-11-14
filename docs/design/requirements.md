@@ -31,6 +31,7 @@ Related: 🏗️ [Architecture](architecture.md) · ❓ [Open items](../project/
 | R08 | P1 | Read radio state where supported and show what OpenSoar can display. | Driver and UI review (WP2/WP4) |
 | R09 | P0 | Use a full-duplex RS-422 board for the Becker, with a safe signal level at the ESP32. | [Becker wiring](../hardware/wiring.md#becker) and bench check |
 | R10 | P1 | Monitor the quality and stability of the Wi-Fi link to the phone from the ESP32 without interrupting bridge traffic. | In WP6, assess which metrics the firmware can observe (S55), how to report them and what counts as a useful reading. Verify on the bench with the phone during normal traffic and a deliberate disconnect and reconnect. |
+| R11 | P0 | Restrain long internal wire runs against lifting, lateral motion and rubbing under vibration. Support branches near connectors, solder joints and the ferrite, with enough service slack to unload the terminations (S80). | Check the assembled harness with the actual wire and retainers for movement, pinch points, chafing and load at the terminations. Inspect and check continuity after a representative vibration test before aircraft integration ([housing item 20](../project/open-items.md#housing)) |
 
 **Not planned:** active tuning, frequency swap, volume and squelch, Larus, general XCSoar support. Aircraft installation comes later. The repository license is still to be chosen.
 
