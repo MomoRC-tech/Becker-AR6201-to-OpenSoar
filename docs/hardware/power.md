@@ -41,7 +41,7 @@ The RS-232 boards are daisy-chained physically and connected **in parallel elect
 
 ![Internal ground tree: GND-J branches to ESP32, MAX490 and the three instrument grounds; ESP32 J3-7 feeds mod2 R4 and then mod1 R4; R-B2 remains local](../images/ground-distribution.svg)
 
-Keep supply and return runs alongside one another where practical. Junction placement and the provisional routing envelopes: [housing](housing.md#internal-routing). Actual junction hardware, conductor sizes and physical fit: [open items](../project/open-items.md#housing).
+Keep supply and return runs alongside one another where practical. Junction form and placement (bench-made inline splices near the ferrite) and the routing envelopes: [housing](housing.md#internal-routing). Conductor sizes and physical fit: [open items](../project/open-items.md#housing).
 
 > [!WARNING]
 > Never connect USB and the UBEC 5 V at the same time: the board has no power selection. Unplug the UBEC before using USB.

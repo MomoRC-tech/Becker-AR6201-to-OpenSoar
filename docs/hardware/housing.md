@@ -388,6 +388,7 @@ Use the hideable **Cable harness - routing study** component in the [housing ass
 
 - **Crossings:** each wire crosses the centre channel at most once. The only floor crossing under a board is the ESP32 power pair, lying on the floor at one station.
 - **No floor joints between boards:** junctions and splices are made on the bench and laid in.
+- **5V-J and GND-J (selected):** inline solder splices with heat-shrink, made on the bench as part of the power harness and laid into the floor bus at the far end of the channel, X about 58–67, near the ferrite. The modelled junction envelopes below still sit mid-channel.
 
 The [revised power-routing assembly](../../cad/housing/housing-body-v1/housing-power-routing.f3d) replaces six wire envelopes from that baseline (S70). The XT30 input pair turns inward at the connector side and crosses toward the UBEC pads on the ESP32 side of the MAX490 terminal block. Both the UBEC-to-ferrite and ferrite-to-junction pairs run near the base plate, with rises at the ends. The [route data](../../cad/housing/housing-body-v1/routing-study.json) gives the waypoints and approximate lengths.
 
