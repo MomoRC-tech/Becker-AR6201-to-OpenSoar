@@ -7,7 +7,7 @@
 Mechanical design of the bridge: what goes inside, part sizes, connectors on the housing, internal layout.
 
 > [!NOTE]
-> **Status:** housing prototype and [internal routing study](#internal-routing) modelled, not printed. The study includes power routes, all five resistors and two integral cable saddles; the selected levels-and-lanes concept is not modelled yet. Wire sizes, bends and termination envelopes are provisional; physical acceptance is tracked in [open items](../project/open-items.md#housing).
+> **Status:** housing prototype and [internal routing study](#internal-routing) modelled, not printed. The study includes power routes, all five resistors and two integral cable saddles. The selected lanes are modelled as space envelopes; the wire routes do not follow them yet. Wire sizes, bends and termination envelopes are provisional; physical acceptance is tracked in [open items](../project/open-items.md#housing).
 
 📑 **On this page:** <kbd>[1 · 🎯 Requirements](#requirements)</kbd> <kbd>[2 · 📐 Design rules](#rules)</kbd> <kbd>[3 · 📏 Contents and sizes](#contents)</kbd> <kbd>[4 · 🔌 Connectors on the housing](#connectors)</kbd> <kbd>[5 · 🧩 Internal layout](#layout)</kbd>
 
@@ -377,7 +377,7 @@ Constraints from the wiring:
 Use the hideable **Cable harness - routing study** component in the [housing assembly](../../cad/housing/housing-body-v1/README.md). It contains separate 12 V, 5 V, local RS-232 supply/return, resistor, junction-envelope and insulation-allowance groups. Current geometry checks: S64. Electrical connections: [power and grounding](power.md#supply).
 
 > [!TIP]
-> **Selected routing concept: levels and lanes.** Every wire belongs to one lane and leaves it at a station opposite its pin. The modelled routes below do not follow it yet; the re-route follows the [routing review plan](../research/reviews/2026-11-14-wire-routing.md#plan).
+> **Selected routing concept: levels and lanes.** Every wire belongs to one lane and leaves it at a station opposite its pin. The lanes and stations are modelled as the hideable **Routing lanes** component in the [revised power-routing assembly](../../cad/housing/housing-body-v1/housing-power-routing.f3d) (S76); box sizes are in the [route data](../../cad/housing/housing-body-v1/routing-study.json). The modelled wire routes below do not follow them yet; the re-route follows the [routing review plan](../research/reviews/2026-11-14-wire-routing.md#plan).
 
 | Level or lane | Where (layout frame) | Carries | Rule |
 | --- | --- | --- | --- |
@@ -387,6 +387,7 @@ Use the hideable **Cable harness - routing study** component in the [housing ass
 | Connector-wall lane | X 11–17 | XT30 pair down to the floor; Becker pairs 4/5 and 8/9 to the terminal entries | Pairs stay twisted to the terminals |
 | J2-side lane | Between the module R pads (Z −17.3) and the J2 header (Z −23.3) | Module receive outputs to GPIO32/GPIO26, 3.3 V feed from J2-1, module ground from J2-14 | Pin-top level |
 
+- **Lane limits:** the floor bus starts behind the Z 6 cable saddle (X 15.6) and stays at Z ≤ 9.2, clear of the MAX490 post fillets; the signal bus ends at X 72, before the antenna cap. All lanes stay at least 2.2 mm under the hood (S76).
 - **Crossings:** each wire crosses the centre channel at most once. The only floor crossing under a board is the ESP32 power pair, lying on the floor at one station.
 - **No floor joints between boards:** junctions and splices are made on the bench and laid in.
 - **Ferrite (selected):** the ring is moved along the UBEC output lead so the approach leads stay short and above the floor ([ferrite cradle](#ferrite-cradle)); the modelled floor loop between UBEC and ring is superseded.
