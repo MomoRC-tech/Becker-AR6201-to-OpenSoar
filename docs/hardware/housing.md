@@ -208,7 +208,7 @@ Sizes from owner measurements, seller listings or datasheets; see the source col
 | UBEC ferrite ring | 1 | Bare core: Ø14.2 outside × 5.4 axial, 2.9 radial wall (Ø8.4 bore calculated). Including wire turns: Ø17.5 outside × 9.5 axial | Owner measurements; S54 | On the UBEC 5 V output lead; upright in the [integral cradle](#ferrite-cradle). Allow separately for the entering and leaving leads. |
 | XT30 male, panel | 1 | 10.55 × 5.25 body; 10.8 × 5.66 over the raised markings at the solder-cup end (owner measurement) | S51 | Press-fit pocket ([section 4](#connectors)) |
 | DE-9 male, panel | 1 | Flange 31 × 12.6 × 1.0, holes Ø3.1 at 25.0 spacing; D shell 17.85 × 9.2 outer; rear body behind the flange 19.3 × 10.9 × 5.0 deep, 8.0 including the solder cups (owner measurement) | S43 | Flange and rear side as the female plug model |
-| Resistors (divider, pull-ups) | 5 | Small | — | R-B1, R-B2, R-Z, R-F, R-D |
+| Resistors (divider, pull-ups) | 5 | DIN0204 axial, body about Ø1.6 × 3.6 | S45 | R-B1, R-B2, R-Z, R-F, R-D |
 
 ### 3.1 ESP32 CAD reference
 
@@ -249,8 +249,8 @@ Keep the delivered-board measurements for mounting design. The model represents 
 ### 3.3 UBEC and resistor CAD references
 
 - [Hobbywing UBEC 3A MAX 5A CAD reference](../../cad/reference/ubec-hobbywing-3a/README.md) (S44). The full model envelope is 54.40 × 24.00 × 9.50 mm, including the modeled jumper and wire ends. Use it for preliminary layout and measure the actual unit before sizing its mount.
-- [KiCad DIN0204 axial STEP models](../../cad/reference/kicad-din0204/README.md) (S45) give a 3.6 × Ø1.6 mm body with two options for horizontal leads. Use as placeholders for resistors of that body size.
-- The revised routing study uses the normal Yageo CFR-25 axial resistor as its size reference (S72). Nominal body Ø2.4 × 6.3 mm, leads Ø0.55 mm.
+- [KiCad DIN0204 axial STEP models](../../cad/reference/kicad-din0204/README.md) (S45) give a 3.6 × Ø1.6 mm body with two options for horizontal leads. Selected resistor body size.
+- The revised routing study still uses the larger Yageo CFR-25 axial resistor as its size reference (S72): nominal body Ø2.4 × 6.3 mm, leads Ø0.55 mm.
 
 ### 3.4 RS-422 board CAD reference
 
@@ -390,6 +390,7 @@ Use the hideable **Cable harness - routing study** component in the [housing ass
 - **Crossings:** each wire crosses the centre channel at most once. The only floor crossing under a board is the ESP32 power pair, lying on the floor at one station.
 - **No floor joints between boards:** junctions and splices are made on the bench and laid in.
 - **Ferrite (selected):** the ring is moved along the UBEC output lead so the approach leads stay short and above the floor ([ferrite cradle](#ferrite-cradle)); the modelled floor loop between UBEC and ring is superseded.
+- **Pull-ups R-Z and R-F (selected):** directly on the module pads R1 → R3, leads bent over the R2 joint, soldered on the bench before the module slides into the clamp. The modelled flying-lead resistors and the bridge wrap for the FLARM pull-up lead are superseded.
 - **5V-J and GND-J (selected):** inline solder splices with heat-shrink, made on the bench as part of the power harness and laid into the floor bus at the far end of the channel, X about 58–67, near the ferrite. The modelled junction envelopes below still sit mid-channel.
 
 The [revised power-routing assembly](../../cad/housing/housing-body-v1/housing-power-routing.f3d) replaces six wire envelopes from that baseline (S70). The XT30 input pair turns inward at the connector side and crosses toward the UBEC pads on the ESP32 side of the MAX490 terminal block. Both the UBEC-to-ferrite and ferrite-to-junction pairs run near the base plate, with rises at the ends. The [route data](../../cad/housing/housing-body-v1/routing-study.json) gives the waypoints and approximate lengths.
