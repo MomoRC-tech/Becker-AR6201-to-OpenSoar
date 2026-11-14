@@ -7,7 +7,7 @@
 Mechanical design of the bridge: what goes inside, part sizes, connectors on the housing, internal layout.
 
 > [!NOTE]
-> **Status:** housing prototype and [internal routing study](#internal-routing) modelled, not printed. The study includes power routes, all five resistors and two integral cable saddles. Wire sizes, bends and termination envelopes are provisional; physical acceptance is tracked in [open items](../project/open-items.md#housing).
+> **Status:** housing prototype and [internal routing study](#internal-routing) modelled, not printed. The study includes power routes, all five resistors and two integral cable saddles; the selected levels-and-lanes concept is not modelled yet. Wire sizes, bends and termination envelopes are provisional; physical acceptance is tracked in [open items](../project/open-items.md#housing).
 
 📑 **On this page:** <kbd>[1 · 🎯 Requirements](#requirements)</kbd> <kbd>[2 · 📐 Design rules](#rules)</kbd> <kbd>[3 · 📏 Contents and sizes](#contents)</kbd> <kbd>[4 · 🔌 Connectors on the housing](#connectors)</kbd> <kbd>[5 · 🧩 Internal layout](#layout)</kbd>
 
@@ -374,6 +374,20 @@ Constraints from the wiring:
 ### 5.1 Internal routing study
 
 Use the hideable **Cable harness - routing study** component in the [housing assembly](../../cad/housing/housing-body-v1/README.md). It contains separate 12 V, 5 V, local RS-232 supply/return, resistor, junction-envelope and insulation-allowance groups. Current geometry checks: S64. Electrical connections: [power and grounding](power.md#supply).
+
+> [!TIP]
+> **Selected routing concept: levels and lanes.** Every wire belongs to one lane and leaves it at a station opposite its pin. The modelled routes below do not follow it yet; the re-route follows the [routing review plan](../research/reviews/2026-11-14-wire-routing.md#plan).
+
+| Level or lane | Where (layout frame) | Carries | Rule |
+| --- | --- | --- | --- |
+| Floor bus | Centre channel between the ESP32 and MAX490 PCB edges, Z 4–10.6, on the floor, X 12–70 | XT30 pair, instrument ground, ESP32 5V/GND pair, 5V-J and GND-J | On the floor in a channel or under retention; power on the MAX490 half, the ESP32 pair on the ESP32 half |
+| Centre-axis signal bus | Same channel, mid height (Y about 9–12) | DE-9 pins 1/2 to the module L3 pads; MAX490 RO/DI to J3-12/J3-11 | ESP32 half (Z 4.5–6.5, clear of the J3 pins); rise only at the station |
+| Pin-top level | Y 15–18 | Terminations, resistors, hops up to about 15 mm | Nothing above Y 18, at least 2 mm under the hood |
+| Connector-wall lane | X 11–17 | XT30 pair down to the floor; Becker pairs 4/5 and 8/9 to the terminal entries | Pairs stay twisted to the terminals |
+| J2-side lane | Between the module R pads (Z −17.3) and the J2 header (Z −23.3) | Module receive outputs to GPIO32/GPIO26, 3.3 V feed from J2-1, module ground | Pin-top level |
+
+- **Crossings:** each wire crosses the centre channel at most once. The only floor crossing under a board is the ESP32 power pair, lying on the floor at one station.
+- **No floor joints between boards:** junctions and splices are made on the bench and laid in.
 
 The [revised power-routing assembly](../../cad/housing/housing-body-v1/housing-power-routing.f3d) replaces six wire envelopes from that baseline (S70). The XT30 input pair turns inward at the connector side and crosses toward the UBEC pads on the ESP32 side of the MAX490 terminal block. Both the UBEC-to-ferrite and ferrite-to-junction pairs run near the base plate, with rises at the ends. The [route data](../../cad/housing/housing-body-v1/routing-study.json) gives the waypoints and approximate lengths.
 
