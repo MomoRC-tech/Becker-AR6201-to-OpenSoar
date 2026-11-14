@@ -323,6 +323,7 @@ Use the [STEP model](../../cad/reference/xt30u-m/xt30u-m.step) of the AMASS XT30
 
 - **ESP32 holder:** layout v4 uses the tested USB block B. In the housing prototype the USB boss, PCB ledge and end stops are part of the base tray, with the broad glue foot removed. Both layouts use antenna cap A without foot ears (31.9 wide, blue) and USB clamp UR carrying both RS-232 boards (green). The boards sit turned 90°, one behind the other across the ESP32 between its header rows, at Y 13.8 (rails to Y 16.1). One M2.5 screw removes the clamp with both boards.
 - **USB seating ledge:** the continuous seating face is 12 mm wide at 7.5 mm above the floor. Two floor-supported webs connect it to the end-stop feet up to 5.6 mm above the floor. The antenna cap lands on an integral 3 mm pad (S64).
+- **ESP32/RS-232 placement in Fusion:** a rigid as-built joint mounts the stack to the pinned base tray. A rigid group preserves the installed positions of both holders and the embedded ESP32 and RS-232 references. See the [assembly archive](../../cad/housing/housing-body-v1/README.md) for the local holder features (S65).
 - **Clamp arm:** a 6 × 2 mm arm runs from the clamp's free end over the ESP32 module into a short tunnel on top of the antenna cap's spring bridge. It only locates the free end, without loading the spring bridge (cap top at Y 15.0). Gaps, sized for print tolerances and the ~0.4 mm lift of the bridge once the ESP32 is fitted:
 
   | Gap (mm) | Modelled | ESP32 fitted |
