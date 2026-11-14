@@ -249,6 +249,7 @@ Keep the delivered-board measurements for mounting design. The model represents 
 
 - [Hobbywing UBEC 3A MAX 5A CAD reference](../../cad/reference/ubec-hobbywing-3a/README.md) (S44). The full model envelope is 54.40 × 24.00 × 9.50 mm, including the modeled jumper and wire ends. Use it for preliminary layout and measure the actual unit before sizing its mount.
 - [KiCad DIN0204 axial STEP models](../../cad/reference/kicad-din0204/README.md) (S45) give a 3.6 × Ø1.6 mm body with two options for horizontal leads. Use as placeholders for resistors of that body size.
+- The revised routing study uses the normal Yageo CFR-25 axial resistor as its size reference (S72). Nominal body Ø2.4 × 6.3 mm, leads Ø0.55 mm.
 
 ### 3.4 RS-422 board CAD reference
 
@@ -377,6 +378,14 @@ Use the hideable **Cable harness - routing study** component in the [housing ass
 The [revised power-routing assembly](../../cad/housing/housing-body-v1/housing-power-routing.f3d) replaces six wire envelopes from that baseline (S70). The XT30 input pair turns inward at the connector side and crosses toward the UBEC pads on the ESP32 side of the MAX490 terminal block. Both the UBEC-to-ferrite and ferrite-to-junction pairs run near the base plate, with rises at the ends. The [route data](../../cad/housing/housing-body-v1/routing-study.json) gives the waypoints and approximate lengths.
 
 **Wire colours (S71):** ground black, 12 V red, 5 V orange, 3.3 V violet, and logic blue. Keep both insulated leads of each resistor branch the same colour. The R-B1 series signal stays blue, the R-B2 ground branch stays black, and the R-D, R-Z and R-F pull-up branches stay violet.
+
+The revised assembly also models the four RS-232 signal paths and the two MAX490 logic leads in blue (S73). The MAX490 RO and DI leads stop short of the header pins so the bench identification in [signal wiring](wiring.md#becker) can determine the final ends.
+
+| Modelled detail | Revised signal routing |
+| --- | --- |
+| RS-232 signal leads | Four blue routes: DE-9 pins 1 and 2 to the module inputs, and the module receive outputs to the ESP32. See [signal wiring](wiring.md) for the pins |
+| Resistor assemblies | All five use CFR-25 nominal body and lead dimensions. CAD allowances per resistor are 3 mm of trimmed axial lead per end, a Ø1.35 × 2 mm solder lap per end and a Ø3.2 × 14.3 mm insulated envelope |
+| Fit review | Resolve the local pull-up and supply wire overlap and check the shared terminations, clamp removal and service slack before placing a harness keeper |
 
 The table below describes the baseline.
 
