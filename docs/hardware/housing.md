@@ -7,7 +7,7 @@
 Mechanical design of the bridge: what goes inside, part sizes, connectors on the housing, internal layout.
 
 > [!NOTE]
-> **Status:** housing prototype and [internal routing study](#internal-routing) modelled, not printed. The study includes power routes, all five resistors and two integral cable saddles. The selected lanes are modelled as space envelopes; the wire routes do not follow them yet. Wire sizes, bends and termination envelopes are provisional; physical acceptance is tracked in [open items](../project/open-items.md#housing).
+> **Status:** housing prototype and [internal routing study](#internal-routing) modelled, not printed. The study includes power routes, all five resistors and two integral cable saddles. The selected lanes are modelled as space envelopes; the power wires follow them, the signal and resistor routes do not yet. Wire sizes, bends and termination envelopes are provisional; physical acceptance is tracked in [open items](../project/open-items.md#housing).
 
 📑 **On this page:** <kbd>[1 · 🎯 Requirements](#requirements)</kbd> <kbd>[2 · 📐 Design rules](#rules)</kbd> <kbd>[3 · 📏 Contents and sizes](#contents)</kbd> <kbd>[4 · 🔌 Connectors on the housing](#connectors)</kbd> <kbd>[5 · 🧩 Internal layout](#layout)</kbd>
 
@@ -339,7 +339,7 @@ Use the [STEP model](../../cad/reference/xt30u-m/xt30u-m.step) of the AMASS XT30
 - **Fitting the clamp:** push the arm tip into the tunnel with the USB end raised, then lower the clamp onto the USB socket and screw it down.
 - **Assembly order:** solder the RS-232 wires on the bench, slide the boards into the clamp, fit the ESP32, then screw the clamp on.
 - **UBEC carrier:** lift it off for access to the MAX490 header joints. Mounting and tie routing: [section 2.4](#ubec-carrier).
-- **Wiring:** the modelled XT30 pair follows the connector-side floor and passes around the MAX490 terminal block. Keep the DE-9 on the MAX490 side for the two Becker differential pairs. A direct exchange puts one DE-9 jackpost into the base corner post and the straight XT30 leads through the terminal block (S63). See the [routing study](#internal-routing) for the harness, saddles and space allowances.
+- **Wiring:** the modelled XT30 pair drops to the floor at the connector side and runs in the floor bus to the UBEC ([power routes](#power-on-lanes)). Keep the DE-9 on the MAX490 side for the two Becker differential pairs. A direct exchange puts one DE-9 jackpost into the base corner post and the straight XT30 leads through the terminal block (S63). See the [routing study](#internal-routing) for the harness, saddles and space allowances.
 - **Ferrite ring placement:** in the housing prototype the measured ring sits in the cradle at X 80.8–86.2. The wire turns still need clearance.
 - **Behind the connector wall:** 12–16 mm free depth before the ESP32 USB block, the USB clamp and the MAX490 (Fusion check), too short for a panel fuse holder; F1 sits in the harness ([protection](power.md#protection)).
 - **Corner posts:** the measured ferrite ring clears the far post on the MAX490 side in Fusion.
@@ -377,11 +377,11 @@ Constraints from the wiring:
 Use the hideable **Cable harness - routing study** component in the [housing assembly](../../cad/housing/housing-body-v1/README.md). It contains separate 12 V, 5 V, local RS-232 supply/return, resistor, junction-envelope and insulation-allowance groups. Current geometry checks: S64. Electrical connections: [power and grounding](power.md#supply).
 
 > [!TIP]
-> **Selected routing concept: levels and lanes.** Every wire belongs to one lane and leaves it at a station opposite its pin. The lanes and stations are modelled as the hideable **Routing lanes** component in the [revised power-routing assembly](../../cad/housing/housing-body-v1/housing-power-routing.f3d) (S76); box sizes are in the [route data](../../cad/housing/housing-body-v1/routing-study.json). The modelled wire routes below do not follow them yet; the re-route follows the [routing review plan](../research/reviews/2026-11-14-wire-routing.md#plan).
+> **Selected routing concept: levels and lanes.** Every wire belongs to one lane and leaves it at a station opposite its pin. The lanes and stations are modelled as the hideable **Routing lanes** component in the [revised power-routing assembly](../../cad/housing/housing-body-v1/housing-power-routing.f3d) (S76); box sizes are in the [route data](../../cad/housing/housing-body-v1/routing-study.json). The [power routes](#power-on-lanes) follow the lanes (S77); the signal and resistor routes below are re-routed next, following the [routing review plan](../research/reviews/2026-11-14-wire-routing.md#plan).
 
 | Level or lane | Where (layout frame) | Carries | Rule |
 | --- | --- | --- | --- |
-| Floor bus | Centre channel between the ESP32 and MAX490 PCB edges, Z 4–10.6, on the floor, X 12–70 | XT30 pair, instrument ground, ESP32 5V/GND pair, 5V-J and GND-J | On the floor in a channel or under retention; power on the MAX490 half, the ESP32 pair on the ESP32 half |
+| Floor bus | Centre channel between the ESP32 and MAX490 PCB edges, Z 1.0–9.2, on the floor, X 12–70 | XT30 pair, instrument ground, ESP32 5V/GND pair, 5V-J and GND-J | On the floor in a channel or under retention; power on the MAX490 half, the ESP32 pair on the ESP32 half |
 | Centre-axis signal bus | Same channel, mid height (Y about 9–12) | DE-9 pins 1/2 to the module L3 pads; MAX490 RO/DI to J3-12/J3-11 | ESP32 half (Z 4.5–6.5, clear of the J3 pins); rise only at the station |
 | Pin-top level | Y 15–18 | Terminations, resistors, hops up to about 15 mm | Nothing above Y 18, at least 2 mm under the hood |
 | Connector-wall lane | X 11–17 | XT30 pair down to the floor; Becker pairs 4/5 and 8/9 to the terminal entries | Pairs stay twisted to the terminals |
@@ -394,9 +394,41 @@ Use the hideable **Cable harness - routing study** component in the [housing ass
 - **Pull-ups R-Z and R-F (selected):** directly on the module pads R1 → R3, leads bent over the R2 joint, soldered on the bench before the module slides into the clamp. The modelled flying-lead resistors and the bridge wrap for the FLARM pull-up lead are superseded.
 - **Local taps (selected):** RS-232 module ground from J2-14, and R-D takes 3.3 V from the mod2 L2 pad ([supply path](power.md#supply)).
 - **Wire (selected):** 26 AWG stranded PTFE for signals and the local 3.3 V/ground chain, inside the Ø1.0 mm envelope; 22 AWG stranded PTFE for the power branches and the instrument-ground wire, inside the Ø1.5 mm envelope; the UBEC's factory input and output leads where they reach ([parts](modules.md#parts-list)).
-- **5V-J and GND-J (selected):** inline solder splices with heat-shrink, made on the bench as part of the power harness and laid into the floor bus at the far end of the channel, X about 58–67, near the ferrite. The modelled junction envelopes below still sit mid-channel.
+- **5V-J and GND-J (selected):** inline solder splices with heat-shrink, made on the bench as part of the power harness and laid into the floor bus at the far end of the channel, near the ferrite.
 
-The [revised power-routing assembly](../../cad/housing/housing-body-v1/housing-power-routing.f3d) replaces six wire envelopes from that baseline (S70). The XT30 input pair turns inward at the connector side and crosses toward the UBEC pads on the ESP32 side of the MAX490 terminal block. Both the UBEC-to-ferrite and ferrite-to-junction pairs run near the base plate, with rises at the ends. The [route data](../../cad/housing/housing-body-v1/routing-study.json) gives the waypoints and approximate lengths.
+<a id="power-on-lanes"></a>
+
+**Power routes on the lanes (S77).** All power wires are 22 AWG PTFE or UBEC leads in the Ø1.5 mm envelope. Floor runs lie at wire centre Y −2.2 in fixed tracks; the [route data](../../cad/housing/housing-body-v1/routing-study.json) (`lane_power_routing`) holds every waypoint.
+
+| Floor-bus track (wire centre Z) | Wire |
+| ---: | --- |
+| 1.8 | ESP32 GND |
+| 3.4 | ESP32 5V |
+| 5.0 | Instrument ground |
+| 6.6 | XT30 − |
+| 8.2 | XT30 + |
+
+| Item | Route |
+| --- | --- |
+| XT30 pair | From the XT30 cups down to the floor at X 16.4 (+) and 18.0 (−), just past the cable saddles, across to their tracks, along the floor bus to X about 33–35, then up and across at Y 13 to the UBEC input pads |
+| UBEC output to ferrite | Factory leads, rising straight from the output pads to the ring ([ferrite cradle](#ferrite-cradle)) |
+| Ferrite departures | Down from the ring into the floor bus, ending at the splice envelopes |
+| 5V-J / GND-J | Bench-splice envelopes in the floor bus: 5V-J X 55.5–59.5, Z 2.85–5.45; GND-J X 61.5–66.5, Z 2.0–6.5 |
+| ESP32 branches | From the splices back along tracks 1.8/3.4, rising at the J2 station to J2-19 (5V) and J2-14 (GND) |
+| MAX490 branches | From the splices up to the terminal-block VCC and GND entries |
+| Instrument ground | From the bridged DE-9 cups 3-6-7 down to track 5.0 and along the floor bus to GND-J |
+
+- **Clearance:** highest power wire Y 16.55, 3.45 mm under the hood; power wires touch only their end pads, joint allowances and splice envelopes (S77).
+- **Centreline lengths (mm):** these are routing lengths, **not cutting lengths**; add termination, stripping, service slack and the actual ferrite winding.
+
+| Segment | Length |
+| --- | ---: |
+| XT30 → UBEC input + / − | 96.5 / 87.8 |
+| UBEC output → ferrite approach 5V / GND | 5.4 / 7.4 |
+| Ferrite departure → 5V-J / GND-J | 37.4 / 27.2 |
+| Splices → ESP32 5V / GND | 76.5 / 76.4 |
+| Splices → MAX490 VCC / GND | 45.5 / 36.0 |
+| DE-9 bridge → GND-J (instrument ground) | 61.8 |
 
 **Wire colours (S71):** ground black, 12 V red, 5 V orange, 3.3 V violet, and logic blue. Keep both insulated leads of each resistor branch the same colour. The R-B1 series signal stays blue, the R-B2 ground branch stays black, and the R-D, R-Z and R-F pull-up branches stay violet.
 
@@ -409,45 +441,32 @@ The revised assembly also models the four RS-232 signal paths and the two MAX490
 | R3 terminations | The violet pull-up wires approach both R3 pads from the side. Each pad has a shared solder allowance (S74) |
 | RS-232 bridge keeper | Space for a removable 2.5 mm-wide wrap around the exposed clamp arm to loosely hold the FLARM pull-up lead. Open the wrap from above with the hood off, free the lead, then remove the clamp screw and withdraw the arm from the antenna-cap tunnel (S74) |
 
-The table below describes the baseline.
+The signal and local-supply routes below are still the baseline arrangement; they move onto the lanes in the next step.
 
 | Item | Modelled arrangement |
 | --- | --- |
-| Routing style | Straight runs with rounded corners; power uses the floor and central gap where possible, with rises at the terminals |
-| Main supply/return wires | Ø1.5 mm envelope **including insulation** for 12 V and 5 V; holds the selected 22 AWG PTFE wire and the UBEC leads |
 | Local RS-232 supply/return and signal/resistor connections | Ø1.0 mm envelope including insulation; holds the selected 26 AWG PTFE wire |
-| 12 V pair | From the XT30 along the connector wall, through two open saddles, then around the terminal block to the UBEC input; the upper bends avoid the four carrier screw-driver paths |
-| 5 V distribution | Ferrite departure segments feed separate 5V-J and GND-J envelopes in the central channel. Each junction has its own branches to ESP32 and MAX490; floor runs pass below the boards |
 | RS-232 supply chain | ESP32 feeds mod2, then short links join mod2 R3/R4 to mod1 R3/R4. Local feeds approach the marked pad row above the boards; short parallel inter-board links stay clear of the clamp |
-| Junction space | 5V-J: 9 × 2.4 × 2.6 mm (X/Y/Z), centre (37, 2, 5.5). GND-J: 20 × 2.4 × 2.6 mm, centre (55, 2, 5.5). These are insulated-space placeholders, not selected connectors or mounting designs |
 | Endpoint labels | XT30 molded marks identify + at the square end (route endpoint Z −17.93 mm) and − at the chamfered end (Z −12.93 mm): red to UBEC reference red input, black to black. Output A/B remain spatial labels; physical UBEC/XT30 polarity needs the bench check. RO and DI leads stop short of an assigned MAX490 signal pin. RS-232 supply and return use the +/− pad row at Z −17.327 mm; resistor signal ends follow the inferred electrical map |
 | Resistors | Five Ø1.6 × 3.6 mm DIN0204-size placeholders: R-Z/R-F at the RS-232 pads; R-B1/R-B2 and R-D beside the ESP32 header |
 | Insulation/joints | Separate hideable Ø2.4 × 5.2 mm resistor heat-shrink allowances; Ø3 mm supply-joint allowances and Ø2.4 mm allowances at the adjacent GPIO16/17 joints. These are space estimates, not selected parts |
-| Tight geometry | Minimum nominal hood clearance remains 0.25 mm at the upper 12 V bend; the new RS-232 ground link has 0.50 mm. The v77 study uses laterally adjusted wire envelopes. Set the final bend radii after selecting the wire |
+| Tight geometry | The RS-232 ground link has 0.50 mm nominal hood clearance. Set the final bend radii after selecting the wire |
 
-GND-J takes one instrument-ground wire from the DE-9, where cups 3, 6 and 7 are bridged ([pinout](wiring.md#de9-pinout)); it runs in the floor bus. The modelled study still reserves three branches. Junction hardware and attachment are tracked in the [housing open items](../project/open-items.md#housing).
-
-**Two integral open saddles for the 12 V pair:**
-
-- Centres at X 12.5, Z 6 / 22 mm in the layout frame; wires at X 11.5 / 13.5 and Y 4 mm.
-- Each saddle: 5.7 × 6 mm footprint, 7.5 mm high; open trough 4.1 mm wide, floor at Y 3 mm, side walls 0.8 mm.
-- Tie passage across the saddle: 3.2 × 1.6 mm, bottom 3.4 mm above the housing floor; 1.0 mm roof below the trough. Rounded edges R0.2.
-- Use the existing 2.5 mm-wide, approximately 1 mm-thick tie envelope for the fit study. Actual tie threading and head placement belong to the [fit checks](../project/open-items.md#housing).
-- Print with the base floor down, PETG, 0.4 mm nozzle and 0.2 mm layers. The tie-passage roof spans 3.2 mm; fit-print before assembling the boards.
-
-**Baseline centreline lengths (v76)** in millimetres. Re-measure the shifted routes for v77.
+Baseline centreline lengths (v76) of the local RS-232 supply, in millimetres; routing lengths, not cutting lengths.
 
 | Segment | Length |
 | --- | ---: |
-| XT30 → UBEC input +12 V / GND | 101 / 99 mm |
-| UBEC output approaches to ferrite boundary A / B | 5 / 8 mm |
-| Ferrite boundary → 5V-J / GND-J | 53 / 25 mm |
-| Junctions → ESP32 5V / GND | 50 / 51 mm |
-| Junctions → MAX490 VCC / GND | 59 / 36 mm |
-| ESP32 → RS-232-mod2 3V3 / GND | 36 / 35 mm |
-| RS-232-mod2 → mod1 3V3 / GND | 21 / 28 mm |
+| ESP32 → RS-232-mod2 3V3 / GND | 36 / 35 |
+| RS-232-mod2 → mod1 3V3 / GND | 21 / 28 |
 
-These are routing lengths, **not cutting lengths**. Account separately for termination/stripping allowance, service slack and the actual ferrite winding length. The [route data](../../cad/housing/housing-body-v1/routing-study.json) contains the individual wire-section measurements and provisional endpoints; use [open items](../project/open-items.md#housing) for physical acceptance.
+Junction hardware and attachment are tracked in the [housing open items](../project/open-items.md#housing).
+
+**Two integral open saddles in the base:** no wire runs through them since the power re-route; whether to keep them is [open item 16](../project/open-items.md#housing).
+
+- Centres at X 12.5, Z 6 / 22 mm in the layout frame.
+- Each saddle: 5.7 × 6 mm footprint, 7.5 mm high; open trough 4.1 mm wide, floor at Y 3 mm, side walls 0.8 mm.
+- Tie passage across the saddle: 3.2 × 1.6 mm, bottom 3.4 mm above the housing floor; 1.0 mm roof below the trough. Rounded edges R0.2.
+- Print with the base floor down, PETG, 0.4 mm nozzle and 0.2 mm layers. The tie-passage roof spans 3.2 mm.
 
 ---
 
