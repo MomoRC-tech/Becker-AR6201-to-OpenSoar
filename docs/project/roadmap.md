@@ -30,6 +30,15 @@ Related: ❓ [Open items](open-items.md) · 🎯 [Requirements](../design/requir
 | WP6 Bridge firmware | ⏸️ Planned | After WP3 and WP5, assess Wi-Fi link monitoring ([R10](../design/requirements.md#requirements)) during firmware planning | Radio path byte-exact, single owner, navigation unaffected. Verify link monitoring if included in the approved scope |
 | WP8 Aircraft integration | ⬜ Later | Needs verified hardware and separate approval | Installation, protection and approval requirements met |
 
+<a id="claude-handover"></a>
+
+### 1.1 Claude handover and recovery
+
+| Restore point | How to reopen |
+| --- | --- |
+| Claude handover, published Step 4 | Git commit [`7207a63`](https://github.com/MomoRC-tech/Becker-AR6201-to-OpenSoar/commit/7207a63), including the [Step 4 F3D archive at that commit](https://github.com/MomoRC-tech/Becker-AR6201-to-OpenSoar/blob/7207a63d5f699fc7f18654ec6b911e9aa324b8e3/cad/housing/housing-body-v1/housing-power-routing.f3d). In Fusion, open version 10 of `Housing body - revised power routing` from its version history. |
+| Step 5 continuation draft | Open version 11 of the same Fusion document. It includes Claude's unsaved Step 5 geometry and Codex's four routing corrections. The exact unsaved Claude draft had no separate saved version. |
+
 Work loop for each step:
 
 ```mermaid
