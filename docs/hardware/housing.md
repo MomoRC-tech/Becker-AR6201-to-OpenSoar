@@ -383,7 +383,7 @@ The revised assembly also models the four RS-232 signal paths and the two MAX490
 
 | Modelled detail | Revised signal routing |
 | --- | --- |
-| RS-232 signal leads | Four blue routes: DE-9 pins 1 and 2 to the module inputs, and the module receive outputs to the ESP32. See [signal wiring](wiring.md) for the pins |
+| RS-232 signal leads | Four blue routes: DE-9 pins 1 and 2 to the module inputs, and the module receive outputs to the ESP32 J2-7 (GPIO32) and J2-10 (GPIO26) (S75). See [signal wiring](wiring.md) for the pins |
 | Resistor assemblies | All five use CFR-25 nominal body and lead dimensions. CAD allowances per resistor are 3 mm of trimmed axial lead per end, a Ø1.35 × 2 mm solder lap per end and a Ø3.2 × 14.3 mm insulated envelope |
 | R3 terminations | The violet pull-up wires approach both R3 pads from the side. Each pad has a shared solder allowance (S74) |
 | RS-232 bridge keeper | Space for a removable 2.5 mm-wide wrap around the exposed clamp arm to loosely hold the FLARM pull-up lead. Open the wrap from above with the hood off, free the lead, then remove the clamp screw and withdraw the arm from the antenna-cap tunnel (S74) |
