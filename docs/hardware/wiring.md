@@ -27,14 +27,30 @@ Zander and FLARM are receive-only at the bridge. No return wires or connector co
 
 Use one standard-density DE-9 connector for Becker, Zander and FLARM: a male connector (pins) on the housing and a mating female cable connector, with solder-cup contacts and screw locking. Terminate the existing instrument wires directly in the cable connector and support the cables with a backshell and strain relief. Power uses the separate [XT30 connector](power.md#supply).
 
-| Device | Signals through the connector | Contacts |
-| --- | --- | ---: |
-| Becker | Two differential pairs and signal ground | 5 |
-| Zander | Data to bridge and ground | 2 |
-| FLARM | Data to bridge and ground | 2 |
-| **Total** | **No spare contacts or navigation return lines** | **9** |
+<a id="de9-pinout"></a>
 
-This is a custom combined instrument connection, not a standard PC serial port. Connector pin assignments, exact parts and housing fit are tracked in [open items](../project/open-items.md#bench-hardware); mechanical mounting: [housing](housing.md#connectors). Keep the Becker shield treatment described in [Becker wiring](#becker).
+> [!TIP]
+> **Selected DE-9 pinout.** View the male housing connector from outside with the five-pin row up and the XT30 on the left. The housing-side solder-cup view is mirrored. Use the moulded contact numbers on both connector halves.
+
+```text
+XT30 side                         MAX490 side
+      1      2      3      4      5
+          6      7      8      9
+```
+
+| DE-9 pin | Instrument harness | Inside the bridge |
+| ---: | --- | --- |
+| 1 | [Zander ZS1](#zander) TX | RS-232 mod1 L3 |
+| 2 | [FLARM](#flarm) TX | RS-232 mod2 L3 |
+| 3 | [Becker](#becker) J1-21 D_GND | GND-J |
+| 4 | Becker J1-2 TX2+ | MAX490 A |
+| 5 | Becker J1-9 TX2− | MAX490 B |
+| 6 | Zander ZS1 signal ground | GND-J |
+| 7 | FLARM signal ground | GND-J |
+| 8 | Becker J1-3 RX2+ | MAX490 Y |
+| 9 | Becker J1-10 RX2− | MAX490 Z |
+
+Keep pins 4/5 and 8/9 as separate twisted pairs up to the solder cups. Follow the [Becker shield termination](#becker) and insulate the drain at the bridge end. Use the dedicated instrument harness with this custom pinout. See [housing](housing.md#connectors) for mounting and [open items](../project/open-items.md#bench-hardware) for parts and fit checks.
 
 ### 1.2 UART plan
 
@@ -164,8 +180,9 @@ Before connecting any device, work through this list in order:
 - [ ] **4.** On the MAX490 board, identify RO and DI on the header and check the 120 Ω termination.
 - [ ] **5.** With the MAX490 powered and the radio line idle, measure GPIO16: about 3.0 V (high). Then hold B above A with a 1.5 V cell (+ to B, − to A) and check for a low below 0.5 V.
 - [ ] **6.** Measure the bridge's current and switch-on inrush at 12 V, and update the [current assumptions](power.md#currents).
-- [ ] **7.** Before plugging in J1, check that the bridge ground and the radio's P1-13 and P1-25 each have low resistance (well under 1 Ω) to the common ground point ([why](power.md#wire-breaks)).
-- [ ] **8.** In the aircraft: listen for radio noise and check squelch with the bridge on and off.
+- [ ] **7.** With power off and the instruments disconnected, check continuity through each contact of the mated DE-9 against the [pinout](#de9-pinout). Check for shorts between signal contacts and to GND-J or the shell. The three ground contacts share GND-J.
+- [ ] **8.** Before plugging in J1, check that the bridge ground and the radio's P1-13 and P1-25 each have low resistance (well under 1 Ω) to the common ground point ([why](power.md#wire-breaks)).
+- [ ] **9.** In the aircraft: listen for radio noise and check squelch with the bridge on and off.
 
 ---
 
