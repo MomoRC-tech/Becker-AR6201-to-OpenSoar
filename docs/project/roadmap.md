@@ -21,7 +21,7 @@ Related: ❓ [Open items](open-items.md) · 🎯 [Requirements](../design/requir
 
 | Package | Status | Next step | Done when |
 | --- | --- | --- | --- |
-| **WP3 Hardware** | 🟡 **Current focus** — parts and wiring decided; [power/resistor routing study](../hardware/housing.md#internal-routing) with a deeper base, wider MAX490 side, central junction envelopes, ESP32-fed RS-232 daisy chains and two cable saddles modelled | Select the central-junction hardware; review routing bends, hood clearance and service slack; fit-print the cable saddles, [ferrite cradle](../hardware/housing.md#ferrite-cradle), [UBEC carrier](../hardware/housing.md#ubec-carrier) and base. Collect the remaining [housing inputs](open-items.md#housing) and complete the [bench hardware checks](open-items.md#bench-hardware), then build the bench bridge | Bench bridge built and all bench checks passed |
+| **WP3 Hardware** | 🟡 **Current focus** — wiring design in progress, with a [power and resistor routing study](../hardware/housing.md#internal-routing) modelled | Work through the wiring decisions in [open items](open-items.md), including the central junctions, wire selection, remaining harness routes and terminations. Review bends, hood clearance and service slack. Fit-print the cable saddles, [ferrite cradle](../hardware/housing.md#ferrite-cradle), [UBEC carrier](../hardware/housing.md#ubec-carrier) and base. Collect the remaining [housing inputs](open-items.md#housing) and complete the [bench hardware checks](open-items.md#bench-hardware) | Wiring design complete, bench bridge built and all bench checks passed |
 | WP1 Installed equipment | 🟡 Photos and equipment report reviewed ([review](../research/reviews/2026-11-09-installation-claims.md)) | Get the [installed-equipment facts](open-items.md#installed-equipment) from Tom | Inventory, connector map and navigation baseline complete |
 | WP0 Documentation | ✅ Done | — | — |
 | WP2 Interfaces and protocol | ⏸️ Driver research done ([Becker driver](../research/becker-driver.md)) | Matching radio protocol reference or independent captures | Manual, settings, framing and reply rules confirmed |
@@ -51,7 +51,7 @@ flowchart LR
 | Milestone | Reached when | Status |
 | --- | --- | --- |
 | M1 | Installed equipment and interfaces are understood | ⬜ Open |
-| M2 | Hardware design and driver plan are selected | 🟡 Hardware selected |
+| M2 | Hardware design and driver plan are selected | 🟡 Hardware design in progress |
 | M3 | Software verified | ⬜ Open |
 
 ---

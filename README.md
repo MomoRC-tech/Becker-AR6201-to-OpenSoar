@@ -43,12 +43,12 @@ The bridge never changes the active frequency, and the radio's own controls keep
 | Stage | Status |
 | --- | --- |
 | 🔬 Research and documentation | ✅ Done |
-| 🔧 Hardware selection and wiring | 🟡 **In progress** — parts and wiring decided, bench checks open |
+| 🔧 Hardware selection and wiring | 🟡 **In progress** — wiring design and bench checks open |
 | 🛩️ Existing installation details | 🟡 Waiting for equipment information |
 | 💻 Firmware and driver changes | ⏸️ On hold until the hardware is finished |
 | ✈️ Aircraft integration | ⬜ Later |
 
-**Next step:** work through the [bench hardware checks](docs/project/open-items.md#bench-hardware).
+**Next step:** continue the wiring design in [WP3 Hardware](docs/project/roadmap.md#work-packages).
 
 ---
 
