@@ -25,11 +25,12 @@ The housing uses [layout v4](../layout-v4/README.md) with a base tray, connector
 | File | Use |
 | --- | --- |
 | [housing-assembly.f3d](housing-assembly.f3d) | Full editable Fusion assembly with a hideable cable-harness component, the [measured UBEC](../../reference/ubec-hobbywing-3a/README.md), [measured ferrite ring](../../../docs/hardware/housing.md#contents) and a local copy of the MAX490 board. Open with *File › Open › Open from my computer*. |
+| [housing-power-routing.f3d](housing-power-routing.f3d) | Standalone v80-based assembly with revised inboard XT30 routing and floor-level ferrite leads (S70). Open this archive to review the current power routes. |
 | `housing-base.f3d`, `housing-hood.f3d` | Fusion archives of the two parts; the base includes the ESP32 USB support, MAX490 floor posts, ferrite cradle and two cable saddles. Open with *File › Open › Open from my computer* |
 | `housing-base.3mf`, `housing-hood.3mf`, `housing-logo-insert.3mf` | Print-ready meshes, Z up: base floor down; hood and logo insert top down in the same coordinates. Load hood and logo insert together as one object with two parts (dark grey filament for the logo) |
 | `housing-logo-insert.f3d`, `housing-logo-insert.step` | Logo and "7-20V" insert as its own part |
 | `housing-base.step`, `housing-hood.step` | Solid models in the layout frame |
-| [routing-study.json](routing-study.json) | Provisional wire diameters, baseline lengths and v77 lateral shifts |
+| [routing-study.json](routing-study.json) | Current power-route waypoints and approximate lengths, plus the baseline routes and v77 lateral shifts |
 | [routing-verification.json](routing-verification.json) | Native geometry and export checks for S64 |
 
 | Part | Main dimensions (mm) |

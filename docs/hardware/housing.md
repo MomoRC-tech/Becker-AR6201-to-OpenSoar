@@ -374,6 +374,8 @@ Constraints from the wiring:
 
 Use the hideable **Cable harness - routing study** component in the [housing assembly](../../cad/housing/housing-body-v1/README.md). It contains separate 12 V, 5 V, local RS-232 supply/return, resistor, junction-envelope and insulation-allowance groups. Current geometry checks: S64. Electrical connections: [power and grounding](power.md#supply).
 
+The [revised power-routing assembly](../../cad/housing/housing-body-v1/housing-power-routing.f3d) replaces six wire envelopes from that baseline (S70). The XT30 input pair turns inward at the connector side and crosses toward the UBEC pads on the ESP32 side of the MAX490 terminal block. Both the UBEC-to-ferrite and ferrite-to-junction pairs run near the base plate, with rises at the ends. The [route data](../../cad/housing/housing-body-v1/routing-study.json) gives the waypoints and approximate lengths. The table below describes the baseline.
+
 | Item | Modelled arrangement |
 | --- | --- |
 | Routing style | Straight runs with rounded corners; power uses the floor and central gap where possible, with rises at the terminals |
