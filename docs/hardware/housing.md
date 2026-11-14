@@ -374,10 +374,10 @@ Constraints from the wiring:
 
 ### 5.1 Internal routing study
 
-Use the hideable **Cable harness - routing study** component in the [housing assembly](../../cad/housing/housing-body-v1/README.md). It contains separate 12 V, 5 V, local RS-232 supply/return, resistor, junction-envelope and insulation-allowance groups. Current geometry checks: S64. Electrical connections: [power and grounding](power.md#supply).
+Use the hideable **Cable harness - routing study** component in the [housing assembly](../../cad/housing/housing-body-v1/README.md). It contains separate 12 V, 5 V, local RS-232 supply/return, resistor, junction-envelope and insulation-allowance groups. Current harness geometry: S77 and S78. Electrical connections: [power and grounding](power.md#supply).
 
 > [!TIP]
-> **Selected routing concept: levels and lanes.** Every wire belongs to one lane and leaves it at a station opposite its pin. The lanes and stations are modelled as the hideable **Routing lanes** component in the [revised power-routing assembly](../../cad/housing/housing-body-v1/housing-power-routing.f3d) (S76); box sizes are in the [route data](../../cad/housing/housing-body-v1/routing-study.json). The [power routes](#power-on-lanes) follow the lanes (S77); the signal and resistor routes below are re-routed next, following the [routing review plan](../research/reviews/2026-11-14-wire-routing.md#plan).
+> **Selected routing concept: levels and lanes.** Every wire belongs to one lane and leaves it at a station opposite its pin. The lanes and stations are modelled as the hideable **Routing lanes** component in the [revised power-routing assembly](../../cad/housing/housing-body-v1/housing-power-routing.f3d) (S76); box sizes are in the [route data](../../cad/housing/housing-body-v1/routing-study.json). The [power routes](#power-on-lanes) and [signal routes](#signals-on-lanes) follow these lanes (S77, S78).
 
 | Level or lane | Where (layout frame) | Carries | Rule |
 | --- | --- | --- | --- |
@@ -391,7 +391,7 @@ Use the hideable **Cable harness - routing study** component in the [housing ass
 - **Crossings:** each wire crosses the centre channel at most once. The only floor crossing under a board is the ESP32 power pair, lying on the floor at one station.
 - **No floor joints between boards:** junctions and splices are made on the bench and laid in.
 - **Ferrite (selected):** the ring is moved along the UBEC output lead so the approach leads stay short and above the floor ([ferrite cradle](#ferrite-cradle)); the modelled floor loop between UBEC and ring is superseded.
-- **Pull-ups R-Z and R-F (selected):** directly on the module pads R1 → R3, leads bent over the R2 joint, soldered on the bench before the module slides into the clamp. The modelled flying-lead resistors and the bridge wrap for the FLARM pull-up lead are superseded.
+- **Pull-ups R-Z and R-F (selected):** directly on the module pads R1 → R3, leads bent over the R2 joint, soldered on the bench before the module slides into the clamp. The on-pad layout removes the need for the FLARM pull-up bridge wrap.
 - **Local taps (selected):** RS-232 module ground from J2-14, and R-D takes 3.3 V from the mod2 L2 pad ([supply path](power.md#supply)).
 - **Wire (selected):** 26 AWG stranded PTFE for signals and the local 3.3 V/ground chain, inside the Ø1.0 mm envelope; 22 AWG stranded PTFE for the power branches and the instrument-ground wire, inside the Ø1.5 mm envelope; the UBEC's factory input and output leads where they reach ([parts](modules.md#parts-list)).
 - **5V-J and GND-J (selected):** inline solder splices with heat-shrink, made on the bench as part of the power harness and laid into the floor bus at the far end of the channel, near the ferrite.
@@ -415,7 +415,7 @@ Use the hideable **Cable harness - routing study** component in the [housing ass
 | Ferrite departures | Down from the ring into the floor bus, ending at the splice envelopes |
 | 5V-J / GND-J | Bench-splice envelopes in the floor bus: 5V-J X 55.5–59.5, Z 2.85–5.45; GND-J X 61.5–66.5, Z 2.0–6.5 |
 | ESP32 branches | From the splices back along tracks 1.8/3.4, rising at the J2 station to J2-19 (5V) and J2-14 (GND) |
-| MAX490 branches | From the splices up to the terminal-block VCC and GND entries |
+| MAX490 branches | From the splices to header VCC and GND. The VCC branch rises at X 75.4 mm (S78) |
 | Instrument ground | From the bridged DE-9 cups 3-6-7 down to track 5.0 and along the floor bus to GND-J |
 
 - **Clearance:** highest power wire Y 16.55, 3.45 mm under the hood; power wires touch only their end pads, joint allowances and splice envelopes (S77).
@@ -427,37 +427,22 @@ Use the hideable **Cable harness - routing study** component in the [housing ass
 | UBEC output → ferrite approach 5V / GND | 5.4 / 7.4 |
 | Ferrite departure → 5V-J / GND-J | 37.4 / 27.2 |
 | Splices → ESP32 5V / GND | 76.5 / 76.4 |
-| Splices → MAX490 VCC / GND | 45.5 / 36.0 |
+| Splices → MAX490 VCC / GND | 52.4 / 38.6 |
 | DE-9 bridge → GND-J (instrument ground) | 61.8 |
 
 **Wire colours (S71):** ground black, 12 V red, 5 V orange, 3.3 V violet, and logic blue. Keep both insulated leads of each resistor branch the same colour. The R-B1 series signal stays blue, the R-B2 ground branch stays black, and the R-D, R-Z and R-F pull-up branches stay violet.
 
-The revised assembly also models the four RS-232 signal paths and the two MAX490 logic leads in blue (S73). The MAX490 RO and DI leads stop short of the header pins so the bench identification in [signal wiring](wiring.md#becker) can determine the final ends.
+<a id="signals-on-lanes"></a>
 
-| Modelled detail | Revised signal routing |
+**Signal routes on the lanes (S78).** See the [route data](../../cad/housing/housing-body-v1/routing-study.json) and [signal wiring](wiring.md) for waypoints and pin assignments.
+
+| Lane or joint | Route |
 | --- | --- |
-| RS-232 signal leads | Four blue routes: DE-9 pins 1 and 2 to the module inputs, and the module receive outputs to the ESP32 J2-7 (GPIO32) and J2-10 (GPIO26) (S75). See [signal wiring](wiring.md) for the pins |
-| Resistor assemblies | All five use CFR-25 nominal body and lead dimensions. CAD allowances per resistor are 3 mm of trimmed axial lead per end, a Ø1.35 × 2 mm solder lap per end and a Ø3.2 × 14.3 mm insulated envelope |
-| R3 terminations | The violet pull-up wires approach both R3 pads from the side. Each pad has a shared solder allowance (S74) |
-| RS-232 bridge keeper | Space for a removable 2.5 mm-wide wrap around the exposed clamp arm to loosely hold the FLARM pull-up lead. Open the wrap from above with the hood off, free the lead, then remove the clamp screw and withdraw the arm from the antenna-cap tunnel (S74) |
-
-The signal and local-supply routes below are still the baseline arrangement; they move onto the lanes in the next step.
-
-| Item | Modelled arrangement |
-| --- | --- |
-| Local RS-232 supply/return and signal/resistor connections | Ø1.0 mm envelope including insulation; holds the selected 26 AWG PTFE wire |
-| RS-232 supply chain | ESP32 feeds mod2, then short links join mod2 R3/R4 to mod1 R3/R4. Local feeds approach the marked pad row above the boards; short parallel inter-board links stay clear of the clamp |
-| Endpoint labels | XT30 molded marks identify + at the square end (route endpoint Z −17.93 mm) and − at the chamfered end (Z −12.93 mm): red to UBEC reference red input, black to black. Output A/B remain spatial labels; physical UBEC/XT30 polarity needs the bench check. RO and DI leads stop short of an assigned MAX490 signal pin. RS-232 supply and return use the +/− pad row at Z −17.327 mm; resistor signal ends follow the inferred electrical map |
-| Resistors | Five Ø1.6 × 3.6 mm DIN0204-size placeholders: R-Z/R-F at the RS-232 pads; R-B1/R-B2 and R-D beside the ESP32 header |
-| Insulation/joints | Separate hideable Ø2.4 × 5.2 mm resistor heat-shrink allowances; Ø3 mm supply-joint allowances and Ø2.4 mm allowances at the adjacent GPIO16/17 joints. These are space estimates, not selected parts |
-| Tight geometry | The RS-232 ground link has 0.50 mm nominal hood clearance. Set the final bend radii after selecting the wire |
-
-Baseline centreline lengths (v76) of the local RS-232 supply, in millimetres; routing lengths, not cutting lengths.
-
-| Segment | Length |
-| --- | ---: |
-| ESP32 → RS-232-mod2 3V3 / GND | 36 / 35 |
-| RS-232-mod2 → mod1 3V3 / GND | 21 / 28 |
+| Centre-axis signal bus | DE-9 pins 1 and 2 to the RS-232 L3 pads. Across the MAX490 header station, RO runs at X 74.0 mm and DI at X 73.1 mm. Check the MAX490 label orientation at the [bench](wiring.md#becker) |
+| Connector-wall lane | DE-9 4/5 to MAX490 A/B and 8/9 to Y/Z. The CAD shows each conductor envelope. Keep the pairs twisted up to the terminations |
+| J2-side lane | Module R2 outputs to J2-7 (GPIO32) and J2-10 (GPIO26). Route the GPIO32 wire around the J2-14 ground joint |
+| Local RS-232 supply and ground | 3.3 V from J2-1 to mod2 R3 then mod1 R3. Ground from J2-14 to mod2 R4 then mod1 R4. Assemble the mod2 R3 feed, link and R-F lead on the bench |
+| Pin-top resistor connections | R-Z/R-F directly on module pads R1 → R3. R-B1 at the RO splice, R-B2 across J3-12 and J3-7, and R-D from J3-11 to mod2 L2 |
 
 Junction hardware and attachment are tracked in the [housing open items](../project/open-items.md#housing).
 
