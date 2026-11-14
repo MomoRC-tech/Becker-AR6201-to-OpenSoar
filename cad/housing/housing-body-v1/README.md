@@ -30,7 +30,7 @@ First housing prototype on [layout v4](../layout-v4/README.md): base tray with c
 | `housing-logo-insert.f3d`, `housing-logo-insert.step` | Logo and "7-20V" insert as its own part |
 | `housing-base.step`, `housing-hood.step` | Solid models in the layout frame |
 | [routing-study.json](routing-study.json) | Provisional diameters, construction waypoints and measured centreline lengths; not cutting lengths |
-| [routing-verification.json](routing-verification.json) | Native geometry, preservation, topology and export-check evidence for S61 |
+| [routing-verification.json](routing-verification.json) | Native geometry, preservation, topology and export-check evidence for S62 |
 
 | Part | Main dimensions (mm) |
 | --- | --- |
@@ -46,18 +46,34 @@ First housing prototype on [layout v4](../layout-v4/README.md): base tray with c
 
 - Colours in Fusion and STEP: base dark green, hood a lighter green. Logo insert dark grey.
 - Units: millimetres. Layout frame: X from the outer face of the connector wall, Y up from the floor top, Z across.
-- Fusion archive: 75 occurrences and 389 timeline items, including the hideable harness, separate 5V-J/GND-J space envelopes, all five resistors, the MAX490 board’s 150 bodies, UBEC carrier, upright ferrite and cable-tie fit envelopes. The four screw reference solids are omitted. Carrier/post verification: [carrier model notes](../ubec-carrier/README.md).
+- Fusion archive: 75 occurrences and 391 timeline items, including the hideable harness, separate 5V-J/GND-J space envelopes, all five resistors, the MAX490 board’s 150 bodies, UBEC carrier, upright ferrite and cable-tie fit envelopes. The four screw reference solids are omitted. Carrier/post verification: [carrier model notes](../ubec-carrier/README.md).
 - Mating plug: the [XT30PB-F](../../reference/amass-xt30-family/README.md) STEP model sits plugged onto the XT30 on the outside of the connector wall (reference component `XT30 female (reference)` in the Connector side group): mating face against the male front face (0.5 mm outside the wall), centred on the pocket, turned 180° about the plug axis from the first placement so the polarity matches the male, solder tails pointing away from the box; no intersection with the base, hood, connector plate, DE-9 or XT30 male (Fusion check). Included in the full Fusion assembly.
 - Layout: inside height 20 mm. The UBEC sits on the [four-screw carrier](../ubec-carrier/README.md); the ferrite sits upright in the [integral cradle](../../../docs/hardware/housing.md#ferrite-cradle), with two ties through its centre. The ring model is the bare core; the winding envelope was checked separately. Lead approaches and departures are modelled; actual ferrite turns are not. The hood is flat.
 - Print checks: printed floor down, the DE-9 cutout top is a 19.9 mm bridge and the XT30 pocket top a 10.55 mm bridge (both were fit-tested printed flat, and the rule limit is 10 mm). The connector face has 2.7 mm of wall between the XT30 pocket and the DE-9 recess; the XT30 collar stays 0.8 mm clear of the nearer DE-9 nut pocket.
 
-- **Central distribution verification, 2026-11-14:** the reopened assembly recomputes and matches all 520 live body records. All 477 bodies outside the harness and 31 retained harness bodies keep their geometry; four old power sections were replaced. New routes clear unrelated bodies and the four carrier driver paths. The planned internal ground network forms a tree; external ground loops remain. Evidence: S61 in the [source register](../../../docs/research/sources.md#source-register). The two inherited position warnings remain. Junction hardware, wire sizes, bends and physical access need the [fit checks](../../../docs/project/open-items.md#housing); [routing dimensions and lengths](../../../docs/hardware/housing.md#internal-routing).
+- **Routing verification, 2026-11-14:** XT30 input wires now match the molded +/− marks and UBEC reference colors; both RS-232 supply chains and R-Z/R-F use the corrected pad row. Six supply endpoints match CAD pad centers within 0.001 mm. All 506 bodies outside these corrections preserve geometry; the reopened assembly recomputes and matches all 520 body records. Corrected routes clear unrelated bodies and all four carrier driver paths. The two inherited position warnings remain. Evidence: S62; unchanged central distribution and internal ground tree: S61 in the [source register](../../../docs/research/sources.md#source-register). Physical continuity, junction hardware, wire sizes, bends and access need the [fit checks](../../../docs/project/open-items.md#housing); [routing dimensions and lengths](../../../docs/hardware/housing.md#internal-routing).
 
-- Harness colors: **GND black, +12 V red, +5 V orange**, 3.3 V violet, logic blue. Input/output A/B colors follow the UBEC CAD reference; they do not confirm physical terminal polarity. The junction bodies reserve space only; the base and its print exports are unchanged in this increment.
+- Harness colors: **GND black, +12 V red, +5 V orange**, 3.3 V violet, logic blue. XT30 input colors match the molded +/− marks and the UBEC reference leads; output A/B colors follow the UBEC reference. Physical polarity still needs a bench check. The junction bodies reserve space only; the base and its print exports are unchanged in this increment.
 
 <details>
 <summary><b>🖼️ Show the floor routing and cable saddles</b> (click to expand)</summary>
 
 ![Power routes and central junction envelopes with boards and local RS-232 wiring hidden to expose the floor runs](preview-routing.png)
+
+</details>
+
+<details>
+<summary><b>🖼️ Show the XT30 polarity detail</b> (click to expand)</summary>
+
+![XT30 square-end plus marking with red positive wire; black return at the other cup](preview-xt30-polarity.png)
+
+</details>
+
+<details>
+<summary><b>🖼️ Show the RS-232 pad check</b> (click to expand)</summary>
+
+![Both reference boards with the marked positive and negative pads on the right-hand row](preview-rs232-marks.png)
+
+![Corrected violet 3.3 V and black ground chains, with R-Z and R-F on the same pad row](preview-rs232-pads.png)
 
 </details>

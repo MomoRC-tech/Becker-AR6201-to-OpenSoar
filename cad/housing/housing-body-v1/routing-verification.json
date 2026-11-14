@@ -1,26 +1,294 @@
 {
-  "source_id": "S61",
+  "source_id": "S62",
   "date": "2026-11-14",
-  "baseline_commit": "c3bc17b",
-  "scope": "Central supply/return routing and colors; no physical acceptance",
-  "native_geometry": {
+  "baseline_commit": "5c8a596",
+  "scope": "Correct XT30 polarity and RS232 supply/pull-up pad row; preserve all other geometry",
+  "reopened_assembly": {
     "recompute": true,
-    "unchanged_outside_harness": 477,
-    "changed_outside_harness": [],
-    "routes": [
+    "matching_body_records": 520,
+    "occurrences": 75,
+    "timeline": 391,
+    "maximum_volume_difference_mm3": 2.8421709430404007e-13,
+    "maximum_bound_difference_mm": 1.4210854715202004e-14,
+    "saved_before_export": true,
+    "cloud_complete_before_export": true
+  },
+  "polarity": {
+    "source_id": "S62",
+    "basis": "Molded + and − marks on both embedded connector halves, visually inspected in Fusion",
+    "positive": {
+      "color": "red",
+      "xt30_route_endpoint_mm": [
+        14,
+        7.5,
+        -17.93
+      ],
+      "ubec_route_endpoint_mm": [
+        35.4,
+        10.2,
+        26.5
+      ]
+    },
+    "negative": {
+      "color": "black",
+      "xt30_route_endpoint_mm": [
+        14,
+        7.5,
+        -12.93
+      ],
+      "ubec_route_endpoint_mm": [
+        35.4,
+        10.2,
+        23.5
+      ]
+    }
+  },
+  "reused_evidence": {
+    "source_id": "S61",
+    "commit": "5c8a596",
+    "scope": "Unchanged central distribution and ground topology/diagrams; CAD power-pad locations corrected in this package"
+  },
+  "topology_and_diagrams": {
+    "internal_ground_tree": {
+      "connected": true,
+      "cycles": 0,
+      "nodes": 9,
+      "edges": [
+        [
+          "UBEC output",
+          "GND-J"
+        ],
+        [
+          "GND-J",
+          "ESP32"
+        ],
+        [
+          "GND-J",
+          "MAX490"
+        ],
+        [
+          "GND-J",
+          "Becker ground"
+        ],
+        [
+          "GND-J",
+          "Zander ground"
+        ],
+        [
+          "GND-J",
+          "FLARM ground"
+        ],
+        [
+          "ESP32",
+          "RS232-mod2"
+        ],
+        [
+          "RS232-mod2",
+          "RS232-mod1"
+        ]
+      ],
+      "modelled_wire_sections": [
+        "Ferrite departure to central GND",
+        "Central GND to ESP32 J2-14",
+        "Central GND to MAX490 GND",
+        "ESP32 J3-7 GND to RS232-mod2 R4",
+        "RS232-mod2 R4 to mod1 R4 - GND chain"
+      ],
+      "reserved_not_routed": [
+        "GND-J to Becker DE9 ground",
+        "GND-J to Zander DE9 ground",
+        "GND-J to FLARM DE9 ground"
+      ],
+      "scope": "Planned internal connections only; external supply/USB ground paths excluded. Not a continuity test."
+    },
+    "diagrams": {
+      "generated_svg_files": 8,
+      "xml_valid": true,
+      "visual_review": "Offline CairoSVG PNG renders inspected. Browser file preview blocked by URL security policy; browser rendering not verified."
+    }
+  },
+  "colors": {
+    "applied": [
       {
-        "name": "Input B - spatial route only",
-        "od_mm": 1.5,
-        "centreline_mm": 95.94,
-        "volume_length_error_mm": -0.0,
-        "smallest_arc_radius_mm": 1.4
+        "name": "XT30 negative to UBEC input ground",
+        "net_color": "GND"
       },
       {
-        "name": "Input A - spatial route only",
+        "name": "XT30 positive to UBEC input positive",
+        "net_color": "12V"
+      },
+      {
+        "name": "UBEC output A to ferrite approach - polarity unassigned",
+        "net_color": "5V"
+      },
+      {
+        "name": "UBEC output B to ferrite approach - polarity unassigned",
+        "net_color": "GND"
+      },
+      {
+        "name": "Central 5V to ESP32 J2-19",
+        "net_color": "5V"
+      },
+      {
+        "name": "Central GND to ESP32 J2-14",
+        "net_color": "GND"
+      },
+      {
+        "name": "Central 5V to MAX490 VCC",
+        "net_color": "5V"
+      },
+      {
+        "name": "Central GND to MAX490 GND",
+        "net_color": "GND"
+      },
+      {
+        "name": "Ferrite departure to central 5V",
+        "net_color": "5V"
+      },
+      {
+        "name": "Ferrite departure to central GND",
+        "net_color": "GND"
+      },
+      {
+        "name": "R-B2 to J3-7 GND",
+        "net_color": "GND"
+      },
+      {
+        "name": "R-Z to R3 inferred pad",
+        "net_color": "3V3"
+      },
+      {
+        "name": "R-F to R3 inferred pad",
+        "net_color": "3V3"
+      },
+      {
+        "name": "R-D to J2-1 3V3",
+        "net_color": "3V3"
+      },
+      {
+        "name": "ESP32 J2-1 3V3 to RS232-mod2 R3",
+        "net_color": "3V3"
+      },
+      {
+        "name": "RS232-mod2 R3 to mod1 R3 - 3V3 chain",
+        "net_color": "3V3"
+      },
+      {
+        "name": "ESP32 J3-7 GND to RS232-mod2 R4",
+        "net_color": "GND"
+      },
+      {
+        "name": "RS232-mod2 R4 to mod1 R4 - GND chain",
+        "net_color": "GND"
+      },
+      {
+        "name": "Central 5V junction - space envelope only",
+        "net_color": "5V"
+      },
+      {
+        "name": "Central GND junction - space envelope only",
+        "net_color": "GND"
+      }
+    ],
+    "basis": "XT30 positive at square end (Z -17.93 mm) is red and joins UBEC reference red input (Z 26.5 mm). XT30 negative at chamfered end (Z -12.93 mm) is black and joins UBEC reference black input (Z 23.5 mm). Both connector halves show matching molded +/− marks. Output A orange / B black follow UBEC reference colors. CAD evidence only; physical polarity not tested.",
+    "reference_cosmetic_edit": "UBEC positive output stub faces changed from red to orange; geometry unchanged."
+  },
+  "limitations": [
+    "5V-J and GND-J are space envelopes, not selected connection hardware or mounts",
+    "Three instrument grounds reserved at GND-J; DE9 fan-out not routed before pin selection",
+    "Physical UBEC/XT30 polarity and RS232 electrical continuity not verified; CAD +/− marks checked. R1/R2 use the inferred S26/S27 map, not the inconsistent CAD signal arrows.",
+    "No ferrite winding count or winding length represented",
+    "Insulated outside diameters, bend radii and termination envelopes are provisional",
+    "Minimum overall hood gap remains 0.25 mm at 12V input-ground bend; new RS232 ground link gap 0.50 mm",
+    "No slicing, printing, physical continuity, loaded electrical, removal/service-slack, vibration or thermal acceptance",
+    "Browser SVG review blocked by local URL policy; offline renders inspected"
+  ],
+  "contact_interpretation": "Corrected routes contact only their intended terminals/pad areas, same-net wires and their own resistor/insulation allowances. Resistor leads enter the approximate pad/PCB surface by less than 0.004 mm3 at each endpoint. No unrelated obstacles or different-net wire intersections; all four carrier driver paths clear.",
+  "xt30_correction": {
+    "recompute": true,
+    "routes": [
+      {
+        "name": "XT30 positive to UBEC input positive",
         "od_mm": 1.5,
-        "centreline_mm": 103.13,
+        "centreline_mm": 100.68,
         "volume_length_error_mm": 0.0,
         "smallest_arc_radius_mm": 1.0
+      },
+      {
+        "name": "XT30 negative to UBEC input ground",
+        "od_mm": 1.5,
+        "centreline_mm": 98.94,
+        "volume_length_error_mm": -0.0,
+        "smallest_arc_radius_mm": 1.4
+      }
+    ],
+    "new_body_contacts": [
+      {
+        "a": "XT30 positive to UBEC input positive",
+        "b": "Connector side:1+XT30 male (reference):1+XT30_Stecker:1/Body1",
+        "mm3": 0.526389
+      },
+      {
+        "a": "XT30 positive to UBEC input positive",
+        "b": "ubec-measured:1+ubec (1):1+id5 (1):1/Body1",
+        "mm3": 0.276805
+      },
+      {
+        "a": "XT30 positive to UBEC input positive",
+        "b": "Cable harness - routing study:1+Insulation and joint allowances:1/XT30 cup A allowance diameter 3",
+        "mm3": 2.298532
+      },
+      {
+        "a": "XT30 negative to UBEC input ground",
+        "b": "Connector side:1+XT30 male (reference):1+XT30_Stecker:1/Body1",
+        "mm3": 0.692326
+      },
+      {
+        "a": "XT30 negative to UBEC input ground",
+        "b": "ubec-measured:1+ubec (1):1+id8 (1):1/Body1",
+        "mm3": 0.276805
+      },
+      {
+        "a": "XT30 negative to UBEC input ground",
+        "b": "Cable harness - routing study:1+Insulation and joint allowances:1/XT30 cup B allowance diameter 3",
+        "mm3": 2.298532
+      }
+    ],
+    "carrier_driver_collisions": [],
+    "new_minimum_hood_gap": {
+      "name": "XT30 negative to UBEC input ground",
+      "mm": 0.25
+    },
+    "warnings": [
+      {
+        "name": "Position19",
+        "message": "Capture Position has no positions for current Components and JointsCompute FailedPosition19"
+      },
+      {
+        "name": "Position20",
+        "message": "Capture Position has no positions for current Components and JointsCompute FailedPosition20"
+      }
+    ],
+    "unchanged_except_corrected_input_wires": 518,
+    "changed_other_bodies": [],
+    "stage": "After XT30 correction, before RS232 row correction"
+  },
+  "rs232_correction": {
+    "recompute": true,
+    "routes": [
+      {
+        "name": "XT30 positive to UBEC input positive",
+        "od_mm": 1.5,
+        "centreline_mm": 100.68,
+        "volume_length_error_mm": 0.0,
+        "smallest_arc_radius_mm": 1.0
+      },
+      {
+        "name": "XT30 negative to UBEC input ground",
+        "od_mm": 1.5,
+        "centreline_mm": 98.94,
+        "volume_length_error_mm": -0.0,
+        "smallest_arc_radius_mm": 1.4
       },
       {
         "name": "UBEC output A to ferrite approach - polarity unassigned",
@@ -107,6 +375,27 @@
         "smallest_arc_radius_mm": null
       },
       {
+        "name": "RO pending identification to R-B1",
+        "od_mm": 1.0,
+        "centreline_mm": 42.97,
+        "volume_length_error_mm": 0.0,
+        "smallest_arc_radius_mm": 1.047
+      },
+      {
+        "name": "R-D to J2-1 3V3",
+        "od_mm": 1.0,
+        "centreline_mm": 42.41,
+        "volume_length_error_mm": -0.0,
+        "smallest_arc_radius_mm": 0.831
+      },
+      {
+        "name": "J3-11 GPIO17 to DI pending identification",
+        "od_mm": 1.0,
+        "centreline_mm": 45.15,
+        "volume_length_error_mm": 0.0,
+        "smallest_arc_radius_mm": 0.68
+      },
+      {
         "name": "R-Z to R1 inferred pad",
         "od_mm": 1.0,
         "centreline_mm": 2.18,
@@ -135,140 +424,169 @@
         "smallest_arc_radius_mm": null
       },
       {
-        "name": "RO pending identification to R-B1",
+        "name": "ESP32 J2-1 3V3 to RS232-mod2 R3",
         "od_mm": 1.0,
-        "centreline_mm": 42.97,
-        "volume_length_error_mm": 0.0,
-        "smallest_arc_radius_mm": 1.047
-      },
-      {
-        "name": "R-D to J2-1 3V3",
-        "od_mm": 1.0,
-        "centreline_mm": 42.41,
+        "centreline_mm": 35.75,
         "volume_length_error_mm": -0.0,
-        "smallest_arc_radius_mm": 0.831
-      },
-      {
-        "name": "J3-11 GPIO17 to DI pending identification",
-        "od_mm": 1.0,
-        "centreline_mm": 45.15,
-        "volume_length_error_mm": 0.0,
-        "smallest_arc_radius_mm": 0.68
+        "smallest_arc_radius_mm": 0.9
       },
       {
         "name": "RS232-mod2 R3 to mod1 R3 - 3V3 chain",
         "od_mm": 1.0,
-        "centreline_mm": 20.25,
+        "centreline_mm": 20.89,
         "volume_length_error_mm": -0.0,
         "smallest_arc_radius_mm": 0.9
       },
       {
         "name": "ESP32 J3-7 GND to RS232-mod2 R4",
         "od_mm": 1.0,
-        "centreline_mm": 35.51,
+        "centreline_mm": 34.75,
         "volume_length_error_mm": 0.0,
         "smallest_arc_radius_mm": 0.9
       },
       {
         "name": "RS232-mod2 R4 to mod1 R4 - GND chain",
         "od_mm": 1.0,
-        "centreline_mm": 27.21,
+        "centreline_mm": 27.84,
         "volume_length_error_mm": -0.0,
         "smallest_arc_radius_mm": 1.58
-      },
-      {
-        "name": "ESP32 J2-1 3V3 to RS232-mod2 R3",
-        "od_mm": 1.0,
-        "centreline_mm": 47.88,
-        "volume_length_error_mm": -0.0,
-        "smallest_arc_radius_mm": 0.9
       }
     ],
     "new_body_contacts": [
       {
-        "a": "Central 5V to ESP32 J2-19",
-        "b": "ESP32 holder with RS-232 clamp:1+ESP32 board (reference):1+ESP-WROOM-32D-Assembly:1+zl201-19_p2-54_l48-3_w2-54_h8-9:1/Body1",
-        "mm3": 0.131008
+        "a": "R-Z 10k body 3.6 x 1.6 mm placeholder",
+        "b": "Cable harness - routing study:1+Resistors:1/R-Z to R1 inferred pad",
+        "mm3": 0.067558
       },
       {
-        "a": "Central 5V to ESP32 J2-19",
-        "b": "Cable harness - routing study:1+Insulation and joint allowances:1/J2-19 5V joint allowance diameter 3",
-        "mm3": 2.477404
-      },
-      {
-        "a": "Central 5V to ESP32 J2-19",
-        "b": "Cable harness - routing study:1+Distribution junction envelopes:1/Central 5V junction - space envelope only",
-        "mm3": 2.771042
-      },
-      {
-        "a": "Central GND to ESP32 J2-14",
-        "b": "ESP32 holder with RS-232 clamp:1+ESP32 board (reference):1+ESP-WROOM-32D-Assembly:1+zl201-19_p2-54_l48-3_w2-54_h8-9:1/Body7",
-        "mm3": 0.131008
-      },
-      {
-        "a": "Central GND to ESP32 J2-14",
-        "b": "Cable harness - routing study:1+Insulation and joint allowances:1/J2-14 GND joint allowance diameter 3",
-        "mm3": 2.477404
-      },
-      {
-        "a": "Central GND to ESP32 J2-14",
-        "b": "Cable harness - routing study:1+Distribution junction envelopes:1/Central GND junction - space envelope only",
-        "mm3": 3.534292
-      },
-      {
-        "a": "Central 5V to MAX490 VCC",
-        "b": "MAX490 board - CHATGPT:1/TTL pins TXD RXD GND VCC 04",
-        "mm3": 0.148803
-      },
-      {
-        "a": "Central 5V to MAX490 VCC",
-        "b": "Cable harness - routing study:1+5 V power:1/Ferrite departure to central 5V",
-        "mm3": 0.177825
-      },
-      {
-        "a": "Central 5V to MAX490 VCC",
-        "b": "Cable harness - routing study:1+Distribution junction envelopes:1/Central 5V junction - space envelope only",
-        "mm3": 2.299659
-      },
-      {
-        "a": "Central GND to MAX490 GND",
-        "b": "MAX490 board - CHATGPT:1/TTL pins TXD RXD GND VCC 01",
-        "mm3": 0.148803
-      },
-      {
-        "a": "Central GND to MAX490 GND",
-        "b": "Cable harness - routing study:1+Distribution junction envelopes:1/Central GND junction - space envelope only",
-        "mm3": 2.300407
-      },
-      {
-        "a": "Ferrite departure to central 5V",
-        "b": "Cable harness - routing study:1+Distribution junction envelopes:1/Central 5V junction - space envelope only",
-        "mm3": 2.277674
-      },
-      {
-        "a": "Ferrite departure to central GND",
-        "b": "Cable harness - routing study:1+Distribution junction envelopes:1/Central GND junction - space envelope only",
-        "mm3": 2.23104
-      },
-      {
-        "a": "RS232-mod2 R3 to mod1 R3 - 3V3 chain",
+        "a": "R-Z 10k body 3.6 x 1.6 mm placeholder",
         "b": "Cable harness - routing study:1+Resistors:1/R-Z to R3 inferred pad",
+        "mm3": 0.067738
+      },
+      {
+        "a": "R-Z 10k body 3.6 x 1.6 mm placeholder",
+        "b": "Cable harness - routing study:1+Insulation and joint allowances:1/R-Z 10k heat-shrink allowance OD 2.4 x 5.2",
+        "mm3": 7.238229
+      },
+      {
+        "a": "R-F 10k body 3.6 x 1.6 mm placeholder",
+        "b": "Cable harness - routing study:1+Resistors:1/R-F to R1 inferred pad",
+        "mm3": 0.067558
+      },
+      {
+        "a": "R-F 10k body 3.6 x 1.6 mm placeholder",
+        "b": "Cable harness - routing study:1+Resistors:1/R-F to R3 inferred pad",
+        "mm3": 0.067738
+      },
+      {
+        "a": "R-F 10k body 3.6 x 1.6 mm placeholder",
+        "b": "Cable harness - routing study:1+Insulation and joint allowances:1/R-F 10k heat-shrink allowance OD 2.4 x 5.2",
+        "mm3": 7.238229
+      },
+      {
+        "a": "R-Z to R1 inferred pad",
+        "b": "ESP32 holder with RS-232 clamp:1+RS-232 board 1 (reference):1+RS232_TTL:1/Body2",
+        "mm3": 0.003706
+      },
+      {
+        "a": "R-Z to R1 inferred pad",
+        "b": "ESP32 holder with RS-232 clamp:1+RS-232 board 1 (reference):1+RS232_TTL:1/Body24",
+        "mm3": 0.014153
+      },
+      {
+        "a": "R-Z to R1 inferred pad",
+        "b": "Cable harness - routing study:1+Insulation and joint allowances:1/R-Z 10k heat-shrink allowance OD 2.4 x 5.2",
+        "mm3": 0.931619
+      },
+      {
+        "a": "R-Z to R3 inferred pad",
+        "b": "ESP32 holder with RS-232 clamp:1+RS-232 board 1 (reference):1+RS232_TTL:1/Body2",
+        "mm3": 0.003842
+      },
+      {
+        "a": "R-Z to R3 inferred pad",
+        "b": "ESP32 holder with RS-232 clamp:1+RS-232 board 1 (reference):1+RS232_TTL:1/Body26",
+        "mm3": 0.014104
+      },
+      {
+        "a": "R-Z to R3 inferred pad",
+        "b": "Cable harness - routing study:1+Insulation and joint allowances:1/R-Z 10k heat-shrink allowance OD 2.4 x 5.2",
+        "mm3": 0.932521
+      },
+      {
+        "a": "R-Z to R3 inferred pad",
+        "b": "Cable harness - routing study:1+3.3 V and RS232 ground:1/RS232-mod2 R3 to mod1 R3 - 3V3 chain",
+        "mm3": 1.409862
+      },
+      {
+        "a": "R-F to R1 inferred pad",
+        "b": "ESP32 holder with RS-232 clamp:1+RS-232 board 2 (reference):1+RS232_TTL (1):1/Body2",
+        "mm3": 0.003706
+      },
+      {
+        "a": "R-F to R1 inferred pad",
+        "b": "ESP32 holder with RS-232 clamp:1+RS-232 board 2 (reference):1+RS232_TTL (1):1/Body24",
+        "mm3": 0.014153
+      },
+      {
+        "a": "R-F to R1 inferred pad",
+        "b": "Cable harness - routing study:1+Insulation and joint allowances:1/R-F 10k heat-shrink allowance OD 2.4 x 5.2",
+        "mm3": 0.931619
+      },
+      {
+        "a": "R-F to R3 inferred pad",
+        "b": "ESP32 holder with RS-232 clamp:1+RS-232 board 2 (reference):1+RS232_TTL (1):1/Body2",
+        "mm3": 0.003842
+      },
+      {
+        "a": "R-F to R3 inferred pad",
+        "b": "ESP32 holder with RS-232 clamp:1+RS-232 board 2 (reference):1+RS232_TTL (1):1/Body26",
+        "mm3": 0.014104
+      },
+      {
+        "a": "R-F to R3 inferred pad",
+        "b": "Cable harness - routing study:1+Insulation and joint allowances:1/R-F 10k heat-shrink allowance OD 2.4 x 5.2",
+        "mm3": 0.932521
+      },
+      {
+        "a": "R-F to R3 inferred pad",
+        "b": "Cable harness - routing study:1+3.3 V and RS232 ground:1/ESP32 J2-1 3V3 to RS232-mod2 R3",
         "mm3": 1.409165
       },
       {
-        "a": "RS232-mod2 R3 to mod1 R3 - 3V3 chain",
-        "b": "Cable harness - routing study:1+Resistors:1/R-F to R3 inferred pad",
-        "mm3": 1.408634
+        "a": "R-F to R3 inferred pad",
+        "b": "Cable harness - routing study:1+3.3 V and RS232 ground:1/RS232-mod2 R3 to mod1 R3 - 3V3 chain",
+        "mm3": 1.409104
       },
       {
-        "a": "RS232-mod2 R3 to mod1 R3 - 3V3 chain",
-        "b": "Cable harness - routing study:1+Insulation and joint allowances:1/R-Z 10k heat-shrink allowance OD 2.4 x 5.2",
+        "a": "R-Z 10k heat-shrink allowance OD 2.4 x 5.2",
+        "b": "Cable harness - routing study:1+3.3 V and RS232 ground:1/RS232-mod2 R3 to mod1 R3 - 3V3 chain",
+        "mm3": 1.306535
+      },
+      {
+        "a": "R-F 10k heat-shrink allowance OD 2.4 x 5.2",
+        "b": "Cable harness - routing study:1+3.3 V and RS232 ground:1/ESP32 J2-1 3V3 to RS232-mod2 R3",
         "mm3": 1.306537
       },
       {
-        "a": "RS232-mod2 R3 to mod1 R3 - 3V3 chain",
-        "b": "Cable harness - routing study:1+Insulation and joint allowances:1/R-F 10k heat-shrink allowance OD 2.4 x 5.2",
-        "mm3": 1.306536
+        "a": "R-F 10k heat-shrink allowance OD 2.4 x 5.2",
+        "b": "Cable harness - routing study:1+3.3 V and RS232 ground:1/RS232-mod2 R3 to mod1 R3 - 3V3 chain",
+        "mm3": 1.306538
+      },
+      {
+        "a": "ESP32 J2-1 3V3 to RS232-mod2 R3",
+        "b": "ESP32 holder with RS-232 clamp:1+ESP32 board (reference):1+ESP-WROOM-32D-Assembly:1+zl201-19_p2-54_l48-3_w2-54_h8-9:1/Body20",
+        "mm3": 0.024288
+      },
+      {
+        "a": "ESP32 J2-1 3V3 to RS232-mod2 R3",
+        "b": "Cable harness - routing study:1+Resistors:1/R-D to J2-1 3V3",
+        "mm3": 0.838452
+      },
+      {
+        "a": "ESP32 J2-1 3V3 to RS232-mod2 R3",
+        "b": "Cable harness - routing study:1+3.3 V and RS232 ground:1/RS232-mod2 R3 to mod1 R3 - 3V3 chain",
+        "mm3": 1.5946
       },
       {
         "a": "ESP32 J3-7 GND to RS232-mod2 R4",
@@ -283,32 +601,7 @@
       {
         "a": "ESP32 J3-7 GND to RS232-mod2 R4",
         "b": "Cable harness - routing study:1+3.3 V and RS232 ground:1/RS232-mod2 R4 to mod1 R4 - GND chain",
-        "mm3": 1.7646
-      },
-      {
-        "a": "ESP32 J2-1 3V3 to RS232-mod2 R3",
-        "b": "ESP32 holder with RS-232 clamp:1+ESP32 board (reference):1+ESP-WROOM-32D-Assembly:1+zl201-19_p2-54_l48-3_w2-54_h8-9:1/Body20",
-        "mm3": 0.024288
-      },
-      {
-        "a": "ESP32 J2-1 3V3 to RS232-mod2 R3",
-        "b": "Cable harness - routing study:1+Resistors:1/R-F to R3 inferred pad",
-        "mm3": 1.409165
-      },
-      {
-        "a": "ESP32 J2-1 3V3 to RS232-mod2 R3",
-        "b": "Cable harness - routing study:1+Resistors:1/R-D to J2-1 3V3",
-        "mm3": 0.838709
-      },
-      {
-        "a": "ESP32 J2-1 3V3 to RS232-mod2 R3",
-        "b": "Cable harness - routing study:1+Insulation and joint allowances:1/R-F 10k heat-shrink allowance OD 2.4 x 5.2",
-        "mm3": 1.306536
-      },
-      {
-        "a": "ESP32 J2-1 3V3 to RS232-mod2 R3",
-        "b": "Cable harness - routing study:1+3.3 V and RS232 ground:1/RS232-mod2 R3 to mod1 R3 - 3V3 chain",
-        "mm3": 3.341101
+        "mm3": 1.763387
       }
     ],
     "carrier_driver_collisions": [],
@@ -326,187 +619,98 @@
         "message": "Capture Position has no positions for current Components and JointsCompute FailedPosition20"
       }
     ],
-    "last_targeted_check": "Shortened local 3V3 feed checked against all assembly bodies, harness bodies, hood and carrier driver cylinders; only intended same-net terminal/lead contacts."
+    "unchanged_except_rs232_correction": 508,
+    "changed_other_bodies": [],
+    "stage": "Final geometry after both corrections"
   },
-  "reopened_assembly": {
-    "recompute": true,
-    "matching_body_records": 520,
-    "occurrences": 75,
-    "timeline": 389,
-    "maximum_volume_difference_mm3": 2.1032064978498966e-12,
-    "maximum_bound_difference_mm": 1.4210854715202004e-14,
-    "saved_before_export": true,
-    "cloud_complete_before_export": true
+  "preservation_vs_baseline": {
+    "unchanged_bodies": 506,
+    "other_differences": [],
+    "changed_bodies": 14,
+    "description": "Two XT30 wires; eight RS232 supply/pull-up wire sections; two resistor placeholders and their two heat-shrink allowances"
   },
-  "retained_harness": {
-    "bodies": 31,
-    "differences": []
-  },
-  "topology_and_diagrams": {
-    "internal_ground_tree": {
-      "connected": true,
-      "cycles": 0,
-      "nodes": 9,
-      "edges": [
-        [
-          "UBEC output",
-          "GND-J"
+  "rs232_pad_centers": {
+    "row_z_mm": -17.327,
+    "matched_endpoints": [
+      {
+        "route": "ESP32 J2-1 3V3 to RS232-mod2 R3",
+        "board": 2,
+        "endpoint_mm": [
+          45.312,
+          15.05,
+          -17.327
         ],
-        [
-          "GND-J",
-          "ESP32"
+        "pad_center_error_mm": 0.00013431332701323358
+      },
+      {
+        "route": "RS232-mod2 R3 to mod1 R3 - 3V3 chain",
+        "board": 2,
+        "endpoint_mm": [
+          45.312,
+          15.05,
+          -17.327
         ],
-        [
-          "GND-J",
-          "MAX490"
+        "pad_center_error_mm": 0.00013431332701323358
+      },
+      {
+        "route": "RS232-mod2 R3 to mod1 R3 - 3V3 chain",
+        "board": 1,
+        "endpoint_mm": [
+          32.837,
+          15.05,
+          -17.327
         ],
-        [
-          "GND-J",
-          "Becker ground"
+        "pad_center_error_mm": 0.00013431332701323358
+      },
+      {
+        "route": "ESP32 J3-7 GND to RS232-mod2 R4",
+        "board": 2,
+        "endpoint_mm": [
+          47.981,
+          15.05,
+          -17.327
         ],
-        [
-          "GND-J",
-          "Zander ground"
+        "pad_center_error_mm": 0.00010318912997608018
+      },
+      {
+        "route": "RS232-mod2 R4 to mod1 R4 - GND chain",
+        "board": 2,
+        "endpoint_mm": [
+          47.981,
+          15.05,
+          -17.327
         ],
-        [
-          "GND-J",
-          "FLARM ground"
+        "pad_center_error_mm": 0.00010318912997608018
+      },
+      {
+        "route": "RS232-mod2 R4 to mod1 R4 - GND chain",
+        "board": 1,
+        "endpoint_mm": [
+          35.506,
+          15.05,
+          -17.327
         ],
-        [
-          "ESP32",
-          "RS232-mod2"
-        ],
-        [
-          "RS232-mod2",
-          "RS232-mod1"
-        ]
-      ],
-      "modelled_wire_sections": [
-        "Ferrite departure to central GND",
-        "Central GND to ESP32 J2-14",
-        "Central GND to MAX490 GND",
-        "ESP32 J3-7 GND to RS232-mod2 R4",
-        "RS232-mod2 R4 to mod1 R4 - GND chain"
-      ],
-      "reserved_not_routed": [
-        "GND-J to Becker DE9 ground",
-        "GND-J to Zander DE9 ground",
-        "GND-J to FLARM DE9 ground"
-      ],
-      "scope": "Planned internal connections only; external supply/USB ground paths excluded. Not a continuity test."
-    },
-    "diagrams": {
-      "generated_svg_files": 8,
-      "xml_valid": true,
-      "visual_review": "Offline CairoSVG PNG renders inspected. Browser file preview blocked by URL security policy; browser rendering not verified."
-    }
-  },
-  "colors": {
-    "applied": [
-      {
-        "name": "Input B - spatial route only",
-        "net_color": "12V"
-      },
-      {
-        "name": "Input A - spatial route only",
-        "net_color": "GND"
-      },
-      {
-        "name": "UBEC output A to ferrite approach - polarity unassigned",
-        "net_color": "5V"
-      },
-      {
-        "name": "UBEC output B to ferrite approach - polarity unassigned",
-        "net_color": "GND"
-      },
-      {
-        "name": "Central 5V to ESP32 J2-19",
-        "net_color": "5V"
-      },
-      {
-        "name": "Central GND to ESP32 J2-14",
-        "net_color": "GND"
-      },
-      {
-        "name": "Central 5V to MAX490 VCC",
-        "net_color": "5V"
-      },
-      {
-        "name": "Central GND to MAX490 GND",
-        "net_color": "GND"
-      },
-      {
-        "name": "Ferrite departure to central 5V",
-        "net_color": "5V"
-      },
-      {
-        "name": "Ferrite departure to central GND",
-        "net_color": "GND"
-      },
-      {
-        "name": "R-B2 to J3-7 GND",
-        "net_color": "GND"
-      },
-      {
-        "name": "R-Z to R3 inferred pad",
-        "net_color": "3V3"
-      },
-      {
-        "name": "R-F to R3 inferred pad",
-        "net_color": "3V3"
-      },
-      {
-        "name": "R-D to J2-1 3V3",
-        "net_color": "3V3"
-      },
-      {
-        "name": "ESP32 J2-1 3V3 to RS232-mod2 R3",
-        "net_color": "3V3"
-      },
-      {
-        "name": "RS232-mod2 R3 to mod1 R3 - 3V3 chain",
-        "net_color": "3V3"
-      },
-      {
-        "name": "ESP32 J3-7 GND to RS232-mod2 R4",
-        "net_color": "GND"
-      },
-      {
-        "name": "RS232-mod2 R4 to mod1 R4 - GND chain",
-        "net_color": "GND"
-      },
-      {
-        "name": "Central 5V junction - space envelope only",
-        "net_color": "5V"
-      },
-      {
-        "name": "Central GND junction - space envelope only",
-        "net_color": "GND"
+        "pad_center_error_mm": 0.0001031891299786145
       }
     ],
-    "basis": "Input A black / B red; output A orange / B black follow the existing UBEC reference face colors. Physical terminal polarity and XT30 matching remain pending.",
-    "reference_cosmetic_edit": "UBEC positive output stub faces changed from red to orange; geometry unchanged."
+    "marked_ground_x_mm": [
+      35.506,
+      47.981
+    ],
+    "marked_positive_x_mm": [
+      32.837,
+      45.312
+    ]
   },
-  "contact_interpretation": "All recorded new-route intersections are intended same-net terminal, resistor lead, joint allowance or distribution-envelope contacts. No unintended obstacle or different-net wire intersections. Coincident same-net joins are routing space studies, not detailed solder joints.",
-  "limitations": [
-    "5V-J and GND-J are space envelopes, not selected connection hardware or mounts",
-    "Three instrument grounds reserved at GND-J; DE9 fan-out not routed before pin selection",
-    "Physical UBEC/XT30 polarity and RS232 pad mapping not verified",
-    "No ferrite winding count or winding length represented",
-    "Insulated outside diameters, bend radii and termination envelopes are provisional",
-    "Minimum overall hood gap remains 0.25 mm at retained 12V bend; new RS232 ground link gap 0.50 mm",
-    "No slicing, printing, physical continuity, loaded electrical, removal/service-slack, vibration or thermal acceptance",
-    "Browser SVG review blocked by local URL policy; offline renders inspected"
-  ],
+  "native_previews_inspected": true,
+  "documentation_check": {
+    "local_links_checked": 172,
+    "issues": [],
+    "source_ids_unique": true
+  },
   "final_save": {
     "saved": true,
     "modified": false,
-    "complete": true
-  },
-  "documentation_check": {
-    "local_links_checked": 297,
-    "issues": [],
-    "source_ids_unique": true,
-    "native_previews_inspected": true
+    "cloud_complete": true
   }
 }

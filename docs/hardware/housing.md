@@ -370,7 +370,7 @@ Constraints from the wiring:
 
 ### 5.1 Internal routing study
 
-Use the hideable **Cable harness - routing study** component in the [housing assembly](../../cad/housing/housing-body-v1/README.md). It contains separate 12 V, 5 V, local RS-232 supply/return, resistor, junction-envelope and insulation-allowance groups. Geometry checks: S61. Electrical connections: [power and grounding](power.md#supply).
+Use the hideable **Cable harness - routing study** component in the [housing assembly](../../cad/housing/housing-body-v1/README.md). It contains separate 12 V, 5 V, local RS-232 supply/return, resistor, junction-envelope and insulation-allowance groups. Geometry checks: S61/S62. Electrical connections: [power and grounding](power.md#supply).
 
 | Item | Modelled arrangement |
 | --- | --- |
@@ -380,9 +380,9 @@ Use the hideable **Cable harness - routing study** component in the [housing ass
 | Wire colors | GND black; +12 V red; +5 V orange; 3.3 V violet; logic blue |
 | 12 V pair | From the XT30 along the connector wall, through two open saddles, then around the terminal block to the UBEC input; the upper bends avoid the four carrier screw-driver paths |
 | 5 V distribution | Ferrite departure segments feed separate 5V-J and GND-J envelopes in the central channel. Each junction has its own branches to ESP32 and MAX490; floor runs pass below the boards |
-| RS-232 supply chain | ESP32 feeds mod2, then short links join mod2 R3/R4 to mod1 R3/R4. The local 3.3 V and ground feeds share a short parallel corridor above the boards; pad approaches stay clear of the clamp |
+| RS-232 supply chain | ESP32 feeds mod2, then short links join mod2 R3/R4 to mod1 R3/R4. Local feeds approach the marked pad row above the boards; short parallel inter-board links stay clear of the clamp |
 | Junction space | 5V-J: 9 × 2.4 × 2.6 mm (X/Y/Z), centre (37, 2, 5.5). GND-J: 20 × 2.4 × 2.6 mm, centre (55, 2, 5.5). These are insulated-space placeholders, not selected connectors or mounting designs |
-| Endpoint labels | Input/output A and B remain spatial labels. Colors follow the UBEC reference leads; physical UBEC/XT30 polarity and cup matching need the bench check. RO and DI leads stop short of an assigned MAX490 signal pin. RS-232 resistor pad positions follow the inferred reference map |
+| Endpoint labels | XT30 molded marks identify + at the square end (route endpoint Z −17.93 mm) and − at the chamfered end (Z −12.93 mm): red to UBEC reference red input, black to black. Output A/B remain spatial labels; physical UBEC/XT30 polarity needs the bench check. RO and DI leads stop short of an assigned MAX490 signal pin. RS-232 supply and return use the +/− pad row at Z −17.327 mm; resistor signal ends follow the inferred electrical map |
 | Resistors | Five Ø1.6 × 3.6 mm DIN0204-size placeholders: R-Z/R-F at the RS-232 pads; R-B1/R-B2 and R-D beside the ESP32 header |
 | Insulation/joints | Separate hideable Ø2.4 × 5.2 mm resistor heat-shrink allowances; Ø3 mm supply-joint allowances and Ø2.4 mm allowances at the adjacent GPIO16/17 joints. These are space estimates, not selected parts |
 | Tight geometry | Minimum nominal hood clearance remains 0.25 mm at the upper 12 V bend; the new RS-232 ground link has 0.50 mm. The former long ESP32-to-MAX490 5 V branch is removed. Smallest circular centreline bends: 0.80 mm for power, 0.68 mm for signal. These describe the model, not permissible wire bend radii |
@@ -401,13 +401,13 @@ GND-J reserves the three instrument-ground branches. Their DE-9 fan-out remains 
 
 | Segment | Length |
 | --- | ---: |
-| XT30 → UBEC input A / B | 103 / 96 mm |
+| XT30 → UBEC input +12 V / GND | 101 / 99 mm |
 | UBEC output approaches to ferrite boundary A / B | 5 / 8 mm |
 | Ferrite boundary → 5V-J / GND-J | 53 / 25 mm |
 | Junctions → ESP32 5V / GND | 50 / 51 mm |
 | Junctions → MAX490 VCC / GND | 59 / 36 mm |
-| ESP32 → RS-232-mod2 3V3 / GND | 48 / 36 mm |
-| RS-232-mod2 → mod1 3V3 / GND | 20 / 27 mm |
+| ESP32 → RS-232-mod2 3V3 / GND | 36 / 35 mm |
+| RS-232-mod2 → mod1 3V3 / GND | 21 / 28 mm |
 
 These are routing lengths, **not cutting lengths**. Account separately for termination/stripping allowance, service slack and the actual ferrite winding length. The [route data](../../cad/housing/housing-body-v1/routing-study.json) contains the individual wire-section measurements and provisional endpoints; use [open items](../project/open-items.md#housing) for physical acceptance.
 

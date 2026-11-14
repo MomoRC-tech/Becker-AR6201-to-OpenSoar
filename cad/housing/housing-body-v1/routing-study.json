@@ -10,9 +10,9 @@
     "Ferrite winding length"
   ],
   "endpoint_limits": [
-    "Physical UBEC/XT30 polarity and cup matching pending; colors follow the UBEC CAD reference",
+    "XT30 CAD molded +/− markings matched to UBEC reference red/black input leads; physical connector and UBEC polarity still require bench verification",
     "MAX490 RO/DI pin assignment pending",
-    "RS-232 pad mapping inferred",
+    "RS232 CAD +/− pad row verified; signal-pad functions follow the S26/S27 inferred plan, pending physical continuity",
     "No ferrite winding count modelled",
     "DE-9 pin assignments and ground fan-out not modelled; three instrument branches reserved at GND-J"
   ],
@@ -235,17 +235,17 @@
         [
           28.042,
           15.05,
-          -3.557
+          -17.327
         ],
         [
           28.042,
           16.2,
-          -3.557
+          -17.327
         ],
         [
           28.64,
           17,
-          -3.557
+          -17.327
         ]
       ],
       "group": "Resistors",
@@ -259,17 +259,17 @@
         [
           32.837,
           15.05,
-          -3.557
+          -17.327
         ],
         [
           32.837,
           16.2,
-          -3.557
+          -17.327
         ],
         [
           32.24,
           17,
-          -3.557
+          -17.327
         ]
       ],
       "group": "Resistors",
@@ -283,17 +283,17 @@
         [
           40.517,
           15.05,
-          -3.557
+          -17.327
         ],
         [
           40.517,
           16.2,
-          -3.557
+          -17.327
         ],
         [
           41.115,
           17,
-          -3.557
+          -17.327
         ]
       ],
       "group": "Resistors",
@@ -307,17 +307,17 @@
         [
           45.312000000000005,
           15.05,
-          -3.557
+          -17.327
         ],
         [
           45.312000000000005,
           16.2,
-          -3.557
+          -17.327
         ],
         [
           44.715,
           17,
-          -3.557
+          -17.327
         ]
       ],
       "group": "Resistors",
@@ -365,8 +365,8 @@
       "smallest_arc_radius_mm": 0.68
     },
     {
-      "name": "Input A - spatial route only",
-      "group": "12 V input - polarity unassigned",
+      "name": "XT30 positive to UBEC input positive",
+      "group": "12 V input",
       "points_mm": [
         [
           14,
@@ -416,26 +416,27 @@
         [
           25.5,
           17.3,
-          23.5
+          26.5
         ],
         [
           35.4,
           17.3,
-          23.5
+          26.5
         ],
         [
           35.4,
           10.2,
-          23.5
+          26.5
         ]
       ],
       "od_mm": 1.5,
-      "centreline_mm": 103.13,
-      "smallest_arc_radius_mm": 1.0
+      "centreline_mm": 100.68,
+      "smallest_arc_radius_mm": 1.0,
+      "net": "12V"
     },
     {
-      "name": "Input B - spatial route only",
-      "group": "12 V input - polarity unassigned",
+      "name": "XT30 negative to UBEC input ground",
+      "group": "12 V input",
       "points_mm": [
         [
           14,
@@ -475,22 +476,23 @@
         [
           25.5,
           19,
-          26.5
+          23.5
         ],
         [
           35.4,
           19,
-          26.5
+          23.5
         ],
         [
           35.4,
           10.2,
-          26.5
+          23.5
         ]
       ],
       "od_mm": 1.5,
-      "centreline_mm": 95.94,
-      "smallest_arc_radius_mm": 1.4
+      "centreline_mm": 98.94,
+      "smallest_arc_radius_mm": 1.4,
+      "net": "GND"
     },
     {
       "name": "Ferrite departure to central 5V",
@@ -728,28 +730,28 @@
         [
           71,
           17.3,
-          -13
+          -20
         ],
         [
           45.312,
           17.3,
-          -13
+          -20
         ],
         [
           45.312,
           17.3,
-          -3.557
+          -17.327
         ],
         [
           45.312,
           15.05,
-          -3.557
+          -17.327
         ]
       ],
       "group": "3.3 V and RS232 ground",
       "od_mm": 1.0,
       "net": "3V3",
-      "centreline_mm": 47.88,
+      "centreline_mm": 35.75,
       "smallest_arc_radius_mm": 0.9
     },
     {
@@ -758,38 +760,38 @@
         [
           45.312,
           15.05,
-          -3.557
+          -17.327
         ],
         [
           45.312,
           17.3,
-          -3.557
+          -17.327
         ],
         [
           45.312,
           17.3,
-          -6
+          -14.5
         ],
         [
           32.837,
           17.3,
-          -6
+          -14.5
         ],
         [
           32.837,
           17.3,
-          -3.557
+          -17.327
         ],
         [
           32.837,
           15.05,
-          -3.557
+          -17.327
         ]
       ],
       "group": "3.3 V and RS232 ground",
       "od_mm": 1.0,
       "net": "3V3",
-      "centreline_mm": 20.25,
+      "centreline_mm": 20.89,
       "smallest_arc_radius_mm": 0.9
     },
     {
@@ -808,28 +810,28 @@
         [
           61,
           17.3,
-          -11
+          -12
         ],
         [
           47.981,
           17.3,
-          -11
+          -12
         ],
         [
           47.981,
           17.3,
-          -3.557
+          -17.327
         ],
         [
           47.981,
           15.05,
-          -3.557
+          -17.327
         ]
       ],
       "group": "3.3 V and RS232 ground",
       "od_mm": 1.0,
       "net": "GND",
-      "centreline_mm": 35.51,
+      "centreline_mm": 34.75,
       "smallest_arc_radius_mm": 0.9
     },
     {
@@ -838,38 +840,38 @@
         [
           47.981,
           15.05,
-          -3.557
+          -17.327
         ],
         [
           47.981,
           19,
-          -3.557
+          -17.327
         ],
         [
           47.981,
           19,
-          -8.5
+          -12
         ],
         [
           35.506,
           19,
-          -8.5
+          -12
         ],
         [
           35.506,
           19,
-          -3.557
+          -17.327
         ],
         [
           35.506,
           15.05,
-          -3.557
+          -17.327
         ]
       ],
       "group": "3.3 V and RS232 ground",
       "od_mm": 1.0,
       "net": "GND",
-      "centreline_mm": 27.21,
+      "centreline_mm": 27.84,
       "smallest_arc_radius_mm": 1.58
     }
   ],
@@ -880,12 +882,12 @@
         [
           28.64,
           17,
-          -3.557
+          -17.327
         ],
         [
           32.24,
           17,
-          -3.557
+          -17.327
         ]
       ],
       "diameter_mm": 1.6
@@ -896,12 +898,12 @@
         [
           41.115,
           17,
-          -3.557
+          -17.327
         ],
         [
           44.715,
           17,
-          -3.557
+          -17.327
         ]
       ],
       "diameter_mm": 1.6
@@ -1019,7 +1021,53 @@
     "3V3": "violet",
     "logic": "blue"
   },
-  "color_basis": "UBEC reference face colors: input A black, B red; output A red (displayed orange for 5V), B black. This is CAD evidence only; physical polarity and XT30 terminal matching are not confirmed.",
+  "color_basis": "XT30 positive at square end (Z -17.93 mm) is red and joins UBEC reference red input (Z 26.5 mm). XT30 negative at chamfered end (Z -12.93 mm) is black and joins UBEC reference black input (Z 23.5 mm). Both connector halves show matching molded +/− marks. Output A orange / B black follow UBEC reference colors. CAD evidence only; physical polarity not tested.",
   "diameter_note": "Main 12V/5V supplies and returns: provisional 1.5 mm insulated OD. Local RS232 3V3/GND chain and logic/resistor connections: provisional 1.0 mm. Not selected conductor gauges.",
-  "junction_hardware": "Insulated space envelopes only. Actual junction, mounting and strain relief not selected."
+  "junction_hardware": "Insulated space envelopes only. Actual junction, mounting and strain relief not selected.",
+  "xt30_polarity": {
+    "source_id": "S62",
+    "basis": "Molded + and − marks on both embedded connector halves, visually inspected in Fusion",
+    "positive": {
+      "color": "red",
+      "xt30_route_endpoint_mm": [
+        14,
+        7.5,
+        -17.93
+      ],
+      "ubec_route_endpoint_mm": [
+        35.4,
+        10.2,
+        26.5
+      ]
+    },
+    "negative": {
+      "color": "black",
+      "xt30_route_endpoint_mm": [
+        14,
+        7.5,
+        -12.93
+      ],
+      "ubec_route_endpoint_mm": [
+        35.4,
+        10.2,
+        23.5
+      ]
+    }
+  },
+  "rs232_pad_mapping": {
+    "source_id": "S62",
+    "row_z_mm": -17.327,
+    "surface_y_mm": 15.05,
+    "module_1": {
+      "R1_x_mm": 28.042,
+      "R3_positive_x_mm": 32.837,
+      "R4_ground_x_mm": 35.506
+    },
+    "module_2": {
+      "R1_x_mm": 40.517,
+      "R3_positive_x_mm": 45.312,
+      "R4_ground_x_mm": 47.981
+    },
+    "evidence": "CAD +/− marks and circular pad centers; supply is 3.3 V from ESP32. R1 follows the inferred S26/S27 signal map; CAD signal arrows differ from the supplied photo and are not electrical evidence."
+  }
 }
