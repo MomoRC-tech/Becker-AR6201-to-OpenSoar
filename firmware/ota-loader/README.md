@@ -13,7 +13,7 @@ Bench loader for the Wi-Fi bridge ESP32: flash it once over USB, then upload all
 
 | Variant | Compiler flag | Wi-Fi | Passwords | Where |
 | --- | --- | --- | --- | --- |
-| Public | `-DHOTSPOT_ONLY` | Hotspot only | Hotspot `BridgeTom-setup`, OTA `BridgeTom-ota` | [`bin/`](bin/), committed |
+| Public | `-DHOTSPOT_ONLY` | Hotspot only | Public defaults, see [`bin/manifest.json`](bin/manifest.json) | [`bin/`](bin/README.md), committed |
 | Private | — | Network, then hotspot | `credentials.h` | `build/private/`, local only |
 | Fallback test | `-DFALLBACK_TEST` | Joins a network that does not exist, so the hotspot fallback runs | `credentials.h` | `build/fallback-test/`, local only |
 

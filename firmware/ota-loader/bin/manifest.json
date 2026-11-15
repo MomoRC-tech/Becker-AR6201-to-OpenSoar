@@ -1,15 +1,35 @@
 {
-  "fqbn": "esp32:esp32:esp32:PartitionScheme=min_spiffs",
-  "esp32_core": "3.3.12",
-  "arduino_cli": "1.6.0",
+  "variant": "hotspot only (-DHOTSPOT_ONLY), bench use only: the passwords are public",
+  "tested_on_board": false,
+  "build": {
+    "board": "ESP32 Dev Module",
+    "fqbn": "esp32:esp32:esp32:PartitionScheme=min_spiffs",
+    "partition_scheme": "Minimal SPIFFS (1.9MB APP with OTA/190KB SPIFFS)",
+    "flash_size": "4MB",
+    "esp32_core": "3.3.12",
+    "arduino_cli": "1.6.0"
+  },
+  "wifi": {
+    "hotspot_ssid": "WiFi-BridgeTom",
+    "hotspot_password": "BridgeTom-setup",
+    "address": "192.168.4.1"
+  },
+  "ota": {
+    "hostname": "wifi-bridgetom",
+    "password": "BridgeTom-ota",
+    "port": 3232
+  },
+  "serial_log_baud": 115200,
   "files": {
     "ota-loader-hotspot-only.bin": {
+      "flash": "OTA upload",
       "bytes": 952560,
-      "sha256": "9ddd873e1ea50c2a8019d409e3070647801e56ccd0151342f02210fa90213460"
+      "sha256": "d20cf787ef5c9e78a68f6a0a2093f1dc0b4508b80508e779474dbf7086c51ff1"
     },
     "ota-loader-hotspot-only.merged.bin": {
+      "flash": "0x0 (USB)",
       "bytes": 4194304,
-      "sha256": "e754e71d04c9f1277cbc69ad28598b6d4e17bd3c5f35310c2686cf836312bec7"
+      "sha256": "739d23e66c21a7bde7f4c9c59b5134cdd741128bfd9edefe34820dec48d26e9b"
     }
   }
 }

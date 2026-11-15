@@ -83,10 +83,30 @@ def build(name: str) -> bool:
             "ota-loader-hotspot-only.bin": out_dir / "ota-loader.ino.bin",
             "ota-loader-hotspot-only.merged.bin": out_dir / "ota-loader.ino.merged.bin",
         }
-        manifest = {"fqbn": FQBN, "esp32_core": core_version(), "arduino_cli": cli_version(), "files": {}}
+        manifest = {
+            "variant": "hotspot only (-DHOTSPOT_ONLY), bench use only: the passwords are public",
+            "tested_on_board": False,
+            "build": {
+                "board": "ESP32 Dev Module",
+                "fqbn": FQBN,
+                "partition_scheme": "Minimal SPIFFS (1.9MB APP with OTA/190KB SPIFFS)",
+                "flash_size": "4MB",
+                "esp32_core": core_version(),
+                "arduino_cli": cli_version(),
+            },
+            "wifi": {"hotspot_ssid": "WiFi-BridgeTom", "hotspot_password": "BridgeTom-setup", "address": "192.168.4.1"},
+            "ota": {"hostname": "wifi-bridgetom", "password": "BridgeTom-ota", "port": 3232},
+            "serial_log_baud": 115200,
+            "files": {},
+        }
+        offsets = {"ota-loader-hotspot-only.merged.bin": "0x0 (USB)", "ota-loader-hotspot-only.bin": "OTA upload"}
         for target, source in files.items():
             shutil.copyfile(source, PUBLIC_BIN / target)
-            manifest["files"][target] = {"bytes": source.stat().st_size, "sha256": sha256(source)}
+            manifest["files"][target] = {
+                "flash": offsets[target],
+                "bytes": source.stat().st_size,
+                "sha256": sha256(source),
+            }
         (PUBLIC_BIN / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
         print(f"[{name}] copied to {PUBLIC_BIN.relative_to(ROOT).as_posix()}/", flush=True)
     return True
