@@ -19,7 +19,7 @@ Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md)
 
 ## 1. 🎯 Requirements
 
-- **Holds:** ESP32 board, 2 × RS-232 modules, MAX490 board, UBEC (with jumper, leads, ferrite ring). The five resistors sit on the module pads and ESP32 pins, so there is no extra board.
+- **Holds:** ESP32 board, 2 × RS-232 modules, MAX490 board, UBEC (with jumper, leads, ferrite ring). The three Becker interface resistors sit at the ESP32 header and the adjacent module supply pad, so there is no extra board.
 - **On the housing:** XT30 for power, DE-9 for the three instruments ([section 4](#connectors)).
 - **F1:** in the 12 V harness at its supply end, not in the housing ([power](power.md#protection)).
 - **Wiring:** connector mating forces must not load solder joints.
@@ -207,7 +207,7 @@ Sizes from owner measurements, seller listings or datasheets; see the source col
 | UBEC ferrite ring | 1 | Bare core: Ø14.2 outside × 5.4 axial, 2.9 radial wall (Ø8.4 bore calculated). Including wire turns: Ø17.5 outside × 9.5 axial | Owner measurements; S54 | Around both UBEC output leads; upright in the [integral cradle](#ferrite-cradle). Allow separately for the entering and leaving leads. |
 | XT30 male, panel | 1 | 10.55 × 5.25 body; 10.8 × 5.66 over the raised markings at the solder-cup end (owner measurement) | S51 | Press-fit pocket ([section 4](#connectors)) |
 | DE-9 male, panel | 1 | Flange 31 × 12.6 × 1.0, holes Ø3.1 at 25.0 spacing; D shell 17.85 × 9.2 outer; rear body behind the flange 19.3 × 10.9 × 5.0 deep, 8.0 including the solder cups (owner measurement) | S43 | Flange and rear side as the female plug model |
-| Resistors (divider, pull-ups) | 5 | DIN0204 axial, body about Ø1.6 × 3.6 | S45 | R-B1, R-B2, R-Z, R-F, R-D |
+| Resistors (divider, pull-up) | 3 | DIN0204 axial, body about Ø1.6 × 3.6 | S45 | R-B1, R-B2, R-D |
 
 ### 3.1 ESP32 CAD reference
 
@@ -386,7 +386,6 @@ Use **Cable harness - Wire Generator** in the [v15 enclosure assembly](../../cad
 - **Guide entry:** feed loose wires individually through the staggered openings before terminating them. Both ferrite departures pass through the transverse guide. See the [fit checks](../project/open-items.md#housing).
 - **No floor joints between boards:** junctions and splices are made on the bench and laid in.
 - **Ferrite (selected):** the ring is moved along the UBEC output lead so the approach leads stay short and above the floor ([ferrite cradle](#ferrite-cradle)); the modelled floor loop between UBEC and ring is superseded.
-- **Pull-ups R-Z and R-F (selected):** directly on the module pads R1 → R3, leads bent over the R2 joint, soldered on the bench before the module slides into the clamp. The on-pad layout removes the need for the FLARM pull-up bridge wrap.
 - **Local taps (selected):** RS-232 module ground from J2-14, and R-D takes 3.3 V from the mod2 L2 pad ([supply path](power.md#supply)).
 - **Wire (selected):** 26 AWG stranded PTFE for signals and the local 3.3 V/ground chain, inside the Ø1.0 mm envelope; 22 AWG stranded PTFE for the power branches and the instrument-ground wire, inside the Ø1.5 mm envelope; the UBEC's factory input and output leads where they reach ([parts](modules.md#parts-list)).
 - **5V-J and GND-J (selected):** inline solder splices with heat-shrink, made on the bench as part of the power harness and laid into the floor bus at the far end of the channel, near the ferrite.
@@ -417,8 +416,8 @@ Use **Cable harness - Wire Generator** in the [v15 enclosure assembly](../../cad
 | Centre-axis signal bus | DE-9 pins 1 and 2 to the RS-232 L3 pads. RO and DI cross at the MAX490 header station. Check the MAX490 label orientation at the [bench](wiring.md#becker) |
 | Connector-wall lane | DE-9 4/5 to MAX490 A/B and 8/9 to Y/Z. The CAD shows each conductor envelope. Keep the pairs twisted up to the terminations |
 | J2-side lane | Module R2 outputs to J2-7 (GPIO32) and J2-10 (GPIO26). Route the GPIO32 wire around the J2-14 ground joint |
-| Local RS-232 supply and ground | 3.3 V from J2-1 to mod2 R3 then mod1 R3. Ground from J2-14 to mod2 R4 then mod1 R4. Assemble the mod2 R3 feed, link and R-F lead on the bench |
-| Pin-top resistor connections | R-Z/R-F directly on module pads R1 → R3. R-B1 at the RO splice, R-B2 across J3-12 and J3-7, and R-D from J3-11 to mod2 L2 |
+| Local RS-232 supply and ground | 3.3 V from J2-1 to mod2 R3 then mod1 R3. Ground from J2-14 to mod2 R4 then mod1 R4. Assemble the mod2 R3 feed and link on the bench |
+| Pin-top resistor connections | R-B1 at the RO splice, R-B2 across J3-12 and J3-7, and R-D from J3-11 to mod2 L2 |
 
 Junction hardware and attachment are tracked in the [housing open items](../project/open-items.md#housing).
 
@@ -443,10 +442,12 @@ The centre-floor guide has three rib pairs. Two pairs have staggered fingers for
 
 ### 5.3 Harness cutting table
 
-Use the [current route data](../../cad/housing/housing-body-v1/routing-study.json) and the [build order](../research/reviews/2026-11-14-wire-routing.md#build-order). Lengths are in millimetres. A plus sign separates routed segments or resistor leads. The UBEC output estimates include the two schematic ferrite passes. Measure the factory leads with their actual turns in place.
+The released v15 CAD still depicts R-Z and R-F. Omit both when building the harness from this table.
+
+Use the [v15 route data](../../cad/housing/housing-body-v1/routing-study.json). Lengths are in millimetres. A plus sign separates routed segments or resistor leads. The UBEC output estimates include the two schematic ferrite passes. Measure the factory leads with their actual turns in place.
 
 - **Cut length = fitted route length + both end allowances + service slack.** Measure the end allowance against each cup, pad or terminal. Count the stripped portion once. Fit enough slack to lift the carrier or the RS-232 modules where needed.
-- Twist and dress the Becker pairs before measuring each conductor. Count the ferrite turns before rewinding the factory output leads. Form the DE-9 tinned bridge and the on-pad axial leads against the real contacts.
+- Twist and dress the Becker pairs before measuring each conductor. Count the ferrite turns before rewinding the factory output leads. Form the DE-9 tinned bridge against the real contacts.
 - Record the measurements from [housing items 14 and 21–23](../project/open-items.md#housing) before cutting. For R-B1, R-B2 and R-D, fit the insulated leads and axial overlaps individually.
 
 | Build step | From → to | Colour | Wire | Lane | CAD length | Strip / end allowance | Service slack | Cut |
@@ -457,8 +458,6 @@ Use the [current route data](../../cad/housing/housing-body-v1/routing-study.jso
 | Bench | UBEC output GND → ferrite → GND-J | Black | UBEC factory | Ferrite / floor | ≈107.6 | Measure at ends | Fit | Retain factory lead |
 | Bench | DE-9 cups 3–6–7 bridge | Tinned | Tinned jumper | Connector cups | — | — | — | Form at cups |
 | Bench | DE-9 ground bridge → GND-J | Black | 22 AWG PTFE | Wall / floor | 62.0 | Measure | Fit | Calculate |
-| Bench | R-Z at mod1 R1 → R3 | Pink sleeve | DIN0204 axial | Pin top | 2.4 + 2.4 | — | — | Form at pads |
-| Bench | R-F at mod2 R1 → R3 | Pink sleeve | DIN0204 axial | Pin top | 2.4 + 2.4 | — | — | Form at pads |
 | Bench | J2-1 → mod2 R3 | Pink | 26 AWG PTFE | J2 | 34.9 | Measure | Fit | Calculate |
 | Bench | J2-14 → mod2 R4 | Black | 26 AWG PTFE | J2 | 26.8 | Measure | Fit | Calculate |
 | Bench | mod2 R3 → mod1 R3 | Pink | 26 AWG PTFE | Pin top | 16.2 | Measure | Fit | Calculate |

@@ -83,7 +83,7 @@ Start with the loose ends of the existing Zander harness ([installed wiring](../
 
 Connect the Zander signal-ground conductor to GND-J. The module receives 3.3 V and ground through mod2; see the [supply chain](power.md#supply). Leave L1 without an extra ground wire.
 
-Leave L4 and GPIO33 unconnected. Solder the 10 kΩ pull-up R-Z directly on the module, from pad R1 to pad R3 (the module's 3.3 V supply). It holds the unused converter driver input at a defined level.
+Leave R1 (unused driver input), L4 and GPIO33 unconnected.
 
 ---
 
@@ -101,7 +101,7 @@ Use a free data port on the Classic FLARM ([installation manual v221 pp.6/7](htt
 
 Connect the FLARM signal-ground conductor (pins 7/8) to GND-J. Mod2 receives 3.3 V and ground from the ESP32 and passes both on to mod1; see the [supply chain](power.md#supply). Leave L1 without an extra ground wire.
 
-Leave L4, GPIO27 and the FLARM RX conductor unconnected. Solder the 10 kΩ pull-up R-F from pad R1 to pad R3 on the module, as for the Zander.
+Leave R1 (unused driver input), L4, GPIO27 and the FLARM RX conductor unconnected.
 
 > [!WARNING]
 > FLARM uses IGC pin numbering, which runs opposite to common RJ45 numbering. Pins 1–3 carry supply voltage: never connect them to the converter.
@@ -176,7 +176,7 @@ Before connecting any device, work through this list in order:
 
 - [ ] **1.** Set the UBEC jumper to 5 V; measure the output with no load and with the ESP32 connected. Check continuity between the UBEC's input and output ground.
 - [ ] **2.** Match the ESP32 board's headers and module marking to the [pinout](modules.md#esp32-pinout).
-- [ ] **3.** With both RS-232 boards unpowered, check continuity from L2 to R3 and from L1 to R4 on each board. Verify the rest of the [pad map](modules.md#rs232-module) before soldering R-Z and R-F.
+- [ ] **3.** With both RS-232 boards unpowered, check continuity from L2 to R3 and from L1 to R4 on each board. Verify the rest of the [pad map](modules.md#rs232-module) before soldering the harness.
 - [ ] **4.** On the MAX490 board, identify RO and DI on the header and check the 120 Ω termination.
 - [ ] **5.** With the MAX490 powered and the radio line idle, measure GPIO16: about 3.0 V (high). Then hold B above A with a 1.5 V cell (+ to B, − to A) and check for a low below 0.5 V.
 - [ ] **6.** Measure the bridge's current and switch-on inrush at 12 V, and update the [current assumptions](power.md#currents).

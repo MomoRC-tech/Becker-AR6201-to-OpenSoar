@@ -82,7 +82,7 @@ Datasheet values carry their source ID; everything else is an estimate until the
 | Bridge +12 V feed (F1, harness, XT30, UBEC input) | About 22 AWG (owner) | ~0.15 A | Switch-on inrush, not measured | Short circuit, limited by F1 | Estimate |
 | UBEC 5 V → ESP32 | Board header | ~250 mA | ~500 mA (Wi-Fi) | — | Typical datasheet values |
 | UBEC 5 V → MAX490 board | Board header | ~30 mA | — | — | Typical datasheet value |
-| ESP32 3.3 V → RS-232 modules, pull-ups | Board header | A few mA | — | — | Estimate |
+| ESP32 3.3 V → RS-232 modules and Becker DI pull-up | Board header | A few mA | — | — | Estimate |
 | Bridge ground wire | Not yet selected | ~0.15 A + radio share | ~0.35 A while the radio transmits | ~3.2 A if the radio's P1 ground breaks | Estimate, S10 |
 | Instrument-ground wire (DE-9 bridge → GND-J) | 22 AWG PTFE | ~14 mA radio share + small Zander and FLARM shares | ~0.2 A while the radio transmits | ~3.2 A if the radio's P1 ground breaks | Estimate, S10 |
 | J1-21 | Becker harness (gauge open) | ~14 mA radio share | ~0.2 A while the radio transmits | Up to 3 A if the radio's P1 ground breaks | Estimate, S10 |

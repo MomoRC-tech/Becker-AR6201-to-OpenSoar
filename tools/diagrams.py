@@ -121,12 +121,10 @@ s.line([(1100,50),(1140,50),(1140,280),(960,280)],"v33");s.tag(1106,44,"L2","v33
 # The physical chain terminates at mod2 R3, then continues to mod1 R3.
 s.line([(960,35),(935,35),(935,165),(960,165)],"v33");s.dot(935,35,"v33")
 s.tag(943,116,"R3 chain","v33",anchor="start",size=11)
-for name,rname,top in [("RS-232-mod2","R-F",20),("RS-232-mod1","R-Z",150)]:
-    r3,r1=top+15,top+45
+for name,top in [("RS-232-mod2",20),("RS-232-mod1",150)]:
+    r3=top+15
     s.box(960,top,140,60,name)
-    s.text(966,r3+4,"R3",size=11,color=SUB,anchor="start");s.text(966,r1+4,"R1",size=11,color=SUB,anchor="start")
-    s.line([(935,r3),(905,r3),(905,r1),(960,r1)],"v33")
-    s.resistor(905,(r3+r1)/2,"v33",vertical=True);s.tag(1030,r1+25,f"{rname} 10 kΩ","v33",bold=False,size=11)
+    s.text(966,r3+4,"R3",size=11,color=SUB,anchor="start")
 s.resistor(1050,280,"v33");s.tag(1050,269,"R-D 10 kΩ","v33")
 s.dot(960,280,"v33");s.tag(950,284,"DI / GPIO17","v33",anchor="end",size=11)
 s.legend(340,["v12","v5","v33"],"RS-232 boards: 3.3 V, electrically parallel. GND-J is separate from 5V-J; see the ground tree.")
@@ -157,7 +155,7 @@ s.save("ground-distribution.svg")
 # ------------------------------------------------------------- signal overview
 s = Svg(1020, 380, "Bridge signal overview",
         "Zander ZS1 to RS-232-mod1 to ESP32 UART0 (receive only). Classic FLARM to RS-232-mod2 to ESP32 UART1 (receive only). "
-        "Becker AR6201 to and from the MAX490 RS-422 board and ESP32 UART2 in both directions. Pull-ups R-Z and R-F from pad R1 to 3V3 on the RS-232 modules; RO through R-B1 to GPIO16 with R-B2 to ground; R-D from DI to 3V3. The ESP32 talks to OpenSoar over Wi-Fi.")
+        "Becker AR6201 to and from the MAX490 RS-422 board and ESP32 UART2 in both directions. The RS-232 transmitter inputs are unconnected. RO through R-B1 to GPIO16 with R-B2 to ground; R-D from DI to 3V3. The ESP32 talks to OpenSoar over Wi-Fi.")
 s.box(20, 50, 150, 56, "Zander ZS1", ["RS-232"])
 s.box(20, 145, 150, 56, "Classic FLARM", ["RS-232"])
 s.box(20, 240, 150, 66, "Becker AR6201", ["RS-422, J1"])
@@ -170,12 +168,6 @@ for y, a, b in ((78, "TX → L3", "R2 → GPIO32 · UART0"), (173, "pin 5 TX →
     s.line([(170, y), (300, y)], "data"); s.arrow(235, y, "right", "data")
     s.line([(470, y), (660, y)], "data"); s.arrow(565, y, "right", "data")
     s.tag(235, y - 8, a, "data", bold=False); s.tag(565, y - 8, b, "data", bold=False)
-for y, rname in ((78, "R-Z"), (173, "R-F")):
-    # Pull-up from pad R1 to 3V3, soldered on the module
-    s.line([(470, y + 17), (535, y + 17)], "v33"); s.resistor(503, y + 17, "v33")
-    s.tag(474, y + 13, "R1", "v33", anchor="start", bold=False, size=10)
-    s.tag(540, y + 21, "3V3", "v33", anchor="start", size=11)
-    s.tag(503, y + 34, rname, "v33", bold=False, size=11)
 s.line([(170, 262), (300, 262)], "data"); s.arrow(235, 262, "right", "data")
 s.line([(300, 286), (170, 286)], "data"); s.arrow(235, 286, "left", "data")
 # DI with pull-up R-D to 3V3
@@ -195,7 +187,7 @@ s.legend(345, ["data", "wifi", ("v33", "3.3 V")], "Zander and FLARM: receive onl
 s.save("wiring-overview.svg")
 
 # -------------------------------------------------------------- RS-232 links
-def rs232_device(name,dev,tx_pin,gpio,pull,source,fname):
+def rs232_device(name,dev,tx_pin,gpio,source,fname):
     s=Svg(930,365,f"{dev} through {name}",f"Instrument TX to L3, R2 to {gpio}; instrument ground to GND-J through the DE-9 ground bridge. Module R3/R4 supplied through {source}. L1 has no extra ground wire.")
     s.box(20,40,170,130,dev,["existing harness / DE-9"])
     s.box(330,40,240,130,name,["RS-232 / 3.3 V TTL"])
@@ -206,13 +198,11 @@ def rs232_device(name,dev,tx_pin,gpio,pull,source,fname):
     s.line([(190,140),(250,140),(250,242),(330,242)],"sgnd");s.tag(245,132,"signal GND","sgnd",anchor="end",size=11)
     s.box(720,210,190,80,source,["3V3 / R3","GND / R4"])
     s.line([(720,235),(675,235),(675,115),(570,115)],"v33");s.tag(580,108,"R3","v33",anchor="start",size=11)
-    s.line([(570,85),(625,85),(625,115)],"v33");s.resistor(625,100,"v33",vertical=True);s.dot(625,115,"v33")
-    s.tag(620,145,pull,"v33",size=11)
     s.line([(720,270),(650,270),(650,160),(570,160)],"gnd");s.tag(580,155,"R4","gnd",anchor="start",size=11)
     s.legend(320,["data","sgnd","gnd",("v33","3.3 V")],"Receive only. Supply/return chain: ESP32 → mod2 → mod1; boards remain electrically parallel.")
     s.save(fname)
-rs232_device("RS-232-mod1","Zander ZS1","TX","GPIO32","R-Z 10 kΩ","RS-232-mod2","wiring-zander.svg")
-rs232_device("RS-232-mod2","Classic FLARM","pin 5 TX","GPIO26","R-F 10 kΩ","ESP32 J2-1 / J2-14","wiring-flarm.svg")
+rs232_device("RS-232-mod1","Zander ZS1","TX","GPIO32","RS-232-mod2","wiring-zander.svg")
+rs232_device("RS-232-mod2","Classic FLARM","pin 5 TX","GPIO26","ESP32 J2-1 / J2-14","wiring-flarm.svg")
 
 # --------------------------------------------------------------------- Becker
 s = Svg(980, 300, "Becker to RS-422 board to ESP32",
