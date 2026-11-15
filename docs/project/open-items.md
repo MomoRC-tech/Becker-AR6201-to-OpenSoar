@@ -36,7 +36,7 @@ Start with the delivered boards and power supply, with all instruments disconnec
 | 12 | Supply-cable protection | Owner confirmation of cable length, routing and wire specification; where F1 sits at the supply end ([protection](../hardware/power.md#protection)) | Owner supplies harness details; agree cable protection before aircraft connection |
 | 13 | F1 holder | Inline holder in the 12 V harness at its supply end is selected; holder part and fuse format ([protection](../hardware/power.md#protection)) | Owner selection with item 6 |
 | 14 | Combined DE-9 instrument connection | Exact mating parts, wire-gauge compatibility, screw threads, backshell, strain relief and housing mounting. Identify the loose conductors and verify shield termination against the [selected pinout](../hardware/wiring.md#de9-pinout) and [Becker wiring](../hardware/wiring.md#becker). | Owner selects parts and mounting details. Check fit and continuity before connection. |
-| 15 | OTA loader | Compile and flash the [loader](../../firmware/ota-loader/README.md); it has only been syntax-checked against stub headers | [Bring-up](../hardware/wiring.md#bring-up) step 3 passes (milestone [M3](roadmap.md#milestones)) |
+| 15 | OTA loader | Hotspot test: with the bench network off, restart the [loader](../../firmware/ota-loader/README.md), join `WiFi-BridgeTom` and do one OTA upload. USB flashing and the network OTA upload passed (S97) | [Bring-up](../hardware/wiring.md#bring-up) step 3 passes (milestone [M3](roadmap.md#milestones)) |
 
 ---
 

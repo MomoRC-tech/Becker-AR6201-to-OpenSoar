@@ -20,12 +20,17 @@ Bench loader for the Wi-Fi bridge ESP32: flash it once over USB, then upload all
 UBEC and all instruments unplugged ([power rules](../../docs/hardware/power.md#supply)).
 
 ```bash
-esptool.py flash_id            # expect "Detected flash size: 4MB"
-arduino-cli compile --upload -p /dev/ttyUSB0 \
+esptool --port COM3 flash-id   # expect "Detected flash size: 4MB"
+arduino-cli compile --upload -p COM3 \
   --fqbn esp32:esp32:esp32:PartitionScheme=min_spiffs firmware/ota-loader
 ```
 
-The Arduino IDE upload button does the same. Serial monitor at 115200 baud shows the network result and IP address.
+The Arduino IDE upload button does the same. Serial monitor at 115200 baud shows the network result and IP address. Use your board's port (`/dev/ttyUSB0` on Linux). `esptool` ships with the esp32 board package in `tools/esptool_py`.
+
+| Problem | Fix |
+| --- | --- |
+| No COM port; Device Manager shows "CP2102 USB to UART Bridge Controller" with an error | Install the Silicon Labs CP210x driver, then replug |
+| `Wrong boot mode detected (0x13)` | Hold BOOT, tap EN, release BOOT, then retry |
 
 ## Upload over Wi-Fi (every later image)
 
@@ -35,4 +40,4 @@ In the Arduino IDE, pick the network port `wifi-bridgetom` and upload as usual; 
 python espota.py -i 192.168.4.1 -a "<OTA password>" -f firmware.bin
 ```
 
-`espota.py` ships with the esp32 board package in its `tools` folder. Every new image must be built with the same partition scheme and must contain an OTA receiver, otherwise the next update needs USB again.
+`espota.py` (`espota.exe` on Windows) ships with the esp32 board package in its `tools` folder. If authentication succeeds but the upload ends with `No response from device`, allow `espota.exe` through Windows Firewall: the bridge connects back to the PC for the data transfer. Every new image must be built with the same partition scheme and must contain an OTA receiver, otherwise the next update needs USB again.
