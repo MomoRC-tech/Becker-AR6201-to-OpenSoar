@@ -11,7 +11,7 @@ Mechanical design of the bridge: what goes inside, part sizes, connectors on the
 
 📑 **On this page:** <kbd>[1 · 🎯 Requirements](#requirements)</kbd> <kbd>[2 · 📐 Design rules](#rules)</kbd> <kbd>[3 · 📏 Contents and sizes](#contents)</kbd> <kbd>[4 · 🔌 Connectors on the housing](#connectors)</kbd> <kbd>[5 · 🧩 Internal layout](#layout)</kbd>
 
-Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md) · ⚡ [Power and grounding](power.md)
+Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md) · 🪛 [Wire installation](wire-installation.md) · ⚡ [Power and grounding](power.md)
 
 ---
 
@@ -442,7 +442,7 @@ The centre-floor guide has three rib pairs. Two pairs have staggered fingers for
 
 ### 5.3 Harness cutting table
 
-Use the [v16 route data](../../cad/housing/housing-body-v1/routing-study.json). Lengths are in millimetres. A plus sign separates routed segments or resistor leads. The UBEC output estimates include the two schematic ferrite passes. Measure the factory leads with their actual turns in place.
+Follow the [illustrated installation sequence](wire-installation.md) when fitting the harness. Use the [v16 route data](../../cad/housing/housing-body-v1/routing-study.json). Lengths are in millimetres. A plus sign separates routed segments or resistor leads. The UBEC output estimates include the two schematic ferrite passes. Measure the factory leads with their actual turns in place.
 
 - **Cut length = fitted route length + both end allowances + service slack.** Measure the end allowance against each cup, pad or terminal. Count the stripped portion once. Fit enough slack to lift the carrier or the RS-232 modules where needed.
 - Twist and dress the Becker pairs before measuring each conductor. Count the ferrite turns before rewinding the factory output leads. Form the DE-9 tinned bridge against the real contacts.

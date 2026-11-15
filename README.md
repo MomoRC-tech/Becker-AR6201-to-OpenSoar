@@ -63,6 +63,7 @@ The bridge never changes the active frequency, and the radio's own controls keep
 | | | [⚡ Power and grounding](docs/hardware/power.md) | Supply, ground loops and currents |
 | | | [🧱 Modules and parts](docs/hardware/modules.md) | Module details, parts list |
 | | | [📦 Housing](docs/hardware/housing.md) | Mechanical design |
+| | | [🪛 Wire installation](docs/hardware/wire-installation.md) | Assembling the harness step by step |
 | | | [📐 CAD downloads and credits](cad/reference/README.md) | Reference models, original sources and reuse terms |
 | 🧩 | **Design** | [🏗️ Architecture](docs/design/architecture.md) | How the bridge is built and why |
 | | | [🎯 Requirements](docs/design/requirements.md) | Requirements, assumptions, risks |
