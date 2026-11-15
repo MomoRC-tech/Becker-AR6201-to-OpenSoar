@@ -7,9 +7,9 @@
 The one list of everything still missing: what is needed, who provides it, and what it unblocks. Other pages link here instead of repeating open questions.
 
 > [!NOTE]
-> **Status:** all items open. Current focus: the bench hardware checks and the housing inputs.
+> **Status:** all listed items are open. Current focus: bench hardware. Housing checks carry forward to prototype assembly and installation.
 
-📑 **On this page:** <kbd>[1 · 🔧 Bench hardware — current focus](#bench-hardware)</kbd> <kbd>[2 · 📦 Housing — current focus](#housing)</kbd> <kbd>[3 · 🛩️ Installed equipment](#installed-equipment)</kbd> <kbd>[4 · 💻 Software and acceptance — later](#software-and-acceptance)</kbd>
+📑 **On this page:** <kbd>[1 · 🔧 Bench hardware — current focus](#bench-hardware)</kbd> <kbd>[2 · 📦 Housing fit and installation](#housing)</kbd> <kbd>[3 · 🛩️ Installed equipment](#installed-equipment)</kbd> <kbd>[4 · 💻 Software and acceptance — later](#software-and-acceptance)</kbd>
 
 Related: 🗺️ [Roadmap](roadmap.md) · 🤔 [Assumptions](../design/requirements.md#assumptions) · 🛩️ [Existing installation](existing-installation.md)
 
@@ -19,7 +19,7 @@ Related: 🗺️ [Roadmap](roadmap.md) · 🤔 [Assumptions](../design/requireme
 
 ## 1. 🔧 Bench hardware — current focus
 
-Checks on the delivered parts before the bridge is connected to any device. Step-by-step order: [bench bring-up](../hardware/wiring.md#bring-up).
+Start with the delivered boards and power supply, with all instruments disconnected. See [bench bring-up](../hardware/wiring.md#bring-up) for the order; installation checks are identified separately there.
 
 | # | Item | What is needed | How it is closed |
 | :-: | --- | --- | --- |
@@ -41,9 +41,9 @@ Checks on the delivered parts before the bridge is connected to any device. Step
 
 <a id="housing"></a>
 
-## 2. 📦 Housing — current focus
+## 2. 📦 Housing fit and installation
 
-Measurements and bench checks needed for the [housing design](../hardware/housing.md#rules).
+Checks on the [housing v16 bench prototype](../hardware/housing.md) as built, and on its eventual placement in the aircraft.
 
 ### 2.1 Installation and environment
 
@@ -69,10 +69,10 @@ Measurements and bench checks needed for the [housing design](../hardware/housin
 | 15 | Ferrite cradle | Slice and fit-print the [cradle](../hardware/housing.md#ferrite-cradle). Check the exposed core sector seats without trapping wire turns. Confirm lead exits, hood and rear-strap clearance, tie thickness and head size, and access for threading the single passage. Check retention with the hood removed, under vibration and at the expected loaded temperature | Owner / physical fit test |
 | 18 | Centre-floor wire guide | Fit-print the [staggered fingers and tie eyes](../hardware/housing.md#floor-guide). Thread the actual ties and fit the insulated bundle. Check finger strength, opening and removal, side exits, splice access and bends | Physical fit check |
 | 19 | Ferrite-end guide | Fit-print the [staggered ferrite-end guide](../hardware/housing.md#floor-guide). Check that both leads feed in and out, clear the tie head and nearby parts, and reach the splices with the required bend radius | Physical fit check with items 18, 21 and 24 |
-| 14 | Internal wiring details | Buy the [selected wire](../hardware/modules.md#parts-list), measure its outside diameter and set the allowable bend radii. Fit-check the inboard XT30 pair and carrier tool access using the [routing study](../hardware/housing.md#internal-routing). Check hood gaps, bends, supports, tie tunnels and seam. Set termination allowance and service slack. Complete restraint beside R-B1/R-D and the remaining harness routes | Owner selection and physical routing/maintenance check |
+| 14 | Internal wiring details | Buy the [selected wire](../hardware/modules.md#parts-list), measure its outside diameter and set the allowable bend radii. Fit-check the inboard XT30 pair and carrier tool access using the [routing study](../hardware/housing.md#internal-routing). Check hood gaps, bends, supports, tie tunnels and seam. Set termination allowance and service slack. Check restraint beside R-B1/R-D and along the other harness runs during assembly | Owner selection and physical routing/maintenance check |
 | 21 | Ferrite supply and return fit | Move and rewind the ring as [selected](../hardware/housing.md#ferrite-cradle) after measuring the factory turn count and winding sense. Fit-check the short approach from the UBEC output and the departure into the floor bus with cradle ties and actual windings in place. Check bends, clearance and service slack for lifting the carrier | Physical fit check |
 | 22 | RS-232 harness fit | Fit-check the R3 solder joints (mod2 R3 takes two conductors). Check that pre-soldered modules can slide into the clamp, and that both modules lift clear with slack at the pads and access to the screw | Verify pad functions before soldering. Check assembly and removal, then confirm stable Zander and FLARM reception with both R1 inputs open |
-| 23 | MAX490 logic fit | Fit-check the modelled [RO and DI routes](../hardware/housing.md#internal-routing) with the actual resistor leads, insulated joints and tools. Locate a tie-down for the insulated leads beside the ESP32. Finish the MAX490 ends after RO and DI are identified | Owner reviews retention. Verify RO/DI on the delivered board and measure GPIO16 through the divider on the bench |
+| 23 | MAX490 logic fit | Fit-check the modelled [RO and DI routes](../hardware/housing.md#internal-routing) with the actual resistor leads, insulated joints and tools. Check that the insulated leads can be tied down beside the ESP32 without loading the joints. Finish the MAX490 ends after RO and DI are identified | Owner reviews retention. Verify RO/DI on the delivered board and measure GPIO16 through the divider on the bench |
 | 17 | Central distribution | Size the [selected bench-made 5V-J and GND-J splices](../hardware/housing.md#internal-routing) and their heat-shrink; fit them in the floor bus near the ferrite, support the leads, preserve removal access, and rate the full ground path for the documented fault currents. Verify the ESP32 → RS-232-mod2 → mod1 supply/return chain has no redundant ground link | Owner selects hardware; bench continuity and fit check |
 | 20 | Internal harness retention | Check the selected [floor retainers](../hardware/housing.md#floor-guide) and support at the DE-9 breakout, signal runs, board branches and ferrite rise against [R11](../design/requirements.md#requirements). Check movement, chafing and continuity after representative vibration | Physical fit and vibration checks |
 | 24 | Harness fit | Fit the [revised harness](../hardware/housing.md#internal-routing) around the raised floor, shifted connectors and new guides. Confirm usable factory lead lengths, bend radii and service slack before cutting | Bench fit |

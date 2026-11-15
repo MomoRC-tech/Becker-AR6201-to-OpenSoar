@@ -2,9 +2,9 @@
 
 ## Scope and starting point
 
-This project is in investigation/planning. Read README.md, the current package in docs/project/roadmap.md, and only the source/documents needed for that package. Check repository status and preserve unrelated edits.
+This project is preparing a bench prototype. Read README.md, the current package in docs/project/roadmap.md, and only the source/documents needed for that package. Check repository status and preserve unrelated edits.
 
-**Current focus: hardware selection and wiring.** No software, firmware or driver work until the hardware design is finished. Ask the owner for each hardware decision (part choice, circuit option, wiring choice) separately; present the options with a recommendation, then record the answer.
+**Current focus: WP3 wiring and bench validation.** Use the accepted housing design linked from the roadmap. Reopen mechanical design only if a physical check calls for a change. No software, firmware or driver work until WP3 is complete. Ask the owner for each hardware decision (part choice, circuit option, wiring choice) separately; present the options with a recommendation, then record the answer.
 
 The roadmap is the single work queue. A listed package, proposed ADR or recommendation is not implementation approval. For a broad request to continue, use the next package and its stated boundaries.
 

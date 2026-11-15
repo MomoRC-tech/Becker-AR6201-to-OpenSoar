@@ -7,7 +7,7 @@
 Mechanical design of the bridge: what goes inside, part sizes, connectors on the housing, internal layout.
 
 > [!NOTE]
-> **Status:** enclosure and harness modelled in Fusion, with the Wire Generator harness selected for housing v16 (S93). The DE-9 stops are provisional. Physical checks are tracked in [open items](../project/open-items.md#housing).
+> **Status:** housing v16 with the Wire Generator harness is the accepted mechanical design for the bench prototype (S93). Park CAD changes and use v16 for assembly. The DE-9 stops and other features still need the [physical fit and retention checks](../project/open-items.md#housing). Reopen the design if those checks call for a change.
 
 📑 **On this page:** <kbd>[1 · 🎯 Requirements](#requirements)</kbd> <kbd>[2 · 📐 Design rules](#rules)</kbd> <kbd>[3 · 📏 Contents and sizes](#contents)</kbd> <kbd>[4 · 🔌 Connectors on the housing](#connectors)</kbd> <kbd>[5 · 🧩 Internal layout](#layout)</kbd>
 

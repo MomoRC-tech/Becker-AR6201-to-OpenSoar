@@ -7,7 +7,7 @@
 The single work queue: which work package comes next and what finishes it.
 
 > [!NOTE]
-> **Status:** WP3 hardware is the current focus. Software packages (WP4–WP6) wait until the hardware is finished. Every implementation step needs the owner's approval.
+> **Status:** WP3 continues with wiring and bench validation. Software packages (WP4–WP6) wait until WP3 is complete. Every implementation step needs the owner's approval.
 
 📑 **On this page:** <kbd>[1 · 📦 Work packages](#work-packages)</kbd> <kbd>[2 · 🏁 Milestones](#milestones)</kbd> <kbd>[3 · ✅ Test coverage for the software phase](#test-coverage)</kbd>
 
@@ -21,7 +21,7 @@ Related: ❓ [Open items](open-items.md) · 🎯 [Requirements](../design/requir
 
 | Package | Status | Next step | Done when |
 | --- | --- | --- | --- |
-| **WP3 Hardware** | 🟡 **Current focus** — enclosure and [harness](../hardware/housing.md#internal-routing) published as the housing v16 hardware prototype with the selected Wire Generator harness (S93). ESP32 nose print-support slicer check complete (S89) | Measure the DE-9 jackpost and fit-print the revised enclosure features. Count the factory ferrite turns and bench-fit the harness before using the [cutting table](../hardware/housing.md#harness-cutting). See [housing fit checks](open-items.md#housing) and the [bench checks](open-items.md#bench-hardware) | Wiring design complete, bench bridge built and all bench checks passed |
+| **WP3 Hardware** | 🟡 **Current focus** — [housing v16](../hardware/housing.md) accepted for the bench prototype (S93); wiring and validation remain | Start with [bench bring-up](../hardware/wiring.md#bring-up): verify the UBEC and identify the delivered boards before soldering. Run the [housing fit checks](open-items.md#housing) during assembly; fit the harness before cutting. | Wiring design complete, bench bridge built and all bench checks passed |
 | WP1 Installed equipment | 🟡 Photos and equipment report reviewed ([review](../research/reviews/2026-11-09-installation-claims.md)) | Get the [installed-equipment facts](open-items.md#installed-equipment) from Tom | Inventory, connector map and navigation baseline complete |
 | WP0 Documentation | ✅ Done | — | — |
 | WP2 Interfaces and protocol | ⏸️ Driver research done ([Becker driver](../research/becker-driver.md)) | Matching radio protocol reference or independent captures | Manual, settings, framing and reply rules confirmed |
@@ -60,7 +60,7 @@ flowchart LR
 | Milestone | Reached when | Status |
 | --- | --- | --- |
 | M1 | Installed equipment and interfaces are understood | ⬜ Open |
-| M2 | Hardware design and driver plan are selected | 🟡 Hardware design in progress |
+| M2 | Hardware design and driver plan are selected | 🟡 Mechanical design accepted; WP3 wiring and bench validation in progress |
 | M3 | Software verified | ⬜ Open |
 
 ---

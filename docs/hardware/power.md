@@ -111,14 +111,14 @@ What a single broken wire does:
 | Broken wire | Effect | Risk |
 | --- | --- | --- |
 | Radio supply ground (P1-13/25) | The radio's whole return current, up to 3 A (S10), flows through J1-21, GND-J, the UBEC ground path and the bridge ground wire. The radio keeps working. | 🔴 Overheated wiring; see the warning below |
-| Bridge supply ground | The bridge's ~0.15 A returns through J1-21 and the Zander and FLARM grounds. The bridge keeps working. | 🟡 Low; bring-up step 7 catches a poor connection |
+| Bridge supply ground | The bridge's ~0.15 A returns through J1-21 and the Zander and FLARM grounds. The bridge keeps working. | 🟡 Low; [ground check](wiring.md#bring-up) in step 8 catches a poor connection |
 | Zander or FLARM supply ground | That device's supply current returns through its RS-232 ground and the bridge. | 🟡 Low; small currents |
 | Bridge +12 V or F1 | The bridge switches off; its unpowered interfaces do not feed the devices. | 🟢 None |
 | One signal ground (J1-21, Zander, FLARM) | The link stays referenced through the supply grounds. | 🟢 None |
 | Instrument-ground wire (DE-9 bridge → GND-J) | All three links lose their bridge-side signal ground at once and stay referenced through the supply grounds. | 🟢 None; bring-up step 7 catches it |
 
 > [!WARNING]
-> The direct J1-21 wire depends on the radio's own supply ground. If P1-13/25 lost their connection, up to 3 A of radio current would run through the instrument-ground wiring, junction and UBEC return path without any visible symptom. Size and verify the whole return path for this case; an internal ground junction does not provide isolation. Make sure both P1 ground pins are wired to the ground point and check them before connecting the bridge ([bring-up](wiring.md#bring-up) step 7).
+> The direct J1-21 wire depends on the radio's own supply ground. If P1-13/25 lost their connection, up to 3 A of radio current would run through the instrument-ground wiring, junction and UBEC return path without any visible symptom. Size and verify the whole return path for this case; an internal ground junction does not provide isolation. Make sure both P1 ground pins are wired to the ground point and check them before connecting the bridge ([ground check](wiring.md#bring-up), step 8).
 
 ---
 

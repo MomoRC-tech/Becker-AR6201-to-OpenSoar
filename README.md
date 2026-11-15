@@ -13,8 +13,8 @@ A small ESP32 box in the glider that collects data from the cockpit instruments 
 [![Housing prototype v1, closed: MomoRC logo and 7-20V on the hood, XT30 power socket and DE-9 instrument connector on the end wall](cad/housing/housing-body-v1/preview-closed.png)](cad/housing/housing-body-v1/README.md)
 
 > [!NOTE]
-> **Status:** planning and bench design — nothing is built yet.
-> **Current focus:** 🔧 hardware selection and wiring. Software work waits until the hardware design is finished.
+> **Status:** the housing design is accepted for the bench prototype. Physical fit, wiring and electrical checks are pending.
+> **Current focus:** 🔧 WP3 wiring and bench validation. Software work waits until WP3 is complete.
 
 📑 **On this page:** <kbd>[1 · 🎯 What it does](#what-it-does)</kbd> <kbd>[2 · 🚦 Project status](#status)</kbd> <kbd>[3 · 🗺️ Documentation map](#documentation)</kbd> <kbd>[4 · ⚠️ Safety](#safety)</kbd>
 
@@ -43,12 +43,13 @@ The bridge never changes the active frequency, and the radio's own controls keep
 | Stage | Status |
 | --- | --- |
 | 🔬 Research and documentation | ✅ Done |
-| 🔧 Hardware selection and wiring | 🟡 **In progress** — wiring design and bench checks open |
+| 📦 Mechanical design | ✅ Accepted — [housing v16](docs/hardware/housing.md); physical fit checks open |
+| 🔧 Wiring and bench validation | 🟡 **Current focus** |
 | 🛩️ Existing installation details | 🟡 Waiting for equipment information |
-| 💻 Firmware and driver changes | ⏸️ On hold until the hardware is finished |
+| 💻 Firmware and driver changes | ⏸️ On hold until WP3 is complete |
 | ✈️ Aircraft integration | ⬜ Later |
 
-**Next step:** continue the wiring design in [WP3 Hardware](docs/project/roadmap.md#work-packages).
+**Next step:** verify the bench supply and delivered parts using the [bring-up checklist](docs/hardware/wiring.md#bring-up). See [WP3 Hardware](docs/project/roadmap.md#work-packages) for the full work package.
 
 ---
 
