@@ -7,7 +7,7 @@
 Mechanical design of the bridge: what goes inside, part sizes, connectors on the housing, internal layout.
 
 > [!NOTE]
-> **Status:** housing prototype and [internal routing study](#internal-routing) modelled, not printed. The study includes power routes, all five resistors and two integral cable saddles. Power, signal and resistor routes follow the selected lanes. The [cutting table](#harness-cutting) gives CAD lengths and bench inputs; physical acceptance is tracked in [open items](../project/open-items.md#housing).
+> **Status:** enclosure fit revision modelled in Fusion (S82). The DE-9 stops are provisional. The [routing study](#internal-routing) uses the previous enclosure geometry. Harness adaptation and physical checks are tracked in [open items](../project/open-items.md#housing).
 
 📑 **On this page:** <kbd>[1 · 🎯 Requirements](#requirements)</kbd> <kbd>[2 · 📐 Design rules](#rules)</kbd> <kbd>[3 · 📏 Contents and sizes](#contents)</kbd> <kbd>[4 · 🔌 Connectors on the housing](#connectors)</kbd> <kbd>[5 · 🧩 Internal layout](#layout)</kbd>
 
@@ -39,21 +39,21 @@ Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md)
 | Topic | Rule |
 | --- | --- |
 | Manufacturing | 3D printed on a Bambu Lab P1S in PETG ([section 2.1](#material)) |
-| Split | Base tray (floor, side walls 13 mm above the floor top, full-height connector wall) and a hood as the cover; connectors stay on the base when the hood is off. Seam: step lip, the inner half of the tray wall rises 1.75 mm and the hood's outer half drops over it (about 0.9 + 0.2 gap + 0.9 mm), so the hood is located before the screws go in. The hood seats on the post tops, on the wall shoulder under its skirt and on the flat top of the connector wall and its two full-height corners; every other base face that would touch it is set 0.25 mm back |
-| Cover | Hood held by four M3 × 6 socket head cap screws (DIN 912 / ISO 4762, head Ø5.4 × 2.9), one per corner, heads flush in Ø6.0 × 3.1 mm counterbores, into ruthex RX-M3x5.7 brass heat-set inserts (S50); each screw reaches 4.5 mm into its insert. The hood top stays 2.5 mm thick except for four 4.6 mm thick spots that hang 2.1 mm down into the housing over the posts, leaving 1.5 mm under each head. Inserts at the top of four corner posts on the base (about 8 × 8 mm inside the wall corners, tops 20.9 mm above the floor), so each screw only passes through the hood. The posts hang from the walls: their free faces end 11 mm above the floor and the underside rises 45° from the walls, so they print without support; free vertical edges R2. At the connector-end corners the side and connector walls stay full height around the post top and the thick spot sits between them with 0.2 mm gap. At the XT30 corner the post sits on the XT30 collar, screw 5 mm from the side face; there the side wall top has a 1.0 mm wide inner rebate along the thick spot (0.9 mm below the seat) and the thick spot reaches down into it (0.2 mm side, 0.25 mm bottom gap), so the counterbore wall stays closed |
+| Split | Base tray (floor, side walls 10 mm above the floor top, full-height connector wall) and a hood as the cover; connectors stay on the base when the hood is off. Seam: step lip, the inner half of the tray wall rises 1.75 mm and the hood's outer half drops over it (about 0.9 + 0.2 gap + 0.9 mm), so the hood is located before the screws go in. The hood seats on the post tops, on the wall shoulder under its skirt and on the flat top of the connector wall and its two full-height corners; every other base face that would touch it is set 0.25 mm back |
+| Cover | Hood held by four M3 × 6 socket head cap screws (DIN 912 / ISO 4762, head Ø5.4 × 2.9), one per corner, heads flush in Ø6.0 × 3.1 mm counterbores, into ruthex RX-M3x5.7 brass heat-set inserts (S50); each screw reaches 4.5 mm into its insert. The hood top stays 2.5 mm thick except for four 4.6 mm thick spots that hang 2.1 mm down into the housing over the posts, leaving 1.5 mm under each head. Inserts at the top of four corner posts on the base (about 8 × 8 mm inside the wall corners, tops 17.9 mm above the floor), so each screw only passes through the hood. The posts hang from the walls: their free faces end 8 mm above the floor and the underside rises 45° from the walls, so they print without support; free vertical edges R2. At the connector-end corners the side and connector walls stay full height around the post top and the thick spot sits between them with 0.2 mm gap. Both connector-end screw axes sit 6 mm in from their side faces |
 | PCB mounting | The ESP32 sits on an integral USB support and a separate antenna cap. The removable USB clamp carries the RS-232 boards. The MAX490 sits on posts built into the base floor. Each PCB sits with its underside at least 2 mm above its tallest underside part. The UBEC sits on a removable carrier sharing the MAX490's four mounting screws ([section 2.4](#ubec-carrier)); the carrier can be reprinted separately |
-| ESP32 | Component side up; its pre-soldered header pins point up, and wires are soldered directly to them from above (not replaceable). Lengthwise, antenna at the short end opposite the connectors. Held at its short ends by the glued antenna cap and the USB support printed into the base tray. The PCB underside sits 7.5 mm above the floor to clear the header solder tails. Use the printed gluing jig to locate the antenna cap against the integral USB support while the glue cures. Antenna cap: one piece, printed standing on its antenna-facing side; side walls along both long edges, corner end walls, lips 1.7 mm thick over the bare edge between header strip and module (EN side 1.9 mm, BOOT side 1.5 mm wide), a chamfered ledge under the board, and a spring bridge whose pad reaches 2 mm onto the module shield with 0.3 mm pre-load; the antenna overhang passes through an open window, with the bridge about 3 mm above it. Above the header strips the bridge stays about 1.9 mm clear of the first header pins on each side (estimated from the CAD model), room for the soldered wires. USB end: an integral screw boss, a PCB ledge and two end stops rise from the floor on local supports. The boss is directly in front of the USB socket and has a Ø2.2 mm blind pilot; a USB cap covers the top and sides of the socket, presses 0.2 mm onto it and is held by one M2.5 metal screw cut straight into the boss (no insert); the USB socket is not usable with the cap fitted. Rounded outer edges. The board stays captured with the hood off; leave clearance above the header strips and wires |
+| ESP32 | Component side up; its pre-soldered header pins point up, and wires are soldered directly to them from above (not replaceable). Lengthwise, antenna at the short end opposite the connectors. Held at its short ends by the glued antenna cap and the USB support printed into the base tray. The PCB underside sits 4.5 mm above the floor to clear the header solder tails. Use the printed gluing jig to locate the antenna cap against the integral USB support while the glue cures. Antenna cap: one piece, printed standing on its antenna-facing side; side walls along both long edges, corner end walls, lips 1.7 mm thick over the bare edge between header strip and module (EN side 1.9 mm, BOOT side 1.5 mm wide), a chamfered ledge under the board, and a spring bridge whose pad reaches 2 mm onto the module shield with 0.3 mm pre-load; the antenna overhang passes through an open window, with the bridge about 3 mm above it. Above the header strips the bridge stays about 1.9 mm clear of the first header pins on each side (estimated from the CAD model), room for the soldered wires. USB end: an integral screw boss, a PCB ledge and two end stops rise from the floor on local supports. The boss is directly in front of the USB socket and has a Ø2.2 mm blind pilot; a USB cap covers the top and sides of the socket, presses 0.2 mm onto it and is held by one M2.5 metal screw cut straight into the boss (no insert); the USB socket is not usable with the cap fitted. Rounded outer edges. The board stays captured with the hood off; leave clearance above the header strips and wires |
 | RS-232 modules | Each slides flat into a slot of two grooved rails, held by friction on its long edges beside the chip feet; slot 1.25 mm for the 1.15 mm PCB, both pad rows free for soldering. Both slots are part of the ESP32 USB clamp ([layout](#layout)) |
 | Internal wiring | Wires are soldered directly to the module pads and ESP32 header pins (no plugs, nothing to shake loose); the resistors sit on those pads and pins ([signal wiring](wiring.md)), main supply and instrument returns meet at the central GND junction; the RS-232 supply/return chain comes from the ESP32 ([supply path](power.md#supply)) |
 | Access from outside | Connectors only. UBEC jumper and the ESP32 EN/BOOT buttons only with the hood off, Micro-USB only with the hood and the ESP32 USB cap off; no USB opening in the hood |
 | Soldering | Every solder joint reachable with all PCBs fitted and the cover off, except the MAX490 header joints under the UBEC bridge: reachable with the bridge lifted |
 | Connector wall | XT30 and DE-9 together on one short side. The wall ends at the inside top like the corner posts; the hood top runs over it to the outer face, and the step lip continues up the wall's two vertical end edges where the hood side walls meet it |
 | XT30 | Inserted front first from inside; press fit on the flat faces; the pocket follows the two chamfered corners with 0.2 mm clearance; the raised markings stop against the inner wall face, so unplugging cannot pull it out; glued in, so plugging-in cannot push it into the housing |
-| DE-9 | Male connector (pins) on the housing, mounted from the front: flange set flush into a recess in the outer wall face, rear body through a D-shaped cutout; jackposts (UNC 4-40) through flange and wall into nuts in printed pockets inside, wall thinned locally around the nuts if the thread is too short; the female cable connector locks onto the jackposts |
+| DE-9 | Male connector (pins) on the housing, mounted from the front. The flange sits in a flush recess and the rear body passes through a D-shaped cutout. Two provisional gusseted stops bear against the nut flats on the inner face. The female cable connector locks onto the UNC 4-40 jackposts |
 | Walls | 2.0 mm side walls; 2.5 mm floor and cover; 3.0 mm connector wall (DE-9 screws, XT30 press fit); at least 2.0 mm of material around each M3 heat-set insert |
 | Edges | Rounded outside edges and corners, no sharp corners: vertical corners R6 (inner R4, keeping the 2 mm walls), hood top edges R3 |
 | Location | Shaded spot in the cockpit, out of direct sun through the canopy |
-| Attachment | Four tie loops blended into the base's long side walls, below the hood seam, for 4.8 mm cable ties; the hood comes off while the base stays tied in. Each loop is a rounded pad 12 mm long and 4 mm out, from the floor underside to 11.5 mm above the floor top, all edges R1.5 (convex outside, concave into the wall). A vertical tunnel 5.4 × 1.9 mm (tie width and thickness + 0.6 mm) runs through it flat against the wall face, open at the top and at the floor underside, corners R0.5 and rounded entries; 2.1 mm of material outside the tie. The tie goes down through the loop and around the structure below. Centres 14 mm from each short end's outer face, clear of the connectors |
+| Attachment | Four tie loops blended into the base's long side walls, below the hood seam, for 4.8 mm cable ties; the hood comes off while the base stays tied in. Each loop is a rounded pad 12 mm long and 4 mm out, from the floor underside to 8.5 mm above the floor top, all edges R1.5 (convex outside, concave into the wall). A vertical tunnel 5.4 × 1.9 mm (tie width and thickness + 0.6 mm) runs through it flat against the wall face, open at the top and at the floor underside, corners R0.5 and rounded entries; 2.1 mm of material outside the tie. The tie goes down through the loop and around the structure below. Centres 14 mm from each short end's outer face, clear of the connectors |
 | Ventilation | Two rows of horizontal slots in both hood side walls, none on top: low just above the seam lip, high just under the top-edge rounding. Slots 1.5 mm high, about 10 mm long (bridge limit), corners R0.5, 2 mm ribs, clear of the corner posts; five slots per row, about 300 mm² open area in total |
 | Status light | No window in the hood; the ESP32 power LED shows through the vent slots |
 | Markings | Sketch text heights (S63): 2.16 mm for "7-20V" above the XT30 and 2.4 mm for "INSTR" below the DE-9 flange, both Arial Black and engraved 0.6 mm into the connector wall. Hood top: 3 mm for "7-20V" (Arial Black) above the XT30 and 4 mm for "WIFI Bridge" (Arial bold) along the far short edge. Both are in the 0.6 mm dark grey insert with the Ø56 mm MomoRC logo, flush with the hood top, with logo features at least 0.8 mm |
@@ -131,7 +131,7 @@ Current models in `cad/housing/` (files: [CAD rule](#rules)):
 
 - [ ] **Connector panel:** XT30 front first from the back until the markings stop it, DE-9 from the front into the flush recess, nuts in the pockets; mate both plugs and check backshell and tool clearance.
 - [ ] **Connector wall print test:** print both slices and work through their [checklist](../../cad/housing/connector-print-test/README.md) before the full base.
-- [ ] **Housing body v1:** print base and hood; check the hood over the seam lip (0.2 gap), the four inserts and the flush DIN 912 screws in the hood thick spots, the DE-9 and XT30 openings printed standing (19.9 and 10.55 mm bridges), fitting the DE-9 nuts beside the corner post and the XT30 collar, the engraved "7-20V" and "INSTR" labels, the hood "7-20V" and "WIFI Bridge" inserts, the two-colour logo on the bed face and the fit of the holders and boards. Check that the ESP32 rests flat on the integral USB ledge, both end stops locate the board and the M2.5 clamp screw holds in the printed pilot.
+- [ ] **Housing body v1:** print base and hood; check the hood over the seam lip (0.2 gap), the four inserts and the flush DIN 912 screws in the hood thick spots, the DE-9 and XT30 openings printed standing (19.9 and 10.55 mm bridges), thread engagement and retention at the DE-9 nut stops, the engraved "7-20V" and "INSTR" labels, the hood "7-20V" and "WIFI Bridge" inserts, the two-colour logo on the bed face and the fit of the holders and boards. Check that the ESP32 rests flat on the integral USB ledge, both end stops locate the board and the M2.5 clamp screw holds in the printed pilot.
 
 <a id="ubec-carrier"></a>
 
@@ -144,14 +144,14 @@ Exported geometry, in the installed layout frame; owner measurements and Fusion 
 
 | Feature | Dimension / construction |
 | --- | --- |
-| UBEC height | PCB underside 13.7 mm above the floor; cover top about 21.0, leaving 2.0 to the hood. A 1.0 mm tie over the top leaves about 1.0 to the hood |
-| Carrier plate | 1.5 mm thick, underside 12.2 mm above the floor; only a 19 mm length supports the UBEC, X 43.65–62.65 |
+| UBEC height | PCB underside 10.7 mm above the floor; cover top about 18.0, leaving 2.0 to the hood. A 1.0 mm tie over the top leaves about 1.0 to the hood |
+| Carrier plate | 1.5 mm thick, underside 9.2 mm above the floor; only a 19 mm length supports the UBEC, X 43.65–62.65 |
 | Solder clearance | No carrier under the PCB for 6.25 mm from the jumper end and 8.75 mm from the output end; connecting arms run outside its outline. The attached leads pass through these open ends |
 | PCB holes / post centres | X 29.7 / 64.5, Z 13.8 / 35.4; 34.8 × 21.6 mm pattern. PCB holes Ø3.2, confirmed by owner |
 | Screw axes | X 29.7 / 64.5, Z 13.6 / 35.6; carrier holes and floor pilots offset 0.2 mm outward from the PCB-hole centres. An M2.5 shaft has 0.15 mm nominal radial clearance at the nearest PCB-hole edge |
-| Carrier screw seats | Flush with the carrier top at 13.7 mm above the floor; legs bear on the MAX490 at 9.1, giving 4.6 mm seat thickness. Ø2.8 clearance holes; no raised pocket lips or screw reference solids |
+| Carrier screw seats | Flush with the carrier top at 10.7 mm above the floor; legs bear on the MAX490 at 6.1, giving 4.6 mm seat thickness. Ø2.8 clearance holes; no raised pocket lips or screw reference solids |
 | Shared screws | 4 × M2.5 × 12 raised-head metal screws, directly into PETG; owner-measured head Ø4.4, height allowance 2.5. Nominal rear-head gaps to the UBEC: 0.2 mm on the ESP32 side, 0.4 mm on the wall side. Engagement 5.8 mm below the MAX490; tips stop 3.8 mm above the pilot-hole bottoms |
-| Floor posts | Ø6.6 × 7.5 high, Ø2.2 pilot holes 9.6 deep, leaving 0.4 mm of floor beneath. The offset pilots retain at least 2.0 mm of post wall. The two outer posts join the side wall through short solid webs; the two inner posts have R1 fillets at the floor |
+| Floor posts | Ø6.6 × 4.5 high, Ø2.2 pilot holes 6.6 deep, leaving 0.4 mm of floor beneath. The offset pilots retain at least 2.0 mm of post wall. The two outer posts join the side wall through short solid webs; the two inner posts have R1 fillets at the floor |
 | Cable ties | 2 × 2.5 mm-wide ties, about 1.0 mm thick; centres X 47.5 and 58.5. Four 3.2 × 1.6 slots, R0.3 corners and R0.2 top entries; underside channels 0.5 deep leave 1.0 mm of plate beneath the UBEC |
 | Tie heads | Place beside the UBEC on the housing-wall side, not on top; cut off the tails. The assembly includes an estimated 4 × 4 × 3 head envelope |
 | Printing | Print the carrier with its UBEC contact face down, as in the 3MF, supports off. The full-height legs start on the bed, with vertical screw holes; no projecting screw-seat roofs. Print the base floor down; the 0.4 mm floor beneath each pilot is two nominal 0.2 mm layers |
@@ -167,23 +167,22 @@ Exported geometry, in the installed layout frame; owner measurements and Fusion 
 ### 2.5 Ferrite cradle
 
 > [!TIP]
-> Hold the ferrite upright in a cradle integral with the base, retained by two 2.5 mm-wide cable ties (S54).
+> Hold the ferrite upright in a cradle integral with the base, retained by one 2.5 mm-wide cable tie (S82).
 
-[CAD files and verification](../../cad/housing/housing-body-v1/README.md). Dimensions in the installed layout frame; S54.
+[CAD files and verification](../../cad/housing/housing-body-v1/README.md). Dimensions in the installed layout frame.
 
 | Feature | Dimension / construction |
 | --- | --- |
-| Integral cradle | 8.6 × 9.4 mm footprint, 7.4 mm high; outside vertical corners R0.6, exposed top edges R0.2 |
-| Core seat | Concave R7.1 saddle, 5.8 mm between the side cheeks: 0.2 mm axial clearance per side of the bare core. Lowest contact 5.9 mm above the floor |
+| Integral cradle | 11.4 × 9.4 mm footprint, 4.4 mm high. Two 2.8 mm axial cheeks with a local exit relief at the rear |
+| Core seat | Concave R7.1 saddle, 5.8 mm between the cheeks, with 0.2 mm axial clearance per side of the bare core. Lowest contact 2.9 mm above the floor |
 | Ring position | Upright, bore along X; centre X 83.5, Y 10.0, Z 19.5. The [wound envelope](#contents) reaches Y 18.75, leaving 1.25 mm beneath the hood |
-| Tie tunnels | Two 3.2 mm-wide × 1.6 mm-high passages along X through the cradle, centred at Z 17.5 / 21.5; bottoms 3.4 mm above the floor, at least 0.9 mm of roof. Corners and entry lips R0.2. The original 2.5 mm housing floor stays intact |
-| Tie routing | One tie per tunnel, up the two axial faces and through the ring centre. Both anchor to the base; the hood does not clamp the ring |
-| Tie fit envelopes | 2.5 mm-wide straps with a 1.0 mm thickness allowance. Estimated 3 × 4 × 4 mm heads staggered on the UBEC-facing side; nominal rear strap-to-wall gap 0.45 mm |
-| Printing | Base floor down, as placed in the 3MF; PETG, 0.4 mm nozzle, 0.2 mm layers. The tie tunnels have short 3.2 mm ceiling spans |
+| Tie passage | 3.2 mm wide × 1.6 mm high along X, centred at Z 19.5, bottom 0.4 mm above the intact floor |
+| Tie route | Up the two axial faces and through the ring centre, with the head on the UBEC side and a 1.0 mm strap thickness allowance |
+| Printing | Base floor down, as placed in the 3MF, using PETG, a 0.4 mm nozzle and 0.2 mm layers. The passage roof bridges 3.2 mm |
 
 - **Move the ring close to the UBEC (selected):** cut off the servo plug, unwind the turns from the free end, slide the ring along the factory output lead until it sits in the cradle with about 10–15 mm of lead from the UBEC output end, and rewind the same number of turns in the same sense. The UBEC stays closed. Cut the departure leads to length for the junctions.
 - Orient the exposed core sector downward into the saddle. Keep the wire turns out of the seat and side cheeks; the CAD ring shows the bare core, not the windings.
-- Thread both ties through the cradle and ring centre, with their heads on the accessible UBEC side. Tighten only enough to remove movement without squeezing the wires.
+- Thread the tie through the cradle and ring centre. Tighten only enough to remove movement without squeezing the wires.
 - Check that the ring stays captured with the hood removed. Wire routing, actual tie-head fit and print checks: [open items](../project/open-items.md#housing).
 
 ### 2.6 Later optimizations
@@ -307,8 +306,7 @@ Use the [STEP model](../../cad/reference/xt30u-m/xt30u-m.step) of the AMASS XT30
 - Front mount: flange in a flush recess on the outer face, rear body (19.3 × 10.9 mm) through a D-shaped cutout that follows its tapered sides; the cable connector seats fully because no wall is in front of the flange.
 - Backshell and strain relief on the cable side.
 - Cable-side clearance references: the same [female plug STEP](../../cad/reference/dsub-9pin/DSUB_9pin_female_plug.STEP) for the female cable connector (S43), and the [backshell STEP](../../cad/reference/dsub-9pin/DSUB_9pin_backshell.STEP), a straight plastic backshell with 4-40 thumbscrews, about 31.5 × 38.1 × 15.2 mm (S52).
-- Standard 4-40 jackposts (stud length about 4.8 mm, estimate; not delivered yet): through 1.0 mm flange and 2.0 mm wall, the nut pocket is sunk into the inner face so the nut gets full thread.
-- Housing side: jackposts ([design rules](#rules)); exact jackpost and local wall thickness: [open items](../project/open-items.md#bench-hardware).
+- The jackpost passes through the 1.0 mm flange and 2.0 mm of wall behind the flange recess. Each provisional stop has a 4.2 mm-wide shelf 0.15 mm below the flat of the measured 5.45 mm nut. See the [jackpost measurement](../project/open-items.md#housing).
 
 ---
 
@@ -321,11 +319,11 @@ Use the [STEP model](../../cad/reference/xt30u-m/xt30u-m.step) of the AMASS XT30
 
 | Column | Parts, from the connector wall |
 | --- | --- |
-| ESP32 side (−Z) | XT30 low in the wall (body from 6.9 above the floor, collar standing on the floor); in the housing body 4.2 mm further from the side wall than in layout v4 (body from 7.0 inside the inner side-wall face, so the corner post keeps 2.0 mm around its insert with the screw 5 mm from the side face), with a smaller, rounded collar · ESP32 (USB edge X = 27, centre Z = −10.5, antenna end X = 81) with both RS-232 boards on its USB clamp; the clamp starts 3.8 mm behind the XT30 body |
-| MAX490 side (+Z) | DE-9, in the housing body 4 mm closer to the XT30 than in layout v4 (centre Z 8.5), so its nut pocket clears the corner post · in the housing body this side is 6 mm wider than in layout v4, and the MAX490 and UBEC sit 6 mm further out (MAX490 board Z 11–38) · MAX490 on floor posts (terminal edge X = 17, PCB underside 7.5 mm above the floor) with the UBEC on the [four-screw carrier](#ubec-carrier), jumper toward the wall · ferrite ring on edge behind the UBEC output end |
+| ESP32 side (−Z) | XT30 low in the wall, with its collar rising from the floor · ESP32 (USB edge X = 27, centre Z = −10.5, antenna end X = 81) with both RS-232 boards on its USB clamp; the clamp starts 3.8 mm behind the XT30 body |
+| MAX490 side (+Z) | DE-9 on the MAX490 side of the connector wall · in the housing body this side is 6 mm wider than in layout v4, and the MAX490 and UBEC sit 6 mm further out (MAX490 board Z 11–38) · MAX490 on floor posts (terminal edge X = 17, PCB underside 4.5 mm above the floor) with the UBEC on the [four-screw carrier](#ubec-carrier), jumper toward the wall · ferrite ring on edge behind the UBEC output end |
 
 - **ESP32 holder:** layout v4 uses the tested USB block B. In the housing prototype the USB boss, PCB ledge and end stops are part of the base tray, with the broad glue foot removed. Both layouts use antenna cap A without foot ears (31.9 wide, blue) and USB clamp UR carrying both RS-232 boards (green). The boards sit turned 90°, one behind the other across the ESP32 between its header rows, at Y 13.8 (rails to Y 16.1). One M2.5 screw removes the clamp with both boards.
-- **USB seating ledge:** the continuous seating face is 12 mm wide at 7.5 mm above the floor. Two floor-supported webs connect it to the end-stop feet up to 5.6 mm above the floor. The antenna cap lands on an integral 3 mm pad (S64).
+- **USB seating ledge:** the continuous seating face is 12 mm wide at 4.5 mm above the floor. Two floor-supported webs connect it to the end-stop feet up to 2.6 mm above the floor. The antenna cap lands at the floor datum (S82).
 - **ESP32/RS-232 placement in Fusion:** a rigid as-built joint mounts the stack to the pinned base tray. A rigid group preserves the installed positions of both holders and the embedded ESP32 and RS-232 references. See the [assembly archive](../../cad/housing/housing-body-v1/README.md) for the local holder features (S65).
 - **Clamp arm:** a 6 × 2 mm arm runs from the clamp's free end over the ESP32 module into a short tunnel on top of the antenna cap's spring bridge. It only locates the free end, without loading the spring bridge (cap top at Y 15.0). Gaps, sized for print tolerances and the ~0.4 mm lift of the bridge once the ESP32 is fitted:
 
@@ -339,7 +337,7 @@ Use the [STEP model](../../cad/reference/xt30u-m/xt30u-m.step) of the AMASS XT30
 - **Fitting the clamp:** push the arm tip into the tunnel with the USB end raised, then lower the clamp onto the USB socket and screw it down.
 - **Assembly order:** solder the RS-232 wires on the bench, slide the boards into the clamp, fit the ESP32, then screw the clamp on.
 - **UBEC carrier:** lift it off for access to the MAX490 header joints. Mounting and tie routing: [section 2.4](#ubec-carrier).
-- **Wiring:** the modelled XT30 pair drops to the floor at the connector side and runs in the floor bus to the UBEC ([power routes](#power-on-lanes)). Keep the DE-9 on the MAX490 side for the two Becker differential pairs. A direct exchange puts one DE-9 jackpost into the base corner post and the straight XT30 leads through the terminal block (S63). See the [routing study](#internal-routing) for the harness, saddles and space allowances.
+- **Wiring:** the modelled XT30 pair drops to the floor at the connector side and runs in the floor bus to the UBEC ([power routes](#power-on-lanes)). Keep the DE-9 on the MAX490 side for the two Becker differential pairs. A direct exchange puts one DE-9 jackpost into the base corner post and the straight XT30 leads through the terminal block (S63). See the [routing study](#internal-routing) for the harness and space allowances.
 - **Ferrite ring placement:** in the housing prototype the measured ring sits in the cradle at X 80.8–86.2. The wire turns still need clearance.
 - **Behind the connector wall:** 12–16 mm free depth before the ESP32 USB block, the USB clamp and the MAX490 (Fusion check), too short for a panel fuse holder; F1 sits in the harness ([protection](power.md#protection)).
 - **Corner posts:** the measured ferrite ring clears the far post on the MAX490 side in Fusion.
@@ -358,7 +356,7 @@ Components in the Fusion layout v4. The [housing prototype archive](../../cad/ho
 | UBEC (reference) | Repository STEP, body raised 1.5 mm for the jumper pins |
 | Ferrite ring (estimate) | Ø15 / Ø8 × 6 from the product photo (parameters `ferrite_od`, `ferrite_id`, `ferrite_h`) |
 
-- **Layout frame:** X along the housing length from the outside face of the connector wall; Y up from the original floor datum (current floor top Y −3 mm); Z across.
+- **Layout frame:** X along the housing length from the outside face of the connector wall; Y up from the floor top (Y 0); Z across.
 - **Holder pieces:** each derived body is moved from its print position into its installed position by a *Place installed* move; a change in the holder document updates the layout.
 - **Interference check:** no collisions between components; only intended holder contacts and the UBEC output lead entering the ring.
 
@@ -374,7 +372,7 @@ Constraints from the wiring:
 
 ### 5.1 Internal routing study
 
-Use the hideable **Cable harness - routing study** component in the [housing assembly](../../cad/housing/housing-body-v1/README.md). It contains separate 12 V, 5 V, local RS-232 supply/return, resistor, junction-envelope and insulation-allowance groups. Current harness geometry: S77 and S78. Electrical connections: [power and grounding](power.md#supply).
+Use the hideable **Cable harness - routing study** component in the [housing assembly](../../cad/housing/housing-body-v1/README.md). It contains separate 12 V, 5 V, local RS-232 supply/return, resistor, junction-envelope and insulation-allowance groups. The lanes and lengths below describe the routing baseline (S77, S78, S81). See [harness adaptation](../project/open-items.md#housing) before using the cutting table with the current enclosure. Electrical connections are in [power and grounding](power.md#supply).
 
 > [!TIP]
 > **Selected routing concept: levels and lanes.** Every wire belongs to one lane and leaves it at a station opposite its pin. The lanes and stations are modelled as the hideable **Routing lanes** component in the [revised power-routing assembly](../../cad/housing/housing-body-v1/housing-power-routing.f3d) (S76); box sizes are in the [route data](../../cad/housing/housing-body-v1/routing-study.json). The [power routes](#power-on-lanes) and [signal routes](#signals-on-lanes) follow these lanes (S77, S78).
@@ -387,7 +385,7 @@ Use the hideable **Cable harness - routing study** component in the [housing ass
 | Connector-wall lane | X 11–17 | XT30 pair down to the floor; Becker pairs 4/5 and 8/9 to the terminal entries | Pairs stay twisted to the terminals |
 | J2-side lane | Between the module R pads (Z −17.3) and the J2 header (Z −23.3) | Module receive outputs to GPIO32/GPIO26, 3.3 V feed from J2-1, module ground from J2-14 | Pin-top level |
 
-- **Lane limits:** the floor bus starts behind the Z 6 cable saddle (X 15.6) and stays at Z ≤ 9.2, clear of the MAX490 post fillets; the signal bus ends at X 72, before the antenna cap. All lanes stay at least 2.2 mm under the hood (S76).
+- **Lane limits:** the baseline floor bus starts at X 15.6 and stays at Z ≤ 9.2, clear of the MAX490 post fillets; the signal bus ends at X 72, before the antenna cap. All lanes stay at least 2.2 mm under the hood (S76).
 - **Crossings:** each wire crosses the centre channel at most once. The only floor crossing under a board is the ESP32 power pair, lying on the floor at one station.
 - **No floor joints between boards:** junctions and splices are made on the bench and laid in.
 - **Ferrite (selected):** the ring is moved along the UBEC output lead so the approach leads stay short and above the floor ([ferrite cradle](#ferrite-cradle)); the modelled floor loop between UBEC and ring is superseded.
@@ -410,7 +408,7 @@ Use the hideable **Cable harness - routing study** component in the [housing ass
 
 | Item | Route |
 | --- | --- |
-| XT30 pair | From the XT30 cups down to the floor at X 16.4 (+) and 18.0 (−), just past the cable saddles, across to their tracks, along the floor bus to X about 33–35, then up and across at Y 13 to the UBEC input pads |
+| XT30 pair | From the XT30 cups down to the floor at X 16.4 (+) and 18.0 (−), across to their tracks, along the floor bus to X about 33–35, then up and across at Y 13 to the UBEC input pads |
 | UBEC output to ferrite | Factory leads, rising straight from the output pads to the ring ([ferrite cradle](#ferrite-cradle)) |
 | Ferrite departures | Down from the ring into the floor bus, ending at the splice envelopes |
 | 5V-J / GND-J | Bench-splice envelopes in the floor bus: 5V-J X 55.5–59.5, Z 2.85–5.45; GND-J X 61.5–66.5, Z 2.0–6.5 |
@@ -444,13 +442,13 @@ The centre-floor guide has three rib pairs. Two pairs have staggered fingers tha
 
 | Feature | Layout-frame dimensions (mm) |
 | --- | --- |
-| Rib pairs | X 22–25, 44–47 and 51–54. Clear width 8.4 between the ribs. Top 2.5 above the floor |
-| Staggered fingers | Station centres X 23.5 and 52.5. One 1.2-wide finger on each side, with a 2.0 gap along X. Tips reach 4.6 into the channel and overlap by 0.8 in plan |
-| Cable-tie eyes | X 29.5 on the ESP32 side and X 39.5 on the MAX490 side. Use 2.5-wide ties in the 3.2 × 1.6 through-passages. The base floor is closed |
+| Rib pairs | X 22–25, 44–47 and 51–54. Ribs 1.8 thick, 8.4 clear between them, top 2.5 above the floor |
+| Staggered fingers | Station centres X 23.5 and 52.5. One 3.6-wide finger on each side, with a 2.0 gap along X. Tips reach 4.6 into the channel and overlap by 0.8 in plan. The rear ESP32-side finger has a lower section beneath the two nearest header pins |
+| Cable-tie eyes | X 29.5 on the ESP32 side and X 39.5 on the MAX490 side. Each eye is 7.8 wide with a 3.2 × 2.08 through-passage for a 2.5-wide tie. The base floor is closed |
 
 - Pass each wire under one finger at a time, then straighten it along the channel. Remove it by reversing the sequence. Leave the splice and branch exits accessible.
 - Thread the ties before laying the bundle. Support the wires without pinching the insulation and leave service slack at the terminals.
-- Print the base floor down in PETG on the P1S with a 0.4 mm nozzle and 0.20 mm layers. The finger undersides rise at about 55° from vertical, and the eye roofs bridge 3.2 mm. Fit-print both details with the actual wire and ties. See the [housing checks](../project/open-items.md#housing).
+- Print the base floor down in PETG on the P1S with a 0.4 mm nozzle and 0.20 mm layers. The eye roofs bridge 3.2 mm. Fit-print the fingers and eyes with the actual wire and ties, including the flat underside beneath the rear ESP32 header. See the [housing checks](../project/open-items.md#housing).
 
 <a id="harness-cutting"></a>
 
