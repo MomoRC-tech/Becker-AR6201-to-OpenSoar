@@ -7,7 +7,7 @@
 Mechanical design of the bridge: what goes inside, part sizes, connectors on the housing, internal layout.
 
 > [!NOTE]
-> **Status:** enclosure and harness modelled in Fusion, with the Wire Generator harness selected for housing v15 (S92). The DE-9 stops are provisional. Physical checks are tracked in [open items](../project/open-items.md#housing).
+> **Status:** enclosure and harness modelled in Fusion, with the Wire Generator harness selected for housing v16 (S93). The DE-9 stops are provisional. Physical checks are tracked in [open items](../project/open-items.md#housing).
 
 📑 **On this page:** <kbd>[1 · 🎯 Requirements](#requirements)</kbd> <kbd>[2 · 📐 Design rules](#rules)</kbd> <kbd>[3 · 📏 Contents and sizes](#contents)</kbd> <kbd>[4 · 🔌 Connectors on the housing](#connectors)</kbd> <kbd>[5 · 🧩 Internal layout](#layout)</kbd>
 
@@ -373,7 +373,7 @@ Constraints from the wiring:
 
 ### 5.1 Internal routing
 
-Use **Cable harness - Wire Generator** in the [v15 enclosure assembly](../../cad/housing/housing-body-v1/README.md). The [route data](../../cad/housing/housing-body-v1/routing-study.json) gives the v15 CAD lengths and reference waypoints for the routing corridors. See [power and grounding](power.md#supply) for the electrical connections.
+Use **Cable harness - Wire Generator** in the [v16 enclosure assembly](../../cad/housing/housing-body-v1/README.md). The [route data](../../cad/housing/housing-body-v1/routing-study.json) gives the v16 CAD lengths and reference waypoints for the routing corridors. See [power and grounding](power.md#supply) for the electrical connections.
 
 | Level or lane | Where (layout frame) | Carries | Rule |
 | --- | --- | --- | --- |
@@ -442,9 +442,7 @@ The centre-floor guide has three rib pairs. Two pairs have staggered fingers for
 
 ### 5.3 Harness cutting table
 
-The released v15 CAD still depicts R-Z and R-F. Omit both when building the harness from this table.
-
-Use the [v15 route data](../../cad/housing/housing-body-v1/routing-study.json). Lengths are in millimetres. A plus sign separates routed segments or resistor leads. The UBEC output estimates include the two schematic ferrite passes. Measure the factory leads with their actual turns in place.
+Use the [v16 route data](../../cad/housing/housing-body-v1/routing-study.json). Lengths are in millimetres. A plus sign separates routed segments or resistor leads. The UBEC output estimates include the two schematic ferrite passes. Measure the factory leads with their actual turns in place.
 
 - **Cut length = fitted route length + both end allowances + service slack.** Measure the end allowance against each cup, pad or terminal. Count the stripped portion once. Fit enough slack to lift the carrier or the RS-232 modules where needed.
 - Twist and dress the Becker pairs before measuring each conductor. Count the ferrite turns before rewinding the factory output leads. Form the DE-9 tinned bridge against the real contacts.

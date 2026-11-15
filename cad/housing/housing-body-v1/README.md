@@ -1,6 +1,6 @@
 # Housing body v1 (prototype)
 
-The enclosure fit revision uses [layout v4](../layout-v4/README.md) with a restored floor datum, revised connector wall, rounded corners around the front insert seats, an integral ESP32 antenna holder and the hood. Open `Housing body - Wire Generator harness` in Fusion or use the standalone archive from the [housing v15 release](https://github.com/MomoRC-tech/Becker-AR6201-to-OpenSoar/releases/tag/housing-v15) (S92). See the [design rules](../../../docs/hardware/housing.md#rules) and [physical fit checks](../../../docs/project/open-items.md#housing).
+The enclosure fit revision uses [layout v4](../layout-v4/README.md) with a restored floor datum, revised connector wall, rounded corners around the front insert seats, an integral ESP32 antenna holder and the hood. Open `Housing body - Wire Generator harness` in Fusion or use the standalone archive from the [housing v16 release](https://github.com/MomoRC-tech/Becker-AR6201-to-OpenSoar/releases/tag/housing-v16) (S93). See the [design rules](../../../docs/hardware/housing.md#rules) and [physical fit checks](../../../docs/project/open-items.md#housing).
 
 ![Earlier prototype showing the hood, connector wall and external tie loops](preview-closed.png)
 
@@ -24,14 +24,14 @@ The enclosure fit revision uses [layout v4](../layout-v4/README.md) with a resto
 
 | File | Use |
 | --- | --- |
-| [housing-enclosure-fit.f3d](housing-enclosure-fit.f3d) | Standalone housing v15 assembly with the selected Wire Generator harness, continuous schematic ferrite leads, saved wire colours and RS-422 pair bands (S92), embedded board references, the integral ESP32 antenna holder, the [reinforced floor guides](../../../docs/hardware/housing.md#floor-guide), the single-tie ferrite cradle and the provisional DE-9 stops. Open with *File › Open › Open from my computer* |
+| [housing-enclosure-fit.f3d](housing-enclosure-fit.f3d) | Standalone housing v16 assembly with the selected Wire Generator harness, continuous schematic ferrite leads, saved wire colours and RS-422 pair bands (S93), embedded board references, the integral ESP32 antenna holder, the [reinforced floor guides](../../../docs/hardware/housing.md#floor-guide), the single-tie ferrite cradle and the provisional DE-9 stops. Open with *File › Open › Open from my computer* |
 | [housing-power-routing.f3d](housing-power-routing.f3d), [housing-assembly.f3d](housing-assembly.f3d) | Standalone references for the v20 routing baseline (S81) and the earlier v80 prototype (S66) |
 | [housing-base.f3d](housing-base.f3d), `housing-hood.f3d` | Fusion part archives. Edit hood lettering in the full assembly, which contains the insert references |
 | [housing-base.3mf](housing-base.3mf), [housing-hood.3mf](housing-hood.3mf), [housing-logo-insert.3mf](housing-logo-insert.3mf) | Print meshes at Z = 0. Base floor down. Hood and logo top down in shared coordinates. Load hood and logo together as one object with two parts (dark grey filament for the logo) |
 | [housing-base-with-esp32-support.3mf](housing-base-with-esp32-support.3mf) | Optional base print with the breakaway support platform under the ESP32 retaining nose (S89). Slice floor down with support allowed to start on the model. Remove the slicer support and snap off the platform before inserting the ESP32 |
 | `housing-logo-insert.f3d`, `housing-logo-insert.step` | Logo and "7-20V" insert as its own part |
 | `housing-base.step`, `housing-hood.step` | Solid models in the layout frame |
-| [routing-study.json](routing-study.json) | Housing v15 CAD lengths, reference waypoints and [harness cutting table](../../../docs/hardware/housing.md#harness-cutting) inputs |
+| [routing-study.json](routing-study.json) | Housing v16 CAD lengths, reference waypoints and [harness cutting table](../../../docs/hardware/housing.md#harness-cutting) inputs |
 | [routing-verification.json](routing-verification.json) | Native geometry and export checks for S64 and S87 |
 
 | Part | Main dimensions (mm) |
@@ -48,7 +48,7 @@ The enclosure fit revision uses [layout v4](../layout-v4/README.md) with a resto
 
 - Colours in Fusion and STEP: base dark green, hood a lighter green. Logo insert dark grey.
 - Dimensions are in millimetres. X starts at the outside of the connector wall, Y rises from the floor top (Y 0), and Z runs across. The floor underside is at Y −2.5.
-- The antenna-end holder is part of `Base tray`. Expand `Base tray` in Fusion and toggle `ESP32 holder - breakaway support platform` to show or hide the print-only component. The v15 release opens with the platform visible (S92). To edit the removable USB clamp, activate its component under `ESP32 holder with RS-232 clamp`. To edit the carrier, activate `UBEC carrier` under `MAX490 and UBEC stack`.
+- The antenna-end holder is part of `Base tray`. Expand `Base tray` in Fusion and toggle `ESP32 holder - breakaway support platform` to show or hide the print-only component. The v16 release opens with the platform visible (S93). To edit the removable USB clamp, activate its component under `ESP32 holder with RS-232 clamp`. To edit the carrier, activate `UBEC carrier` under `MAX490 and UBEC stack`.
 - Mating plug: the [XT30PB-F](../../reference/amass-xt30-family/README.md) STEP model sits plugged onto the XT30 on the outside of the connector wall (reference component `XT30 female (reference)` in the Connector side group): mating face against the male front face (0.5 mm outside the wall), centred on the pocket, turned 180° about the plug axis from the first placement so the polarity matches the male, solder tails pointing away from the box; no intersection with the base, hood, connector plate, DE-9 or XT30 male (Fusion check). Included in the full Fusion assembly.
 - Inside height is 20 mm. The ESP32 and MAX490 PCB undersides are 4.5 mm above the floor, with a 7.45 mm gap between the facing edges. The ferrite sits in the [integral cradle](../../../docs/hardware/housing.md#ferrite-cradle).
 - With the base floor down, the DE-9 opening bridges 19.9 mm and the XT30 pocket bridges 10.55 mm. See S82 in the [source register](../../../docs/research/sources.md#source-register) and the [physical fit checks](../../../docs/project/open-items.md#housing).
@@ -70,10 +70,10 @@ The enclosure fit revision uses [layout v4](../layout-v4/README.md) with a resto
 </details>
 
 <details>
-<summary><b>🖼️ Show the RS-232 pad check</b> (click to expand)</summary>
+<summary><b>🖼️ Show the earlier RS-232 pad check</b> (click to expand)</summary>
 
 ![Both reference boards with the marked positive and negative pads on the right-hand row](preview-rs232-marks.png)
 
-![Corrected violet 3.3 V and black ground chains, with R-Z and R-F on the same pad row](preview-rs232-pads.png)
+![Earlier RS-232 pad and supply routing study](preview-rs232-pads.png)
 
 </details>

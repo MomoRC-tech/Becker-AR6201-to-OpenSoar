@@ -252,7 +252,7 @@
       ]
     }
   },
-  "geometry_source": "Fusion Housing body - Wire Generator harness, housing-v15 (S92)",
+  "geometry_source": "Fusion Housing body - Wire Generator harness, housing-v16 (S93)",
   "waypoint_reference": "The waypoint arrays and per-path CAD lengths describe the v14 routing reference (S86–S87). Open housing-enclosure-fit.f3d for the selected path geometry and use release_cad_length_mm for the selected flexible conductors.",
   "junction_envelopes": {
     "Central 5V junction - bench splice envelope": {
@@ -557,70 +557,6 @@
         }
       ],
       "cut_method": "fit and calculate"
-    },
-    {
-      "endpoints": "R-Z at mod1 R1 → R3",
-      "colour": "Pink sleeve",
-      "material": "DIN0204 axial",
-      "lane": "Pin top",
-      "build_step": "Bench",
-      "paths": [
-        {
-          "waypoints_mm": [
-            [28.042, 15.3, -17.327],
-            [28.042, 17.1, -17.327],
-            [28.6395, 17.1, -17.327]
-          ],
-          "cad_length_mm": 2.4,
-          "strip_allowance_mm": null,
-          "service_slack_mm": null,
-          "cutting_length_mm": null
-        },
-        {
-          "waypoints_mm": [
-            [32.837, 15.3, -17.327],
-            [32.837, 17.1, -17.327],
-            [32.2395, 17.1, -17.327]
-          ],
-          "cad_length_mm": 2.4,
-          "strip_allowance_mm": null,
-          "service_slack_mm": null,
-          "cutting_length_mm": null
-        }
-      ],
-      "cut_method": "form at pads"
-    },
-    {
-      "endpoints": "R-F at mod2 R1 → R3",
-      "colour": "Pink sleeve",
-      "material": "DIN0204 axial",
-      "lane": "Pin top",
-      "build_step": "Bench",
-      "paths": [
-        {
-          "waypoints_mm": [
-            [40.517, 15.3, -17.327],
-            [40.517, 17.1, -17.327],
-            [41.1145, 17.1, -17.327]
-          ],
-          "cad_length_mm": 2.4,
-          "strip_allowance_mm": null,
-          "service_slack_mm": null,
-          "cutting_length_mm": null
-        },
-        {
-          "waypoints_mm": [
-            [45.312, 15.3, -17.327],
-            [45.312, 17.1, -17.327],
-            [44.7145, 17.1, -17.327]
-          ],
-          "cad_length_mm": 2.4,
-          "strip_allowance_mm": null,
-          "service_slack_mm": null,
-          "cutting_length_mm": null
-        }
-      ],
-      "cut_method": "form at pads"
     },
     {
       "endpoints": "J2-1 → mod2 R3",
