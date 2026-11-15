@@ -77,7 +77,7 @@ Measurements and bench checks needed for the [housing design](../hardware/housin
 | 20 | Internal harness retention | Check the selected [floor retainers](../hardware/housing.md#floor-guide) and support at the DE-9 breakout, signal runs, board branches and ferrite rise against [R11](../design/requirements.md#requirements). Check movement, chafing and continuity after representative vibration | Physical fit and vibration checks |
 | 24 | Harness adaptation | Raise and recheck the floor runs and splice envelopes. Update the XT30 and DE-9 breakouts for their shifted terminals. Check clearances through the revised fingers, eyes and ferrite cradle before using the cutting table for the new enclosure | Later routing and bench fit |
 | 25 | DE-9 nut stops | Measure usable jackpost stud length and nut thickness. Check thread engagement through the seated flange and front wall, then fit-print the gusseted stops and test whether they hold the nuts while tightening | Owner measurement and fit-print |
-| 26 | Integral ESP32 holder and front corners | Slice the base floor down and check support access beneath the antenna bridge and clamp tunnel. Fit-print and test board insertion, spring retention and clamp removal. Inspect the rounded walls below both front inserts and fit the heat-set inserts and cover | Slicer and physical fit checks |
+| 26 | Integral ESP32 holder and front corners | Slice the base floor down and check support access beneath the antenna bridge and clamp tunnel. Fit-print and test board insertion, spring retention and clamp removal. Inspect the rounded corners at both front insert seats and fit the heat-set inserts and cover | Slicer and physical fit checks |
 
 ### 2.4 Measurements
 

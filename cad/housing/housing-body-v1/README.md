@@ -1,6 +1,6 @@
 # Housing body v1 (prototype)
 
-The enclosure fit revision uses [layout v4](../layout-v4/README.md) with a restored floor datum, revised connector wall, rounded roots beneath the front inserts, an integral ESP32 antenna holder and the hood. Open `Housing body - enclosure fit revision` in Fusion or use its standalone archive below (S82–S84). See the [design rules](../../../docs/hardware/housing.md#rules) and [physical fit checks](../../../docs/project/open-items.md#housing).
+The enclosure fit revision uses [layout v4](../layout-v4/README.md) with a restored floor datum, revised connector wall, rounded corners around the front insert seats, an integral ESP32 antenna holder and the hood. Open `Housing body - enclosure fit revision` in Fusion or use its standalone archive below (S82–S85). See the [design rules](../../../docs/hardware/housing.md#rules) and [physical fit checks](../../../docs/project/open-items.md#housing).
 
 ![Earlier prototype showing the hood, connector wall and external tie loops](preview-closed.png)
 
@@ -37,7 +37,7 @@ The enclosure fit revision uses [layout v4](../layout-v4/README.md) with a resto
 | --- | --- |
 | Base tray | Outside 92 × 70 (78 wide over the tie loops), floor 2.5, side walls to Y 10 plus a 1.75 mm seam lip (inner 0.9). Connector wall 3.0 thick to Y 20. The hood seats on the post tops, the wall shoulder and the connector-wall and corner tops |
 | Hood | Outside 92 × 70, top at Y 22.5, top 2.5 thick with four 4.6 mm thick spots over the posts. Top edges R3, vertical corners R6 (inner corners R4), skirt 0.9 over the lip with 0.2 gap |
-| Corner posts | 8 × 8, tops at Y 17.9, inserts Ø4.0 × 6.7 deep with 0.2 entry chamfers. Insert centres (X, Z) are (7, −23.5), (7, 34.5), (85.8, −23.3) and (85.8, 34.3). Free faces end at Y 8 with a 45° underside and R2 free vertical edges. The inside front corners below the posts are R4 |
+| Corner posts | 8 × 8, tops at Y 17.9, inserts Ø4.0 × 6.7 deep with 0.2 entry chamfers. Insert centres (X, Z) are (7, −23.5), (7, 34.5), (85.8, −23.3) and (85.8, 34.3). Free faces end at Y 8 with a 45° underside and R2 free vertical edges. The inside front corners above and below the post seats are R4, with R3.8 mating relief on the hood |
 | Cover screws | Four DIN 912 M3 × 6 screws. Counterbores Ø6.0 × 3.1, heads flush, 1.5 under each head, Ø3.4 clearance. Each screw reaches 4.5 into its insert |
 | Connector wall | XT30 pocket 10.55 × 5.25, centre (Y, Z) = (6.5, −12.3), through the 3 mm wall and 5 mm-deep collar. DE-9 centre (Y, Z) = (10, 11.5). Flange recess 31.6 × 13.2 × 1.0, D-shaped cutout 19.9 × 11.5 narrowing to 16.7 at the bottom, two Ø3.4 holes at 25.0 spacing. See the [provisional nut stops](../../../docs/hardware/housing.md#connectors) |
 | Labels | See the [housing marking dimensions](../../../docs/hardware/housing.md#rules). The hood inserts are readable from the connector end |
