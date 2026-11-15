@@ -252,7 +252,8 @@
       ]
     }
   },
-  "geometry_source": "Fusion enclosure fit revision v10, S86–S87",
+  "geometry_source": "Fusion Housing body - Wire Generator harness, housing-v15 (S92)",
+  "waypoint_reference": "The waypoint arrays and per-path CAD lengths describe the v14 routing reference (S86–S87). Open housing-enclosure-fit.f3d for the selected path geometry and use release_cad_length_mm for the selected flexible conductors.",
   "junction_envelopes": {
     "Central 5V junction - bench splice envelope": {
       "box_mm": [
@@ -287,10 +288,12 @@
     "power": 1.5,
     "signal": 1.0
   },
-  "cutting_note": "Signal lengths are sums of straight construction segments. Null values need bench measurements. CAD lengths exclude end allowances, service slack and twist allowance. Fit the factory output leads on the bench using the measured turns.",
+  "cutting_note": "CAD lengths exclude end allowances, service slack and twist allowance. Use bench measurements for cut lengths and fit the factory output leads with the measured ferrite turns.",
   "routes": [
     {
       "endpoints": "XT30 + → UBEC input +",
+      "release_cad_length_mm": 83.88,
+      "release_length_method": "sketch centreline",
       "colour": "Red",
       "material": "UBEC factory",
       "lane": "Wall / floor",
@@ -318,6 +321,8 @@
     },
     {
       "endpoints": "XT30 − → UBEC input GND",
+      "release_cad_length_mm": 73.74,
+      "release_length_method": "sketch centreline",
       "colour": "Black",
       "material": "UBEC factory",
       "lane": "Wall / floor",
@@ -346,6 +351,8 @@
     },
     {
       "endpoints": "UBEC output + → ferrite → 5V-J",
+      "release_cad_length_mm": 113.68,
+      "release_length_method": "reference length adjusted by swept-volume difference",
       "colour": "Orange in CAD",
       "material": "UBEC factory",
       "lane": "Ferrite / floor",
@@ -430,6 +437,8 @@
     },
     {
       "endpoints": "UBEC output GND → ferrite → GND-J",
+      "release_cad_length_mm": 107.64,
+      "release_length_method": "reference length adjusted by swept-volume difference",
       "colour": "Black",
       "material": "UBEC factory",
       "lane": "Ferrite / floor",
@@ -519,6 +528,8 @@
     },
     {
       "endpoints": "DE-9 ground bridge → GND-J",
+      "release_cad_length_mm": 62.05,
+      "release_length_method": "sketch centreline",
       "colour": "Black",
       "material": "22 AWG PTFE",
       "lane": "Wall / floor",
@@ -613,6 +624,8 @@
     },
     {
       "endpoints": "J2-1 → mod2 R3",
+      "release_cad_length_mm": 34.94,
+      "release_length_method": "reference length adjusted by swept-volume difference",
       "colour": "Pink",
       "material": "26 AWG PTFE",
       "lane": "J2",
@@ -637,6 +650,8 @@
     },
     {
       "endpoints": "J2-14 → mod2 R4",
+      "release_cad_length_mm": 26.78,
+      "release_length_method": "reference length adjusted by swept-volume difference",
       "colour": "Black",
       "material": "26 AWG PTFE",
       "lane": "J2",
@@ -662,6 +677,8 @@
     },
     {
       "endpoints": "mod2 R3 → mod1 R3",
+      "release_cad_length_mm": 16.17,
+      "release_length_method": "reference length adjusted by swept-volume difference",
       "colour": "Pink",
       "material": "26 AWG PTFE",
       "lane": "Pin top",
@@ -684,6 +701,8 @@
     },
     {
       "endpoints": "mod2 R4 → mod1 R4",
+      "release_cad_length_mm": 16.09,
+      "release_length_method": "reference length adjusted by swept-volume difference",
       "colour": "Black",
       "material": "26 AWG PTFE",
       "lane": "Pin top",
@@ -707,6 +726,8 @@
     },
     {
       "endpoints": "5V-J → ESP32 J2-19",
+      "release_cad_length_mm": 70.44,
+      "release_length_method": "sketch centreline",
       "colour": "Orange",
       "material": "22 AWG PTFE",
       "lane": "Floor / J2",
@@ -733,6 +754,8 @@
     },
     {
       "endpoints": "GND-J → ESP32 J2-14",
+      "release_cad_length_mm": 81.25,
+      "release_length_method": "sketch centreline",
       "colour": "Black",
       "material": "22 AWG PTFE",
       "lane": "Floor / J2",
@@ -758,6 +781,8 @@
     },
     {
       "endpoints": "5V-J → MAX490 VCC",
+      "release_cad_length_mm": 45.76,
+      "release_length_method": "sketch centreline",
       "colour": "Orange",
       "material": "22 AWG PTFE",
       "lane": "Floor / MAX490 header",
@@ -783,6 +808,8 @@
     },
     {
       "endpoints": "GND-J → MAX490 GND",
+      "release_cad_length_mm": 30.08,
+      "release_length_method": "sketch centreline",
       "colour": "Black",
       "material": "22 AWG PTFE",
       "lane": "Floor / MAX490 header",
@@ -808,6 +835,8 @@
     },
     {
       "endpoints": "DE-9 1 → mod1 L3",
+      "release_cad_length_mm": 37.84,
+      "release_length_method": "sketch centreline",
       "colour": "Brown",
       "material": "26 AWG PTFE",
       "lane": "Centre bus",
@@ -833,6 +862,8 @@
     },
     {
       "endpoints": "DE-9 2 → mod2 L3",
+      "release_cad_length_mm": 51.94,
+      "release_length_method": "sketch centreline",
       "colour": "Beige",
       "material": "26 AWG PTFE",
       "lane": "Centre bus",
@@ -859,6 +890,8 @@
     },
     {
       "endpoints": "mod1 R2 → ESP32 J2-7",
+      "release_cad_length_mm": 34.96,
+      "release_length_method": "reference length adjusted by swept-volume difference",
       "colour": "Light blue",
       "material": "26 AWG PTFE",
       "lane": "J2",
@@ -888,6 +921,8 @@
     },
     {
       "endpoints": "mod2 R2 → ESP32 J2-10",
+      "release_cad_length_mm": 16.4,
+      "release_length_method": "reference length adjusted by swept-volume difference",
       "colour": "Mint green",
       "material": "26 AWG PTFE",
       "lane": "J2",
@@ -913,6 +948,8 @@
     },
     {
       "endpoints": "ESP32 J3-11 → MAX490 DI",
+      "release_cad_length_mm": 51.44,
+      "release_length_method": "sketch centreline",
       "colour": "Turquoise",
       "material": "26 AWG PTFE",
       "lane": "Centre bus / header",
@@ -939,6 +976,8 @@
     },
     {
       "endpoints": "MAX490 RO → R-B1 splice",
+      "release_cad_length_mm": 40.55,
+      "release_length_method": "sketch centreline",
       "colour": "Blue",
       "material": "26 AWG PTFE",
       "lane": "Centre bus / header",
@@ -963,6 +1002,8 @@
     },
     {
       "endpoints": "DE-9 8 → MAX490 Y",
+      "release_cad_length_mm": 15.37,
+      "release_length_method": "sketch centreline",
       "colour": "White",
       "material": "26 AWG PTFE",
       "lane": "Wall, pair 8/9",
@@ -986,6 +1027,8 @@
     },
     {
       "endpoints": "DE-9 9 → MAX490 Z",
+      "release_cad_length_mm": 17.21,
+      "release_length_method": "sketch centreline",
       "colour": "Green",
       "material": "26 AWG PTFE",
       "lane": "Wall, pair 8/9",
@@ -1009,6 +1052,8 @@
     },
     {
       "endpoints": "DE-9 4 → MAX490 A",
+      "release_cad_length_mm": 28.58,
+      "release_length_method": "sketch centreline",
       "colour": "Yellow",
       "material": "26 AWG PTFE",
       "lane": "Wall, pair 4/5",
@@ -1032,6 +1077,8 @@
     },
     {
       "endpoints": "DE-9 5 → MAX490 B",
+      "release_cad_length_mm": 18.89,
+      "release_length_method": "sketch centreline",
       "colour": "Violet",
       "material": "26 AWG PTFE",
       "lane": "Wall, pair 4/5",
