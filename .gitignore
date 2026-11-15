@@ -4,3 +4,6 @@
 
 # Local Wi-Fi and OTA passwords
 firmware/ota-loader/credentials.h
+
+# Local loader builds (private images contain passwords)
+firmware/ota-loader/build/

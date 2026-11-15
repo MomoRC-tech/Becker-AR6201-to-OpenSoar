@@ -112,7 +112,7 @@ Parts: [parts list](../hardware/modules.md#parts-list).
 | Loader | [`firmware/ota-loader`](../../firmware/ota-loader/README.md), ArduinoOTA (S94). Tries the configured network for 15 s, then opens hotspot `WiFi-BridgeTom` at 192.168.4.1 (S96) |
 | Availability | Hotspot and OTA stay available as long as the bridge is powered |
 | Board setting | ESP32 Dev Module, partition scheme as above; PlatformIO: `board_build.partitions = min_spiffs.csv` |
-| Credentials | Wi-Fi and OTA passwords stay in an untracked local file, never in the repository |
+| Credentials | Private builds: Wi-Fi and OTA passwords stay in an untracked local file, never in the repository. The committed [hotspot-only build](../../firmware/ota-loader/README.md#variants) uses public default passwords and is for the bench only |
 | Recovery | An image without OTA, or one that fails at boot, needs USB: hood and USB cap off ([power rules](../hardware/power.md#supply)) |
 
 Bench step: [bring-up](../hardware/wiring.md#bring-up) step 3.

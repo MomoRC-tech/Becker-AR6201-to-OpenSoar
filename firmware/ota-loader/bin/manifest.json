@@ -1,0 +1,15 @@
+{
+  "fqbn": "esp32:esp32:esp32:PartitionScheme=min_spiffs",
+  "esp32_core": "3.3.12",
+  "arduino_cli": "1.6.0",
+  "files": {
+    "ota-loader-hotspot-only.bin": {
+      "bytes": 952560,
+      "sha256": "9ddd873e1ea50c2a8019d409e3070647801e56ccd0151342f02210fa90213460"
+    },
+    "ota-loader-hotspot-only.merged.bin": {
+      "bytes": 4194304,
+      "sha256": "e754e71d04c9f1277cbc69ad28598b6d4e17bd3c5f35310c2686cf836312bec7"
+    }
+  }
+}
