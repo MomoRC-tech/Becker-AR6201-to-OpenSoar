@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 390" role="img" aria-labelledby="title desc">
-  <title id="title">Tinned bridge on the housing DE-9 solder cups</title>
-  <desc id="desc">Rear view of the male housing connector. With five cups on top, the upper row reads 5, 4, 3, 2, 1 from left to right, and the lower row reads 9, 8, 7, 6. Short bare tinned wire joins cup 3 diagonally to cup 7 and then across to cup 6. An insulated black lead from cup 6 goes to GND-J.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 510" role="img" aria-labelledby="title desc">
+  <title id="title">DE-9 pigtail before mounting</title>
+  <desc id="desc">From the solder-cup side, cups 5 violet, 4 yellow, 3 ground bridge, 2 beige and 1 brown form the top row. Cups 9 green, 8 white, 7 ground bridge and 6 black form the lower row. Bare tinned wire connects 3, 7 and 6.</desc>
   <defs>
     <linearGradient id="cup" x2="0" y2="1">
       <stop stop-color="#fce4a2"/>
@@ -19,40 +19,89 @@
       <path d="M-8 -5q8 -5 16 0" fill="none" stroke="#f5fbff" stroke-width="2" stroke-linecap="round"/>
     </g>
   </defs>
-  <rect width="1040" height="390" fill="#eef4f9"/>
+  <rect width="1040" height="510" fill="#eef4f9"/>
   <g font-family="Segoe UI, Arial, sans-serif" fill="#142c41">
-    <text x="34" y="42" font-size="25" font-weight="700">DE-9 tinned ground bridge</text>
-    <text x="34" y="72" font-size="18">Solder-cup side, looking from inside the housing · five-cup row up</text>
-    <rect x="53" y="100" width="694" height="221" rx="33" fill="#d5dce2" stroke="#8194a5" stroke-width="2"/>
-    <circle cx="81" cy="213" r="12" fill="#eef4f9" stroke="#8194a5" stroke-width="2"/>
-    <circle cx="719" cy="213" r="12" fill="#eef4f9" stroke="#8194a5" stroke-width="2"/>
-    <path d="M147 115H652Q682 115 672 145L638 277Q632 305 607 305H190Q165 305 159 277L125 145Q115 115 147 115Z" fill="#253a50" stroke="#152c40" stroke-width="2"/>
-    <g>
-      <use href="#solder-cup" x="200" y="175"/><use href="#solder-cup" x="300" y="175"/>
-      <use href="#solder-cup" x="400" y="175"/><use href="#solder-cup" x="500" y="175"/>
-      <use href="#solder-cup" x="600" y="175"/><use href="#solder-cup" x="250" y="264"/>
-      <use href="#solder-cup" x="350" y="264"/><use href="#solder-cup" x="450" y="264"/>
-      <use href="#solder-cup" x="550" y="264"/>
-    </g>
-    <g text-anchor="middle" font-size="20" font-weight="700" fill="#f8fbff">
-      <text x="200" y="143">5</text><text x="300" y="143">4</text>
-      <text x="400" y="143">3</text><text x="500" y="143">2</text>
-      <text x="600" y="143">1</text><text x="250" y="299">9</text>
-      <text x="350" y="299">8</text><text x="450" y="299">7</text>
-      <text x="550" y="299">6</text>
-    </g>
-    <path d="M550 264H751Q769 264 784 277H955" stroke="#070e16" stroke-width="13" fill="none" stroke-linecap="round"/>
-    <path d="M550 261H751Q769 261 784 274H952" stroke="#576778" stroke-width="2" fill="none" stroke-linecap="round"/>
-    <path d="M400 175L450 264H550" fill="none" stroke="#415566" stroke-width="13" stroke-linejoin="round"/>
-    <path d="M400 175L450 264H550" fill="none" stroke="#d5e2ea" stroke-width="8" stroke-linejoin="round"/>
-    <path d="M400 173L450 262H550" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
-    <use href="#joint" x="400" y="175"/><use href="#joint" x="450" y="264"/><use href="#joint" x="550" y="264"/>
-    <path d="M780 145H677L476 256" fill="none" stroke="#eef4f9" stroke-width="6"/>
-    <path d="M780 145H677L476 256" fill="none" stroke="#395468" stroke-width="2.5" marker-end="url(#arrow)"/>
-    <text x="790" y="144" font-size="20" font-weight="700">Bare tinned wire</text>
-    <text x="790" y="170" font-size="17">Solder at cups 3, 7 and 6</text>
-    <text x="790" y="313" font-size="20" font-weight="700">Black lead to GND-J</text>
-    <text x="790" y="337" font-size="17">Example takeoff at cup 6</text>
-    <text x="34" y="366" font-size="17">Use the moulded cup numbers. Form the wire to the actual cups and keep it clear of adjacent cups and the shell.</text>
+    <text x="32" y="38" font-size="26" font-weight="700">DE-9 pigtail before mounting</text>
+    <text x="32" y="66" font-size="18">Solder-cup side · look from inside the housing with the five-cup row up</text>
+    <rect x="51" y="166" width="748" height="205" rx="31" fill="#d5dce2" stroke="#8497a8" stroke-width="2"/>
+    <circle cx="79" cy="268" r="12" fill="#eef4f9" stroke="#8497a8" stroke-width="2"/>
+    <circle cx="771" cy="268" r="12" fill="#eef4f9" stroke="#8497a8" stroke-width="2"/>
+    <path d="M135 179H715Q739 179 735 204L705 340Q700 359 680 359H170Q150 359 145 340L115 204Q111 179 135 179Z" fill="#263c51"/>
+    <use href="#solder-cup" x="185" y="222"/>
+    <use href="#solder-cup" x="305" y="222"/>
+    <use href="#solder-cup" x="425" y="222"/>
+    <use href="#solder-cup" x="545" y="222"/>
+    <use href="#solder-cup" x="665" y="222"/>
+    <use href="#solder-cup" x="245" y="315"/>
+    <use href="#solder-cup" x="365" y="315"/>
+    <use href="#solder-cup" x="485" y="315"/>
+    <use href="#solder-cup" x="605" y="315"/>
+    <path d="M185 140V212" stroke="#283c50" stroke-width="14" stroke-linecap="round"/>
+    <path d="M185 140V212" stroke="#8454b5" stroke-width="10" stroke-linecap="round"/>
+    <path d="M180 190h10" stroke="#252a30" stroke-width="3"/>
+    <path d="M185 212V222" stroke="#ccdbe5" stroke-width="5"/>
+    <text x="185" y="105" text-anchor="middle" font-size="17" font-weight="700">5 · Violet</text>
+    <text x="185" y="127" text-anchor="middle" font-size="16">MAX490 B</text>
+    <path d="M305 140V212" stroke="#283c50" stroke-width="14" stroke-linecap="round"/>
+    <path d="M305 140V212" stroke="#f5cd31" stroke-width="10" stroke-linecap="round"/>
+    <path d="M300 190h10" stroke="#252a30" stroke-width="3"/>
+    <path d="M305 212V222" stroke="#ccdbe5" stroke-width="5"/>
+    <text x="305" y="105" text-anchor="middle" font-size="17" font-weight="700">4 · Yellow</text>
+    <text x="305" y="127" text-anchor="middle" font-size="16">MAX490 A</text>
+    <path d="M545 140V212" stroke="#283c50" stroke-width="14" stroke-linecap="round"/>
+    <path d="M545 140V212" stroke="#e9cfa3" stroke-width="10" stroke-linecap="round"/>
+    <path d="M545 212V222" stroke="#ccdbe5" stroke-width="5"/>
+    <text x="545" y="105" text-anchor="middle" font-size="17" font-weight="700">2 · Beige</text>
+    <text x="545" y="127" text-anchor="middle" font-size="14">FLARM mod2 L3</text>
+    <path d="M665 140V212" stroke="#283c50" stroke-width="14" stroke-linecap="round"/>
+    <path d="M665 140V212" stroke="#95583a" stroke-width="10" stroke-linecap="round"/>
+    <path d="M665 212V222" stroke="#ccdbe5" stroke-width="5"/>
+    <text x="665" y="105" text-anchor="middle" font-size="17" font-weight="700">1 · Brown</text>
+    <text x="665" y="127" text-anchor="middle" font-size="14">Zander mod1 L3</text>
+    <path d="M245 405V325" stroke="#283c50" stroke-width="14" stroke-linecap="round"/>
+    <path d="M245 405V325" stroke="#278046" stroke-width="10" stroke-linecap="round"/>
+    <path d="M240 345h10" stroke="#252a30" stroke-width="3"/>
+    <path d="M240 353h10" stroke="#252a30" stroke-width="3"/>
+    <path d="M245 325V315" stroke="#ccdbe5" stroke-width="5"/>
+    <text x="245" y="436" text-anchor="middle" font-size="17" font-weight="700">9 · Green</text>
+    <text x="245" y="458" text-anchor="middle" font-size="16">MAX490 Z</text>
+    <path d="M365 405V325" stroke="#283c50" stroke-width="14" stroke-linecap="round"/>
+    <path d="M365 405V325" stroke="#fff" stroke-width="10" stroke-linecap="round"/>
+    <path d="M360 345h10" stroke="#252a30" stroke-width="3"/>
+    <path d="M360 353h10" stroke="#252a30" stroke-width="3"/>
+    <path d="M365 325V315" stroke="#ccdbe5" stroke-width="5"/>
+    <text x="365" y="436" text-anchor="middle" font-size="17" font-weight="700">8 · White</text>
+    <text x="365" y="458" text-anchor="middle" font-size="16">MAX490 Y</text>
+    <path d="M605 405V325" stroke="#283c50" stroke-width="14" stroke-linecap="round"/>
+    <path d="M605 405V325" stroke="#111820" stroke-width="10" stroke-linecap="round"/>
+    <path d="M605 325V315" stroke="#ccdbe5" stroke-width="5"/>
+    <text x="605" y="436" text-anchor="middle" font-size="17" font-weight="700">6 · Black</text>
+    <text x="605" y="458" text-anchor="middle" font-size="16">GND-J from bridge</text>
+    <path d="M425 222L485 315H605" fill="none" stroke="#435a6c" stroke-width="13" stroke-linejoin="round"/>
+    <path d="M425 222L485 315H605" fill="none" stroke="#d7e3eb" stroke-width="8" stroke-linejoin="round"/>
+    <path d="M425 219L486 312H605" fill="none" stroke="#fff" stroke-width="2"/>
+    <use href="#joint" x="185" y="222"/>
+    <text x="185" y="255" fill="#fff" text-anchor="middle" font-size="19" font-weight="700">5</text>
+    <use href="#joint" x="305" y="222"/>
+    <text x="305" y="255" fill="#fff" text-anchor="middle" font-size="19" font-weight="700">4</text>
+    <use href="#joint" x="425" y="222"/>
+    <text x="425" y="198" fill="#fff" text-anchor="middle" font-size="19" font-weight="700">3</text>
+    <use href="#joint" x="545" y="222"/>
+    <text x="545" y="255" fill="#fff" text-anchor="middle" font-size="19" font-weight="700">2</text>
+    <use href="#joint" x="665" y="222"/>
+    <text x="665" y="255" fill="#fff" text-anchor="middle" font-size="19" font-weight="700">1</text>
+    <use href="#joint" x="245" y="315"/>
+    <text x="245" y="291" fill="#fff" text-anchor="middle" font-size="19" font-weight="700">9</text>
+    <use href="#joint" x="365" y="315"/>
+    <text x="365" y="291" fill="#fff" text-anchor="middle" font-size="19" font-weight="700">8</text>
+    <use href="#joint" x="485" y="315"/>
+    <text x="485" y="291" fill="#fff" text-anchor="middle" font-size="19" font-weight="700">7</text>
+    <use href="#joint" x="605" y="315"/>
+    <text x="605" y="291" fill="#fff" text-anchor="middle" font-size="19" font-weight="700">6</text>
+    <path d="M819 272H751L560 310" fill="none" stroke="#eef4f9" stroke-width="6"/>
+    <path d="M819 272H751L560 310" fill="none" stroke="#344f63" stroke-width="2.5" marker-end="url(#arrow)"/>
+    <text x="828" y="264" font-size="19" font-weight="700">Bare tinned bridge</text>
+    <text x="828" y="290" font-size="17">Cups 3 → 7 → 6</text>
+    <text x="32" y="488" font-size="17">Leads shown spread out. Keep 4/5 and 8/9 as separate twisted pairs when fitting the harness.</text>
   </g>
 </svg>

@@ -19,16 +19,14 @@ Start with the [loose-board bench checks](wiring.md#bring-up) and disconnect pow
 
 ## 1. 🔌 Prepare the connectors
 
+![Bench-wired DE-9, solder-cup side. Brown 1, beige 2, yellow 4, violet 5, white 8, green 9 and black from cup 6 of the tinned 3–7–6 bridge.](../images/wire-installation/de9-tinned-bridge.svg)
+
 ![Red and black factory leads from the XT30 down the connector wall and across the floor to the UBEC input](../images/wire-installation/01-xt30.png)
 
 1. With the connectors outside the tray, identify XT30 polarity from the moulded marks. Solder the red and black UBEC input leads to the corresponding cups. Keep the UBEC loose until step 7. The picture shows its final location so you can see where the leads go.
-2. Wire the **entire DE-9 pigtail on the bench before fastening the connector**. Start with the lower row, which is hard to reach once mounted. Using the moulded cup numbers, solder **white to cup 8 (MAX490 Y)** and **green to cup 9 (MAX490 Z)**. Fit the tinned bridge across **3, 6 and 7** and attach one black lead to **GND-J** at the bridge. Then solder the remaining signal leads at cups **1, 2, 4 and 5**.
+2. Wire the **entire DE-9 pigtail on the bench before fastening the connector**. Start with the lower row, which is hard to reach once mounted. Using the moulded cup numbers, solder **white to cup 8 (MAX490 Y)** and **green to cup 9 (MAX490 Z)**. Fit the tinned bridge across **3, 6 and 7**, clear of the other cups and shell. Attach one black lead from the bridge to **GND-J**. Then solder the remaining signal leads at cups **1, 2, 4 and 5**.
 3. Leave the pigtail leads overlength at their free ends. Allow enough to feed the bundle through the front cutout, follow the guides and reach each termination with service slack. Check the cup assignments and isolation from neighbouring nets and the shell while the cups are accessible.
 4. Fit the XT30 in its inside pocket. Feed the DE-9 pigtail through the cutout from outside, seat and fasten the connector without pulling on the solder joints. Route the free ends, then trim and strip them at their destinations. [Connector mounting](housing.md#connectors) · [DE-9 cup map](wiring.md#de9-pinout)
-
-![Rear view of the housing DE-9. A short tinned wire runs from cup 3 down to cup 7 and across to cup 6. The black GND-J lead leaves cup 6.](../images/wire-installation/de9-tinned-bridge.svg)
-
-The close-up shows one way to form the bridge off the housing. Fit the wire to the actual connector and check that it clears the other cups and the metal shell.
 
 ---
 
