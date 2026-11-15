@@ -1,6 +1,6 @@
 # ESP32 holder
 
-Holds the ESP32 at its short ends: two end blocks glued onto the housing floor, a USB cap with one screw, and a gluing jig. Rules: [housing § 2](../../../docs/hardware/housing.md#rules); checks: [§ 2.3](../../../docs/hardware/housing.md#fit-test). Built in Autodesk Fusion through MCP, 2026-11-12; tested and selected.
+Holds the ESP32 at its short ends: two end blocks glued onto the housing floor, a USB cap with one screw, and a gluing jig. Rules: [housing § 2](../../../docs/hardware/housing.md#rules); checks: [§ 2.3](../../../docs/hardware/housing.md#fit-test). Built in Autodesk Fusion through MCP, 2026-11-12, and tested as a standalone holder. The [current housing base](../housing-body-v1/README.md) integrates both ESP32 end supports.
 
 | File | Use |
 | --- | --- |

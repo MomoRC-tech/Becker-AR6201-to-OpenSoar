@@ -43,7 +43,7 @@ Checks on the delivered parts before the bridge is connected to any device. Step
 
 ## 2. 📦 Housing — current focus
 
-Inputs still needed before the housing can be modelled. Selected rules: [housing design rules](../hardware/housing.md#rules). Connector details are items 11 and 14 above. Work top-down: each group sets limits for the next.
+Measurements and bench checks needed for the [housing design](../hardware/housing.md#rules).
 
 ### 2.1 Installation and environment
 
@@ -65,7 +65,7 @@ Inputs still needed before the housing can be modelled. Selected rules: [housing
 
 | # | Item | What is needed | How it is closed |
 | :-: | --- | --- | --- |
-| 4 | Holders | Slice, print and fit the [UBEC carrier](../hardware/housing.md#ubec-carrier): check support-free legs, end solder clearance, 19 mm support, tie threading and actual tie-head size, hood clearance, M2.5 × 12 head/driver access, the offset shafts through the PCB holes and thread holding; check the base's R1 post roots and 0.4 mm pilot-hole floors. Choose a glue that holds on PETG (ESP32 holder, XT30) | Owner / fit test; remaining selections separately |
+| 4 | Holders | Slice, print and fit the [UBEC carrier](../hardware/housing.md#ubec-carrier): check support-free legs, end solder clearance, 19 mm support, tie threading and actual tie-head size, hood clearance, M2.5 × 12 head/driver access, the offset shafts through the PCB holes and thread holding; check the base's R1 post roots and 0.4 mm pilot-hole floors. Choose a glue that holds the XT30 in PETG | Owner / fit test; remaining selections separately |
 | 15 | Ferrite cradle | Slice and fit-print the [cradle](../hardware/housing.md#ferrite-cradle). Check the exposed core sector seats without trapping wire turns. Confirm lead exits, hood and rear-strap clearance, tie thickness and head size, and access for threading the single passage. Check retention with the hood removed, under vibration and at the expected loaded temperature | Owner / physical fit test |
 | 18 | Centre-floor wire guide | Fit-print the [staggered fingers and tie eyes](../hardware/housing.md#floor-guide). Thread the actual ties and fit the insulated bundle. Check finger strength, opening and removal, side exits, splice access and bends | Physical fit check |
 | 19 | Raised ferrite-end guide | Compare the open floor guides alone with a short, rounded MAX490-side rib at the ferrite end. Trial position X 65–68 mm and Z 7.8–8.7 mm, up to 9 mm above the floor (S68). Use the raised wall to guide the pair through the rise while keeping top access. Check PCB clearance, wire bend radius, clearance to the 5 V lead and resistance to chafing with the actual bundle | Owner chooses whether to add the raised guide. Fit-check with item 18 |
@@ -77,12 +77,13 @@ Inputs still needed before the housing can be modelled. Selected rules: [housing
 | 20 | Internal harness retention | Check the selected [floor retainers](../hardware/housing.md#floor-guide) and support at the DE-9 breakout, signal runs, board branches and ferrite rise against [R11](../design/requirements.md#requirements). Check movement, chafing and continuity after representative vibration | Physical fit and vibration checks |
 | 24 | Harness adaptation | Raise and recheck the floor runs and splice envelopes. Update the XT30 and DE-9 breakouts for their shifted terminals. Check clearances through the revised fingers, eyes and ferrite cradle before using the cutting table for the new enclosure | Later routing and bench fit |
 | 25 | DE-9 nut stops | Measure usable jackpost stud length and nut thickness. Check thread engagement through the seated flange and front wall, then fit-print the gusseted stops and test whether they hold the nuts while tightening | Owner measurement and fit-print |
+| 26 | Integral ESP32 holder and front corners | Slice the base floor down and check support access beneath the antenna bridge and clamp tunnel. Fit-print and test board insertion, spring retention and clamp removal. Inspect the rounded walls below both front inserts and fit the heat-set inserts and cover | Slicer and physical fit checks |
 
 ### 2.4 Measurements
 
 | # | Item | What is needed | How it is closed |
 | :-: | --- | --- | --- |
-| 1 | Part sizes | Compare the ESP32 with its [CAD reference](../hardware/housing.md#contents): solder-joint height underneath, header spacing, overall length including antenna and USB protrusion, overall height with headers, USB-plug and wiring clearance; measure RS-232 assembled height on both sides and soldered-wire clearance against its CAD reference on the same page; measure the RS-422 board's hole positions, PCB thickness and screw-terminal height against its CAD reference; measure the DE-9 jackpost stud length once delivered; check the UBEC and ferrite lead-exit envelopes beyond the recorded body and winding dimensions | Bench measurement |
+| 1 | Part sizes | Compare the ESP32 with its [CAD reference](../hardware/housing.md#contents): solder-joint height underneath, header spacing, overall length including antenna and USB protrusion, overall height with headers, USB-plug and wiring clearance; measure RS-232 assembled height on both sides and soldered-wire clearance against its CAD reference on the same page; measure the RS-422 board's hole positions, PCB thickness and screw-terminal height against its CAD reference; check the UBEC and ferrite lead-exit envelopes beyond the recorded body and winding dimensions | Bench measurement |
 
 ---
 

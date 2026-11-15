@@ -1,6 +1,6 @@
 # Housing body v1 (prototype)
 
-The enclosure fit revision uses [layout v4](../layout-v4/README.md) with a restored floor datum, revised connector wall, corner posts and hood. Open `Housing body - enclosure fit revision` in Fusion or use its standalone archive below (S82). See the [design rules](../../../docs/hardware/housing.md#rules) and [physical fit checks](../../../docs/project/open-items.md#housing).
+The enclosure fit revision uses [layout v4](../layout-v4/README.md) with a restored floor datum, revised connector wall, rounded roots beneath the front inserts, an integral ESP32 antenna holder and the hood. Open `Housing body - enclosure fit revision` in Fusion or use its standalone archive below (S82, S83). See the [design rules](../../../docs/hardware/housing.md#rules) and [physical fit checks](../../../docs/project/open-items.md#housing).
 
 ![Earlier prototype showing the hood, connector wall and external tie loops](preview-closed.png)
 
@@ -24,9 +24,9 @@ The enclosure fit revision uses [layout v4](../layout-v4/README.md) with a resto
 
 | File | Use |
 | --- | --- |
-| [housing-enclosure-fit.f3d](housing-enclosure-fit.f3d) | Current standalone Fusion assembly. Includes embedded board references, the [reinforced floor guides](../../../docs/hardware/housing.md#floor-guide), the single-tie ferrite cradle and the provisional DE-9 stops. The baseline harness is hidden. Open with *File › Open › Open from my computer* |
+| [housing-enclosure-fit.f3d](housing-enclosure-fit.f3d) | Current standalone Fusion assembly. Includes embedded board references, the integral ESP32 antenna holder, the [reinforced floor guides](../../../docs/hardware/housing.md#floor-guide), the single-tie ferrite cradle and the provisional DE-9 stops. The baseline harness is hidden. Open with *File › Open › Open from my computer* |
 | [housing-power-routing.f3d](housing-power-routing.f3d), [housing-assembly.f3d](housing-assembly.f3d) | Standalone references for the v20 routing baseline (S81) and the earlier v80 prototype (S66) |
-| [housing-base.f3d](housing-base.f3d), `housing-hood.f3d` | Fusion part archives. Open with *File › Open › Open from my computer* |
+| [housing-base.f3d](housing-base.f3d), `housing-hood.f3d` | Fusion part archives. Edit hood lettering in the full assembly, which contains the insert references |
 | [housing-base.3mf](housing-base.3mf), [housing-hood.3mf](housing-hood.3mf), [housing-logo-insert.3mf](housing-logo-insert.3mf) | Print meshes at Z = 0. Base floor down. Hood and logo top down in shared coordinates. Load hood and logo together as one object with two parts (dark grey filament for the logo) |
 | `housing-logo-insert.f3d`, `housing-logo-insert.step` | Logo and "7-20V" insert as its own part |
 | `housing-base.step`, `housing-hood.step` | Solid models in the layout frame |
@@ -37,7 +37,7 @@ The enclosure fit revision uses [layout v4](../layout-v4/README.md) with a resto
 | --- | --- |
 | Base tray | Outside 92 × 70 (78 wide over the tie loops), floor 2.5, side walls to Y 10 plus a 1.75 mm seam lip (inner 0.9). Connector wall 3.0 thick to Y 20. The hood seats on the post tops, the wall shoulder and the connector-wall and corner tops |
 | Hood | Outside 92 × 70, top at Y 22.5, top 2.5 thick with four 4.6 mm thick spots over the posts. Top edges R3, vertical corners R6 (inner corners R4), skirt 0.9 over the lip with 0.2 gap |
-| Corner posts | 8 × 8, tops at Y 17.9, inserts Ø4.0 × 6.7 deep with 0.2 entry chamfers. Insert centres (X, Z) are (7, −23.5), (7, 34.5), (85.8, −23.3) and (85.8, 34.3). Free faces end at Y 8 with a 45° underside and R2 free vertical edges |
+| Corner posts | 8 × 8, tops at Y 17.9, inserts Ø4.0 × 6.7 deep with 0.2 entry chamfers. Insert centres (X, Z) are (7, −23.5), (7, 34.5), (85.8, −23.3) and (85.8, 34.3). Free faces end at Y 8 with a 45° underside and R2 free vertical edges. The inside front corners below the posts are R4 |
 | Cover screws | Four DIN 912 M3 × 6 screws. Counterbores Ø6.0 × 3.1, heads flush, 1.5 under each head, Ø3.4 clearance. Each screw reaches 4.5 into its insert |
 | Connector wall | XT30 pocket 10.55 × 5.25, centre (Y, Z) = (6.5, −12.3), through the 3 mm wall and 5 mm-deep collar. DE-9 centre (Y, Z) = (10, 11.5). Flange recess 31.6 × 13.2 × 1.0, D-shaped cutout 19.9 × 11.5 narrowing to 16.7 at the bottom, two Ø3.4 holes at 25.0 spacing. See the [provisional nut stops](../../../docs/hardware/housing.md#connectors) |
 | Labels | See the [housing marking dimensions](../../../docs/hardware/housing.md#rules). The hood inserts are readable from the connector end |
@@ -47,7 +47,7 @@ The enclosure fit revision uses [layout v4](../layout-v4/README.md) with a resto
 
 - Colours in Fusion and STEP: base dark green, hood a lighter green. Logo insert dark grey.
 - Dimensions are in millimetres. X starts at the outside of the connector wall, Y rises from the floor top (Y 0), and Z runs across. The floor underside is at Y −2.5.
-- To edit either printed ESP32 holder part, activate its component under `ESP32 holder with RS-232 clamp` and start from its `local installed solid` base feature. To edit the carrier, activate `UBEC carrier` under `MAX490 and UBEC stack`.
+- The antenna-end holder is part of `Base tray`. To edit the removable USB clamp, activate its component under `ESP32 holder with RS-232 clamp`. To edit the carrier, activate `UBEC carrier` under `MAX490 and UBEC stack`.
 - Mating plug: the [XT30PB-F](../../reference/amass-xt30-family/README.md) STEP model sits plugged onto the XT30 on the outside of the connector wall (reference component `XT30 female (reference)` in the Connector side group): mating face against the male front face (0.5 mm outside the wall), centred on the pocket, turned 180° about the plug axis from the first placement so the polarity matches the male, solder tails pointing away from the box; no intersection with the base, hood, connector plate, DE-9 or XT30 male (Fusion check). Included in the full Fusion assembly.
 - Inside height is 20 mm. The ESP32 and MAX490 PCB undersides are 4.5 mm above the floor, with a 7.45 mm gap between the facing edges. The ferrite sits in the [integral cradle](../../../docs/hardware/housing.md#ferrite-cradle).
 - With the base floor down, the DE-9 opening bridges 19.9 mm and the XT30 pocket bridges 10.55 mm. See S82 in the [source register](../../../docs/research/sources.md#source-register) and the [physical fit checks](../../../docs/project/open-items.md#housing).
