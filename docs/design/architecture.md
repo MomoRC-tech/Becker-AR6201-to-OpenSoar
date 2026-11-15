@@ -109,7 +109,8 @@ Parts: [parts list](../hardware/modules.md#parts-list).
 
 | Item | Rule |
 | --- | --- |
-| Loader | Arduino `BasicOTA` example (S94) plus the hotspot fallback; the example alone reboots when the network is missing |
+| Loader | [`firmware/ota-loader`](../../firmware/ota-loader/README.md), ArduinoOTA (S94). Tries the configured network for 15 s, then opens hotspot `WiFi-BridgeTom` at 192.168.4.1 (S96) |
+| Availability | Hotspot and OTA stay available as long as the bridge is powered |
 | Board setting | ESP32 Dev Module, partition scheme as above; PlatformIO: `board_build.partitions = min_spiffs.csv` |
 | Credentials | Wi-Fi and OTA passwords stay in an untracked local file, never in the repository |
 | Recovery | An image without OTA, or one that fails at boot, needs USB: hood and USB cap off ([power rules](../hardware/power.md#supply)) |

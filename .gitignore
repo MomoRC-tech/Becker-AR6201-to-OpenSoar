@@ -1,3 +1,6 @@
 # Local agent files
 .codex-remote-attachments/
 .claude/settings.local.json
+
+# Local Wi-Fi and OTA passwords
+firmware/ota-loader/credentials.h
