@@ -1,6 +1,6 @@
 {
   "units": "mm",
-  "frame": "X from the connector-wall outside face; Y up from the layout datum, 3 mm above the prototype floor; Z across",
+  "frame": "X from the connector-wall outside face, Y up from the restored floor at Y 0, Z across",
   "wire_colors": {
     "GND": "black",
     "12V": "red",
@@ -12,7 +12,7 @@
     "source_id": "S76, S77",
     "archive": "housing-power-routing.f3d",
     "component": "Cable harness - routing study > Routing lanes",
-    "note": "Space envelopes for the selected levels-and-lanes concept, not wires. Each body is the union of its boxes.",
+    "note": "Historical space envelopes for routing v20, shown in housing-power-routing.f3d. The current paths and floor datum are in routes and frame.",
     "box_format": "[x0, x1, y0, y1, z0, z1] in mm, layout frame",
     "floor_top_y_mm": -3.0,
     "hood_underside_y_mm": 20.0,
@@ -252,14 +252,14 @@
       ]
     }
   },
-  "geometry_source": "housing-power-routing.f3d, Fusion version 12 (S77, S78)",
+  "geometry_source": "Fusion enclosure fit revision v8, S86",
   "junction_envelopes": {
     "Central 5V junction - bench splice envelope": {
       "box_mm": [
         55.5,
         59.5,
-        -2.95,
-        -0.35,
+        0.05,
+        2.65,
         2.85,
         5.45
       ]
@@ -268,19 +268,20 @@
       "box_mm": [
         61.5,
         66.5,
-        -2.95,
-        -0.35,
+        0.05,
+        2.65,
         2.0,
         6.5
       ]
     }
   },
   "floor_bus_tracks_z_mm": {
-    "ESP32 GND": 1.8,
-    "ESP32 5V": 3.4,
-    "instrument ground": 5.0,
-    "XT30 negative": 6.6,
-    "XT30 positive": 8.2
+    "ESP32 GND": 6.0,
+    "ESP32 5V": 4.15,
+    "instrument ground front": 5.05,
+    "instrument ground rear": 7.7,
+    "XT30 negative": 6.65,
+    "XT30 positive": 8.25
   },
   "wire_envelope_od_mm": {
     "power": 1.5,
@@ -297,17 +298,17 @@
       "paths": [
         {
           "waypoints_mm": [
-            [14, 7.5, -17.93],
-            [16.4, 7.5, -17.93],
-            [16.4, -2.2, -17.93],
-            [16.4, -2.2, 8.2],
-            [33.2, -2.2, 8.2],
-            [33.2, 13.0, 8.2],
-            [33.2, 13.0, 29.5],
-            [35.4, 13.0, 29.5],
+            [14, 7.5, -14.93],
+            [16.4, 7.5, -14.93],
+            [16.4, 0.8, -14.93],
+            [16.4, 0.8, 8.25],
+            [33.2, 0.8, 8.25],
+            [33.2, 13, 8.25],
+            [33.2, 13, 29.5],
+            [35.4, 13, 29.5],
             [35.4, 10.2, 29.5]
           ],
-          "cad_length_mm": 96.5,
+          "cad_length_mm": 83.8,
           "strip_allowance_mm": null,
           "service_slack_mm": null,
           "cutting_length_mm": null
@@ -324,18 +325,18 @@
       "paths": [
         {
           "waypoints_mm": [
-            [14, 7.5, -12.93],
-            [18.0, 7.5, -12.93],
-            [18.0, -2.2, -12.93],
-            [18.0, -2.2, 6.6],
-            [34.4, -2.2, 6.6],
-            [34.9, -2.2, 7.3],
-            [34.9, 13.0, 7.3],
-            [34.9, 13.0, 26.5],
-            [35.4, 12.2, 26.5],
+            [14, 7.5, -9.93],
+            [18, 7.5, -9.93],
+            [18, 0.8, -9.93],
+            [18, 0.8, 6.65],
+            [32.7, 0.8, 6.65],
+            [34.8, 4.2, 6.65],
+            [34.8, 6.2, 7.5],
+            [34.8, 13, 7.5],
+            [34.8, 13, 26.5],
             [35.4, 10.2, 26.5]
           ],
-          "cad_length_mm": 87.8,
+          "cad_length_mm": 73.7,
           "strip_allowance_mm": null,
           "service_slack_mm": null,
           "cutting_length_mm": null
@@ -364,14 +365,21 @@
         {
           "waypoints_mm": [
             [78, 15.5, 12],
-            [75.4, 13.5, 9.8],
-            [75.4, 1.6, 8.5],
-            [62.0, 1.6, 8.0],
-            [60.5, 1.6, 4.15],
-            [58.5, 1.6, 4.15],
-            [58.5, -0.35, 4.15]
+            [76.6, 15.5, 14],
+            [74.1, 15.5, 18.15],
+            [72.25, 15.5, 18.15],
+            [72.25, 6.4, 18.15],
+            [71.75, 2.8, 18.15],
+            [71.75, 0.8, 18.15],
+            [71.75, 0.8, 7.1],
+            [67.8, 0.8, 7.22],
+            [66.4, 0.8, 8.35],
+            [64.9, 6.3, 8.35],
+            [60.2, 6.3, 8.25],
+            [58.9, 6.3, 4.45],
+            [58.9, 2.65, 4.45]
           ],
-          "cad_length_mm": 37.4,
+          "cad_length_mm": 55.8,
           "strip_allowance_mm": null,
           "service_slack_mm": null,
           "cutting_length_mm": null
@@ -401,13 +409,17 @@
         {
           "waypoints_mm": [
             [78, 13, 10.4],
-            [77.0, 11.5, 8.5],
-            [77.0, -2.2, 7.5],
-            [72.0, -2.2, 6.9],
-            [67.8, -2.2, 6.9],
-            [66.5, -2.2, 6.0]
+            [76.9, 13, 13.5],
+            [75.7, 13, 16.8],
+            [73.4, 13, 19.35],
+            [73.4, 0.8, 19.35],
+            [73.4, 0.8, 8.0],
+            [73.4, 2.9, 6.25],
+            [69.5, 2.9, 6.25],
+            [67.4, 2.9, 6.25],
+            [66.5, 0.8, 5.8]
           ],
-          "cad_length_mm": 27.2,
+          "cad_length_mm": 42.8,
           "strip_allowance_mm": null,
           "service_slack_mm": null,
           "cutting_length_mm": null
@@ -434,17 +446,20 @@
       "paths": [
         {
           "waypoints_mm": [
-            [9.6, 8.6, 6.5],
-            [12.5, 6.5, 6.0],
-            [19.6, 6.5, 5.0],
-            [20.4, 5.8, 5.0],
-            [20.4, -2.2, 5.0],
-            [53.0, -2.2, 5.0],
-            [54.5, -2.2, 6.5],
-            [60.5, -2.2, 6.5],
-            [61.5, -2.2, 5.8]
+            [9.6, 8.6, 9.5],
+            [12.4, 6.8, 9.5],
+            [18.4, 6.4, 5.05],
+            [23.5, 6.4, 5.05],
+            [23.5, 0.8, 5.05],
+            [28.6, 0.8, 5.05],
+            [31.0, 2.65, 5.05],
+            [36.1, 2.65, 5.05],
+            [40.0, 2.65, 7.7],
+            [43.0, 0.8, 7.7],
+            [60.9, 0.8, 7.7],
+            [63.2, 0.8, 6.5]
           ],
-          "cad_length_mm": 61.8,
+          "cad_length_mm": 62.0,
           "strip_allowance_mm": null,
           "service_slack_mm": null,
           "cutting_length_mm": null
@@ -619,15 +634,16 @@
       "paths": [
         {
           "waypoints_mm": [
-            [55.5, -2.2, 4.15],
-            [54.5, -2.2, 3.4],
-            [35.3, -2.2, 3.4],
-            [35.3, -2.2, -25.9],
-            [28.27, -2.2, -25.9],
+            [55.5, 0.8, 4.15],
+            [37.16, 0.8, 4.15],
+            [37.16, 0.8, -20.3],
+            [37.16, 2.7, -23.8],
+            [37.16, 2.7, -25.9],
+            [28.27, 2.7, -25.9],
             [28.27, 14.9, -25.9],
             [28.27, 14.9, -23.28]
           ],
-          "cad_length_mm": 76.5,
+          "cad_length_mm": 70.4,
           "strip_allowance_mm": null,
           "service_slack_mm": null,
           "cutting_length_mm": null
@@ -644,15 +660,15 @@
       "paths": [
         {
           "waypoints_mm": [
-            [61.5, -2.2, 2.6],
-            [60.5, -2.2, 1.8],
-            [36.9, -2.2, 1.8],
-            [36.9, -2.2, -25.9],
-            [40.97, -2.2, -25.9],
+            [61.5, 0.8, 4.3],
+            [60.3, 0.8, 6.0],
+            [34.2, 0.8, 6.0],
+            [34.2, 0.8, -25.9],
+            [40.97, 0.8, -25.9],
             [40.97, 14.9, -25.9],
             [40.97, 14.9, -23.28]
           ],
-          "cad_length_mm": 76.4,
+          "cad_length_mm": 81.2,
           "strip_allowance_mm": null,
           "service_slack_mm": null,
           "cutting_length_mm": null
@@ -669,16 +685,15 @@
       "paths": [
         {
           "waypoints_mm": [
-            [56.5, -0.35, 4.15],
-            [56.5, 3.2, 4.15],
-            [57.5, 3.2, 6.6],
-            [69.0, 3.2, 6.6],
-            [69.0, 3.2, 28.31],
-            [75.4, 3.2, 28.31],
+            [57.0, 2.65, 4.15],
+            [57, 4.5, 6.6],
+            [69, 4.5, 6.6],
+            [69, 4.5, 28.31],
+            [75.4, 4.5, 28.31],
             [75.4, 7.6, 28.31],
             [73.2, 7.6, 28.31]
           ],
-          "cad_length_mm": 52.4,
+          "cad_length_mm": 45.7,
           "strip_allowance_mm": null,
           "service_slack_mm": null,
           "cutting_length_mm": null
@@ -695,16 +710,15 @@
       "paths": [
         {
           "waypoints_mm": [
-            [66.5, -2.2, 3.5],
-            [67.5, -0.6, 5.5],
-            [68.5, -0.6, 8.4],
-            [69.5, -2.2, 8.4],
-            [70.4, -2.2, 8.4],
-            [70.4, -2.2, 25.77],
-            [73.2, -2.2, 25.77],
+            [66.5, 0.8, 3.5],
+            [67.3, 2.3, 4.4],
+            [68.2, 6.1, 4.6],
+            [68.2, 6.1, 7.0],
+            [70.65, 6.1, 8.4],
+            [70.65, 6.1, 25.77],
             [73.2, 7.6, 25.77]
           ],
-          "cad_length_mm": 38.6,
+          "cad_length_mm": 30.0,
           "strip_allowance_mm": null,
           "service_slack_mm": null,
           "cutting_length_mm": null
@@ -726,10 +740,10 @@
             [32.837, 16.6, 4.95],
             [32.837, 10.6, 4.95],
             [13.6, 10.6, 4.95],
-            [11.6, 11.27, 3.0],
-            [9.1, 11.27, 3.0]
+            [11.6, 11.27, 6.0],
+            [9.1, 11.27, 6.0]
           ],
-          "cad_length_mm": 39.6,
+          "cad_length_mm": 37.8,
           "strip_allowance_mm": null,
           "service_slack_mm": null,
           "cutting_length_mm": null
@@ -752,10 +766,10 @@
             [44.3, 15.85, 5.95],
             [44.3, 9.5, 5.95],
             [12.0, 9.5, 5.95],
-            [10.6, 11.27, 5.77],
-            [9.1, 11.27, 5.77]
+            [10.6, 11.27, 8.77],
+            [9.1, 11.27, 8.77]
           ],
-          "cad_length_mm": 52.1,
+          "cad_length_mm": 51.9,
           "strip_allowance_mm": null,
           "service_slack_mm": null,
           "cutting_length_mm": null
@@ -827,14 +841,15 @@
         {
           "waypoints_mm": [
             [73.1, 8.74, 20.69],
-            [73.1, 9.5, 20.69],
-            [73.1, 9.5, 4.95],
+            [75.4, 9.5, 20.69],
+            [75.4, 9.5, 6.4],
+            [73.3, 9.5, 4.95],
             [48.59, 9.5, 4.95],
             [48.59, 15.7, 4.95],
             [48.59, 15.7, 3.2],
             [48.59, 15.18, 2.28]
           ],
-          "cad_length_mm": 50.0,
+          "cad_length_mm": 51.4,
           "strip_allowance_mm": null,
           "service_slack_mm": null,
           "cutting_length_mm": null
@@ -853,11 +868,12 @@
           "waypoints_mm": [
             [73.7, 8.74, 23.23],
             [73.7, 9.6, 23.23],
-            [74.0, 11.2, 23.23],
-            [74.0, 11.2, 6.1],
+            [76.7, 11.2, 23.23],
+            [76.7, 11.2, 7.7],
+            [74, 11.2, 6.1],
             [55.6, 11.2, 6.1]
           ],
-          "cad_length_mm": 38.0,
+          "cad_length_mm": 40.5,
           "strip_allowance_mm": null,
           "service_slack_mm": null,
           "cutting_length_mm": null
@@ -878,9 +894,9 @@
             [17.0, 9.8, 16.88],
             [15.6, 8.6, 16.88],
             [15.6, 8.6, 9.925],
-            [9.1, 8.6, 9.925]
+            [9.1, 8.6, 12.925]
           ],
-          "cad_length_mm": 16.5,
+          "cad_length_mm": 15.2,
           "strip_allowance_mm": null,
           "service_slack_mm": null,
           "cutting_length_mm": null
@@ -901,9 +917,9 @@
             [17.0, 9.8, 21.96],
             [14.55, 8.6, 21.96],
             [14.55, 8.6, 12.695],
-            [9.1, 8.6, 12.695]
+            [9.1, 8.6, 15.695]
           ],
-          "cad_length_mm": 18.6,
+          "cad_length_mm": 17.1,
           "strip_allowance_mm": null,
           "service_slack_mm": null,
           "cutting_length_mm": null
@@ -924,9 +940,9 @@
             [17.0, 9.8, 32.12],
             [12.9, 11.3, 32.12],
             [12.9, 11.3, 11.31],
-            [9.1, 11.27, 11.31]
+            [9.1, 11.27, 14.31]
           ],
-          "cad_length_mm": 30.2,
+          "cad_length_mm": 28.6,
           "strip_allowance_mm": null,
           "service_slack_mm": null,
           "cutting_length_mm": null
@@ -944,14 +960,14 @@
         {
           "waypoints_mm": [
             [18.2, 9.8, 27.04],
-            [17.0, 9.8, 27.04],
-            [14.3, 12.35, 27.04],
-            [12.9, 12.35, 27.04],
-            [12.9, 12.35, 14.08],
-            [11.5, 12.35, 14.08],
-            [9.1, 11.27, 14.08]
+            [16.7, 9.8, 27.04],
+            [14.8, 12.35, 27.04],
+            [12.9, 12.35, 25.3],
+            [12.9, 12.35, 17.08],
+            [10.25, 12.35, 17.08],
+            [9.1, 11.27, 17.08]
           ],
-          "cad_length_mm": 23.3,
+          "cad_length_mm": 18.8,
           "strip_allowance_mm": null,
           "service_slack_mm": null,
           "cutting_length_mm": null
