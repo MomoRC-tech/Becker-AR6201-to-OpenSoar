@@ -36,6 +36,7 @@ Start with the delivered boards and power supply, with all instruments disconnec
 | 12 | Supply-cable protection | Owner confirmation of cable length, routing and wire specification; where F1 sits at the supply end ([protection](../hardware/power.md#protection)) | Owner supplies harness details; agree cable protection before aircraft connection |
 | 13 | F1 holder | Inline holder in the 12 V harness at its supply end is selected; holder part and fuse format ([protection](../hardware/power.md#protection)) | Owner selection with item 6 |
 | 14 | Combined DE-9 instrument connection | Exact mating parts, wire-gauge compatibility, screw threads, backshell, strain relief and housing mounting. Identify the loose conductors and verify shield termination against the [selected pinout](../hardware/wiring.md#de9-pinout) and [Becker wiring](../hardware/wiring.md#becker). | Owner selects parts and mounting details. Check fit and continuity before connection. |
+| 15 | OTA loader | Write the [loader sketch](../design/architecture.md#adr-05): BasicOTA plus the hotspot fallback. Choose the hotspot name, how long to try the configured network, and the untracked credentials file | Owner approves the sketch; [bring-up](../hardware/wiring.md#bring-up) step 3 passes (milestone [M3](roadmap.md#milestones)) |
 
 ---
 
@@ -121,8 +122,8 @@ On hold until the hardware is finished.
 | 3 | Application integration | AR62xx driver over TCP alongside navigation; status display | Driver plan |
 | 4 | Firmware selection | Candidate audit, licenses, reproducible build ([ADR-02](../design/architecture.md#adr-02)) | Bridge firmware |
 | 5 | Network settings | New-bridge network configuration and device endpoints | App and bridge configuration |
-| 6 | Driver regression | Zero/A5 bytes, short frames, bad CRC, unknown start state, two instances, missing or late replies | Software verification (M3) |
-| 7 | Bridge reliability | Byte-exact tests both ways, bursts, slow clients, partial writes, reconnects, navigation in parallel | Software verification (M3) |
+| 6 | Driver regression | Zero/A5 bytes, short frames, bad CRC, unknown start state, two instances, missing or late replies | Software verification (M4) |
+| 7 | Bridge reliability | Byte-exact tests both ways, bursts, slow clients, partial writes, reconnects, navigation in parallel | Software verification (M4) |
 | 8 | Physical acceptance | Frequency change and readback on the real radio, local controls and navigation unaffected | Aircraft integration |
 
 ---

@@ -7,7 +7,7 @@
 How the bridge is split up, which hardware is selected, and the decisions behind it.
 
 > [!NOTE]
-> **Status:** hardware design selected (ADR-04); firmware not selected. Building and testing are tracked in the [roadmap](../project/roadmap.md).
+> **Status:** hardware design (ADR-04) and update path (ADR-05) selected; bridge firmware not selected. Building and testing are tracked in the [roadmap](../project/roadmap.md).
 
 📑 **On this page:** <kbd>[1 · 🧩 Who does what](#responsibilities)</kbd> <kbd>[2 · 🔧 Hardware](#hardware)</kbd> <kbd>[3 · 📝 Decisions](#decisions)</kbd>
 
@@ -57,6 +57,7 @@ Pin-by-pin details: [signal wiring](../hardware/wiring.md) and [power and ground
 | [ADR-02](#adr-02) | Firmware and reuse baseline | ⏸️ Open |
 | [ADR-03](#adr-03) | New hardware; existing setup kept as backup | ✅ Selected |
 | [ADR-04](#adr-04) | Bench hardware and power path | ✅ Selected |
+| [ADR-05](#adr-05) | Update path and Wi-Fi start-up | ✅ Selected |
 
 <a id="adr-00"></a>
 
@@ -94,6 +95,26 @@ One work queue: the [roadmap](../project/roadmap.md). Requirements live in [requ
 > - Power protection: supply fuse plus the UBEC's reverse-input protection; [fuse selection](../project/open-items.md#bench-hardware).
 
 Parts: [parts list](../hardware/modules.md#parts-list).
+
+<a id="adr-05"></a>
+
+### 3.6 ADR-05 — update path and Wi-Fi start-up
+
+> [!TIP]
+> **Selected:**
+> - Flash an OTA loader once over USB on the bench; all later firmware goes over Wi-Fi ([R13](requirements.md#requirements)). Built with Arduino-ESP32, like both firmware candidates, which include ArduinoOTA (S95).
+> - Partition scheme **Minimal SPIFFS (1.9MB APP with OTA)**, `min_spiffs.csv`: two app slots of about 1.9 MB each (S94). OTA cannot change the partition table, so every later build uses the same scheme.
+> - Wi-Fi start-up ([R12](requirements.md#requirements)): join the configured network; if that fails, open the bridge's own password-protected hotspot. OTA works in both modes.
+> - Every firmware image keeps an OTA receiver. The update method of the project firmware is chosen with [ADR-02](#adr-02).
+
+| Item | Rule |
+| --- | --- |
+| Loader | Arduino `BasicOTA` example (S94) plus the hotspot fallback; the example alone reboots when the network is missing |
+| Board setting | ESP32 Dev Module, partition scheme as above; PlatformIO: `board_build.partitions = min_spiffs.csv` |
+| Credentials | Wi-Fi and OTA passwords stay in an untracked local file, never in the repository |
+| Recovery | An image without OTA, or one that fails at boot, needs USB: hood and USB cap off ([power rules](../hardware/power.md#supply)) |
+
+Bench step: [bring-up](../hardware/wiring.md#bring-up) step 3.
 
 ---
 
