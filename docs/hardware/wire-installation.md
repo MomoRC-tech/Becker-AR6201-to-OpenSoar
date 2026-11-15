@@ -11,7 +11,7 @@ Install the bridge harness in housing v16, using the pictures to find each group
 
 📑 **On this page:** <kbd>[1 · 🔌 Prepare the connectors](#connectors)</kbd> <kbd>[2 · ⚡ Lay the power harness](#floor-power)</kbd> <kbd>[3 · 🧩 Wire the RS-232 boards](#rs232-boards)</kbd> <kbd>[4 · 📡 Connect Zander and FLARM](#rs232-connector)</kbd> <kbd>[5 · 📻 Wire the MAX490 header](#max490-header)</kbd> <kbd>[6 · 🔀 Fit the Becker pairs](#becker-pairs)</kbd> <kbd>[7 · ✅ Close up and check](#finish)</kbd>
 
-Start with the [loose-board bench checks](wiring.md#bring-up) and disconnect power before assembling. Use the [cutting table](housing.md#harness-cutting) to fit each conductor and leave enough slack to lift the carrier and clamp. Each picture shows the relevant wires in their final position, with other wires or obstructing parts hidden. The connector wall is on the left throughout.
+Start with the [loose-board bench checks](wiring.md#bring-up) and disconnect power before assembling. Use the [cutting table](housing.md#harness-cutting) to fit each conductor and leave enough slack to lift the carrier and clamp. The Fusion views show the relevant wires in their final position, with obstructing parts hidden where needed. The connector wall is on the left in each Fusion view. Arrowheads point to the labelled pin, pad, joint or wire.
 
 ---
 
@@ -24,6 +24,10 @@ Start with the [loose-board bench checks](wiring.md#bring-up) and disconnect pow
 1. With the connectors outside the tray, identify XT30 polarity from the moulded marks. Solder the red and black UBEC input leads to the corresponding cups. The UBEC is shown in its eventual position. Leave the carrier out for access.
 2. Identify the DE-9 solder cups by their moulded numbers. Fit the tinned bridge across cups **3, 6 and 7**, and attach the black lead that goes to **GND-J**. Prepare the remaining DE-9 pigtail ends for steps 4 and 6 while the cups are accessible.
 3. Fit the XT30 in its inside pocket. Fit the DE-9 from the outside, feeding the pigtail through the cutout without loading its solder joints. [Connector mounting](housing.md#connectors) · [DE-9 cup map](wiring.md#de9-pinout)
+
+![Rear view of the housing DE-9. A short tinned wire runs from cup 3 down to cup 7 and across to cup 6. The black GND-J lead leaves cup 6.](../images/wire-installation/de9-tinned-bridge.svg)
+
+The close-up shows one way to form the bridge off the housing. Fit the wire to the actual connector and check that it clears the other cups and the metal shell.
 
 ---
 
