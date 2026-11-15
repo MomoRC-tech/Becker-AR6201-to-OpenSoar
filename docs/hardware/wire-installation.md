@@ -21,7 +21,7 @@ Start with the [loose-board bench checks](wiring.md#bring-up) and disconnect pow
 
 ![Red and black factory leads from the XT30 down the connector wall and across the floor to the UBEC input](../images/wire-installation/01-xt30.png)
 
-1. With the connectors outside the tray, identify XT30 polarity from the moulded marks. Solder the red and black UBEC input leads to the corresponding cups. The UBEC is shown in its eventual position. Leave the carrier out for access.
+1. With the connectors outside the tray, identify XT30 polarity from the moulded marks. Solder the red and black UBEC input leads to the corresponding cups. Keep the UBEC loose until step 7. The picture shows its final location so you can see where the leads go.
 2. Identify the DE-9 solder cups by their moulded numbers. Fit the tinned bridge across cups **3, 6 and 7**, and attach the black lead that goes to **GND-J**. Prepare the remaining DE-9 pigtail ends for steps 4 and 6 while the cups are accessible.
 3. Fit the XT30 in its inside pocket. Fit the DE-9 from the outside, feeding the pigtail through the cutout without loading its solder joints. [Connector mounting](housing.md#connectors) · [DE-9 cup map](wiring.md#de9-pinout)
 
@@ -39,7 +39,7 @@ The close-up shows one way to form the bridge off the housing. Fit the wire to t
 
 1. Count the factory ferrite turns before moving the ring. Fit both UBEC output leads through the ferrite, preserving the factory turn count and winding sense. The picture shows the route envelope.
 2. Make and insulate **5V-J** and **GND-J** separately on the bench near the ferrite end of the floor bus. The black DE-9 bridge lead joins GND-J. Fit one supply/return pair toward ESP32 **J2-19/J2-14** and the other toward MAX490 **VCC/GND**.
-3. Pre-thread the floor ties. Feed loose ends one at a time through the staggered guide fingers, and feed both ferrite departure leads through the transverse guide. Lay in the splices, park the board ends above the tray and leave the ties loose for the fit check. [Power and ground tree](power.md#supply) · [Floor guides](housing.md#floor-guide)
+3. Pre-thread the floor ties. Feed loose ends one at a time through the staggered guide fingers, and feed both ferrite departure leads through the transverse guide. Lay in the splices, park the board ends above the tray and leave the ties loose for the fit check. Keep the UBEC and carrier out of the MAX490 mounting area. [Power and ground tree](power.md#supply) · [Floor guides](housing.md#floor-guide)
 
 ---
 
@@ -79,7 +79,7 @@ Prepare the L3 ends in step 4 before seating the modules. Prepare the **mod2 L2*
 
 ![With the UBEC carrier off, the orange, black, turquoise and blue wires are visible at the MAX490 header. Three resistors sit near ESP32 J3.](../images/wire-installation/05-max490-header.png)
 
-Keep the UBEC carrier lifted off for header access. Identify **RO** and **DI** electrically on the actual board before using the model view to route the wires.
+Set the MAX490 RS-422 board on its floor posts first. Keep the UBEC and carrier out so you can reach the MAX490 header and screw terminals. Identify **RO** and **DI** electrically on the actual board before using the model view to route the wires.
 
 | Colour | Connection |
 | --- | --- |
@@ -112,7 +112,7 @@ Twist and fit each pair separately before trimming. The Fusion paths show the te
 
 ![Completed v16 harness viewed from above with the UBEC carrier fitted, ferrite at right and the hood removed](../images/wire-installation/07-installed.png)
 
-- [ ] Seat the UBEC carrier and secure the ferrite in its cradle. Check for pinched wires under the carrier and clamp. [Carrier and ferrite mounting](housing.md#ubec-carrier)
+- [ ] After finishing the MAX490 header and both Becker pairs, place the UBEC carrier over the MAX490. Fasten both with the shared four screws and secure the ferrite in its cradle. Check for pinched wires under the carrier and clamp. [Carrier and ferrite mounting](housing.md#ubec-carrier)
 - [ ] Check that service slack lets the carrier and clamp lift clear. Retain the floor wires and insulated resistor leads without pinching the insulation. Trial-fit the hood and check for contact with the harness.
 - [ ] With the instruments disconnected, check continuity, polarity and shorts before applying power. Follow the [bench bring-up checklist](wiring.md#bring-up) before connecting any instrument.
 
