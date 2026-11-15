@@ -46,6 +46,7 @@ The bridge never changes the active frequency, and the radio's own controls keep
 | 📦 Mechanical design | ✅ Accepted — [housing v16](docs/hardware/housing.md); physical fit checks open |
 | 🔧 Wiring and bench validation | 🟡 **Current focus** |
 | 🛩️ Existing installation details | 🟡 Waiting for equipment information |
+| 📶 Bench OTA loader | 🟡 [Ready-made hotspot-only image](firmware/ota-loader/bin/README.md) for the first USB flash; hotspot not yet proven |
 | 💻 Firmware and driver changes | ⏸️ On hold until WP3 is complete |
 | ✈️ Aircraft integration | ⬜ Later |
 
@@ -74,6 +75,7 @@ The bridge never changes the active frequency, and the radio's own controls keep
 | 🔬 | **Research** | [📚 Sources](docs/research/sources.md) | Evidence |
 | | | [📻 Becker driver](docs/research/becker-driver.md) | Driver analysis |
 | | | [📶 Bridge firmware](docs/research/bridge-firmware.md) | Firmware analysis |
+| 💾 | **Firmware** | [📶 OTA loader](firmware/ota-loader/README.md) | Bench loader source, variants and build script; [public image](firmware/ota-loader/bin/README.md) |
 | | | [🗂️ Reviews](docs/research/reviews) | Dated review records |
 
 Working on the repository? Read the [work instructions](AGENTS.md) first.
