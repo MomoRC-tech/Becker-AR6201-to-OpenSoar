@@ -1,0 +1,249 @@
+{
+  "source_id": "S91",
+  "date": "2026-11-15",
+  "reference_commit": "985866c98cc4d5b4d971ff97aae80f8789ea3212",
+  "reference_fusion_document": "Housing body - enclosure fit revision",
+  "reference_version": 14,
+  "trial_fusion_document": "Housing body - Wire Generator trial",
+  "trial_version": 2,
+  "cloud_save_completed_before_export": true,
+  "comparison": {
+    "matching_reference_solids": 543,
+    "matching_reference_occurrences": 78,
+    "matching_properties": [
+      "volume",
+      "bounding box",
+      "centroid",
+      "face count",
+      "occurrence transform",
+      "joint suppression"
+    ],
+    "visibility_combinations_checked": 4,
+    "default_visibility": "Wire Generator trial visible, reference harness hidden",
+    "wiregen_conductor_solids": 23,
+    "retained_detail_bodies": {
+      "Trial Signals and resistors": 10,
+      "Trial Insulation and joint allowances": 13,
+      "Trial Distribution junction envelopes": 2
+    },
+    "rs422_marker_bands_by_pin": {
+      "8": 4,
+      "9": 4,
+      "4": 2,
+      "5": 2
+    },
+    "saved_palette_matches_reference": true,
+    "carrier_driver_probe_od_mm": 4.4,
+    "carrier_driver_intersections": 0,
+    "compute_all": true,
+    "inherited_timeline_warnings": [
+      "Position19",
+      "Position20"
+    ]
+  },
+  "reopened_archive": {
+    "solids": 591,
+    "occurrences": 82,
+    "external_references": 0,
+    "compute_all": true,
+    "palette_on_open_matches_reference": true,
+    "palette_differences_after_compute_all": [
+      "UBEC output + → ferrite → 5V-J",
+      "UBEC output GND → ferrite → GND-J",
+      "J2-1 → mod2 R3",
+      "J2-14 → mod2 R4",
+      "mod2 R3 → mod1 R3",
+      "mod2 R4 → mod1 R4",
+      "mod1 R2 → ESP32 J2-7",
+      "mod2 R2 → ESP32 J2-10"
+    ],
+    "archive_bytes": 45786445
+  },
+  "length_note": "CAD comparison only. Bench-fit the actual conductors, measure factory ferrite turns and add termination allowances and service slack before cutting.",
+  "routes": [
+    {
+      "endpoints": "XT30 + → UBEC input +",
+      "insulated_od_mm": 1.5,
+      "reference_cad_mm": 83.8,
+      "trial_cad_mm": 83.88,
+      "trial_length_method": "sketch centreline",
+      "route_geometry": "WireGen local spline and native arcs"
+    },
+    {
+      "endpoints": "XT30 − → UBEC input GND",
+      "insulated_od_mm": 1.5,
+      "reference_cad_mm": 73.7,
+      "trial_cad_mm": 73.74,
+      "trial_length_method": "sketch centreline",
+      "route_geometry": "WireGen regeneration of the reference path"
+    },
+    {
+      "endpoints": "UBEC output + → ferrite → 5V-J",
+      "insulated_od_mm": 1.5,
+      "reference_cad_mm": 113.62,
+      "trial_cad_mm": 113.68,
+      "trial_length_method": "reference length adjusted by swept-volume difference",
+      "route_geometry": "WireGen sweep on a free span; retains fixed turns / end bends"
+    },
+    {
+      "endpoints": "UBEC output GND → ferrite → GND-J",
+      "insulated_od_mm": 1.5,
+      "reference_cad_mm": 107.63,
+      "trial_cad_mm": 107.64,
+      "trial_length_method": "reference length adjusted by swept-volume difference",
+      "route_geometry": "WireGen sweep on a free span; retains fixed turns / end bends"
+    },
+    {
+      "endpoints": "DE-9 ground bridge → GND-J",
+      "insulated_od_mm": 1.5,
+      "reference_cad_mm": 62.0,
+      "trial_cad_mm": 62.05,
+      "trial_length_method": "sketch centreline",
+      "route_geometry": "WireGen fitted spline"
+    },
+    {
+      "endpoints": "J2-1 → mod2 R3",
+      "insulated_od_mm": 1.0,
+      "reference_cad_mm": 34.9,
+      "trial_cad_mm": 34.94,
+      "trial_length_method": "reference length adjusted by swept-volume difference",
+      "route_geometry": "WireGen sweep on a free span; retains fixed turns / end bends"
+    },
+    {
+      "endpoints": "J2-14 → mod2 R4",
+      "insulated_od_mm": 1.0,
+      "reference_cad_mm": 26.7,
+      "trial_cad_mm": 26.78,
+      "trial_length_method": "reference length adjusted by swept-volume difference",
+      "route_geometry": "WireGen sweep on a free span; retains fixed turns / end bends"
+    },
+    {
+      "endpoints": "mod2 R3 → mod1 R3",
+      "insulated_od_mm": 1.0,
+      "reference_cad_mm": 16.1,
+      "trial_cad_mm": 16.17,
+      "trial_length_method": "reference length adjusted by swept-volume difference",
+      "route_geometry": "WireGen sweep on a free span; retains fixed turns / end bends"
+    },
+    {
+      "endpoints": "mod2 R4 → mod1 R4",
+      "insulated_od_mm": 1.0,
+      "reference_cad_mm": 16.0,
+      "trial_cad_mm": 16.09,
+      "trial_length_method": "reference length adjusted by swept-volume difference",
+      "route_geometry": "WireGen sweep on a free span; retains fixed turns / end bends"
+    },
+    {
+      "endpoints": "5V-J → ESP32 J2-19",
+      "insulated_od_mm": 1.5,
+      "reference_cad_mm": 70.4,
+      "trial_cad_mm": 70.44,
+      "trial_length_method": "sketch centreline",
+      "route_geometry": "WireGen fitted spline"
+    },
+    {
+      "endpoints": "GND-J → ESP32 J2-14",
+      "insulated_od_mm": 1.5,
+      "reference_cad_mm": 81.2,
+      "trial_cad_mm": 81.25,
+      "trial_length_method": "sketch centreline",
+      "route_geometry": "WireGen fitted spline"
+    },
+    {
+      "endpoints": "5V-J → MAX490 VCC",
+      "insulated_od_mm": 1.5,
+      "reference_cad_mm": 45.7,
+      "trial_cad_mm": 45.76,
+      "trial_length_method": "sketch centreline",
+      "route_geometry": "WireGen local spline and native arcs"
+    },
+    {
+      "endpoints": "GND-J → MAX490 GND",
+      "insulated_od_mm": 1.5,
+      "reference_cad_mm": 30.0,
+      "trial_cad_mm": 30.08,
+      "trial_length_method": "sketch centreline",
+      "route_geometry": "WireGen fitted spline"
+    },
+    {
+      "endpoints": "DE-9 1 → mod1 L3",
+      "insulated_od_mm": 1.0,
+      "reference_cad_mm": 37.8,
+      "trial_cad_mm": 37.84,
+      "trial_length_method": "sketch centreline",
+      "route_geometry": "WireGen local spline and native arcs"
+    },
+    {
+      "endpoints": "DE-9 2 → mod2 L3",
+      "insulated_od_mm": 1.0,
+      "reference_cad_mm": 51.9,
+      "trial_cad_mm": 51.94,
+      "trial_length_method": "sketch centreline",
+      "route_geometry": "WireGen local spline and native arcs"
+    },
+    {
+      "endpoints": "mod1 R2 → ESP32 J2-7",
+      "insulated_od_mm": 1.0,
+      "reference_cad_mm": 34.9,
+      "trial_cad_mm": 34.96,
+      "trial_length_method": "reference length adjusted by swept-volume difference",
+      "route_geometry": "WireGen sweep on a free span; retains fixed turns / end bends"
+    },
+    {
+      "endpoints": "mod2 R2 → ESP32 J2-10",
+      "insulated_od_mm": 1.0,
+      "reference_cad_mm": 16.3,
+      "trial_cad_mm": 16.4,
+      "trial_length_method": "reference length adjusted by swept-volume difference",
+      "route_geometry": "WireGen sweep on a free span; retains fixed turns / end bends"
+    },
+    {
+      "endpoints": "ESP32 J3-11 → MAX490 DI",
+      "insulated_od_mm": 1.0,
+      "reference_cad_mm": 51.4,
+      "trial_cad_mm": 51.44,
+      "trial_length_method": "sketch centreline",
+      "route_geometry": "WireGen local spline and native arcs"
+    },
+    {
+      "endpoints": "MAX490 RO → R-B1 splice",
+      "insulated_od_mm": 1.0,
+      "reference_cad_mm": 40.5,
+      "trial_cad_mm": 40.55,
+      "trial_length_method": "sketch centreline",
+      "route_geometry": "WireGen local spline and native arcs"
+    },
+    {
+      "endpoints": "DE-9 8 → MAX490 Y",
+      "insulated_od_mm": 1.0,
+      "reference_cad_mm": 15.2,
+      "trial_cad_mm": 15.37,
+      "trial_length_method": "sketch centreline",
+      "route_geometry": "WireGen local spline and native arcs"
+    },
+    {
+      "endpoints": "DE-9 9 → MAX490 Z",
+      "insulated_od_mm": 1.0,
+      "reference_cad_mm": 17.1,
+      "trial_cad_mm": 17.21,
+      "trial_length_method": "sketch centreline",
+      "route_geometry": "WireGen local spline and native arcs"
+    },
+    {
+      "endpoints": "DE-9 4 → MAX490 A",
+      "insulated_od_mm": 1.0,
+      "reference_cad_mm": 28.6,
+      "trial_cad_mm": 28.58,
+      "trial_length_method": "sketch centreline",
+      "route_geometry": "WireGen local spline and native arcs"
+    },
+    {
+      "endpoints": "DE-9 5 → MAX490 B",
+      "insulated_od_mm": 1.0,
+      "reference_cad_mm": 18.8,
+      "trial_cad_mm": 18.89,
+      "trial_length_method": "sketch centreline",
+      "route_geometry": "WireGen local spline and native arcs"
+    }
+  ]
+}
