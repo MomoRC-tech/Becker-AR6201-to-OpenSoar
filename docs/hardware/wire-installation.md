@@ -22,8 +22,9 @@ Start with the [loose-board bench checks](wiring.md#bring-up) and disconnect pow
 ![Red and black factory leads from the XT30 down the connector wall and across the floor to the UBEC input](../images/wire-installation/01-xt30.png)
 
 1. With the connectors outside the tray, identify XT30 polarity from the moulded marks. Solder the red and black UBEC input leads to the corresponding cups. Keep the UBEC loose until step 7. The picture shows its final location so you can see where the leads go.
-2. Identify the DE-9 solder cups by their moulded numbers. Fit the tinned bridge across cups **3, 6 and 7**, and attach the black lead that goes to **GND-J**. Prepare the remaining DE-9 pigtail ends for steps 4 and 6 while the cups are accessible.
-3. Fit the XT30 in its inside pocket. Fit the DE-9 from the outside, feeding the pigtail through the cutout without loading its solder joints. [Connector mounting](housing.md#connectors) · [DE-9 cup map](wiring.md#de9-pinout)
+2. Wire the **entire DE-9 pigtail on the bench before fastening the connector**. Start with the lower row, which is hard to reach once mounted. Using the moulded cup numbers, solder **white to cup 8 (MAX490 Y)** and **green to cup 9 (MAX490 Z)**. Fit the tinned bridge across **3, 6 and 7** and attach one black lead to **GND-J** at the bridge. Then solder the remaining signal leads at cups **1, 2, 4 and 5**.
+3. Leave the pigtail leads overlength at their free ends. Allow enough to feed the bundle through the front cutout, follow the guides and reach each termination with service slack. Check the cup assignments and isolation from neighbouring nets and the shell while the cups are accessible.
+4. Fit the XT30 in its inside pocket. Feed the DE-9 pigtail through the cutout from outside, seat and fasten the connector without pulling on the solder joints. Route the free ends, then trim and strip them at their destinations. [Connector mounting](housing.md#connectors) · [DE-9 cup map](wiring.md#de9-pinout)
 
 ![Rear view of the housing DE-9. A short tinned wire runs from cup 3 down to cup 7 and across to cup 6. The black GND-J lead leaves cup 6.](../images/wire-installation/de9-tinned-bridge.svg)
 
@@ -68,7 +69,7 @@ Prepare the L3 ends in step 4 before seating the modules. Prepare the **mod2 L2*
 
 ![Brown and beige DE-9 wires following the centre lane, then rising to L3 on the first and second RS-232 boards](../images/wire-installation/04-rs232-connector-wires.png)
 
-1. Route **brown** from DE-9 cup **1** to **mod1 L3** and **beige** from cup **2** to **mod2 L3**. Fit the routes through the centre guides before soldering the module ends.
+1. Route the prewired **brown** lead from DE-9 cup **1** to **mod1 L3** and the **beige** lead from cup **2** to **mod2 L3**. Fit the routes through the centre guides, then trim and solder the module ends.
 2. Slide the prewired modules into the clamp. With the ESP32 in place, fit the clamp and finish the ESP32 header ends from step 3. Leave enough slack to lift the modules clear for service. [Clamp assembly order](housing.md#layout)
 
 ---
@@ -97,7 +98,7 @@ Fit **R-B2** across **J3-12 and J3-7**. Finish the **J3-11** end of **R-D** from
 
 ![Two short pairs run from the DE-9 back to the four MAX490 screw terminals at the connector wall](../images/wire-installation/06-becker-pairs.png)
 
-Twist and fit each pair separately before trimming. The Fusion paths show the terminal approaches and routing space. Use the [DE-9 cup numbers](wiring.md#de9-pinout) and the MAX490 terminal labels at both ends.
+Twist and fit each prewired pair separately, then trim and strip at the MAX490 end. The Fusion paths show the terminal approaches and routing space. Use the [DE-9 cup numbers](wiring.md#de9-pinout) and the MAX490 terminal labels at both ends.
 
 | Pair | Wires |
 | --- | --- |
