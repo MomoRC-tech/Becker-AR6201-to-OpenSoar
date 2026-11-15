@@ -252,7 +252,7 @@
       ]
     }
   },
-  "geometry_source": "Fusion enclosure fit revision v8, S86",
+  "geometry_source": "Fusion enclosure fit revision v10, S86–S87",
   "junction_envelopes": {
     "Central 5V junction - bench splice envelope": {
       "box_mm": [
@@ -287,7 +287,7 @@
     "power": 1.5,
     "signal": 1.0
   },
-  "cutting_note": "Power lengths are from the v12 route records. Signal lengths are sums of straight construction segments. Null values need bench measurements. The route length excludes end allowances, service slack, twist allowance and ferrite turns.",
+  "cutting_note": "Signal lengths are sums of straight construction segments. Null values need bench measurements. CAD lengths exclude end allowances, service slack and twist allowance. Fit the factory output leads on the bench using the measured turns.",
   "routes": [
     {
       "endpoints": "XT30 + → UBEC input +",
@@ -363,6 +363,46 @@
           "cutting_length_mm": null
         },
         {
+          "kind": "schematic winding",
+          "bore_passes": 2,
+          "waypoints_mm": [
+            [78.0, 14.0, 26.5],
+            [79.429, 14.004, 25.808],
+            [79.86, 13.063, 24.431],
+            [79.869, 12.467, 22.762],
+            [81.185, 12.196, 21.902],
+            [82.934, 12.396, 21.676],
+            [84.683, 12.591, 21.446],
+            [86.43, 12.803, 21.223],
+            [87.148, 14.214, 21.579],
+            [87.15, 15.972, 21.802],
+            [86.69, 17.595, 21.681],
+            [85.082, 17.907, 21.043],
+            [83.451, 18.019, 20.353],
+            [81.82, 18.054, 19.654],
+            [80.228, 17.828, 18.969],
+            [79.859, 16.223, 18.52],
+            [79.856, 14.456, 18.377],
+            [80.674, 13.085, 18.41],
+            [82.423, 12.941, 18.142],
+            [84.172, 12.8, 17.876],
+            [85.921, 12.652, 17.612],
+            [87.142, 13.176, 16.76],
+            [87.153, 14.103, 15.25],
+            [87.021, 14.747, 13.617],
+            [85.559, 14.491, 12.819],
+            [83.928, 13.902, 12.443],
+            [82.296, 13.274, 12.135],
+            [80.639, 12.84, 11.774],
+            [79.427, 13.865, 11.121],
+            [78, 15.5, 12]
+          ],
+          "cad_length_mm": 52.42,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        },
+        {
           "waypoints_mm": [
             [78, 15.5, 12],
             [76.6, 15.5, 14],
@@ -386,7 +426,7 @@
         }
       ],
       "cut_method": "retain factory lead",
-      "note": "CAD lengths exclude the actual turns."
+      "note": "One continuous CAD solid. The winding waypoints are sampled from the schematic spline. Measure the factory turn count and usable length on the bench."
     },
     {
       "endpoints": "UBEC output GND → ferrite → GND-J",
@@ -402,6 +442,46 @@
             [78.0, 16.0, 27.5]
           ],
           "cad_length_mm": 7.4,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        },
+        {
+          "kind": "schematic winding",
+          "bore_passes": 2,
+          "waypoints_mm": [
+            [78.0, 16.0, 27.5],
+            [79.041, 17.184, 26.377],
+            [79.72, 17.539, 24.647],
+            [79.859, 16.652, 22.945],
+            [79.859, 15.252, 21.599],
+            [79.957, 13.636, 20.545],
+            [81.675, 13.195, 20.074],
+            [83.591, 13.226, 19.745],
+            [85.508, 13.248, 19.415],
+            [87.106, 13.921, 18.994],
+            [87.153, 15.682, 18.18],
+            [86.975, 17.23, 17.057],
+            [85.317, 17.349, 16.207],
+            [83.529, 17.013, 15.519],
+            [81.742, 16.595, 14.877],
+            [80.06, 15.84, 14.513],
+            [79.86, 14.089, 15.255],
+            [79.879, 12.482, 16.345],
+            [81.429, 11.739, 16.754],
+            [83.346, 11.444, 16.604],
+            [85.263, 11.145, 16.463],
+            [87.014, 10.953, 15.896],
+            [87.153, 10.881, 13.975],
+            [87.082, 10.448, 12.087],
+            [85.546, 9.716, 11.454],
+            [83.758, 8.952, 11.504],
+            [81.94, 8.775, 11.207],
+            [80.607, 9.839, 10.299],
+            [79.55, 11.267, 9.515],
+            [78, 13, 10.4]
+          ],
+          "cad_length_mm": 57.43,
           "strip_allowance_mm": null,
           "service_slack_mm": null,
           "cutting_length_mm": null
@@ -426,7 +506,7 @@
         }
       ],
       "cut_method": "retain factory lead",
-      "note": "CAD lengths exclude the actual turns."
+      "note": "One continuous CAD solid. The winding waypoints are sampled from the schematic spline. Measure the factory turn count and usable length on the bench."
     },
     {
       "endpoints": "DE-9 cups 3–6–7 bridge",

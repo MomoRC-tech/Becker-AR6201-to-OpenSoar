@@ -7,7 +7,7 @@
 Mechanical design of the bridge: what goes inside, part sizes, connectors on the housing, internal layout.
 
 > [!NOTE]
-> **Status:** enclosure and harness modelled in Fusion (S82–S86). The DE-9 stops are provisional. The schematic ferrite winding and physical checks are tracked in [open items](../project/open-items.md#housing).
+> **Status:** enclosure and harness modelled in Fusion (S82–S87). The DE-9 stops are provisional. Physical checks are tracked in [open items](../project/open-items.md#housing).
 
 📑 **On this page:** <kbd>[1 · 🎯 Requirements](#requirements)</kbd> <kbd>[2 · 📐 Design rules](#rules)</kbd> <kbd>[3 · 📏 Contents and sizes](#contents)</kbd> <kbd>[4 · 🔌 Connectors on the housing](#connectors)</kbd> <kbd>[5 · 🧩 Internal layout](#layout)</kbd>
 
@@ -181,7 +181,7 @@ Exported geometry, in the installed layout frame; owner measurements and Fusion 
 | Printing | Base floor down, as placed in the 3MF, using PETG, a 0.4 mm nozzle and 0.2 mm layers. The passage roof bridges 3.2 mm |
 
 - **Move the ring close to the UBEC (selected):** cut off the servo plug, unwind the turns from the free end, slide the ring along the factory output lead until it sits in the cradle with about 10–15 mm of lead from the UBEC output end, and rewind the same number of turns in the same sense. The UBEC stays closed. Cut the departure leads to length for the junctions.
-- Orient the exposed core sector downward into the saddle. Keep the wire turns out of the seat and side cheeks; the CAD ring shows the bare core, not the windings.
+- Orient the exposed core sector downward into the saddle. Keep the wire turns out of the seat and side cheeks. See the [schematic winding](#power-on-lanes).
 - Thread the tie through the cradle and ring centre. Tighten only enough to remove movement without squeezing the wires.
 - Check that the ring stays captured with the hood removed. Wire routing, actual tie-head fit and print checks: [open items](../project/open-items.md#housing).
 
@@ -204,7 +204,7 @@ Sizes from owner measurements, seller listings or datasheets; see the source col
 | RS-232 module (Hailege H-1-0290) | 2 | 9.2 × 15.6 | S38 | Edge pads, soldered wires |
 | RS-422 board (MAX490) | 1 | 50 × 27 | S34 | Screw terminals A/B/Y/Z on one edge, header on the other |
 | UBEC (Hobbywing 3A) | 1 | PCB and cover dimensions in the [measured model notes](../../cad/reference/ubec-hobbywing-3a/README.md) | Owner measurements | Allow extra space for the jumper and leads. |
-| UBEC ferrite ring | 1 | Bare core: Ø14.2 outside × 5.4 axial, 2.9 radial wall (Ø8.4 bore calculated). Including wire turns: Ø17.5 outside × 9.5 axial | Owner measurements; S54 | On the UBEC 5 V output lead; upright in the [integral cradle](#ferrite-cradle). Allow separately for the entering and leaving leads. |
+| UBEC ferrite ring | 1 | Bare core: Ø14.2 outside × 5.4 axial, 2.9 radial wall (Ø8.4 bore calculated). Including wire turns: Ø17.5 outside × 9.5 axial | Owner measurements; S54 | Around both UBEC output leads; upright in the [integral cradle](#ferrite-cradle). Allow separately for the entering and leaving leads. |
 | XT30 male, panel | 1 | 10.55 × 5.25 body; 10.8 × 5.66 over the raised markings at the solder-cup end (owner measurement) | S51 | Press-fit pocket ([section 4](#connectors)) |
 | DE-9 male, panel | 1 | Flange 31 × 12.6 × 1.0, holes Ø3.1 at 25.0 spacing; D shell 17.85 × 9.2 outer; rear body behind the flange 19.3 × 10.9 × 5.0 deep, 8.0 including the solder cups (owner measurement) | S43 | Flange and rear side as the female plug model |
 | Resistors (divider, pull-ups) | 5 | DIN0204 axial, body about Ø1.6 × 3.6 | S45 | R-B1, R-B2, R-Z, R-F, R-D |
@@ -392,12 +392,12 @@ Use **Cable harness - routing study** in the [enclosure assembly](../../cad/hous
 
 <a id="power-on-lanes"></a>
 
-**Power routes on the lanes (S86).** Power conductors use Ø1.5 mm envelopes. Floor runs are centred at Y 0.8 mm. Follow the [waypoints](../../cad/housing/housing-body-v1/routing-study.json) through branches and crossings.
+**Power routes on the lanes (S86–S87).** Power conductors use Ø1.5 mm envelopes. Floor runs are centred at Y 0.8 mm. Follow the [waypoints](../../cad/housing/housing-body-v1/routing-study.json) through branches and crossings.
 
 | Item | Route |
 | --- | --- |
 | XT30 pair | Drop from the shifted cups at X 16.4 (+) and 18.0 (−). Follow the floor bus before rising to the UBEC input pads |
-| UBEC output and ferrite | The approach and departure spans are modelled. Both departures pass under the transverse guide before branching to their splices |
+| UBEC output and ferrite | Both leads run continuously from the UBEC pads, make two schematic passes through the bore and around the core, then pass under the transverse guide to 5V-J and GND-J |
 | 5V-J / GND-J | Splice envelopes at Y 0.05–2.65, with 5V-J at X 55.5–59.5 and GND-J at X 61.5–66.5 |
 | ESP32 branches | Separate floor crossings and wall routes to J2-19 (5V) and J2-14 (GND) |
 | MAX490 branches | Approach header VCC and GND from the end of the board |
@@ -440,7 +440,7 @@ The centre-floor guide has three rib pairs. Two pairs have staggered fingers for
 
 ### 5.3 Harness cutting table
 
-Use the [current route data](../../cad/housing/housing-body-v1/routing-study.json) and the [build order](../research/reviews/2026-11-14-wire-routing.md#build-order). Lengths are in millimetres and exclude the ferrite winding. A plus sign separates routed segments or resistor leads.
+Use the [current route data](../../cad/housing/housing-body-v1/routing-study.json) and the [build order](../research/reviews/2026-11-14-wire-routing.md#build-order). Lengths are in millimetres. A plus sign separates routed segments or resistor leads. For the UBEC output pair, the table gives the approach and departure spans. Measure the factory leads with their actual turns in place.
 
 - **Cut length = fitted route length + both end allowances + service slack.** Measure the end allowance against each cup, pad or terminal. Count the stripped portion once. Fit enough slack to lift the carrier or the RS-232 modules where needed.
 - Twist and dress the Becker pairs before measuring each conductor. Count the ferrite turns before rewinding the factory output leads. Form the DE-9 tinned bridge and the on-pad axial leads against the real contacts.

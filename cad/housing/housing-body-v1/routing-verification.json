@@ -88,5 +88,170 @@
     "Service loops and strain relief",
     "Junction hardware and mounting",
     "Ferrite winding and DE-9 fan-out"
-  ]
+  ],
+  "ferrite_winding": {
+    "source_id": "S87",
+    "date": "2026-11-15",
+    "baseline_commit": "999f43b",
+    "baseline_source": "S86",
+    "fusion_version": 10,
+    "unchanged_solids": 540,
+    "recompute_timeline_health": [
+      [
+        200,
+        "UBEC end solder clearance - support only 19",
+        4,
+        ""
+      ],
+      [
+        202,
+        "Raised-head pockets diameter 5.2 depth 3.2",
+        4,
+        ""
+      ],
+      [
+        204,
+        "Open pocket mouths - remove thin side rims",
+        4,
+        ""
+      ]
+    ],
+    "leads": {
+      "5V": {
+        "continuous_solid_lumps": 1,
+        "preserved_pad_and_splice_centres_mm": [
+          [
+            74.4,
+            10.2,
+            26.5
+          ],
+          [
+            58.9,
+            2.65,
+            4.45
+          ]
+        ],
+        "winding_joint_overlap_mm3": [
+          0.3887,
+          0.38873
+        ],
+        "midplane_crossing_radii_mm": [
+          3.23553,
+          8.06445,
+          3.23553,
+          8.06445
+        ],
+        "s86_departure_tie_clearance_mm": 1.322,
+        "winding_gaps_mm": {
+          "tie": 2.99343,
+          "core": 0.18679,
+          "base_including_cradle_and_guides": 2.41305,
+          "hood": 1.19628
+        }
+      },
+      "GND": {
+        "continuous_solid_lumps": 1,
+        "preserved_pad_and_splice_centres_mm": [
+          [
+            74.4,
+            10.2,
+            29.5
+          ],
+          [
+            66.5,
+            0.8,
+            5.8
+          ]
+        ],
+        "winding_joint_overlap_mm3": [
+          0.38877,
+          0.38872
+        ],
+        "midplane_crossing_radii_mm": [
+          3.23553,
+          8.06445,
+          3.23553,
+          8.06421
+        ],
+        "s86_departure_tie_clearance_mm": 0.172,
+        "winding_gaps_mm": {
+          "tie": 2.27485,
+          "core": 0.18682,
+          "base_including_cradle_and_guides": 2.09686,
+          "hood": 1.66489
+        }
+      }
+    },
+    "winding_to_winding_gap_mm": 0.29701,
+    "complete_lead_gaps_mm": {
+      "5V tie": 1.322,
+      "5V core": 0.18679,
+      "5V base_including_floor_guides_and_cradle": 0.0402,
+      "5V hood": 1.19628,
+      "5V cradle_face_set": 5.04893,
+      "5V transverse_guide_face_set": 0.0402,
+      "5V central_guides_face_set": 4.45565,
+      "GND tie": 0.172,
+      "GND core": 0.18682,
+      "GND base_including_floor_guides_and_cradle": 0.05,
+      "GND hood": 1.66489,
+      "GND cradle_face_set": 3.65,
+      "GND transverse_guide_face_set": 0.25,
+      "GND central_guides_face_set": 12.19864,
+      "between_complete_leads": 0.15
+    },
+    "s86_departure_to_base_mm": {
+      "5V": 0.0402,
+      "GND": 0.05
+    },
+    "s86_span_comparison": {
+      "scope": "S86 span mesh vertices at X < 77 mm compared to the joined lead mesh surfaces",
+      "max_sample_error_mm": 0.00051
+    },
+    "joined_mesh_check": {
+      "all_welded_edges_have_two_triangles": true,
+      "triangles": {
+        "5V": 19634,
+        "GND": 18410
+      },
+      "volume_mm3": {
+        "5V": 197.73388,
+        "GND": 187.52648
+      },
+      "note": "The native +5 V solid-volume result differs from tessellated integration. Continuity was checked by joined topology, the original end faces, and point containment at 401 positions per winding."
+    },
+    "export": {
+      "saved_version": 10,
+      "saved_and_cloud_complete_before_export": true,
+      "reopened_occurrences": 77,
+      "reopened_timeline_items": 724,
+      "reopened_solid_records": 542,
+      "reopened_external_references": 0,
+      "reopened_visible_continuous_leads": 2,
+      "reopened_compute_all": true,
+      "reopened_matching_geometry_and_endpoint_caps": true,
+      "reopened_names_after_compute": [
+        "UBEC output A to ferrite approach - polarity unassigned (1)",
+        "UBEC output B to ferrite approach - polarity unassigned (1)"
+      ],
+      "reopened_mesh_check": {
+        "UBEC output +5 V through ferrite to 5V-J": {
+          "symmetric_vertex_deviation_mm": 0.0,
+          "mesh_volume_deviation_mm3": 0.0,
+          "two_triangles_per_welded_edge": true
+        },
+        "UBEC output return through ferrite to GND-J": {
+          "symmetric_vertex_deviation_mm": 0.0,
+          "mesh_volume_deviation_mm3": 0.0,
+          "two_triangles_per_welded_edge": true
+        }
+      }
+    },
+    "recompute_label_note": "Use the named Join UBEC features to identify each net if Compute All restores the inherited approach body labels.",
+    "bench_checks": [
+      "Factory turn count and winding sense",
+      "Available lead length, bend radii, clearance, threading, and service slack",
+      "Electrical continuity and fit"
+    ]
+  }
 }
