@@ -403,7 +403,9 @@ Use **Cable harness - routing study** in the [enclosure assembly](../../cad/hous
 | MAX490 branches | Approach header VCC and GND from the end of the board |
 | Instrument ground | From the shifted ground jumper location through the centre guide and raised crossing to GND-J |
 
-**Wire colours (S81)** — red for 12 V, orange for 5 V, pink for 3.3 V and black for ground. Use the individual signal colours in the [cutting table](#harness-cutting). Keep the RO signal blue on both sides of R-B1.
+**Wire colours (S81, S88)** — red for 12 V, orange for 5 V, pink for 3.3 V and black for ground. Use the individual signal colours in the [cutting table](#harness-cutting). Keep the RO insulation blue on both sides of R-B1 and the exposed leads and solder joints metallic.
+
+- **RS-422 pair markings (S88):** keep each wire’s base colour. Mark each A/B wire (DE-9 4/5) with one charcoal band near each end. Mark each Y/Z wire (DE-9 8/9) with two bands near each end.
 
 <a id="signals-on-lanes"></a>
 
