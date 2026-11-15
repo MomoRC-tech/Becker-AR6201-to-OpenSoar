@@ -7,7 +7,7 @@
 Mechanical design of the bridge: what goes inside, part sizes, connectors on the housing, internal layout.
 
 > [!NOTE]
-> **Status:** enclosure fit revision modelled in Fusion (S82, S83). The DE-9 stops are provisional. The [routing study](#internal-routing) uses the previous enclosure geometry. Harness adaptation and physical checks are tracked in [open items](../project/open-items.md#housing).
+> **Status:** enclosure fit revision modelled in Fusion (S82–S84). The DE-9 stops are provisional. The [routing study](#internal-routing) uses the previous enclosure geometry. Harness adaptation and physical checks are tracked in [open items](../project/open-items.md#housing).
 
 📑 **On this page:** <kbd>[1 · 🎯 Requirements](#requirements)</kbd> <kbd>[2 · 📐 Design rules](#rules)</kbd> <kbd>[3 · 📏 Contents and sizes](#contents)</kbd> <kbd>[4 · 🔌 Connectors on the housing](#connectors)</kbd> <kbd>[5 · 🧩 Internal layout](#layout)</kbd>
 
@@ -438,17 +438,18 @@ Junction hardware and attachment are tracked in the [housing open items](../proj
 
 ### 5.2 Floor guide and cable-tie eyes
 
-The centre-floor guide has three rib pairs. Two pairs have staggered fingers that retain the wires and leave an opening for side entry (S79, S81).
+The centre-floor guide has three rib pairs. Two pairs have staggered fingers for side entry. A narrower staggered guide sits beside the ferrite (S84).
 
 | Feature | Layout-frame dimensions (mm) |
 | --- | --- |
-| Rib pairs | X 22–25, 44–47 and 51–54. Ribs 1.8 thick, 8.4 clear between them, top 2.5 above the floor |
-| Staggered fingers | Station centres X 23.5 and 52.5. One 3.6-wide finger on each side, with a 2.0 gap along X. Tips reach 4.6 into the channel and overlap by 0.8 in plan. The rear ESP32-side finger has a lower section beneath the two nearest header pins |
+| Rib pairs | X 22–25, 44–47 and 51–54. Ribs 1.8 thick, 8.4 clear between them, top 2.5 above the floor. At X 22–25 and 51–54 the channel spans Z 2.9–11.3. At X 44–47 it spans Z 0.9–9.3 |
+| Staggered fingers | Station centres X 23.5 and 52.5. One 3.6-wide finger on each side, with a 2.0 gap along X. Tips reach 4.6 into the channel and overlap by 0.8 in plan. The rear ESP32-side finger retains its lowered section on the header side |
+| Ferrite-end guide | Staggered fingers at X 68.0–71.6 and 73.6–77.2. Ribs 1.8 thick, with a 3.6 clear channel at Z 12.7–16.3 |
 | Cable-tie eyes | X 29.5 on the ESP32 side and X 39.5 on the MAX490 side. Each eye is 7.8 wide with a 3.2 × 2.08 through-passage for a 2.5-wide tie. The base floor is closed |
 
 - Pass each wire under one finger at a time, then straighten it along the channel. Remove it by reversing the sequence. Leave the splice and branch exits accessible.
 - Thread the ties before laying the bundle. Support the wires without pinching the insulation and leave service slack at the terminals.
-- Print the base floor down in PETG on the P1S with a 0.4 mm nozzle and 0.20 mm layers. The eye roofs bridge 3.2 mm. Fit-print the fingers and eyes with the actual wire and ties, including the flat underside beneath the rear ESP32 header. See the [housing checks](../project/open-items.md#housing).
+- Print the base floor down in PETG on the P1S with a 0.4 mm nozzle and 0.20 mm layers. The eye roofs bridge 3.2 mm. Fit-print the fingers and eyes with the actual wire and ties, including the flat underside of the rear ESP32-side finger. See the [housing checks](../project/open-items.md#housing).
 
 <a id="harness-cutting"></a>
 

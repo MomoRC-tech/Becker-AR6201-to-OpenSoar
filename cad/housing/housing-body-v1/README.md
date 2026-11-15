@@ -1,6 +1,6 @@
 # Housing body v1 (prototype)
 
-The enclosure fit revision uses [layout v4](../layout-v4/README.md) with a restored floor datum, revised connector wall, rounded roots beneath the front inserts, an integral ESP32 antenna holder and the hood. Open `Housing body - enclosure fit revision` in Fusion or use its standalone archive below (S82, S83). See the [design rules](../../../docs/hardware/housing.md#rules) and [physical fit checks](../../../docs/project/open-items.md#housing).
+The enclosure fit revision uses [layout v4](../layout-v4/README.md) with a restored floor datum, revised connector wall, rounded roots beneath the front inserts, an integral ESP32 antenna holder and the hood. Open `Housing body - enclosure fit revision` in Fusion or use its standalone archive below (S82–S84). See the [design rules](../../../docs/hardware/housing.md#rules) and [physical fit checks](../../../docs/project/open-items.md#housing).
 
 ![Earlier prototype showing the hood, connector wall and external tie loops](preview-closed.png)
 
