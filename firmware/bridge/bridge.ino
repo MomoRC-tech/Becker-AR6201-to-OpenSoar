@@ -1,20 +1,17 @@
 /*********************************************************************************
- * ESP-Serial-Bridge
+ * Wi-Fi bridge firmware: Zander ZS1, FLARM and Becker AR6201 to OpenSoar
+ * https://github.com/MomoRC-tech/Becker-AR6201-to-OpenSoar (firmware/bridge)
  *
- * Simple WiFi Serial Bridge for Espressif microcontrollers
+ * Forwards three UARTs to TCP and UDP over Wi-Fi: Zander on UART0, FLARM on
+ * UART1, the Becker radio (RS-422 through a MAX490) on UART2. Settings are in
+ * config.h, Wi-Fi and OTA passwords in credentials.h, the status page in
+ * status_page.h.
  *
- * Forked from https://github.com/AlphaLima/ESP32-Serial-Bridge
+ * Based on ESP-Serial-Bridge by yuri-rage, itself forked from AlphaLima's
+ * ESP32-Serial-Bridge (MIT license, see LICENSE). Lines marked "Project:"
+ * are this project's changes.
  *
- * Added compatibility for ESP8266, WiFi reconnect on failure, and mDNS
- *discovery.
- *
- * Note: ESP8266 is limited to 115200 baud and may be somewhat unreliable in
- *       this application.
- *
- *   -- Yuri - Aug 2021
- *
- * Fixed compatibility with Arduino framework 2.0 -- Yuri - Apr 2023
- * Implemented UDP + bug fixes                    -- Yuri - Apr 2023
+ * Note: the ESP8266 branches are kept but not tested here.
  *
  * Disclaimer: Don't use for life support systems or any other situation
  * where system failure may affect user or environmental safety.

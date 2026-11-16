@@ -63,7 +63,7 @@ static String statusJson() {
     char part[256];
     String out;
     out.reserve(1024);
-    snprintf(part, sizeof(part), "{\"firmware\":\"%s %s\",\"uptime_s\":%llu,", VERSION, BRIDGE_VERSION,
+    snprintf(part, sizeof(part), "{\"firmware\":\"Wi-Fi bridge %s\",\"uptime_s\":%llu,", VERSION,
              (unsigned long long)(esp_timer_get_time() / 1000000));
     out += part;
 

@@ -1,6 +1,6 @@
 # Bridge firmware
 
-Wi-Fi bridge firmware for Zander, FLARM and Becker, built from Yuri's ESP-Serial-Bridge in the steps of the [firmware plan](../../docs/project/roadmap.md#firmware-plan) ([ADR-02](../../docs/design/architecture.md#adr-02)). Current state: step 3 done, running on the bench ESP32 (S105–S107).
+The project's own Wi-Fi bridge firmware for Zander, FLARM and Becker, developed in the steps of the [firmware plan](../../docs/project/roadmap.md#firmware-plan) ([ADR-02](../../docs/design/architecture.md#adr-02)). It started from ESP-Serial-Bridge; origin and license below. Current state: step 3 done, running on the bench ESP32 (S105–S107).
 
 ## Origin and license
 
@@ -38,6 +38,7 @@ Set in `config.h`; everything else is upstream.
 | UART receive buffer | 4096 bytes per UART, so bytes are kept while the loop waits on a UART write |
 | Build-time checks | The build stops if UDP or Bluetooth is pointed at the radio port, or if not exactly one Wi-Fi mode is selected |
 | `BATTERY_SAVER` | Fixed so it lowers the transmit power; off |
+| Version | `VERSION` in `config.h`, `0.<plan step>` until bench acceptance; shown on the status page as "Wi-Fi bridge 0.3-ESP32" |
 | Status page | `STATUS_PAGE`: read-only page on port 80 and `/api/status` as JSON, open to everyone on the bridge's Wi-Fi; see below |
 
 <a id="status-page"></a>

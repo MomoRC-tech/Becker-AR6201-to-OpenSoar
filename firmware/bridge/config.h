@@ -1,10 +1,8 @@
 /*********************************************************************************
- * config.h
- * 
- * Added compatibility for ESP8266  -- Yuri - Aug 2021
- * Incremented  version to 2.0      -- Yuri - Apr 2023
- * Implemented UDP + bug fixes      -- Yuri - Apr 2023
- * 
+ * config.h: build-time settings of the Wi-Fi bridge firmware
+ *
+ * Pins, baud rates, ports, Wi-Fi mode and features. Passwords are in
+ * credentials.h. Lines marked "Project:" are this project's settings.
 *********************************************************************************/
 #ifndef CONFIG_H
 #define CONFIG_H
@@ -52,9 +50,9 @@
                              // incoming bytes while the loop waits on a UART write
 
 #ifdef ESP32
-#define VERSION "2.0-ESP32"
+#define VERSION "0.3-ESP32"    // Project: own version, 0.<plan step> until bench acceptance
 #elif defined(ESP8266)
-#define VERSION "2.0-ESP8266"
+#define VERSION "0.3-ESP8266"
 #endif
 
 #define MODE_STA_AP            // MODE_STA, MODE_AP or MODE_STA_AP (Project: network, then hotspot; ESP32 only)
@@ -62,7 +60,6 @@
 #define MAX_NMEA_CLIENTS 4     // max TCP clients
 #define PROTOCOL_UDP           // uncomment to enable UDP broadcast (ESP32 only)
 #define STATUS_PAGE            // Project: read-only status page on port 80 and /api/status (ESP32 only)
-#define BRIDGE_VERSION "bridge step 3"           // Project: shown on the status page
 #define PORT_NAMES {"Zander", "FLARM", "Becker"}  // Project: COM 0, 1, 2 on the status page
 //#define BLUETOOTH 0          // uncomment to create a bluetooth serial bridge on the indicated serial port (ESP32 only)
 //#define BATTERY_SAVER        // uncomment to reduce wifi power
