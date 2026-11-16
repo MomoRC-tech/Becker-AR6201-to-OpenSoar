@@ -47,7 +47,7 @@ The bridge never changes the active frequency, and the radio's own controls keep
 | 🔧 Wiring and bench validation | 🟡 **Current focus** |
 | 🛩️ Existing installation details | 🟡 Waiting for equipment information |
 | 📶 Bench OTA loader | ✅ Flashed and updatable over Wi-Fi ([M3](docs/project/roadmap.md#milestones)); [ready-made hotspot-only image](firmware/ota-loader/bin/README.md) for the first USB flash |
-| 💻 Bridge firmware | 🟡 [Plan](docs/project/roadmap.md#firmware-plan) approved; step 1 next |
+| 💻 Bridge firmware | 🟡 [Plan](docs/project/roadmap.md#firmware-plan) approved; step 1 done ([baseline](firmware/bridge/README.md) builds, not uploaded), step 2 next |
 | 📻 OpenSoar driver changes | ⏸️ On hold until WP3 is complete |
 | ✈️ Aircraft integration | ⬜ Later |
 
@@ -78,6 +78,7 @@ The bridge never changes the active frequency, and the radio's own controls keep
 | | | [📻 Becker driver](docs/research/becker-driver.md) | Driver analysis |
 | | | [📶 Bridge firmware](docs/research/bridge-firmware.md) | Firmware analysis |
 | 💾 | **Firmware** | [📶 OTA loader](firmware/ota-loader/README.md) | Bench loader source, variants and build script; [public image](firmware/ota-loader/bin/README.md) |
+| | | [💻 Bridge firmware](firmware/bridge/README.md) | Bridge sketch from Yuri's ESP-Serial-Bridge, project settings and build script |
 | | | [🗂️ Reviews](docs/research/reviews) | Dated review records |
 
 Working on the repository? Read the [work instructions](AGENTS.md) first.

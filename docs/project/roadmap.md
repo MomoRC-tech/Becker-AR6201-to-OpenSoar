@@ -7,7 +7,7 @@
 The single work queue: which work package comes next and what finishes it.
 
 > [!NOTE]
-> **Status:** WP3 continues with wiring and bench validation. The [bridge firmware plan](#firmware-plan) (WP6) is approved and runs in parallel, starting with step 1. The driver packages (WP4, WP5) wait until WP3 is complete. Work outside the approved plan needs the owner's approval.
+> **Status:** WP3 continues with wiring and bench validation. The [bridge firmware plan](#firmware-plan) (WP6) is approved and runs in parallel; step 1 is done, step 2 is next. The driver packages (WP4, WP5) wait until WP3 is complete. Work outside the approved plan needs the owner's approval.
 
 📑 **On this page:** <kbd>[1 · 📦 Work packages](#work-packages)</kbd> <kbd>[2 · 💻 Bridge firmware plan](#firmware-plan)</kbd> <kbd>[3 · 🏁 Milestones](#milestones)</kbd> <kbd>[4 · ✅ Test coverage for the software phase](#test-coverage)</kbd>
 
@@ -27,7 +27,7 @@ Related: ❓ [Open items](open-items.md) · 🎯 [Requirements](../design/requir
 | WP2 Interfaces and protocol | ⏸️ Driver research done ([Becker driver](../research/becker-driver.md)) | Matching radio protocol reference or independent captures | Manual, settings, framing and reply rules confirmed |
 | WP4 Driver plan | ⏸️ Send defect analysed | After hardware: counted-send fix and caller/state/UI mapping | One small change and regression test per step |
 | WP5 Host tests | ⏸️ Send regression only ([review](../research/reviews/2026-11-08-becker-send.md)) | After WP4 scope is approved | Framing, state, reply and reconnect cases pass |
-| WP6 Bridge firmware | 🟡 [Plan](#firmware-plan) approved, in parallel with WP3 | Step 1 of the [firmware plan](#firmware-plan) | Radio path byte-exact, single owner, navigation unaffected. Verify link monitoring if included in the approved scope |
+| WP6 Bridge firmware | 🟡 [Plan](#firmware-plan) approved, in parallel with WP3; step 1 done | Step 2 of the [firmware plan](#firmware-plan) | Radio path byte-exact, single owner, navigation unaffected. Verify link monitoring if included in the approved scope |
 | WP8 Aircraft integration | ⬜ Later | Needs verified hardware and separate approval | Installation, protection and approval requirements met |
 
 <a id="claude-handover"></a>
@@ -108,7 +108,7 @@ Each step: build, upload over Wi-Fi, check, update the owning pages, commit.
 
 | # | Step | Needs | Done when |
 | :-: | --- | --- | --- |
-| 1 | **Baseline.** Import the upstream sketch unchanged with its MIT license; set the project pins, ports and hotspot address; add a build script | PC only | Builds with the pinned toolchain. Not uploaded: the upstream start-up has no hotspot fallback and no OTA password ([R13](../design/requirements.md#requirements)) |
+| 1 | ✅ **Baseline.** Import the upstream sketch unchanged with its MIT license; set the project pins, ports and hotspot address; add a build script | PC only | Done: [`firmware/bridge/`](../../firmware/bridge/README.md) builds with the pinned toolchain (S104). Not uploaded: the upstream start-up has no hotspot fallback and no OTA password ([R13](../design/requirements.md#requirements)) |
 | 2 | **Project settings.** Pins, baud rates and ports; add the loader's Wi-Fi start-up and the OTA password; log output off; UDP limited to Zander and FLARM; fix `BATTERY_SAVER`. No upstream feature removed | Bench ESP32, one jumper wire or a USB RS-232 adapter | First upload. Test data arrives byte for byte on the receiving port, over TCP and UDP: looped from the Zander output pin to the FLARM input and back the other way, or fed in at the DE-9. UDP sent to the radio port reaches nothing; OTA works in both Wi-Fi modes, with the hotspot at its new address |
 | 3 | **Status page.** Read-only page and JSON | Bench ESP32, phone | The page shows live counters on the phone; the step 2 check passes with the page open |
 | 4 | **Radio port.** Single owner, counted writes, no blocking calls in the forwarding loop | Wired MAX490 path; loopback plug: DE-9 socket with pin 8 linked to 4 and pin 9 to 5 ([pinout](../hardware/wiring.md#de9-pinout)) | Through the loopback plug every byte value, bursts and split writes return unchanged; nothing arrives after a restart; a second client is refused; navigation data keeps flowing |
@@ -117,7 +117,7 @@ Each step: build, upload over Wi-Fi, check, update the owning pages, commit.
 > [!WARNING]
 > Use the jumper loop only while GPIO26 and GPIO32 are not yet soldered to the RS-232 modules. Once they are, the module output and the jumper would drive the same pin against each other: feed test data in at the DE-9 instead.
 
-Later, each needing its own approval: password-protected settings page (baud rates and Wi-Fi stored on the ESP32), firmware upload from the browser, radio byte monitor for [protocol captures](open-items.md#software-and-acceptance).
+Later, each needing its own approval: password-protected settings page (baud rates and Wi-Fi stored on the ESP32), firmware upload from the browser, radio byte monitor for [protocol captures](open-items.md#software-and-acceptance), contributing general fixes back to [Yuri's project](https://github.com/yuri-rage/ESP-Serial-Bridge) (for example `BATTERY_SAVER` and the Arduino-ESP32 3.x `accept()` rename). Keep each such fix in its own commit so it can be offered upstream.
 
 The firmware alone does not tune the radio: OpenSoar's driver cuts frames that contain zero bytes ([Becker driver](../research/becker-driver.md#opensoar-driver)). WP4 and WP5 stay separate packages and follow once the bridge passes step 5.
 

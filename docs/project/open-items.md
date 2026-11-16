@@ -120,11 +120,11 @@ The bridge firmware follows its [plan](roadmap.md#firmware-plan) in parallel wit
 | 1 | Protocol | Authoritative framing, ACK/NAK, CRC rules, status requests, channel vectors ([details](../research/becker-driver.md#protocol-details)) | Driver plan; independent test vectors |
 | 2 | Radio configuration | Matching manual, serial settings, remote-control configuration | Port configuration |
 | 3 | Application integration | AR62xx driver over TCP alongside navigation; status display | Driver plan |
-| 4 | Firmware build | Reproducible build of the selected baseline ([firmware plan](roadmap.md#firmware-plan), step 1) | Bridge firmware |
 | 5 | Network settings | Wi-Fi name and passwords of the new bridge; address and ports are [selected](roadmap.md#firmware-plan) | App and bridge configuration |
 | 6 | Driver regression | Zero/A5 bytes, short frames, bad CRC, unknown start state, two instances, missing or late replies | Software verification (M4) |
 | 7 | Bridge reliability | Byte-exact tests both ways, bursts, slow clients, partial writes, reconnects, navigation in parallel | Software verification (M4) |
 | 8 | Physical acceptance | Frequency change and readback on the real radio, local controls and navigation unaffected | Aircraft integration |
+| 9 | UDP ports | Recheck the upstream UDP ports 14550 (Zander) and 14551 (FLARM) in the [bridge settings](../../firmware/bridge/README.md#project-settings): 14550 is also the usual MAVLink port; match them to OpenSoar's UDP device entries | UDP use with OpenSoar |
 
 ---
 
