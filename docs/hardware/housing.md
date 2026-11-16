@@ -457,7 +457,7 @@ Follow the [illustrated installation sequence](wire-installation.md) when fittin
 | Bench | DE-9 cups 3–6–7 bridge | Tinned | Tinned jumper | Connector cups | — | — | — | Form at cups |
 | Bench | DE-9 ground bridge → GND-J | Black | 22 AWG PTFE | Wall / floor | 62.0 | Measure | Fit | Calculate |
 | Bench | J2-1 → mod2 R3 | Pink | 26 AWG PTFE | J2 | 34.9 | Measure | Fit | Calculate |
-| Bench | J3-1 → mod2 R4 | Black | 26 AWG PTFE | Across ESP32 | Not modelled | Measure | Fit | Calculate |
+| Bench | J3-1 → mod2 R4 | Black | 26 AWG PTFE | Pin top, across ESP32 | 47.4 | Measure | Fit | Calculate |
 | Bench | mod2 R3 → mod1 R3 | Pink | 26 AWG PTFE | Pin top | 16.2 | Measure | Fit | Calculate |
 | Bench | mod2 R4 → mod1 R4 | Black | 26 AWG PTFE | Pin top | 16.1 | Measure | Fit | Calculate |
 | Floor | 5V-J → ESP32 J2-19 | Orange | 22 AWG PTFE | Floor / J2 | 70.4 | Measure | Fit | Calculate |

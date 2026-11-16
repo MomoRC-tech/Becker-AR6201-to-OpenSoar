@@ -585,25 +585,24 @@
       "cut_method": "fit and calculate"
     },
     {
-      "endpoints": "J2-14 → mod2 R4",
-      "release_cad_length_mm": 26.78,
-      "release_length_method": "reference length adjusted by swept-volume difference",
+      "endpoints": "J3-1 → mod2 R4",
+      "release_cad_length_mm": 47.42,
+      "release_length_method": "sketch centreline (native sweep, S101)",
       "colour": "Black",
       "material": "26 AWG PTFE",
-      "lane": "J2",
+      "lane": "Pin top, across ESP32",
       "build_step": "Bench",
       "paths": [
         {
           "waypoints_mm": [
-            [47.981, 15.55, -17.327],
+            [73.99, 15.18, 2.28],
+            [73.99, 17.4, 2.28],
+            [62.0, 17.4, 2.28],
+            [62.0, 17.4, -17.327],
             [47.981, 17.4, -17.327],
-            [52.8, 17.4, -17.327],
-            [52.8, 17.4, -23.65],
-            [41.9, 17.4, -23.65],
-            [40.97, 16.75, -23.28],
-            [40.97, 15.18, -23.28]
+            [47.981, 15.55, -17.327]
           ],
-          "cad_length_mm": 26.7,
+          "cad_length_mm": 47.4,
           "strip_allowance_mm": null,
           "service_slack_mm": null,
           "cutting_length_mm": null
