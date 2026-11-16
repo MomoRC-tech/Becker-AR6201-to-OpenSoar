@@ -31,15 +31,15 @@ Related: 🔌 [Signal wiring](wiring.md) · 🧱 [Modules and parts](modules.md)
 | --- | --- |
 | UBEC input GND | The common ground point (where the radio's P1-13/25 return, S10), with its own wire |
 | UBEC 5 V, after the ferrite | Central **5V-J** junction; separate branches to ESP32 5V ([J2-19](modules.md#esp32-pinout)) and MAX490 VCC |
-| UBEC output GND, after the ferrite | Central **GND-J** junction; separate branches to ESP32 GND (J2-14), MAX490 GND and one instrument-ground wire to the DE-9, where cups 3, 6 and 7 are bridged ([pinout](wiring.md#de9-pinout)) |
+| UBEC output GND, after the ferrite | Central **GND-J** junction; separate branches to ESP32 GND (J3-1), MAX490 GND and one instrument-ground wire to the DE-9, where cups 3, 6 and 7 are bridged ([pinout](wiring.md#de9-pinout)) |
 | ESP32 3V3 ([J2-1](modules.md#esp32-pinout)) | RS-232-mod2 R3 → RS-232-mod1 R3; R-D takes 3.3 V from the mod2 L2 pad, the same net |
-| ESP32 GND (J2-14) | RS-232-mod2 R4 → RS-232-mod1 R4; R-B2 keeps its local return on J3-7 |
+| ESP32 GND (J2-14), used only for this chain | RS-232-mod2 R4 → RS-232-mod1 R4; R-B2 keeps its local return on J3-7 |
 
 **5V-J and GND-J are separate insulated junctions.** Keep the UBEC input return on the XT30 input circuit; do not add a wire from GND-J to XT30 minus that bypasses the ferrite output return.
 
 The RS-232 boards are daisy-chained physically and connected **in parallel electrically**, at **3.3 V**. Feed the nearer module (mod2), then link R3 to R3 and R4 to R4 across to mod1. Their ground comes from the ESP32, not from an additional branch to GND-J. Do not add a separate MAX490-to-ESP32 ground wire or instrument-ground wires to RS-232 L1. This gives one internal ground tree; it does not remove the external loops in [section 2](#ground).
 
-![Internal ground tree: GND-J branches to ESP32, MAX490 and one wire to the DE-9 ground bridge, which joins the Becker, Zander and FLARM signal grounds on cups 3, 6 and 7; ESP32 J2-14 feeds mod2 R4 and then mod1 R4; R-B2 remains local](../images/ground-distribution.svg)
+![Internal ground tree: GND-J branches to ESP32 J3-1, MAX490 and one wire to the DE-9 ground bridge, which joins the Becker, Zander and FLARM signal grounds on cups 3, 6 and 7; ESP32 J2-14 feeds mod2 R4 and then mod1 R4; R-B2 remains local](../images/ground-distribution.svg)
 
 Keep supply and return runs alongside one another where practical. Junction form and placement (bench-made inline splices near the ferrite) and the routing envelopes: [housing](housing.md#internal-routing). Conductor sizes and physical fit: [open items](../project/open-items.md#housing).
 

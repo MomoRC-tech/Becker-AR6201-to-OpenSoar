@@ -399,7 +399,7 @@ Use **Cable harness - Wire Generator** in the [v16 enclosure assembly](../../cad
 | XT30 pair | Drop from the shifted cups at X 16.4 (+) and 18.0 (−). Follow the floor bus before rising to the UBEC input pads |
 | UBEC output and ferrite | Both leads run continuously from the UBEC pads, make two schematic passes through the bore and around the core, then pass under the transverse guide to 5V-J and GND-J |
 | 5V-J / GND-J | Splice envelopes at Y 0.05–2.65, with 5V-J at X 55.5–59.5 and GND-J at X 61.5–66.5 |
-| ESP32 branches | Separate floor crossings and wall routes to J2-19 (5V) and J2-14 (GND) |
+| ESP32 branches | Separate floor crossings and wall routes to J2-19 (5V) and J3-1 (GND) |
 | MAX490 branches | Approach header VCC and GND from the end of the board |
 | Instrument ground | From the shifted ground jumper location through the centre guide and raised crossing to GND-J |
 
@@ -461,7 +461,7 @@ Follow the [illustrated installation sequence](wire-installation.md) when fittin
 | Bench | mod2 R3 → mod1 R3 | Pink | 26 AWG PTFE | Pin top | 16.2 | Measure | Fit | Calculate |
 | Bench | mod2 R4 → mod1 R4 | Black | 26 AWG PTFE | Pin top | 16.1 | Measure | Fit | Calculate |
 | Floor | 5V-J → ESP32 J2-19 | Orange | 22 AWG PTFE | Floor / J2 | 70.4 | Measure | Fit | Calculate |
-| Floor | GND-J → ESP32 J2-14 | Black | 22 AWG PTFE | Floor / J2 | 81.2 | Measure | Fit | Calculate |
+| Floor | GND-J → ESP32 J3-1 | Black | 22 AWG PTFE | Floor / J3 | Not modelled | Measure | Fit | Calculate |
 | Boards | 5V-J → MAX490 VCC | Orange | 22 AWG PTFE | Floor / MAX490 header | 45.8 | Measure | Fit | Calculate |
 | Boards | GND-J → MAX490 GND | Black | 22 AWG PTFE | Floor / MAX490 header | 30.1 | Measure | Fit | Calculate |
 | Signals | DE-9 1 → mod1 L3 | Brown | 26 AWG PTFE | Centre bus | 37.8 | Measure | Fit | Calculate |

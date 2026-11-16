@@ -132,12 +132,12 @@ s.save("power-supply.svg")
 
 # ------------------------------------------------------ internal ground tree
 s = Svg(1120,490,"Internal ground tree",
-        "UBEC output ground through the ferrite to GND-J. Separate branches to ESP32 and MAX490, and one instrument-ground wire to the DE-9, where cups 3, 6 and 7 are bridged for the Becker, Zander and FLARM signal grounds. ESP32 J2-14 feeds RS-232-mod2 R4 then mod1 R4. R-B2 remains local. No additional module-to-junction or MAX490-to-ESP32 ground links.")
+        "UBEC output ground through the ferrite to GND-J. Separate branches to ESP32 and MAX490, and one instrument-ground wire to the DE-9, where cups 3, 6 and 7 are bridged for the Becker, Zander and FLARM signal grounds. GND-J reaches the ESP32 at J3-1. ESP32 J2-14 is used only to feed RS-232-mod2 R4 then mod1 R4. R-B2 remains local. No additional module-to-junction or MAX490-to-ESP32 ground links.")
 s.box(20,185,170,75,"UBEC output GND",["through existing ferrite"])
 s.box(245,185,150,75,"GND-J",["bench-made splice"])
 s.line([(190,222),(245,222)],"gnd")
 s.line([(395,222),(450,222)],"gnd");s.line([(450,65),(450,305)],"gnd",width=4);s.dot(450,222,"gnd")
-branches=[(65,"ESP32",["J2-14 main return"]),(145,"MAX490",["own GND branch"]),(305,"DE-9 ground bridge",["cups 3, 6, 7; one wire"])]
+branches=[(65,"ESP32",["J3-1 main return","J2-14 module return"]),(145,"MAX490",["own GND branch"]),(305,"DE-9 ground bridge",["cups 3, 6, 7; one wire"])]
 for y,title,subs in branches:
     s.line([(450,y),(510,y)],"gnd");s.dot(450,y,"gnd");s.box(510,y-27,190,54,title,subs)
 s.line([(700,305),(730,305)],"gnd");s.line([(730,242),(730,382)],"gnd",width=4);s.dot(730,305,"gnd")

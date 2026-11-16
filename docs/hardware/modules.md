@@ -36,7 +36,7 @@ The AZ-Delivery board follows Espressif's DevKitC V4 layout (S32). View from the
 
 | Position | J2 label | J2 bridge use | J3 label | J3 bridge use |
 | ---: | --- | --- | --- | --- |
-| 1 | `3V3` | **3.3 V to RS-232-mod2 R3, then mod1** | `GND` | — |
+| 1 | `3V3` | **3.3 V to RS-232-mod2 R3, then mod1** | `GND` | **Ground: central GND-J** |
 | 2 | `EN` | — | `IO23` | — |
 | 3 | `VP` | — | `IO22` | — |
 | 4 | `VN` | — | `TX` | USB serial (boot only) |
@@ -49,7 +49,7 @@ The AZ-Delivery board follows Espressif's DevKitC V4 layout (S32). View from the
 | 11 | `IO27` | Not connected | `IO17` | **Becker TX** (UART2), R-D to RS-232-mod2 L2 |
 | 12 | `IO14` | — | `IO16` | **Becker RX** via R-B1 (UART2), R-B2 to J3-7 |
 | 13 | `IO12` | — | `IO4` | — |
-| 14 | `GND` | **Ground: central GND-J; RS-232-mod2 R4, then mod1** | `IO0` | — |
+| 14 | `GND` | **Ground: RS-232-mod2 R4, then mod1** | `IO0` | — |
 | 15 | `IO13` | — | `IO2` | — |
 | 16 | `D2` | — | `IO15` | — |
 | 17 | `D3` | — | `D1` | — |
