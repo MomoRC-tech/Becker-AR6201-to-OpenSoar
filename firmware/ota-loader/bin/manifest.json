@@ -23,13 +23,13 @@
   "files": {
     "ota-loader-hotspot-only.bin": {
       "flash": "OTA upload",
-      "bytes": 952560,
-      "sha256": "d20cf787ef5c9e78a68f6a0a2093f1dc0b4508b80508e779474dbf7086c51ff1"
+      "bytes": 954176,
+      "sha256": "b992064fd17589f7222b95ae96a6bfbe572c28855049647326a49c228072b08b"
     },
     "ota-loader-hotspot-only.merged.bin": {
       "flash": "0x0 (USB)",
       "bytes": 4194304,
-      "sha256": "739d23e66c21a7bde7f4c9c59b5134cdd741128bfd9edefe34820dec48d26e9b"
+      "sha256": "226eecf73511a07e68edf79bb9366f674682bf06420be9b17d364e447e02902b"
     }
   }
 }

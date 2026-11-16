@@ -11,11 +11,11 @@ Bench loader for the Wi-Fi bridge ESP32: flash it once over USB, then upload all
 
 ## Variants
 
-| Variant | Compiler flag | Wi-Fi | Passwords | Where |
+| Variant | Define in `ota_variant.h` | Wi-Fi | Passwords | Where |
 | --- | --- | --- | --- | --- |
-| Public | `-DHOTSPOT_ONLY` | Hotspot only | Public defaults, see [`bin/manifest.json`](bin/manifest.json) | [`bin/`](bin/README.md), committed |
-| Private | — | Network, then hotspot | `credentials.h` | `build/private/`, local only |
-| Fallback test | `-DFALLBACK_TEST` | Joins a network that does not exist, so the hotspot fallback runs | `credentials.h` | `build/fallback-test/`, local only |
+| Public | `HOTSPOT_ONLY` | Hotspot only | Public defaults, see [`bin/manifest.json`](bin/manifest.json) | [`bin/`](bin/README.md), committed |
+| Private | — | Network, then hotspot | `credentials.h` | `build/ota-loader/private/`, local only |
+| Fallback test | `FALLBACK_TEST` | Joins a network that does not exist, so the hotspot fallback runs | `credentials.h` | `build/ota-loader/fallback-test/`, local only |
 
 > [!WARNING]
 > Anyone with this repository knows the public passwords and can upload firmware while the public build runs. Use it on the bench only; install a private build before the bridge goes near the aircraft.
@@ -31,7 +31,7 @@ python tools/build_ota_loader.py                  # public, plus private if cred
 python tools/build_ota_loader.py fallback-test    # one variant
 ```
 
-The script builds one variant at a time and prints its duration. The first build after a board package update compiles the core and takes about 4 minutes; repeat builds take about 20 s. It copies the public images and a [`manifest.json`](bin/manifest.json) with board package version and SHA-256 to `bin/`; commit the three files together.
+The script builds one variant at a time and prints its duration. It selects the variant by writing `ota_variant.h` (ignored by Git, removed after the build) and builds in `build/ota-loader/<variant>/` at the repository root. Do not pass the variant as a compiler flag and do not build inside the sketch folder: both make arduino-cli recompile the whole core. The first build in a new folder takes about 4 minutes; a repeat build after a sketch change takes under a minute. It copies the public images and a [`manifest.json`](bin/manifest.json) with board package version and SHA-256 to `bin/`; commit the three files together.
 
 ## Flash over USB (once)
 
@@ -42,12 +42,14 @@ esptool --port COM3 flash-id   # expect "Detected flash size: 4MB"
 esptool --port COM3 write-flash 0x0 firmware/ota-loader/bin/ota-loader-hotspot-only.merged.bin
 ```
 
-For a private build, flash `build/private/ota-loader.ino.merged.bin` instead, or use the Arduino IDE upload button. Serial monitor at 115200 baud shows the network result and IP address. Use your board's port (`/dev/ttyUSB0` on Linux). `esptool` ships with the esp32 board package in `tools/esptool_py`.
+For a private build, flash `build/ota-loader/private/ota-loader.ino.merged.bin` instead, or use the Arduino IDE upload button. Serial monitor at 115200 baud shows the network result and IP address. Use your board's port (`/dev/ttyUSB0` on Linux). `esptool` ships with the esp32 board package in `tools/esptool_py`.
 
 | Problem | Fix |
 | --- | --- |
 | No COM port; Device Manager shows "CP2102 USB to UART Bridge Controller" with an error | Install the Silicon Labs CP210x driver, then replug |
 | `Wrong boot mode detected (0x13)` | Hold BOOT, tap EN, release BOOT, then retry |
+
+In hotspot mode the serial log also reports each client that joins, leaves (with reason code) or gets an IP address.
 
 ## Upload over Wi-Fi (every later image)
 

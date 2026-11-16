@@ -12,16 +12,22 @@
 // The loader configures no GPIO and no UART other than the boot console
 // (UART0 TX on GPIO1), so the instrument interfaces stay idle.
 //
-// Build variants (compiler flag; see README):
+// Build variants (defined in ota_variant.h by tools/build_ota_loader.py; see README):
 //   (none)          Private build: network + hotspot, passwords from credentials.h.
-//   -DHOTSPOT_ONLY  Public build: hotspot only, documented default passwords,
+//   HOTSPOT_ONLY    Public build: hotspot only, documented default passwords,
 //                   no credentials.h needed. Safe to publish.
-//   -DFALLBACK_TEST Temporary test build: joins a network that does not exist,
+//   FALLBACK_TEST   Temporary test build: joins a network that does not exist,
 //                   so the 15 s timeout and hotspot fallback run. Without an
 //                   OTA upload it boots the previous app slot after 5 min.
 
 #include <WiFi.h>
 #include <ArduinoOTA.h>
+
+// tools/build_ota_loader.py writes this header to select a variant; a compiler
+// flag would also rebuild the whole Arduino core. Absent: private build.
+#if __has_include("ota_variant.h")
+#include "ota_variant.h"
+#endif
 
 #if defined(HOTSPOT_ONLY) && defined(FALLBACK_TEST)
 #error "HOTSPOT_ONLY and FALLBACK_TEST are separate builds."
@@ -41,7 +47,7 @@
 #if defined(FALLBACK_TEST)
 #include <esp_ota_ops.h>
 #undef WIFI_SSID
-#define WIFI_SSID "bridgetom-fallback-test-no-network"
+#define WIFI_SSID "bridgetom-no-such-network"
 static constexpr unsigned long kRevertAfterMs = 5UL * 60UL * 1000UL;
 #endif
 
@@ -72,13 +78,41 @@ static bool joinNetwork() {
 }
 #endif
 
+// Log hotspot clients on the boot console, so connection problems can be
+// diagnosed over USB. Device addresses are not printed.
+static void logHotspotEvent(arduino_event_id_t event, arduino_event_info_t info) {
+  switch (event) {
+    case ARDUINO_EVENT_WIFI_AP_STACONNECTED:
+      Serial.printf("Hotspot: client %u joined\n", info.wifi_ap_staconnected.aid);
+      break;
+    case ARDUINO_EVENT_WIFI_AP_STADISCONNECTED:
+      Serial.printf("Hotspot: client %u left, reason %u\n", info.wifi_ap_stadisconnected.aid,
+                    info.wifi_ap_stadisconnected.reason);
+      break;
+    case ARDUINO_EVENT_WIFI_AP_STAIPASSIGNED:
+      Serial.printf("Hotspot: client got IP %s\n", IPAddress(info.wifi_ap_staipassigned.ip.addr).toString().c_str());
+      break;
+    default:
+      break;
+  }
+}
+
 static bool openHotspot() {
   WiFi.disconnect(true);
+  WiFi.onEvent(logHotspotEvent);
   WiFi.mode(WIFI_AP);
+#if defined(FALLBACK_TEST) && defined(OPEN_HOTSPOT_TEST)
+  // Diagnosis only: open hotspot to separate radio problems from WPA2 problems.
+  Serial.println("Hotspot without password (OPEN_HOTSPOT_TEST)");
+  if (!WiFi.softAP(kHotspotSsid)) {
+#else
   if (!WiFi.softAP(kHotspotSsid, HOTSPOT_PASSWORD)) {
+#endif
     return false;
   }
-  Serial.printf("Hotspot \"%s\" open, IP %s\n", kHotspotSsid, WiFi.softAPIP().toString().c_str());
+  Serial.printf("Hotspot \"%s\" open, IP %s, channel %d, TX power %d (0.25 dBm)\n", kHotspotSsid,
+                WiFi.softAPIP().toString().c_str(), static_cast<int>(WiFi.channel()),
+                static_cast<int>(WiFi.getTxPower()));
   return true;
 }
 

@@ -46,7 +46,7 @@ The bridge never changes the active frequency, and the radio's own controls keep
 | 📦 Mechanical design | ✅ Accepted — [housing v16](docs/hardware/housing.md); physical fit checks open |
 | 🔧 Wiring and bench validation | 🟡 **Current focus** |
 | 🛩️ Existing installation details | 🟡 Waiting for equipment information |
-| 📶 Bench OTA loader | 🟡 [Ready-made hotspot-only image](firmware/ota-loader/bin/README.md) for the first USB flash; hotspot not yet proven |
+| 📶 Bench OTA loader | ✅ Flashed and updatable over Wi-Fi ([M3](docs/project/roadmap.md#milestones)); [ready-made hotspot-only image](firmware/ota-loader/bin/README.md) for the first USB flash |
 | 💻 Firmware and driver changes | ⏸️ On hold until WP3 is complete |
 | ✈️ Aircraft integration | ⬜ Later |
 

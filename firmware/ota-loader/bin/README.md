@@ -5,4 +5,4 @@ Ready-made image for the first USB flash of a bridge ESP32; later firmware goes 
 > [!WARNING]
 > The passwords are public. Anyone in range who knows this repository can upload firmware while this image runs. Bench use only.
 
-Not yet run on a board; the hotspot is not yet proven ([open item 15](../../../docs/project/open-items.md#bench-hardware)). Flashing and troubleshooting: [Flash over USB](../README.md#flash-over-usb-once).
+This exact image has not yet run on a board; the same sketch passed the hotspot test as private and test builds (S99 in [sources](../../../docs/research/sources.md)). Flashing and troubleshooting: [Flash over USB](../README.md#flash-over-usb-once).

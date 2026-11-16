@@ -61,7 +61,7 @@ flowchart LR
 | --- | --- | --- |
 | M1 | Installed equipment and interfaces are understood | ⬜ Open |
 | M2 | Hardware design and driver plan are selected | 🟡 Mechanical design accepted; WP3 wiring and bench validation in progress |
-| M3 | Bench ESP32 updatable over Wi-Fi: OTA loader flashed over USB, joins the configured network or opens its hotspot, and accepts an OTA upload in both modes ([ADR-05](../design/architecture.md#adr-05), [bring-up](../hardware/wiring.md#bring-up) step 3) | 🟡 USB flash, network OTA and fallback revert passed (S97, S98); [hotspot proof](open-items.md#bench-hardware) pending |
+| M3 | Bench ESP32 updatable over Wi-Fi: OTA loader flashed over USB, joins the configured network or opens its hotspot, and accepts an OTA upload in both modes ([ADR-05](../design/architecture.md#adr-05), [bring-up](../hardware/wiring.md#bring-up) step 3) | ✅ Done (S97–S99); hotspot OTA accepted on the fallback test and a phone join, without an upload over the hotspot |
 | M4 | Software verified | ⬜ Open |
 
 ---
