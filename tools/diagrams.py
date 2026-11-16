@@ -132,19 +132,19 @@ s.save("power-supply.svg")
 
 # ------------------------------------------------------ internal ground tree
 s = Svg(1120,490,"Internal ground tree",
-        "UBEC output ground through the ferrite to GND-J. Separate branches to ESP32 and MAX490, and one instrument-ground wire to the DE-9, where cups 3, 6 and 7 are bridged for the Becker, Zander and FLARM signal grounds. GND-J reaches the ESP32 at J3-1. ESP32 J2-14 is used only to feed RS-232-mod2 R4 then mod1 R4. R-B2 remains local. No additional module-to-junction or MAX490-to-ESP32 ground links.")
+        "UBEC output ground through the ferrite to GND-J. Separate branches to ESP32 and MAX490, and one instrument-ground wire to the DE-9, where cups 3, 6 and 7 are bridged for the Becker, Zander and FLARM signal grounds. GND-J reaches the ESP32 at J2-14. ESP32 J3-1 is used only to feed RS-232-mod2 R4 then mod1 R4. R-B2 remains local. No additional module-to-junction or MAX490-to-ESP32 ground links.")
 s.box(20,185,170,75,"UBEC output GND",["through existing ferrite"])
 s.box(245,185,150,75,"GND-J",["bench-made splice"])
 s.line([(190,222),(245,222)],"gnd")
 s.line([(395,222),(450,222)],"gnd");s.line([(450,65),(450,305)],"gnd",width=4);s.dot(450,222,"gnd")
-branches=[(65,"ESP32",["J3-1 main return","J2-14 module return"]),(145,"MAX490",["own GND branch"]),(305,"DE-9 ground bridge",["cups 3, 6, 7; one wire"])]
+branches=[(65,"ESP32",["J2-14 main return","J3-1 module return"]),(145,"MAX490",["own GND branch"]),(305,"DE-9 ground bridge",["cups 3, 6, 7; one wire"])]
 for y,title,subs in branches:
     s.line([(450,y),(510,y)],"gnd");s.dot(450,y,"gnd");s.box(510,y-27,190,54,title,subs)
 s.line([(700,305),(730,305)],"gnd");s.line([(730,242),(730,382)],"gnd",width=4);s.dot(730,305,"gnd")
 for y,title,subs in [(242,"Becker signal GND",["pin 3, J1-21"]),(312,"Zander signal GND",["pin 6"]),(382,"FLARM signal GND",["pin 7"])]:
     s.line([(730,y),(760,y)],"gnd");s.dot(730,y,"gnd");s.box(760,y-27,190,54,title,subs)
 s.box(760,38,150,54,"RS-232-mod2",["R4"]);s.box(950,38,150,54,"RS-232-mod1",["R4"])
-s.line([(700,65),(760,65)],"gnd");s.tag(730,30,"J2-14","gnd",size=11)
+s.line([(700,65),(760,65)],"gnd");s.tag(730,30,"J3-1","gnd",size=11)
 s.line([(910,65),(950,65)],"gnd");s.tag(930,30,"R4 link","gnd",size=11)
 s.text(790,120,"R-B2 stays on ESP32 J3-7.",anchor="start",size=12)
 s.text(790,145,"No extra RS-232 L1 ground wires.",anchor="start",size=12)
@@ -202,7 +202,7 @@ def rs232_device(name,dev,tx_pin,gpio,source,fname):
     s.legend(320,["data","sgnd","gnd",("v33","3.3 V")],"Receive only. Supply/return chain: ESP32 → mod2 → mod1; boards remain electrically parallel.")
     s.save(fname)
 rs232_device("RS-232-mod1","Zander ZS1","TX","GPIO32","RS-232-mod2","wiring-zander.svg")
-rs232_device("RS-232-mod2","Classic FLARM","pin 5 TX","GPIO26","ESP32 J2-1 / J2-14","wiring-flarm.svg")
+rs232_device("RS-232-mod2","Classic FLARM","pin 5 TX","GPIO26","ESP32 J2-1 / J3-1","wiring-flarm.svg")
 
 # --------------------------------------------------------------------- Becker
 s = Svg(980, 300, "Becker to RS-422 board to ESP32",

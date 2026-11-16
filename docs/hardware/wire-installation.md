@@ -37,7 +37,7 @@ Start with the [loose-board bench checks](wiring.md#bring-up) and disconnect pow
 ![The electronics are hidden to show the DE-9 ground, paired ESP32 and MAX490 power branches, splice positions and the output leads looping through the ferrite at right](../images/wire-installation/02-floor-power.png)
 
 1. Count the factory ferrite turns before moving the ring. Fit both UBEC output leads through the ferrite, preserving the factory turn count and winding sense. The picture shows the route envelope.
-2. Make and insulate **5V-J** and **GND-J** separately on the bench near the ferrite end of the floor bus. The black DE-9 bridge lead joins GND-J. Fit the ESP32 branches to **J2-19** (5V) and **J3-1** (GND), and one supply/return pair toward MAX490 **VCC/GND**.
+2. Make and insulate **5V-J** and **GND-J** separately on the bench near the ferrite end of the floor bus. The black DE-9 bridge lead joins GND-J. Fit one supply/return pair toward ESP32 **J2-19/J2-14** and the other toward MAX490 **VCC/GND**.
 3. Pre-thread the floor ties. Feed loose ends one at a time through the staggered guide fingers, and feed both ferrite departure leads through the transverse guide. Lay in the splices, park the board ends above the tray and leave the ties loose for the fit check. Keep the UBEC and carrier out of the MAX490 mounting area. [Power and ground tree](power.md#supply) · [Floor guides](housing.md#floor-guide)
 
 ---
@@ -53,11 +53,11 @@ Solder the module pads on the bench. In this view, Zander **mod1** is on the lef
 | Colour | Connection |
 | --- | --- |
 | Pink | ESP32 J2-1 → mod2 R3 → mod1 R3 |
-| Black | ESP32 J2-14 → mod2 R4 → mod1 R4 |
+| Black | ESP32 J3-1 → mod2 R4 → mod1 R4 |
 | Light blue | mod1 R2 → ESP32 J2-7 (GPIO32) |
 | Mint green | mod2 R2 → ESP32 J2-10 (GPIO26) |
 
-Prepare the L3 ends in step 4 before seating the modules. Prepare the **mod2 L2** end of R-D on the bench while the pad is accessible. At the ESP32, **J2-14** takes only the mod2 return; the floor return from step 2 goes to **J3-1**. **J2-19** takes the orange floor feed. [Module pad map](modules.md#rs232-module) · [ESP32 header map](modules.md#esp32-pinout)
+Prepare the L3 ends in step 4 before seating the modules. Prepare the **mod2 L2** end of R-D on the bench while the pad is accessible. At the ESP32, **J3-1** takes only the mod2 return, and **J2-14** only the floor return from step 2. **J2-19** takes the orange floor feed. [Module pad map](modules.md#rs232-module) · [ESP32 header map](modules.md#esp32-pinout)
 
 ---
 

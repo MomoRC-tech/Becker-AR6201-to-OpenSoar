@@ -3527,26 +3527,6 @@
 	)
 	(wire
 		(pts
-			(xy 177.8 157.48) (xy 142.24 157.48)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f82eeac1-3987-4681-9a9b-fabffc70a169")
-	)
-	(wire
-		(pts
-			(xy 142.24 157.48) (xy 142.24 154.94)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f9acaa69-c32f-41bb-a61a-9defc801b0e5")
-	)
-	(wire
-		(pts
 			(xy 142.24 154.94) (xy 137.16 154.94)
 		)
 		(stroke
@@ -4487,43 +4467,79 @@
 	)
 	(wire
 		(pts
-			(xy 165.1 210.82) (xy 271.78 210.82)
+			(xy 165.1 210.82) (xy 177.8 210.82)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "90debcab-d499-4662-86af-67f7c433c235")
+		(uuid "cc348d46-0d33-42e9-a57f-5c9cc57d243a")
 	)
 	(wire
 		(pts
-			(xy 271.78 210.82) (xy 271.78 116.84)
+			(xy 177.8 210.82) (xy 177.8 157.48)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "df9f544f-5a2e-401c-91f7-bed54923db9c")
+		(uuid "fb8c218a-47f0-4242-b8c2-6e18d34b6dbd")
 	)
 	(wire
 		(pts
-			(xy 271.78 116.84) (xy 215.9 116.84)
+			(xy 142.24 119.38) (xy 142.24 104.14)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "9872303d-28bb-4888-a2b3-ddde9545eff6")
+		(uuid "070d8d0c-5a4f-413a-a47b-ee7183d6421a")
+	)
+	(wire
+		(pts
+			(xy 142.24 104.14) (xy 220.98 104.14)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "05122b2c-bbe4-4250-a07a-6749fdc4dea7")
+	)
+	(wire
+		(pts
+			(xy 220.98 104.14) (xy 220.98 116.84)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "332389f0-7dbd-4354-98af-dd7fbf54510a")
+	)
+	(wire
+		(pts
+			(xy 220.98 116.84) (xy 215.9 116.84)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "90ecb5b3-f3da-46cd-83c8-4c440ceb9ac1")
+	)
+	(junction
+		(at 142.24 119.38)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "2f2a92c1-a41a-4a29-b16b-1240003d5586")
 	)
 	(label "GND-J"
-		(at 144.78 157.48 0)
+		(at 182.88 104.14 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify left bottom)
 		)
-		(uuid "e8d7a98f-74d9-4bea-a8d4-4b9f379b01cc")
+		(uuid "1b733db7-89f7-4ec0-9707-c49adbffac42")
 	)
 	(sheet_instances
 		(path "/"

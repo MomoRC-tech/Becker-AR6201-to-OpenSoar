@@ -381,12 +381,12 @@ Use **Cable harness - Wire Generator** in the [v16 enclosure assembly](../../cad
 | Centre-axis signal bus | Same channel, mid height (Y about 9–12) | DE-9 pins 1/2 to the module L3 pads; MAX490 RO/DI to J3-12/J3-11 | ESP32 half (Z 4.5–6.5, clear of the J3 pins); rise only at the station |
 | Pin-top level | Y 15–18 | Terminations, resistors, hops up to about 15 mm | Nothing above Y 18, at least 2 mm under the hood |
 | Connector-wall lane | X 11–17 | XT30 pair down to the floor; Becker pairs 4/5 and 8/9 to the terminal entries | Pairs stay twisted to the terminals |
-| J2-side lane | Between the module R pads (Z −17.3) and the J2 header (Z −23.3) | Module receive outputs to GPIO32/GPIO26, 3.3 V feed from J2-1, module ground from J2-14 | Pin-top level |
+| J2-side lane | Between the module R pads (Z −17.3) and the J2 header (Z −23.3) | Module receive outputs to GPIO32/GPIO26, 3.3 V feed from J2-1 | Pin-top level |
 
 - **Guide entry:** feed loose wires individually through the staggered openings before terminating them. Both ferrite departures pass through the transverse guide. See the [fit checks](../project/open-items.md#housing).
 - **No floor joints between boards:** junctions and splices are made on the bench and laid in.
 - **Ferrite (selected):** the ring is moved along the UBEC output lead so the approach leads stay short and above the floor ([ferrite cradle](#ferrite-cradle)); the modelled floor loop between UBEC and ring is superseded.
-- **Local taps (selected):** RS-232 module ground from J2-14, and R-D takes 3.3 V from the mod2 L2 pad ([supply path](power.md#supply)).
+- **Local taps (selected):** RS-232 module ground from J3-1, across the ESP32 at pin-top level, and R-D takes 3.3 V from the mod2 L2 pad ([supply path](power.md#supply)).
 - **Wire (selected):** 26 AWG stranded PTFE for signals and the local 3.3 V/ground chain, inside the Ø1.0 mm envelope; 22 AWG stranded PTFE for the power branches and the instrument-ground wire, inside the Ø1.5 mm envelope; the UBEC's factory input and output leads where they reach ([parts](modules.md#parts-list)).
 - **5V-J and GND-J (selected):** inline solder splices with heat-shrink, made on the bench as part of the power harness and laid into the floor bus at the far end of the channel, near the ferrite.
 
@@ -399,7 +399,7 @@ Use **Cable harness - Wire Generator** in the [v16 enclosure assembly](../../cad
 | XT30 pair | Drop from the shifted cups at X 16.4 (+) and 18.0 (−). Follow the floor bus before rising to the UBEC input pads |
 | UBEC output and ferrite | Both leads run continuously from the UBEC pads, make two schematic passes through the bore and around the core, then pass under the transverse guide to 5V-J and GND-J |
 | 5V-J / GND-J | Splice envelopes at Y 0.05–2.65, with 5V-J at X 55.5–59.5 and GND-J at X 61.5–66.5 |
-| ESP32 branches | Separate floor crossings and wall routes to J2-19 (5V) and J3-1 (GND) |
+| ESP32 branches | Separate floor crossings and wall routes to J2-19 (5V) and J2-14 (GND) |
 | MAX490 branches | Approach header VCC and GND from the end of the board |
 | Instrument ground | From the shifted ground jumper location through the centre guide and raised crossing to GND-J |
 
@@ -416,7 +416,7 @@ Use **Cable harness - Wire Generator** in the [v16 enclosure assembly](../../cad
 | Centre-axis signal bus | DE-9 pins 1 and 2 to the RS-232 L3 pads. RO and DI cross at the MAX490 header station. Check the MAX490 label orientation at the [bench](wiring.md#becker) |
 | Connector-wall lane | DE-9 4/5 to MAX490 A/B and 8/9 to Y/Z. The CAD shows each conductor envelope. Keep the pairs twisted up to the terminations |
 | J2-side lane | Module R2 outputs to J2-7 (GPIO32) and J2-10 (GPIO26). Route the GPIO32 wire around the J2-14 ground joint |
-| Local RS-232 supply and ground | 3.3 V from J2-1 to mod2 R3 then mod1 R3. Ground from J2-14 to mod2 R4 then mod1 R4. Assemble the mod2 R3 feed and link on the bench |
+| Local RS-232 supply and ground | 3.3 V from J2-1 to mod2 R3 then mod1 R3. Ground from J3-1, across the ESP32, to mod2 R4 then mod1 R4. Assemble the mod2 R3 feed and link on the bench |
 | Pin-top resistor connections | R-B1 at the RO splice, R-B2 across J3-12 and J3-7, and R-D from J3-11 to mod2 L2 |
 
 Junction hardware and attachment are tracked in the [housing open items](../project/open-items.md#housing).
@@ -457,11 +457,11 @@ Follow the [illustrated installation sequence](wire-installation.md) when fittin
 | Bench | DE-9 cups 3–6–7 bridge | Tinned | Tinned jumper | Connector cups | — | — | — | Form at cups |
 | Bench | DE-9 ground bridge → GND-J | Black | 22 AWG PTFE | Wall / floor | 62.0 | Measure | Fit | Calculate |
 | Bench | J2-1 → mod2 R3 | Pink | 26 AWG PTFE | J2 | 34.9 | Measure | Fit | Calculate |
-| Bench | J2-14 → mod2 R4 | Black | 26 AWG PTFE | J2 | 26.8 | Measure | Fit | Calculate |
+| Bench | J3-1 → mod2 R4 | Black | 26 AWG PTFE | Across ESP32 | Not modelled | Measure | Fit | Calculate |
 | Bench | mod2 R3 → mod1 R3 | Pink | 26 AWG PTFE | Pin top | 16.2 | Measure | Fit | Calculate |
 | Bench | mod2 R4 → mod1 R4 | Black | 26 AWG PTFE | Pin top | 16.1 | Measure | Fit | Calculate |
 | Floor | 5V-J → ESP32 J2-19 | Orange | 22 AWG PTFE | Floor / J2 | 70.4 | Measure | Fit | Calculate |
-| Floor | GND-J → ESP32 J3-1 | Black | 22 AWG PTFE | Floor / J3 | Not modelled | Measure | Fit | Calculate |
+| Floor | GND-J → ESP32 J2-14 | Black | 22 AWG PTFE | Floor / J2 | 81.2 | Measure | Fit | Calculate |
 | Boards | 5V-J → MAX490 VCC | Orange | 22 AWG PTFE | Floor / MAX490 header | 45.8 | Measure | Fit | Calculate |
 | Boards | GND-J → MAX490 GND | Black | 22 AWG PTFE | Floor / MAX490 header | 30.1 | Measure | Fit | Calculate |
 | Signals | DE-9 1 → mod1 L3 | Brown | 26 AWG PTFE | Centre bus | 37.8 | Measure | Fit | Calculate |

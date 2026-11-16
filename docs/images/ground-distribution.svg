@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1120" height="490" viewBox="0 0 1120 490" role="img" aria-labelledby="title desc">
 <title id="title">Internal ground tree</title>
-<desc id="desc">UBEC output ground through the ferrite to GND-J. Separate branches to ESP32 and MAX490, and one instrument-ground wire to the DE-9, where cups 3, 6 and 7 are bridged for the Becker, Zander and FLARM signal grounds. GND-J reaches the ESP32 at J3-1. ESP32 J2-14 is used only to feed RS-232-mod2 R4 then mod1 R4. R-B2 remains local. No additional module-to-junction or MAX490-to-ESP32 ground links.</desc>
+<desc id="desc">UBEC output ground through the ferrite to GND-J. Separate branches to ESP32 and MAX490, and one instrument-ground wire to the DE-9, where cups 3, 6 and 7 are bridged for the Becker, Zander and FLARM signal grounds. GND-J reaches the ESP32 at J2-14. ESP32 J3-1 is used only to feed RS-232-mod2 R4 then mod1 R4. R-B2 remains local. No additional module-to-junction or MAX490-to-ESP32 ground links.</desc>
 <rect width="1120" height="490" fill="white"/>
 <g font-family="Arial,sans-serif">
 <path d="M190 222 L245 222" stroke="#171717" stroke-width="2.5" fill="none"/>
@@ -40,8 +40,8 @@
 <text x="320.0" y="218.5" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">GND-J</text>
 <text x="320.0" y="236.5" font-size="12" fill="#475569" text-anchor="middle">bench-made splice</text>
 <text x="605.0" y="52.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">ESP32</text>
-<text x="605.0" y="70.0" font-size="12" fill="#475569" text-anchor="middle">J3-1 main return</text>
-<text x="605.0" y="88.0" font-size="12" fill="#475569" text-anchor="middle">J2-14 module return</text>
+<text x="605.0" y="70.0" font-size="12" fill="#475569" text-anchor="middle">J2-14 main return</text>
+<text x="605.0" y="88.0" font-size="12" fill="#475569" text-anchor="middle">J3-1 module return</text>
 <text x="605.0" y="141.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">MAX490</text>
 <text x="605.0" y="159.0" font-size="12" fill="#475569" text-anchor="middle">own GND branch</text>
 <text x="605.0" y="301.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">DE-9 ground bridge</text>
@@ -56,7 +56,7 @@
 <text x="835.0" y="79.0" font-size="12" fill="#475569" text-anchor="middle">R4</text>
 <text x="1025.0" y="61.0" font-size="14" fill="#172b4d" text-anchor="middle" font-weight="700">RS-232-mod1</text>
 <text x="1025.0" y="79.0" font-size="12" fill="#475569" text-anchor="middle">R4</text>
-<text x="730" y="30" font-size="11" fill="#171717" text-anchor="middle" font-weight="700">J2-14</text>
+<text x="730" y="30" font-size="11" fill="#171717" text-anchor="middle" font-weight="700">J3-1</text>
 <text x="930" y="30" font-size="11" fill="#171717" text-anchor="middle" font-weight="700">R4 link</text>
 <text x="790" y="120" font-size="12" fill="#172b4d" text-anchor="start">R-B2 stays on ESP32 J3-7.</text>
 <text x="790" y="145" font-size="12" fill="#172b4d" text-anchor="start">No extra RS-232 L1 ground wires.</text>
