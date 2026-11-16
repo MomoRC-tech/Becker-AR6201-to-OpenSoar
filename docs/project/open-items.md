@@ -113,7 +113,21 @@ Facts about the equipment already in the aircraft, mostly from Tom. What is know
 
 ## 4. 💻 Software and acceptance — later
 
-On hold until the hardware is finished.
+On hold until the hardware is finished. The [bridge firmware plan](roadmap.md#firmware-plan) is proposed; its decisions are in [4.1](#firmware-decisions).
+
+<a id="firmware-decisions"></a>
+
+### 4.1 Decisions for the bridge firmware plan
+
+All from the owner, one at a time.
+
+| # | Decision | Options | Recommendation |
+| :-: | --- | --- | --- |
+| 1 | Start firmware work before WP3 is complete | Steps 1–3 now, in parallel with the bench build · wait for WP3 | Start steps 1–3 now; steps 4–5 wait for the wired bench bridge. Needs the hold in the work instructions lifted for the bridge firmware |
+| 2 | Board for firmware development | A second ESP32 dev board · the bench ESP32 over Wi-Fi | Second board of the same type: wiring and firmware work do not block each other |
+| 3 | Hotspot address | 192.168.4.1 as tested with the OTA loader · 10.10.10.10 as on today's bridge | 10.10.10.10: OpenSoar then works with either bridge without changes; changing it means repeating the hotspot check of [bring-up](../hardware/wiring.md#bring-up) step 3 |
+
+### 4.2 Open items
 
 | # | Item | What is needed | Unblocks |
 | :-: | --- | --- | --- |

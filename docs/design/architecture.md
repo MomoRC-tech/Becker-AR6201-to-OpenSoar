@@ -7,7 +7,7 @@
 How the bridge is split up, which hardware is selected, and the decisions behind it.
 
 > [!NOTE]
-> **Status:** hardware design (ADR-04), update path (ADR-05) and schematic role (ADR-06) selected; bridge firmware not selected. Building and testing are tracked in the [roadmap](../project/roadmap.md).
+> **Status:** hardware design (ADR-04), update path (ADR-05) and schematic role (ADR-06) selected; bridge firmware proposed (ADR-02), not selected. Building and testing are tracked in the [roadmap](../project/roadmap.md).
 
 📑 **On this page:** <kbd>[1 · 🧩 Who does what](#responsibilities)</kbd> <kbd>[2 · 🔧 Hardware](#hardware)</kbd> <kbd>[3 · 📝 Decisions](#decisions)</kbd>
 
@@ -39,7 +39,7 @@ Related: 🔌 [Signal wiring](../hardware/wiring.md) · ⚡ [Power and grounding
 | Becker | 5 V MAX490 RS-422 board; receiver output to the ESP32 through a 2.2 kΩ / 3.3 kΩ divider |
 | UARTs | UART0 (remapped) Zander, UART1 FLARM, UART2 Becker |
 | Supply | 12 V battery → supply fuse → Hobbywing UBEC at 5 V → ESP32 and MAX490; ESP32 3.3 V → RS-232 modules |
-| Firmware | Not selected — software waits for the hardware. Candidates: [bridge firmware](../research/bridge-firmware.md) |
+| Firmware | Not selected — software waits for the hardware. Proposal: [ADR-02](#adr-02); candidates: [bridge firmware](../research/bridge-firmware.md) |
 | OpenSoar review baseline | 7.46.26, `b2e745cfddfe0150f6ed7db467ac18c321b38d01` (S09); the installed build is not known yet |
 
 Pin-by-pin details: [signal wiring](../hardware/wiring.md) and [power and grounding](../hardware/power.md). Today's installation: [existing installation](../project/existing-installation.md).
@@ -54,7 +54,7 @@ Pin-by-pin details: [signal wiring](../hardware/wiring.md) and [power and ground
 | --- | --- | --- |
 | [ADR-00](#adr-00) | The repository is the project record | ✅ Selected |
 | [ADR-01](#adr-01) | Separate, transparent radio path | 🟡 Proposed |
-| [ADR-02](#adr-02) | Firmware and reuse baseline | ⏸️ Open |
+| [ADR-02](#adr-02) | Firmware and reuse baseline | 🟡 Proposed |
 | [ADR-03](#adr-03) | New hardware; existing setup kept as backup | ✅ Selected |
 | [ADR-04](#adr-04) | Bench hardware and power path | ✅ Selected |
 | [ADR-05](#adr-05) | Update path and Wi-Fi start-up | ✅ Selected |
@@ -76,7 +76,7 @@ One work queue: the [roadmap](../project/roadmap.md). Requirements live in [requ
 
 ### 3.3 ADR-02 — firmware and reuse baseline
 
-**Open, on hold until the hardware is finished.** Yuri's ESP serial bridge is the first candidate; it needs exclusive radio ownership, separate diagnostics and checked writes ([review](../research/reviews/2026-11-08-yuri-bridge.md)). DroneBridge is an alternative. Check licenses and build inputs before reusing code. OpenSoar driver fixes are planned separately (WP4).
+**Proposed.** Base the bridge firmware on Yuri's ESP serial bridge 130f731 (MIT) and keep its forwarding loop. Replace its start-up with the OTA loader's, add exclusive radio ownership, counted writes and a read-only status page, and remove what the bridge does not use ([adoption review](../research/reviews/2026-11-16-yuri-adoption.md), [first review](../research/reviews/2026-11-08-yuri-bridge.md)). Steps: [firmware plan](../project/roadmap.md#firmware-plan). Keep the upstream license notice. OpenSoar driver fixes are planned separately (WP4).
 
 <a id="adr-03"></a>
 

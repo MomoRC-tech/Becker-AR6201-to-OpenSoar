@@ -47,7 +47,7 @@ The bridge never changes the active frequency, and the radio's own controls keep
 | 🔧 Wiring and bench validation | 🟡 **Current focus** |
 | 🛩️ Existing installation details | 🟡 Waiting for equipment information |
 | 📶 Bench OTA loader | ✅ Flashed and updatable over Wi-Fi ([M3](docs/project/roadmap.md#milestones)); [ready-made hotspot-only image](firmware/ota-loader/bin/README.md) for the first USB flash |
-| 💻 Firmware and driver changes | ⏸️ On hold until WP3 is complete |
+| 💻 Firmware and driver changes | ⏸️ On hold until WP3 is complete; [bridge firmware plan](docs/project/roadmap.md#firmware-plan) proposed |
 | ✈️ Aircraft integration | ⬜ Later |
 
 **Next step:** verify the bench supply and delivered parts using the [bring-up checklist](docs/hardware/wiring.md#bring-up). See [WP3 Hardware](docs/project/roadmap.md#work-packages) for the full work package.

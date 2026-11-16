@@ -34,6 +34,7 @@ Related: 🏗️ [Architecture](architecture.md) · ❓ [Open items](../project/
 | R11 | P0 | Restrain long internal wire runs against lifting, lateral motion and rubbing under vibration. Support branches near connectors, solder joints and the ferrite, with enough service slack to unload the terminations (S80). | Check the assembled harness with the actual wire and retainers for movement, pinch points, chafing and load at the terminations. Inspect and check continuity after a representative vibration test before aircraft integration ([housing item 20](../project/open-items.md#housing)) |
 | R12 | P1 | Join the configured Wi-Fi network at start-up; if that fails, open its own password-protected hotspot ([ADR-05](architecture.md#adr-05)). | On the bench: start with the network available, then with it switched off; the bridge must be reachable in both cases |
 | R13 | P1 | Accept firmware updates over Wi-Fi, so the housing stays closed. Every firmware image keeps this ability and the selected partition scheme ([ADR-05](architecture.md#adr-05)). | One OTA upload in each Wi-Fi mode of R12; repeat for every new firmware image |
+| R14 | P1 | Show bridge, Wi-Fi and per-device status on a web page, without disturbing bridge traffic. | Open the page on the phone during the byte-exact tests of R03; the results must not change ([firmware plan](../project/roadmap.md#firmware-plan)) |
 
 **Not planned:** active tuning, frequency swap, volume and squelch, Larus, general XCSoar support. Aircraft installation comes later. The repository license is still to be chosen.
 

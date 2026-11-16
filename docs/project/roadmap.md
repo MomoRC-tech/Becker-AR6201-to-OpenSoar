@@ -7,9 +7,9 @@
 The single work queue: which work package comes next and what finishes it.
 
 > [!NOTE]
-> **Status:** WP3 continues with wiring and bench validation. Software packages (WP4–WP6) wait until WP3 is complete. Every implementation step needs the owner's approval.
+> **Status:** WP3 continues with wiring and bench validation. Software packages (WP4–WP6) wait until WP3 is complete. A [bridge firmware plan](#firmware-plan) is proposed and waits for the owner's approval. Every implementation step needs the owner's approval.
 
-📑 **On this page:** <kbd>[1 · 📦 Work packages](#work-packages)</kbd> <kbd>[2 · 🏁 Milestones](#milestones)</kbd> <kbd>[3 · ✅ Test coverage for the software phase](#test-coverage)</kbd>
+📑 **On this page:** <kbd>[1 · 📦 Work packages](#work-packages)</kbd> <kbd>[2 · 💻 Bridge firmware plan](#firmware-plan)</kbd> <kbd>[3 · 🏁 Milestones](#milestones)</kbd> <kbd>[4 · ✅ Test coverage for the software phase](#test-coverage)</kbd>
 
 Related: ❓ [Open items](open-items.md) · 🎯 [Requirements](../design/requirements.md)
 
@@ -27,7 +27,7 @@ Related: ❓ [Open items](open-items.md) · 🎯 [Requirements](../design/requir
 | WP2 Interfaces and protocol | ⏸️ Driver research done ([Becker driver](../research/becker-driver.md)) | Matching radio protocol reference or independent captures | Manual, settings, framing and reply rules confirmed |
 | WP4 Driver plan | ⏸️ Send defect analysed | After hardware: counted-send fix and caller/state/UI mapping | One small change and regression test per step |
 | WP5 Host tests | ⏸️ Send regression only ([review](../research/reviews/2026-11-08-becker-send.md)) | After WP4 scope is approved | Framing, state, reply and reconnect cases pass |
-| WP6 Bridge firmware | ⏸️ Planned | After WP3 and WP5, assess Wi-Fi link monitoring ([R10](../design/requirements.md#requirements)) during firmware planning | Radio path byte-exact, single owner, navigation unaffected. Verify link monitoring if included in the approved scope |
+| WP6 Bridge firmware | ⏸️ [Plan proposed](#firmware-plan) | Owner approval of the plan and its [open decisions](open-items.md#firmware-decisions) | Radio path byte-exact, single owner, navigation unaffected. Verify link monitoring if included in the approved scope |
 | WP8 Aircraft integration | ⬜ Later | Needs verified hardware and separate approval | Installation, protection and approval requirements met |
 
 <a id="claude-handover"></a>
@@ -53,9 +53,58 @@ flowchart LR
 
 ---
 
+<a id="firmware-plan"></a>
+
+## 2. 💻 Bridge firmware plan
+
+> [!TIP]
+> **Proposed, not approved:** build the bridge firmware (WP6) from Yuri's ESP-Serial-Bridge 130f731 ([ADR-02](../design/architecture.md#adr-02), [review](../research/reviews/2026-11-16-yuri-adoption.md)), in five small steps. Steps 1–3 need only an ESP32 and can run while the bench hardware is being built.
+
+### 2.1 Target
+
+One Arduino sketch in `firmware/bridge/`, built like the [OTA loader](../../firmware/ota-loader/README.md): same toolchain, partition scheme, credentials file and OTA upload.
+
+```mermaid
+flowchart LR
+    Z[📈 Zander] -->|UART0 in| B
+    F[📡 FLARM] -->|UART1 in| B
+    R[📻 Becker] <-->|UART2 both ways, RS-422| B
+    B[🧠 Bridge firmware] -->|TCP, many readers| O[📱 OpenSoar]
+    B <-->|TCP, one owner| O
+    B -->|HTTP status page| W[🌐 Browser]
+```
+
+| Part | Plan |
+| --- | --- |
+| Zander, FLARM | Receive only: UART → TCP. Bytes from TCP clients are discarded |
+| TCP ports | Today's ports, so the OpenSoar device entries stay the same: Zander 10110, FLARM 2000, Becker 4352 ([configuration](existing-installation.md#configuration)) |
+| Becker (RS-422) | Both ways on UART2 ↔ its own TCP port ([ADR-01](../design/architecture.md#adr-01)). One client owns the radio; a second is refused. Writes are counted; on overflow or a stalled client the session closes instead of dropping bytes silently |
+| Status page | Read-only page on port 80 plus `/api/status` as JSON ([R14](../design/requirements.md#requirements)): firmware version, uptime, Wi-Fi mode and phone signal ([R10](../design/requirements.md#requirements)), and per device the baud rate, bytes, time since last data, clients and errors. Served from its own low-priority task, so it cannot hold up forwarding. Open to everyone on the bridge's Wi-Fi while it is read-only |
+| Wi-Fi and OTA | Start-up and OTA from the OTA loader ([ADR-05](../design/architecture.md#adr-05)), replacing the upstream start-up |
+| Removed from upstream | ESP8266 support, UDP, Bluetooth, log output on UART0 |
+| Kept simple | Core libraries only (`WiFi`, `ArduinoOTA`, `WebServer`); no file system; settings in one header at build time; no protocol handling in the bridge |
+
+### 2.2 Steps
+
+Each step: build, upload over Wi-Fi, check, update the owning pages, commit.
+
+| # | Step | Needs | Done when |
+| :-: | --- | --- | --- |
+| 1 | **Baseline.** Import the upstream sketch unchanged with its MIT license; set the project pins; extend the build script | ESP32 | Builds with the pinned toolchain; the upload keeps OTA working |
+| 2 | **Clean-up.** Remove the unused upstream parts; use the loader's Wi-Fi start-up and OTA; switch the UART0 console off; navigation ports receive only | ESP32, one jumper wire from GPIO17 to the input under test | Test data sent out on GPIO17 and looped into the Zander input, then the FLARM input, arrives byte for byte on that input's TCP port; OTA works in both Wi-Fi modes |
+| 3 | **Status page.** Read-only page and JSON | ESP32, phone | The page shows live counters on the phone; the step 2 check passes with the page open |
+| 4 | **Radio port.** Single owner, counted writes, no blocking calls in the forwarding loop | Wired MAX490 path; loopback plug: DE-9 socket with pin 8 linked to 4 and pin 9 to 5 ([pinout](../hardware/wiring.md#de9-pinout)) | Through the loopback plug every byte value, bursts and split writes return unchanged; nothing arrives after a restart; a second client is refused; navigation data keeps flowing |
+| 5 | **Bench acceptance.** One PC test script for the [bridge tests](#test-coverage): slow and vanishing clients, Wi-Fi loss and return, power cycle, one-hour run on all three ports | Finished bench bridge | No byte errors; results recorded; bridge part of M4 |
+
+Later, each needing its own approval: password-protected settings page (baud rates and Wi-Fi stored on the ESP32), firmware upload from the browser, radio byte monitor for [protocol captures](open-items.md#software-and-acceptance).
+
+The firmware alone does not tune the radio: OpenSoar's driver cuts frames that contain zero bytes ([Becker driver](../research/becker-driver.md#opensoar-driver)). WP4 and WP5 stay separate packages and follow once the bridge passes step 5.
+
+---
+
 <a id="milestones"></a>
 
-## 2. 🏁 Milestones
+## 3. 🏁 Milestones
 
 | Milestone | Reached when | Status |
 | --- | --- | --- |
@@ -68,7 +117,7 @@ flowchart LR
 
 <a id="test-coverage"></a>
 
-## 3. ✅ Test coverage for the software phase
+## 4. ✅ Test coverage for the software phase
 
 | Layer | Tests |
 | --- | --- |
