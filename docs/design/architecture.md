@@ -76,7 +76,7 @@ One work queue: the [roadmap](../project/roadmap.md). Requirements live in [requ
 
 ### 3.3 ADR-02 — firmware and reuse baseline
 
-**Proposed.** Base the bridge firmware on Yuri's ESP serial bridge 130f731 (MIT) and keep its forwarding loop. Replace its start-up with the OTA loader's, add exclusive radio ownership, counted writes and a read-only status page, and remove what the bridge does not use ([adoption review](../research/reviews/2026-11-16-yuri-adoption.md), [first review](../research/reviews/2026-11-08-yuri-bridge.md)). Steps: [firmware plan](../project/roadmap.md#firmware-plan). Keep the upstream license notice. OpenSoar driver fixes are planned separately (WP4).
+**Proposed.** Base the bridge firmware on Yuri's ESP serial bridge 130f731 (MIT) and keep its forwarding loop. Keep all upstream features; removing one needs the owner's answer first. Add the OTA loader's start-up, exclusive radio ownership, counted writes and a read-only status page ([adoption review](../research/reviews/2026-11-16-yuri-adoption.md), [first review](../research/reviews/2026-11-08-yuri-bridge.md)). Steps: [firmware plan](../project/roadmap.md#firmware-plan). Keep the upstream license notice. OpenSoar driver fixes are planned separately (WP4).
 
 <a id="adr-03"></a>
 

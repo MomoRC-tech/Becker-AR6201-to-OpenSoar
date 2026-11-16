@@ -66,32 +66,48 @@ One Arduino sketch in `firmware/bridge/`, built like the [OTA loader](../../firm
 
 ```mermaid
 flowchart LR
-    Z[📈 Zander] -->|UART0 in| B
-    F[📡 FLARM] -->|UART1 in| B
+    Z[📈 Zander] -->|UART0, return line not wired| B
+    F[📡 FLARM] -->|UART1, return line not wired| B
     R[📻 Becker] <-->|UART2 both ways, RS-422| B
-    B[🧠 Bridge firmware] -->|TCP, many readers| O[📱 OpenSoar]
+    B[🧠 Bridge firmware] <-->|TCP and UDP, several clients| O[📱 OpenSoar]
     B <-->|TCP, one owner| O
     B -->|HTTP status page| W[🌐 Browser]
 ```
 
 | Part | Plan |
 | --- | --- |
-| Zander, FLARM | Receive only: UART → TCP. Bytes from TCP clients are discarded |
+| Zander, FLARM | Both directions stay in the firmware, as upstream: several TCP clients plus UDP. The transmit direction uses GPIO33 (Zander) and GPIO27 (FLARM), the pins [signal wiring](../hardware/wiring.md#overview) leaves free. No return line is wired today; one can be added later without a firmware change |
 | TCP ports | Today's ports, so the OpenSoar device entries stay the same: Zander 10110, FLARM 2000, Becker 4352 ([configuration](existing-installation.md#configuration)) |
-| Becker (RS-422) | Both ways on UART2 ↔ its own TCP port ([ADR-01](../design/architecture.md#adr-01)). One client owns the radio; a second is refused. Writes are counted; on overflow or a stalled client the session closes instead of dropping bytes silently |
+| Becker (RS-422) | Both ways on UART2 ↔ its own TCP port ([ADR-01](../design/architecture.md#adr-01)). TCP only: no UDP and no Bluetooth on this port. One client owns the radio; a second is refused. Writes are counted; on overflow or a stalled client the session closes instead of dropping bytes silently |
 | Status page | Read-only page on port 80 plus `/api/status` as JSON ([R14](../design/requirements.md#requirements)): firmware version, uptime, Wi-Fi mode and phone signal ([R10](../design/requirements.md#requirements)), and per device the baud rate, bytes, time since last data, clients and errors. Served from its own low-priority task, so it cannot hold up forwarding. Open to everyone on the bridge's Wi-Fi while it is read-only |
-| Wi-Fi and OTA | Start-up and OTA from the OTA loader ([ADR-05](../design/architecture.md#adr-05)), replacing the upstream start-up |
-| Removed from upstream | ESP8266 support, UDP, Bluetooth, log output on UART0 |
-| Kept simple | Core libraries only (`WiFi`, `ArduinoOTA`, `WebServer`); no file system; settings in one header at build time; no protocol handling in the bridge |
+| Wi-Fi and OTA | The loader's start-up (network, then hotspot) is added as a third Wi-Fi mode next to the two upstream modes and is the project setting; OTA gets its password ([ADR-05](../design/architecture.md#adr-05)) |
+| Log output | Upstream `DEBUG` switch off, because UART0 serves the Zander; the OTA messages follow the same switch. Diagnostics go to the status page |
+| Kept from upstream | Nothing is removed. Every removal needs the owner's answer first; [selections](#upstream-features) below |
+| Kept simple | Arduino-ESP32 core libraries only; no file system; settings in one header at build time; no protocol handling in the bridge |
 
-### 2.2 Steps
+<a id="upstream-features"></a>
+
+### 2.2 Upstream features
+
+> [!TIP]
+> **Selected:** keep all upstream features. Ask the owner before removing any.
+
+| Upstream feature | Selection |
+| --- | --- |
+| Transmit direction on the RS-232 ports | Keep for Zander and FLARM |
+| UDP | Keep for Zander and FLARM; not on the radio port |
+| Bluetooth | Keep in the code, switched off as upstream. The build refuses the radio port as its target |
+| ESP8266 support | Keep the upstream branches unchanged. Project additions (radio port rules, status page) are ESP32 only; the ESP8266 build is not tested |
+| `BATTERY_SAVER` | Keep, and fix it so the switch really lowers the Wi-Fi transmit power; off by default |
+
+### 2.3 Steps
 
 Each step: build, upload over Wi-Fi, check, update the owning pages, commit.
 
 | # | Step | Needs | Done when |
 | :-: | --- | --- | --- |
 | 1 | **Baseline.** Import the upstream sketch unchanged with its MIT license; set the project pins; extend the build script | ESP32 | Builds with the pinned toolchain; the upload keeps OTA working |
-| 2 | **Clean-up.** Remove the unused upstream parts; use the loader's Wi-Fi start-up and OTA; switch the UART0 console off; navigation ports receive only | ESP32, one jumper wire from GPIO17 to the input under test | Test data sent out on GPIO17 and looped into the Zander input, then the FLARM input, arrives byte for byte on that input's TCP port; OTA works in both Wi-Fi modes |
+| 2 | **Project settings.** Pins, baud rates and ports; add the loader's Wi-Fi start-up and the OTA password; log output off; UDP limited to Zander and FLARM; fix `BATTERY_SAVER`. No upstream feature removed | ESP32, one jumper wire | Looped from the Zander output pin to the FLARM input and back the other way, test data arrives byte for byte on the receiving port, over TCP and UDP; UDP sent to the radio port reaches nothing; OTA works in both Wi-Fi modes |
 | 3 | **Status page.** Read-only page and JSON | ESP32, phone | The page shows live counters on the phone; the step 2 check passes with the page open |
 | 4 | **Radio port.** Single owner, counted writes, no blocking calls in the forwarding loop | Wired MAX490 path; loopback plug: DE-9 socket with pin 8 linked to 4 and pin 9 to 5 ([pinout](../hardware/wiring.md#de9-pinout)) | Through the loopback plug every byte value, bursts and split writes return unchanged; nothing arrives after a restart; a second client is refused; navigation data keeps flowing |
 | 5 | **Bench acceptance.** One PC test script for the [bridge tests](#test-coverage): slow and vanishing clients, Wi-Fi loss and return, power cycle, one-hour run on all three ports | Finished bench bridge | No byte errors; results recorded; bridge part of M4 |
