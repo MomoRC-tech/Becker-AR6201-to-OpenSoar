@@ -38,7 +38,7 @@
 //#define BLUETOOTH 0          // uncomment to create a bluetooth serial bridge on the indicated serial port (ESP32 only)
 //#define BATTERY_SAVER        // uncomment to reduce wifi power
 
-#define STATIC_IP IPAddress(192, 168,   4, 1)  // static IP for MODE_AP
+#define STATIC_IP IPAddress( 10,  10,  10, 10)  // static IP for MODE_AP
 #define NETMASK   IPAddress(255, 255, 255, 0)  // netmask for MODE_AP
 
 #ifdef ESP32
@@ -48,25 +48,25 @@
 #endif
 
 /**************************  COM Port 0 *******************************/
-#define UART_BAUD0 115200         // Baudrate UART0
+#define UART_BAUD0 19200          // Baudrate UART0: Zander ZS1, candidate (S22), installed setting unknown
 #define SERIAL_PARAM0 SERIAL_8N1  // Data/Parity/Stop UART0 (use SWSERIAL_* for ESP8266)
-#define SERIAL0_TXPIN 1           // transmit Pin UART0
-#define SERIAL0_RXPIN 21          // receive Pin UART0
-#define SERIAL0_TCP_PORT 8880     // TCP Port UART0
+#define SERIAL0_TXPIN 33          // transmit Pin UART0
+#define SERIAL0_RXPIN 32          // receive Pin UART0
+#define SERIAL0_TCP_PORT 10110    // TCP Port UART0
 #define SERIAL0_UDP_PORT 14550    // UDP Port UART0           (ESP32 only)
 /*************************  COM Port 1 *******************************/
-#define UART_BAUD1 115200           // Baudrate UART1
+#define UART_BAUD1 19200            // Baudrate UART1: FLARM, candidate (S23), installed setting unknown
 #define SERIAL_PARAM1 SERIAL_8N1    // Data/Parity/Stop UART1 (use SWSERIAL_* for ESP8266)
-#define SERIAL1_TXPIN 17            // transmit Pin UART1
-#define SERIAL1_RXPIN 16            // receive Pin UART1
-#define SERIAL1_TCP_PORT 8881       // TCP Port UART1
+#define SERIAL1_TXPIN 27            // transmit Pin UART1
+#define SERIAL1_RXPIN 26            // receive Pin UART1
+#define SERIAL1_TCP_PORT 2000       // TCP Port UART1
 #define SERIAL1_UDP_PORT 14551      // UDP Port UART1         (ESP32 only)
 /*************************  COM Port 2 *******************************/
-#define UART_BAUD2 115200           // Baudrate UART2         (ESP32 only)
+#define UART_BAUD2 115200           // Baudrate UART2         (ESP32 only): Becker, placeholder, setting unknown
 #define SERIAL_PARAM2 SERIAL_8N1    // Data/Parity/Stop UART2 (ESP32 only)
-#define SERIAL2_TXPIN 4             // transmit Pin UART2     (ESP32 only)
-#define SERIAL2_RXPIN 15            // receive Pin UART2      (ESP32 only)
-#define SERIAL2_TCP_PORT 8882       // TCP Port UART2         (ESP32 only)
+#define SERIAL2_TXPIN 17            // transmit Pin UART2     (ESP32 only)
+#define SERIAL2_RXPIN 16            // receive Pin UART2      (ESP32 only)
+#define SERIAL2_TCP_PORT 4352       // TCP Port UART2         (ESP32 only)
 #define SERIAL2_UDP_PORT 14552      // UDP Port UART2         (ESP32 only)
 
 /**************************  DO NOT EDIT BELOW HERE **************************/
