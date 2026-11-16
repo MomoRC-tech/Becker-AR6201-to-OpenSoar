@@ -111,7 +111,7 @@ What a single broken wire does:
 | Broken wire | Effect | Risk |
 | --- | --- | --- |
 | Radio supply ground (P1-13/25) | The radio's whole return current, up to 3 A (S10), flows through J1-21, GND-J, the UBEC ground path and the bridge ground wire. The radio keeps working. | 🔴 Overheated wiring; see the warning below |
-| Bridge supply ground | The bridge's ~0.15 A returns through J1-21 and the Zander and FLARM grounds. The bridge keeps working. | 🟡 Low; [ground check](wiring.md#bring-up) in step 9 catches a poor connection |
+| Bridge supply ground | The bridge's ~0.15 A returns through J1-21 and the Zander and FLARM grounds. The bridge keeps working. | 🟡 Low; [ground check](wiring.md#bring-up) in step 13 catches a poor connection |
 | Zander or FLARM supply ground | That device's supply current returns through its RS-232 ground and the bridge. | 🟡 Low; small currents |
 | Bridge +12 V or F1 | The bridge switches off; its unpowered interfaces do not feed the devices. | 🟢 None |
 | One signal ground (J1-21, Zander, FLARM) | The link stays referenced through the supply grounds. | 🟢 None |

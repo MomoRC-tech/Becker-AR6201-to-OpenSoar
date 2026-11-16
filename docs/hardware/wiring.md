@@ -183,10 +183,42 @@ Keep all instruments disconnected during bench bring-up. Start with the supply a
 - [ ] **7.** Measure the bridge's current and switch-on inrush at 12 V, and update the [current assumptions](power.md#currents).
 - [ ] **8.** With power off and the instruments disconnected, use the moulded contact numbers to check each loose harness conductor end to end through the mated DE-9 against the [pinout](#de9-pinout). Check for unintended connections between signals and from signals to GND-J or the shell. Allow for the MAX490 receive termination and the three ground contacts that share GND-J.
 
-During [aircraft integration](../project/roadmap.md#work-packages), after bench validation and separate approval:
+<a id="bus-test"></a>
 
-- [ ] **9.** Before plugging in J1, check that the bridge ground and the radio's P1-13 and P1-25 each have low resistance (well under 1 Ω) to the common ground point ([why](power.md#wire-breaks)).
-- [ ] **10.** Listen for radio noise and check squelch with the bridge on and off.
+### 5.1 Bus-level test at the DE-9
+
+Test the finished bridge from the DE-9 inward, with the instruments still disconnected. Once the modules are soldered, the jumper loop on the ESP32 is no longer allowed ([warning](../project/roadmap.md#firmware-plan)).
+
+> [!TIP]
+> **Selected:** a DE-9 female screw-terminal breakout as the test plug, and a USB RS-232 adapter on the PC as the source for the Zander and FLARM inputs.
+
+| Breakout terminal | Radio loop | RS-232 feed |
+| ---: | --- | --- |
+| 1 | — | Adapter TXD (adapter DE-9 pin 3), Zander test |
+| 2 | — | Adapter TXD, FLARM test |
+| 3 | — | — |
+| 4 | Link to 8 | — |
+| 5 | Link to 9 | — |
+| 6, 7 | — | Adapter GND (adapter DE-9 pin 5) |
+
+| Test | Covers | Not covered |
+| --- | --- | --- |
+| Radio loop | DE-9 pins 4/5/8/9, MAX490 driver and receiver, divider, UART2, radio port | Pair polarity towards the radio: a loop with both pairs reversed still passes. Items 6 and 8 cover it |
+| RS-232 feed | DE-9 pins 1/2/6/7, module receivers at RS-232 levels, GPIO32/26, baud rate, forwarding over TCP and UDP | The RS-232 transmit direction (not wired); device protocol and installed baud rates ([open items](../project/open-items.md#installed-equipment)) |
+
+Feed one input at a time. Zander and FLARM use the same baud rate, so swapped pins show up only when each input gets its own test. The PC test script drives the adapter; its serial mode comes with [firmware step 4](../project/roadmap.md#firmware-plan).
+
+- [ ] **9.** Check the adapter: its TXD idles below −3 V against GND. A TTL cable does not and cannot be used.
+- [ ] **10.** Radio loop: fit the links 4–8 and 5–9, plug the breakout in and run the radio-port loop test.
+- [ ] **11.** Zander input: adapter TXD on terminal 1, GND on 6 and 7. Bytes sent at the Zander baud rate arrive unchanged on the Zander port ([ports](../../firmware/bridge/README.md#project-settings)), over TCP and UDP; nothing arrives on the FLARM port.
+- [ ] **12.** FLARM input: move TXD to terminal 2. Bytes arrive on the FLARM port only.
+
+### 5.2 Aircraft integration
+
+After bench validation and separate approval ([work packages](../project/roadmap.md#work-packages)):
+
+- [ ] **13.** Before plugging in J1, check that the bridge ground and the radio's P1-13 and P1-25 each have low resistance (well under 1 Ω) to the common ground point ([why](power.md#wire-breaks)).
+- [ ] **14.** Listen for radio noise and check squelch with the bridge on and off.
 
 ---
 
