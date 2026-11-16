@@ -8,6 +8,15 @@ This project is preparing a bench prototype. Read README.md, the current package
 
 The roadmap is the single work queue. A listed package, proposed ADR or recommendation is not implementation approval. For a broad request to continue, use the next package and its stated boundaries.
 
+### One writer at a time
+
+Several agents (Claude, ChatGPT/Codex) work on this repository. Before the first edit of a task:
+
+1. `git fetch origin`. If the checkout is behind `origin/main`, update it first (fast-forward only). If it has commits or uncommitted changes that are not part of this task, stop and report.
+2. Fusion: compare the cloud version of the housing design with the newest Fusion version recorded in docs/research/sources.md (the latest S-entry for the housing design). If the cloud version is newer, someone else changed it: stop and report. After saving, record the new version there in the same commit as the export.
+
+Finish every task with a push to `main` (see Preservation and delivery), so the next agent starts from it. Do not leave finished work on a side branch.
+
 ---
 
 ## Evidence and engineering rules
