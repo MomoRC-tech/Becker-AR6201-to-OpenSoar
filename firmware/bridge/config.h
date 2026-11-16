@@ -61,6 +61,9 @@
 #define PROTOCOL_TCP           // uncomment to enable TCP server
 #define MAX_NMEA_CLIENTS 4     // max TCP clients
 #define PROTOCOL_UDP           // uncomment to enable UDP broadcast (ESP32 only)
+#define STATUS_PAGE            // Project: read-only status page on port 80 and /api/status (ESP32 only)
+#define BRIDGE_VERSION "bridge step 3"           // Project: shown on the status page
+#define PORT_NAMES {"Zander", "FLARM", "Becker"}  // Project: COM 0, 1, 2 on the status page
 //#define BLUETOOTH 0          // uncomment to create a bluetooth serial bridge on the indicated serial port (ESP32 only)
 //#define BATTERY_SAVER        // uncomment to reduce wifi power
 

@@ -98,6 +98,8 @@ uint16_t i1[NUM_COM] = {0, 0};
 uint8_t BTbuf[BUFFERSIZE];
 uint16_t iBT = 0;
 
+#include "status_page.h"  // Project: status page and counters (step 3)
+
 #ifdef MODE_STA
 #if defined(ESP32)
 void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
@@ -128,7 +130,7 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
 
 #ifdef ESP32
         for (int num = 0; num < NUM_COM; num++)  // Project: before begin()
-            COM[num]->setRxBufferSize(UART_RX_BUFFER);
+            COM[num]->setRxBufferSize(UART_RX_BUFFER), statusAttachUart(num);
         COM[0]->begin(UART_BAUD0, SERIAL_PARAM0, SERIAL0_RXPIN, SERIAL0_TXPIN);
         COM[1]->begin(UART_BAUD1, SERIAL_PARAM1, SERIAL1_RXPIN, SERIAL1_TXPIN);
         COM[2]->begin(UART_BAUD2, SERIAL_PARAM2, SERIAL2_RXPIN, SERIAL2_TXPIN);
@@ -274,7 +276,8 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
             if (udp[num]->listen(udp_port[num])) {
                 debug.printf("Listening on UDP port %d\n", udp_port[num]);
                 udp[num]->onPacket([num](AsyncUDPPacket packet) {
-                    COM[num]->write(packet.data(), packet.length()); });
+                    COM[num]->write(packet.data(), packet.length());
+                    STAT(num, toDevice, packet.length()); });  // Project: count
                     }
                 }
 #endif
@@ -291,6 +294,7 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
     WiFi.setOutputPower(15);
 #endif
 #endif
+        statusBegin();  // Project: status page task (step 3)
     }
 
 #ifdef FALLBACK_TEST
@@ -352,8 +356,10 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
         for (int num = 0; num < NUM_COM; num++) {
             if (COM[num] != NULL) {
 #ifdef PROTOCOL_TCP
+                uint32_t clients = 0;  // Project: count for the status page
                 for (byte cln = 0; cln < MAX_NMEA_CLIENTS; cln++) {
                     if (TCPClient[num][cln]) {
+                        clients++;  // Project
                         while (TCPClient[num][cln].available()) {
                             buf1[num][i1[num]] =
                                 TCPClient[num][cln]
@@ -364,19 +370,24 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
 
                         COM[num]->write(buf1[num],
                                         i1[num]);  // now send to UART(num):
+                        STAT(num, toDevice, i1[num]);  // Project: count
                         i1[num] = 0;
                     }
                 }
+                STAT_CLIENTS(num, clients);  // Project
 #endif
 
                 if (COM[num]->available()) {
                     int readCount = COM[num]->read(&buf2[num][0], BUFFERSIZE); // Read up to BUFFERSIZE bytes from the serial device.
                     if (readCount == 0)
                         continue;
+                    STAT(num, fromDevice, readCount);  // Project: count
+                    STAT_RX(num);
 #ifdef PROTOCOL_TCP
                     for (byte cln = 0; cln < MAX_NMEA_CLIENTS; cln++) {
                         if (TCPClient[num][cln])
-                            TCPClient[num][cln].write(buf2[num], readCount);
+                            if (TCPClient[num][cln].write(buf2[num], readCount) != (size_t)readCount)
+                                STAT(num, shortWrites, 1);  // Project: count short writes
                     }
 #endif
 
