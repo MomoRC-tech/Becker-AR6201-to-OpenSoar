@@ -7,7 +7,7 @@
 Existing ESP32 serial-to-Wi-Fi firmware that could run on the bridge, and what each one would need.
 
 > [!NOTE]
-> **Status:** source reviews from 2026-11-08 and 2026-11-16; candidate 1 compiles unmodified with the project toolchain (S103), nothing flashed or run. Candidate 1 is proposed as the baseline ([ADR-02](../design/architecture.md#adr-02), [firmware plan](../project/roadmap.md#firmware-plan)); no firmware is selected.
+> **Status:** source reviews from 2026-11-08 and 2026-11-16; candidate 1 compiles unmodified with the project toolchain (S103), nothing flashed or run. Candidate 1 is the selected baseline ([ADR-02](../design/architecture.md#adr-02), [firmware plan](../project/roadmap.md#firmware-plan)).
 
 📑 **On this page:** <kbd>[1 · 📐 Requirements for any firmware](#firmware-requirements)</kbd> <kbd>[2 · 🧪 Candidates](#candidates)</kbd> <kbd>[3 · 🔀 Alternatives](#alternatives)</kbd>
 

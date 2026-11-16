@@ -7,7 +7,7 @@
 How the bridge is split up, which hardware is selected, and the decisions behind it.
 
 > [!NOTE]
-> **Status:** hardware design (ADR-04), update path (ADR-05) and schematic role (ADR-06) selected; bridge firmware proposed (ADR-02), not selected. Building and testing are tracked in the [roadmap](../project/roadmap.md).
+> **Status:** hardware design (ADR-04), update path (ADR-05) and schematic role (ADR-06) selected; bridge firmware baseline selected (ADR-02). Building and testing are tracked in the [roadmap](../project/roadmap.md).
 
 📑 **On this page:** <kbd>[1 · 🧩 Who does what](#responsibilities)</kbd> <kbd>[2 · 🔧 Hardware](#hardware)</kbd> <kbd>[3 · 📝 Decisions](#decisions)</kbd>
 
@@ -39,7 +39,7 @@ Related: 🔌 [Signal wiring](../hardware/wiring.md) · ⚡ [Power and grounding
 | Becker | 5 V MAX490 RS-422 board; receiver output to the ESP32 through a 2.2 kΩ / 3.3 kΩ divider |
 | UARTs | UART0 (remapped) Zander, UART1 FLARM, UART2 Becker |
 | Supply | 12 V battery → supply fuse → Hobbywing UBEC at 5 V → ESP32 and MAX490; ESP32 3.3 V → RS-232 modules |
-| Firmware | Not selected — software waits for the hardware. Proposal: [ADR-02](#adr-02); candidates: [bridge firmware](../research/bridge-firmware.md) |
+| Firmware | Yuri ESP-Serial-Bridge 130f731 as baseline ([ADR-02](#adr-02)), built in the steps of the [firmware plan](../project/roadmap.md#firmware-plan) |
 | OpenSoar review baseline | 7.46.26, `b2e745cfddfe0150f6ed7db467ac18c321b38d01` (S09); the installed build is not known yet |
 
 Pin-by-pin details: [signal wiring](../hardware/wiring.md) and [power and grounding](../hardware/power.md). Today's installation: [existing installation](../project/existing-installation.md).
@@ -54,7 +54,7 @@ Pin-by-pin details: [signal wiring](../hardware/wiring.md) and [power and ground
 | --- | --- | --- |
 | [ADR-00](#adr-00) | The repository is the project record | ✅ Selected |
 | [ADR-01](#adr-01) | Separate, transparent radio path | 🟡 Proposed |
-| [ADR-02](#adr-02) | Firmware and reuse baseline | 🟡 Proposed |
+| [ADR-02](#adr-02) | Firmware and reuse baseline | ✅ Selected |
 | [ADR-03](#adr-03) | New hardware; existing setup kept as backup | ✅ Selected |
 | [ADR-04](#adr-04) | Bench hardware and power path | ✅ Selected |
 | [ADR-05](#adr-05) | Update path and Wi-Fi start-up | ✅ Selected |
@@ -76,7 +76,13 @@ One work queue: the [roadmap](../project/roadmap.md). Requirements live in [requ
 
 ### 3.3 ADR-02 — firmware and reuse baseline
 
-**Proposed.** Base the bridge firmware on Yuri's ESP serial bridge 130f731 (MIT) and keep its forwarding loop. Keep all upstream features; removing one needs the owner's answer first. Add the OTA loader's start-up, exclusive radio ownership, counted writes and a read-only status page ([adoption review](../research/reviews/2026-11-16-yuri-adoption.md), [first review](../research/reviews/2026-11-08-yuri-bridge.md)). Steps: [firmware plan](../project/roadmap.md#firmware-plan). Keep the upstream license notice. OpenSoar driver fixes are planned separately (WP4).
+> [!TIP]
+> **Selected:**
+> - Base the bridge firmware on Yuri's ESP serial bridge 130f731 (MIT) and keep its license notice.
+> - Keep all upstream features; removing one needs the owner's answer first.
+> - Add the OTA loader's start-up, exclusive radio ownership, counted writes and a read-only status page.
+
+Reviews: [adoption review](../research/reviews/2026-11-16-yuri-adoption.md), [first review](../research/reviews/2026-11-08-yuri-bridge.md). Steps and feature selections: [firmware plan](../project/roadmap.md#firmware-plan). OpenSoar driver fixes are planned separately (WP4).
 
 <a id="adr-03"></a>
 
@@ -111,6 +117,7 @@ Parts: [parts list](../hardware/modules.md#parts-list).
 | Item | Rule |
 | --- | --- |
 | Loader | [`firmware/ota-loader`](../../firmware/ota-loader/README.md), ArduinoOTA (S94). Tries the configured network for 15 s, then opens hotspot `WiFi-BridgeTom` at 192.168.4.1 (S96) |
+| Bridge firmware | Same start-up and hotspot name; hotspot address 10.10.10.10, as on today's bridge ([configuration](../project/existing-installation.md#configuration)) |
 | Availability | Hotspot and OTA stay available as long as the bridge is powered |
 | Board setting | ESP32 Dev Module, partition scheme as above; PlatformIO: `board_build.partitions = min_spiffs.csv` |
 | Credentials | Private builds: Wi-Fi and OTA passwords stay in an untracked local file, never in the repository. The committed [hotspot-only build](../../firmware/ota-loader/README.md#variants) uses public default passwords and is for the bench only |

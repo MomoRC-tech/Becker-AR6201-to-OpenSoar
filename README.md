@@ -14,7 +14,7 @@ A small ESP32 box in the glider that collects data from the cockpit instruments 
 
 > [!NOTE]
 > **Status:** the housing design is accepted for the bench prototype. Physical fit, wiring and electrical checks are pending.
-> **Current focus:** 🔧 WP3 wiring and bench validation. Software work waits until WP3 is complete.
+> **Current focus:** 🔧 WP3 wiring and bench validation, with the 💻 [bridge firmware](docs/project/roadmap.md#firmware-plan) in parallel. Driver work waits until WP3 is complete.
 
 📑 **On this page:** <kbd>[1 · 🎯 What it does](#what-it-does)</kbd> <kbd>[2 · 🚦 Project status](#status)</kbd> <kbd>[3 · 🗺️ Documentation map](#documentation)</kbd> <kbd>[4 · ⚠️ Safety](#safety)</kbd>
 
@@ -47,7 +47,8 @@ The bridge never changes the active frequency, and the radio's own controls keep
 | 🔧 Wiring and bench validation | 🟡 **Current focus** |
 | 🛩️ Existing installation details | 🟡 Waiting for equipment information |
 | 📶 Bench OTA loader | ✅ Flashed and updatable over Wi-Fi ([M3](docs/project/roadmap.md#milestones)); [ready-made hotspot-only image](firmware/ota-loader/bin/README.md) for the first USB flash |
-| 💻 Firmware and driver changes | ⏸️ On hold until WP3 is complete; [bridge firmware plan](docs/project/roadmap.md#firmware-plan) proposed |
+| 💻 Bridge firmware | 🟡 [Plan](docs/project/roadmap.md#firmware-plan) approved; step 1 next |
+| 📻 OpenSoar driver changes | ⏸️ On hold until WP3 is complete |
 | ✈️ Aircraft integration | ⬜ Later |
 
 **Next step:** verify the bench supply and delivered parts using the [bring-up checklist](docs/hardware/wiring.md#bring-up). See [WP3 Hardware](docs/project/roadmap.md#work-packages) for the full work package.
