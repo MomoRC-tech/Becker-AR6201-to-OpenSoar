@@ -1,3 +1,3 @@
-# Keep the imported upstream files byte-identical to Yuri ESP-Serial-Bridge 130f731 (CRLF).
+# Keep the CRLF line endings of the imported sketch, so diffs against the import (56d1b23) stay line by line.
 bridge.ino -text whitespace=cr-at-eol
 config.h -text whitespace=cr-at-eol

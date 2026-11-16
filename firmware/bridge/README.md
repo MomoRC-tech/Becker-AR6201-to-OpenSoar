@@ -10,7 +10,7 @@ The project's own Wi-Fi bridge firmware for Zander, FLARM and Becker, developed 
 | Pinned commit | [`130f731416d43c89bce5626ef989b3e65918c9ce`](https://github.com/yuri-rage/ESP-Serial-Bridge/tree/130f731416d43c89bce5626ef989b3e65918c9ce) |
 | Imported files | `ESP-Serial-Bridge.ino` as [`bridge.ino`](bridge.ino) (arduino-cli needs the sketch named after its folder), [`config.h`](config.h), [`LICENSE`](LICENSE) |
 | License | MIT, see [`LICENSE`](LICENSE); keep the notice with every copy |
-| Line endings | CRLF as upstream; [`.gitattributes`](.gitattributes) keeps the files byte-identical, so `git diff 56d1b23 -- firmware/bridge` shows every project change. Each change is marked `// Project:` |
+| Line endings | CRLF as at the import; [`.gitattributes`](.gitattributes) keeps them, so `git diff 56d1b23 -- firmware/bridge` shows every project change. Each change is marked `// Project:` |
 
 <a id="project-settings"></a>
 
