@@ -7,7 +7,7 @@
 Mechanical design of the bridge: what goes inside, part sizes, connectors on the housing, internal layout.
 
 > [!NOTE]
-> **Status:** housing v16 with the Wire Generator harness is the accepted mechanical design for the bench prototype (S93). Park CAD changes and use v16 for assembly. The DE-9 stops and other features still need the [physical fit and retention checks](../project/open-items.md#housing). Reopen the design if those checks call for a change.
+> **Status:** the bench prototype uses the housing v16 baseline (S93) with the shield-supported RS-232 clamp and revised base (S102). Follow the [physical fit and retention checks](../project/open-items.md#housing).
 
 📑 **On this page:** <kbd>[1 · 🎯 Requirements](#requirements)</kbd> <kbd>[2 · 📐 Design rules](#rules)</kbd> <kbd>[3 · 📏 Contents and sizes](#contents)</kbd> <kbd>[4 · 🔌 Connectors on the housing](#connectors)</kbd> <kbd>[5 · 🧩 Internal layout](#layout)</kbd>
 
@@ -326,17 +326,8 @@ Use the [STEP model](../../cad/reference/xt30u-m/xt30u-m.step) of the AMASS XT30
 - **USB seating ledge:** the continuous seating face is 12 mm wide at 4.5 mm above the floor. Two floor-supported webs connect it to the end-stop feet up to 2.6 mm above the floor. The antenna holder joins the floor at Y 0 (S83).
 - **ESP32 nose print support (S89):** use the [base print with the breakaway platform](../../cad/housing/housing-body-v1/housing-base-with-esp32-support.3mf) to give the slicer a landing below the retaining nose. Allow supports to start on model surfaces and inspect the layers under the nose. Remove the slicer support and break the platform off at its four feet before seating the ESP32.
 - **ESP32/RS-232 placement in Fusion:** a rigid as-built joint mounts the stack to the pinned base tray. A rigid group preserves the installed positions of the removable clamp and the embedded ESP32 and RS-232 references. See the [assembly archive](../../cad/housing/housing-body-v1/README.md) for the local holder features (S65).
-- **Clamp arm:** a 6 × 2 mm arm runs from the clamp's free end over the ESP32 module into a short tunnel on top of the integral antenna holder's spring bridge. It only locates the free end, without loading the spring bridge (cap top at Y 15.0). Gaps, sized for print tolerances and the ~0.4 mm lift of the bridge once the ESP32 is fitted:
-
-  | Gap (mm) | Modelled | ESP32 fitted |
-  | --- | --- | --- |
-  | Below the arm | 0.7 | about 0.3 |
-  | Above the arm | −0.1 (overlap in the model) | about 0.3 |
-  | Each side | 0.25 | 0.25 |
-  | Arm tip to tunnel end | 0.2 | 0.2 |
-
-- **Fitting the clamp:** push the arm tip into the tunnel with the USB end raised, then lower the clamp onto the USB socket and screw it down.
-- **Assembly order:** solder the RS-232 wires on the bench, slide the boards into the clamp, fit the ESP32, then screw the clamp on.
+- **Clamp support (S102):** the shortened 6 × 2 mm arm ends over the ESP32 shield. Its flat 4 × 6 mm foot sits 2.6 mm below the arm, level with the shield in CAD. The integral ESP32 spring bridge retains the ESP32 at the antenna end.
+- **Fitting the clamp:** solder the RS-232 wires on the bench, slide the boards into the clamp and fit the ESP32. Lower the clamp onto the USB socket and shield, then fit the existing front M2.5 screw. Check that the foot rests on the shield without preload.
 - **UBEC carrier:** lift it off for access to the MAX490 header joints. Mounting and tie routing: [section 2.4](#ubec-carrier).
 - **Wiring:** the modelled XT30 pair drops to the floor at the connector side and runs in the floor bus to the UBEC ([power routes](#power-on-lanes)). Keep the DE-9 on the MAX490 side for the two Becker differential pairs. A direct exchange puts one DE-9 jackpost into the base corner post and the straight XT30 leads through the terminal block (S63). See the [routing study](#internal-routing) for the harness and space allowances.
 - **Ferrite ring placement:** in the housing prototype the measured ring sits in the cradle at X 80.8–86.2. The wire turns still need clearance.
@@ -344,7 +335,6 @@ Use the [STEP model](../../cad/reference/xt30u-m/xt30u-m.step) of the AMASS XT30
 - **Corner posts:** the measured ferrite ring clears the far post on the MAX490 side in Fusion.
 - **Routing space:** the housing body is 70 mm wide, 6 mm wider than layout v4 on the MAX490 side. The facing ESP32 and MAX490 PCB edges are 7.45 mm apart. The 2.5 mm floor sits 3 mm below the layout datum, giving 23 mm to the hood underside (S64).
 - **Hood shape:** rounded top edges, a cut-off rear corner on the MAX490 side and a lower hood over the ring area. A curved hood saves little: the tallest items (ESP32 header wire rows, UBEC) sit close to both side walls.
-- **Fit test:** the first print of holder v3 fits (clamp printed top up with support under the arm and slot plate; arm tilts into the tunnel).
 - **Ferrite representation:** bare core and retained tie envelopes; the routing study stops at separate approach/departure points and does not depict wire turns.
 
 Components in the Fusion layout v4. The [housing prototype archive](../../cad/housing/housing-body-v1/README.md) uses the measured UBEC and ferrite ring and embeds the MAX490 board.

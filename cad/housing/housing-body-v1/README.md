@@ -1,6 +1,6 @@
 # Housing body v1 (prototype)
 
-The enclosure fit revision uses [layout v4](../layout-v4/README.md) with a restored floor datum, revised connector wall, rounded corners around the front insert seats, an integral ESP32 antenna holder and the hood. Open `Housing body - Wire Generator harness` in Fusion or use the standalone archive from the [housing v16 release](https://github.com/MomoRC-tech/Becker-AR6201-to-OpenSoar/releases/tag/housing-v16) (S93). See the [design rules](../../../docs/hardware/housing.md#rules) and [physical fit checks](../../../docs/project/open-items.md#housing).
+The enclosure fit revision uses [layout v4](../layout-v4/README.md) with a restored floor datum, revised connector wall, rounded corners around the front insert seats, an integral ESP32 antenna holder and the hood. Open `Housing body - Wire Generator harness` in Fusion or use the [standalone archive](housing-enclosure-fit.f3d) for the current bench design (S102). See the [design rules](../../../docs/hardware/housing.md#rules) and [physical fit checks](../../../docs/project/open-items.md#housing).
 
 ![Earlier prototype showing the hood, connector wall and external tie loops](preview-closed.png)
 
@@ -24,11 +24,12 @@ The enclosure fit revision uses [layout v4](../layout-v4/README.md) with a resto
 
 | File | Use |
 | --- | --- |
-| [housing-enclosure-fit.f3d](housing-enclosure-fit.f3d) | Standalone housing v16 assembly with the selected Wire Generator harness, continuous schematic ferrite leads, saved wire colours and RS-422 pair bands (S93), embedded board references, the integral ESP32 antenna holder, the [reinforced floor guides](../../../docs/hardware/housing.md#floor-guide), the single-tie ferrite cradle, the provisional DE-9 stops and the module ground J3-1 → mod2 R4 as a native sweep (S101). Open with *File › Open › Open from my computer* |
+| [housing-enclosure-fit.f3d](housing-enclosure-fit.f3d) | Standalone housing v16 assembly with the selected Wire Generator harness, continuous schematic ferrite leads, saved wire colours and RS-422 pair bands (S93), embedded board references, the integral ESP32 antenna holder, the [reinforced floor guides](../../../docs/hardware/housing.md#floor-guide), the single-tie ferrite cradle, the provisional DE-9 stops, the module ground J3-1 → mod2 R4 as a native sweep (S101), and the shield-supported RS-232 clamp and revised base (S102). Open with *File › Open › Open from my computer* |
 | [housing-power-routing.f3d](housing-power-routing.f3d), [housing-assembly.f3d](housing-assembly.f3d) | Standalone references for the v20 routing baseline (S81) and the earlier v80 prototype (S66) |
-| [housing-base.f3d](housing-base.f3d), `housing-hood.f3d` | Fusion part archives. Edit hood lettering in the full assembly, which contains the insert references |
+| [housing-base.f3d](housing-base.f3d), `housing-hood.f3d` | Fusion part archives. Toggle the optional ESP32 nose support in the base archive. Edit hood lettering in the full assembly, which contains the insert references |
 | [housing-base.3mf](housing-base.3mf), [housing-hood.3mf](housing-hood.3mf), [housing-logo-insert.3mf](housing-logo-insert.3mf) | Print meshes at Z = 0. Base floor down. Hood and logo top down in shared coordinates. Load hood and logo together as one object with two parts (dark grey filament for the logo) |
 | [housing-base-with-esp32-support.3mf](housing-base-with-esp32-support.3mf) | Optional base print with the breakaway support platform under the ESP32 retaining nose (S89). Slice floor down with support allowed to start on the model. Remove the slicer support and snap off the platform before inserting the ESP32 |
+| [rs232-clamp.3mf](rs232-clamp.3mf) | Shield-supported RS-232 clamp (S102). Print top up in PETG with support under the arm and slot plate. Check the shield seat and both board slots on a test print |
 | `housing-logo-insert.f3d`, `housing-logo-insert.step` | Logo and "7-20V" insert as its own part |
 | `housing-base.step`, `housing-hood.step` | Solid models in the layout frame |
 | [routing-study.json](routing-study.json) | Housing v16 CAD lengths, reference waypoints and [harness cutting table](../../../docs/hardware/housing.md#harness-cutting) inputs |
