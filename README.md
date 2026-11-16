@@ -62,6 +62,7 @@ The bridge never changes the active frequency, and the radio's own controls keep
 | :-: | --- | --- | --- |
 | 🔧 | **Hardware** | [🔌 Signal wiring](docs/hardware/wiring.md) | Pin-by-pin signal wiring and bench bring-up |
 | | | [⚡ Power and grounding](docs/hardware/power.md) | Supply, ground loops and currents |
+| | | [🧾 Schematic](docs/hardware/schematic.md) | All boards and connections on one KiCad sheet |
 | | | [🧱 Modules and parts](docs/hardware/modules.md) | Module details, parts list |
 | | | [📦 Housing](docs/hardware/housing.md) | Mechanical design |
 | | | [🪛 Wire installation](docs/hardware/wire-installation.md) | Assembling the harness step by step |
