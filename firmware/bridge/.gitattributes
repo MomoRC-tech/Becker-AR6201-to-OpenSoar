@@ -1,0 +1,3 @@
+# Keep the imported upstream files byte-identical to Yuri ESP-Serial-Bridge 130f731 (CRLF).
+bridge.ino -text
+config.h -text
