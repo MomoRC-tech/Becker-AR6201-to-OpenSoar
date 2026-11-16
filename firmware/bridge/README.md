@@ -1,6 +1,6 @@
 # Bridge firmware
 
-Wi-Fi bridge firmware for Zander, FLARM and Becker, built from Yuri's ESP-Serial-Bridge in the steps of the [firmware plan](../../docs/project/roadmap.md#firmware-plan) ([ADR-02](../../docs/design/architecture.md#adr-02)). Current state: step 2, project settings, running on the bench ESP32 (S105, S106).
+Wi-Fi bridge firmware for Zander, FLARM and Becker, built from Yuri's ESP-Serial-Bridge in the steps of the [firmware plan](../../docs/project/roadmap.md#firmware-plan) ([ADR-02](../../docs/design/architecture.md#adr-02)). Current state: step 2 done, running on the bench ESP32 (S105, S106).
 
 ## Origin and license
 
