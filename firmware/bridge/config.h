@@ -24,6 +24,8 @@
 #define HOSTNAME "esp32"     // hostname for STA mode mDNS
 
 #define BUFFERSIZE 1024
+#define UART_RX_BUFFER 4096  // Project: UART receive buffer per port (ESP32), holds
+                             // incoming bytes while the loop waits on a UART write
 
 #ifdef ESP32
 #define VERSION "2.0-ESP32"
