@@ -232,7 +232,7 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
 
 #ifdef BATTERY_SAVER
 #ifdef ESP32
-        esp_err_t esp_wifi_set_max_tx_power(50);  // lower WiFi Power
+        esp_wifi_set_max_tx_power(50);  // lower WiFi Power (Project: now called; upstream declared a function)
 #elif defined(ESP8266)
     WiFi.setOutputPower(15);
 #endif
