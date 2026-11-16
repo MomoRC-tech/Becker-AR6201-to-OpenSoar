@@ -4,6 +4,7 @@
 
 # Local Wi-Fi and OTA passwords
 firmware/ota-loader/credentials.h
+firmware/bridge/credentials.h
 
 # Local loader builds (private images contain passwords) and the generated variant header
 build/

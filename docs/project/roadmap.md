@@ -7,7 +7,7 @@
 The single work queue: which work package comes next and what finishes it.
 
 > [!NOTE]
-> **Status:** WP3 continues with wiring and bench validation. The [bridge firmware plan](#firmware-plan) (WP6) is approved and runs in parallel; step 1 is done, step 2 is next. The driver packages (WP4, WP5) wait until WP3 is complete. Work outside the approved plan needs the owner's approval.
+> **Status:** WP3 continues with wiring and bench validation. The [bridge firmware plan](#firmware-plan) (WP6) is approved and runs in parallel; step 1 is done, step 2 has passed its network-mode checks and waits for the hotspot check. The driver packages (WP4, WP5) wait until WP3 is complete. Work outside the approved plan needs the owner's approval.
 
 📑 **On this page:** <kbd>[1 · 📦 Work packages](#work-packages)</kbd> <kbd>[2 · 💻 Bridge firmware plan](#firmware-plan)</kbd> <kbd>[3 · 🏁 Milestones](#milestones)</kbd> <kbd>[4 · ✅ Test coverage for the software phase](#test-coverage)</kbd>
 
@@ -27,7 +27,7 @@ Related: ❓ [Open items](open-items.md) · 🎯 [Requirements](../design/requir
 | WP2 Interfaces and protocol | ⏸️ Driver research done ([Becker driver](../research/becker-driver.md)) | Matching radio protocol reference or independent captures | Manual, settings, framing and reply rules confirmed |
 | WP4 Driver plan | ⏸️ Send defect analysed | After hardware: counted-send fix and caller/state/UI mapping | One small change and regression test per step |
 | WP5 Host tests | ⏸️ Send regression only ([review](../research/reviews/2026-11-08-becker-send.md)) | After WP4 scope is approved | Framing, state, reply and reconnect cases pass |
-| WP6 Bridge firmware | 🟡 [Plan](#firmware-plan) approved, in parallel with WP3; step 1 done | Step 2 of the [firmware plan](#firmware-plan) | Radio path byte-exact, single owner, navigation unaffected. Verify link monitoring if included in the approved scope |
+| WP6 Bridge firmware | 🟡 [Plan](#firmware-plan) approved, in parallel with WP3; step 1 done, step 2 network checks passed (S105) | Step 2 hotspot check: fallback, address 10.10.10.10, OTA over the hotspot | Radio path byte-exact, single owner, navigation unaffected. Verify link monitoring if included in the approved scope |
 | WP8 Aircraft integration | ⬜ Later | Needs verified hardware and separate approval | Installation, protection and approval requirements met |
 
 <a id="claude-handover"></a>
@@ -115,7 +115,7 @@ Each step: build, upload over Wi-Fi, check, update the owning pages, commit.
 | 5 | **Bench acceptance.** One PC test script for the [bridge tests](#test-coverage): slow and vanishing clients, Wi-Fi loss and return, power cycle, one-hour run on all three ports | Finished bench bridge | No byte errors; results recorded; bridge part of M4 |
 
 > [!WARNING]
-> Use the jumper loop only while GPIO26 and GPIO32 are not yet soldered to the RS-232 modules. Once they are, the module output and the jumper would drive the same pin against each other: feed test data in at the DE-9 instead.
+> Use the jumper loop only while GPIO16, GPIO26 and GPIO32 are not yet soldered to the MAX490 or the RS-232 modules. Once they are, the module output and the jumper would drive the same pin against each other: feed test data in at the DE-9 instead.
 
 Later, each needing its own approval: password-protected settings page (baud rates and Wi-Fi stored on the ESP32), firmware upload from the browser, radio byte monitor for [protocol captures](open-items.md#software-and-acceptance), contributing general fixes back to [Yuri's project](https://github.com/yuri-rage/ESP-Serial-Bridge) (for example `BATTERY_SAVER` and the Arduino-ESP32 3.x `accept()` rename). Keep each such fix in its own commit so it can be offered upstream.
 

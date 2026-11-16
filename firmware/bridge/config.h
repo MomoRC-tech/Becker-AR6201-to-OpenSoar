@@ -9,7 +9,8 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#define DEBUG  // comment to suppress system serial messages
+//#define DEBUG  // comment to suppress system serial messages
+                 // Project: off, UART0 serves the Zander (wiring UART plan)
 
 #ifdef ESP32
 #include <WiFi.h>
@@ -19,9 +20,20 @@
 
 #define OTA_HANDLER          // uncomment to enable OTA programming
 
-#define SSID     "ssid"      // SSID to join (or broadcast)
-#define PASSWD   "password"  // wiFi password
-#define HOSTNAME "esp32"     // hostname for STA mode mDNS
+// Project: Wi-Fi and OTA passwords live in credentials.h, ignored by Git.
+// It has the same format as the OTA loader's; copy credentials.example.h.
+#if __has_include("credentials.h")
+#include "credentials.h"
+#else
+#error "Copy credentials.example.h to credentials.h and fill in your values."
+#endif
+
+#define SSID     WIFI_SSID      // SSID to join (or broadcast)
+#define PASSWD   WIFI_PASSWORD  // wiFi password
+#define HOSTNAME "wifi-bridgetom"  // hostname for mDNS and OTA (Project: as the OTA loader)
+
+#define HOTSPOT_SSID "WiFi-BridgeTom"  // Project: MODE_STA_AP fallback hotspot (ADR-05)
+#define JOIN_TIMEOUT_MS 15000         // Project: MODE_STA_AP network join time
 
 #define BUFFERSIZE 1024
 #define UART_RX_BUFFER 4096  // Project: UART receive buffer per port (ESP32), holds
@@ -33,14 +45,14 @@
 #define VERSION "2.0-ESP8266"
 #endif
 
-#define MODE_STA               // MODE_STA or MODE_AP
+#define MODE_STA_AP            // MODE_STA, MODE_AP or MODE_STA_AP (Project: network, then hotspot; ESP32 only)
 #define PROTOCOL_TCP           // uncomment to enable TCP server
 #define MAX_NMEA_CLIENTS 4     // max TCP clients
 #define PROTOCOL_UDP           // uncomment to enable UDP broadcast (ESP32 only)
 //#define BLUETOOTH 0          // uncomment to create a bluetooth serial bridge on the indicated serial port (ESP32 only)
 //#define BATTERY_SAVER        // uncomment to reduce wifi power
 
-#define STATIC_IP IPAddress( 10,  10,  10, 10)  // static IP for MODE_AP
+#define STATIC_IP IPAddress( 10,  10,  10, 10)  // static IP for MODE_AP (Project: and the MODE_STA_AP hotspot)
 #define NETMASK   IPAddress(255, 255, 255, 0)  // netmask for MODE_AP
 
 #ifdef ESP32
@@ -69,9 +81,24 @@
 #define SERIAL2_TXPIN 17            // transmit Pin UART2     (ESP32 only)
 #define SERIAL2_RXPIN 16            // receive Pin UART2      (ESP32 only)
 #define SERIAL2_TCP_PORT 4352       // TCP Port UART2         (ESP32 only)
-#define SERIAL2_UDP_PORT 14552      // UDP Port UART2         (ESP32 only)
+#define SERIAL2_UDP_PORT 0          // UDP Port UART2         (ESP32 only) Project: 0 = no UDP; radio port is TCP only
 
 /**************************  DO NOT EDIT BELOW HERE **************************/
+// Project: build-time checks for the Wi-Fi mode and the radio port rules
+#if defined(MODE_STA) + defined(MODE_AP) + defined(MODE_STA_AP) != 1
+#error "Select exactly one of MODE_STA, MODE_AP and MODE_STA_AP."
+#endif
+#if defined(MODE_STA_AP) && !defined(ESP32)
+#error "MODE_STA_AP is ESP32 only."
+#endif
+#define RADIO_COM 2  // Becker radio on UART2
+#if defined(BLUETOOTH) && (BLUETOOTH == RADIO_COM)
+#error "Bluetooth must not target the radio port."
+#endif
+#if defined(ESP32) && defined(PROTOCOL_UDP) && (SERIAL2_UDP_PORT != 0)
+#error "No UDP on the radio port: set SERIAL2_UDP_PORT to 0."
+#endif
+
 // perhaps a clever way to include/exclude serial debug messages...
 #ifdef DEBUG
     #define debug Serial

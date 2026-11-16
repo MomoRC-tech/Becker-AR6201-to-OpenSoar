@@ -9,6 +9,9 @@ Git); a build folder inside the sketch is picked up as sketch source and forces
 a full core rebuild every time. A build takes about 4-5 minutes, also when
 only the sketch changed (S104 in docs/research/sources.md).
 
+Needs firmware/bridge/credentials.h (ignored by Git; same format as the OTA
+loader's). The image contains its passwords, so it stays in build/bridge/.
+
 Prints the toolchain, the duration, the image size and any warning or error
 from the sketch files. Nothing is uploaded.
 """
@@ -39,7 +42,10 @@ def cli_version() -> str:
 
 
 def main() -> int:
-    cmd = ["arduino-cli", "compile", "--fqbn", FQBN, "--warnings", "all", "--build-path", str(BUILD), str(SKETCH)]
+    if not (SKETCH / "credentials.h").exists():
+        print("firmware/bridge/credentials.h is missing: copy credentials.example.h (or the OTA loader's credentials.h).")
+        return 2
+    cmd =["arduino-cli", "compile", "--fqbn", FQBN, "--warnings", "all", "--build-path", str(BUILD), str(SKETCH)]
     print(f"[bridge] arduino-cli {cli_version()}, esp32 core {core_version()}, {FQBN}", flush=True)
     print(f"[bridge] building in {BUILD.relative_to(ROOT).as_posix()}/ ...", flush=True)
     start = time.monotonic()

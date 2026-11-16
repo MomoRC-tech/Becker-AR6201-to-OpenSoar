@@ -36,6 +36,10 @@
 
 #ifdef OTA_HANDLER
 #include <ArduinoOTA.h>
+static_assert(sizeof(OTA_PASSWORD) - 1 >= 8, "OTA_PASSWORD needs at least 8 characters.");  // Project
+#endif
+#ifdef MODE_STA_AP
+static_assert(sizeof(HOTSPOT_PASSWORD) - 1 >= 8, "HOTSPOT_PASSWORD needs at least 8 characters (WPA2).");  // Project
 #endif
 
 #ifdef ESP32
@@ -172,7 +176,46 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
         }
 #endif
 
+#ifdef MODE_STA_AP  // Project: join the network for JOIN_TIMEOUT_MS, else open the hotspot (ADR-05, R12)
+        debug.println("Open ESP Station Mode, hotspot fallback");
+        WiFi.setHostname(HOSTNAME);
+        WiFi.mode(WIFI_STA);
+        WiFi.begin(SSID, PASSWD);
+        debug.printf("Joining %s for up to %u s\n", SSID, JOIN_TIMEOUT_MS / 1000);
+        {
+            const unsigned long start = millis();
+            while (WiFi.status() != WL_CONNECTED && millis() - start < JOIN_TIMEOUT_MS) {
+                delay(250);
+            }
+        }
+        if (WiFi.status() == WL_CONNECTED) {
+            debug.print("connected, IP address: ");
+            debug.println(WiFi.localIP());  // reconnects on its own after a drop
+        } else {
+            debug.println("Network not reached, opening hotspot");
+            WiFi.disconnect(true);
+            WiFi.mode(WIFI_AP);
+            if (!WiFi.softAP(HOTSPOT_SSID, HOTSPOT_PASSWORD)) {
+                debug.println("Hotspot failed, restarting in 5 s");
+                delay(5000);
+                ESP.restart();
+            }
+            delay(2000);  // as upstream MODE_AP before softAPConfig
+            WiFi.softAPConfig(STATIC_IP, STATIC_IP, NETMASK);
+            debug.print("Hotspot ");
+            debug.print(HOTSPOT_SSID);
+            debug.print(", IP address: ");
+            debug.println(WiFi.softAPIP());
+        }
+        if (MDNS.begin(HOSTNAME)) {
+            MDNS.addService("_telnet", "_tcp", SERIAL0_TCP_PORT);
+        }
+#endif
+
 #ifdef OTA_HANDLER
+        // Project: password and hostname (R13); messages follow the DEBUG switch
+        ArduinoOTA.setHostname(HOSTNAME);
+        ArduinoOTA.setPassword(OTA_PASSWORD);
         ArduinoOTA.onStart([]() {
             String type;
             if (ArduinoOTA.getCommand() == U_FLASH)
@@ -182,24 +225,24 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
 
             // NOTE: if updating SPIFFS this would be the place to unmount
             // SPIFFS using SPIFFS.end()
-            Serial.println("Start updating " + type);
+            debug.println("Start updating " + type);
         });
-        ArduinoOTA.onEnd([]() { Serial.println("\nEnd"); });
+        ArduinoOTA.onEnd([]() { debug.println("\nEnd"); });
         ArduinoOTA.onProgress([](unsigned int progress, unsigned int total) {
-            Serial.printf("Progress: %u%%\r", (progress / (total / 100)));
+            debug.printf("Progress: %u%%\r", (progress / (total / 100)));
         });
         ArduinoOTA.onError([](ota_error_t error) {
-            Serial.printf("Error[%u]: ", error);
+            debug.printf("Error[%u]: ", error);
             if (error == OTA_AUTH_ERROR)
-                Serial.println("Auth Failed");
+                debug.println("Auth Failed");
             else if (error == OTA_BEGIN_ERROR)
-                Serial.println("Begin Failed");
+                debug.println("Begin Failed");
             else if (error == OTA_CONNECT_ERROR)
-                Serial.println("Connect Failed");
+                debug.println("Connect Failed");
             else if (error == OTA_RECEIVE_ERROR)
-                Serial.println("Receive Failed");
+                debug.println("Receive Failed");
             else if (error == OTA_END_ERROR)
-                Serial.println("End Failed");
+                debug.println("End Failed");
         });
         // if DNSServer is started with "*" for domain name, it will reply with
         // provided IP to all DNS request
@@ -219,6 +262,7 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
 #ifdef ESP32
 #ifdef PROTOCOL_UDP
         for (uint16_t num = 0; num < NUM_COM; num++) {
+            if (udp_port[num] == 0) continue;  // Project: no UDP on this port
             if (udp[num]->listen(udp_port[num])) {
                 debug.printf("Listening on UDP port %d\n", udp_port[num]);
                 udp[num]->onPacket([num](AsyncUDPPacket packet) {
@@ -315,7 +359,8 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
 
 #ifdef ESP32
 #ifdef PROTOCOL_UDP
-                    udp[num]->broadcastTo(buf2[num], readCount, udp_port[num]);
+                    if (udp_port[num] != 0)  // Project: no UDP on this port
+                        udp[num]->broadcastTo(buf2[num], readCount, udp_port[num]);
 #endif
 #ifdef BLUETOOTH
                     // now send to Bluetooth:
