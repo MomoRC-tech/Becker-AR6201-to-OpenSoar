@@ -34,6 +34,11 @@
 
 #include "config.h"
 
+#ifdef FALLBACK_TEST  // Project: temporary hotspot fallback test build
+#include <esp_ota_ops.h>
+static bool otaStarted = false;
+#endif
+
 #ifdef OTA_HANDLER
 #include <ArduinoOTA.h>
 static_assert(sizeof(OTA_PASSWORD) - 1 >= 8, "OTA_PASSWORD needs at least 8 characters.");  // Project
@@ -217,6 +222,9 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
         ArduinoOTA.setHostname(HOSTNAME);
         ArduinoOTA.setPassword(OTA_PASSWORD);
         ArduinoOTA.onStart([]() {
+#ifdef FALLBACK_TEST
+            otaStarted = true;
+#endif
             String type;
             if (ArduinoOTA.getCommand() == U_FLASH)
                 type = "sketch";
@@ -285,7 +293,22 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
 #endif
     }
 
+#ifdef FALLBACK_TEST
+    // Project: boot the other app slot (the previous image) if no OTA upload
+    // arrived, so the test build never stays installed by accident.
+    static void revertIfIdle() {
+        if (otaStarted || millis() < FALLBACK_REVERT_MS) return;
+        const esp_partition_t* previous = esp_ota_get_next_update_partition(nullptr);
+        if (previous != nullptr) esp_ota_set_boot_partition(previous);
+        delay(500);
+        ESP.restart();
+    }
+#endif
+
     void loop() {
+#ifdef FALLBACK_TEST
+        revertIfIdle();
+#endif
 #ifdef OTA_HANDLER
         ArduinoOTA.handle();
 #endif

@@ -1,6 +1,6 @@
 # Bridge firmware
 
-Wi-Fi bridge firmware for Zander, FLARM and Becker, built from Yuri's ESP-Serial-Bridge in the steps of the [firmware plan](../../docs/project/roadmap.md#firmware-plan) ([ADR-02](../../docs/design/architecture.md#adr-02)). Current state: step 2, project settings; network-mode checks passed on the bench ESP32 (S105).
+Wi-Fi bridge firmware for Zander, FLARM and Becker, built from Yuri's ESP-Serial-Bridge in the steps of the [firmware plan](../../docs/project/roadmap.md#firmware-plan) ([ADR-02](../../docs/design/architecture.md#adr-02)). Current state: step 2, project settings, running on the bench ESP32 (S105, S106).
 
 ## Origin and license
 
@@ -50,6 +50,8 @@ python tools/build_bridge.py
 ```
 
 The script builds in `build/bridge/` at the repository root, outside the sketch, and prints toolchain, duration, image size and any sketch warnings. A build takes between 1 and 5 minutes (S104, S105).
+
+To test the hotspot fallback without switching off the network, build `python tools/build_bridge.py fallback-test` (in `build/bridge-fallback-test/`) and upload it. It joins a network that does not exist, so the hotspot opens after 15 s. Without an OTA upload it boots the previous image after 10 minutes, so it never stays installed by accident. The variant is selected by a generated `bridge_variant.h`, ignored by Git and removed after the build.
 
 ## Upload over Wi-Fi
 

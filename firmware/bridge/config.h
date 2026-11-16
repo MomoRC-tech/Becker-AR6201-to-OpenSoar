@@ -28,6 +28,18 @@
 #error "Copy credentials.example.h to credentials.h and fill in your values."
 #endif
 
+// Project: tools/build_bridge.py fallback-test writes bridge_variant.h (ignored by Git).
+// FALLBACK_TEST joins a network that does not exist, so the hotspot opens; without an
+// OTA upload the bridge boots the previous app slot after FALLBACK_REVERT_MS.
+#if __has_include("bridge_variant.h")
+#include "bridge_variant.h"
+#endif
+#ifdef FALLBACK_TEST
+#undef WIFI_SSID
+#define WIFI_SSID "bridgetom-no-such-network"
+#define FALLBACK_REVERT_MS (10UL * 60UL * 1000UL)
+#endif
+
 #define SSID     WIFI_SSID      // SSID to join (or broadcast)
 #define PASSWD   WIFI_PASSWORD  // wiFi password
 #define HOSTNAME "wifi-bridgetom"  // hostname for mDNS and OTA (Project: as the OTA loader)

@@ -7,7 +7,7 @@
 The single work queue: which work package comes next and what finishes it.
 
 > [!NOTE]
-> **Status:** WP3 continues with wiring and bench validation. The [bridge firmware plan](#firmware-plan) (WP6) is approved and runs in parallel; step 1 is done, step 2 has passed its network-mode checks and waits for the hotspot check. The driver packages (WP4, WP5) wait until WP3 is complete. Work outside the approved plan needs the owner's approval.
+> **Status:** WP3 continues with wiring and bench validation. The [bridge firmware plan](#firmware-plan) (WP6) is approved and runs in parallel; step 1 is done, step 2 has passed its checks except OTA over the hotspot (S105, S106). The driver packages (WP4, WP5) wait until WP3 is complete. Work outside the approved plan needs the owner's approval.
 
 📑 **On this page:** <kbd>[1 · 📦 Work packages](#work-packages)</kbd> <kbd>[2 · 💻 Bridge firmware plan](#firmware-plan)</kbd> <kbd>[3 · 🏁 Milestones](#milestones)</kbd> <kbd>[4 · ✅ Test coverage for the software phase](#test-coverage)</kbd>
 
@@ -27,7 +27,7 @@ Related: ❓ [Open items](open-items.md) · 🎯 [Requirements](../design/requir
 | WP2 Interfaces and protocol | ⏸️ Driver research done ([Becker driver](../research/becker-driver.md)) | Matching radio protocol reference or independent captures | Manual, settings, framing and reply rules confirmed |
 | WP4 Driver plan | ⏸️ Send defect analysed | After hardware: counted-send fix and caller/state/UI mapping | One small change and regression test per step |
 | WP5 Host tests | ⏸️ Send regression only ([review](../research/reviews/2026-11-08-becker-send.md)) | After WP4 scope is approved | Framing, state, reply and reconnect cases pass |
-| WP6 Bridge firmware | 🟡 [Plan](#firmware-plan) approved, in parallel with WP3; step 1 done, step 2 network checks passed (S105) | Step 2 hotspot check: fallback, address 10.10.10.10, OTA over the hotspot | Radio path byte-exact, single owner, navigation unaffected. Verify link monitoring if included in the approved scope |
+| WP6 Bridge firmware | 🟡 [Plan](#firmware-plan) approved, in parallel with WP3; step 1 done, step 2 checks passed except OTA over the hotspot (S105, S106) | Owner acceptance of step 2, then step 3 | Radio path byte-exact, single owner, navigation unaffected. Verify link monitoring if included in the approved scope |
 | WP8 Aircraft integration | ⬜ Later | Needs verified hardware and separate approval | Installation, protection and approval requirements met |
 
 <a id="claude-handover"></a>

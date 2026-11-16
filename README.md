@@ -47,7 +47,7 @@ The bridge never changes the active frequency, and the radio's own controls keep
 | 🔧 Wiring and bench validation | 🟡 **Current focus** |
 | 🛩️ Existing installation details | 🟡 Waiting for equipment information |
 | 📶 Bench OTA loader | ✅ Flashed and updatable over Wi-Fi ([M3](docs/project/roadmap.md#milestones)); [ready-made hotspot-only image](firmware/ota-loader/bin/README.md) for the first USB flash |
-| 💻 Bridge firmware | 🟡 [Plan](docs/project/roadmap.md#firmware-plan) approved; step 1 done; step 2 [bridge firmware](firmware/bridge/README.md) runs on the bench ESP32, network checks passed, hotspot check open |
+| 💻 Bridge firmware | 🟡 [Plan](docs/project/roadmap.md#firmware-plan) approved; step 1 done; step 2 [bridge firmware](firmware/bridge/README.md) runs on the bench ESP32; loop check, network OTA and hotspot fallback passed, OTA over the hotspot not checked |
 | 📻 OpenSoar driver changes | ⏸️ On hold until WP3 is complete |
 | ✈️ Aircraft integration | ⬜ Later |
 
