@@ -7,7 +7,7 @@
 Existing ESP32 serial-to-Wi-Fi firmware that could run on the bridge, and what each one would need.
 
 > [!NOTE]
-> **Status:** source reviews from 2026-11-08 and 2026-11-16; candidate 1 compiles unmodified with the project toolchain (S103), nothing flashed or run. Candidate 1 is the selected baseline ([ADR-02](../design/architecture.md#adr-02), [firmware plan](../project/roadmap.md#firmware-plan)).
+> **Status:** source reviews from 2026-11-08 and 2026-11-16. Candidate 1 is the selected baseline ([ADR-02](../design/architecture.md#adr-02)); the project's [bridge firmware](../../firmware/bridge/README.md) built from it runs on the bench ESP32 (S104–S107). Progress: [firmware plan](../project/roadmap.md#firmware-plan).
 
 📑 **On this page:** <kbd>[1 · 📐 Requirements for any firmware](#firmware-requirements)</kbd> <kbd>[2 · 🧪 Candidates](#candidates)</kbd> <kbd>[3 · 🔀 Alternatives](#alternatives)</kbd>
 
@@ -34,7 +34,7 @@ In order of preference.
 
 | # | Candidate | Good | Needs work |
 | :-: | --- | --- | --- |
-| 1 | [Yuri ESP-Serial-Bridge 130f731](https://github.com/yuri-rage/ESP-Serial-Bridge/tree/130f731416d43c89bce5626ef989b3e65918c9ce) — MIT | Bounded reads, routing per port, three UARTs with one TCP port each | Checked writes, single radio owner, separate diagnostics, start-up with hotspot fallback, status page ([first review](reviews/2026-11-08-yuri-bridge.md), [adoption review](reviews/2026-11-16-yuri-adoption.md)) |
+| 1 | [Yuri ESP-Serial-Bridge 130f731](https://github.com/yuri-rage/ESP-Serial-Bridge/tree/130f731416d43c89bce5626ef989b3e65918c9ce) — MIT | Bounded reads, routing per port, three UARTs with one TCP port each | Done in the project firmware: hotspot fallback, OTA password, no log output on the device UARTs, larger receive buffers, status page. Still to do: single radio owner and counted writes (plan step 4). Reviews: [first](reviews/2026-11-08-yuri-bridge.md), [adoption](reviews/2026-11-16-yuri-adoption.md) |
 | 2 | [AlphaLima ESP32-Serial-Bridge](https://github.com/AlphaLima/ESP32-Serial-Bridge/blob/bb42dc3db926f9baf1f5faa76cc21bad1dd80cdf/ESP32-Serial-Bridge.ino) — [MIT](https://github.com/AlphaLima/ESP32-Serial-Bridge/blob/bb42dc3db926f9baf1f5faa76cc21bad1dd80cdf/LICENSE) | Separate TCP/UART paths, counted writes, no NMEA parsing; [config](https://github.com/AlphaLima/ESP32-Serial-Bridge/blob/bb42dc3db926f9baf1f5faa76cc21bad1dd80cdf/config.h) has 3 UARTs on TCP 8880–8882 | Prints banners on the UARTs, overruns its 1,023-byte buffer, unchecked writes, several writers, Bluetooth broadcast |
 | — | [AlphaLima Pro bf263c1](https://github.com/AlphaLima/ESP32-Serial-Bridge-Pro/blob/bf263c1880d7630cadef5264dac9aa9654e4096e/ESP32-Serial-Bridge-pro/ESP32_Serial_Bridge_pro.ino) | Web configuration, routes, filters | Small TCP buffer, filters change binary data, no license file — not usable as is |
 | — | Firmware in today's bridge | Navigation works (reported) | Unknown source and settings; stays on the backup unit |

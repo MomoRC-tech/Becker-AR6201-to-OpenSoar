@@ -27,19 +27,12 @@ Related: ❓ [Open items](open-items.md) · 🎯 [Requirements](../design/requir
 | WP2 Interfaces and protocol | ⏸️ Driver research done ([Becker driver](../research/becker-driver.md)) | Matching radio protocol reference or independent captures | Manual, settings, framing and reply rules confirmed |
 | WP4 Driver plan | ⏸️ Send defect analysed | After hardware: counted-send fix and caller/state/UI mapping | One small change and regression test per step |
 | WP5 Host tests | ⏸️ Send regression only ([review](../research/reviews/2026-11-08-becker-send.md)) | After WP4 scope is approved | Framing, state, reply and reconnect cases pass |
-| WP6 Bridge firmware | 🟡 [Plan](#firmware-plan) approved, in parallel with WP3; steps 1–3 done | Step 4 of the [firmware plan](#firmware-plan), once the MAX490 path is wired | Radio path byte-exact, single owner, navigation unaffected. Verify link monitoring if included in the approved scope |
+| WP6 Bridge firmware | 🟡 [Plan](#firmware-plan) approved, in parallel with WP3; steps 1–3 done | Step 4 of the [firmware plan](#firmware-plan), once the MAX490 path is wired | Radio path byte-exact, single owner, navigation unaffected; phone signal readable on the status page in hotspot mode ([R10](../design/requirements.md#requirements)) |
 | WP8 Aircraft integration | ⬜ Later | Needs verified hardware and separate approval | Installation, protection and approval requirements met |
 
-<a id="claude-handover"></a>
+### 1.1 Work loop
 
-### 1.1 Claude handover and recovery
-
-| Restore point | How to reopen |
-| --- | --- |
-| Claude handover, published Step 4 | Git commit [`7207a63`](https://github.com/MomoRC-tech/Becker-AR6201-to-OpenSoar/commit/7207a63), including the [Step 4 F3D archive at that commit](https://github.com/MomoRC-tech/Becker-AR6201-to-OpenSoar/blob/7207a63d5f699fc7f18654ec6b911e9aa324b8e3/cad/housing/housing-body-v1/housing-power-routing.f3d). In Fusion, open version 10 of `Housing body - revised power routing` from its version history. |
-| Step 5 continuation draft | Open version 11 of the same Fusion document. It includes Claude's unsaved Step 5 geometry and Codex's four routing corrections. The exact unsaved Claude draft had no separate saved version. |
-
-Work loop for each step:
+For each step:
 
 ```mermaid
 flowchart LR

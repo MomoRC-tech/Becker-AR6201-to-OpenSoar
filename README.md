@@ -77,9 +77,9 @@ The bridge never changes the active frequency, and the radio's own controls keep
 | 🔬 | **Research** | [📚 Sources](docs/research/sources.md) | Evidence |
 | | | [📻 Becker driver](docs/research/becker-driver.md) | Driver analysis |
 | | | [📶 Bridge firmware](docs/research/bridge-firmware.md) | Firmware analysis |
+| | | [🗂️ Reviews](docs/research/reviews) | Dated review records |
 | 💾 | **Firmware** | [📶 OTA loader](firmware/ota-loader/README.md) | Bench loader source, variants and build script; [public image](firmware/ota-loader/bin/README.md) |
 | | | [💻 Bridge firmware](firmware/bridge/README.md) | Bridge sketch from Yuri's ESP-Serial-Bridge, project settings and build script |
-| | | [🗂️ Reviews](docs/research/reviews) | Dated review records |
 
 Working on the repository? Read the [work instructions](AGENTS.md) first.
 

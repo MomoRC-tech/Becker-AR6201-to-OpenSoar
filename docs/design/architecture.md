@@ -7,7 +7,7 @@
 How the bridge is split up, which hardware is selected, and the decisions behind it.
 
 > [!NOTE]
-> **Status:** hardware design (ADR-04), update path (ADR-05) and schematic role (ADR-06) selected; bridge firmware baseline selected (ADR-02). Building and testing are tracked in the [roadmap](../project/roadmap.md).
+> **Status:** hardware design (ADR-04), update path (ADR-05) and schematic role (ADR-06) selected; radio path (ADR-01) and bridge firmware baseline (ADR-02) selected. Building and testing are tracked in the [roadmap](../project/roadmap.md).
 
 📑 **On this page:** <kbd>[1 · 🧩 Who does what](#responsibilities)</kbd> <kbd>[2 · 🔧 Hardware](#hardware)</kbd> <kbd>[3 · 📝 Decisions](#decisions)</kbd>
 
@@ -53,7 +53,7 @@ Pin-by-pin details: [signal wiring](../hardware/wiring.md) and [power and ground
 | ADR | Decision | State |
 | --- | --- | --- |
 | [ADR-00](#adr-00) | The repository is the project record | ✅ Selected |
-| [ADR-01](#adr-01) | Separate, transparent radio path | 🟡 Proposed |
+| [ADR-01](#adr-01) | Separate, transparent radio path | ✅ Selected |
 | [ADR-02](#adr-02) | Firmware and reuse baseline | ✅ Selected |
 | [ADR-03](#adr-03) | New hardware; existing setup kept as backup | ✅ Selected |
 | [ADR-04](#adr-04) | Bench hardware and power path | ✅ Selected |
@@ -70,7 +70,7 @@ One work queue: the [roadmap](../project/roadmap.md). Requirements live in [requ
 
 ### 3.2 ADR-01 — separate transparent radio path
 
-**Proposed.** The radio gets its own bidirectional TCP endpoint; all protocol and state handling stays in OpenSoar, and the bridge only forwards bytes. Final selection needs the installed equipment details and the firmware review.
+**Selected** with the approved [firmware plan](../project/roadmap.md#firmware-plan). The radio gets its own bidirectional TCP endpoint (port 4352, as in today's OpenSoar entry) with a single owning client; all protocol and state handling stays in OpenSoar, and the bridge only forwards bytes.
 
 <a id="adr-02"></a>
 
@@ -112,7 +112,7 @@ Parts: [parts list](../hardware/modules.md#parts-list).
 > - Flash an OTA loader once over USB on the bench; all later firmware goes over Wi-Fi ([R13](requirements.md#requirements)). Built with Arduino-ESP32, like both firmware candidates, which include ArduinoOTA (S95).
 > - Partition scheme **Minimal SPIFFS (1.9MB APP with OTA)**, `min_spiffs.csv`: two app slots of about 1.9 MB each (S94). OTA cannot change the partition table, so every later build uses the same scheme.
 > - Wi-Fi start-up ([R12](requirements.md#requirements)): join the configured network; if that fails, open the bridge's own password-protected hotspot. OTA works in both modes.
-> - Every firmware image keeps an OTA receiver. The update method of the project firmware is chosen with [ADR-02](#adr-02).
+> - Every firmware image keeps an OTA receiver. The bridge firmware ([ADR-02](#adr-02)) uses ArduinoOTA with the same password and partition scheme.
 
 | Item | Rule |
 | --- | --- |

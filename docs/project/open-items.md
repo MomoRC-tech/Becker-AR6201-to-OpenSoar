@@ -29,7 +29,7 @@ Start with the delivered boards and power supply, with all instruments disconnec
 | 4 | ESP32 board | Module marking and header positions match the DevKitC V4 reference | Visual check |
 | 5 | UBEC | 5 V output with and without load; match the physical input/output polarity and XT30 cups to the labelled routing endpoints; fit in the enclosure | Bench measurement |
 | 6 | Current and fuse | Running current and switch-on inrush at 12 V; select fuse rating and speed using these measurements and the wire protection requirements | Bench measurement and owner selection |
-| 8 | Device connectors | Photos of the installed connectors and exact device models (from Tom) | Confirms the pin views in the wiring tables |
+| 8 | Device connectors | Photos of the installed connectors (from Tom); device models are [installed-equipment items 1–3](#installed-equipment) | Confirms the pin views in the wiring tables |
 | 9 | Becker J1 | Installed J1 revision, moulded pin numbers and which pins are already used | Confirms the J1 pins and the J1-21 ground |
 | 10 | Radio noise | No audible noise or squelch opening caused by the bridge | Check in the aircraft |
 | 11 | Power connector fit and retention | Adhesive compatibility with the XT30 body and PETG, wire support and insulated terminations ([selected arrangement](../hardware/housing.md#connectors)) | Connector-panel print and assembly check |
@@ -96,7 +96,7 @@ Facts about the equipment already in the aircraft, mostly from Tom. What is know
 
 | # | Item | What is needed | From | Unblocks |
 | :-: | --- | --- | --- | --- |
-| 1 | Radio | Type plate, article number, hardware/software versions, J1 occupancy of the reported AR6201-(022) | Tom | Matching manual and interface |
+| 1 | Radio | Type plate, article number, hardware/software versions of the reported AR6201-(022); J1 occupancy is [bench item 9](#bench-hardware) | Tom | Matching manual and interface |
 | 2 | Zander ZS1 | Program version, baud and output settings, cable | Tom | Serial settings |
 | 3 | FLARM | Model and firmware (reported Classic, IGC series 6), socket used, baud and output settings | Tom | Serial settings |
 | 4 | Existing wiring | How each device signal reaches the existing ESP32, including any converters | Tom | Backup record |
@@ -120,7 +120,7 @@ The bridge firmware follows its [plan](roadmap.md#firmware-plan) in parallel wit
 | 1 | Protocol | Authoritative framing, ACK/NAK, CRC rules, status requests, channel vectors ([details](../research/becker-driver.md#protocol-details)) | Driver plan; independent test vectors |
 | 2 | Radio configuration | Matching manual, serial settings, remote-control configuration | Port configuration |
 | 3 | Application integration | AR62xx driver over TCP alongside navigation; status display | Driver plan |
-| 5 | Network settings | Wi-Fi name and passwords of the new bridge; address and ports are [selected](roadmap.md#firmware-plan) | App and bridge configuration |
+| 5 | Network settings | Network to join in the aircraft and the passwords of the new bridge; hotspot name ([ADR-05](../design/architecture.md#adr-05)), address and ports ([firmware plan](roadmap.md#firmware-plan)) are selected | App and bridge configuration |
 | 6 | Driver regression | Zero/A5 bytes, short frames, bad CRC, unknown start state, two instances, missing or late replies | Software verification (M4) |
 | 7 | Bridge reliability | Byte-exact tests both ways, bursts, slow clients, partial writes, reconnects, navigation in parallel | Software verification (M4) |
 | 8 | Physical acceptance | Frequency change and readback on the real radio, local controls and navigation unaffected | Aircraft integration |

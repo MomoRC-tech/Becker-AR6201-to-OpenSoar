@@ -45,7 +45,9 @@ esptool --port COM3 write-flash 0x0 firmware/ota-loader/bin/ota-loader-hotspot-o
 Fallback when the merged image fails on a weak USB connection, using the parts from `build/ota-loader/public/`:
 
 ```bash
-esptool --port COM3 --before no-reset --after no-reset --baud 115200 write-flash \n  0x1000 ota-loader.ino.bootloader.bin 0x8000 ota-loader.ino.partitions.bin \n  0xe000 boot_app0.bin 0x10000 ota-loader.ino.bin
+esptool --port COM3 --before no-reset --after no-reset --baud 115200 write-flash \
+  0x1000 ota-loader.ino.bootloader.bin 0x8000 ota-loader.ino.partitions.bin \
+  0xe000 boot_app0.bin 0x10000 ota-loader.ino.bin
 ```
 
 For a private build, flash `build/ota-loader/private/ota-loader.ino.merged.bin` instead, or use the Arduino IDE upload button. Serial monitor at 115200 baud shows the network result and IP address. Use your board's port (`/dev/ttyUSB0` on Linux). `esptool` ships with the esp32 board package in `tools/esptool_py`.
@@ -54,7 +56,7 @@ For a private build, flash `build/ota-loader/private/ota-loader.ino.merged.bin` 
 | --- | --- |
 | No COM port; Device Manager shows "CP2102 USB to UART Bridge Controller" with an error | Install the Silicon Labs CP210x driver, then replug |
 | `Wrong boot mode detected (0x13)` | Hold BOOT, tap EN, release BOOT, then retry |
-| `Invalid head of packet` or `No more data to read` while writing | Use a rear USB port and a short data cable. Add `--before no-reset --after no-reset --baud 115200`, put the board in download mode by hand, and write the parts separately (see below); press EN afterwards |
+| `Invalid head of packet` or `No more data to read` while writing | Use a rear USB port and a short data cable. Add `--before no-reset --after no-reset --baud 115200`, put the board in download mode by hand, and write the parts separately (see above); press EN afterwards |
 
 In hotspot mode the serial log also reports each client that joins, leaves (with reason code) or gets an IP address.
 

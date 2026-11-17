@@ -124,7 +124,7 @@ Current models in `cad/housing/` (files: [CAD rule](#rules)):
 | --- | --- |
 | [ESP32 holder](../../cad/housing/esp32-holder/README.md): original antenna cap, USB block, USB cap, gluing jig | Tested reference for the integrated holder |
 | [RS-232 holder](../../cad/housing/rs232-holder/README.md): grooved two-rail slot holder, 1.25 mm slot | Tested, selected; two needed |
-| [Connector panel](../../cad/housing/connector-panel/README.md): DE-9, XT30, space for F1 | Updated to the measured values; prints flat, front face down |
+| [Connector panel](../../cad/housing/connector-panel/README.md): DE-9 and XT30 | Updated to the measured values; prints flat, front face down. Its F1 space is unused: F1 sits in the harness |
 | [Connector wall print test](../../cad/housing/connector-print-test/README.md): XT30 and DE-9 slices of the housing body v1 base | Not printed; prints standing like the base |
 | [Housing body v1](../../cad/housing/housing-body-v1/README.md): base tray and hood on layout v4 | Prototype, not printed; includes MAX490 floor posts and the measured UBEC and ring |
 | [UBEC carrier](../../cad/housing/ubec-carrier/README.md): shared four-screw mounting and two cable ties | Modelled, not printed; [dimensions and assembly](#ubec-carrier) |
@@ -265,7 +265,6 @@ Use the [STEP model](../../cad/reference/rs422-to-ttl-max490/rs422-to-ttl-max490
 | Header pins past the PCB edge | 6.9 | Photo scale, right-angle header |
 | Overall envelope, pins included | 27.0 × 56.9 × 14.1 | — |
 
-- Measurement letters A–F: top view, USB end on the left, antenna end on the right; header strips 2.54 mm wide along both long edges, full length.
 - Model axes: X = width, Y = length (terminal edge Y = 0, header edge Y = 50), Z = up; PCB underside Z = 0, pins below reach Z = −2.5.
 - Measure the mounting holes, PCB thickness and terminal height before sizing the mount ([open items](../project/open-items.md#housing)).
 
@@ -335,7 +334,7 @@ Use the [STEP model](../../cad/reference/xt30u-m/xt30u-m.step) of the AMASS XT30
 - **Corner posts:** the measured ferrite ring clears the far post on the MAX490 side in Fusion.
 - **Routing space:** the housing body is 70 mm wide, 6 mm wider than layout v4 on the MAX490 side. The facing ESP32 and MAX490 PCB edges are 7.45 mm apart. The 2.5 mm floor sits 3 mm below the layout datum, giving 23 mm to the hood underside (S64).
 - **Hood shape:** rounded top edges, a cut-off rear corner on the MAX490 side and a lower hood over the ring area. A curved hood saves little: the tallest items (ESP32 header wire rows, UBEC) sit close to both side walls.
-- **Ferrite representation:** bare core and retained tie envelopes; the routing study stops at separate approach/departure points and does not depict wire turns.
+- **Ferrite representation:** bare core and tie envelopes; the harness shows the output leads making two schematic passes through the bore, not the actual turns (S87).
 
 Components in the Fusion layout v4. The [housing prototype archive](../../cad/housing/housing-body-v1/README.md) uses the measured UBEC and ferrite ring and embeds the MAX490 board.
 

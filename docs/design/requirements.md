@@ -51,7 +51,7 @@ Things the plan relies on but that are not yet confirmed.
 | A01 | The installed radio is an AR6201 variant that supports remote control. | Radio identity (WP1), matching manual (WP2) | Final wiring |
 | A03 | The installed OpenSoar build supports the Becker driver over TCP alongside the navigation feeds. | Installed build (WP1), integration review (WP4) | End-to-end software choice |
 | A04 | Radio status gives a fresh enough active frequency before a standby command. | Protocol evidence (WP2), state design (WP4) | Safe command design |
-| A05 | A separate radio TCP endpoint works without disturbing the navigation feeds. | Topology (WP1), design comparison (WP3) | [ADR-01](architecture.md#adr-01) |
+| A05 | A separate radio TCP endpoint works without disturbing the navigation feeds. | Topology (WP1), coexistence tests (WP6) | Radio path acceptance ([ADR-01](architecture.md#adr-01)) |
 | A06 | The ESP32 can carry both navigation paths plus the radio path. | UART plan (done), coexistence tests (WP6) | Bridge acceptance |
 
 ---

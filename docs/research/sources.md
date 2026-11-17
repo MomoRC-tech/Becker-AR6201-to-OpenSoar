@@ -7,7 +7,7 @@
 Every source the project relies on: what it is, what was checked in it, and its limits. Other pages cite these IDs (S01, F02 …).
 
 > [!NOTE]
-> **Status:** documents and code are reviewed; owner-measured RS-232 and ESP32 PCB dimensions are recorded in S38 and S40. Electrical bench checks are pending. Dated review records: [reviews](reviews).
+> **Status:** documents and code are reviewed; owner-measured RS-232 and ESP32 PCB dimensions are recorded in S38 and S40, the OTA loader and bridge firmware bench results in S97–S107. Electrical checks of the bridge hardware are pending. Dated review records: [reviews](reviews).
 
 📑 **On this page:** <kbd>[1 · 🏷️ Evidence labels](#evidence-labels)</kbd> <kbd>[2 · 📋 Source register](#source-register)</kbd> <kbd>[3 · 🔍 Driver findings](#findings)</kbd>
 

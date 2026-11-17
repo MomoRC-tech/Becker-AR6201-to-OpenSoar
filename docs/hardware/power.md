@@ -118,7 +118,7 @@ What a single broken wire does:
 | Instrument-ground wire (DE-9 bridge → GND-J) | All three links lose their bridge-side signal ground at once and stay referenced through the supply grounds. | 🟢 None; bring-up step 8 catches it |
 
 > [!WARNING]
-> The direct J1-21 wire depends on the radio's own supply ground. If P1-13/25 lost their connection, up to 3 A of radio current would run through the instrument-ground wiring, junction and UBEC return path without any visible symptom. Size and verify the whole return path for this case; an internal ground junction does not provide isolation. Make sure both P1 ground pins are wired to the ground point and check them before connecting the bridge ([ground check](wiring.md#bring-up), step 9).
+> The direct J1-21 wire depends on the radio's own supply ground. If P1-13/25 lost their connection, up to 3 A of radio current would run through the instrument-ground wiring, junction and UBEC return path without any visible symptom. Size and verify the whole return path for this case; an internal ground junction does not provide isolation. Make sure both P1 ground pins are wired to the ground point and check them before connecting the bridge ([ground check](wiring.md#bring-up), step 13).
 
 ---
 
