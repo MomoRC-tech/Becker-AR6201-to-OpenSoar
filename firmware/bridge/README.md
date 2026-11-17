@@ -1,6 +1,6 @@
 # Bridge firmware
 
-The project's own Wi-Fi bridge firmware for Zander, FLARM and Becker, developed in the steps of the [firmware plan](../../docs/project/roadmap.md#firmware-plan) ([ADR-02](../../docs/design/architecture.md#adr-02)). It started from ESP-Serial-Bridge; origin and license below. Current state: step 3 done, running on the bench ESP32 (S105–S107); step 3a ([settings page](../../docs/project/roadmap.md#settings-page)) in progress: the stored-settings module builds, not yet on the board.
+The project's own Wi-Fi bridge firmware for Zander, FLARM and Becker, developed in the steps of the [firmware plan](../../docs/project/roadmap.md#firmware-plan) ([ADR-02](../../docs/design/architecture.md#adr-02)). It started from ESP-Serial-Bridge; origin and license below. Current state: step 3 done, running on the bench ESP32 (S105–S107); step 3a ([settings page](../../docs/project/roadmap.md#settings-page)) in progress: the stored-settings module runs on the bench ESP32 with nothing stored and passes the loop test (S109).
 
 ## Origin and license
 
