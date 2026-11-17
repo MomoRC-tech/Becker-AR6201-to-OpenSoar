@@ -22,10 +22,10 @@ Set in `config.h`; everything else is upstream.
 | --- | --- | --- | --- | --- | --- | --- |
 | 📈 Zander | UART0 | GPIO32 | GPIO33 | 10110 | 14550 | 19200 |
 | 📡 FLARM | UART1 | GPIO26 | GPIO27 | 2000 | 14551 | 19200 |
-| 📻 Becker | UART2 | GPIO16 | GPIO17 | 4352 | — | 115200 |
+| 📻 Becker | UART2 | GPIO16 | GPIO17 | 4352 | — | 9600 |
 
 - Pins: [UART plan](../../docs/hardware/wiring.md#overview). TCP ports and the hotspot address: [firmware plan](../../docs/project/roadmap.md#firmware-plan).
-- Baud rates: Zander and FLARM are candidates from the device documents (S22, S23); the Becker value is the upstream placeholder. The installed settings are [open items](../../docs/project/open-items.md#installed-equipment).
+- Baud rates: Zander and FLARM are candidates from the device documents (S22, S23); the Becker value 9600 8N1 is the best lead found, from independent controller code, not a Becker document (S108). The installed settings are [open items](../../docs/project/open-items.md#installed-equipment).
 - UDP ports: upstream values; [open item](../../docs/project/open-items.md#software-and-acceptance). A UDP port of 0 switches UDP off for that UART; the radio port uses it.
 - UDP output is a Wi-Fi broadcast without acknowledgement: single datagrams can be lost (S105). Use TCP where every byte counts.
 

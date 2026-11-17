@@ -49,6 +49,8 @@ In order of preference.
 | --- | --- | --- |
 | [DroneBridge ESP32](https://github.com/DroneBridge/ESP32/tree/25b3d9c60ca4cb958ad7156a742436c6a4361475) — Apache-2.0 | Transparent bidirectional mode, TCP port 5760, flush timeout, host tests | Whether it handles several independent UARTs; forwarding code not audited |
 | [XCVario](https://github.com/iltis42/XCVario/tree/1c5ad83a9e0911b81bb0bd5a47243bea5746f6c2) — GPL-2.0 | ESP32 gliding instrument with serial/Wi-Fi routing (`Router.cpp`) | Good reference for coexistence; adopting the whole firmware is out of scope |
+| [GS-Traffic2WIFI 7b1d41d](https://github.com/gs-avionik-gunnar/GS-Traffic2WIFI/tree/7b1d41d2a97f66d70715768199aa15746753cadf) — MIT | One FLARM/NMEA port to TCP, network with hotspot fallback, web page in its own task; drops a client after three short writes | Reference for client handling in step 5 ([check](reviews/2026-11-17-bridge-projects-check.md#other-projects)) |
+| [BtBridge 62ebaf6](https://github.com/iltis42/BtBridge/tree/62ebaf63b6522b3dbd273aa22181e6ce32764842) — GPL-2.0 | Two serial ports (FLARM, radios) to Wi-Fi TCP or Bluetooth; only the first client writes to the device | Reference only (GPL) |
 
 ---
 

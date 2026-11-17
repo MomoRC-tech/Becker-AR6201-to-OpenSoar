@@ -88,7 +88,7 @@
 #define SERIAL1_TCP_PORT 2000       // TCP Port UART1
 #define SERIAL1_UDP_PORT 14551      // UDP Port UART1         (ESP32 only)
 /*************************  COM Port 2 *******************************/
-#define UART_BAUD2 115200           // Baudrate UART2         (ESP32 only): Becker, placeholder, setting unknown
+#define UART_BAUD2 9600             // Baudrate UART2         (ESP32 only): Becker, best lead (S108), installed setting unknown
 #define SERIAL_PARAM2 SERIAL_8N1    // Data/Parity/Stop UART2 (ESP32 only)
 #define SERIAL2_TXPIN 17            // transmit Pin UART2     (ESP32 only)
 #define SERIAL2_RXPIN 16            // receive Pin UART2      (ESP32 only)

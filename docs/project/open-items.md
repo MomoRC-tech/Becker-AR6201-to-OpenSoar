@@ -118,7 +118,7 @@ The bridge firmware follows its [plan](roadmap.md#firmware-plan) in parallel wit
 | # | Item | What is needed | Unblocks |
 | :-: | --- | --- | --- |
 | 1 | Protocol | Authoritative framing, ACK/NAK, CRC rules, status requests, channel vectors ([details](../research/becker-driver.md#protocol-details)) | Driver plan; independent test vectors |
-| 2 | Radio configuration | Matching manual, serial settings, remote-control configuration | Port configuration |
+| 2 | Radio configuration | Matching manual; serial settings (the bridge uses 9600 8N1 until confirmed, [check](../research/reviews/2026-11-17-bridge-projects-check.md#other-projects)); remote control and Tandem mode enabled, as LXNAV and SD-Link require | Port configuration |
 | 3 | Application integration | AR62xx driver over TCP alongside navigation; status display | Driver plan |
 | 5 | Network settings | Network to join in the aircraft and the passwords of the new bridge; hotspot name ([ADR-05](../design/architecture.md#adr-05)), address and ports ([firmware plan](roadmap.md#firmware-plan)) are selected | App and bridge configuration |
 | 6 | Driver regression | Zero/A5 bytes, short frames, bad CRC, unknown start state, two instances, missing or late replies | Software verification (M4) |
