@@ -95,6 +95,7 @@ uint16_t i1[NUM_COM] = {0, 0};
 uint8_t BTbuf[BUFFERSIZE];
 uint16_t iBT = 0;
 
+#include "settings.h"     // Project: stored settings (step 3a)
 #include "status_page.h"  // Project: status page and counters (step 3)
 
 #ifdef MODE_STA
@@ -126,11 +127,12 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
         delay(500);
 
 #ifdef ESP32
+        settingsLoad();  // Project: defaults from config.h, overridden by valid stored values (step 3a)
         for (int num = 0; num < NUM_COM; num++)  // Project: before begin()
             COM[num]->setRxBufferSize(UART_RX_BUFFER), statusAttachUart(num);
-        COM[0]->begin(UART_BAUD0, SERIAL_PARAM0, SERIAL0_RXPIN, SERIAL0_TXPIN);
-        COM[1]->begin(UART_BAUD1, SERIAL_PARAM1, SERIAL1_RXPIN, SERIAL1_TXPIN);
-        COM[2]->begin(UART_BAUD2, SERIAL_PARAM2, SERIAL2_RXPIN, SERIAL2_TXPIN);
+        COM[0]->begin(settings.port[0].baud, settingsFrameCode(0), SERIAL0_RXPIN, SERIAL0_TXPIN);  // Project: stored settings
+        COM[1]->begin(settings.port[1].baud, settingsFrameCode(1), SERIAL1_RXPIN, SERIAL1_TXPIN);
+        COM[2]->begin(settings.port[2].baud, settingsFrameCode(2), SERIAL2_RXPIN, SERIAL2_TXPIN);
 #elif defined(ESP8266)
     COM[0]->begin(UART_BAUD0);
     COM[1]->begin(UART_BAUD1);
@@ -182,13 +184,14 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
 
 #ifdef MODE_STA_AP  // Project: join the network for JOIN_TIMEOUT_MS, else open the hotspot (ADR-05, R12)
         debug.println("Open ESP Station Mode, hotspot fallback");
+        WiFi.persistent(false);  // Project: the core keeps no second copy of the network password (step 3a)
         WiFi.setHostname(HOSTNAME);
         WiFi.mode(WIFI_STA);
-        WiFi.begin(SSID, PASSWD);
-        debug.printf("Joining %s for up to %u s\n", SSID, JOIN_TIMEOUT_MS / 1000);
+        WiFi.begin(settings.netSsid, settings.netPass);  // Project: stored settings (step 3a)
+        debug.printf("Joining %s for up to %u s\n", settings.netSsid, settings.joinSeconds);
         {
             const unsigned long start = millis();
-            while (WiFi.status() != WL_CONNECTED && millis() - start < JOIN_TIMEOUT_MS) {
+            while (WiFi.status() != WL_CONNECTED && millis() - start < settings.joinSeconds * 1000UL) {
                 delay(250);
             }
         }
@@ -199,20 +202,21 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
             debug.println("Network not reached, opening hotspot");
             WiFi.disconnect(true);
             WiFi.mode(WIFI_AP);
-            if (!WiFi.softAP(HOTSPOT_SSID, HOTSPOT_PASSWORD)) {
+            if (!WiFi.softAP(settings.hotspotSsid, settings.hotspotPass)) {
                 debug.println("Hotspot failed, restarting in 5 s");
                 delay(5000);
                 ESP.restart();
             }
             delay(2000);  // as upstream MODE_AP before softAPConfig
-            WiFi.softAPConfig(STATIC_IP, STATIC_IP, NETMASK);
+            const IPAddress hotspotIp(settings.hotspotIp);
+            WiFi.softAPConfig(hotspotIp, hotspotIp, NETMASK);
             debug.print("Hotspot ");
-            debug.print(HOTSPOT_SSID);
+            debug.print(settings.hotspotSsid);
             debug.print(", IP address: ");
             debug.println(WiFi.softAPIP());
         }
         if (MDNS.begin(HOSTNAME)) {
-            MDNS.addService("_telnet", "_tcp", SERIAL0_TCP_PORT);
+            MDNS.addService("_telnet", "_tcp", settings.port[0].tcpPort);
         }
 #endif
 
@@ -261,7 +265,11 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
         for (int num = 0; num < NUM_COM; num++) {
             debug.print("Starting TCP Server ");
             debug.println(num + 1);
+#ifdef ESP32
+            server[num]->begin(settings.port[num].tcpPort);  // Project: stored settings (step 3a)
+#else
             server[num]->begin();  // start TCP server
+#endif
             server[num]->setNoDelay(true);
         }
 #endif
@@ -269,6 +277,7 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
 #ifdef ESP32
 #ifdef PROTOCOL_UDP
         for (uint16_t num = 0; num < NUM_COM; num++) {
+            udp_port[num] = settings.port[num].udpPort;  // Project: stored settings (step 3a)
             if (udp_port[num] == 0) continue;  // Project: no UDP on this port
             if (udp[num]->listen(udp_port[num])) {
                 debug.printf("Listening on UDP port %d\n", udp_port[num]);

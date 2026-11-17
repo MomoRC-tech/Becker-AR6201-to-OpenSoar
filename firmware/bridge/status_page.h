@@ -5,7 +5,7 @@
 // server in its own low-priority task on core 0 reads them; the Arduino loop
 // runs on core 1, so serving the page cannot hold up forwarding.
 //
-// Included by bridge.ino after its globals (COM, NUM_COM, udp_port).
+// Included by bridge.ino after its globals (COM, NUM_COM, udp_port) and settings.h.
 
 #pragma once
 
@@ -31,8 +31,6 @@ static PortStats portStats[NUM_COM];
 #define STAT_CLIENTS(num, n) portStats[num].tcpClients.store((n), std::memory_order_relaxed)
 
 static const char* const kPortName[NUM_COM] = PORT_NAMES;
-static const uint32_t kPortBaud[NUM_COM] = {UART_BAUD0, UART_BAUD1, UART_BAUD2};
-static const uint16_t kPortTcp[NUM_COM] = {SERIAL0_TCP_PORT, SERIAL1_TCP_PORT, SERIAL2_TCP_PORT};
 
 static WebServer statusServer(80);
 
@@ -100,7 +98,7 @@ static String statusJson() {
                  "%s{\"name\":\"%s\",\"uart\":%d,\"baud\":%lu,\"tcp_port\":%u,\"udp_port\":%u,"
                  "\"bytes_from_device\":%lu,\"bytes_to_device\":%lu,\"last_data_ms_ago\":%s,"
                  "\"tcp_clients\":%lu,\"uart_errors\":%lu,\"short_writes\":%lu}",
-                 num ? "," : "", kPortName[num], num, (unsigned long)kPortBaud[num], kPortTcp[num], udpPort,
+                 num ? "," : "", kPortName[num], num, (unsigned long)settings.port[num].baud, settings.port[num].tcpPort, udpPort,
                  (unsigned long)p.fromDevice.load(), (unsigned long)p.toDevice.load(), age,
                  (unsigned long)p.tcpClients.load(), (unsigned long)p.uartErrors.load(),
                  (unsigned long)p.shortWrites.load());

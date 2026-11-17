@@ -3,6 +3,9 @@
  *
  * Pins, baud rates, ports, Wi-Fi mode and features. Passwords are in
  * credentials.h. Lines marked "Project:" are this project's settings.
+ * Project: with STORED_SETTINGS, baud rates, frames, ports, the network and
+ * the hotspot set here are defaults; valid values stored on the ESP32
+ * override them (settings.h, MODE_STA_AP only).
 *********************************************************************************/
 #ifndef CONFIG_H
 #define CONFIG_H
@@ -50,9 +53,9 @@
                              // incoming bytes while the loop waits on a UART write
 
 #ifdef ESP32
-#define VERSION "0.3-ESP32"    // Project: own version, 0.<plan step> until bench acceptance
+#define VERSION "0.3a-ESP32"    // Project: own version, 0.<plan step> until bench acceptance
 #elif defined(ESP8266)
-#define VERSION "0.3-ESP8266"
+#define VERSION "0.3a-ESP8266"
 #endif
 
 #define MODE_STA_AP            // MODE_STA, MODE_AP or MODE_STA_AP (Project: network, then hotspot; ESP32 only)
@@ -60,6 +63,7 @@
 #define MAX_NMEA_CLIENTS 4     // max TCP clients
 #define PROTOCOL_UDP           // uncomment to enable UDP broadcast (ESP32 only)
 #define STATUS_PAGE            // Project: read-only status page on port 80 and /api/status (ESP32 only)
+#define STORED_SETTINGS        // Project: settings stored on the ESP32 override the defaults here (step 3a, ESP32 only)
 #define PORT_NAMES {"Zander", "FLARM", "Becker"}  // Project: COM 0, 1, 2 on the status page
 //#define BLUETOOTH 0          // uncomment to create a bluetooth serial bridge on the indicated serial port (ESP32 only)
 //#define BATTERY_SAVER        // uncomment to reduce wifi power

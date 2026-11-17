@@ -1,6 +1,6 @@
 # Bridge firmware
 
-The project's own Wi-Fi bridge firmware for Zander, FLARM and Becker, developed in the steps of the [firmware plan](../../docs/project/roadmap.md#firmware-plan) ([ADR-02](../../docs/design/architecture.md#adr-02)). It started from ESP-Serial-Bridge; origin and license below. Current state: step 3 done, running on the bench ESP32 (S105–S107).
+The project's own Wi-Fi bridge firmware for Zander, FLARM and Becker, developed in the steps of the [firmware plan](../../docs/project/roadmap.md#firmware-plan) ([ADR-02](../../docs/design/architecture.md#adr-02)). It started from ESP-Serial-Bridge; origin and license below. Current state: step 3 done, running on the bench ESP32 (S105–S107); step 3a ([settings page](../../docs/project/roadmap.md#settings-page)) in progress: the stored-settings module builds, not yet on the board.
 
 ## Origin and license
 
@@ -38,7 +38,8 @@ Set in `config.h`; everything else is upstream.
 | UART receive buffer | 4096 bytes per UART, so bytes are kept while the loop waits on a UART write |
 | Build-time checks | The build stops if UDP or Bluetooth is pointed at the radio port, or if not exactly one Wi-Fi mode is selected |
 | `BATTERY_SAVER` | Fixed so it lowers the transmit power; off |
-| Version | `VERSION` in `config.h`, `0.<plan step>` until bench acceptance; shown on the status page as "Wi-Fi bridge 0.3-ESP32" |
+| Version | `VERSION` in `config.h`, `0.<plan step>` until bench acceptance; shown on the status page as "Wi-Fi bridge 0.3a-ESP32" |
+| Stored settings | `STORED_SETTINGS`: baud rates, frames, TCP and UDP ports, the network and the hotspot in this file are defaults; valid values stored on the ESP32 (NVS namespace `bridge`, [`settings.h`](settings.h)) override them in `MODE_STA_AP`. An invalid stored value falls back to its default. Nothing is stored until the settings page exists |
 | Status page | `STATUS_PAGE`: read-only page on port 80 and `/api/status` as JSON, open to everyone on the bridge's Wi-Fi; see below |
 
 <a id="status-page"></a>
