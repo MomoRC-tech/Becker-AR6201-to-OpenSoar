@@ -29,6 +29,7 @@ Related: ❓ [Open items](open-items.md) · 🎯 [Requirements](../design/requir
 | WP5 Host tests | ⏸️ Send regression only ([review](../research/reviews/2026-11-08-becker-send.md)) | After WP4 scope is approved | Framing, state, reply and reconnect cases pass |
 | WP6 Bridge firmware | 🟡 [Plan](#firmware-plan) approved, in parallel with WP3; steps 1–3b done | Step 4 of the [firmware plan](#firmware-plan), once the MAX490 path is wired | Radio path byte-exact, single owner, navigation unaffected; phone signal readable on the status page in hotspot mode ([R10](../design/requirements.md#requirements)) |
 | WP8 Aircraft integration | ⬜ Later | Needs verified hardware and separate approval | Installation, protection and approval requirements met |
+| WP9 Device profiles | ⬜ Planned | After WP3 and WP6 bench acceptance, define the first [device profiles](#device-profiles) from verified settings | Presets and manual settings work on compatible ports, survive restart and OTA, and preserve existing configurations |
 
 ### 1.1 Work loop
 
@@ -43,6 +44,14 @@ flowchart LR
     E --> F[Commit and push]
     F -.-> A
 ```
+
+<a id="device-profiles"></a>
+
+### 1.2 Device profiles (WP9)
+
+- Choose an instrument preset per port on the [settings page](#settings-page) to fill in its baud rate and serial frame. Use **Custom** for manual values. Keep the TCP port editable independently so the OpenSoar connection can stay the same.
+- Start with Zander ZS1, Classic FLARM and Becker AR6201 once their settings are verified. Show the required electrical interface and offer presets only on ports with compatible wiring and direction. Candidate additions are LXNAV S80/S100, PowerFLARM Fusion, TQ KRT2 and f.u.n.k.e. ATR833, subject to model and interface checks.
+- Keep device protocol handling in OpenSoar and retain [one writer on the dedicated radio port](../design/architecture.md#adr-01).
 
 ---
 
