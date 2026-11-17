@@ -7,7 +7,7 @@
 The single work queue: which work package comes next and what finishes it.
 
 > [!NOTE]
-> **Status:** WP3 continues with wiring and bench validation. In the [bridge firmware plan](#firmware-plan) (WP6), steps 1–3b are done and step 4 firmware is on the standalone ESP32. The wired checks for steps 4 and 5 remain. The driver packages (WP4, WP5) wait until WP3 is complete. Work outside the approved plan needs the owner's approval.
+> **Status:** WP3 continues with wiring and bench validation. In the [bridge firmware plan](#firmware-plan) (WP6), steps 1–3b are done and step 4 firmware is on the standalone ESP32. The wired checks for steps 4 and 5 remain. The software part of the device profiles (WP9) is brought forward and runs on the standalone ESP32. The driver packages (WP4, WP5) wait until WP3 is complete. Work outside the approved plan needs the owner's approval.
 
 📑 **On this page:** <kbd>[1 · 📦 Work packages](#work-packages)</kbd> <kbd>[2 · 💻 Bridge firmware plan](#firmware-plan)</kbd> <kbd>[3 · 🏁 Milestones](#milestones)</kbd> <kbd>[4 · ✅ Test coverage for the software phase](#test-coverage)</kbd>
 
@@ -29,7 +29,7 @@ Related: ❓ [Open items](open-items.md) · 🎯 [Requirements](../design/requir
 | WP5 Host tests | ⏸️ Send regression only ([review](../research/reviews/2026-11-08-becker-send.md)) | After WP4 scope is approved | Framing, state, reply and reconnect cases pass |
 | WP6 Bridge firmware | 🟡 Step 4 firmware checked on the standalone ESP32 (S114) | Run the step 4 [wired checks](#firmware-plan), then step 5 | Radio path byte-exact, single owner, navigation unaffected; phone signal readable on the status page in hotspot mode ([R10](../design/requirements.md#requirements)) |
 | WP8 Aircraft integration | ⬜ Later | Needs verified hardware and separate approval | Installation, protection and approval requirements met |
-| WP9 Device profiles | ⬜ Planned | After WP3 and WP6 bench acceptance, define the first [device profiles](#device-profiles) from verified settings | Presets and manual settings work on compatible ports, survive restart and OTA, and preserve existing configurations |
+| WP9 Device profiles | 🟡 Software part brought forward: [profiles](#device-profiles) in firmware 0.4.1 on the standalone ESP32 (S115) | Replace the candidate preset values once the [installed settings](open-items.md#installed-equipment) are known; check them on the wired bridge | Presets and manual settings work on compatible ports, survive restart and OTA, and preserve existing configurations |
 
 ### 1.1 Work loop
 
@@ -50,7 +50,7 @@ flowchart LR
 ### 1.2 Device profiles (WP9)
 
 - Choose an instrument preset per port on the [settings page](#settings-page) to fill in its baud rate and serial frame. Use **Custom** for manual values. Keep the TCP port editable independently so the OpenSoar connection can stay the same.
-- Start with Zander ZS1, Classic FLARM and Becker AR6201 once their settings are verified. Show the required electrical interface and offer presets only on ports with compatible wiring and direction. Candidate additions are LXNAV S80/S100, PowerFLARM Fusion, TQ KRT2 and f.u.n.k.e. ATR833, subject to model and interface checks.
+- First presets: Zander ZS1, Classic FLARM and Becker AR6201, with the candidate values from `config.h` until the installed settings are verified. The page shows each port's wiring and offers presets only where wiring and direction fit ([firmware](../../firmware/bridge/README.md#settings-page)). Candidate additions are LXNAV S80/S100, PowerFLARM Fusion, TQ KRT2 and f.u.n.k.e. ATR833, subject to model and interface checks.
 - Keep device protocol handling in OpenSoar and retain [one writer on the dedicated radio port](../design/architecture.md#adr-01).
 
 ---

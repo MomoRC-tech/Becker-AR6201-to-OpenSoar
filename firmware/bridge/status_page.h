@@ -110,10 +110,11 @@ $('x'+n).innerHTML='<div><dt>From device</dt><dd>'+size(p.bytes_from_device)+'</
 function g(){fetch('/api/settings',{cache:'no-store'}).then(r=>r.json()).then(d=>{
 const ports={},order=[],wifi=[];for(const i of d.items){if(i.port){if(!ports[i.port]){ports[i.port]={};order.push(i.port)}ports[i.port][i.key[0]]=i}else wifi.push(i)}
 order.forEach((k,n)=>{frame[n]=ports[k].f.value});
-const cell=i=>{const v=i.secret?'\u2022\u2022\u2022\u2022\u2022\u2022':esc(i.value);return i.origin==='changed'?'<b class="chg">'+v+'</b>':i.origin==='invalid'?'<b class="bad">'+v+'</b>':v};
+const pn={custom:'Custom'};for(const p of d.profiles||[])pn[p.id]=p.name;
+const cell=(i,t)=>{const v=i.secret?'\u2022\u2022\u2022\u2022\u2022\u2022':esc(t||i.value);return i.origin==='changed'?'<b class="chg">'+v+'</b>':i.origin==='invalid'?'<b class="bad">'+v+'</b>':v};
 let h=d.format_mismatch?'<p class="bad">Settings saved by another firmware version were ignored; the defaults are in use.</p>':'';
-h+='<table><tr><th>Device</th><th>Baud</th><th>Frame</th><th>TCP</th></tr>';
-for(const k of order){const p=ports[k];h+='<tr><td>'+esc(k)+'</td><td>'+cell(p.b)+'</td><td>'+cell(p.f)+'</td><td>'+cell(p.t)+'</td></tr>'}
+h+='<table><tr><th>Port</th><th>Device</th><th>Baud</th><th>Frame</th><th>TCP</th></tr>';
+for(const k of order){const p=ports[k];h+='<tr><td>'+esc(k)+'</td><td>'+(p.p?cell(p.p,pn[p.p.value]):'')+'</td><td>'+cell(p.b)+'</td><td>'+cell(p.f)+'</td><td>'+cell(p.t)+'</td></tr>'}
 h+='</table><div class="grp">';for(const i of wifi){h+='<span>'+esc(i.name.charAt(0).toUpperCase()+i.name.slice(1))+'</span><div>'+cell(i)+'</div>'}
 const any=d.items.some(i=>i.origin!=='default');
 if(d.trial&&d.trial.active){$('trial').hidden=false;$('tt').textContent='New Wi-Fi or port settings are on trial for '+Math.ceil(d.trial.seconds_left/60)+' more min.'}
@@ -183,6 +184,30 @@ static String settingsJson() {
     String out;
     out.reserve(2048);
     out += settingsFormatMismatch ? "{\"format_mismatch\":true," : "{\"format_mismatch\":false,";
+    char part[160];  // one profile is about 115 bytes
+    out += "\"profiles\":[";  // device profiles (WP9): what each preset fills in and needs
+    for (size_t i = 0; i < kProfileCount; i++) {
+        const DeviceProfile& p = kProfiles[i];
+        snprintf(part, sizeof(part), "%s{\"id\":\"%s\",\"name\":\"%s\",\"baud\":\"%lu\",\"frame\":\"%s\",\"interface\":\"%s\"}",
+                 i ? "," : "", p.id, p.name, (unsigned long)p.baud, p.frame, linkText(p.link));
+        out += part;
+    }
+    out += "],\"ports\":[";  // per port: its wiring and the profiles that fit it
+    for (int n = 0; n < NUM_COM; n++) {
+        snprintf(part, sizeof(part), "%s{\"name\":\"%s\",\"interface\":\"%s\",\"profiles\":[", n ? "," : "", kPortName[n],
+                 linkText(kPortLink[n]));
+        out += part;
+        bool first = true;
+        for (const DeviceProfile& p : kProfiles) {
+            if (!profileFits(p.id, n)) continue;
+            out += first ? "\"" : ",\"";
+            out += p.id;
+            out += "\"";
+            first = false;
+        }
+        out += "]}";
+    }
+    out += "],";
     if (settingsTrial) {
         const uint32_t left = millis() < SETTINGS_TRIAL_MS ? (SETTINGS_TRIAL_MS - millis()) / 1000 : 0;
         out += "\"trial\":{\"active\":true,\"seconds_left\":" + String(left) + "},\"items\":[";

@@ -29,6 +29,7 @@ static void restartSoon() {
 
 static const char* settingHint(SettingType type, int portNum) {
     switch (type) {
+        case T_PROFILE: return "Choose a listed device; the others do not fit this port's wiring";
         case T_BAUD: return "Choose one of the listed rates";
         case T_FRAME: return "Data bits 5 to 8, parity N, E or O, stop bits 1 or 2, for example 8N1";
         case T_TCP: return "1 to 65535, not 80, not used by another device";
@@ -107,6 +108,7 @@ static void handleSettingsSave() {
         statusServer.send(400, "application/json", "{\"ok\":false,\"errors\":{" + errors + "}}");
         return;
     }
+    profilesMatchValues(cand);  // a preset with edited baud or frame is stored as Custom
     const bool trial = settingsSave(cand);
     statusServer.send(200, "application/json", trial ? "{\"ok\":true,\"trial\":true}" : "{\"ok\":true,\"trial\":false}");
     restartSoon();
@@ -154,6 +156,7 @@ fieldset{border:0;border-top:1px solid var(--rule);margin:0;padding:14px 0}
 legend{font-size:20px;font-weight:700;padding:0 0 4px}
 .f{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px 16px}
 .f.w{grid-template-columns:1fr}
+.dev{grid-column:1/-1}
 label{display:block;color:var(--mute);font-size:14px}
 input,select{display:block;width:100%;margin-top:3px;padding:8px 10px;font:inherit;color:var(--ink);background:var(--field);border:1px solid var(--rule);border-radius:8px}
 input:focus,select:focus,button:focus-visible{outline:2px solid var(--green);outline-offset:1px}
@@ -179,14 +182,18 @@ button{font:inherit;font-weight:600;border-radius:10px;padding:10px 18px;cursor:
 const $=i=>document.getElementById(i);
 const esc=x=>String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
 const BAUD=[1200,2400,4800,9600,19200,38400,57600,115200,230400],FRAME=['8N1','8E1','8O1','8N2','7E1','7O1','7N1'];
-let items=[];
-function field(i){const id='k_'+i.key,lab=esc(i.name.charAt(0).toUpperCase()+i.name.slice(1));let c;
-if(i.key[0]==='b'||i.key[0]==='f'){const o=i.key[0]==='b'?BAUD:FRAME;c='<select id="'+id+'" name="'+i.key+'">'+o.map(x=>'<option'+(String(x)===i.value?' selected':'')+'>'+x+'</option>').join('')+'</select>'}
+let items=[],PROF={},PORTS=[],NAME={custom:'Custom'};
+function field(i){const id='k_'+i.key,lab=esc(i.name.charAt(0).toUpperCase()+i.name.slice(1)),n=i.key[1],dev=i.port&&i.key[0]==='p';let c,w='';
+if(dev){const P=PORTS[+n];c='<select id="'+id+'" name="'+i.key+'" onchange="preset('+n+')">'+P.profiles.concat('custom').map(x=>'<option value="'+x+'"'+(x===i.value?' selected':'')+'>'+esc(NAME[x])+'</option>').join('')+'</select>';w='<span class="def">Wiring: '+esc(P.interface)+'. Presets fill in baud and frame.</span>'}
+else if(i.port&&(i.key[0]==='b'||i.key[0]==='f')){const o=i.key[0]==='b'?BAUD:FRAME;c='<select id="'+id+'" name="'+i.key+'" onchange="manual('+n+')">'+o.map(x=>'<option'+(String(x)===i.value?' selected':'')+'>'+x+'</option>').join('')+'</select>'}
 else if(i.secret)c='<input id="'+id+'" name="'+i.key+'" type="password" autocomplete="new-password" placeholder="Unchanged">';
 else{const num=i.key[0]==='t'||i.key==='nj';c='<input id="'+id+'" name="'+i.key+'" value="'+esc(i.value)+'"'+(num?' inputmode="numeric"':'')+'>'}
-const d=i.secret?'':'<span class="def'+(i.origin==='changed'?' chg':'')+'">'+(i.origin==='changed'?'Changed, default ':'Default ')+esc(i.default)+'</span>';
-return '<div><label for="'+id+'">'+lab+'</label>'+c+d+'<div class="err" id="e_'+i.key+'"></div></div>'}
-function load(){fetch('/api/settings',{cache:'no-store'}).then(r=>r.json()).then(d=>{items=d.items;const g={},o=[];
+const dv=dev?NAME[i.default]||i.default:i.default;
+const d=i.secret?'':'<span class="def'+(i.origin==='changed'?' chg':'')+'">'+(i.origin==='changed'?'Changed, default ':'Default ')+esc(dv)+'</span>';
+return '<div'+(dev?' class="dev"':'')+'><label for="'+id+'">'+lab+'</label>'+c+d+(w?'<br>'+w:'')+'<div class="err" id="e_'+i.key+'"></div></div>'}
+function preset(n){const p=PROF[$('k_p'+n).value];if(p){$('k_b'+n).value=p.baud;$('k_f'+n).value=p.frame}}
+function manual(n){const s=$('k_p'+n),p=s&&PROF[s.value];if(p&&($('k_b'+n).value!==p.baud||$('k_f'+n).value!==p.frame))s.value='custom'}
+function load(){fetch('/api/settings',{cache:'no-store'}).then(r=>r.json()).then(d=>{items=d.items;PORTS=d.ports||[];for(const p of d.profiles||[]){PROF[p.id]=p;NAME[p.id]=p.name}const g={},o=[];
 for(const i of d.items){const k=i.port||'Wi-Fi';if(!g[k]){g[k]=[];o.push(k)}g[k].push(i)}
 $('fs').innerHTML=o.map(k=>'<fieldset><legend>'+esc(k)+'</legend><div class="f'+(k==='Wi-Fi'?' w':'')+'">'+g[k].map(field).join('')+'</div></fieldset>').join('');
 if(d.trial&&d.trial.active){$('trial').hidden=false;$('tt').textContent='These Wi-Fi or port settings are on trial. Keep them within '+Math.ceil(d.trial.seconds_left/60)+' min, otherwise the previous settings come back.'}})}

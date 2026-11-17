@@ -53,7 +53,7 @@
                              // incoming bytes while the loop waits on a UART write
 
 #ifdef ESP32
-#define VERSION "0.4-ESP32"       // Project: own version, 0.<plan step> until bench acceptance
+#define VERSION "0.4.1-ESP32"     // Project: own version, 0.<plan step> until bench acceptance; .1 = device profiles (WP9)
 #elif defined(ESP8266)
 #define VERSION "0.3b.1-ESP8266"
 #endif
@@ -65,6 +65,7 @@
 #define STATUS_PAGE            // Project: read-only status page on port 80 and /api/status (ESP32 only)
 #define STORED_SETTINGS        // Project: settings stored on the ESP32 override the defaults here (step 3a, ESP32 only)
 #define PORT_NAMES {"Zander", "FLARM", "Becker"}  // Project: COM 0, 1, 2 on the status page
+#define PORT_PROFILES {"zs1", "flarm", "ar6201"}  // Project: default device profile per COM (settings.h); baud and frame must match UART_BAUDn and SERIAL_PARAMn
 //#define BLUETOOTH 0          // uncomment to create a bluetooth serial bridge on the indicated serial port (ESP32 only)
 //#define BATTERY_SAVER        // uncomment to reduce wifi power
 

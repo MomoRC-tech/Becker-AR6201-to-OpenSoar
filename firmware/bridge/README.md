@@ -61,7 +61,7 @@ Open `http://<bridge address>/` (10.10.10.10 in hotspot mode) in a browser. [`st
 | `/` | The page, about 7.4 kB |
 | `/device.webp` | Lid photo, 5.3 kB, cached for a day |
 | `/api/status` | Live counters as JSON |
-| `/api/settings` | Active settings, their defaults and source (`default`, `changed`, `invalid`) and the trial state as JSON |
+| `/api/settings` | Active settings, their defaults and source (`default`, `changed`, `invalid`), the trial state and the device profiles with the presets that fit each port, as JSON |
 | `/monitor`, `/api/monitor` | [Data monitor](#data-monitor) |
 
 After any change to the status, settings or monitor page, take new screenshots from the running bridge and commit them with the change: `python tools/status_screenshot.py <bridge address>`. It masks the network name, shows hotspot mode and uses demo data for the monitor, since the repository is public.
@@ -76,7 +76,8 @@ Open *Change settings* under *All settings*, or `http://<bridge address>/setting
 
 | What | How it works |
 | --- | --- |
-| Values | Per device: baud, frame, TCP port. Wi-Fi: network name and password, join time, hotspot name, password and address. Pins, radio port rules, hostname and OTA password stay fixed in the firmware |
+| Values | Per device: device profile, baud, frame, TCP port. Wi-Fi: network name and password, join time, hotspot name, password and address. Pins, radio port rules, hostname and OTA password stay fixed in the firmware |
+| Device profiles | Choose the instrument on a port: Zander ZS1, Classic FLARM, Becker AR6201 or Custom. A preset fills in baud and frame; changing either by hand selects Custom. Only presets that fit the port's wiring are offered and accepted: Zander and FLARM ports (RS-232, bridge receives only) take ZS1 or Classic FLARM, the Becker port (RS-422, both ways) takes AR6201. The page shows the port's wiring under the choice. Preset values are the candidates in `config.h`. Settings saved before profiles existed keep working: a preset that no longer matches its baud and frame shows as Custom. The TCP port stays separate
 | Checks | Every field is checked on the bridge; a refused save names each wrong field and changes nothing. TCP ports may not repeat and may not be 80 |
 | Passwords | Never shown. Leave the field empty to keep the current one |
 | Save and restart | Values equal to the default are not stored, so they show as default. The bridge restarts and uses the new values |
@@ -87,11 +88,11 @@ Open *Change settings* under *All settings*, or `http://<bridge address>/setting
 | Address | Content |
 | --- | --- |
 | `GET /settings` | The page (password) |
-| `POST /api/settings` | Check and save form fields named by their keys (`b0`, `f0`, `t0` ... `ns`, `np`, `nj`, `hs`, `hp`, `ha`), then restart (password) |
+| `POST /api/settings` | Check and save form fields named by their keys (`p0`, `b0`, `f0`, `t0` ... `ns`, `np`, `nj`, `hs`, `hp`, `ha`), then restart (password) |
 | `POST /api/keep` | Keep settings on trial (password) |
 | `POST /api/reset` | Forget all stored values, then restart (password) |
 
-Bench check: `python tools/settings_test.py <bridge address> [--revert]` runs the password, refusal, save, trial, *Keep*, reset and (with `--revert`, 10 minutes) automatic revert checks. The bridge must be in network mode, so its address stays the same across restarts.
+Bench check: `python tools/settings_test.py <bridge address> [--revert]` runs the password, refusal, save, device profile, trial, *Keep*, reset and (with `--revert`, 10 minutes) automatic revert checks. The bridge must be in network mode, so its address stays the same across restarts.
 
 <a id="data-monitor"></a>
 

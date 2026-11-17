@@ -18,9 +18,48 @@
 #define SETTINGS_FORMAT 1  // stored key "v"; another value means: ignore everything stored
 
 enum SettingOrigin : uint8_t { ORIGIN_DEFAULT, ORIGIN_STORED, ORIGIN_INVALID };
-enum SettingType : uint8_t { T_BAUD, T_FRAME, T_TCP, T_SSID, T_NETPASS, T_APPASS, T_SECONDS, T_IP };
+enum SettingType : uint8_t { T_PROFILE, T_BAUD, T_FRAME, T_TCP, T_SSID, T_NETPASS, T_APPASS, T_SECONDS, T_IP };
+
+// ---- device profiles (WP9) ------------------------------------------------------
+// A profile fills in the baud rate and frame of one instrument. It is offered only on
+// ports whose wiring fits its electrical interface. "custom" keeps manual values.
+// Preset values are the current candidates (config.h comments, sources S22, S23, S108);
+// the installed instrument settings are still to be confirmed.
+
+enum PortLink : uint8_t { LINK_RS232_IN, LINK_RS422_BOTH };  // electrical interface of a port
+
+static const char* linkText(PortLink l) {
+    return l == LINK_RS422_BOTH ? "RS-422, both ways" : "RS-232, bridge receives only";
+}
+
+struct DeviceProfile {
+    const char* id;  // stored value, at most 7 characters
+    const char* name;
+    PortLink link;
+    uint32_t baud;
+    const char* frame;
+};
+
+#define PROFILE_CUSTOM "custom"
+static const DeviceProfile kProfiles[] = {
+    {"zs1", "Zander ZS1", LINK_RS232_IN, 19200, "8N1"},
+    {"flarm", "Classic FLARM", LINK_RS232_IN, 19200, "8N1"},
+    {"ar6201", "Becker AR6201", LINK_RS422_BOTH, 9600, "8N1"},
+};
+static constexpr size_t kProfileCount = sizeof(kProfiles) / sizeof(kProfiles[0]);
+
+// Wiring of COM 0, 1, 2 (docs/hardware/wiring.md): two RS-232 modules without return line, the RS-422 board.
+static const PortLink kPortLink[] = {LINK_RS232_IN, LINK_RS232_IN, LINK_RS422_BOTH};
+static_assert(sizeof(kPortLink) / sizeof(kPortLink[0]) == NUM_COM, "one link per port");
+
+static const DeviceProfile* findProfile(const char* id) {
+    for (const DeviceProfile& p : kProfiles)
+        if (strcmp(p.id, id) == 0) return &p;
+    return nullptr;
+}
 
 struct PortSettings {
+    char profile[8];  // device profile id or "custom"
     uint32_t baud;
     char frame[4];  // data bits, parity, stop bits, for example "8N1"
     uint16_t tcpPort;
@@ -55,12 +94,15 @@ struct SettingItem {
 };
 
 static SettingItem kSettings[] = {
+    {"p0", T_PROFILE, settings.port[0].profile, ORIGIN_DEFAULT},
     {"b0", T_BAUD, &settings.port[0].baud, ORIGIN_DEFAULT},
     {"f0", T_FRAME, settings.port[0].frame, ORIGIN_DEFAULT},
     {"t0", T_TCP, &settings.port[0].tcpPort, ORIGIN_DEFAULT},
+    {"p1", T_PROFILE, settings.port[1].profile, ORIGIN_DEFAULT},
     {"b1", T_BAUD, &settings.port[1].baud, ORIGIN_DEFAULT},
     {"f1", T_FRAME, settings.port[1].frame, ORIGIN_DEFAULT},
     {"t1", T_TCP, &settings.port[1].tcpPort, ORIGIN_DEFAULT},
+    {"p2", T_PROFILE, settings.port[2].profile, ORIGIN_DEFAULT},
     {"b2", T_BAUD, &settings.port[2].baud, ORIGIN_DEFAULT},
     {"f2", T_FRAME, settings.port[2].frame, ORIGIN_DEFAULT},
     {"t2", T_TCP, &settings.port[2].tcpPort, ORIGIN_DEFAULT},
@@ -124,9 +166,17 @@ static bool validIp(uint32_t raw) {
     return ip[0] >= 1 && ip[0] <= 223 && ip[0] != 127 && ip[3] >= 1 && ip[3] <= 254;
 }
 
+// A profile fits a port if its interface matches the port's wiring; Custom fits every port.
+static bool profileFits(const char* id, int portNum) {
+    if (strcmp(id, PROFILE_CUSTOM) == 0) return true;
+    const DeviceProfile* p = findProfile(id);
+    return p && portNum >= 0 && portNum < NUM_COM && p->link == kPortLink[portNum];
+}
+
 // Check one value of the given type at v; portNum is -1 for values that belong to no port.
 static bool validAt(SettingType type, const void* v, int portNum) {
     switch (type) {
+        case T_PROFILE: return profileFits((const char*)v, portNum);
         case T_BAUD: return validBaud(*(const uint32_t*)v);
         case T_FRAME: return validFrame((const char*)v);
         case T_TCP: {
@@ -152,7 +202,21 @@ static bool validValue(const SettingItem& s, int portNum) { return validAt(s.typ
 
 static int portOf(const SettingItem& s) {  // port number for per-port keys, -1 otherwise
     const char c = s.key[1];
-    return (s.key[2] == 0 && c >= '0' && c < '0' + NUM_COM && strchr("bft", s.key[0])) ? c - '0' : -1;
+    return (s.key[2] == 0 && c >= '0' && c < '0' + NUM_COM && strchr("pbft", s.key[0])) ? c - '0' : -1;
+}
+
+// A preset whose baud or frame was edited by hand becomes Custom. Returns the ports changed.
+static int profilesMatchValues(BridgeSettings& b) {
+    int changed = 0;
+    for (int n = 0; n < NUM_COM; n++) {
+        PortSettings& ps = b.port[n];
+        const DeviceProfile* p = findProfile(ps.profile);
+        if (!p || (p->baud == ps.baud && strcmp(p->frame, ps.frame) == 0)) continue;
+        memset(ps.profile, 0, sizeof(ps.profile));  // whole-buffer comparisons in settingsSave()
+        strlcpy(ps.profile, PROFILE_CUSTOM, sizeof(ps.profile));
+        changed |= 1 << n;
+    }
+    return changed;
 }
 
 // ---- display -------------------------------------------------------------------
@@ -162,6 +226,7 @@ static bool settingSecret(const SettingItem& s) { return s.type == T_NETPASS || 
 // Short name of the value, without the port: "baud", "TCP port", "network" ...
 static const char* settingName(const SettingItem& s) {
     switch (s.type) {
+        case T_PROFILE: return "device";
         case T_BAUD: return "baud";
         case T_FRAME: return "frame";
         case T_TCP: return "TCP port";
@@ -198,7 +263,9 @@ static void fillDefaults(BridgeSettings& out) {
     const uint32_t baud[NUM_COM] = {UART_BAUD0, UART_BAUD1, UART_BAUD2};
     const uint32_t frame[NUM_COM] = {SERIAL_PARAM0, SERIAL_PARAM1, SERIAL_PARAM2};
     const uint16_t tcp[NUM_COM] = {SERIAL0_TCP_PORT, SERIAL1_TCP_PORT, SERIAL2_TCP_PORT};
+    const char* const profile[NUM_COM] = PORT_PROFILES;
     for (int n = 0; n < NUM_COM; n++) {
+        strlcpy(out.port[n].profile, profile[n], sizeof(out.port[n].profile));
         out.port[n].baud = baud[n];
         frameFromCode(frame[n], out.port[n].frame);
         out.port[n].tcpPort = tcp[n];
@@ -223,6 +290,7 @@ static size_t valueSize(SettingType t) {
         case T_TCP:
         case T_SECONDS: return 2;
         case T_FRAME: return 4;
+        case T_PROFILE: return 8;
         case T_SSID: return 33;
         default: return 64;  // passwords
     }
@@ -437,6 +505,13 @@ static void settingsLoad() {
     }
     p.end();
     settingsCrossCheck(defaults);
+    // Values saved before profiles existed, or edited by hand: a preset that no longer
+    // matches its baud and frame shows as Custom.
+    const int custom = profilesMatchValues(settings);
+    for (size_t i = 0; i < kSettingCount; i++) {
+        SettingItem& s = kSettings[i];
+        if (s.type == T_PROFILE && ((custom >> portOf(s)) & 1) && s.origin == ORIGIN_DEFAULT) s.origin = ORIGIN_STORED;
+    }
 #endif
 }
 

@@ -12,8 +12,10 @@ Checks:
  3. a serial change (radio baud) is saved, survives the restart, no trial
  4. setting it back to the default removes it (shows as default)
  5. a port change starts a trial; the new port listens; Keep ends the trial
- 6. reset brings back all defaults
- 7. with --revert: an unkept port change reverts after 10 minutes
+ 6. device profiles: only presets that fit a port's wiring are offered and
+    accepted; a preset fills baud and frame; an edited preset is saved as Custom
+ 7. reset brings back all defaults
+ 8. with --revert: an unkept port change reverts after 10 minutes
 """
 
 import argparse
@@ -116,6 +118,23 @@ def main():
     code, _ = request(host, "/api/settings", {"b2": b2["default"]}, auth=pw)
     s = wait_back(host)
     check("back to default shows as default", item(s, "b2")["origin"] == "default" and code == 200)
+
+    s = settings(host)
+    offered = {p["name"]: p["profiles"] for p in s.get("ports", [])}
+    check("presets offered by wiring", offered == {"Zander": ["zs1", "flarm"], "FLARM": ["zs1", "flarm"], "Becker": ["ar6201"]}, str(offered))
+    code, body = request(host, "/api/settings", {"p2": "zs1", "p0": "ar6201", "p1": "nonsense"}, auth=pw)
+    errs = json.loads(body).get("errors", {}) if code == 400 else {}
+    check("unfitting or unknown presets refused", code == 400 and {"p0", "p1", "p2"} <= set(errs), f"HTTP {code}, fields {sorted(errs)}")
+
+    code, body = request(host, "/api/settings", {"p0": "flarm", "b0": "19200", "f0": "8N1", "p1": "flarm", "b1": "9600", "f1": "8N1"}, auth=pw)
+    check("preset change saved without trial", code == 200 and json.loads(body) == {"ok": True, "trial": False}, body.decode())
+    s = wait_back(host)
+    p0, b0, p1, b1 = (item(s, k) for k in ("p0", "b0", "p1", "b1"))
+    check("Zander port keeps the FLARM preset after restart", p0["value"] == "flarm" and p0["origin"] == "changed" and b0["origin"] == "default", f"{p0}, {b0}")
+    check("edited preset saved as Custom", p1["value"] == "custom" and b1["value"] == "9600", f"{p1}, {b1}")
+    code, _ = request(host, "/api/settings", {"p0": "zs1", "b0": "19200", "f0": "8N1", "p1": "flarm", "b1": "19200", "f1": "8N1"}, auth=pw)
+    s = wait_back(host)
+    check("default presets show as default", code == 200 and all(item(s, k)["origin"] == "default" for k in ("p0", "b0", "f0", "p1", "b1", "f1")))
 
     code, body = request(host, "/api/settings", {"t0": "10111"}, auth=pw)
     check("port change starts a trial", code == 200 and json.loads(body).get("trial") is True, body.decode())
