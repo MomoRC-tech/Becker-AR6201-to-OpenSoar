@@ -149,11 +149,23 @@ Owner's answers of 2026-11-17 in the last column; the [firmware plan](../../proj
 
 | # | Proposal | Why | Owner |
 | :-: | --- | --- | --- |
-| 1 | Radio owner rule: a new connection takes over the radio port and closes the old one, instead of being refused | OpenSoar reconnects after a Wi-Fi drop while the stale connection may hold the port for hours ([section 5](#esp32)). Still one writer at a time. Alternative: refuse, but detect dead owners with a short keepalive on the radio socket | ✅ New connection takes over |
-| 2 | Write to clients without the core's 10 s retry: send only what the socket accepts and close a client that stays full, as GS-Traffic2WIFI does | Keeps navigation flowing when one client stalls (R02, K05) | ❌ Keep the core behaviour; step 5 measures the stall first |
+| 1 | Radio owner rule: a new connection takes over the radio port and closes the old one, instead of being refused | OpenSoar reconnects after a Wi-Fi drop while the stale connection may hold the port for hours ([section 5](#esp32)). Still one writer at a time. Alternative: refuse, but detect dead owners with a short keepalive on the radio socket | ✅ Refuse a second client; drop a dead owner by keepalive and, in hotspot mode, when its phone leaves (revised after the daily-use check below) |
+| 2 | Write to clients without the core's 10 s retry: send only what the socket accepts and close a client that stays full, as GS-Traffic2WIFI does | Keeps navigation flowing when one client stalls (R02, K05) | ❌ Keep the core behaviour; step 5 tests a connected phone that stops reading; if it delays other data, the fix is required before aircraft use |
 | 3 | Add to step 5: bridge power cycle in both Wi-Fi modes with OpenSoar connected; OpenSoar must return to data on all three ports without a manual reconnect | OpenSoar reopens TCP client ports only after a socket error ([section 4](#opensoar)) | ✅ Added to step 5 |
 | 4 | Add a phone test with mobile data on: all three ports connect and stay connected | AlphaLima #19, XCSoar #629 | ✅ Added to step 5 |
 | 5 | Set the radio baud rate from the installed radio; test 9600 8N1 first if nothing better is found | Only code evidence (RadioDriver); 115200 is an upstream placeholder | ✅ 9600 8N1 set now, until the installed setting is known |
+
+### 7.1 Daily-use check
+
+Rechecked with the owner the same day: does any answer create a problem for pilots in daily use?
+
+| Answer | Daily-use effect | Result |
+| --- | --- | --- |
+| New connection takes over the radio | Two devices with the Becker entry (for example panel tablet and phone) kick each other off every 30 s, the OpenSoar reopen interval | Replaced by refuse plus dead-owner check |
+| Keep blocking client writes | A connected phone that stops reading (screen off, app in background) can delay all ports, FLARM traffic included, by about 10 s per write | Step 5 tests this case; a delay makes the fix required before aircraft use |
+| Power-cycle and mobile-data tests | Tests only | No effect |
+| Radio at 9600 8N1 | A wrong value only stops frequency transfer; the radio's own controls stay (R05) | No effect |
+| Tandem or remote mode on the radio | Required by LXNAV and SD-Link; LXNAV also sets the speaker volume source to "Both". Changes radio behaviour | Not changed; separate installation decision ([open item](../../project/open-items.md#software-and-acceptance)) |
 
 ---
 
