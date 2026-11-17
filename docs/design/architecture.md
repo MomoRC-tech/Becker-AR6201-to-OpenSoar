@@ -79,7 +79,7 @@ One work queue: the [roadmap](../project/roadmap.md). Requirements live in [requ
 > [!TIP]
 > **Selected:**
 > - Base the bridge firmware on Yuri's ESP serial bridge 130f731 (MIT) and keep its license notice.
-> - Keep all upstream features; removing one needs the owner's answer first.
+> - Keep the upstream features except UDP (removed, not implemented); removing another needs the owner's answer first.
 > - Add the OTA loader's start-up, exclusive radio ownership, counted writes and a read-only status page.
 
 Reviews: [adoption review](../research/reviews/2026-11-16-yuri-adoption.md), [first review](../research/reviews/2026-11-08-yuri-bridge.md). Steps and feature selections: [firmware plan](../project/roadmap.md#firmware-plan). OpenSoar driver fixes are planned separately (WP4).

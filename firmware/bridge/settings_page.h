@@ -32,9 +32,6 @@ static const char* settingHint(SettingType type, int portNum) {
         case T_BAUD: return "Choose one of the listed rates";
         case T_FRAME: return "Data bits 5 to 8, parity N, E or O, stop bits 1 or 2, for example 8N1";
         case T_TCP: return "1 to 65535, not 80, not used by another device";
-        case T_UDP:
-            return portNum == RADIO_COM ? "Always off on the radio port"
-                                        : "0 for off, or a port not used by another device; not 53, 67, 68, 3232, 5353";
         case T_SSID: return "1 to 32 characters";
         case T_NETPASS: return "8 to 63 characters";
         case T_APPASS: return "8 to 63 characters";
@@ -51,7 +48,6 @@ static bool parseInto(const SettingItem& s, const String& raw, void* v) {
     switch (s.type) {
         case T_BAUD:
         case T_TCP:
-        case T_UDP:
         case T_SECONDS: {
             if (a.length() == 0 || a.length() > 6) return false;
             for (size_t i = 0; i < a.length(); i++)
@@ -103,10 +99,6 @@ static void handleSettingsSave() {
         for (int b = a + 1; b < NUM_COM; b++) {
             if (cand.port[a].tcpPort == cand.port[b].tcpPort) {
                 char k[3] = {'t', char('0' + b), 0};
-                addError(errors, k, "Already used by another device");
-            }
-            if (cand.port[a].udpPort != 0 && cand.port[a].udpPort == cand.port[b].udpPort) {
-                char k[3] = {'u', char('0' + b), 0};
                 addError(errors, k, "Already used by another device");
             }
         }
@@ -191,9 +183,8 @@ let items=[];
 function field(i){const id='k_'+i.key,lab=esc(i.name.charAt(0).toUpperCase()+i.name.slice(1));let c;
 if(i.key[0]==='b'||i.key[0]==='f'){const o=i.key[0]==='b'?BAUD:FRAME;c='<select id="'+id+'" name="'+i.key+'">'+o.map(x=>'<option'+(String(x)===i.value?' selected':'')+'>'+x+'</option>').join('')+'</select>'}
 else if(i.secret)c='<input id="'+id+'" name="'+i.key+'" type="password" autocomplete="new-password" placeholder="Unchanged">';
-else{const num=['t','u'].includes(i.key[0])||i.key==='nj';c='<input id="'+id+'" name="'+i.key+'" value="'+esc(i.value)+'"'+(num?' inputmode="numeric"':'')+'>'}
-if(i.key==='u2')c='<input id="'+id+'" value="Off" disabled>';
-const d=i.key==='u2'?'<span class="def">Always off on the radio port</span>':i.secret?'':'<span class="def'+(i.origin==='changed'?' chg':'')+'">'+(i.origin==='changed'?'Changed, default ':'Default ')+esc(i.key[0]==='u'&&i.default==='0'?'off':i.default)+'</span>';
+else{const num=i.key[0]==='t'||i.key==='nj';c='<input id="'+id+'" name="'+i.key+'" value="'+esc(i.value)+'"'+(num?' inputmode="numeric"':'')+'>'}
+const d=i.secret?'':'<span class="def'+(i.origin==='changed'?' chg':'')+'">'+(i.origin==='changed'?'Changed, default ':'Default ')+esc(i.default)+'</span>';
 return '<div><label for="'+id+'">'+lab+'</label>'+c+d+'<div class="err" id="e_'+i.key+'"></div></div>'}
 function load(){fetch('/api/settings',{cache:'no-store'}).then(r=>r.json()).then(d=>{items=d.items;const g={},o=[];
 for(const i of d.items){const k=i.port||'Wi-Fi';if(!g[k]){g[k]=[];o.push(k)}g[k].push(i)}

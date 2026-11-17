@@ -53,15 +53,15 @@
                              // incoming bytes while the loop waits on a UART write
 
 #ifdef ESP32
-#define VERSION "0.3b-ESP32"    // Project: own version, 0.<plan step> until bench acceptance
+#define VERSION "0.3b.1-ESP32"    // Project: own version, 0.<plan step> until bench acceptance
 #elif defined(ESP8266)
-#define VERSION "0.3b-ESP8266"
+#define VERSION "0.3b.1-ESP8266"
 #endif
 
 #define MODE_STA_AP            // MODE_STA, MODE_AP or MODE_STA_AP (Project: network, then hotspot; ESP32 only)
 #define PROTOCOL_TCP           // uncomment to enable TCP server
 #define MAX_NMEA_CLIENTS 4     // max TCP clients
-#define PROTOCOL_UDP           // uncomment to enable UDP broadcast (ESP32 only)
+// Project: UDP (upstream PROTOCOL_UDP) is removed; the bridge serves TCP only
 #define STATUS_PAGE            // Project: read-only status page on port 80 and /api/status (ESP32 only)
 #define STORED_SETTINGS        // Project: settings stored on the ESP32 override the defaults here (step 3a, ESP32 only)
 #define PORT_NAMES {"Zander", "FLARM", "Becker"}  // Project: COM 0, 1, 2 on the status page
@@ -83,21 +83,18 @@
 #define SERIAL0_TXPIN 33          // transmit Pin UART0
 #define SERIAL0_RXPIN 32          // receive Pin UART0
 #define SERIAL0_TCP_PORT 10110    // TCP Port UART0
-#define SERIAL0_UDP_PORT 14550    // UDP Port UART0           (ESP32 only)
 /*************************  COM Port 1 *******************************/
 #define UART_BAUD1 19200            // Baudrate UART1: FLARM, candidate (S23), installed setting unknown
 #define SERIAL_PARAM1 SERIAL_8N1    // Data/Parity/Stop UART1 (use SWSERIAL_* for ESP8266)
 #define SERIAL1_TXPIN 27            // transmit Pin UART1
 #define SERIAL1_RXPIN 26            // receive Pin UART1
 #define SERIAL1_TCP_PORT 2000       // TCP Port UART1
-#define SERIAL1_UDP_PORT 14551      // UDP Port UART1         (ESP32 only)
 /*************************  COM Port 2 *******************************/
 #define UART_BAUD2 9600             // Baudrate UART2         (ESP32 only): Becker, best lead (S108), installed setting unknown
 #define SERIAL_PARAM2 SERIAL_8N1    // Data/Parity/Stop UART2 (ESP32 only)
 #define SERIAL2_TXPIN 17            // transmit Pin UART2     (ESP32 only)
 #define SERIAL2_RXPIN 16            // receive Pin UART2      (ESP32 only)
 #define SERIAL2_TCP_PORT 4352       // TCP Port UART2         (ESP32 only)
-#define SERIAL2_UDP_PORT 0          // UDP Port UART2         (ESP32 only) Project: 0 = no UDP; radio port is TCP only
 
 /**************************  DO NOT EDIT BELOW HERE **************************/
 // Project: build-time checks for the Wi-Fi mode and the radio port rules
@@ -111,8 +108,8 @@
 #if defined(BLUETOOTH) && (BLUETOOTH == RADIO_COM)
 #error "Bluetooth must not target the radio port."
 #endif
-#if defined(ESP32) && defined(PROTOCOL_UDP) && (SERIAL2_UDP_PORT != 0)
-#error "No UDP on the radio port: set SERIAL2_UDP_PORT to 0."
+#ifdef PROTOCOL_UDP
+#error "UDP is removed from this firmware; the bridge serves TCP only."
 #endif
 
 // perhaps a clever way to include/exclude serial debug messages...

@@ -11,10 +11,10 @@ Needs the bench ESP32 running the bridge firmware and jumper wires
     GPIO17 (Becker TX) -> GPIO16 (Becker RX), only with --radio-loop
 
 Sends every byte value plus a pseudo-random block into one port and checks
-that exactly the same bytes, in order, come out of the looped port:
-TCP -> TCP in both directions, UDP -> TCP and TCP -> UDP for Zander and FLARM.
-With --radio-loop it also loops the radio port over TCP and checks that UDP
-sent to the radio port's former UDP port reaches nothing.
+that exactly the same bytes, in order, come out of the looped port, over
+TCP in both directions for Zander and FLARM. With --radio-loop it also loops
+the radio port over TCP. Last it checks that UDP sent to the former upstream
+UDP ports reaches no device: the firmware has no UDP.
 
 Zander and FLARM must use the same baud rate in config.h for the loop.
 """
@@ -26,7 +26,7 @@ import sys
 import time
 
 ZANDER_TCP, FLARM_TCP, RADIO_TCP = 10110, 2000, 4352
-ZANDER_UDP, FLARM_UDP, RADIO_UDP_UPSTREAM = 14550, 14551, 14552
+FORMER_UDP = (14550, 14551, 14552)  # upstream UDP ports; the firmware has no UDP
 BAUD = 19200
 
 
@@ -50,19 +50,6 @@ def read_tcp(sock: socket.socket, size: int, timeout: float) -> bytes:
         except socket.timeout:
             break
         if not chunk:
-            break
-        data += chunk
-    return bytes(data)
-
-
-def read_udp(sock: socket.socket, size: int, timeout: float) -> bytes:
-    data = bytearray()
-    deadline = time.monotonic() + timeout
-    while len(data) < size and time.monotonic() < deadline:
-        sock.settimeout(max(0.05, deadline - time.monotonic()))
-        try:
-            chunk, _ = sock.recvfrom(4096)
-        except socket.timeout:
             break
         data += chunk
     return bytes(data)
@@ -92,13 +79,6 @@ def tcp(host: str, port: int) -> socket.socket:
     return sock
 
 
-def udp_listener(port: int) -> socket.socket:
-    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    sock.bind(("", port))
-    return sock
-
-
 def send_tcp(sock: socket.socket, data: bytes, split: int = 97) -> None:
     # Uneven writes, so the bridge sees split and merged reads.
     for i in range(0, len(data), split):
@@ -121,33 +101,24 @@ def main() -> int:
         send_tcp(src, data)
         results.append(compare(name, data, read_tcp(dst, len(data), wait_seconds(len(data)))))
 
-    out = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    for name, port, dst, seed in (("UDP -> Zander, TCP FLARM", ZANDER_UDP, flarm, 3), ("UDP -> FLARM, TCP Zander", FLARM_UDP, zander, 4)):
-        data = payload(seed, 1024)
-        for i in range(0, len(data), 256):
-            out.sendto(data[i : i + 256], (args.host, port))
-            time.sleep(256 * 10 / BAUD)
-        results.append(compare(name, data, read_tcp(dst, len(data), wait_seconds(len(data)))))
-
-    for name, src, port, seed in (("TCP Zander, UDP FLARM", zander, FLARM_UDP, 5), ("TCP FLARM, UDP Zander", flarm, ZANDER_UDP, 6)):
-        listener = udp_listener(port)
-        data = payload(seed, 1024)
-        send_tcp(src, data)
-        results.append(compare(name, data, read_udp(listener, len(data), wait_seconds(len(data)))))
-        listener.close()
-
+    radio = None
     if args.radio_loop:
         radio = tcp(args.host, RADIO_TCP)
         drain(radio)
         data = payload(7)
         send_tcp(radio, data)
         results.append(compare("TCP radio loop", data, read_tcp(radio, len(data), wait_seconds(len(data)))))
-        out.sendto(b"must not reach the radio", (args.host, RADIO_UDP_UPSTREAM))
-        stray = read_tcp(radio, 1, 3.0)
-        ok = stray == b""
-        print(f"{'PASS' if ok else 'FAIL'} UDP to radio port {RADIO_UDP_UPSTREAM}: {len(stray)} bytes reached the radio")
-        results.append(ok)
+
+    out = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    for port in FORMER_UDP:
+        out.sendto(b"must not reach any device", (args.host, port))
+    stray = read_tcp(zander, 1, 3.0) + read_tcp(flarm, 1, 0.5)
+    if radio is not None:
+        stray += read_tcp(radio, 1, 0.5)  # with the loop, UDP into the radio UART would come back here
         radio.close()
+    ok = stray == b""
+    print(f"{'PASS' if ok else 'FAIL'} UDP to ports {', '.join(map(str, FORMER_UDP))}: {len(stray)} bytes reached a device")
+    results.append(ok)
 
     zander.close()
     flarm.close()

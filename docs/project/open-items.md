@@ -124,7 +124,6 @@ The bridge firmware follows its [plan](roadmap.md#firmware-plan) in parallel wit
 | 6 | Driver regression | Zero/A5 bytes, short frames, bad CRC, unknown start state, two instances, missing or late replies | Software verification (M4) |
 | 7 | Bridge reliability | Byte-exact tests both ways, bursts, slow clients, partial writes, reconnects, navigation in parallel | Software verification (M4) |
 | 8 | Physical acceptance | Frequency change and readback on the real radio, local controls and navigation unaffected | Aircraft integration |
-| 9 | UDP ports | Recheck the upstream UDP ports 14550 (Zander) and 14551 (FLARM) in the [bridge settings](../../firmware/bridge/README.md#project-settings): 14550 is also the usual MAVLink port; match them to OpenSoar's UDP device entries | UDP use with OpenSoar |
 
 ---
 

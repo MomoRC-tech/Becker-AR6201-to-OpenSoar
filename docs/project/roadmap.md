@@ -62,22 +62,22 @@ flowchart LR
     Z[📈 Zander] -->|UART0, return line not wired| B
     F[📡 FLARM] -->|UART1, return line not wired| B
     R[📻 Becker] <-->|UART2 both ways, RS-422| B
-    B[🧠 Bridge firmware] <-->|TCP and UDP, several clients| O[📱 OpenSoar]
+    B[🧠 Bridge firmware] <-->|TCP, several clients| O[📱 OpenSoar]
     B <-->|TCP, one owner| O
     B -->|HTTP status page| W[🌐 Browser]
 ```
 
 | Part | Plan |
 | --- | --- |
-| Zander, FLARM | Both directions stay in the firmware, as upstream: several TCP clients plus UDP. The transmit direction uses GPIO33 (Zander) and GPIO27 (FLARM), the pins [signal wiring](../hardware/wiring.md#overview) leaves free. No return line is wired today; one can be added later without a firmware change |
+| Zander, FLARM | Both directions stay in the firmware, as upstream: several TCP clients. The transmit direction uses GPIO33 (Zander) and GPIO27 (FLARM), the pins [signal wiring](../hardware/wiring.md#overview) leaves free. No return line is wired today; one can be added later without a firmware change |
 | Board | The bench ESP32, updated over Wi-Fi; no second board |
 | Hotspot address | 10.10.10.10, as on today's bridge, so the OpenSoar device entries fit both bridges ([ADR-05](../design/architecture.md#adr-05)) |
 | TCP ports | Today's ports, so the OpenSoar device entries stay the same: Zander 10110, FLARM 2000, Becker 4352 ([configuration](existing-installation.md#configuration)) |
-| Becker (RS-422) | Both ways on UART2 ↔ its own TCP port ([ADR-01](../design/architecture.md#adr-01)). TCP only: no UDP and no Bluetooth on this port. One client owns the radio; a second is refused, so two devices with the Becker entry never fight over it. A dead owner is dropped: short TCP keepalive (about 15 s) on the radio connection only, and in hotspot mode the connections of a phone that leaves the Wi-Fi are closed at once, so OpenSoar gets back on after a Wi-Fi drop ([check](../research/reviews/2026-11-17-bridge-projects-check.md)). Writes are counted; on overflow or a stalled client the session closes instead of dropping bytes silently |
+| Becker (RS-422) | Both ways on UART2 ↔ its own TCP port ([ADR-01](../design/architecture.md#adr-01)). TCP only, no Bluetooth on this port. One client owns the radio; a second is refused, so two devices with the Becker entry never fight over it. A dead owner is dropped: short TCP keepalive (about 15 s) on the radio connection only, and in hotspot mode the connections of a phone that leaves the Wi-Fi are closed at once, so OpenSoar gets back on after a Wi-Fi drop ([check](../research/reviews/2026-11-17-bridge-projects-check.md)). Writes are counted; on overflow or a stalled client the session closes instead of dropping bytes silently |
 | Status page | Read-only page on port 80 plus `/api/status` as JSON ([R14](../design/requirements.md#requirements)): firmware version, uptime, Wi-Fi mode and phone signal ([R10](../design/requirements.md#requirements)), and per device the baud rate, bytes, time since last data, clients and errors. Served from its own low-priority task, so it cannot hold up forwarding. Open to everyone on the bridge's Wi-Fi while it is read-only |
 | Wi-Fi and OTA | The loader's start-up (network, then hotspot) is added as a third Wi-Fi mode next to the two upstream modes and is the project setting; OTA gets its password ([ADR-05](../design/architecture.md#adr-05)) |
 | Log output | Upstream `DEBUG` switch off, because UART0 serves the Zander; the OTA messages follow the same switch. Diagnostics go to the status page |
-| Kept from upstream | Nothing is removed. Every removal needs the owner's answer first; [selections](#upstream-features) below |
+| Kept from upstream | Everything except UDP, which the owner removed. Every further removal needs the owner's answer first; [selections](#upstream-features) below |
 | Kept simple | Arduino-ESP32 core libraries only; no file system; defaults in one header at build time, changes from the [settings page](#settings-page) stored on the ESP32; no protocol handling in the bridge |
 
 <a id="upstream-features"></a>
@@ -85,12 +85,12 @@ flowchart LR
 ### 2.2 Upstream features
 
 > [!TIP]
-> **Selected:** keep all upstream features. Ask the owner before removing any.
+> **Selected:** keep the upstream features except UDP. Ask the owner before removing any other.
 
 | Upstream feature | Selection |
 | --- | --- |
 | Transmit direction on the RS-232 ports | Keep for Zander and FLARM |
-| UDP | Keep for Zander and FLARM; not on the radio port |
+| UDP | Not implemented: removed by the owner, 2026-11-17. OpenSoar connects by TCP; broadcast over Wi-Fi lost single datagrams on the bench (S112) |
 | Bluetooth | Keep in the code, switched off as upstream. The build refuses the radio port as its target |
 | ESP8266 support | Keep the upstream branches unchanged. Project additions (radio port rules, status page) are ESP32 only; the ESP8266 build is not tested |
 | `BATTERY_SAVER` | Keep, and fix it so the switch really lowers the Wi-Fi transmit power; off by default |
@@ -102,10 +102,10 @@ Each step: build, upload over Wi-Fi, check, update the owning pages, commit.
 | # | Step | Needs | Done when |
 | :-: | --- | --- | --- |
 | 1 | ✅ **Baseline.** Import the upstream sketch unchanged with its MIT license; set the project pins, ports and hotspot address; add a build script | PC only | Done: [`firmware/bridge/`](../../firmware/bridge/README.md) builds with the pinned toolchain (S104). Not uploaded: the upstream start-up has no hotspot fallback and no OTA password ([R13](../design/requirements.md#requirements)) |
-| 2 | ✅ **Project settings.** Pins, baud rates and ports; add the loader's Wi-Fi start-up and the OTA password; log output off; UDP limited to Zander and FLARM; fix `BATTERY_SAVER`. No upstream feature removed | Bench ESP32, one jumper wire or a USB RS-232 adapter | First upload. Test data arrives byte for byte on the receiving port, over TCP and UDP: looped from the Zander output pin to the FLARM input and back the other way, or fed in at the DE-9. UDP sent to the radio port reaches nothing; OTA works in both Wi-Fi modes, with the hotspot at its new address. Done (S105, S106): accepted by the owner without OTA over the hotspot, which the bench PC cannot reach; OTA over the network passed |
-| 3 | ✅ **Status page.** Read-only page and JSON | Bench ESP32, phone | The page shows live counters on the phone; the step 2 check passes with the page open. Done (S107); UDP broadcast output stays best-effort |
+| 2 | ✅ **Project settings.** Pins, baud rates and ports; add the loader's Wi-Fi start-up and the OTA password; log output off; fix `BATTERY_SAVER` | Bench ESP32, one jumper wire or a USB RS-232 adapter | First upload. Test data arrives byte for byte on the receiving port: looped from the Zander output pin to the FLARM input and back the other way, or fed in at the DE-9. OTA works in both Wi-Fi modes, with the hotspot at its new address. Done (S105, S106): accepted by the owner without OTA over the hotspot, which the bench PC cannot reach; OTA over the network passed |
+| 3 | ✅ **Status page.** Read-only page and JSON | Bench ESP32, phone | The page shows live counters on the phone; the step 2 check passes with the page open. Done (S107) |
 | 3a | ✅ **Settings page.** Stored settings and a password-protected page, [design](#settings-page). Four commits: settings module used at start-up; active values and their origin on the status page; settings page; bench checks | Bench ESP32, phone | With nothing stored, the step 2 loop test passes unchanged. A changed baud rate works after the restart and survives an OTA update. A wrong network falls back to the hotspot. An unconfirmed Wi-Fi, hotspot or port change reverts after 10 min. A wrong password saves nothing. Power loss during a save leaves the old or the new values, never a mix. Forwarding is unaffected with the page open. Reset restores the defaults. Done (S109–S111), except the power-loss check, which needs the owner to pull the USB cable during a save |
-| 3b | ✅ **Data monitor.** Live view of the bytes from and to each device on its own page `/monitor`, [design](#data-monitor) | Bench ESP32, phone, PC | Looped test data appears on the monitor in the right port and direction, NMEA as readable lines and radio bytes as hex; Pause and Download work; the loop test passes with the monitor open; nothing is collected while no one watches. Done (S112): TCP and radio byte-exact with the monitor open; UDP broadcast stays best-effort, with and without the monitor. Pause and Download still to try on a phone |
+| 3b | ✅ **Data monitor.** Live view of the bytes from and to each device on its own page `/monitor`, [design](#data-monitor) | Bench ESP32, phone, PC | Looped test data appears on the monitor in the right port and direction, NMEA as readable lines and radio bytes as hex; Pause and Download work; the loop test passes with the monitor open; nothing is collected while no one watches. Done (S112): byte-exact with the monitor open. Pause and Download still to try on a phone |
 | 4 | **Radio port.** Single owner with dead-owner check, counted writes. Client writes keep the core's blocking behaviour until step 5 has measured it | Wired bench bridge; [bus-level test](../hardware/wiring.md#bus-test): DE-9 breakout with the radio loop, USB RS-232 adapter; serial-feed mode in the test script | Through the radio loop every byte value, bursts and split writes return unchanged; the Zander and FLARM inputs pass the RS-232 feed; nothing arrives after a restart; a second client is refused; after the owner's Wi-Fi is cut, a new client gets the radio port within 45 s; navigation data keeps flowing |
 | 5 | **Bench acceptance.** One PC test script for the [bridge tests](#test-coverage): slow and vanishing clients, including a second phone that stays connected with its screen off or OpenSoar in the background; Wi-Fi loss and return; one-hour run on all three ports. With OpenSoar on the phone: bridge power cycle in network and hotspot mode, and a run with mobile data on | Finished bench bridge, phone with OpenSoar | No byte errors; a client that stops reading does not delay data on the other clients or ports, otherwise non-blocking client writes are added before aircraft use; after each power cycle OpenSoar gets data on all three ports again without a manual reconnect; with mobile data on, all three ports connect and stay connected; results recorded; bridge part of M4 |
 
@@ -125,11 +125,11 @@ The firmware alone does not tune the radio: OpenSoar's driver cuts frames that c
 
 | Part | Plan |
 | --- | --- |
-| Editable | Per port: baud rate, data bits, parity, stop bits, TCP port, UDP port (0 = off). Network to join (name, password) and join time. Hotspot name, password and address |
-| Fixed at build time | Pins; radio port rules (TCP only, one owner, no UDP or Bluetooth); features; hostname; OTA password |
+| Editable | Per port: baud rate, data bits, parity, stop bits, TCP port. Network to join (name, password) and join time. Hotspot name, password and address |
+| Fixed at build time | Pins; radio port rules (one owner, no Bluetooth); features; hostname; OTA password |
 | Defaults | `config.h` and `credentials.h`. The ESP32 stores only changed values, so an empty or erased store behaves like a fresh build |
 | Storage | `Preferences` (NVS partition, 20 KB in the selected partition scheme), namespace `bridge`, one key per setting plus a format version. Survives restarts and OTA updates |
-| Loading | Once at start-up. Every value is checked (allowed baud rates, port range, text length, UDP never on the radio port); an invalid value falls back to its default and is flagged on the page |
+| Loading | Once at start-up. Every value is checked (allowed baud rates, port range, text length); an invalid value falls back to its default and is flagged on the page |
 | Protection | HTTP basic authentication with the OTA password for the settings page and every save. The status page stays open and read-only |
 | Applying | "Save and restart". Nothing changes while the bridge runs |
 | Confirm or revert | Changes to Wi-Fi, hotspot or ports apply as a trial after the restart; the previous values stay stored. Without "Keep" on the settings page within 10 min, the bridge restores them and restarts. Serial-only changes apply directly |

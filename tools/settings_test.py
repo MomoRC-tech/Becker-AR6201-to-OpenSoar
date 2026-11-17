@@ -100,9 +100,9 @@ def main():
     code, _ = request(host, "/api/settings", {"b2": "19200"}, auth="wrong-password")
     check("wrong password saves nothing", code == 401 and settings(host) == before, f"HTTP {code}")
 
-    code, body = request(host, "/api/settings", {"b2": "1234", "f1": "9X1", "t1": "10110", "u0": "5353", "ha": "300.1.1.1"}, auth=pw)
+    code, body = request(host, "/api/settings", {"b2": "1234", "f1": "9X1", "t1": "10110", "nj": "500", "ha": "300.1.1.1"}, auth=pw)
     errs = json.loads(body).get("errors", {}) if code == 400 else {}
-    check("invalid values refused per field", code == 400 and {"b2", "f1", "t1", "u0", "ha"} <= set(errs), f"HTTP {code}, fields {sorted(errs)}")
+    check("invalid values refused per field", code == 400 and {"b2", "f1", "t1", "nj", "ha"} <= set(errs), f"HTTP {code}, fields {sorted(errs)}")
     check("refused save changed nothing", settings(host)["items"] == before["items"])
 
     code, body = request(host, "/api/settings", {"b2": "19200"}, auth=pw)

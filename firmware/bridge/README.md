@@ -18,16 +18,15 @@ The project's own Wi-Fi bridge firmware for Zander, FLARM and Becker, developed 
 
 Set in `config.h`; everything else is upstream.
 
-| Device | UART | RX | TX | TCP port | UDP port | Baud |
-| --- | --- | --- | --- | --- | --- | --- |
-| 📈 Zander | UART0 | GPIO32 | GPIO33 | 10110 | 14550 | 19200 |
-| 📡 FLARM | UART1 | GPIO26 | GPIO27 | 2000 | 14551 | 19200 |
-| 📻 Becker | UART2 | GPIO16 | GPIO17 | 4352 | — | 9600 |
+| Device | UART | RX | TX | TCP port | Baud |
+| --- | --- | --- | --- | --- | --- |
+| 📈 Zander | UART0 | GPIO32 | GPIO33 | 10110 | 19200 |
+| 📡 FLARM | UART1 | GPIO26 | GPIO27 | 2000 | 19200 |
+| 📻 Becker | UART2 | GPIO16 | GPIO17 | 4352 | 9600 |
 
 - Pins: [UART plan](../../docs/hardware/wiring.md#overview). TCP ports and the hotspot address: [firmware plan](../../docs/project/roadmap.md#firmware-plan).
 - Baud rates: Zander and FLARM are candidates from the device documents (S22, S23); the Becker value 9600 8N1 is the best lead found, from independent controller code, not a Becker document (S108). The installed settings are [open items](../../docs/project/open-items.md#installed-equipment).
-- UDP ports: upstream values; [open item](../../docs/project/open-items.md#software-and-acceptance). A UDP port of 0 switches UDP off for that UART; the radio port uses it.
-- UDP output is a Wi-Fi broadcast without acknowledgement: single datagrams can be lost (S105). Use TCP where every byte counts.
+- UDP is not implemented: the upstream UDP broadcast is removed, OpenSoar connects by TCP. Reason: broadcast over Wi-Fi has no acknowledgement and lost single datagrams on the bench, with and without load (S112). The build stops if `PROTOCOL_UDP` is defined.
 
 | Setting | Value |
 | --- | --- |
@@ -36,10 +35,10 @@ Set in `config.h`; everything else is upstream.
 | OTA | ArduinoOTA with the password from `credentials.h`, in both Wi-Fi modes |
 | Log output | `DEBUG` off: UART0 serves the Zander, so nothing is printed |
 | UART receive buffer | 4096 bytes per UART, so bytes are kept while the loop waits on a UART write |
-| Build-time checks | The build stops if UDP or Bluetooth is pointed at the radio port, or if not exactly one Wi-Fi mode is selected |
+| Build-time checks | The build stops if UDP is switched on, if Bluetooth is pointed at the radio port, or if not exactly one Wi-Fi mode is selected |
 | `BATTERY_SAVER` | Fixed so it lowers the transmit power; off |
 | Version | `VERSION` in `config.h`, `0.<plan step>` until bench acceptance; shown on the status page as "Wi-Fi bridge 0.3a-ESP32" |
-| Stored settings | `STORED_SETTINGS`: baud rates, frames, TCP and UDP ports, the network and the hotspot in this file are defaults; valid values saved on the [settings page](#settings-page) override them in `MODE_STA_AP`. An invalid stored value falls back to its default |
+| Stored settings | `STORED_SETTINGS`: baud rates, frames, TCP ports, the network and the hotspot in this file are defaults; valid values saved on the [settings page](#settings-page) override them in `MODE_STA_AP`. An invalid stored value falls back to its default |
 | Status page | `STATUS_PAGE`: read-only page on port 80 and `/api/status` as JSON, open to everyone on the bridge's Wi-Fi; see below |
 
 <a id="status-page"></a>
@@ -54,8 +53,8 @@ Open `http://<bridge address>/` (10.10.10.10 in hotspot mode) in a browser. [`st
 | --- | --- |
 | Header | Photo of the housing lid ([`device_image.h`](device_image.h), made by `tools/device_image.py`), firmware version, uptime, Wi-Fi: network address and the bridge's signal to the router, or hotspot address and the signal of each connected phone (no device addresses) |
 | Device row | Live dot (green while data arrives, pulses on new bytes), state (receiving, quiet for how long, no data yet), baud rate and frame, TCP port, connected apps; receive errors and short writes in red when not zero |
-| Details (collapsed) | Bytes from and to the device since start (TCP and UDP), UDP port, receive errors (buffer full, FIFO overflow, framing, parity, break), short writes (TCP writes that took fewer bytes than offered), UDP not sent (broadcasts the network stack refused); link to the [data monitor](#data-monitor) |
-| All settings (collapsed) | Active baud, frame, TCP and UDP port per device; network, join time, hotspot name and address. Amber: saved on the bridge; red: saved value invalid, default in use. Passwords are never sent |
+| Details (collapsed) | Bytes from and to the device since start, receive errors (buffer full, FIFO overflow, framing, parity, break), short writes (TCP writes that took fewer bytes than offered); link to the [data monitor](#data-monitor) |
+| All settings (collapsed) | Active baud, frame and TCP port per device; network, join time, hotspot name and address. Amber: saved on the bridge; red: saved value invalid, default in use. Passwords are never sent |
 
 | Address | Content |
 | --- | --- |
@@ -77,8 +76,8 @@ Open *Change settings* under *All settings*, or `http://<bridge address>/setting
 
 | What | How it works |
 | --- | --- |
-| Values | Per device: baud, frame, TCP port, UDP port (0 = off; always off on the radio port). Wi-Fi: network name and password, join time, hotspot name, password and address. Pins, radio port rules, hostname and OTA password stay fixed in the firmware |
-| Checks | Every field is checked on the bridge; a refused save names each wrong field and changes nothing. Ports may not repeat; UDP not on 53, 67, 68, 3232, 5353 |
+| Values | Per device: baud, frame, TCP port. Wi-Fi: network name and password, join time, hotspot name, password and address. Pins, radio port rules, hostname and OTA password stay fixed in the firmware |
+| Checks | Every field is checked on the bridge; a refused save names each wrong field and changes nothing. TCP ports may not repeat and may not be 80 |
 | Passwords | Never shown. Leave the field empty to keep the current one |
 | Save and restart | Values equal to the default are not stored, so they show as default. The bridge restarts and uses the new values |
 | Trial | A change to Wi-Fi, hotspot or ports runs on trial. Reconnect, open the settings page and press *Keep* within 10 minutes. Otherwise the bridge restores the values from before and restarts; after the 3rd start without *Keep* it restores them at once. Serial-only changes apply directly |
@@ -88,7 +87,7 @@ Open *Change settings* under *All settings*, or `http://<bridge address>/setting
 | Address | Content |
 | --- | --- |
 | `GET /settings` | The page (password) |
-| `POST /api/settings` | Check and save form fields named by their keys (`b0`, `f0`, `t0`, `u0` ... `ns`, `np`, `nj`, `hs`, `hp`, `ha`), then restart (password) |
+| `POST /api/settings` | Check and save form fields named by their keys (`b0`, `f0`, `t0` ... `ns`, `np`, `nj`, `hs`, `hp`, `ha`), then restart (password) |
 | `POST /api/keep` | Keep settings on trial (password) |
 | `POST /api/reset` | Forget all stored values, then restart (password) |
 
@@ -142,4 +141,4 @@ Fit jumper wires on the bare board (positions in [modules](../../docs/hardware/m
 python tools/bridge_loop_test.py <bridge address> --radio-loop
 ```
 
-It sends every byte value and a pseudo-random block over TCP and UDP and checks that the looped port returns exactly the same bytes, and that UDP to the radio port reaches nothing. Use the jumpers only while these pins are not soldered to the modules ([warning](../../docs/project/roadmap.md#firmware-plan)).
+It sends every byte value and a pseudo-random block over TCP and checks that the looped port returns exactly the same bytes, and that UDP sent to the former upstream UDP ports reaches no device. Use the jumpers only while these pins are not soldered to the modules ([warning](../../docs/project/roadmap.md#firmware-plan)).

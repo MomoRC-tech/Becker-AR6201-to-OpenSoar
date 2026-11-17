@@ -5,7 +5,7 @@
 // server in its own low-priority task on core 0 reads them; the Arduino loop
 // runs on core 1, so serving the page cannot hold up forwarding.
 //
-// Included by bridge.ino after its globals (COM, NUM_COM, udp_port) and settings.h.
+// Included by bridge.ino after its globals (COM, NUM_COM) and settings.h.
 
 #pragma once
 
@@ -20,12 +20,11 @@
 
 struct PortStats {
     std::atomic<uint32_t> fromDevice{0};   // bytes UART -> network
-    std::atomic<uint32_t> toDevice{0};     // bytes network -> UART (TCP and UDP)
+    std::atomic<uint32_t> toDevice{0};     // bytes network -> UART
     std::atomic<uint32_t> lastRxMs{0};     // millis() of the last byte from the device, 0 = none yet
     std::atomic<uint32_t> tcpClients{0};   // connected TCP clients
     std::atomic<uint32_t> uartErrors{0};   // receive buffer full, FIFO overflow, framing, parity, break
     std::atomic<uint32_t> shortWrites{0};  // TCP writes that took fewer bytes than offered
-    std::atomic<uint32_t> udpDrops{0};     // UDP broadcasts the network stack did not take
 };
 static PortStats portStats[NUM_COM];
 
@@ -106,15 +105,15 @@ let b=p.baud+' baud'+(frame[n]?' '+frame[n]:'')+', TCP '+p.tcp_port+', '+(p.tcp_
 if(p.uart_errors)b+=', <span class="bad">'+p.uart_errors+' receive error'+(p.uart_errors>1?'s':'')+'</span>';
 if(p.short_writes)b+=', <span class="bad">'+p.short_writes+' short write'+(p.short_writes>1?'s':'')+'</span>';
 $('b'+n).innerHTML=b;
-$('x'+n).innerHTML='<div><dt>From device</dt><dd>'+size(p.bytes_from_device)+'</dd></div><div><dt>To device</dt><dd>'+size(p.bytes_to_device)+'</dd></div><div><dt>UDP port</dt><dd>'+(p.udp_port||'Off')+'</dd></div><div><dt>Receive errors</dt><dd'+(p.uart_errors?' class="bad"':'')+'>'+p.uart_errors+'</dd></div><div><dt>Short writes</dt><dd'+(p.short_writes?' class="bad"':'')+'>'+p.short_writes+'</dd></div><div><dt>UDP not sent</dt><dd>'+p.udp_drops+'</dd></div>'})
+$('x'+n).innerHTML='<div><dt>From device</dt><dd>'+size(p.bytes_from_device)+'</dd></div><div><dt>To device</dt><dd>'+size(p.bytes_to_device)+'</dd></div><div><dt>Receive errors</dt><dd'+(p.uart_errors?' class="bad"':'')+'>'+p.uart_errors+'</dd></div><div><dt>Short writes</dt><dd'+(p.short_writes?' class="bad"':'')+'>'+p.short_writes+'</dd></div>'})
 }).catch(()=>{$('down').hidden=false})}
 function g(){fetch('/api/settings',{cache:'no-store'}).then(r=>r.json()).then(d=>{
 const ports={},order=[],wifi=[];for(const i of d.items){if(i.port){if(!ports[i.port]){ports[i.port]={};order.push(i.port)}ports[i.port][i.key[0]]=i}else wifi.push(i)}
 order.forEach((k,n)=>{frame[n]=ports[k].f.value});
-const cell=i=>{const v=i.secret?'\u2022\u2022\u2022\u2022\u2022\u2022':i.key[0]==='u'&&i.value==='0'?'Off':esc(i.value);return i.origin==='changed'?'<b class="chg">'+v+'</b>':i.origin==='invalid'?'<b class="bad">'+v+'</b>':v};
+const cell=i=>{const v=i.secret?'\u2022\u2022\u2022\u2022\u2022\u2022':esc(i.value);return i.origin==='changed'?'<b class="chg">'+v+'</b>':i.origin==='invalid'?'<b class="bad">'+v+'</b>':v};
 let h=d.format_mismatch?'<p class="bad">Settings saved by another firmware version were ignored; the defaults are in use.</p>':'';
-h+='<table><tr><th>Device</th><th>Baud</th><th>Frame</th><th>TCP</th><th>UDP</th></tr>';
-for(const k of order){const p=ports[k];h+='<tr><td>'+esc(k)+'</td><td>'+cell(p.b)+'</td><td>'+cell(p.f)+'</td><td>'+cell(p.t)+'</td><td>'+cell(p.u)+'</td></tr>'}
+h+='<table><tr><th>Device</th><th>Baud</th><th>Frame</th><th>TCP</th></tr>';
+for(const k of order){const p=ports[k];h+='<tr><td>'+esc(k)+'</td><td>'+cell(p.b)+'</td><td>'+cell(p.f)+'</td><td>'+cell(p.t)+'</td></tr>'}
 h+='</table><div class="grp">';for(const i of wifi){h+='<span>'+esc(i.name.charAt(0).toUpperCase()+i.name.slice(1))+'</span><div>'+cell(i)+'</div>'}
 const any=d.items.some(i=>i.origin!=='default');
 if(d.trial&&d.trial.active){$('trial').hidden=false;$('tt').textContent='New Wi-Fi or port settings are on trial for '+Math.ceil(d.trial.seconds_left/60)+' more min.'}
@@ -154,19 +153,14 @@ static String statusJson() {
         char age[16];
         if (last) snprintf(age, sizeof(age), "%lu", (unsigned long)(now - last));
         else snprintf(age, sizeof(age), "null");
-#ifdef PROTOCOL_UDP
-        const unsigned udpPort = udp_port[num];
-#else
-        const unsigned udpPort = 0;
-#endif
         snprintf(part, sizeof(part),
-                 "%s{\"name\":\"%s\",\"uart\":%d,\"baud\":%lu,\"tcp_port\":%u,\"udp_port\":%u,"
+                 "%s{\"name\":\"%s\",\"uart\":%d,\"baud\":%lu,\"tcp_port\":%u,"
                  "\"bytes_from_device\":%lu,\"bytes_to_device\":%lu,\"last_data_ms_ago\":%s,"
-                 "\"tcp_clients\":%lu,\"uart_errors\":%lu,\"short_writes\":%lu,\"udp_drops\":%lu}",
-                 num ? "," : "", kPortName[num], num, (unsigned long)settings.port[num].baud, settings.port[num].tcpPort, udpPort,
+                 "\"tcp_clients\":%lu,\"uart_errors\":%lu,\"short_writes\":%lu}",
+                 num ? "," : "", kPortName[num], num, (unsigned long)settings.port[num].baud, settings.port[num].tcpPort,
                  (unsigned long)p.fromDevice.load(), (unsigned long)p.toDevice.load(), age,
                  (unsigned long)p.tcpClients.load(), (unsigned long)p.uartErrors.load(),
-                 (unsigned long)p.shortWrites.load(), (unsigned long)p.udpDrops.load());
+                 (unsigned long)p.shortWrites.load());
         out += part;
     }
     out += "]}";

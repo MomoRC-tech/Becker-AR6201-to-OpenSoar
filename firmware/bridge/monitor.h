@@ -1,7 +1,7 @@
 // Project: data monitor (firmware plan step 3b, R16). ESP32 only.
 //
 // Keeps the latest chunks of data per device, both directions in time order,
-// while someone watches /monitor. The forwarding loop (and the UDP task) only
+// while someone watches /monitor. The forwarding loop only
 // copy bytes into a fixed slot under a short spinlock; the web task reads them.
 // Nothing is collected when no monitor page has asked for data for 10 s.
 //

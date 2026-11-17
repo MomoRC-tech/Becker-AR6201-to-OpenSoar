@@ -18,13 +18,12 @@
 #define SETTINGS_FORMAT 1  // stored key "v"; another value means: ignore everything stored
 
 enum SettingOrigin : uint8_t { ORIGIN_DEFAULT, ORIGIN_STORED, ORIGIN_INVALID };
-enum SettingType : uint8_t { T_BAUD, T_FRAME, T_TCP, T_UDP, T_SSID, T_NETPASS, T_APPASS, T_SECONDS, T_IP };
+enum SettingType : uint8_t { T_BAUD, T_FRAME, T_TCP, T_SSID, T_NETPASS, T_APPASS, T_SECONDS, T_IP };
 
 struct PortSettings {
     uint32_t baud;
     char frame[4];  // data bits, parity, stop bits, for example "8N1"
     uint16_t tcpPort;
-    uint16_t udpPort;  // 0 = no UDP
 };
 
 struct BridgeSettings {
@@ -59,15 +58,12 @@ static SettingItem kSettings[] = {
     {"b0", T_BAUD, &settings.port[0].baud, ORIGIN_DEFAULT},
     {"f0", T_FRAME, settings.port[0].frame, ORIGIN_DEFAULT},
     {"t0", T_TCP, &settings.port[0].tcpPort, ORIGIN_DEFAULT},
-    {"u0", T_UDP, &settings.port[0].udpPort, ORIGIN_DEFAULT},
     {"b1", T_BAUD, &settings.port[1].baud, ORIGIN_DEFAULT},
     {"f1", T_FRAME, settings.port[1].frame, ORIGIN_DEFAULT},
     {"t1", T_TCP, &settings.port[1].tcpPort, ORIGIN_DEFAULT},
-    {"u1", T_UDP, &settings.port[1].udpPort, ORIGIN_DEFAULT},
     {"b2", T_BAUD, &settings.port[2].baud, ORIGIN_DEFAULT},
     {"f2", T_FRAME, settings.port[2].frame, ORIGIN_DEFAULT},
     {"t2", T_TCP, &settings.port[2].tcpPort, ORIGIN_DEFAULT},
-    {"u2", T_UDP, &settings.port[2].udpPort, ORIGIN_DEFAULT},
     {"ns", T_SSID, settings.netSsid, ORIGIN_DEFAULT},
     {"np", T_NETPASS, settings.netPass, ORIGIN_DEFAULT},
     {"nj", T_SECONDS, &settings.joinSeconds, ORIGIN_DEFAULT},
@@ -137,12 +133,6 @@ static bool validAt(SettingType type, const void* v, int portNum) {
             const uint16_t p = *(const uint16_t*)v;
             return p != 0 && p != 80;  // 80 is the status page
         }
-        case T_UDP: {
-            const uint16_t p = *(const uint16_t*)v;
-            if (p == 0) return true;                // no UDP
-            if (portNum == RADIO_COM) return false;  // never UDP on the radio port
-            return p != 53 && p != 67 && p != 68 && p != 3232 && p != 5353;  // DNS, DHCP, OTA, mDNS
-        }
         case T_SSID: return validText((const char*)v, 1, 32);
         case T_NETPASS: {
             const size_t n = strlen((const char*)v);
@@ -162,7 +152,7 @@ static bool validValue(const SettingItem& s, int portNum) { return validAt(s.typ
 
 static int portOf(const SettingItem& s) {  // port number for per-port keys, -1 otherwise
     const char c = s.key[1];
-    return (s.key[2] == 0 && c >= '0' && c < '0' + NUM_COM && strchr("bftu", s.key[0])) ? c - '0' : -1;
+    return (s.key[2] == 0 && c >= '0' && c < '0' + NUM_COM && strchr("bft", s.key[0])) ? c - '0' : -1;
 }
 
 // ---- display -------------------------------------------------------------------
@@ -175,7 +165,6 @@ static const char* settingName(const SettingItem& s) {
         case T_BAUD: return "baud";
         case T_FRAME: return "frame";
         case T_TCP: return "TCP port";
-        case T_UDP: return "UDP port";
         case T_SSID: return s.value == settings.netSsid ? "network" : "hotspot name";
         case T_NETPASS: return "network password";
         case T_APPASS: return "hotspot password";
@@ -194,7 +183,6 @@ static void settingValueText(const SettingItem& s, char* out, size_t n) {
     switch (s.type) {
         case T_BAUD: snprintf(out, n, "%lu", (unsigned long)*(uint32_t*)s.value); break;
         case T_TCP:
-        case T_UDP:
         case T_SECONDS: snprintf(out, n, "%u", (unsigned)*(uint16_t*)s.value); break;
         case T_IP: snprintf(out, n, "%s", IPAddress(*(uint32_t*)s.value).toString().c_str()); break;
         case T_NETPASS:
@@ -210,12 +198,10 @@ static void fillDefaults(BridgeSettings& out) {
     const uint32_t baud[NUM_COM] = {UART_BAUD0, UART_BAUD1, UART_BAUD2};
     const uint32_t frame[NUM_COM] = {SERIAL_PARAM0, SERIAL_PARAM1, SERIAL_PARAM2};
     const uint16_t tcp[NUM_COM] = {SERIAL0_TCP_PORT, SERIAL1_TCP_PORT, SERIAL2_TCP_PORT};
-    const uint16_t udp[NUM_COM] = {SERIAL0_UDP_PORT, SERIAL1_UDP_PORT, SERIAL2_UDP_PORT};
     for (int n = 0; n < NUM_COM; n++) {
         out.port[n].baud = baud[n];
         frameFromCode(frame[n], out.port[n].frame);
         out.port[n].tcpPort = tcp[n];
-        out.port[n].udpPort = udp[n];
     }
     strlcpy(out.netSsid, SSID, sizeof(out.netSsid));
     strlcpy(out.netPass, PASSWD, sizeof(out.netPass));
@@ -235,7 +221,6 @@ static size_t valueSize(SettingType t) {
         case T_BAUD:
         case T_IP: return 4;
         case T_TCP:
-        case T_UDP:
         case T_SECONDS: return 2;
         case T_FRAME: return 4;
         case T_SSID: return 33;
@@ -258,7 +243,6 @@ static bool readStored(Preferences& p, SettingItem& s) {
             *(uint32_t*)s.value = p.getUInt(s.key);
             return true;
         case T_TCP:
-        case T_UDP:
         case T_SECONDS:
             if (p.getType(s.key) != PT_U16) return false;
             *(uint16_t*)s.value = p.getUShort(s.key);
@@ -272,8 +256,7 @@ static bool readStored(Preferences& p, SettingItem& s) {
     }
 }
 
-// Two ports with the same TCP port, or two with the same UDP port, cannot all
-// listen: put the clashing ones back to their defaults (which never clash) and mark them.
+// Two ports with the same TCP port cannot both listen: put the clashing ones back to their defaults (which never clash) and mark them.
 static void settingsCrossCheck(const BridgeSettings& defaults) {
     for (int round = 0; round < NUM_COM; round++) {
         bool changed = false;
@@ -281,13 +264,12 @@ static void settingsCrossCheck(const BridgeSettings& defaults) {
             for (int b = a + 1; b < NUM_COM; b++) {
                 const PortSettings &pa = settings.port[a], &pb = settings.port[b];
                 const bool tcpClash = pa.tcpPort == pb.tcpPort;
-                const bool udpClash = pa.udpPort != 0 && pa.udpPort == pb.udpPort;
-                if (!tcpClash && !udpClash) continue;
+                if (!tcpClash) continue;
                 for (size_t i = 0; i < kSettingCount; i++) {
                     SettingItem& s = kSettings[i];
                     const int n = portOf(s);
                     if ((n != a && n != b) || s.origin != ORIGIN_STORED) continue;
-                    if ((tcpClash && s.type == T_TCP) || (udpClash && s.type == T_UDP)) {
+                    if (s.type == T_TCP) {
                         restoreDefault(s, defaults);
                         s.origin = ORIGIN_INVALID;
                         changed = true;
@@ -302,7 +284,7 @@ static void settingsCrossCheck(const BridgeSettings& defaults) {
 // ---- storing (settings page) --------------------------------------------------------
 
 static bool trialKey(const SettingItem& s) {  // changes that can cut the phone off
-    return s.type == T_TCP || s.type == T_UDP || s.type == T_SSID || s.type == T_NETPASS ||
+    return s.type == T_TCP || s.type == T_SSID || s.type == T_NETPASS ||
            s.type == T_APPASS || s.type == T_SECONDS || s.type == T_IP;
 }
 
@@ -311,7 +293,6 @@ static void putValue(Preferences& p, SettingType type, const char* key, const vo
         case T_BAUD:
         case T_IP: p.putUInt(key, *(const uint32_t*)v); break;
         case T_TCP:
-        case T_UDP:
         case T_SECONDS: p.putUShort(key, *(const uint16_t*)v); break;
         default: p.putString(key, (const char*)v); break;
     }
@@ -334,7 +315,6 @@ static void copyNamespace(const char* from, const char* to) {
                 case T_BAUD:
                 case T_IP: *(uint32_t*)buf = src.getUInt(s.key); break;
                 case T_TCP:
-                case T_UDP:
                 case T_SECONDS: *(uint16_t*)buf = src.getUShort(s.key); break;
                 default: src.getString(s.key, (char*)buf, sizeof(buf)); break;
             }

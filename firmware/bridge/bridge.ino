@@ -2,7 +2,7 @@
  * Wi-Fi bridge firmware: Zander ZS1, FLARM and Becker AR6201 to OpenSoar
  * https://github.com/MomoRC-tech/Becker-AR6201-to-OpenSoar (firmware/bridge)
  *
- * Forwards three UARTs to TCP and UDP over Wi-Fi: Zander on UART0, FLARM on
+ * Forwards three UARTs to TCP over Wi-Fi (no UDP): Zander on UART0, FLARM on
  * UART1, the Becker radio (RS-422 through a MAX490) on UART2. Settings are in
  * config.h, Wi-Fi and OTA passwords in credentials.h, the status page in
  * status_page.h.
@@ -46,15 +46,7 @@ static_assert(sizeof(HOTSPOT_PASSWORD) - 1 >= 8, "HOTSPOT_PASSWORD needs at leas
 
 #ifdef ESP32
 
-#ifdef PROTOCOL_UDP
-#include <AsyncUDP.h>
-
-AsyncUDP udp0, udp1, udp2;
-AsyncUDP *udp[NUM_COM] = {&udp0, &udp1, &udp2};
-uint16_t udp_port[NUM_COM] = {SERIAL0_UDP_PORT, SERIAL1_UDP_PORT,
-                              SERIAL2_UDP_PORT};
-#endif
-
+// Project: the upstream UDP broadcast (PROTOCOL_UDP) is removed; TCP only.
 #ifdef BLUETOOTH  // inside the ESP32 condition, since ESP8266 doesn't have BT
 #include <BluetoothSerial.h>
 BluetoothSerial SerialBT;
@@ -275,19 +267,6 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
 #endif
 
 #ifdef ESP32
-#ifdef PROTOCOL_UDP
-        for (uint16_t num = 0; num < NUM_COM; num++) {
-            udp_port[num] = settings.port[num].udpPort;  // Project: stored settings (step 3a)
-            if (udp_port[num] == 0) continue;  // Project: no UDP on this port
-            if (udp[num]->listen(udp_port[num])) {
-                debug.printf("Listening on UDP port %d\n", udp_port[num]);
-                udp[num]->onPacket([num](AsyncUDPPacket packet) {
-                    COM[num]->write(packet.data(), packet.length());
-                    STAT(num, toDevice, packet.length());  // Project: count
-                    MON(num, 1, packet.data(), packet.length()); });  // Project: data monitor (step 3b)
-                    }
-                }
-#endif
 #ifdef BLUETOOTH
         debug.printf("Bluetooth discoverable at %s\n", SSID);
         SerialBT.begin(SSID);  // Bluetooth device name
@@ -401,11 +380,6 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
 #endif
 
 #ifdef ESP32
-#ifdef PROTOCOL_UDP
-                    if (udp_port[num] != 0)  // Project: no UDP on this port
-                        if (udp[num]->broadcastTo(buf2[num], readCount, udp_port[num]) != (size_t)readCount)
-                            STAT(num, udpDrops, 1);  // Project: count UDP sends the network stack refused
-#endif
 #ifdef BLUETOOTH
                     // now send to Bluetooth:
                     if (num == BLUETOOTH && SerialBT.hasClient())
