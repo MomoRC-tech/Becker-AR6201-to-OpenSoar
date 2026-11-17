@@ -25,6 +25,7 @@ struct PortStats {
     std::atomic<uint32_t> tcpClients{0};   // connected TCP clients
     std::atomic<uint32_t> uartErrors{0};   // receive buffer full, FIFO overflow, framing, parity, break
     std::atomic<uint32_t> shortWrites{0};  // TCP writes that took fewer bytes than offered
+    std::atomic<uint32_t> udpDrops{0};     // UDP broadcasts the network stack did not take
 };
 static PortStats portStats[NUM_COM];
 
@@ -85,7 +86,7 @@ a{color:inherit}
 <div class="down" id="down" hidden>The bridge is not answering. Check that this phone is on the bridge's Wi-Fi.</div>
 <div id="ports"></div>
 <section class="set"><details><summary>All settings</summary><div id="set">Loading</div><p class="key"><a href="/settings">Change settings</a> (password)</p></details></section>
-<footer>Read-only. Refreshes every 2 seconds; settings apply when the bridge starts. Data: <a href="/api/status">status</a>, <a href="/api/settings">settings</a>.</footer>
+<footer><a href="/monitor">Data monitor</a>: see what passes the bridge. Read-only. Refreshes every 2 seconds; settings apply when the bridge starts. Data: <a href="/api/status">status</a>, <a href="/api/settings">settings</a>.</footer>
 </main>
 <script>
 const $=i=>document.getElementById(i),last={},frame={};let built=false;
@@ -93,7 +94,7 @@ const esc=x=>String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',
 function dur(s){const h=Math.floor(s/3600),m=Math.floor(s%3600/60);return h?h+' h '+m+' min':m?m+' min '+s%60+' s':s+' s'}
 function size(b){return b<1e4?b+' B':b<1e7?(b/1024).toFixed(1)+' kB':(b/1048576).toFixed(1)+' MB'}
 function ago(ms){return ms===null?'No data yet':ms<5000?'Receiving':'Quiet for '+dur(Math.round(ms/1000))}
-function build(ports){let h='';ports.forEach((p,n)=>{h+='<section id="d'+n+'"><div class="row"><span class="dot"></span><h2>'+esc(p.name)+'</h2><span class="st" id="s'+n+'"></span></div><div class="brief" id="b'+n+'"></div><details><summary>Details</summary><dl id="x'+n+'"></dl></details></section>'});$('ports').innerHTML=h;built=true}
+function build(ports){let h='';ports.forEach((p,n)=>{h+='<section id="d'+n+'"><div class="row"><span class="dot"></span><h2>'+esc(p.name)+'</h2><span class="st" id="s'+n+'"></span></div><div class="brief" id="b'+n+'"></div><details><summary>Details</summary><dl id="x'+n+'"></dl><p class="key"><a href="/monitor?port='+n+'">Show data</a></p></details></section>'});$('ports').innerHTML=h;built=true}
 function f(){fetch('/api/status',{cache:'no-store'}).then(r=>r.json()).then(d=>{
 $('down').hidden=true;const w=d.wifi;
 const link=w.mode==='hotspot'?'<div>Hotspot <b>'+w.ip+'</b></div><div>'+(w.stations.length?w.stations.length+(w.stations.length>1?' phones, ':' phone, ')+'signal <b>'+w.stations.map(x=>x+' dBm').join(', ')+'</b>':'No phone connected')+'</div>':'<div>Network <b>'+w.ip+'</b></div><div>Signal <b>'+w.rssi_dbm+' dBm</b></div>';
@@ -105,7 +106,7 @@ let b=p.baud+' baud'+(frame[n]?' '+frame[n]:'')+', TCP '+p.tcp_port+', '+(p.tcp_
 if(p.uart_errors)b+=', <span class="bad">'+p.uart_errors+' receive error'+(p.uart_errors>1?'s':'')+'</span>';
 if(p.short_writes)b+=', <span class="bad">'+p.short_writes+' short write'+(p.short_writes>1?'s':'')+'</span>';
 $('b'+n).innerHTML=b;
-$('x'+n).innerHTML='<div><dt>From device</dt><dd>'+size(p.bytes_from_device)+'</dd></div><div><dt>To device</dt><dd>'+size(p.bytes_to_device)+'</dd></div><div><dt>UDP port</dt><dd>'+(p.udp_port||'Off')+'</dd></div><div><dt>Receive errors</dt><dd'+(p.uart_errors?' class="bad"':'')+'>'+p.uart_errors+'</dd></div><div><dt>Short writes</dt><dd'+(p.short_writes?' class="bad"':'')+'>'+p.short_writes+'</dd></div>'})
+$('x'+n).innerHTML='<div><dt>From device</dt><dd>'+size(p.bytes_from_device)+'</dd></div><div><dt>To device</dt><dd>'+size(p.bytes_to_device)+'</dd></div><div><dt>UDP port</dt><dd>'+(p.udp_port||'Off')+'</dd></div><div><dt>Receive errors</dt><dd'+(p.uart_errors?' class="bad"':'')+'>'+p.uart_errors+'</dd></div><div><dt>Short writes</dt><dd'+(p.short_writes?' class="bad"':'')+'>'+p.short_writes+'</dd></div><div><dt>UDP not sent</dt><dd>'+p.udp_drops+'</dd></div>'})
 }).catch(()=>{$('down').hidden=false})}
 function g(){fetch('/api/settings',{cache:'no-store'}).then(r=>r.json()).then(d=>{
 const ports={},order=[],wifi=[];for(const i of d.items){if(i.port){if(!ports[i.port]){ports[i.port]={};order.push(i.port)}ports[i.port][i.key[0]]=i}else wifi.push(i)}
@@ -122,7 +123,7 @@ g();f();setInterval(f,2000);
 </script>)HTML";
 
 static String statusJson() {
-    char part[256];
+    char part[384];  // one port line with all counters at their maximum is about 260 bytes
     String out;
     out.reserve(1024);
     snprintf(part, sizeof(part), "{\"firmware\":\"Wi-Fi bridge %s\",\"uptime_s\":%llu,", VERSION,
@@ -161,11 +162,11 @@ static String statusJson() {
         snprintf(part, sizeof(part),
                  "%s{\"name\":\"%s\",\"uart\":%d,\"baud\":%lu,\"tcp_port\":%u,\"udp_port\":%u,"
                  "\"bytes_from_device\":%lu,\"bytes_to_device\":%lu,\"last_data_ms_ago\":%s,"
-                 "\"tcp_clients\":%lu,\"uart_errors\":%lu,\"short_writes\":%lu}",
+                 "\"tcp_clients\":%lu,\"uart_errors\":%lu,\"short_writes\":%lu,\"udp_drops\":%lu}",
                  num ? "," : "", kPortName[num], num, (unsigned long)settings.port[num].baud, settings.port[num].tcpPort, udpPort,
                  (unsigned long)p.fromDevice.load(), (unsigned long)p.toDevice.load(), age,
                  (unsigned long)p.tcpClients.load(), (unsigned long)p.uartErrors.load(),
-                 (unsigned long)p.shortWrites.load());
+                 (unsigned long)p.shortWrites.load(), (unsigned long)p.udpDrops.load());
         out += part;
     }
     out += "]}";
@@ -230,6 +231,7 @@ static String settingsJson() {
 }
 
 #include "settings_page.h"  // Project: password-protected settings page (step 3a)
+#include "monitor.h"        // Project: data monitor (step 3b)
 
 static void statusTask(void*) {
     statusServer.on("/", HTTP_GET, []() { statusServer.send(200, "text/html", kStatusPage); });
@@ -246,6 +248,7 @@ static void statusTask(void*) {
         statusServer.send(200, "application/json", settingsJson());
     });
     settingsRoutes();
+    monitorRoutes();
     statusServer.onNotFound([]() { statusServer.send(404, "text/plain", "Not found"); });
     statusServer.begin();
     for (;;) {
@@ -271,6 +274,7 @@ static void statusBegin() {
 #define STAT(num, field, n) ((void)0)
 #define STAT_RX(num) ((void)0)
 #define STAT_CLIENTS(num, n) ((void)0)
+#define MON(num, dir, data, len) ((void)0)
 static inline void statusAttachUart(int) {}
 static inline void statusBegin() {}
 

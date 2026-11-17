@@ -283,7 +283,8 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
                 debug.printf("Listening on UDP port %d\n", udp_port[num]);
                 udp[num]->onPacket([num](AsyncUDPPacket packet) {
                     COM[num]->write(packet.data(), packet.length());
-                    STAT(num, toDevice, packet.length()); });  // Project: count
+                    STAT(num, toDevice, packet.length());  // Project: count
+                    MON(num, 1, packet.data(), packet.length()); });  // Project: data monitor (step 3b)
                     }
                 }
 #endif
@@ -377,6 +378,7 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
                         COM[num]->write(buf1[num],
                                         i1[num]);  // now send to UART(num):
                         STAT(num, toDevice, i1[num]);  // Project: count
+                        MON(num, 1, buf1[num], i1[num]);  // Project: data monitor (step 3b)
                         i1[num] = 0;
                     }
                 }
@@ -389,6 +391,7 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
                         continue;
                     STAT(num, fromDevice, readCount);  // Project: count
                     STAT_RX(num);
+                    MON(num, 0, buf2[num], readCount);  // Project: data monitor (step 3b)
 #ifdef PROTOCOL_TCP
                     for (byte cln = 0; cln < MAX_NMEA_CLIENTS; cln++) {
                         if (TCPClient[num][cln])
@@ -400,7 +403,8 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
 #ifdef ESP32
 #ifdef PROTOCOL_UDP
                     if (udp_port[num] != 0)  // Project: no UDP on this port
-                        udp[num]->broadcastTo(buf2[num], readCount, udp_port[num]);
+                        if (udp[num]->broadcastTo(buf2[num], readCount, udp_port[num]) != (size_t)readCount)
+                            STAT(num, udpDrops, 1);  // Project: count UDP sends the network stack refused
 #endif
 #ifdef BLUETOOTH
                     // now send to Bluetooth:

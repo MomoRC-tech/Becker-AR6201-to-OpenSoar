@@ -2,9 +2,11 @@
 
 Reads both pages, the image and the settings JSON from a running bridge,
 masks private details, and renders them at phone width (390 px, 2x) in the
-light theme: docs/images/status-page.png ("All settings" open) and
-docs/images/settings-page.png. The settings page login uses the OTA
-password from firmware/bridge/credentials.h.
+light theme: docs/images/status-page.png ("All settings" open),
+docs/images/settings-page.png and docs/images/monitor-page.png. The
+settings page login uses the OTA password from firmware/bridge/credentials.h.
+The monitor shows fixed demo data, never real data: real NMEA contains
+positions.
 
     python tools/status_screenshot.py <bridge address>
 
@@ -47,6 +49,27 @@ def get(host: str, path: str, auth: str = "") -> bytes:
 def ota_password() -> str:
     text = (ROOT / "firmware" / "bridge" / "credentials.h").read_text()
     return re.search(r'#define\s+OTA_PASSWORD\s+"([^"]*)"', text).group(1)
+
+
+DEMO_LINES = [  # made-up NMEA, round fake position
+    (0, "$GPRMC,120000.00,A,4800.000,N,00800.000,E,045.0,090.0,171126,,,A*00"),
+    (0, "$PZAN1,00450,123456*00"),
+    (0, "$PZAN2,0820,0012*00"),
+    (0, "$PZAN3,+00,AFR,1,*00"),
+    (1, "$PZAN5,SF,MUEHL,123.4,1,10,MC,0.5*00"),
+    (0, "$GPRMC,120001.00,A,4800.010,N,00800.020,E,045.2,090.5,171126,,,A*00"),
+    (0, "$PZAN1,00452,123456*00"),
+    (0, "$PZAN2,0821,0015*00"),
+    (0, "$PZAN3,+00,AFR,1,*00"),
+]
+
+
+def demo_monitor() -> dict:
+    chunks, t = [], 61234
+    for d, line in DEMO_LINES:
+        chunks.append({"t": t, "d": d, "x": (line + "\r\n").encode().hex()})
+        t += 180 if d else 330
+    return {"seq": len(chunks), "lost": False, "now": t, "chunks": chunks}
 
 
 def shoot(page: str, image: bytes, target: Path, height: int) -> None:
@@ -106,6 +129,14 @@ def main() -> None:
             ";window.fetch=u=>Promise.resolve({json:()=>Promise.resolve(_se)});</script>")
     form = form.replace("/device.webp", "device.webp").replace("<main>", mock + "<main>", 1)
     shoot(form, image, IMAGES / "settings-page.png", 1640)
+
+    demo = demo_monitor()
+    empty = {"seq": demo["seq"], "lost": False, "now": demo["now"], "chunks": []}
+    mon = get(args.host, "/monitor").decode("utf-8")
+    mock = ("<script>const _d=" + json.dumps(demo) + ",_e=" + json.dumps(empty) +
+            ";window.fetch=u=>Promise.resolve({json:()=>Promise.resolve(u.includes('since=0')?_d:_e)});</script>")
+    mon = mon.replace("/device.webp", "device.webp").replace("<main>", mock + "<main>", 1)
+    shoot(mon, image, IMAGES / "monitor-page.png", 760)
 
 
 if __name__ == "__main__":

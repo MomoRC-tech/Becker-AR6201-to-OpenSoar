@@ -1,6 +1,6 @@
 # Bridge firmware
 
-The project's own Wi-Fi bridge firmware for Zander, FLARM and Becker, developed in the steps of the [firmware plan](../../docs/project/roadmap.md#firmware-plan) ([ADR-02](../../docs/design/architecture.md#adr-02)). It started from ESP-Serial-Bridge; origin and license below. Current state: step 3 done, running on the bench ESP32 (S105–S107); step 3a ([settings page](../../docs/project/roadmap.md#settings-page)) in progress: stored settings, their display and the settings page run on the bench ESP32 (S109–S111).
+The project's own Wi-Fi bridge firmware for Zander, FLARM and Becker, developed in the steps of the [firmware plan](../../docs/project/roadmap.md#firmware-plan) ([ADR-02](../../docs/design/architecture.md#adr-02)). It started from ESP-Serial-Bridge; origin and license below. Current state: step 3 done, running on the bench ESP32 (S105–S107); step 3a ([settings page](../../docs/project/roadmap.md#settings-page)) in progress: stored settings, their display and the settings page run on the bench ESP32 (S109–S111); step 3b, the [data monitor](#data-monitor), too (S112).
 
 ## Origin and license
 
@@ -54,7 +54,7 @@ Open `http://<bridge address>/` (10.10.10.10 in hotspot mode) in a browser. [`st
 | --- | --- |
 | Header | Photo of the housing lid ([`device_image.h`](device_image.h), made by `tools/device_image.py`), firmware version, uptime, Wi-Fi: network address and the bridge's signal to the router, or hotspot address and the signal of each connected phone (no device addresses) |
 | Device row | Live dot (green while data arrives, pulses on new bytes), state (receiving, quiet for how long, no data yet), baud rate and frame, TCP port, connected apps; receive errors and short writes in red when not zero |
-| Details (collapsed) | Bytes from and to the device since start (TCP and UDP), UDP port, receive errors (buffer full, FIFO overflow, framing, parity, break), short writes (TCP writes that took fewer bytes than offered) |
+| Details (collapsed) | Bytes from and to the device since start (TCP and UDP), UDP port, receive errors (buffer full, FIFO overflow, framing, parity, break), short writes (TCP writes that took fewer bytes than offered), UDP not sent (broadcasts the network stack refused); link to the [data monitor](#data-monitor) |
 | All settings (collapsed) | Active baud, frame, TCP and UDP port per device; network, join time, hotspot name and address. Amber: saved on the bridge; red: saved value invalid, default in use. Passwords are never sent |
 
 | Address | Content |
@@ -62,9 +62,10 @@ Open `http://<bridge address>/` (10.10.10.10 in hotspot mode) in a browser. [`st
 | `/` | The page, about 7.4 kB |
 | `/device.webp` | Lid photo, 5.3 kB, cached for a day |
 | `/api/status` | Live counters as JSON |
-| `/api/settings` | Active settings and their source (`default`, `changed`, `invalid`) as JSON |
+| `/api/settings` | Active settings, their defaults and source (`default`, `changed`, `invalid`) and the trial state as JSON |
+| `/monitor`, `/api/monitor` | [Data monitor](#data-monitor) |
 
-After any change to the status or settings page, take new screenshots from the running bridge and commit them with the change: `python tools/status_screenshot.py <bridge address>`. It masks the network name and shows hotspot mode, since the repository is public.
+After any change to the status, settings or monitor page, take new screenshots from the running bridge and commit them with the change: `python tools/status_screenshot.py <bridge address>`. It masks the network name, shows hotspot mode and uses demo data for the monitor, since the repository is public.
 
 <a id="settings-page"></a>
 
@@ -92,6 +93,22 @@ Open *Change settings* under *All settings*, or `http://<bridge address>/setting
 | `POST /api/reset` | Forget all stored values, then restart (password) |
 
 Bench check: `python tools/settings_test.py <bridge address> [--revert]` runs the password, refusal, save, trial, *Keep*, reset and (with `--revert`, 10 minutes) automatic revert checks. The bridge must be in network mode, so its address stays the same across restarts.
+
+<a id="data-monitor"></a>
+
+## Data monitor
+
+Open *Data monitor* at the bottom of the status page, *Show data* in a device's details, or `http://<bridge address>/monitor`. No password, like the status page: any client on the bridge's Wi-Fi can already read the TCP ports. [`monitor.h`](monitor.h) holds the page and the buffers.
+
+![Data monitor with demo data](../../docs/images/monitor-page.png)
+
+- **What it shows:** the latest data of one device, both directions in time order: *from* = sent by the device to the apps, *to* = sent by an app to the device. Times are seconds since the bridge started.
+- **Text or hex:** text joins NMEA into lines (Zander and FLARM start in text); hex shows every byte (the Becker radio starts in hex). Non-printable bytes show as a dot in text.
+- **Pause, Clear, Download:** Download saves the shown lines as a text file, for example for radio protocol captures.
+- **Collection:** 64 chunks of up to 64 bytes per device, in RAM only. The forwarding loop copies bytes in only while a monitor page has asked for data in the last 10 s; otherwise nothing is collected. If more arrives between two polls than the buffer holds, the page says so.
+- **Data:** `GET /api/monitor?port=<0-2>&since=<sequence>` returns the newer chunks as hex in JSON.
+
+Bench check: `python tools/monitor_test.py <bridge address>` with the step 2 jumpers.
 
 ## Build
 

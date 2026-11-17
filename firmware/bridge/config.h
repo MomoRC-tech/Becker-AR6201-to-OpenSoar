@@ -53,9 +53,9 @@
                              // incoming bytes while the loop waits on a UART write
 
 #ifdef ESP32
-#define VERSION "0.3a-ESP32"    // Project: own version, 0.<plan step> until bench acceptance
+#define VERSION "0.3b-ESP32"    // Project: own version, 0.<plan step> until bench acceptance
 #elif defined(ESP8266)
-#define VERSION "0.3a-ESP8266"
+#define VERSION "0.3b-ESP8266"
 #endif
 
 #define MODE_STA_AP            // MODE_STA, MODE_AP or MODE_STA_AP (Project: network, then hotspot; ESP32 only)

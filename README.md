@@ -35,18 +35,19 @@ A small ESP32 box in the glider that collects data from the cockpit instruments 
 The bridge never changes the active frequency, and the radio's own controls keep working. Not planned: active tuning, frequency swap, volume and squelch.
 
 <details>
-<summary><b>📱 Show the status page and settings</b> (click to expand)</summary>
+<summary><b>📱 Show the status page, settings and data monitor</b> (click to expand)</summary>
 
 Connect the phone to the bridge's Wi-Fi and open `http://10.10.10.10` (or `http://wifi-bridgetom.local` when the bridge is on your network).
 
 - **Top:** which bridge, firmware, uptime and Wi-Fi signal.
 - **One row per device:** green dot while data arrives, the active baud rate and port, connected apps, errors in red. Counters are under *Details*.
 - **All settings:** baud, frame and ports per device, network and hotspot. Amber marks a value saved on the bridge instead of the firmware default. Passwords are never shown.
+- **Data monitor:** the data passing each device, readable as text or hex, to check that data comes in. Pause and download.
 - **Change settings** (password, user `bridge`): baud, frame and ports per device, network and hotspot. Saving restarts the bridge. A Wi-Fi, hotspot or port change runs on trial: press *Keep* within 10 minutes, otherwise the old settings come back by themselves.
 
-<img src="docs/images/status-page.png" width="300" alt="Status page on a phone: housing photo, Zander, FLARM and Becker rows, all settings open"> <img src="docs/images/settings-page.png" width="300" alt="Settings page on a phone: fields per device and for Wi-Fi, with defaults">
+<img src="docs/images/status-page.png" width="300" alt="Status page on a phone: housing photo, Zander, FLARM and Becker rows, all settings open"> <img src="docs/images/settings-page.png" width="300" alt="Settings page on a phone: fields per device and for Wi-Fi, with defaults"> <img src="docs/images/monitor-page.png" width="300" alt="Data monitor on a phone with demo NMEA lines from and to the Zander">
 
-More: [status page](firmware/bridge/README.md#status-page) and [settings page](firmware/bridge/README.md#settings-page) details.
+More: [status page](firmware/bridge/README.md#status-page), [settings page](firmware/bridge/README.md#settings-page) and [data monitor](firmware/bridge/README.md#data-monitor) details.
 
 </details>
 
@@ -63,7 +64,7 @@ More: [status page](firmware/bridge/README.md#status-page) and [settings page](f
 | 🔧 Wiring and bench validation | 🟡 **Current focus** |
 | 🛩️ Existing installation details | 🟡 Waiting for equipment information |
 | 📶 Bench OTA loader | ✅ Flashed and updatable over Wi-Fi ([M3](docs/project/roadmap.md#milestones)); [ready-made hotspot-only image](firmware/ota-loader/bin/README.md) for the first USB flash |
-| 💻 Bridge firmware | 🟡 [Plan](docs/project/roadmap.md#firmware-plan) approved; steps 1–3 done, the [bridge firmware](firmware/bridge/README.md) with status page runs on the bench ESP32; steps 3a (settings page) and 3b (data monitor) next; steps 4–5 wait for the wired bench bridge |
+| 💻 Bridge firmware | 🟡 [Plan](docs/project/roadmap.md#firmware-plan) approved; steps 1–3b done: the [bridge firmware](firmware/bridge/README.md) with status page, settings page and data monitor runs on the bench ESP32; steps 4–5 wait for the wired bench bridge |
 | 📻 OpenSoar driver changes | ⏸️ On hold until WP3 is complete |
 | ✈️ Aircraft integration | ⬜ Later |
 
