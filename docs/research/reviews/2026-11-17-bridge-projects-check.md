@@ -137,6 +137,26 @@ Calculated, not measured: a vanished radio owner holds the port until a write to
 | [XCSoar #772](https://github.com/XCSoar/XCSoar/issues/772) | Several drivers on one hub port | Backlogged in 2026; confirms one TCP port per device, as in [ADR-01](../../design/architecture.md#adr-01) |
 | [XCSoar #1092](https://github.com/XCSoar/XCSoar/issues/1092) | Becker driver | Last comments 2025: no Becker support in XCSoar while the protocol is unpublished |
 
+<a id="pro"></a>
+
+### 6.1 AlphaLima ESP32-Serial-Bridge-Pro
+
+[bf263c1](https://github.com/AlphaLima/ESP32-Serial-Bridge-Pro/tree/bf263c1880d7630cadef5264dac9aa9654e4096e), created 2026-07-28, last change 2026-07-30 (README only since 07-28). No license file, no issues, no pull requests, no forks. One 1,491-line sketch plus `global.h`, uploaded as files; no commit history of the code itself.
+
+| Area | Pro | For this project |
+| --- | --- | --- |
+| Defaults | Hotspot `LK8000` / `Flightcomputer`, 192.168.4.1, ports 8880–8882, same pins as the basic version; Bluetooth as a fourth port | Same author choices, no source |
+| Wi-Fi | Network with a configurable search time (20 s), hotspot fallback, optional hotspot next to the network | Same idea as our start-up (R12) |
+| Settings | Web page on port 80 with baud, parity, data and stop bits per port, stored in `Preferences`; login off by default (`admin`/`admin`); the password is also printed on the serial port | Our later settings page needs a password ([firmware plan](../../project/roadmap.md#firmware-plan)) |
+| Routing | Each UART can also forward to other UARTs (`xCOM`) | Not needed: OpenSoar talks to each device on its own port |
+| NMEA filters | Two pass and two block prefixes per port; when active, every `$` restarts the buffer and a sentence ends 2 bytes after `*` | Would corrupt the binary radio frames; never on the radio port |
+| Buffers | 127 bytes; a longer TCP burst keeps overwriting the last byte | Silent byte loss; our R03 forbids it |
+| Debug output | `Debug_COM` is UART0 and never switched off: free heap and "M" every 10 ms, and every TCP → device byte echoed there | UART0 is a device port; the same problem as the basic version, made worse |
+| Writes | TCP writes unchecked; UART writes guarded by semaphores | No counted writes |
+| Build | Uses `AsyncWebServer` and `SPIFFSEditor` from the external ESPAsyncWebServer library, whose include is commented out | Extra dependency; not built here |
+
+Result: nothing for OpenSoar or the radio; no reusable code without a license. The settings page and the per-port serial parameters are ideas for our later, password-protected settings page.
+
 Searched without result: an ESP32 or Wi-Fi bridge for a Becker radio with XCSoar, LK8000 or OpenSoar, and any public AR620x protocol document.
 
 ---
