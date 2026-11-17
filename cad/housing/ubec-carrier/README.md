@@ -9,7 +9,7 @@ Four-screw carrier above the MAX490 board, with two cable ties holding the UBEC.
 | [ubec-carrier.f3d](ubec-carrier.f3d) | Editable Fusion part |
 | [ubec-carrier.step](ubec-carrier.step) | Solid model |
 | [ubec-carrier.3mf](ubec-carrier.3mf) | Print mesh, millimetres, contact face on Z = 0; print as placed |
-| [Housing assembly](../housing-body-v1/housing-assembly.f3d) | Installed carrier with flush, offset screw seats, raised UBEC, updated floor posts and tie fit envelopes |
+| [Housing assembly](../housing-body-v1/housing-enclosure-fit.f3d) | Current v16 assembly with the installed carrier, MAX490, UBEC and tie fit envelopes |
 
 Installed view: [current open housing assembly](../housing-body-v1/preview-open.png).
 

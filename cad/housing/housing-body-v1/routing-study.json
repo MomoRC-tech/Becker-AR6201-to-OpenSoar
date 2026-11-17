@@ -10,9 +10,9 @@
   },
   "routing_lanes": {
     "source_id": "S76, S77",
-    "archive": "housing-power-routing.f3d",
+    "archive": "https://github.com/MomoRC-tech/Becker-AR6201-to-OpenSoar/blob/f554606526f7e8a2abac69cd21fd4dba9f53f503/cad/housing/housing-body-v1/housing-power-routing.f3d",
     "component": "Cable harness - routing study > Routing lanes",
-    "note": "Historical space envelopes for routing v20, shown in housing-power-routing.f3d. The current paths and floor datum are in routes and frame.",
+    "note": "Historical space envelopes for routing v20, shown in that archive, kept in Git history. The current paths and floor datum are in routes and frame.",
     "box_format": "[x0, x1, y0, y1, z0, z1] in mm, layout frame",
     "floor_top_y_mm": -3.0,
     "hood_underside_y_mm": 20.0,
