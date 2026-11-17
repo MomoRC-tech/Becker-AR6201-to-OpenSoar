@@ -22,7 +22,11 @@
 #ifdef ESP32
 #include <ESPmDNS.h>
 #include <WiFi.h>
+#include <driver/uart.h>
 #include <esp_wifi.h>
+#include <esp_wifi_ap_get_sta_list.h>
+#include <lwip/sockets.h>
+#include <cerrno>
 #elif defined(ESP8266)
 #include <ESP8266WiFi.h>
 #include <ESP8266mDNS.h>
@@ -90,6 +94,110 @@ uint16_t iBT = 0;
 #include "settings.h"     // Project: stored settings (step 3a)
 #include "status_page.h"  // Project: status page and counters (step 3)
 
+#if defined(ESP32) && defined(PROTOCOL_TCP)
+// The Wi-Fi event task only marks a departed owner. The bridge loop owns sockets.
+static portMUX_TYPE radioStationLock = portMUX_INITIALIZER_UNLOCKED;
+static uint8_t radioStationMac[6];
+static bool radioStationTracked = false;
+static bool radioStationLeft = false;
+
+static void radioStationDisconnected(WiFiEvent_t, WiFiEventInfo_t info) {
+    portENTER_CRITICAL(&radioStationLock);
+    if (radioStationTracked && memcmp(radioStationMac, info.wifi_ap_stadisconnected.mac, sizeof(radioStationMac)) == 0)
+        radioStationLeft = true;
+    portEXIT_CRITICAL(&radioStationLock);
+}
+
+static void trackRadioStation(const WiFiClient& owner) {
+    wifi_sta_list_t stations;
+    wifi_sta_mac_ip_list_t addresses;
+    if (!(WiFi.getMode() & WIFI_AP) || owner.localIP() != WiFi.softAPIP() ||
+        esp_wifi_ap_get_sta_list(&stations) != ESP_OK ||
+        esp_wifi_ap_get_sta_list_with_ip(&stations, &addresses) != ESP_OK)
+        return;
+
+    const IPAddress peer = owner.remoteIP();
+    for (int i = 0; i < addresses.num; ++i) {
+        if (IPAddress(addresses.sta[i].ip.addr) != peer) continue;
+        portENTER_CRITICAL(&radioStationLock);
+        memcpy(radioStationMac, addresses.sta[i].mac, sizeof(radioStationMac));
+        radioStationTracked = true;
+        portEXIT_CRITICAL(&radioStationLock);
+        break;
+    }
+}
+
+static void closeRadioOwner(WiFiClient& owner) {
+    owner.stop();
+    portENTER_CRITICAL(&radioStationLock);
+    radioStationTracked = false;
+    radioStationLeft = false;
+    portEXIT_CRITICAL(&radioStationLock);
+}
+
+static bool radioOwnerGone(WiFiClient& owner) {
+    portENTER_CRITICAL(&radioStationLock);
+    const bool left = radioStationLeft;
+    portEXIT_CRITICAL(&radioStationLock);
+    if (left) return true;
+    if (owner.available() > 0) return false;
+    if (owner.fd() < 0) return true;
+
+    // Core 3.3.12 connected() treats a zero-length recv (TCP FIN) as connected.
+    uint8_t byte;
+    const int result = recv(owner.fd(), &byte, sizeof(byte), MSG_DONTWAIT | MSG_PEEK);
+    return result == 0 || (result < 0 && errno != EAGAIN && errno != EWOULDBLOCK && errno != EINTR);
+}
+
+static void serviceRadioPort() {
+    WiFiClient& owner = TCPClient[RADIO_COM][0];
+    HardwareSerial& radio = *COM[RADIO_COM];
+    if (owner.fd() >= 0 && radioOwnerGone(owner)) closeRadioOwner(owner);
+
+    if (server[RADIO_COM]->hasClient()) {
+        WiFiClient candidate = server[RADIO_COM]->accept();
+        // About 14 seconds (5 s idle + three 3 s probe intervals).
+        const int idle = 5, interval = 3, probes = 3;
+        if (candidate.fd() >= 0 && owner.fd() < 0 &&
+            candidate.setSocketOption(IPPROTO_TCP, TCP_KEEPIDLE, &idle, sizeof(idle)) == 0 &&
+            candidate.setSocketOption(IPPROTO_TCP, TCP_KEEPINTVL, &interval, sizeof(interval)) == 0 &&
+            candidate.setSocketOption(IPPROTO_TCP, TCP_KEEPCNT, &probes, sizeof(probes)) == 0) {
+            // Do not pass previously buffered UART bytes to the new owner.
+            uart_flush_input(UART_NUM_2);
+            closeRadioOwner(owner);  // Clear tracking if the core closed the previous socket itself.
+            owner = candidate;
+            trackRadioStation(owner);
+        } else {
+            candidate.stop();
+        }
+    }
+
+    if (owner.available() > 0) {
+        const int readCount = owner.read(buf1[RADIO_COM], BUFFERSIZE);
+        if (readCount > 0) {
+            const size_t sent = radio.write(buf1[RADIO_COM], readCount);
+            STAT(RADIO_COM, toDevice, sent);
+            MON(RADIO_COM, 1, buf1[RADIO_COM], sent);
+            if (sent != (size_t)readCount) closeRadioOwner(owner);
+        }
+    }
+
+    if (radio.available()) {
+        const size_t readCount = radio.read(buf2[RADIO_COM], BUFFERSIZE);
+        if (readCount > 0) {
+            STAT(RADIO_COM, fromDevice, readCount);
+            STAT_RX(RADIO_COM);
+            MON(RADIO_COM, 0, buf2[RADIO_COM], readCount);
+            if (owner.fd() >= 0 && owner.write(buf2[RADIO_COM], readCount) != readCount) {
+                STAT(RADIO_COM, shortWrites, 1);
+                closeRadioOwner(owner);
+            }
+        }
+    }
+    STAT_CLIENTS(RADIO_COM, owner.fd() >= 0 ? 1 : 0);
+}
+#endif
+
 #ifdef MODE_STA
 #if defined(ESP32)
 void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
@@ -117,6 +225,10 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
 
     void setup() {
         delay(500);
+
+#if defined(ESP32) && defined(PROTOCOL_TCP)
+        WiFi.onEvent(radioStationDisconnected, ARDUINO_EVENT_WIFI_AP_STADISCONNECTED);
+#endif
 
 #ifdef ESP32
         settingsLoad();  // Project: defaults from config.h, overridden by valid stored values (step 3a)
@@ -319,6 +431,9 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
 
 #ifdef PROTOCOL_TCP
         for (int num = 0; num < NUM_COM; num++) {
+#ifdef ESP32
+            if (num == RADIO_COM) continue;
+#endif
             if (server[num]->hasClient()) {
                 for (byte i = 0; i < MAX_NMEA_CLIENTS; i++) {
                     // find free/disconnected spot
@@ -340,6 +455,12 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
 #endif
 
         for (int num = 0; num < NUM_COM; num++) {
+#if defined(ESP32) && defined(PROTOCOL_TCP)
+            if (num == RADIO_COM) {
+                serviceRadioPort();
+                continue;
+            }
+#endif
             if (COM[num] != NULL) {
 #ifdef PROTOCOL_TCP
                 uint32_t clients = 0;  // Project: count for the status page

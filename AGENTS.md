@@ -4,7 +4,7 @@
 
 This project is preparing a bench prototype. Read README.md, the current package in docs/project/roadmap.md, and only the source/documents needed for that package. Check repository status and preserve unrelated edits.
 
-**Current focus: WP3 wiring and bench validation.** Use the accepted housing design linked from the roadmap. Reopen mechanical design only if a physical check calls for a change. In parallel, the bridge firmware follows the approved plan in the roadmap, one step at a time: steps 1–3b done, steps 4–5 once the bench bridge is wired. Ask the owner before removing any upstream feature from it. No other software or driver work until WP3 is complete. Ask the owner for each hardware decision (part choice, circuit option, wiring choice) separately; present the options with a recommendation, then record the answer.
+**Current focus: WP3 wiring and bench validation.** Use the accepted housing design linked from the roadmap. Reopen mechanical design only if a physical check calls for a change. In parallel, the bridge firmware follows the approved plan in the roadmap, one step at a time: steps 1–3b done, step 4 firmware checked on the standalone ESP32, wired checks for steps 4–5 pending. Ask the owner before removing any upstream feature from it. No other software or driver work until WP3 is complete. Ask the owner for each hardware decision (part choice, circuit option, wiring choice) separately; present the options with a recommendation, then record the answer.
 
 The roadmap is the single work queue. A listed package, proposed ADR or recommendation is not implementation approval. For a broad request to continue, use the next package and its stated boundaries.
 

@@ -1,6 +1,6 @@
 # Bridge firmware
 
-The project's own Wi-Fi bridge firmware for Zander, FLARM and Becker, developed in the steps of the [firmware plan](../../docs/project/roadmap.md#firmware-plan) ([ADR-02](../../docs/design/architecture.md#adr-02)). It started from ESP-Serial-Bridge; origin and license below. Current state: step 3 done, running on the bench ESP32 (S105–S107); step 3a ([settings page](../../docs/project/roadmap.md#settings-page)) in progress: stored settings, their display and the settings page run on the bench ESP32 (S109–S111); step 3b, the [data monitor](#data-monitor), too (S112).
+Wi-Fi bridge firmware for Zander, FLARM and Becker, based on ESP-Serial-Bridge ([ADR-02](../../docs/design/architecture.md#adr-02)). The standalone ESP32 runs step 4 firmware with single-client radio ownership (S114). See the [firmware plan](../../docs/project/roadmap.md#firmware-plan) for the remaining wired checks.
 
 ## Origin and license
 
@@ -37,7 +37,7 @@ Set in `config.h`; everything else is upstream.
 | UART receive buffer | 4096 bytes per UART, so bytes are kept while the loop waits on a UART write |
 | Build-time checks | The build stops if UDP is switched on, if Bluetooth is pointed at the radio port, or if not exactly one Wi-Fi mode is selected |
 | `BATTERY_SAVER` | Fixed so it lowers the transmit power; off |
-| Version | `VERSION` in `config.h`, `0.<plan step>` until bench acceptance; shown on the status page as "Wi-Fi bridge 0.3a-ESP32" |
+| Version | `VERSION` in `config.h`, `0.<plan step>` until bench acceptance; shown on the status page |
 | Stored settings | `STORED_SETTINGS`: baud rates, frames, TCP ports, the network and the hotspot in this file are defaults; valid values saved on the [settings page](#settings-page) override them in `MODE_STA_AP`. An invalid stored value falls back to its default |
 | Status page | `STATUS_PAGE`: read-only page on port 80 and `/api/status` as JSON, open to everyone on the bridge's Wi-Fi; see below |
 
@@ -142,3 +142,5 @@ python tools/bridge_loop_test.py <bridge address> --radio-loop
 ```
 
 It sends every byte value and a pseudo-random block over TCP and checks that the looped port returns exactly the same bytes, and that UDP sent to the former upstream UDP ports reaches no device. Use the jumpers only while these pins are not soldered to the modules ([warning](../../docs/project/roadmap.md#firmware-plan)).
+
+Add `--radio-owner` for step 4. It checks that a second radio client is refused, navigation keeps flowing, and the radio port accepts the next client after a clean TCP close. The [wired checks](../../docs/project/roadmap.md#firmware-plan) cover the MAX490 path and recovery after Wi-Fi loss.

@@ -2,6 +2,7 @@
 
     python tools/bridge_loop_test.py 10.10.10.10
     python tools/bridge_loop_test.py 192.168.1.50 --radio-loop
+    python tools/bridge_loop_test.py 192.168.1.50 --radio-loop --radio-owner
 
 Needs the bench ESP32 running the bridge firmware and jumper wires
 (firmware plan step 2, docs/project/roadmap.md#firmware-plan):
@@ -15,6 +16,10 @@ that exactly the same bytes, in order, come out of the looped port, over
 TCP in both directions for Zander and FLARM. With --radio-loop it also loops
 the radio port over TCP. Last it checks that UDP sent to the former upstream
 UDP ports reaches no device: the firmware has no UDP.
+
+With --radio-owner, also check that a second client is refused, its bytes do
+not reach the UART, navigation keeps flowing, and a clean TCP close releases
+the port for the next client. Use only on a looped bench bridge.
 
 Zander and FLARM must use the same baud rate in config.h for the loop.
 """
@@ -85,11 +90,59 @@ def send_tcp(sock: socket.socket, data: bytes, split: int = 97) -> None:
         sock.sendall(data[i : i + split])
 
 
+def radio_owner_checks(host: str, zander: socket.socket, flarm: socket.socket) -> list[bool]:
+    with tcp(host, RADIO_TCP) as owner:
+        data = payload(8, size=128)
+        send_tcp(owner, data)
+        established = compare("radio owner established", data, read_tcp(owner, len(data), 3))
+        if not established:
+            return [False]
+
+        with tcp(host, RADIO_TCP) as second:
+            second.settimeout(2)
+            try:
+                second.sendall(b"\x00\xa5second writer")
+                refused = second.recv(1) == b""
+            except (ConnectionResetError, BrokenPipeError):
+                refused = True
+            except socket.timeout:
+                refused = False
+        print(f"{'PASS' if refused else 'FAIL'} second radio client refused")
+
+        send_tcp(owner, data)
+        intact = compare("radio owner receives only its own bytes", data, read_tcp(owner, len(data), 3))
+        nav_data = payload(9, size=128)
+        send_tcp(zander, nav_data)
+        navigation = compare("navigation with a radio owner", nav_data, read_tcp(flarm, len(nav_data), 3))
+
+        # Wait for the server to acknowledge our FIN before attempting a new connection.
+        owner.settimeout(2)
+        owner.shutdown(socket.SHUT_WR)
+        try:
+            released = owner.recv(1) == b""
+        except socket.timeout:
+            released = False
+        print(f"{'PASS' if released else 'FAIL'} radio owner released after TCP FIN")
+
+    with tcp(host, RADIO_TCP) as replacement:
+        try:
+            send_tcp(replacement, data)
+            got = read_tcp(replacement, len(data), 3)
+        except (ConnectionResetError, BrokenPipeError):
+            got = b""
+        reopened = compare("radio port opens for the next client", data, got)
+
+    return [established, refused, intact, navigation, released, reopened]
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("host", help="bridge address, 10.10.10.10 in hotspot mode")
     parser.add_argument("--radio-loop", action="store_true", help="GPIO17 is looped to GPIO16")
+    parser.add_argument("--radio-owner", action="store_true", help="test step 4 TCP ownership on the looped board")
     args = parser.parse_args()
+    if args.radio_owner and not args.radio_loop:
+        parser.error("--radio-owner requires --radio-loop")
 
     results = []
     zander, flarm = tcp(args.host, ZANDER_TCP), tcp(args.host, FLARM_TCP)
@@ -119,6 +172,9 @@ def main() -> int:
     ok = stray == b""
     print(f"{'PASS' if ok else 'FAIL'} UDP to ports {', '.join(map(str, FORMER_UDP))}: {len(stray)} bytes reached a device")
     results.append(ok)
+
+    if args.radio_owner:
+        results.extend(radio_owner_checks(args.host, zander, flarm))
 
     zander.close()
     flarm.close()
