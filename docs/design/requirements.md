@@ -36,6 +36,7 @@ Related: 🏗️ [Architecture](architecture.md) · ❓ [Open items](../project/
 | R13 | P1 | Accept firmware updates over Wi-Fi, so the housing stays closed. Every firmware image keeps this ability and the selected partition scheme ([ADR-05](architecture.md#adr-05)). | One OTA upload in each Wi-Fi mode of R12; repeat for every new firmware image |
 | R14 | P1 | Show bridge, Wi-Fi and per-device status on a web page, without disturbing bridge traffic. | Open the page on the phone during the byte-exact tests of R03; the results must not change ([firmware plan](../project/roadmap.md#firmware-plan)) |
 | R15 | P1 | Let the owner change serial, Wi-Fi, hotspot and port settings on a password-protected page without rebuilding the firmware. Stored settings survive restarts and OTA updates; a Wi-Fi, hotspot or port change that is not confirmed reverts by itself ([settings page](../project/roadmap.md#settings-page)). | Step 3a bench checks: change, restart, OTA update, unconfirmed change, wrong password, power loss during a save, reset |
+| R16 | P1 | Show the data passing each device in readable form (text or hex, both directions), without disturbing bridge traffic. | Step 3b: looped data appears in the right port and direction; loop test passes with the monitor open ([data monitor](../project/roadmap.md#data-monitor)) |
 
 **Not planned:** active tuning, frequency swap, volume and squelch, Larus, general XCSoar support. Aircraft installation comes later. The repository license is still to be chosen.
 

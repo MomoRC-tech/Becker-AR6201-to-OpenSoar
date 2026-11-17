@@ -1,6 +1,6 @@
 # Bridge firmware
 
-The project's own Wi-Fi bridge firmware for Zander, FLARM and Becker, developed in the steps of the [firmware plan](../../docs/project/roadmap.md#firmware-plan) ([ADR-02](../../docs/design/architecture.md#adr-02)). It started from ESP-Serial-Bridge; origin and license below. Current state: step 3 done, running on the bench ESP32 (S105–S107); step 3a ([settings page](../../docs/project/roadmap.md#settings-page)) in progress: stored settings and their display on the status page run on the bench ESP32 (S109, S110); the settings page itself is next.
+The project's own Wi-Fi bridge firmware for Zander, FLARM and Becker, developed in the steps of the [firmware plan](../../docs/project/roadmap.md#firmware-plan) ([ADR-02](../../docs/design/architecture.md#adr-02)). It started from ESP-Serial-Bridge; origin and license below. Current state: step 3 done, running on the bench ESP32 (S105–S107); step 3a ([settings page](../../docs/project/roadmap.md#settings-page)) in progress: stored settings, their display and the settings page run on the bench ESP32 (S109–S111).
 
 ## Origin and license
 
@@ -39,7 +39,7 @@ Set in `config.h`; everything else is upstream.
 | Build-time checks | The build stops if UDP or Bluetooth is pointed at the radio port, or if not exactly one Wi-Fi mode is selected |
 | `BATTERY_SAVER` | Fixed so it lowers the transmit power; off |
 | Version | `VERSION` in `config.h`, `0.<plan step>` until bench acceptance; shown on the status page as "Wi-Fi bridge 0.3a-ESP32" |
-| Stored settings | `STORED_SETTINGS`: baud rates, frames, TCP and UDP ports, the network and the hotspot in this file are defaults; valid values stored on the ESP32 (NVS namespace `bridge`, [`settings.h`](settings.h)) override them in `MODE_STA_AP`. An invalid stored value falls back to its default. Nothing is stored until the settings page exists |
+| Stored settings | `STORED_SETTINGS`: baud rates, frames, TCP and UDP ports, the network and the hotspot in this file are defaults; valid values saved on the [settings page](#settings-page) override them in `MODE_STA_AP`. An invalid stored value falls back to its default |
 | Status page | `STATUS_PAGE`: read-only page on port 80 and `/api/status` as JSON, open to everyone on the bridge's Wi-Fi; see below |
 
 <a id="status-page"></a>
@@ -64,7 +64,34 @@ Open `http://<bridge address>/` (10.10.10.10 in hotspot mode) in a browser. [`st
 | `/api/status` | Live counters as JSON |
 | `/api/settings` | Active settings and their source (`default`, `changed`, `invalid`) as JSON |
 
-After any change to the page, take a new screenshot from the running bridge and commit it with the change: `python tools/status_screenshot.py <bridge address>`. It masks the network name and shows hotspot mode, since the repository is public.
+After any change to the status or settings page, take new screenshots from the running bridge and commit them with the change: `python tools/status_screenshot.py <bridge address>`. It masks the network name and shows hotspot mode, since the repository is public.
+
+<a id="settings-page"></a>
+
+## Settings page
+
+Open *Change settings* under *All settings*, or `http://<bridge address>/settings`. The browser asks for a login: user `bridge`, password = the OTA password from `credentials.h`. [`settings_page.h`](settings_page.h) holds the page and its handlers; [`settings.h`](settings.h) checks and stores the values.
+
+![Settings page on a phone](../../docs/images/settings-page.png)
+
+| What | How it works |
+| --- | --- |
+| Values | Per device: baud, frame, TCP port, UDP port (0 = off; always off on the radio port). Wi-Fi: network name and password, join time, hotspot name, password and address. Pins, radio port rules, hostname and OTA password stay fixed in the firmware |
+| Checks | Every field is checked on the bridge; a refused save names each wrong field and changes nothing. Ports may not repeat; UDP not on 53, 67, 68, 3232, 5353 |
+| Passwords | Never shown. Leave the field empty to keep the current one |
+| Save and restart | Values equal to the default are not stored, so they show as default. The bridge restarts and uses the new values |
+| Trial | A change to Wi-Fi, hotspot or ports runs on trial. Reconnect, open the settings page and press *Keep* within 10 minutes. Otherwise the bridge restores the values from before and restarts; after the 3rd start without *Keep* it restores them at once. Serial-only changes apply directly |
+| Reset to defaults | Forgets all stored values, including a trial, and restarts with the firmware defaults |
+| Storage | NVS namespaces `bridge` (active values, format version, trial marks) and `bridge-prev` (backup during a trial). Survives restarts and OTA updates; a full flash erase over USB clears it |
+
+| Address | Content |
+| --- | --- |
+| `GET /settings` | The page (password) |
+| `POST /api/settings` | Check and save form fields named by their keys (`b0`, `f0`, `t0`, `u0` ... `ns`, `np`, `nj`, `hs`, `hp`, `ha`), then restart (password) |
+| `POST /api/keep` | Keep settings on trial (password) |
+| `POST /api/reset` | Forget all stored values, then restart (password) |
+
+Bench check: `python tools/settings_test.py <bridge address> [--revert]` runs the password, refusal, save, trial, *Keep*, reset and (with `--revert`, 10 minutes) automatic revert checks. The bridge must be in network mode, so its address stays the same across restarts.
 
 ## Build
 

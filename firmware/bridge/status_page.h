@@ -52,6 +52,7 @@ h1{margin:0 0 6px;font:800 28px/1.1 Arial,Helvetica,sans-serif;color:var(--green
 .meta{color:var(--mute);font-size:15px}.meta b{color:var(--ink);font-weight:600;white-space:nowrap}
 .meta div{margin-top:2px}
 .down{margin:0 0 12px;padding:10px 14px;border-left:4px solid var(--red);color:var(--red)}
+.trial{margin:0 0 12px;padding:10px 14px;border-left:4px solid var(--amber)}
 section{border-top:1px solid var(--rule);padding:14px 0}
 .row{display:flex;align-items:center;gap:10px}
 h2{margin:0;font-size:21px;font-weight:700;flex:1}
@@ -80,9 +81,10 @@ a{color:inherit}
 </style>
 <main>
 <header><img src="/device.webp" width="240" height="317" alt="WIFI Bridge housing with the MomoRC logo"><div><h1>WIFI Bridge</h1><div class="meta" id="meta">Connecting to the bridge</div></div></header>
+<div class="trial" id="trial" hidden><span id="tt"></span> <a href="/settings">Keep or change</a></div>
 <div class="down" id="down" hidden>The bridge is not answering. Check that this phone is on the bridge's Wi-Fi.</div>
 <div id="ports"></div>
-<section class="set"><details><summary>All settings</summary><div id="set">Loading</div></details></section>
+<section class="set"><details><summary>All settings</summary><div id="set">Loading</div><p class="key"><a href="/settings">Change settings</a> (password)</p></details></section>
 <footer>Read-only. Refreshes every 2 seconds; settings apply when the bridge starts. Data: <a href="/api/status">status</a>, <a href="/api/settings">settings</a>.</footer>
 </main>
 <script>
@@ -114,6 +116,7 @@ h+='<table><tr><th>Device</th><th>Baud</th><th>Frame</th><th>TCP</th><th>UDP</th
 for(const k of order){const p=ports[k];h+='<tr><td>'+esc(k)+'</td><td>'+cell(p.b)+'</td><td>'+cell(p.f)+'</td><td>'+cell(p.t)+'</td><td>'+cell(p.u)+'</td></tr>'}
 h+='</table><div class="grp">';for(const i of wifi){h+='<span>'+esc(i.name.charAt(0).toUpperCase()+i.name.slice(1))+'</span><div>'+cell(i)+'</div>'}
 const any=d.items.some(i=>i.origin!=='default');
+if(d.trial&&d.trial.active){$('trial').hidden=false;$('tt').textContent='New Wi-Fi or port settings are on trial for '+Math.ceil(d.trial.seconds_left/60)+' more min.'}
 $('set').innerHTML=h+'</div>'+(any?'<p class="key"><b class="chg">Amber</b>: saved on the bridge. <b class="bad">Red</b>: saved value is invalid, the default is in use.</p>':'')}).catch(()=>setTimeout(g,2000))}
 g();f();setInterval(f,2000);
 </script>)HTML";
@@ -184,7 +187,15 @@ static void jsonString(String& out, const char* s) {  // quoted and escaped JSON
 static String settingsJson() {
     String out;
     out.reserve(2048);
-    out += settingsFormatMismatch ? "{\"format_mismatch\":true,\"items\":[" : "{\"format_mismatch\":false,\"items\":[";
+    out += settingsFormatMismatch ? "{\"format_mismatch\":true," : "{\"format_mismatch\":false,";
+    if (settingsTrial) {
+        const uint32_t left = millis() < SETTINGS_TRIAL_MS ? (SETTINGS_TRIAL_MS - millis()) / 1000 : 0;
+        out += "\"trial\":{\"active\":true,\"seconds_left\":" + String(left) + "},\"items\":[";
+    } else {
+        out += "\"trial\":{\"active\":false},\"items\":[";
+    }
+    BridgeSettings defaults;
+    fillDefaults(defaults);
     char value[72];
     for (size_t i = 0; i < kSettingCount; i++) {
         const SettingItem& s = kSettings[i];
@@ -201,6 +212,15 @@ static String settingsJson() {
         out += ",\"value\":";
         if (settingSecret(s)) out += "null";
         else { settingValueText(s, value, sizeof(value)); jsonString(out, value); }
+        out += ",\"default\":";
+        if (settingSecret(s)) {
+            out += "null";
+        } else {
+            SettingItem d = s;  // same item, pointing at the default value
+            d.value = (uint8_t*)&defaults + ((const uint8_t*)s.value - (const uint8_t*)&settings);
+            settingValueText(d, value, sizeof(value));
+            jsonString(out, value);
+        }
         out += ",\"origin\":\"";
         out += settingOriginText(s.origin);
         out += "\"}";
@@ -208,6 +228,8 @@ static String settingsJson() {
     out += "]}";
     return out;
 }
+
+#include "settings_page.h"  // Project: password-protected settings page (step 3a)
 
 static void statusTask(void*) {
     statusServer.on("/", HTTP_GET, []() { statusServer.send(200, "text/html", kStatusPage); });
@@ -223,10 +245,12 @@ static void statusTask(void*) {
         statusServer.sendHeader("Cache-Control", "no-store");
         statusServer.send(200, "application/json", settingsJson());
     });
+    settingsRoutes();
     statusServer.onNotFound([]() { statusServer.send(404, "text/plain", "Not found"); });
     statusServer.begin();
     for (;;) {
         statusServer.handleClient();
+        settingsTrialCheck();
         vTaskDelay(pdMS_TO_TICKS(5));
     }
 }

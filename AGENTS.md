@@ -4,7 +4,7 @@
 
 This project is preparing a bench prototype. Read README.md, the current package in docs/project/roadmap.md, and only the source/documents needed for that package. Check repository status and preserve unrelated edits.
 
-**Current focus: WP3 wiring and bench validation.** Use the accepted housing design linked from the roadmap. Reopen mechanical design only if a physical check calls for a change. In parallel, the bridge firmware follows the approved plan in the roadmap, one step at a time: steps 1–3a now, steps 4–5 once the bench bridge is wired. Ask the owner before removing any upstream feature from it. No other software or driver work until WP3 is complete. Ask the owner for each hardware decision (part choice, circuit option, wiring choice) separately; present the options with a recommendation, then record the answer.
+**Current focus: WP3 wiring and bench validation.** Use the accepted housing design linked from the roadmap. Reopen mechanical design only if a physical check calls for a change. In parallel, the bridge firmware follows the approved plan in the roadmap, one step at a time: steps 1–3b now, steps 4–5 once the bench bridge is wired. Ask the owner before removing any upstream feature from it. No other software or driver work until WP3 is complete. Ask the owner for each hardware decision (part choice, circuit option, wiring choice) separately; present the options with a recommendation, then record the answer.
 
 The roadmap is the single work queue. A listed package, proposed ADR or recommendation is not implementation approval. For a broad request to continue, use the next package and its stated boundaries.
 
@@ -36,7 +36,7 @@ Finish every task with a push to `main` (see Preservation and delivery), so the 
 
 One question or behavior change per increment. Before changing logic, identify the affected requirement, expected outcome and suitable regression check. For broad later packages, choose a bounded subtask rather than implementing the whole plan.
 
-Status page: after any change to the bridge's web page, run `python tools/status_screenshot.py <bridge address>` against the bridge running that firmware and commit the new `docs/images/status-page.png` with the change.
+Bridge web pages: after any change to the status or settings page, run `python tools/status_screenshot.py <bridge address>` against the bridge running that firmware and commit the new `docs/images/status-page.png` and `settings-page.png` with the change.
 
 For documentation-only work, check consistency, relative links/anchors, source support and whitespace; do not build applications or run device tests. State what was not tested. Simulation and static analysis are not physical acceptance.
 

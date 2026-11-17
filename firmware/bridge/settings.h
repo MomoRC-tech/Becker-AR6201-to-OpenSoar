@@ -40,6 +40,14 @@ struct BridgeSettings {
 static BridgeSettings settings;  // active values, fixed after settingsLoad()
 static bool settingsFormatMismatch = false;
 
+// Trial (confirm or revert): Wi-Fi, hotspot and port changes apply after a restart
+// and must be kept on the settings page within SETTINGS_TRIAL_MS, otherwise the
+// previous values come back from the backup namespace.
+#define SETTINGS_BACKUP "bridge-prev"
+#define SETTINGS_TRIAL_MS (10UL * 60UL * 1000UL)
+#define SETTINGS_TRIAL_BOOTS 3  // starts without Keep before the backup is restored at once
+static bool settingsTrial = false;  // this start runs on settings that are not yet kept
+
 struct SettingItem {
     const char* key;  // NVS key, at most 15 characters
     SettingType type;
@@ -120,34 +128,37 @@ static bool validIp(uint32_t raw) {
     return ip[0] >= 1 && ip[0] <= 223 && ip[0] != 127 && ip[3] >= 1 && ip[3] <= 254;
 }
 
-static bool validValue(const SettingItem& s, int portNum) {
-    switch (s.type) {
-        case T_BAUD: return validBaud(*(uint32_t*)s.value);
-        case T_FRAME: return validFrame((const char*)s.value);
+// Check one value of the given type at v; portNum is -1 for values that belong to no port.
+static bool validAt(SettingType type, const void* v, int portNum) {
+    switch (type) {
+        case T_BAUD: return validBaud(*(const uint32_t*)v);
+        case T_FRAME: return validFrame((const char*)v);
         case T_TCP: {
-            const uint16_t p = *(uint16_t*)s.value;
+            const uint16_t p = *(const uint16_t*)v;
             return p != 0 && p != 80;  // 80 is the status page
         }
         case T_UDP: {
-            const uint16_t p = *(uint16_t*)s.value;
+            const uint16_t p = *(const uint16_t*)v;
             if (p == 0) return true;                // no UDP
             if (portNum == RADIO_COM) return false;  // never UDP on the radio port
             return p != 53 && p != 67 && p != 68 && p != 3232 && p != 5353;  // DNS, DHCP, OTA, mDNS
         }
-        case T_SSID: return validText((const char*)s.value, 1, 32);
+        case T_SSID: return validText((const char*)v, 1, 32);
         case T_NETPASS: {
-            const size_t n = strlen((const char*)s.value);
-            return n == 0 || validText((const char*)s.value, 8, 63);
+            const size_t n = strlen((const char*)v);
+            return n == 0 || validText((const char*)v, 8, 63);
         }
-        case T_APPASS: return validText((const char*)s.value, 8, 63);
+        case T_APPASS: return validText((const char*)v, 8, 63);
         case T_SECONDS: {
-            const uint16_t t = *(uint16_t*)s.value;
+            const uint16_t t = *(const uint16_t*)v;
             return t >= 5 && t <= 120;
         }
-        case T_IP: return validIp(*(uint32_t*)s.value);
+        case T_IP: return validIp(*(const uint32_t*)v);
     }
     return false;
 }
+
+static bool validValue(const SettingItem& s, int portNum) { return validAt(s.type, s.value, portNum); }
 
 static int portOf(const SettingItem& s) {  // port number for per-port keys, -1 otherwise
     const char c = s.key[1];
@@ -195,6 +206,7 @@ static void settingValueText(const SettingItem& s, char* out, size_t n) {
 // ---- defaults and loading ----------------------------------------------------
 
 static void fillDefaults(BridgeSettings& out) {
+    memset(&out, 0, sizeof(out));  // whole-buffer comparisons in settingsSave() need clean padding
     const uint32_t baud[NUM_COM] = {UART_BAUD0, UART_BAUD1, UART_BAUD2};
     const uint32_t frame[NUM_COM] = {SERIAL_PARAM0, SERIAL_PARAM1, SERIAL_PARAM2};
     const uint16_t tcp[NUM_COM] = {SERIAL0_TCP_PORT, SERIAL1_TCP_PORT, SERIAL2_TCP_PORT};
@@ -287,12 +299,142 @@ static void settingsCrossCheck(const BridgeSettings& defaults) {
     }
 }
 
+// ---- storing (settings page) --------------------------------------------------------
+
+static bool trialKey(const SettingItem& s) {  // changes that can cut the phone off
+    return s.type == T_TCP || s.type == T_UDP || s.type == T_SSID || s.type == T_NETPASS ||
+           s.type == T_APPASS || s.type == T_SECONDS || s.type == T_IP;
+}
+
+static void putValue(Preferences& p, SettingType type, const char* key, const void* v) {
+    switch (type) {
+        case T_BAUD:
+        case T_IP: p.putUInt(key, *(const uint32_t*)v); break;
+        case T_TCP:
+        case T_UDP:
+        case T_SECONDS: p.putUShort(key, *(const uint16_t*)v); break;
+        default: p.putString(key, (const char*)v); break;
+    }
+}
+
+// Copy every setting key (and the format key) from one namespace to another; keys
+// missing in the source are removed in the target.
+static void copyNamespace(const char* from, const char* to) {
+    Preferences src, dst;
+    const bool haveSrc = src.begin(from, true);
+    dst.begin(to, false);
+    dst.clear();
+    if (haveSrc) {
+        uint8_t buf[64];
+        for (size_t i = 0; i < kSettingCount; i++) {
+            const SettingItem& s = kSettings[i];
+            if (!src.isKey(s.key)) continue;
+            memset(buf, 0, sizeof(buf));
+            switch (s.type) {
+                case T_BAUD:
+                case T_IP: *(uint32_t*)buf = src.getUInt(s.key); break;
+                case T_TCP:
+                case T_UDP:
+                case T_SECONDS: *(uint16_t*)buf = src.getUShort(s.key); break;
+                default: src.getString(s.key, (char*)buf, sizeof(buf)); break;
+            }
+            putValue(dst, s.type, s.key, buf);
+        }
+        if (src.isKey("v")) dst.putUInt("v", src.getUInt("v"));
+        src.end();
+    }
+    dst.end();
+}
+
+// At start-up: count starts in a trial; after too many without Keep, restore the backup.
+static void settingsTrialAtBoot() {
+    Preferences p;
+    if (!p.begin(SETTINGS_NAMESPACE, false)) return;
+    if (!p.getBool("tr", false)) {
+        p.end();
+        return;
+    }
+    const uint8_t boots = p.getUChar("tc", 0) + 1;
+    p.putUChar("tc", boots);
+    p.end();
+    if (boots > SETTINGS_TRIAL_BOOTS) {
+        copyNamespace(SETTINGS_BACKUP, SETTINGS_NAMESPACE);  // also clears the trial keys
+        Preferences b;
+        if (b.begin(SETTINGS_BACKUP, false)) { b.clear(); b.end(); }
+        return;
+    }
+    settingsTrial = true;
+}
+
+// Keep the trial settings: drop the backup and the trial marks.
+static void settingsKeep() {
+    Preferences p;
+    if (p.begin(SETTINGS_NAMESPACE, false)) {
+        p.remove("tr");
+        p.remove("tc");
+        p.end();
+    }
+    Preferences b;
+    if (b.begin(SETTINGS_BACKUP, false)) { b.clear(); b.end(); }
+    settingsTrial = false;
+}
+
+// Trial not kept in time: restore the backup (the caller restarts).
+static void settingsRevert() {
+    copyNamespace(SETTINGS_BACKUP, SETTINGS_NAMESPACE);
+    Preferences b;
+    if (b.begin(SETTINGS_BACKUP, false)) { b.clear(); b.end(); }
+}
+
+// Forget everything stored, including a trial (the caller restarts).
+static void settingsReset() {
+    Preferences p;
+    if (p.begin(SETTINGS_NAMESPACE, false)) { p.clear(); p.end(); }
+    Preferences b;
+    if (b.begin(SETTINGS_BACKUP, false)) { b.clear(); b.end(); }
+}
+
+// Save a checked candidate. Values equal to the default are removed, so they show
+// as default. Returns true if a trial starts with the next restart.
+static bool settingsSave(const BridgeSettings& cand) {
+    BridgeSettings defaults;
+    fillDefaults(defaults);
+    bool risky = false;
+    for (size_t i = 0; i < kSettingCount; i++) {
+        const SettingItem& s = kSettings[i];
+        const size_t off = (const uint8_t*)s.value - (const uint8_t*)&settings;
+        if (trialKey(s) && memcmp((const uint8_t*)&cand + off, s.value, valueSize(s.type)) != 0) risky = true;
+    }
+    Preferences p;
+    if (!p.begin(SETTINGS_NAMESPACE, false)) return false;
+    const bool trialRunning = p.getBool("tr", false);
+    p.end();
+    if (risky && !trialRunning) copyNamespace(SETTINGS_NAMESPACE, SETTINGS_BACKUP);  // keep the last good values
+    p.begin(SETTINGS_NAMESPACE, false);
+    const bool trial = risky || trialRunning;
+    if (trial) {  // mark first: a power loss during the writes below still ends in the trial
+        p.putBool("tr", true);
+        p.putUChar("tc", 0);
+    }
+    for (size_t i = 0; i < kSettingCount; i++) {
+        const SettingItem& s = kSettings[i];
+        const size_t off = (const uint8_t*)s.value - (const uint8_t*)&settings;
+        const void* v = (const uint8_t*)&cand + off;
+        if (memcmp(v, (const uint8_t*)&defaults + off, valueSize(s.type)) == 0) p.remove(s.key);
+        else putValue(p, s.type, s.key, v);
+    }
+    p.putUInt("v", SETTINGS_FORMAT);
+    p.end();
+    return trial;
+}
+
 static void settingsLoad() {
     BridgeSettings defaults;
     fillDefaults(defaults);
     settings = defaults;
     for (size_t i = 0; i < kSettingCount; i++) kSettings[i].origin = ORIGIN_DEFAULT;
 #ifdef STORED_SETTINGS
+    settingsTrialAtBoot();
     Preferences p;
     if (!p.begin(SETTINGS_NAMESPACE, true)) return;  // nothing stored yet
     if (p.isKey("v") && p.getUInt("v", 0) != SETTINGS_FORMAT) {
