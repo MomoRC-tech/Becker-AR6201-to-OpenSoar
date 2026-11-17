@@ -26,7 +26,7 @@ Set in `config.h`; everything else is upstream.
 
 - Pins: [UART plan](../../docs/hardware/wiring.md#overview). TCP ports and the hotspot address: [firmware plan](../../docs/project/roadmap.md#firmware-plan).
 - Baud rates: Zander and FLARM are candidates from the device documents (S22, S23); the Becker value 9600 8N1 is the best lead found, from independent controller code, not a Becker document (S108). The installed settings are [open items](../../docs/project/open-items.md#installed-equipment).
-- UDP is not implemented: the upstream UDP broadcast is removed, OpenSoar connects by TCP. Reason: broadcast over Wi-Fi has no acknowledgement and lost single datagrams on the bench, with and without load (S112). The build stops if `PROTOCOL_UDP` is defined.
+- UDP is not implemented: the upstream UDP broadcast is removed, OpenSoar connects by TCP. Reason: broadcast over Wi-Fi has no acknowledgement and lost single datagrams on the bench, with and without load (S112, [issue #1](https://github.com/MomoRC-tech/Becker-AR6201-to-OpenSoar/issues/1)). The build stops if `PROTOCOL_UDP` is defined.
 
 | Setting | Value |
 | --- | --- |
