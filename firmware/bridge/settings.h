@@ -154,6 +154,44 @@ static int portOf(const SettingItem& s) {  // port number for per-port keys, -1 
     return (s.key[2] == 0 && c >= '0' && c < '0' + NUM_COM && strchr("bftu", s.key[0])) ? c - '0' : -1;
 }
 
+// ---- display -------------------------------------------------------------------
+
+static bool settingSecret(const SettingItem& s) { return s.type == T_NETPASS || s.type == T_APPASS; }
+
+// Short name of the value, without the port: "baud", "TCP port", "network" ...
+static const char* settingName(const SettingItem& s) {
+    switch (s.type) {
+        case T_BAUD: return "baud";
+        case T_FRAME: return "frame";
+        case T_TCP: return "TCP port";
+        case T_UDP: return "UDP port";
+        case T_SSID: return s.value == settings.netSsid ? "network" : "hotspot name";
+        case T_NETPASS: return "network password";
+        case T_APPASS: return "hotspot password";
+        case T_SECONDS: return "network join time, s";
+        case T_IP: return "hotspot address";
+    }
+    return "";
+}
+
+static const char* settingOriginText(SettingOrigin o) {
+    return o == ORIGIN_STORED ? "changed" : o == ORIGIN_INVALID ? "invalid" : "default";
+}
+
+// Active value as text; secrets are never written out.
+static void settingValueText(const SettingItem& s, char* out, size_t n) {
+    switch (s.type) {
+        case T_BAUD: snprintf(out, n, "%lu", (unsigned long)*(uint32_t*)s.value); break;
+        case T_TCP:
+        case T_UDP:
+        case T_SECONDS: snprintf(out, n, "%u", (unsigned)*(uint16_t*)s.value); break;
+        case T_IP: snprintf(out, n, "%s", IPAddress(*(uint32_t*)s.value).toString().c_str()); break;
+        case T_NETPASS:
+        case T_APPASS: snprintf(out, n, "%s", ""); break;
+        default: snprintf(out, n, "%s", (const char*)s.value); break;
+    }
+}
+
 // ---- defaults and loading ----------------------------------------------------
 
 static void fillDefaults(BridgeSettings& out) {

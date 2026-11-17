@@ -16,6 +16,8 @@
 #include <esp_timer.h>
 #include <esp_wifi.h>
 
+#include "device_image.h"  // lid photo for the page header
+
 struct PortStats {
     std::atomic<uint32_t> fromDevice{0};   // bytes UART -> network
     std::atomic<uint32_t> toDevice{0};     // bytes network -> UART (TCP and UDP)
@@ -34,28 +36,87 @@ static const char* const kPortName[NUM_COM] = PORT_NAMES;
 
 static WebServer statusServer(80);
 
+// Status page; /device.webp is the housing lid photo from device_image.h.
 static const char kStatusPage[] = R"HTML(<!doctype html>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Wi-Fi bridge</title>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark"><title>WIFI Bridge</title><link rel="icon" href="/device.webp">
 <style>
-body{font:15px system-ui,sans-serif;margin:12px;color:#222;background:#fff}
-table{border-collapse:collapse;margin-top:8px}th,td{padding:4px 8px;border-bottom:1px solid #ccc;text-align:right}
-th:first-child,td:first-child{text-align:left}#s{line-height:1.6}.bad{color:#b00}
+:root{--ink:#262a27;--paper:#f4f6f3;--rule:#d5ddd6;--mute:#5d665f;--amber:#b26b00;--red:#b3261e;--live:#2e8b47;--green:#2f6b3b}
+@media (prefers-color-scheme:dark){:root{--paper:#141a16;--ink:#e6ebe6;--rule:#2c3630;--mute:#9aa59c;--amber:#f0a73a;--red:#ff8a80;--live:#5fd17e;--green:#7cc487}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.45 system-ui,"Segoe UI",Roboto,sans-serif}
+main{max-width:640px;margin:0 auto;padding:16px 16px 40px}
+header{display:flex;gap:18px;align-items:center;padding-bottom:16px}
+header img{width:104px;height:auto;border-radius:9px;flex:none;display:block}
+h1{margin:0 0 6px;font:800 28px/1.1 Arial,Helvetica,sans-serif;color:var(--green)}
+.meta{color:var(--mute);font-size:15px}.meta b{color:var(--ink);font-weight:600;white-space:nowrap}
+.meta div{margin-top:2px}
+.down{margin:0 0 12px;padding:10px 14px;border-left:4px solid var(--red);color:var(--red)}
+section{border-top:1px solid var(--rule);padding:14px 0}
+.row{display:flex;align-items:center;gap:10px}
+h2{margin:0;font-size:21px;font-weight:700;flex:1}
+.dot{width:11px;height:11px;border-radius:50%;background:var(--rule);flex:none}
+.on .dot{background:var(--live)}
+.pulse .dot{animation:p .9s ease-out}
+@keyframes p{0%{box-shadow:0 0 0 0 var(--live)}100%{box-shadow:0 0 0 9px transparent}}
+@media (prefers-reduced-motion:reduce){.pulse .dot{animation:none}}
+.st{color:var(--mute);font-size:15px}.on .st{color:var(--ink)}
+.brief{margin:4px 0 0 21px;font-variant-numeric:tabular-nums}
+.bad{color:var(--red)}.chg{color:var(--amber)}
+details{margin:6px 0 0 21px}
+summary{color:var(--mute);font-size:14px;cursor:pointer;width:max-content}
+summary:focus-visible{outline:2px solid var(--live);outline-offset:3px;border-radius:3px}
+dl{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px 16px;margin:8px 0 0}
+dt{color:var(--mute);font-size:13px}dd{margin:0;font-variant-numeric:tabular-nums;font-weight:600}
+.set details{margin-left:0}.set summary{font-size:16px;color:var(--ink);font-weight:700}
+table{width:100%;border-collapse:collapse;margin-top:10px;font-variant-numeric:tabular-nums}
+th{color:var(--mute);font-size:13px;font-weight:400;text-align:left;padding:4px 8px 4px 0}
+td{padding:6px 8px 6px 0;border-top:1px solid var(--rule)}
+.grp{display:grid;grid-template-columns:minmax(120px,190px) 1fr;gap:6px 16px;margin:16px 0 0}
+.grp span{color:var(--mute)}
+.key{color:var(--mute);font-size:13px;margin:12px 0 0}
+footer{color:var(--mute);font-size:13px;border-top:1px solid var(--rule);padding-top:12px}
+a{color:inherit}
 </style>
-<h3>Wi-Fi bridge</h3><div id="s">Loading ...</div><table id="t"></table>
-<p style="color:#666">Read-only. Updates every 2 s. JSON: <a href="/api/status">/api/status</a></p>
+<main>
+<header><img src="/device.webp" width="240" height="317" alt="WIFI Bridge housing with the MomoRC logo"><div><h1>WIFI Bridge</h1><div class="meta" id="meta">Connecting to the bridge</div></div></header>
+<div class="down" id="down" hidden>The bridge is not answering. Check that this phone is on the bridge's Wi-Fi.</div>
+<div id="ports"></div>
+<section class="set"><details><summary>All settings</summary><div id="set">Loading</div></details></section>
+<footer>Read-only. Refreshes every 2 seconds; settings apply when the bridge starts. Data: <a href="/api/status">status</a>, <a href="/api/settings">settings</a>.</footer>
+</main>
 <script>
-const s=document.getElementById('s'),t=document.getElementById('t');
-function age(ms){return ms===null?'never':(ms/1000).toFixed(1)+' s'}
+const $=i=>document.getElementById(i),last={},frame={};let built=false;
+const esc=x=>String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
+function dur(s){const h=Math.floor(s/3600),m=Math.floor(s%3600/60);return h?h+' h '+m+' min':m?m+' min '+s%60+' s':s+' s'}
+function size(b){return b<1e4?b+' B':b<1e7?(b/1024).toFixed(1)+' kB':(b/1048576).toFixed(1)+' MB'}
+function ago(ms){return ms===null?'No data yet':ms<5000?'Receiving':'Quiet for '+dur(Math.round(ms/1000))}
+function build(ports){let h='';ports.forEach((p,n)=>{h+='<section id="d'+n+'"><div class="row"><span class="dot"></span><h2>'+esc(p.name)+'</h2><span class="st" id="s'+n+'"></span></div><div class="brief" id="b'+n+'"></div><details><summary>Details</summary><dl id="x'+n+'"></dl></details></section>'});$('ports').innerHTML=h;built=true}
 function f(){fetch('/api/status',{cache:'no-store'}).then(r=>r.json()).then(d=>{
-let w=d.wifi,sig=w.mode==='hotspot'?('phones: '+(w.stations.length?w.stations.map(x=>x+' dBm').join(', '):'none')):('bridge to router: '+w.rssi_dbm+' dBm');
-s.innerHTML='Firmware '+d.firmware+'<br>Uptime '+d.uptime_s+' s<br>Wi-Fi '+w.mode+', '+w.ip+'<br>Signal '+sig;
-let h='<tr><th>Device</th><th>Baud</th><th>From device</th><th>To device</th><th>Last data</th><th>Clients</th><th>UART errors</th><th>Short writes</th></tr>';
-for(const p of d.ports){h+='<tr><td>'+p.name+'</td><td>'+p.baud+'</td><td>'+p.bytes_from_device+'</td><td>'+p.bytes_to_device+'</td><td>'+age(p.last_data_ms_ago)+'</td><td>'+p.tcp_clients+'</td><td'+(p.uart_errors?' class="bad"':'')+'>'+p.uart_errors+'</td><td'+(p.short_writes?' class="bad"':'')+'>'+p.short_writes+'</td></tr>'}
-t.innerHTML=h}).catch(()=>{s.textContent='No connection to the bridge'})}
-f();setInterval(f,2000);
-</script>
-)HTML";
+$('down').hidden=true;const w=d.wifi;
+const link=w.mode==='hotspot'?'<div>Hotspot <b>'+w.ip+'</b></div><div>'+(w.stations.length?w.stations.length+(w.stations.length>1?' phones, ':' phone, ')+'signal <b>'+w.stations.map(x=>x+' dBm').join(', ')+'</b>':'No phone connected')+'</div>':'<div>Network <b>'+w.ip+'</b></div><div>Signal <b>'+w.rssi_dbm+' dBm</b></div>';
+$('meta').innerHTML='<div>Firmware <b>'+esc(d.firmware.replace('Wi-Fi bridge ',''))+'</b></div><div>Up <b>'+dur(d.uptime_s)+'</b></div>'+link;
+if(!built)build(d.ports);
+d.ports.forEach((p,n)=>{const on=p.last_data_ms_ago!==null&&p.last_data_ms_ago<5000,moved=last[n]!==undefined&&last[n]!==p.bytes_from_device;last[n]=p.bytes_from_device;
+$('d'+n).className=(on?'on':'')+(moved?' pulse':'');$('s'+n).textContent=ago(p.last_data_ms_ago);
+let b=p.baud+' baud'+(frame[n]?' '+frame[n]:'')+', TCP '+p.tcp_port+', '+(p.tcp_clients?p.tcp_clients+(p.tcp_clients>1?' apps':' app')+' connected':'no app connected');
+if(p.uart_errors)b+=', <span class="bad">'+p.uart_errors+' receive error'+(p.uart_errors>1?'s':'')+'</span>';
+if(p.short_writes)b+=', <span class="bad">'+p.short_writes+' short write'+(p.short_writes>1?'s':'')+'</span>';
+$('b'+n).innerHTML=b;
+$('x'+n).innerHTML='<div><dt>From device</dt><dd>'+size(p.bytes_from_device)+'</dd></div><div><dt>To device</dt><dd>'+size(p.bytes_to_device)+'</dd></div><div><dt>UDP port</dt><dd>'+(p.udp_port||'Off')+'</dd></div><div><dt>Receive errors</dt><dd'+(p.uart_errors?' class="bad"':'')+'>'+p.uart_errors+'</dd></div><div><dt>Short writes</dt><dd'+(p.short_writes?' class="bad"':'')+'>'+p.short_writes+'</dd></div>'})
+}).catch(()=>{$('down').hidden=false})}
+function g(){fetch('/api/settings',{cache:'no-store'}).then(r=>r.json()).then(d=>{
+const ports={},order=[],wifi=[];for(const i of d.items){if(i.port){if(!ports[i.port]){ports[i.port]={};order.push(i.port)}ports[i.port][i.key[0]]=i}else wifi.push(i)}
+order.forEach((k,n)=>{frame[n]=ports[k].f.value});
+const cell=i=>{const v=i.secret?'\u2022\u2022\u2022\u2022\u2022\u2022':i.key[0]==='u'&&i.value==='0'?'Off':esc(i.value);return i.origin==='changed'?'<b class="chg">'+v+'</b>':i.origin==='invalid'?'<b class="bad">'+v+'</b>':v};
+let h=d.format_mismatch?'<p class="bad">Settings saved by another firmware version were ignored; the defaults are in use.</p>':'';
+h+='<table><tr><th>Device</th><th>Baud</th><th>Frame</th><th>TCP</th><th>UDP</th></tr>';
+for(const k of order){const p=ports[k];h+='<tr><td>'+esc(k)+'</td><td>'+cell(p.b)+'</td><td>'+cell(p.f)+'</td><td>'+cell(p.t)+'</td><td>'+cell(p.u)+'</td></tr>'}
+h+='</table><div class="grp">';for(const i of wifi){h+='<span>'+esc(i.name.charAt(0).toUpperCase()+i.name.slice(1))+'</span><div>'+cell(i)+'</div>'}
+const any=d.items.some(i=>i.origin!=='default');
+$('set').innerHTML=h+'</div>'+(any?'<p class="key"><b class="chg">Amber</b>: saved on the bridge. <b class="bad">Red</b>: saved value is invalid, the default is in use.</p>':'')}).catch(()=>setTimeout(g,2000))}
+g();f();setInterval(f,2000);
+</script>)HTML";
 
 static String statusJson() {
     char part[256];
@@ -108,11 +169,59 @@ static String statusJson() {
     return out;
 }
 
+static void jsonString(String& out, const char* s) {  // quoted and escaped JSON string
+    out += '"';
+    for (; *s; s++) {
+        const char c = *s;
+        if (c == '"' || c == '\\') { out += '\\'; out += c; }
+        else if ((uint8_t)c < 0x20) { char u[8]; snprintf(u, sizeof(u), "\\u%04x", (uint8_t)c); out += u; }
+        else out += c;
+    }
+    out += '"';
+}
+
+// Active settings and where each comes from (step 3a). Passwords are never sent.
+static String settingsJson() {
+    String out;
+    out.reserve(2048);
+    out += settingsFormatMismatch ? "{\"format_mismatch\":true,\"items\":[" : "{\"format_mismatch\":false,\"items\":[";
+    char value[72];
+    for (size_t i = 0; i < kSettingCount; i++) {
+        const SettingItem& s = kSettings[i];
+        const int n = portOf(s);
+        if (i) out += ",";
+        out += "{\"key\":\"";
+        out += s.key;
+        out += "\",\"port\":";
+        if (n >= 0) jsonString(out, kPortName[n]); else out += "null";
+        out += ",\"name\":";
+        jsonString(out, settingName(s));
+        out += ",\"secret\":";
+        out += settingSecret(s) ? "true" : "false";
+        out += ",\"value\":";
+        if (settingSecret(s)) out += "null";
+        else { settingValueText(s, value, sizeof(value)); jsonString(out, value); }
+        out += ",\"origin\":\"";
+        out += settingOriginText(s.origin);
+        out += "\"}";
+    }
+    out += "]}";
+    return out;
+}
+
 static void statusTask(void*) {
     statusServer.on("/", HTTP_GET, []() { statusServer.send(200, "text/html", kStatusPage); });
+    statusServer.on("/device.webp", HTTP_GET, []() {
+        statusServer.sendHeader("Cache-Control", "max-age=86400");
+        statusServer.send_P(200, "image/webp", (const char*)kDeviceImage, sizeof(kDeviceImage));
+    });
     statusServer.on("/api/status", HTTP_GET, []() {
         statusServer.sendHeader("Cache-Control", "no-store");
         statusServer.send(200, "application/json", statusJson());
+    });
+    statusServer.on("/api/settings", HTTP_GET, []() {
+        statusServer.sendHeader("Cache-Control", "no-store");
+        statusServer.send(200, "application/json", settingsJson());
     });
     statusServer.onNotFound([]() { statusServer.send(404, "text/plain", "Not found"); });
     statusServer.begin();

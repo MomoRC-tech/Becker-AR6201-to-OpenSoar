@@ -1,6 +1,6 @@
 # Bridge firmware
 
-The project's own Wi-Fi bridge firmware for Zander, FLARM and Becker, developed in the steps of the [firmware plan](../../docs/project/roadmap.md#firmware-plan) ([ADR-02](../../docs/design/architecture.md#adr-02)). It started from ESP-Serial-Bridge; origin and license below. Current state: step 3 done, running on the bench ESP32 (S105–S107); step 3a ([settings page](../../docs/project/roadmap.md#settings-page)) in progress: the stored-settings module runs on the bench ESP32 with nothing stored and passes the loop test (S109).
+The project's own Wi-Fi bridge firmware for Zander, FLARM and Becker, developed in the steps of the [firmware plan](../../docs/project/roadmap.md#firmware-plan) ([ADR-02](../../docs/design/architecture.md#adr-02)). It started from ESP-Serial-Bridge; origin and license below. Current state: step 3 done, running on the bench ESP32 (S105–S107); step 3a ([settings page](../../docs/project/roadmap.md#settings-page)) in progress: stored settings and their display on the status page run on the bench ESP32 (S109, S110); the settings page itself is next.
 
 ## Origin and license
 
@@ -46,17 +46,25 @@ Set in `config.h`; everything else is upstream.
 
 ## Status page
 
-Open `http://<bridge address>/` (10.10.10.10 in hotspot mode) in a browser; it updates every 2 s. [`status_page.h`](status_page.h) holds the page; the forwarding loop only adds to counters, and a low-priority task on the other CPU core serves the page.
+Open `http://<bridge address>/` (10.10.10.10 in hotspot mode) in a browser. [`status_page.h`](status_page.h) holds the page; the forwarding loop only adds to counters, and a low-priority task on the other CPU core serves it. The page refreshes its values every 2 s in place, so opened sections stay open. Light or dark follows the phone.
 
-| Field | Meaning |
+![Status page on a phone, all settings open](../../docs/images/status-page.png)
+
+| Part | Shows |
 | --- | --- |
-| Firmware, uptime | Version string and seconds since start |
-| Wi-Fi | `network` with the bridge's signal to the router, or `hotspot` with the signal of each connected phone (no device addresses) |
-| From device / to device | Bytes UART → network and network → UART (TCP and UDP) since start |
-| Last data | Time since the last byte from the device |
-| Clients | Connected TCP clients |
-| UART errors | Receive buffer full, FIFO overflow, framing, parity or break |
-| Short writes | TCP writes that took fewer bytes than offered |
+| Header | Photo of the housing lid ([`device_image.h`](device_image.h), made by `tools/device_image.py`), firmware version, uptime, Wi-Fi: network address and the bridge's signal to the router, or hotspot address and the signal of each connected phone (no device addresses) |
+| Device row | Live dot (green while data arrives, pulses on new bytes), state (receiving, quiet for how long, no data yet), baud rate and frame, TCP port, connected apps; receive errors and short writes in red when not zero |
+| Details (collapsed) | Bytes from and to the device since start (TCP and UDP), UDP port, receive errors (buffer full, FIFO overflow, framing, parity, break), short writes (TCP writes that took fewer bytes than offered) |
+| All settings (collapsed) | Active baud, frame, TCP and UDP port per device; network, join time, hotspot name and address. Amber: saved on the bridge; red: saved value invalid, default in use. Passwords are never sent |
+
+| Address | Content |
+| --- | --- |
+| `/` | The page, about 7.4 kB |
+| `/device.webp` | Lid photo, 5.3 kB, cached for a day |
+| `/api/status` | Live counters as JSON |
+| `/api/settings` | Active settings and their source (`default`, `changed`, `invalid`) as JSON |
+
+After any change to the page, take a new screenshot from the running bridge and commit it with the change: `python tools/status_screenshot.py <bridge address>`. It masks the network name and shows hotspot mode, since the repository is public.
 
 ## Build
 

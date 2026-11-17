@@ -34,6 +34,22 @@ A small ESP32 box in the glider that collects data from the cockpit instruments 
 
 The bridge never changes the active frequency, and the radio's own controls keep working. Not planned: active tuning, frequency swap, volume and squelch.
 
+<details>
+<summary><b>📱 Show the status page and settings</b> (click to expand)</summary>
+
+Connect the phone to the bridge's Wi-Fi and open `http://10.10.10.10` (or `http://wifi-bridgetom.local` when the bridge is on your network).
+
+- **Top:** which bridge, firmware, uptime and Wi-Fi signal.
+- **One row per device:** green dot while data arrives, the active baud rate and port, connected apps, errors in red. Counters are under *Details*.
+- **All settings:** baud, frame and ports per device, network and hotspot. Amber marks a value saved on the bridge instead of the firmware default. Passwords are never shown.
+- The page only reads. Changing settings on a password-protected page is the next firmware step ([step 3a](docs/project/roadmap.md#settings-page)).
+
+<img src="docs/images/status-page.png" width="320" alt="Status page on a phone: housing photo, Zander, FLARM and Becker rows, all settings open">
+
+More: [status page details](firmware/bridge/README.md#status-page).
+
+</details>
+
 ---
 
 <a id="status"></a>

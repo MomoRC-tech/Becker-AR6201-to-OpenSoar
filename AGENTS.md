@@ -36,6 +36,8 @@ Finish every task with a push to `main` (see Preservation and delivery), so the 
 
 One question or behavior change per increment. Before changing logic, identify the affected requirement, expected outcome and suitable regression check. For broad later packages, choose a bounded subtask rather than implementing the whole plan.
 
+Status page: after any change to the bridge's web page, run `python tools/status_screenshot.py <bridge address>` against the bridge running that firmware and commit the new `docs/images/status-page.png` with the change.
+
 For documentation-only work, check consistency, relative links/anchors, source support and whitespace; do not build applications or run device tests. State what was not tested. Simulation and static analysis are not physical acceptance.
 
 Update the document that owns the information: requirements for requirements/assumptions/risks; existing-installation for the installed inventory; open-items for missing evidence and owners; sources for evidence; architecture for decisions; wiring for signal pinning and bench bring-up; power for supply, grounding and current assumptions; modules for parts; housing for mechanical design, part sizes and connector mounting; roadmap for work status. Dated reviews in docs/research/reviews are frozen records. Keep documentation current. Remove superseded selections, guidance, references and assets once they no longer support the current project state. Use Git history for previous versions. Keep one concise verification summary per package, with detailed evidence only where useful.
