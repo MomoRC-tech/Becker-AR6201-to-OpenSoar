@@ -53,7 +53,7 @@
                              // incoming bytes while the loop waits on a UART write
 
 #ifdef ESP32
-#define VERSION "0.5-ESP32"       // Project: own version, 0.<plan step> until bench acceptance; 0.4.1 = device profiles (WP9), .2 = web log (step 3c), .3/.4 = log clock time; 0.5 = apps never hold up the bridge
+#define VERSION "0.5.1-ESP32"     // Project: own version, 0.<plan step> until bench acceptance; 0.4.1 = device profiles (WP9), .2 = web log (step 3c), .3/.4 = log clock time; 0.5 = apps never hold up the bridge; 0.5.1 = supply voltage (step 3d)
 #elif defined(ESP8266)
 #define VERSION "0.3b.1-ESP8266"
 #endif
@@ -66,6 +66,7 @@
 #define STATUS_PAGE            // Project: read-only status page on port 80 and /api/status (ESP32 only)
 #define STORED_SETTINGS        // Project: settings stored on the ESP32 override the defaults here (step 3a, ESP32 only)
 #define WEB_LOG                // Project: event log on /log, kept across a restart (step 3c, weblog.h, needs STATUS_PAGE, ESP32 only)
+#define SUPPLY_SENSE           // Project: supply voltage on GPIO34, OpenVario port and chart (step 3d, supply.h, needs STATUS_PAGE, ESP32 only)
 #define PORT_NAMES {"Zander", "FLARM", "Becker"}  // Project: COM 0, 1, 2 on the status page
 #define PORT_PROFILES {"zs1", "flarm", "ar6201"}  // Project: default device profile per COM (settings.h); baud and frame must match UART_BAUDn and SERIAL_PARAMn
 //#define BLUETOOTH 0          // uncomment to create a bluetooth serial bridge on the indicated serial port (ESP32 only)
@@ -98,6 +99,17 @@
 #define SERIAL2_TXPIN 17            // transmit Pin UART2     (ESP32 only)
 #define SERIAL2_RXPIN 16            // receive Pin UART2      (ESP32 only)
 #define SERIAL2_TCP_PORT 4352       // TCP Port UART2         (ESP32 only)
+/*************************  Supply voltage (Project, step 3d) *********/
+#define SUPPLY_PIN 34               // ADC1 input; ADC2 is used by Wi-Fi (S121)
+#define SUPPLY_DIVIDER 11.0f        // (R-V1 100 kOhm + R-V2 10 kOhm) / R-V2 (docs/hardware/power.md)
+#define SUPPLY_SENSOR_FITTED 1      // default of the "sensor fitted" setting; set it off on a board without the divider
+#define SUPPLY_TCP_PORT 4353        // OpenVario sentences $POV,V once per second (ADR-07)
+#define SUPPLY_MIN_V 5.0f           // plausible range; outside it nothing is sent
+#define SUPPLY_MAX_V 30.0f
+#define SUPPLY_LOW_V 11.5f          // web log warning after SUPPLY_LOW_MS below this
+#define SUPPLY_OK_V 12.0f           // and Info when it is back above this
+#define SUPPLY_LOW_MS 10000UL
+#define SUPPLY_HISTORY_MIN 720      // chart: one point per minute, 12 hours
 
 /**************************  DO NOT EDIT BELOW HERE **************************/
 // Project: build-time checks for the Wi-Fi mode and the radio port rules
@@ -116,6 +128,9 @@
 #endif
 #if defined(WEB_LOG) && !(defined(ESP32) && defined(STATUS_PAGE))
 #error "WEB_LOG needs STATUS_PAGE and an ESP32."
+#endif
+#if defined(SUPPLY_SENSE) && !(defined(ESP32) && defined(STATUS_PAGE))
+#error "SUPPLY_SENSE needs STATUS_PAGE and an ESP32."
 #endif
 #if defined(WEB_LOG) && defined(DEBUG)
 #error "DEBUG prints on UART0, which serves the Zander; WEB_LOG shows the same lines on /log."

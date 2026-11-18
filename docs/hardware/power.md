@@ -25,7 +25,7 @@ Related: 🔌 [Signal wiring](wiring.md) · 🧱 [Modules and parts](modules.md)
 - **Fuse:** F1 in the harness at its supply end → [protection](#protection).
 - **Open:** connector fit and supply-cable protection → [open items](../project/open-items.md#bench-hardware).
 
-![Supply path: UBEC to central 5 V junction, separate branches to ESP32 and MAX490; ESP32 3.3 V to RS-232-mod2 then mod1; R-D from mod2 L2](../images/power-supply.svg)
+![Supply path: UBEC to central 5 V junction, separate branches to ESP32 and MAX490; ESP32 3.3 V to RS-232-mod2 then mod1; R-D from mod2 L2; 12 V input through the R-V1/R-V2 divider with C-V to GPIO34](../images/power-supply.svg)
 
 | From | To |
 | --- | --- |

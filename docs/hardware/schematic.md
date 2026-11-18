@@ -7,7 +7,7 @@
 All boards of the bridge and their connections on one KiCad sheet, drawn from the pin tables in [signal wiring](wiring.md) and [power and grounding](power.md), which own every connection ([ADR-06](../design/architecture.md#adr-06)).
 
 > [!NOTE]
-> **Status:** first complete sheet; ERC passes and the netlist matches the pin tables. Not a bench test.
+> **Status:** first complete sheet; ERC passes and the netlist matched the pin tables before the [supply voltage sense](power.md#voltage-sense) was added. R-V1, R-V2 and C-V on GPIO34 are not drawn yet; the pin tables win. Not a bench test.
 
 Related: 🔌 [Signal wiring](wiring.md) · ⚡ [Power and grounding](power.md) · 🧱 [Modules and parts](modules.md)
 

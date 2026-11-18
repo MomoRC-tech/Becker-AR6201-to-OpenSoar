@@ -39,6 +39,8 @@ static const char* settingHint(SettingType type, int portNum) {
         case T_APPASS: return "8 to 63 characters";
         case T_SECONDS: return "5 to 120 seconds";
         case T_IP: return "For example 10.10.10.10";
+        case T_FLAG: return "On or off";
+        case T_CAL: return "0.900 to 1.100";
     }
     return "";
 }
@@ -64,6 +66,17 @@ static bool parseInto(const SettingItem& s, const String& raw, void* v) {
             IPAddress ip;
             if (!ip.fromString(a)) return false;
             *(uint32_t*)v = (uint32_t)ip;
+            return true;
+        }
+        case T_FLAG:
+            if (a != "on" && a != "off") return false;
+            *(uint8_t*)v = a == "on";
+            return true;
+        case T_CAL: {  // "1.023" -> 1023
+            char* end = nullptr;
+            const double f = strtod(a.c_str(), &end);
+            if (a.length() == 0 || a.length() > 8 || *end || !(f > 0 && f < 10)) return false;
+            *(uint16_t*)v = (uint16_t)lround(f * 1000);
             return true;
         }
         default: {
@@ -97,11 +110,11 @@ static void handleSettingsSave() {
         const int n = portOf(s);
         if (!parseInto(s, statusServer.arg(s.key), v) || !validAt(s.type, v, n)) addError(errors, s.key, settingHint(s.type, n));
     }
-    for (int a = 0; a < NUM_COM; a++) {
-        for (int b = a + 1; b < NUM_COM; b++) {
-            if (cand.port[a].tcpPort == cand.port[b].tcpPort) {
+    for (int a = 0; a < TCP_LISTENERS; a++) {
+        for (int b = a + 1; b < TCP_LISTENERS; b++) {
+            if (tcpPortOf(cand, a) == tcpPortOf(cand, b)) {
                 char k[3] = {'t', char('0' + b), 0};
-                addError(errors, k, "Already used by another device");
+                addError(errors, b < NUM_COM ? k : "vt", "Already used by another device");
             }
         }
     }
@@ -176,7 +189,7 @@ button{font:inherit;font-weight:600;border-radius:10px;padding:10px 18px;cursor:
 <header><img src="/device.webp" width="240" height="317" alt=""><h1>Settings</h1><a href="/">Status page</a></header>
 <div class="trial" id="trial" hidden><p id="tt"></p><button class="main" type="button" onclick="keep()">Keep these settings</button></div>
 <form id="fm" onsubmit="return save(event)"><div id="fs">Loading</div>
-<p class="note">Saving restarts the bridge. A change to Wi-Fi, hotspot or ports runs on trial: reconnect and press Keep within 10 minutes, otherwise the previous settings come back. Leave a password empty to keep it.</p>
+<p class="note">Saving restarts the bridge. A change to Wi-Fi, hotspot or ports (also the supply voltage port) runs on trial: reconnect and press Keep within 10 minutes, otherwise the previous settings come back. Leave a password empty to keep it.</p>
 <div class="btns"><button class="main" type="submit">Save and restart</button><button class="quiet" type="button" onclick="reset()">Reset to defaults</button></div></form>
 <div id="msg" role="status"></div>
 </main>
@@ -189,14 +202,21 @@ function field(i){const id='k_'+i.key,lab=esc(i.name.charAt(0).toUpperCase()+i.n
 if(dev){const P=PORTS[+n];c='<select id="'+id+'" name="'+i.key+'" onchange="preset('+n+')">'+P.profiles.concat('custom').map(x=>'<option value="'+x+'"'+(x===i.value?' selected':'')+'>'+esc(NAME[x])+'</option>').join('')+'</select>';w='<span class="def">Wiring: '+esc(P.interface)+'. Presets fill in baud and frame.</span>'}
 else if(i.port&&(i.key[0]==='b'||i.key[0]==='f')){const o=i.key[0]==='b'?BAUD:FRAME;c='<select id="'+id+'" name="'+i.key+'" onchange="manual('+n+')">'+o.map(x=>'<option'+(String(x)===i.value?' selected':'')+'>'+x+'</option>').join('')+'</select>'}
 else if(i.secret)c='<input id="'+id+'" name="'+i.key+'" type="password" autocomplete="new-password" placeholder="Unchanged">';
-else{const num=i.key[0]==='t'||i.key==='nj';c='<input id="'+id+'" name="'+i.key+'" value="'+esc(i.value)+'"'+(num?' inputmode="numeric"':'')+'>'}
+else if(i.key==='vs')c='<select id="'+id+'" name="vs">'+['on','off'].map(x=>'<option'+(x===i.value?' selected':'')+'>'+x+'</option>').join('')+'</select>';
+else{const num=i.key[0]==='t'||i.key==='nj'||i.key==='vt',dec=i.key==='vc';c='<input id="'+id+'" name="'+i.key+'" value="'+esc(i.value)+'"'+(num?' inputmode="numeric"':dec?' inputmode="decimal"':'')+'>';
+if(dec)w='<label for="mv">Calibrate: multimeter reading at the XT30, V</label><input id="mv" inputmode="decimal"><button class="quiet" type="button" onclick="cal()">Set factor</button><span class="def" id="cm"></span>'}
 const dv=dev?NAME[i.default]||i.default:i.default;
 const d=i.secret?'':'<span class="def'+(i.origin==='changed'?' chg':'')+'">'+(i.origin==='changed'?'Changed, default ':'Default ')+esc(dv)+'</span>';
-return '<div'+(dev?' class="dev"':'')+'><label for="'+id+'">'+lab+'</label>'+c+d+(w?'<br>'+w:'')+'<div class="err" id="e_'+i.key+'"></div></div>'}
+return '<div'+(dev||w?' class="dev"':'')+'><label for="'+id+'">'+lab+'</label>'+c+d+(w?'<br>'+w:'')+'<div class="err" id="e_'+i.key+'"></div></div>'}
+function cal(){const m=parseFloat($('mv').value.replace(',','.'));fetch('/api/status',{cache:'no-store'}).then(r=>r.json()).then(d=>{const s=d.supply;
+if(!s||!s.sensor||s.raw_volts===null||!(m>0)){$('cm').textContent=' Needs the sensor switched on, a reading and a meter value.';return}
+const f=m/s.raw_volts;$('cm').textContent=' The bridge reads '+s.raw_volts.toFixed(2)+' V uncalibrated.';
+if(f<0.9||f>1.1){$('cm').textContent+=' Factor '+f.toFixed(3)+' is outside 0.900 to 1.100: check the divider and the meter.';return}
+$('k_vc').value=f.toFixed(3);$('cm').textContent+=' Factor set; save to apply.'})}
 function preset(n){const p=PROF[$('k_p'+n).value];if(p){$('k_b'+n).value=p.baud;$('k_f'+n).value=p.frame}}
 function manual(n){const s=$('k_p'+n),p=s&&PROF[s.value];if(p&&($('k_b'+n).value!==p.baud||$('k_f'+n).value!==p.frame))s.value='custom'}
 function load(){fetch('/api/settings',{cache:'no-store'}).then(r=>r.json()).then(d=>{items=d.items;PORTS=d.ports||[];for(const p of d.profiles||[]){PROF[p.id]=p;NAME[p.id]=p.name}const g={},o=[];
-for(const i of d.items){const k=i.port||'Wi-Fi';if(!g[k]){g[k]=[];o.push(k)}g[k].push(i)}
+for(const i of d.items){const k=i.group||i.port||'Wi-Fi';if(!g[k]){g[k]=[];o.push(k)}g[k].push(i)}
 $('fs').innerHTML=o.map(k=>'<fieldset><legend>'+esc(k)+'</legend><div class="f'+(k==='Wi-Fi'?' w':'')+'">'+g[k].map(field).join('')+'</div></fieldset>').join('');
 if(d.trial&&d.trial.active){$('trial').hidden=false;$('tt').textContent='These Wi-Fi or port settings are on trial. Keep them within '+Math.ceil(d.trial.seconds_left/60)+' min, otherwise the previous settings come back.'}})}
 function post(u,body){return fetch(u,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body||''})}

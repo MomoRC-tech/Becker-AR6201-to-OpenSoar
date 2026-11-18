@@ -1,6 +1,6 @@
 # Bridge firmware
 
-Wi-Fi bridge firmware for Zander, FLARM and Becker, based on ESP-Serial-Bridge ([ADR-02](../../docs/design/architecture.md#adr-02)). The standalone ESP32 runs step 4 firmware with single-client radio ownership (S114) and the [web log](#web-log) (S116). See the [firmware plan](../../docs/project/roadmap.md#firmware-plan) for the remaining wired checks.
+Wi-Fi bridge firmware for Zander, FLARM and Becker, based on ESP-Serial-Bridge ([ADR-02](../../docs/design/architecture.md#adr-02)). The standalone ESP32 runs step 4 firmware with single-client radio ownership (S114) and the [web log](#web-log) (S116). Firmware 0.5.1 adds the [supply voltage](#supply-voltage) (step 3d). See the [firmware plan](../../docs/project/roadmap.md#firmware-plan) for the remaining wired checks.
 
 ## Origin and license
 
@@ -40,6 +40,7 @@ Set in `config.h`; everything else is upstream.
 | Version | `VERSION` in `config.h`, `0.<plan step>` until bench acceptance; shown on the status page |
 | Stored settings | `STORED_SETTINGS`: baud rates, frames, TCP ports, the network and the hotspot in this file are defaults; valid values saved on the [settings page](#settings-page) override them in `MODE_STA_AP`. An invalid stored value falls back to its default |
 | Status page | `STATUS_PAGE`: read-only page on port 80 and `/api/status` as JSON, open to everyone on the bridge's Wi-Fi; see below |
+| Supply voltage | `SUPPLY_SENSE`: 12 V input on GPIO34, OpenVario port 4353 and chart; pin, divider, port and warning levels under *Supply voltage* in `config.h`; see [below](#supply-voltage) |
 
 <a id="status-page"></a>
 
@@ -54,16 +55,18 @@ Open `http://<bridge address>/` (10.10.10.10 in hotspot mode) in a browser. [`st
 | Header | Photo of the housing lid ([`device_image.h`](device_image.h), made by `tools/device_image.py`), firmware version, uptime, Wi-Fi: network address and the bridge's signal to the router, or hotspot address and the signal of each connected phone (no device addresses) |
 | Device row | Live dot (green while data arrives, pulses on new bytes), state (receiving, quiet for how long, no data yet), baud rate and frame, TCP port, connected apps; receive errors and short writes in red when not zero |
 | Details (collapsed) | Bytes from and to the device since start, receive errors (buffer full, FIFO overflow, framing, parity, break), short writes (data an app could not take: skipped for a Zander or FLARM app, session closed on the radio port); link to the [data monitor](#data-monitor) |
-| All settings (collapsed) | Active baud, frame and TCP port per device; network, join time, hotspot name and address. Amber: saved on the bridge; red: saved value invalid, default in use. Passwords are never sent |
+| Supply voltage | Value of the last second, OpenVario port and connected apps, and the [chart](#supply-voltage) |
+| All settings (collapsed) | Active baud, frame and TCP port per device; network, join time, hotspot name and address; supply voltage settings. Amber: saved on the bridge; red: saved value invalid, default in use. Passwords are never sent |
 
 | Address | Content |
 | --- | --- |
 | `/` | The page, about 7.4 kB |
 | `/device.webp` | Lid photo, 5.3 kB, cached for a day |
-| `/api/status` | Live counters as JSON |
+| `/api/status` | Live counters and the supply voltage as JSON |
 | `/api/settings` | Active settings, their defaults and source (`default`, `changed`, `invalid`), the trial state and the device profiles with the presets that fit each port, as JSON |
 | `/monitor`, `/api/monitor` | [Data monitor](#data-monitor) |
 | `/log`, `/api/log` | [Web log](#web-log) |
+| `/api/supply` | [Supply voltage](#supply-voltage) chart data |
 
 After any change to the status, settings, monitor or log page, take new screenshots from the running bridge and commit them with the change: `python tools/status_screenshot.py <bridge address>`. It masks the network name, shows hotspot mode and uses demo data for the monitor and the log, since the repository is public.
 
@@ -77,9 +80,9 @@ Open *Change settings* under *All settings*, or `http://<bridge address>/setting
 
 | What | How it works |
 | --- | --- |
-| Values | Per device: device profile, baud, frame, TCP port. Wi-Fi: network name and password, join time, hotspot name, password and address. Pins, radio port rules, hostname and OTA password stay fixed in the firmware |
+| Values | Per device: device profile, baud, frame, TCP port. Wi-Fi: network name and password, join time, hotspot name, password and address. Supply voltage: sensor fitted, calibration factor, TCP port. Pins, radio port rules, hostname and OTA password stay fixed in the firmware |
 | Device profiles | Choose the instrument on a port: Zander ZS1, Classic FLARM, Becker AR6201 or Custom. A preset fills in baud and frame; changing either by hand selects Custom. Only presets that fit the port's wiring are offered and accepted: Zander and FLARM ports (RS-232, bridge receives only) take ZS1 or Classic FLARM, the Becker port (RS-422, both ways) takes AR6201. The page shows the port's wiring under the choice. Preset values are the candidates in `config.h`. Settings saved before profiles existed keep working: a preset that no longer matches its baud and frame shows as Custom. The TCP port stays separate
-| Checks | Every field is checked on the bridge; a refused save names each wrong field and changes nothing. TCP ports may not repeat and may not be 80 |
+| Checks | Every field is checked on the bridge; a refused save names each wrong field and changes nothing. TCP ports, including the supply voltage port, may not repeat and may not be 80 |
 | Passwords | Never shown. Leave the field empty to keep the current one |
 | Save and restart | Values equal to the default are not stored, so they show as default. The bridge restarts and uses the new values |
 | Trial | A change to Wi-Fi, hotspot or ports runs on trial. Reconnect, open the settings page and press *Keep* within 10 minutes. Otherwise the bridge restores the values from before and restarts; after the 3rd start without *Keep* it restores them at once. Serial-only changes apply directly |
@@ -89,7 +92,7 @@ Open *Change settings* under *All settings*, or `http://<bridge address>/setting
 | Address | Content |
 | --- | --- |
 | `GET /settings` | The page (password) |
-| `POST /api/settings` | Check and save form fields named by their keys (`p0`, `b0`, `f0`, `t0` ... `ns`, `np`, `nj`, `hs`, `hp`, `ha`), then restart (password) |
+| `POST /api/settings` | Check and save form fields named by their keys (`p0`, `b0`, `f0`, `t0` ... `ns`, `np`, `nj`, `hs`, `hp`, `ha`, `vs`, `vc`, `vt`), then restart (password) |
 | `POST /api/keep` | Keep settings on trial (password) |
 | `POST /api/reset` | Forget all stored values, then restart (password) |
 
@@ -137,6 +140,26 @@ Open *Log* at the bottom of the status page, or `http://<bridge address>/log`. N
 - **Privacy:** saved logs contain the network name and app addresses. Do not commit them to this public repository unredacted.
 
 Bench check: `python tools/log_test.py <bridge address>`, and after an OTA upload `--kept` to check that the lines from before the restart remain.
+
+<a id="supply-voltage"></a>
+
+## Supply voltage
+
+The bridge measures its 12 V input through the [divider](../../docs/hardware/power.md#voltage-sense) on GPIO34 and sends it to OpenSoar ([ADR-07](../../docs/design/architecture.md#adr-07), [plan](../../docs/project/roadmap.md#supply-voltage)). [`supply.h`](supply.h) holds the measurement, the OpenVario port and the chart data. Everything runs in the status task; the forwarding loop is not touched. Value and chart are on the [status page](#status-page) (screenshot with demo data).
+
+| Part | How it works |
+| --- | --- |
+| Reading | Every 100 ms the mean of 16 calibrated ADC samples (`analogReadMilliVolts`, 11 dB); × 11 for the divider, × the calibration factor. One value per second for OpenSoar and the status page |
+| Plausible | 5–30 V. Outside it nothing is sent, the page shows *No reading*, and after 10 s the log warns once |
+| OpenSoar | `$POV,V,12.62*hh` once per second on TCP 4353, up to 4 apps. In OpenSoar: add a device **OpenVario**, TCP client, the bridge address, port 4353. Data from OpenSoar (MacCready, ballast, bugs, polar) is read and dropped. An app that falls behind skips sentences; one that takes nothing for 60 s is closed |
+| Chart | One point per minute: mean as a line, lowest to highest as a band, from the 100 ms values. The whole time the bridge is on, up to 12 hours (720 points) without scrolling; then the oldest drop out. Times on the axis are the phone's clock. A dashed line marks the warning level. The page reloads the chart every 30 s |
+| Kept | The minute points sit in `.noinit` RAM like the web log: kept through a restart, crash or OTA update, cleared at power on. The minute running during a restart is lost |
+| Web log | Source System: the first reading after start; a warning after 10 s below 11.5 V, and Info when it is back above 12.0 V |
+| Settings | *Sensor fitted* on or off (default on; switch it off on a board without the divider, whose open pin reads noise); *Calibration factor* 0.900–1.100, with a helper: enter the multimeter reading at the XT30 and press *Set factor*; *TCP port*. A port change runs on trial, like the other ports |
+
+`GET /api/supply` returns `points`, the full minutes oldest first as `[lowest, mean, highest]` in hundredths of a volt (`null` = no reading that minute), `current` for the minute still running, and `age_s`, the seconds since the newest full minute ended.
+
+Bench check: `python tools/supply_test.py <bridge address>` checks the status block, the sentences and their checksum, that data from an app is dropped without closing it, and the chart data. With the sensor switched off: `--expect-off`. Accuracy against a multimeter: [bring-up step 13](../../docs/hardware/wiring.md#bring-up).
 
 ## Build
 

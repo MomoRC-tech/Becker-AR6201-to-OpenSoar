@@ -392,7 +392,7 @@ Use **Cable harness - Wire Generator** in the [v16 enclosure assembly](../../cad
 | MAX490 branches | Approach header VCC and GND from the end of the board |
 | Instrument ground | From the shifted ground jumper location through the centre guide and raised crossing to GND-J |
 
-**Wire colours (S81, S88)** — red for 12 V, orange for 5 V, pink for 3.3 V and black for ground. Use the individual signal colours in the [cutting table](#harness-cutting). Keep the RO insulation blue on both sides of R-B1 and the exposed leads and solder joints metallic.
+**Wire colours (S81, S88)** — red for 12 V, orange for 5 V, pink for 3.3 V, black for ground and grey for the supply voltage sense. Use the individual signal colours in the [cutting table](#harness-cutting). Keep the RO insulation blue on both sides of R-B1 and the exposed leads and solder joints metallic.
 
 - **RS-422 pair markings (S88):** keep each wire’s base colour. Mark each A/B wire (DE-9 4/5) with one charcoal band near each end. Mark each Y/Z wire (DE-9 8/9) with two bands near each end.
 
@@ -406,7 +406,7 @@ Use **Cable harness - Wire Generator** in the [v16 enclosure assembly](../../cad
 | Connector-wall lane | DE-9 4/5 to MAX490 A/B and 8/9 to Y/Z. The CAD shows each conductor envelope. Keep the pairs twisted up to the terminations |
 | J2-side lane | Module R2 outputs to J2-7 (GPIO32) and J2-10 (GPIO26). Route the GPIO32 wire around the J2-14 ground joint |
 | Local RS-232 supply and ground | 3.3 V from J2-1 to mod2 R3 then mod1 R3. Ground from J3-1, across the ESP32, to mod2 R4 then mod1 R4. Assemble the mod2 R3 feed and link on the bench |
-| Pin-top resistor connections | R-B1 at the RO splice, R-B2 across J3-12 and J3-7, and R-D from J3-11 to mod2 L2 |
+| Pin-top resistor connections | R-B1 at the RO splice, R-B2 across J3-12 and J3-7, and R-D from J3-11 to mod2 L2. R-V2 and C-V across J2-5 and J2-14 (not in the CAD model) |
 
 Junction hardware and attachment are tracked in the [housing open items](../project/open-items.md#housing).
 
@@ -466,6 +466,8 @@ Follow the [illustrated installation sequence](wire-installation.md) when fittin
 | Signals | R-B1 between J3-12 and RO splice | Blue | 26 AWG PTFE / axial | Pin top / centre bus | 11.1 + 2.6 | Measure | Fit | Calculate |
 | Signals | R-B2 between J3-12 and J3-7 | Black | 26 AWG PTFE / axial | Pin top | 7.2 + 7.2 | Measure | Fit | Calculate |
 | Signals | R-D between J3-11 and mod2 L2 | Pink | 26 AWG PTFE / axial | Pin top | 2.5 + 7.4 | Measure | Fit | Calculate |
+| Bench | R-V1 at XT30 + → ESP32 J2-5 | Grey | 26 AWG PTFE / axial | Wall / floor / J2 | — | Measure | Fit | Measure on the bench; not in the CAD model |
+| Signals | R-V2 and C-V between J2-5 and J2-14 | — | Axial / leaded | Pin top | — | Measure | Fit | Fit the leads individually |
 
 ---
 

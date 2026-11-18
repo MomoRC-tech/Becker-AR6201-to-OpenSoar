@@ -7,7 +7,7 @@
 Install the bridge harness in housing v16, using the pictures to find each group of wires and its route.
 
 > [!NOTE]
-> **Status:** illustrated sequence from the accepted v16 Fusion model (S93). Fit, actual cut lengths and electrical operation are bench checks.
+> **Status:** illustrated sequence from the accepted v16 Fusion model (S93). The [supply voltage sense](power.md#voltage-sense) (R-V1, R-V2, C-V and the grey wire) is not in the Fusion views yet; its steps are text only. Fit, actual cut lengths and electrical operation are bench checks.
 
 📑 **On this page:** <kbd>[1 · 🔌 Prepare the connectors](#connectors)</kbd> <kbd>[2 · ⚡ Lay the power harness](#floor-power)</kbd> <kbd>[3 · 🧩 Wire the RS-232 boards](#rs232-boards)</kbd> <kbd>[4 · 📡 Connect Zander and FLARM](#rs232-connector)</kbd> <kbd>[5 · 📻 Wire the MAX490 header](#max490-header)</kbd> <kbd>[6 · 🔀 Fit the Becker pairs](#becker-pairs)</kbd> <kbd>[7 · ✅ Close up and check](#finish)</kbd>
 
@@ -24,9 +24,10 @@ Start with the [loose-board bench checks](wiring.md#bring-up) and disconnect pow
 ![Red and black factory leads from the XT30 down the connector wall and across the floor to the UBEC input](../images/wire-installation/01-xt30.png)
 
 1. With the connectors outside the tray, identify XT30 polarity from the moulded marks. Solder the red and black UBEC input leads to the corresponding cups. Keep the UBEC loose until step 7. The picture shows its final location so you can see where the leads go.
-2. Wire the **entire DE-9 pigtail on the bench before fastening the connector**. Start with the lower row, which is hard to reach once mounted. Using the moulded cup numbers, solder **white to cup 8 (MAX490 Y)** and **green to cup 9 (MAX490 Z)**. Fit the tinned bridge across **3, 6 and 7**, clear of the other cups and shell. Attach one black lead from the bridge to **GND-J**. Then solder the remaining signal leads at cups **1, 2, 4 and 5**.
-3. Leave the pigtail leads overlength at their free ends. Allow enough to feed the bundle through the front cutout, follow the guides and reach each termination with service slack. Check the cup assignments and isolation from neighbouring nets and the shell while the cups are accessible.
-4. Fit the XT30 in its inside pocket. Feed the DE-9 pigtail through the cutout from outside, seat and fasten the connector without pulling on the solder joints. Route the free ends, then trim and strip them at their destinations. [Connector mounting](housing.md#connectors) · [DE-9 cup map](wiring.md#de9-pinout)
+2. Solder one lead of **R-V1 (100 kΩ)** into the **XT30 +** cup together with the red lead, or onto the red lead right behind the cup if the cup is full. Solder the **grey** sense wire to its free lead and cover R-V1 and both joints with heat-shrink, so no bare metal is left at the 12 V end. Leave the grey wire overlength. [Supply voltage sense](power.md#voltage-sense)
+3. Wire the **entire DE-9 pigtail on the bench before fastening the connector**. Start with the lower row, which is hard to reach once mounted. Using the moulded cup numbers, solder **white to cup 8 (MAX490 Y)** and **green to cup 9 (MAX490 Z)**. Fit the tinned bridge across **3, 6 and 7**, clear of the other cups and shell. Attach one black lead from the bridge to **GND-J**. Then solder the remaining signal leads at cups **1, 2, 4 and 5**.
+4. Leave the pigtail leads overlength at their free ends. Allow enough to feed the bundle through the front cutout, follow the guides and reach each termination with service slack. Check the cup assignments and isolation from neighbouring nets and the shell while the cups are accessible.
+5. Fit the XT30 in its inside pocket. Feed the DE-9 pigtail through the cutout from outside, seat and fasten the connector without pulling on the solder joints. Route the free ends, then trim and strip them at their destinations. [Connector mounting](housing.md#connectors) · [DE-9 cup map](wiring.md#de9-pinout)
 
 ---
 
@@ -38,7 +39,8 @@ Start with the [loose-board bench checks](wiring.md#bring-up) and disconnect pow
 
 1. Count the factory ferrite turns before moving the ring. Fit both UBEC output leads through the ferrite, preserving the factory turn count and winding sense. The picture shows the route envelope.
 2. Make and insulate **5V-J** and **GND-J** separately on the bench near the ferrite end of the floor bus. The black DE-9 bridge lead joins GND-J. Fit one supply/return pair toward ESP32 **J2-19/J2-14** and the other toward MAX490 **VCC/GND**.
-3. Pre-thread the floor ties. Feed loose ends one at a time through the staggered guide fingers, and feed both ferrite departure leads through the transverse guide. Lay in the splices, park the board ends above the tray and leave the ties loose for the fit check. Keep the UBEC and carrier out of the MAX490 mounting area. [Power and ground tree](power.md#supply) · [Floor guides](housing.md#floor-guide)
+3. Pre-thread the floor ties. Feed loose ends one at a time through the staggered guide fingers, and feed both ferrite departure leads through the transverse guide. Lay in the splices, park the board ends above the tray and leave the ties loose for the fit check.
+4. Lay the **grey** sense wire down the connector wall beside the red input lead, then along the floor bus with the ESP32 branch toward **J2**. Park its end with the J2 branches. Keep the UBEC and carrier out of the MAX490 mounting area. [Power and ground tree](power.md#supply) · [Floor guides](housing.md#floor-guide)
 
 ---
 
@@ -56,8 +58,11 @@ Solder the module pads on the bench. In this view, Zander **mod1** is on the lef
 | Black | ESP32 J3-1 → mod2 R4 → mod1 R4 |
 | Light blue | mod1 R2 → ESP32 J2-7 (GPIO32) |
 | Mint green | mod2 R2 → ESP32 J2-10 (GPIO26) |
+| Grey | R-V1 at the XT30 → ESP32 J2-5 (GPIO34) |
 
-Prepare the L3 ends in step 4 before seating the modules. Prepare the **mod2 L2** end of R-D on the bench while the pad is accessible. At the ESP32, **J3-1** takes only the mod2 return, and **J2-14** only the floor return from step 2. **J2-19** takes the orange floor feed. [Module pad map](modules.md#rs232-module) · [ESP32 header map](modules.md#esp32-pinout)
+Prepare the L3 ends in step 4 before seating the modules. Prepare the **mod2 L2** end of R-D on the bench while the pad is accessible. At the ESP32, **J3-1** takes only the mod2 return. **J2-14** takes the floor return from step 2 and the ground leads of R-V2 and C-V. **J2-19** takes the orange floor feed.
+
+Fit **R-V2 (10 kΩ)** and **C-V (100 nF)** side by side from **J2-5** to **J2-14** at pin-top level, with their leads insulated where they pass J2-6 to J2-13. Solder the grey wire to J2-5 with them. Keep the leads short and support them, like the Becker resistors. [Module pad map](modules.md#rs232-module) · [ESP32 header map](modules.md#esp32-pinout)
 
 ---
 
@@ -112,7 +117,7 @@ Twist and fit each prewired pair separately, then trim and strip at the MAX490 e
 ![Completed v16 harness viewed from above with the UBEC carrier fitted, ferrite at right and the hood removed](../images/wire-installation/07-installed.png)
 
 - [ ] After finishing the MAX490 header and both Becker pairs, place the UBEC carrier over the MAX490. Fasten both with the shared four screws and secure the ferrite in its cradle. Check for pinched wires under the carrier and clamp. [Carrier and ferrite mounting](housing.md#ubec-carrier)
-- [ ] Check that service slack lets the carrier and clamp lift clear. Retain the floor wires and insulated resistor leads without pinching the insulation. Trial-fit the hood and check for contact with the harness.
+- [ ] Check that service slack lets the carrier and clamp lift clear. Retain the floor wires, the grey sense wire and the insulated resistor and capacitor leads without pinching the insulation. Trial-fit the hood and check for contact with the harness.
 - [ ] With the instruments disconnected, check continuity, polarity and shorts before applying power. Follow the [bench bring-up checklist](wiring.md#bring-up) before connecting any instrument.
 
 ---

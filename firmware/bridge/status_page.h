@@ -37,6 +37,8 @@ static const char* const kPortName[NUM_COM] = PORT_NAMES;
 
 static WebServer statusServer(80);
 
+#include "supply.h"  // Project: supply voltage, OpenVario port and chart (step 3d)
+
 // Status page; /device.webp is the housing lid photo from device_image.h.
 static const char kStatusPage[] = R"HTML(<!doctype html>
 <html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -78,6 +80,9 @@ td{padding:6px 8px 6px 0;border-top:1px solid var(--rule)}
 .grp span{color:var(--mute)}
 .key{color:var(--mute);font-size:13px;margin:12px 0 0}
 footer{color:var(--mute);font-size:13px;border-top:1px solid var(--rule);padding-top:12px}
+#sc{display:block;width:100%;height:auto;margin:8px 0 0}
+#sc text{fill:var(--mute);font-size:19px;font-family:system-ui,sans-serif}
+.bd{fill:var(--live);opacity:.25}.mn{fill:none;stroke:var(--green);stroke-width:2.5;stroke-linejoin:round}.gr{stroke:var(--rule);stroke-width:1}.lw{stroke:var(--red);stroke-width:1.5;stroke-dasharray:6 5}
 a{color:inherit}
 </style>
 <main>
@@ -85,8 +90,9 @@ a{color:inherit}
 <div class="trial" id="trial" hidden><span id="tt"></span> <a href="/settings">Keep or change</a></div>
 <div class="down" id="down" hidden>The bridge is not answering. Check that this phone is on the bridge's Wi-Fi.</div>
 <div id="ports"></div>
+<section id="sup" hidden><div class="row"><span class="dot"></span><h2>Supply voltage</h2><span class="st" id="sv"></span></div><div class="brief" id="sb"></div><svg id="sc" viewBox="0 0 600 270" role="img" aria-label="Supply voltage since the bridge was switched on"></svg><p class="key" id="sk" hidden>Each minute since the bridge was switched on, up to 12 hours: line = mean, band = lowest to highest, dashed = <span id="sl"></span> V warning level.</p></section>
 <section class="set"><details><summary>All settings</summary><div id="set">Loading</div><p class="key"><a href="/settings">Change settings</a> (password)</p></details></section>
-<footer><a href="/monitor">Data monitor</a>: see what passes the bridge. <a href="/log">Log</a>: what the bridge did. Read-only. Refreshes every 2 seconds; settings apply when the bridge starts. Data: <a href="/api/status">status</a>, <a href="/api/settings">settings</a>.</footer>
+<footer><a href="/monitor">Data monitor</a>: see what passes the bridge. <a href="/log">Log</a>: what the bridge did. Read-only. Refreshes every 2 seconds; settings apply when the bridge starts. Data: <a href="/api/status">status</a>, <a href="/api/settings">settings</a>, <a href="/api/supply">voltage</a>.</footer>
 </main>
 <script>
 const $=i=>document.getElementById(i),last={},frame={};let built=false;
@@ -106,8 +112,29 @@ let b=p.baud+' baud'+(frame[n]?' '+frame[n]:'')+', TCP '+p.tcp_port+', '+(p.tcp_
 if(p.uart_errors)b+=', <span class="bad">'+p.uart_errors+' receive error'+(p.uart_errors>1?'s':'')+'</span>';
 if(p.short_writes)b+=', <span class="bad">'+p.short_writes+' short write'+(p.short_writes>1?'s':'')+'</span>';
 $('b'+n).innerHTML=b;
-$('x'+n).innerHTML='<div><dt>From device</dt><dd>'+size(p.bytes_from_device)+'</dd></div><div><dt>To device</dt><dd>'+size(p.bytes_to_device)+'</dd></div><div><dt>Receive errors</dt><dd'+(p.uart_errors?' class="bad"':'')+'>'+p.uart_errors+'</dd></div><div><dt>Short writes</dt><dd'+(p.short_writes?' class="bad"':'')+'>'+p.short_writes+'</dd></div>'})
-}).catch(()=>{$('down').hidden=false})}
+$('x'+n).innerHTML='<div><dt>From device</dt><dd>'+size(p.bytes_from_device)+'</dd></div><div><dt>To device</dt><dd>'+size(p.bytes_to_device)+'</dd></div><div><dt>Receive errors</dt><dd'+(p.uart_errors?' class="bad"':'')+'>'+p.uart_errors+'</dd></div><div><dt>Short writes</dt><dd'+(p.short_writes?' class="bad"':'')+'>'+p.short_writes+'</dd></div>'});
+sup(d.supply)}).catch(()=>{$('down').hidden=false})}
+function sup(s){if(!s)return;$('sup').hidden=false;const on=s.sensor&&s.volts!==null;$('sup').className=on?'on':'';
+$('sv').innerHTML=!s.sensor?'Sensor off':s.volts===null?'<span class="bad">No reading</span>':'<b class="'+(s.volts<s.low_v?'bad':'')+'">'+s.volts.toFixed(2)+' V</b>';
+$('sb').innerHTML=s.sensor?'OpenVario, TCP '+s.tcp_port+', '+(s.tcp_clients?s.tcp_clients+(s.tcp_clients>1?' apps':' app')+' connected':'no app connected'):'Switch the sensor on in the settings once the divider is fitted.'}
+let hist=null;function hg(){fetch('/api/supply',{cache:'no-store'}).then(r=>r.json()).then(h=>{hist=h;draw()}).catch(()=>{})}
+function hm(t){const d=new Date(t);return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}
+function draw(){const h=hist,c=$('sc');$('sk').hidden=!(h&&h.sensor);if(!h||!h.sensor){c.innerHTML='';c.style.display='none';return}c.style.display='';
+const W=600,H=270,L=62,R=12,T=12,B=34,now=Date.now(),m=h.points.length,tE=now-h.age_s*1000,P=[];
+h.points.forEach((p,k)=>P.push([tE-(m-1-k)*6e4-3e4,p]));if(h.current)P.push([(tE+now)/2,h.current]);
+const v=P.filter(q=>q[1]);if(!v.length){c.innerHTML='<text x="'+W/2+'" y="'+H/2+'" text-anchor="middle">The chart starts with the first reading</text>';return}
+const t0=m?tE-m*6e4:tE,t1=Math.max(now,t0+6e5);let lo=Math.min(...v.map(q=>q[1][0]))/100,hi=Math.max(...v.map(q=>q[1][2]))/100;
+lo-=.2;hi+=.2;if(lo<h.low_v+.6)lo=Math.min(lo,h.low_v-.2);if(hi-lo<1){const c2=(hi+lo)/2;lo=c2-.5;hi=c2+.5}
+const X=t=>L+(t-t0)/(t1-t0)*(W-L-R),Y=u=>T+(hi-u)/(hi-lo)*(H-T-B);let s='';
+const st=[.1,.2,.5,1,2,5].find(x=>(hi-lo)/x<=5);for(let u=Math.ceil(lo/st)*st;u<=hi+1e-9;u+=st)s+='<line class="gr" x1="'+L+'" x2="'+(W-R)+'" y1="'+Y(u)+'" y2="'+Y(u)+'"/><text x="'+(L-8)+'" y="'+(Y(u)+6)+'" text-anchor="end">'+u.toFixed(st<1?1:0)+'</text>';
+const tz=-new Date().getTimezoneOffset()*6e4,ms=[5,10,15,30,60,120,180].map(x=>x*6e4).find(x=>(t1-t0)/x<=6);
+for(let t=Math.ceil((t0+tz)/ms)*ms-tz;t<=t1;t+=ms)s+='<line class="gr" x1="'+X(t)+'" x2="'+X(t)+'" y1="'+T+'" y2="'+(H-B)+'"/><text x="'+X(t)+'" y="'+(H-8)+'" text-anchor="middle">'+hm(t)+'</text>';
+if(h.low_v>=lo&&h.low_v<=hi)s+='<line class="lw" x1="'+L+'" x2="'+(W-R)+'" y1="'+Y(h.low_v)+'" y2="'+Y(h.low_v)+'"/>';
+const runs=[];let r=[];for(const q of P){if(q[1])r.push(q);else if(r.length){runs.push(r);r=[]}}if(r.length)runs.push(r);
+for(const g of runs){if(g.length===1){const q=g[0];s+='<rect class="bd" x="'+(X(q[0])-2)+'" width="4" y="'+Y(q[1][2]/100)+'" height="'+Math.max(1,Y(q[1][0]/100)-Y(q[1][2]/100))+'"/><circle cx="'+X(q[0])+'" cy="'+Y(q[1][1]/100)+'" r="2.5" fill="var(--green)"/>';continue}
+s+='<polygon class="bd" points="'+g.map(q=>X(q[0])+','+Y(q[1][2]/100)).concat(g.slice().reverse().map(q=>X(q[0])+','+Y(q[1][0]/100))).join(' ')+'"/>';
+s+='<polyline class="mn" points="'+g.map(q=>X(q[0])+','+Y(q[1][1]/100)).join(' ')+'"/>'}
+$('sl').textContent=h.low_v.toFixed(1);c.innerHTML=s}
 function g(){fetch('/api/settings',{cache:'no-store'}).then(r=>r.json()).then(d=>{
 const ports={},order=[],wifi=[];for(const i of d.items){if(i.port){if(!ports[i.port]){ports[i.port]={};order.push(i.port)}ports[i.port][i.key[0]]=i}else wifi.push(i)}
 order.forEach((k,n)=>{frame[n]=ports[k].f.value});
@@ -116,11 +143,11 @@ const cell=(i,t)=>{const v=i.secret?'\u2022\u2022\u2022\u2022\u2022\u2022':esc(t
 let h=d.format_mismatch?'<p class="bad">Settings saved by another firmware version were ignored; the defaults are in use.</p>':'';
 h+='<table><tr><th>Port</th><th>Device</th><th>Baud</th><th>Frame</th><th>TCP</th></tr>';
 for(const k of order){const p=ports[k];h+='<tr><td>'+esc(k)+'</td><td>'+(p.p?cell(p.p,pn[p.p.value]):'')+'</td><td>'+cell(p.b)+'</td><td>'+cell(p.f)+'</td><td>'+cell(p.t)+'</td></tr>'}
-h+='</table><div class="grp">';for(const i of wifi){h+='<span>'+esc(i.name.charAt(0).toUpperCase()+i.name.slice(1))+'</span><div>'+cell(i)+'</div>'}
+h+='</table><div class="grp">';for(const i of wifi){const nm=(i.group&&i.group!=='Wi-Fi'?i.group+': ':'')+i.name;h+='<span>'+esc(nm.charAt(0).toUpperCase()+nm.slice(1))+'</span><div>'+cell(i)+'</div>'}
 const any=d.items.some(i=>i.origin!=='default');
 if(d.trial&&d.trial.active){$('trial').hidden=false;$('tt').textContent='New Wi-Fi or port settings are on trial for '+Math.ceil(d.trial.seconds_left/60)+' more min.'}
 $('set').innerHTML=h+'</div>'+(any?'<p class="key"><b class="chg">Amber</b>: saved on the bridge. <b class="bad">Red</b>: saved value is invalid, the default is in use.</p>':'')}).catch(()=>setTimeout(g,2000))}
-g();f();setInterval(f,2000);
+g();f();hg();setInterval(f,2000);setInterval(hg,30000);
 </script>)HTML";
 
 static String statusJson() {
@@ -165,7 +192,9 @@ static String statusJson() {
                  (unsigned long)p.shortWrites.load());
         out += part;
     }
-    out += "]}";
+    out += "]";
+    supplyStatusJson(out);  // Project: supply voltage (step 3d)
+    out += "}";
     return out;
 }
 
@@ -226,6 +255,8 @@ static String settingsJson() {
         out += s.key;
         out += "\",\"port\":";
         if (n >= 0) jsonString(out, kPortName[n]); else out += "null";
+        out += ",\"group\":";
+        jsonString(out, n >= 0 ? kPortName[n] : supplyKey(s) ? "Supply voltage" : "Wi-Fi");
         out += ",\"name\":";
         jsonString(out, settingName(s));
         out += ",\"secret\":";
@@ -271,12 +302,15 @@ static void statusTask(void*) {
     settingsRoutes();
     monitorRoutes();
     logRoutes();
+    supplyRoutes();
+    supplyBegin();
     statusServer.onNotFound([]() { statusServer.send(404, "text/plain", "Not found"); });
     statusServer.begin();
     for (;;) {
         statusServer.handleClient();
         settingsTrialCheck();
         logTick();
+        supplyTick();
         vTaskDelay(pdMS_TO_TICKS(5));
     }
 }

@@ -18,7 +18,7 @@
 #define SETTINGS_FORMAT 1  // stored key "v"; another value means: ignore everything stored
 
 enum SettingOrigin : uint8_t { ORIGIN_DEFAULT, ORIGIN_STORED, ORIGIN_INVALID };
-enum SettingType : uint8_t { T_PROFILE, T_BAUD, T_FRAME, T_TCP, T_SSID, T_NETPASS, T_APPASS, T_SECONDS, T_IP };
+enum SettingType : uint8_t { T_PROFILE, T_BAUD, T_FRAME, T_TCP, T_SSID, T_NETPASS, T_APPASS, T_SECONDS, T_IP, T_FLAG, T_CAL };
 
 // ---- device profiles (WP9) ------------------------------------------------------
 // A profile fills in the baud rate and frame of one instrument. It is offered only on
@@ -73,6 +73,9 @@ struct BridgeSettings {
     char hotspotSsid[33];
     char hotspotPass[64];
     uint32_t hotspotIp;    // IPAddress as uint32_t
+    uint8_t supplySensor;  // Project (step 3d): 1 = voltage divider fitted on SUPPLY_PIN
+    uint16_t supplyCal;    // calibration factor in thousandths, 1000 = 1.000
+    uint16_t supplyTcp;    // TCP port of the OpenVario voltage sentences
 };
 
 static BridgeSettings settings;  // active values, fixed after settingsLoad()
@@ -112,6 +115,11 @@ static SettingItem kSettings[] = {
     {"hs", T_SSID, settings.hotspotSsid, ORIGIN_DEFAULT},
     {"hp", T_APPASS, settings.hotspotPass, ORIGIN_DEFAULT},
     {"ha", T_IP, &settings.hotspotIp, ORIGIN_DEFAULT},
+#ifdef SUPPLY_SENSE
+    {"vs", T_FLAG, &settings.supplySensor, ORIGIN_DEFAULT},  // supply voltage (step 3d)
+    {"vc", T_CAL, &settings.supplyCal, ORIGIN_DEFAULT},
+    {"vt", T_TCP, &settings.supplyTcp, ORIGIN_DEFAULT},
+#endif
 };
 static constexpr size_t kSettingCount = sizeof(kSettings) / sizeof(kSettings[0]);
 
@@ -194,9 +202,17 @@ static bool validAt(SettingType type, const void* v, int portNum) {
             return t >= 5 && t <= 120;
         }
         case T_IP: return validIp(*(const uint32_t*)v);
+        case T_FLAG: return *(const uint8_t*)v <= 1;
+        case T_CAL: {
+            const uint16_t c = *(const uint16_t*)v;
+            return c >= 900 && c <= 1100;
+        }
     }
     return false;
 }
+
+// The group a value belongs to when it belongs to no port: "Wi-Fi" or "Supply voltage".
+static bool supplyKey(const SettingItem& s) { return s.key[0] == 'v'; }
 
 static bool validValue(const SettingItem& s, int portNum) { return validAt(s.type, s.value, portNum); }
 
@@ -235,6 +251,8 @@ static const char* settingName(const SettingItem& s) {
         case T_APPASS: return "hotspot password";
         case T_SECONDS: return "network join time, s";
         case T_IP: return "hotspot address";
+        case T_FLAG: return "sensor fitted";
+        case T_CAL: return "calibration factor";
     }
     return "";
 }
@@ -250,6 +268,8 @@ static void settingValueText(const SettingItem& s, char* out, size_t n) {
         case T_TCP:
         case T_SECONDS: snprintf(out, n, "%u", (unsigned)*(uint16_t*)s.value); break;
         case T_IP: snprintf(out, n, "%s", IPAddress(*(uint32_t*)s.value).toString().c_str()); break;
+        case T_FLAG: snprintf(out, n, "%s", *(uint8_t*)s.value ? "on" : "off"); break;
+        case T_CAL: snprintf(out, n, "%u.%03u", (unsigned)(*(uint16_t*)s.value / 1000), (unsigned)(*(uint16_t*)s.value % 1000)); break;
         case T_NETPASS:
         case T_APPASS: snprintf(out, n, "%s", ""); break;
         default: snprintf(out, n, "%s", (const char*)s.value); break;
@@ -281,6 +301,11 @@ static void fillDefaults(BridgeSettings& out) {
     out.hotspotPass[0] = 0;
 #endif
     out.hotspotIp = (uint32_t)STATIC_IP;
+#ifdef SUPPLY_SENSE
+    out.supplySensor = SUPPLY_SENSOR_FITTED;
+#endif
+    out.supplyCal = 1000;
+    out.supplyTcp = SUPPLY_TCP_PORT;
 }
 
 static size_t valueSize(SettingType t) {
@@ -288,7 +313,9 @@ static size_t valueSize(SettingType t) {
         case T_BAUD:
         case T_IP: return 4;
         case T_TCP:
-        case T_SECONDS: return 2;
+        case T_SECONDS:
+        case T_CAL: return 2;
+        case T_FLAG: return 1;
         case T_FRAME: return 4;
         case T_PROFILE: return 8;
         case T_SSID: return 33;
@@ -312,8 +339,13 @@ static bool readStored(Preferences& p, SettingItem& s) {
             return true;
         case T_TCP:
         case T_SECONDS:
+        case T_CAL:
             if (p.getType(s.key) != PT_U16) return false;
             *(uint16_t*)s.value = p.getUShort(s.key);
+            return true;
+        case T_FLAG:
+            if (p.getType(s.key) != PT_U8) return false;
+            *(uint8_t*)s.value = p.getUChar(s.key);
             return true;
         default: {  // text
             const size_t cap = valueSize(s.type);
@@ -324,24 +356,28 @@ static bool readStored(Preferences& p, SettingItem& s) {
     }
 }
 
+// TCP ports in use: the device ports, then the supply voltage port (index NUM_COM).
+#define TCP_LISTENERS (NUM_COM + 1)
+static uint16_t& tcpPortOf(BridgeSettings& b, int i) { return i < NUM_COM ? b.port[i].tcpPort : b.supplyTcp; }
+static int tcpListenerOf(const SettingItem& s) {  // index for T_TCP items
+    return s.value == &settings.supplyTcp ? NUM_COM : portOf(s);
+}
+
 // Two ports with the same TCP port cannot both listen: put the clashing ones back to their defaults (which never clash) and mark them.
 static void settingsCrossCheck(const BridgeSettings& defaults) {
-    for (int round = 0; round < NUM_COM; round++) {
+    for (int round = 0; round < TCP_LISTENERS; round++) {
         bool changed = false;
-        for (int a = 0; a < NUM_COM; a++) {
-            for (int b = a + 1; b < NUM_COM; b++) {
-                const PortSettings &pa = settings.port[a], &pb = settings.port[b];
-                const bool tcpClash = pa.tcpPort == pb.tcpPort;
-                if (!tcpClash) continue;
+        for (int a = 0; a < TCP_LISTENERS; a++) {
+            for (int b = a + 1; b < TCP_LISTENERS; b++) {
+                if (tcpPortOf(settings, a) != tcpPortOf(settings, b)) continue;
                 for (size_t i = 0; i < kSettingCount; i++) {
                     SettingItem& s = kSettings[i];
-                    const int n = portOf(s);
-                    if ((n != a && n != b) || s.origin != ORIGIN_STORED) continue;
-                    if (s.type == T_TCP) {
-                        restoreDefault(s, defaults);
-                        s.origin = ORIGIN_INVALID;
-                        changed = true;
-                    }
+                    if (s.type != T_TCP || s.origin != ORIGIN_STORED) continue;
+                    const int n = tcpListenerOf(s);
+                    if (n != a && n != b) continue;
+                    restoreDefault(s, defaults);
+                    s.origin = ORIGIN_INVALID;
+                    changed = true;
                 }
             }
         }
@@ -361,7 +397,9 @@ static void putValue(Preferences& p, SettingType type, const char* key, const vo
         case T_BAUD:
         case T_IP: p.putUInt(key, *(const uint32_t*)v); break;
         case T_TCP:
-        case T_SECONDS: p.putUShort(key, *(const uint16_t*)v); break;
+        case T_SECONDS:
+        case T_CAL: p.putUShort(key, *(const uint16_t*)v); break;
+        case T_FLAG: p.putUChar(key, *(const uint8_t*)v); break;
         default: p.putString(key, (const char*)v); break;
     }
 }
@@ -383,7 +421,9 @@ static void copyNamespace(const char* from, const char* to) {
                 case T_BAUD:
                 case T_IP: *(uint32_t*)buf = src.getUInt(s.key); break;
                 case T_TCP:
-                case T_SECONDS: *(uint16_t*)buf = src.getUShort(s.key); break;
+                case T_SECONDS:
+                case T_CAL: *(uint16_t*)buf = src.getUShort(s.key); break;
+                case T_FLAG: *(uint8_t*)buf = src.getUChar(s.key); break;
                 default: src.getString(s.key, (char*)buf, sizeof(buf)); break;
             }
             putValue(dst, s.type, s.key, buf);
@@ -531,7 +571,8 @@ static void settingsLoad() {
         if (s.origin != ORIGIN_INVALID) continue;
         invalid++;
         const int n = portOf(s);
-        LOGW(LOG_SETTINGS, "Stored %s%s%s is invalid; default in use", n >= 0 ? portNames[n] : "", n >= 0 ? " " : "", settingName(s));
+        const char* group = n >= 0 ? portNames[n] : supplyKey(s) ? "supply voltage" : "";
+        LOGW(LOG_SETTINGS, "Stored %s%s%s is invalid; default in use", group, *group ? " " : "", settingName(s));
     }
     LOGI(LOG_SETTINGS, "Settings loaded: %d changed, %d invalid", changed, invalid);
 #endif

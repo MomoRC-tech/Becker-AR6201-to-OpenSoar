@@ -24,6 +24,7 @@ STYLE = {
     "sgnd":   dict(color="#171717", dash="7 5", width=2.5, label="Signal ground"),
     "shield": dict(color="#9e9e9e", dash="2 4", width=2.5, label="Cable shield"),
     "wifi":   dict(color="#00897b", dash="8 5", width=2.5, label="Wi-Fi"),
+    "sense":  dict(color="#607d8b", dash=None, width=2.0, label="Supply voltage sense"),
 }
 INK, SUB = "#172b4d", "#475569"
 
@@ -103,8 +104,8 @@ class Svg:
 
 
 # ---------------------------------------------------------------- supply path
-s = Svg(1180, 390, "Bridge supply distribution",
-        "UBEC output through the existing ferrite to 5V-J, with separate branches to ESP32 and MAX490. ESP32 3.3 V feeds RS-232-mod2 then mod1, electrically in parallel; R-D takes 3.3 V from the mod2 L2 pad. Grounds are shown separately.")
+s = Svg(1180, 420, "Bridge supply distribution",
+        "UBEC output through the existing ferrite to 5V-J, with separate branches to ESP32 and MAX490. ESP32 3.3 V feeds RS-232-mod2 then mod1, electrically in parallel; R-D takes 3.3 V from the mod2 L2 pad. The 12 V input feeds the voltage divider R-V1 100 kOhm and R-V2 10 kOhm with C-V 100 nF to GPIO34. Grounds are shown separately.")
 for x,w,title,subs in [(20,120,"F1 fuse",["harness, supply end"]),(175,125,"12 V harness",["about 22 AWG"]),(335,80,"XT30",[]),(450,110,"UBEC",["5 V, 3 A"])]:
     s.box(x,45,w,56,title,subs)
 for x1,x2 in [(140,175),(300,335),(415,450)]:
@@ -114,7 +115,7 @@ s.box(660,195,170,56,"MAX490",["VCC"])
 s.line([(560,73),(660,73)],"v5");s.dot(610,73,"v5")
 s.line([(610,73),(610,223),(660,223)],"v5")
 s.tag(605,145,"5V-J","v5",anchor="end");s.tag(605,162,"separate branches","v5",anchor="end",bold=False,size=11)
-s.text(500,120,"Output leads through ferrite",size=11,color=SUB)
+s.text(515,120,"Output leads through ferrite",size=11,color=SUB)
 s.line([(830,80),(850,80),(850,35),(960,35)],"v33")
 # R-D takes 3.3 V from mod2 L2, the same net as R3.
 s.line([(1100,50),(1140,50),(1140,280),(960,280)],"v33");s.tag(1106,44,"L2","v33",anchor="start",size=11)
@@ -127,7 +128,20 @@ for name,top in [("RS-232-mod2",20),("RS-232-mod1",150)]:
     s.text(966,r3+4,"R3",size=11,color=SUB,anchor="start")
 s.resistor(1050,280,"v33");s.tag(1050,269,"R-D 10 kΩ","v33")
 s.dot(960,280,"v33");s.tag(950,284,"DI / GPIO17","v33",anchor="end",size=11)
-s.legend(340,["v12","v5","v33"],"RS-232 boards: 3.3 V, electrically parallel. GND-J is separate from 5V-J; see the ground tree.")
+# Supply voltage sense: R-V1 at the 12 V input, R-V2 and C-V at the ESP32 header (power.md, voltage sense).
+s.dot(420,73,"v12");s.line([(420,73),(420,153)],"v12");s.resistor(420,140,"v12",vertical=True)
+s.text(433,144,"R-V1 100 kΩ",anchor="start",size=11,color=SUB)
+s.line([(420,153),(420,300)],"sense");s.dot(420,215,"sense")
+s.resistor(420,255,"sense",vertical=True);s.text(433,259,"R-V2 10 kΩ",anchor="start",size=11,color=SUB)
+s.line([(420,215),(358,215),(358,251)],"sense");s.line([(358,259),(358,300)],"sense")
+for y in (251,259):
+    s.lines.append(f'<path d="M346 {y} H370" stroke="{STYLE["sense"]["color"]}" stroke-width="3"/>')
+s.text(341,259,"C-V 100 nF",anchor="end",size=11,color=SUB)
+s.ground(358,300);s.ground(420,300);s.line([(358,300),(420,300)],"gnd")
+s.text(389,330,"J2-14, GND-J",size=11,color=SUB)
+s.line([(420,215),(545,215)],"sense");s.arrow(545,215,"right","sense")
+s.tag(486,207,"GPIO34, J2-5","sense",size=11)
+s.legend(370,["v12","v5","v33","sense"],"RS-232 boards: 3.3 V, electrically parallel. GND-J is separate from 5V-J; see the ground tree.")
 s.save("power-supply.svg")
 
 # ------------------------------------------------------ internal ground tree

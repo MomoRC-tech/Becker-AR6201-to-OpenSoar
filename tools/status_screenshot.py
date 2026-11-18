@@ -5,9 +5,10 @@ masks private details, and renders them at phone width (390 px, 2x) in the
 light theme: docs/images/status-page.png ("All settings" open),
 docs/images/settings-page.png, docs/images/monitor-page.png and
 docs/images/log-page.png. The settings page login uses the OTA password from
-firmware/bridge/credentials.h. The monitor and the log show fixed demo data,
-never real data: real NMEA contains positions, the real log network names and
-addresses.
+firmware/bridge/credentials.h. The monitor, the log and the supply voltage
+(value and chart) show fixed demo data, never real data: real NMEA contains
+positions, the real log network names and addresses, and a bench board
+without the divider has no meaningful voltage.
 
     python tools/status_screenshot.py <bridge address>
 
@@ -23,6 +24,8 @@ import argparse
 import base64
 import datetime
 import json
+import math
+import random
 import re
 import shutil
 import subprocess
@@ -99,6 +102,22 @@ DEMO_LOG = [  # (start number, ms since start, level, source, message); start 2 
 ]
 
 
+def demo_supply() -> tuple[dict, dict]:
+    """A made-up five-hour day: charged battery on the ground, slow decline in flight,
+    short dips while the radio transmits."""
+    rnd = random.Random(7)
+    points = []
+    for k in range(300):
+        mean = 12.95 - 0.55 * k / 300 - 0.15 * math.exp(-k / 20) + rnd.uniform(-0.02, 0.02)
+        dip = 0.35 + rnd.uniform(0, 0.25) if rnd.random() < 0.18 else rnd.uniform(0.02, 0.06)
+        points.append([round((mean - dip) * 100), round(mean * 100), round((mean + rnd.uniform(0.02, 0.05)) * 100)])
+    history = {"sensor": True, "interval_s": 60, "low_v": 11.5, "age_s": 25, "current": [1235, 1240, 1244],
+               "points": points}
+    status = {"sensor": True, "volts": 12.41, "raw_volts": 12.38, "calibration": 1.002, "tcp_port": 4353,
+              "tcp_clients": 1, "sentences": 18000, "skipped": 0, "low_v": 11.5}
+    return status, history
+
+
 def demo_log(firmware: str) -> dict:
     start = int(DEMO_START.timestamp() * 1000)
     lines = [{"q": q, "b": b, "t": t, "c": start + t if b == 2 else 0, "l": l, "s": s, "m": m.format(fw=firmware)}
@@ -135,7 +154,7 @@ def browser() -> str:
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("host", help="bridge address")
-    ap.add_argument("--height", type=int, default=1010, help="page height in CSS pixels")
+    ap.add_argument("--height", type=int, default=1400, help="page height in CSS pixels")
     args = ap.parse_args()
 
     page = get(args.host, "/").decode("utf-8")
@@ -150,9 +169,12 @@ def main() -> None:
         if item["key"] == "ha":
             hotspot = item["value"]
     status["wifi"] = {"mode": "hotspot", "ip": hotspot, "stations": [-52]}
+    status["supply"], history = demo_supply()
+    status["uptime_s"] = 5 * 3600 + 25  # matches the five-hour demo chart
 
-    mock = ("<script>const _st=" + json.dumps(status) + ",_se=" + json.dumps(settings) +
-            ";window.fetch=u=>Promise.resolve({json:()=>Promise.resolve(u.includes('settings')?_se:_st)});</script>")
+    mock = ("<script>const _st=" + json.dumps(status) + ",_se=" + json.dumps(settings) + ",_su=" + json.dumps(history) +
+            ";window.fetch=u=>Promise.resolve({json:()=>Promise.resolve(u.includes('settings')?_se:"
+            "u.includes('supply')?_su:_st)});</script>")
     page = page.replace("/device.webp", "device.webp").replace("<main>", mock + "<main>", 1)
     page = page.replace('<section class="set"><details>', '<section class="set"><details open>', 1)
 
@@ -162,7 +184,7 @@ def main() -> None:
     mock = ("<script>const _se=" + json.dumps(settings) +
             ";window.fetch=u=>Promise.resolve({json:()=>Promise.resolve(_se)});</script>")
     form = form.replace("/device.webp", "device.webp").replace("<main>", mock + "<main>", 1)
-    shoot(form, image, IMAGES / "settings-page.png", 1640)
+    shoot(form, image, IMAGES / "settings-page.png", 2480)
 
     demo = demo_monitor()
     empty = {"seq": demo["seq"], "lost": False, "now": demo["now"], "chunks": []}
