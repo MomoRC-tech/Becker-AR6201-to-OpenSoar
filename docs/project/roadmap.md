@@ -7,7 +7,7 @@
 The single work queue: which work package comes next and what finishes it.
 
 > [!NOTE]
-> **Status:** WP3 continues with wiring and bench validation. In the [bridge firmware plan](#firmware-plan) (WP6), steps 1–3b are done and step 4 firmware is on the standalone ESP32. The wired checks for steps 4 and 5 remain. The software part of the device profiles (WP9) is brought forward and runs on the standalone ESP32. The driver packages (WP4, WP5) wait until WP3 is complete. Work outside the approved plan needs the owner's approval.
+> **Status:** WP3 continues with wiring and bench validation. In the [bridge firmware plan](#firmware-plan) (WP6), steps 1–3b are done and step 4 firmware is on the standalone ESP32. Step 3c, a web log, is added on the owner's request. The wired checks for steps 4 and 5 remain. The software part of the device profiles (WP9) is brought forward and runs on the standalone ESP32. The driver packages (WP4, WP5) wait until WP3 is complete. Work outside the approved plan needs the owner's approval.
 
 📑 **On this page:** <kbd>[1 · 📦 Work packages](#work-packages)</kbd> <kbd>[2 · 💻 Bridge firmware plan](#firmware-plan)</kbd> <kbd>[3 · 🏁 Milestones](#milestones)</kbd> <kbd>[4 · ✅ Test coverage for the software phase](#test-coverage)</kbd>
 
@@ -85,7 +85,7 @@ flowchart LR
 | Becker (RS-422) | Both ways on UART2 ↔ its own TCP port ([ADR-01](../design/architecture.md#adr-01)). TCP only, no Bluetooth on this port. One client owns the radio; a second is refused, so two devices with the Becker entry never fight over it. A dead owner is dropped: short TCP keepalive (about 15 s) on the radio connection only, and in hotspot mode the connections of a phone that leaves the Wi-Fi are closed at once, so OpenSoar gets back on after a Wi-Fi drop ([check](../research/reviews/2026-11-17-bridge-projects-check.md)). Writes are counted; on overflow or a stalled client the session closes instead of dropping bytes silently |
 | Status page | Read-only page on port 80 plus `/api/status` as JSON ([R14](../design/requirements.md#requirements)): firmware version, uptime, Wi-Fi mode and phone signal ([R10](../design/requirements.md#requirements)), and per device the baud rate, bytes, time since last data, clients and errors. Served from its own low-priority task, so it cannot hold up forwarding. Open to everyone on the bridge's Wi-Fi while it is read-only |
 | Wi-Fi and OTA | The loader's start-up (network, then hotspot) is added as a third Wi-Fi mode next to the two upstream modes and is the project setting; OTA gets its password ([ADR-05](../design/architecture.md#adr-05)) |
-| Log output | Upstream `DEBUG` switch off, because UART0 serves the Zander; the OTA messages follow the same switch. Diagnostics go to the status page |
+| Log output | Upstream `DEBUG` switch off, because UART0 serves the Zander. Log lines and the ESP32 system messages go to the [web log](#web-log) instead, never to a UART |
 | Kept from upstream | Everything except UDP, which the owner removed. Every further removal needs the owner's answer first; [selections](#upstream-features) below |
 | Kept simple | Arduino-ESP32 core libraries only; no file system; defaults in one header at build time, changes from the [settings page](#settings-page) stored on the ESP32; no protocol handling in the bridge |
 
@@ -115,6 +115,7 @@ Each step: build, upload over Wi-Fi, check, update the owning pages, commit.
 | 3 | ✅ **Status page.** Read-only page and JSON | Bench ESP32, phone | The page shows live counters on the phone; the step 2 check passes with the page open. Done (S107) |
 | 3a | ✅ **Settings page.** Stored settings and a password-protected page, [design](#settings-page). Four commits: settings module used at start-up; active values and their origin on the status page; settings page; bench checks | Bench ESP32, phone | With nothing stored, the step 2 loop test passes unchanged. A changed baud rate works after the restart and survives an OTA update. A wrong network falls back to the hotspot. An unconfirmed Wi-Fi, hotspot or port change reverts after 10 min. A wrong password saves nothing. Power loss during a save leaves the old or the new values, never a mix. Forwarding is unaffected with the page open. Reset restores the defaults. Done (S109–S111), except the power-loss check, which needs the owner to pull the USB cable during a save |
 | 3b | ✅ **Data monitor.** Live view of the bytes from and to each device on its own page `/monitor`, [design](#data-monitor) | Bench ESP32, phone, PC | Looped test data appears on the monitor in the right port and direction, NMEA as readable lines and radio bytes as hex; Pause and Download work; the loop test passes with the monitor open; nothing is collected while no one watches. Done (S112): byte-exact with the monitor open. Pause and Download still to try on a phone |
+| 3c | **Web log.** Event log page `/log` with level and source filters, Copy and Save, kept across a restart, [design](#web-log) | Bench ESP32, phone, PC | Start-up, Wi-Fi, app, radio and settings events appear with the right level and source; the filters, Copy and Save work on the phone; lines from before a restart stay readable with the reset reason; the loop test passes with the log open; nothing reaches a UART |
 | 4 | **Radio port.** Single owner with dead-owner check, counted writes. Client writes keep the core's blocking behaviour until step 5 has measured it. Standalone TCP ownership, clean close and byte-exact loopback checked (S114) | Wired bench bridge; [bus-level test](../hardware/wiring.md#bus-test): DE-9 breakout with the radio loop, USB RS-232 adapter; serial-feed mode in the test script | Through the radio loop every byte value, bursts and split writes return unchanged; the Zander and FLARM inputs pass the RS-232 feed; nothing arrives after a restart; a second client is refused; after the owner's Wi-Fi is cut, a new client gets the radio port within 45 s; navigation data keeps flowing |
 | 5 | **Bench acceptance.** One PC test script for the [bridge tests](#test-coverage): slow and vanishing clients, including a second phone that stays connected with its screen off or OpenSoar in the background; Wi-Fi loss and return; one-hour run on all three ports. With OpenSoar on the phone: bridge power cycle in network and hotspot mode, and a run with mobile data on | Finished bench bridge, phone with OpenSoar | No byte errors; a client that stops reading does not delay data on the other clients or ports, otherwise non-blocking client writes are added before aircraft use; after each power cycle OpenSoar gets data on all three ports again without a manual reconnect; with mobile data on, all three ports connect and stay connected; results recorded; bridge part of M4 |
 
@@ -160,6 +161,41 @@ The firmware alone does not tune the radio: OpenSoar's driver cuts frames that c
 | View | Per device the latest bytes in both directions, each line marked from or to the device with its time. Text (NMEA lines) or hex (radio frames), switchable; Pause; Download of the shown data as a text file, also for [protocol captures](open-items.md#software-and-acceptance) |
 | Collection | One ring buffer per device and direction, about 2 KB each, filled by the forwarding loop only while the page is open; no blocking, nothing written to flash |
 | Documentation | Screenshot with demo data only, since real data contains positions |
+
+<a id="web-log"></a>
+
+### 2.6 Web log (step 3c)
+
+> [!TIP]
+> **Selected:** a read-only log page built into the firmware like the data monitor ([R17](../design/requirements.md#requirements)). Not the WebSerial library: it is AGPL-3.0, needs a second web server next to port 80, and drops every line sent while no page is open, which loses the start-up.
+
+| Part | Plan |
+| --- | --- |
+| Page | `/log`, linked from the status page; no password, like the status page |
+| Levels | Error, Warning, Info, Debug |
+| Sources | Wi-Fi, Ports, Radio, Settings, System |
+| Views | **Important**: errors and warnings. **Events** (default): adds Info, for functional work. **All**: adds Debug, for debugging. One toggle per source on top. The browser remembers the choice |
+| Export | **Copy** puts the shown lines on the clipboard; **Save** downloads them as a text file. One click each, with a header line: firmware, save time and view. Each line carries the bridge time and the clock time estimated from the phone |
+| Collection | Always on, in RAM: the last 96 Error, Warning and Info lines and, separately, the last 48 Debug lines, so debug chatter cannot push out events. About 16 kB |
+| Restart | The lines survive a restart, crash or watchdog reset, but not a power cut. The page marks where the bridge restarted and why |
+| Forwarding loop | Logs only rare events (radio owner changes). Counters (receive errors, short writes, connected apps, data arriving) are compared once per second by the web task: a flood of receive errors makes one line per 5 s, not one per byte |
+| System messages | ESP32 system messages (ESP-IDF log, errors only in this core build) are redirected into the log, so none goes out of UART0 on the Zander transmit pin. Upstream debug prints go to Debug/System |
+| Not included | Commands typed into the page (as WebSerial's input line), text search. Each later only with its own approval |
+
+| Source | Level | Messages |
+| --- | --- | --- |
+| System | Info / Warning | Start with firmware version and reset reason; Warning after a crash, watchdog or brownout |
+| System | Info / Error | Firmware update started, received; Error when it fails, with the reason. Progress in 25 % steps as Debug |
+| System | Error / Warning | ESP32 system messages |
+| System | Debug | Every 60 s: free memory, lowest free memory, Wi-Fi signal. Upstream debug prints |
+| Wi-Fi | Info | Joining the network, connected with its address, hotspot open, a phone joined or left the hotspot |
+| Wi-Fi | Warning | Network not reached, hotspot instead; connection lost with the reason. Retries as Debug |
+| Ports | Info | App connected or disconnected per device, with the number of apps; data arriving, no data for 10 s |
+| Ports | Warning | Receive errors per 5 s with the kind (wrong baud or frame gives framing errors), short writes |
+| Radio | Info | App took the radio port, with its address; released (closed, phone left the hotspot, connection lost) |
+| Radio | Warning | Second app refused; session closed after a short write |
+| Settings | Info | Loaded with the number of changed values, saved, kept, reset |
+| Settings | Warning | Invalid stored value (default in use), settings from another firmware version, trial running or reverted, save refused, wrong password |
 
 ---
 
