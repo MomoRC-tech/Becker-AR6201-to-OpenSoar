@@ -7,7 +7,7 @@
 The single work queue: which work package comes next and what finishes it.
 
 > [!NOTE]
-> **Status:** WP3 continues with wiring and bench validation. In the [bridge firmware plan](#firmware-plan) (WP6), steps 1–3b are done and step 4 firmware is on the standalone ESP32. Step 3c, a web log, is done on the standalone ESP32. The wired checks for steps 4 and 5 remain. The software part of the device profiles (WP9) is brought forward and runs on the standalone ESP32. The driver packages (WP4, WP5) wait until WP3 is complete. Work outside the approved plan needs the owner's approval.
+> **Status:** WP3 continues with wiring and bench validation. In the [bridge firmware plan](#firmware-plan) (WP6), steps 1–3b are done and step 4 firmware is on the standalone ESP32. Step 3c, a web log, is done on the standalone ESP32. Step 3d, the [supply voltage](#supply-voltage), is planned next on the standalone ESP32. The wired checks for steps 4 and 5 remain. The software part of the device profiles (WP9) is brought forward and runs on the standalone ESP32. The driver packages (WP4, WP5) wait until WP3 is complete. Work outside the approved plan needs the owner's approval.
 
 📑 **On this page:** <kbd>[1 · 📦 Work packages](#work-packages)</kbd> <kbd>[2 · 💻 Bridge firmware plan](#firmware-plan)</kbd> <kbd>[3 · 🏁 Milestones](#milestones)</kbd> <kbd>[4 · ✅ Test coverage for the software phase](#test-coverage)</kbd>
 
@@ -21,7 +21,7 @@ Related: ❓ [Open items](open-items.md) · 🎯 [Requirements](../design/requir
 
 | Package | Status | Next step | Done when |
 | --- | --- | --- | --- |
-| **WP3 Hardware** | 🟡 **Current focus** — [housing v16](../hardware/housing.md) accepted for the bench prototype (S93); wiring and validation remain | Start with [bench bring-up](../hardware/wiring.md#bring-up): verify the UBEC and identify the delivered boards before soldering. Run the [housing fit checks](open-items.md#housing) during assembly; fit the harness before cutting. Keep the [schematic](../hardware/schematic.md) in step with the pin tables ([ADR-06](../design/architecture.md#adr-06)). | Wiring design complete, bench bridge built and all bench checks passed |
+| **WP3 Hardware** | 🟡 **Current focus** — [housing v16](../hardware/housing.md) accepted for the bench prototype (S93); wiring and validation remain | Start with [bench bring-up](../hardware/wiring.md#bring-up): verify the UBEC and identify the delivered boards before soldering. Run the [housing fit checks](open-items.md#housing) during assembly; fit the harness before cutting. Include the [supply voltage divider](../hardware/power.md#voltage-sense). Keep the [schematic](../hardware/schematic.md) in step with the pin tables ([ADR-06](../design/architecture.md#adr-06)). | Wiring design complete, bench bridge built and all bench checks passed |
 | WP1 Installed equipment | 🟡 Photos and equipment report reviewed ([review](../research/reviews/2026-11-09-installation-claims.md)) | Get the [installed-equipment facts](open-items.md#installed-equipment) from Tom | Inventory, connector map and navigation baseline complete |
 | WP0 Documentation | ✅ Done | — | — |
 | WP2 Interfaces and protocol | ⏸️ Driver research done ([Becker driver](../research/becker-driver.md)) | Matching radio protocol reference or independent captures | Manual, settings, framing and reply rules confirmed |
@@ -73,6 +73,8 @@ flowchart LR
     R[📻 Becker] <-->|UART2 both ways, RS-422| B
     B[🧠 Bridge firmware] <-->|TCP, several clients| O[📱 OpenSoar]
     B <-->|TCP, one owner| O
+    V[🔋 12 V supply] -->|divider, GPIO34| B
+    B -->|TCP, voltage| O
     B -->|HTTP status page| W[🌐 Browser]
 ```
 
@@ -81,14 +83,14 @@ flowchart LR
 | Zander, FLARM | Both directions stay in the firmware, as upstream: several TCP clients. The transmit direction uses GPIO33 (Zander) and GPIO27 (FLARM), the pins [signal wiring](../hardware/wiring.md#overview) leaves free. No return line is wired today; one can be added later without a firmware change |
 | Board | The bench ESP32, updated over Wi-Fi; no second board |
 | Hotspot address | 10.10.10.10, as on today's bridge, so the OpenSoar device entries fit both bridges ([ADR-05](../design/architecture.md#adr-05)) |
-| TCP ports | Today's ports, so the OpenSoar device entries stay the same: Zander 10110, FLARM 2000, Becker 4352 ([configuration](existing-installation.md#configuration)) |
+| TCP ports | Today's ports, so the OpenSoar device entries stay the same: Zander 10110, FLARM 2000, Becker 4352 ([configuration](existing-installation.md#configuration)). Supply voltage 4353, new ([step 3d](#supply-voltage)) |
 | Becker (RS-422) | Both ways on UART2 ↔ its own TCP port ([ADR-01](../design/architecture.md#adr-01)). TCP only, no Bluetooth on this port. One client owns the radio; a second is refused, so two devices with the Becker entry never fight over it. A dead owner is dropped: short TCP keepalive (about 15 s) on the radio connection only, and in hotspot mode the connections of a phone that leaves the Wi-Fi are closed at once, so OpenSoar gets back on after a Wi-Fi drop ([check](../research/reviews/2026-11-17-bridge-projects-check.md)). Writes are counted; on overflow or a stalled client the session closes instead of dropping bytes silently |
 | Slow apps | No app can hold up the bridge: writes to apps never wait (S119). A Zander or FLARM app that falls behind, such as a phone in a Wi-Fi gap or with OpenSoar in the background, skips the data it cannot take and keeps its connection, so OpenSoar gets current data again as soon as it reads. Only an app that takes no data at all for 60 s is closed, as a dead connection. The radio port closes its session instead of losing frame bytes |
 | Status page | Read-only page on port 80 plus `/api/status` as JSON ([R14](../design/requirements.md#requirements)): firmware version, uptime, Wi-Fi mode and phone signal ([R10](../design/requirements.md#requirements)), and per device the baud rate, bytes, time since last data, clients and errors. Served from its own low-priority task, so it cannot hold up forwarding. Open to everyone on the bridge's Wi-Fi while it is read-only |
 | Wi-Fi and OTA | The loader's start-up (network, then hotspot) is added as a third Wi-Fi mode next to the two upstream modes and is the project setting; OTA gets its password ([ADR-05](../design/architecture.md#adr-05)) |
 | Log output | Upstream `DEBUG` switch off, because UART0 serves the Zander. Log lines and the ESP32 system messages go to the [web log](#web-log) instead, never to a UART |
 | Kept from upstream | Everything except UDP, which the owner removed. Every further removal needs the owner's answer first; [selections](#upstream-features) below |
-| Kept simple | Arduino-ESP32 core libraries only; no file system; defaults in one header at build time, changes from the [settings page](#settings-page) stored on the ESP32; no protocol handling in the bridge |
+| Kept simple | Arduino-ESP32 core libraries only; no file system; defaults in one header at build time, changes from the [settings page](#settings-page) stored on the ESP32; no protocol handling for forwarded data; the bridge's own voltage reading goes out on its own port ([ADR-07](../design/architecture.md#adr-07)) |
 
 <a id="upstream-features"></a>
 
@@ -117,6 +119,7 @@ Each step: build, upload over Wi-Fi, check, update the owning pages, commit.
 | 3a | ✅ **Settings page.** Stored settings and a password-protected page, [design](#settings-page). Four commits: settings module used at start-up; active values and their origin on the status page; settings page; bench checks | Bench ESP32, phone | With nothing stored, the step 2 loop test passes unchanged. A changed baud rate works after the restart and survives an OTA update. A wrong network falls back to the hotspot. An unconfirmed Wi-Fi, hotspot or port change reverts after 10 min. A wrong password saves nothing. Power loss during a save leaves the old or the new values, never a mix. Forwarding is unaffected with the page open. Reset restores the defaults. Done (S109–S111), except the power-loss check, which needs the owner to pull the USB cable during a save |
 | 3b | ✅ **Data monitor.** Live view of the bytes from and to each device on its own page `/monitor`, [design](#data-monitor) | Bench ESP32, phone, PC | Looped test data appears on the monitor in the right port and direction, NMEA as readable lines and radio bytes as hex; Pause and Download work; the loop test passes with the monitor open; nothing is collected while no one watches. Done (S112): byte-exact with the monitor open. Pause and Download still to try on a phone |
 | 3c | ✅ **Web log.** Event log page `/log` with level and source filters, Copy and Save, kept across a restart, [design](#web-log) | Bench ESP32, phone, PC | Start-up, Wi-Fi, app, radio and settings events appear with the right level and source; the filters, Copy and Save work on the phone; lines from before a restart stay readable with the reset reason; the loop test passes with the log open; nothing reaches a UART. Done (S116–S118); Copy and Save still to try on a phone |
+| 3d | **Supply voltage.** Measure the 12 V input and send it to OpenSoar on its own port, [design](#supply-voltage) | Standalone ESP32 with the divider on a breadboard, bench supply, multimeter, phone with OpenSoar | Readings match the meter at 7, 12, 14.6 and 20 V within about ±0.1 V after calibration (error table recorded); OpenSoar's OpenVario device on port 4353 shows the voltage; with the sensor switched off nothing is sent; calibration survives a restart and an OTA update; the loop test passes with the voltage port connected; new page screenshots |
 | 4 | **Radio port.** Single owner with dead-owner check, counted writes. Standalone TCP ownership, clean close and byte-exact loopback checked (S114) | Wired bench bridge; [bus-level test](../hardware/wiring.md#bus-test): DE-9 breakout with the radio loop, USB RS-232 adapter; serial-feed mode in the test script | Through the radio loop every byte value, bursts and split writes return unchanged; the Zander and FLARM inputs pass the RS-232 feed; nothing arrives after a restart; a second client is refused; after the owner's Wi-Fi is cut, a new client gets the radio port within 45 s; navigation data keeps flowing |
 | 5 | **Bench acceptance.** One PC test script for the [bridge tests](#test-coverage): slow and vanishing clients, including a second phone that stays connected with its screen off or OpenSoar in the background; Wi-Fi loss and return; one-hour run on all three ports. With OpenSoar on the phone: bridge power cycle in network and hotspot mode, and a run with mobile data on | Finished bench bridge, phone with OpenSoar | No byte errors; a client that stops reading does not delay data on the other clients or ports, a slow app keeps its connection ([slow apps](#firmware-plan), firmware 0.5); after each power cycle OpenSoar gets data on all three ports again without a manual reconnect; with mobile data on, all three ports connect and stay connected; results recorded; bridge part of M4 |
 
@@ -198,6 +201,30 @@ The firmware alone does not tune the radio: OpenSoar's driver cuts frames that c
 | Radio | Warning | Second app refused; session closed after a short write |
 | Settings | Info | Loaded with the number of changed values, saved, kept, reset |
 | Settings | Warning | Invalid stored value (default in use), settings from another firmware version, trial running or reverted, save refused, wrong password |
+
+<a id="supply-voltage"></a>
+
+### 2.7 Supply voltage (step 3d)
+
+> [!TIP]
+> **Selected:** the ESP32 measures its own 12 V input and sends it to OpenSoar as an OpenVario sentence on a fourth TCP port ([R18](../design/requirements.md#requirements), [ADR-07](../design/architecture.md#adr-07)). Circuit: [supply voltage sense](../hardware/power.md#voltage-sense).
+
+| Part | Plan |
+| --- | --- |
+| Reading | GPIO34 at 11 dB attenuation with the core's calibrated millivolt reading. Read in the low-priority web task, never in the forwarding loop: 16 samples every 100 ms, averaged over 1 s |
+| Value | Pin voltage × 11 × calibration factor |
+| Calibration | One factor, default 1.000. On the settings page, enter the multimeter reading at the XT30; the bridge stores the resulting factor. Accepted only between 0.90 and 1.10 |
+| Sensor switch | Setting "Voltage sensor fitted", default on in `config.h`. Off on a board without the divider, because the open pin reads noise |
+| Plausible range | 5–30 V. Outside it, or with the sensor off: no sentence, and the status page shows "no reading" |
+| OpenSoar output | `$POV,V,12.62*hh` once per second on port 4353, several clients, the same non-blocking writes as the other ports ([slow apps](#firmware-plan)). Data from OpenSoar on this port is read and discarded |
+| Status page and JSON | Voltage, calibration default or changed, sensor on or off, clients on port 4353 |
+| Settings page | Sensor switch, calibration and port 4353 with the other port rules |
+| Web log | Source System. Info with the first reading after start. Warning when the voltage stays below 11.5 V for 10 s; Info when it is back above 12.0 V. Thresholds in `config.h` |
+| Scope | ESP32 build only, like the other project additions |
+
+**In OpenSoar:** add a device "OpenVario", TCP client `10.10.10.10:4353`. The value shows in the System status page as "Supply voltage" and in the vario display's battery line. On Android, the "Battery" InfoBox shows it only while the phone is charging; otherwise it shows the phone's battery (S122).
+
+**Hardware tasks (WP3):** fit R-V1, R-V2 and C-V with the harness; add them to the supply diagram (`tools/diagrams.py`) and the [KiCad schematic](../hardware/schematic.md) ([ADR-06](../design/architecture.md#adr-06)); check the wired bridge in [bring-up step 13](../hardware/wiring.md#bring-up). The housing CAD changes only if the fit check needs it.
 
 ---
 

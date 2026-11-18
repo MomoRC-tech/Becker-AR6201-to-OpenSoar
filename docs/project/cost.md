@@ -26,7 +26,7 @@ All amounts are in EUR; each row is the total for the quantity used in one bridg
 | MAX490 RS-422 board | €8.30 |
 | Hobbywing UBEC 3A | €6.70 |
 | **Subtotal: electronics + power** | **€31.50** |
-| Resistors | €0.00 |
+| Resistors and capacitor | €0.00 |
 | Inline fuse holder | €2.50 |
 | XT30 connector pair | €1.00 |
 | D-Sub connector pair | €2.60 |

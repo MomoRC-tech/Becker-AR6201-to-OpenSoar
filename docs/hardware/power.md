@@ -7,9 +7,9 @@
 How the bridge is supplied and grounded, where ground loops close, which currents each wire carries, and what a broken wire does.
 
 > [!NOTE]
-> **Status:** bench design. Separate central 5 V/GND distribution and the ESP32-fed RS-232 supply chain are selected; all currents are datasheet values or estimates, nothing is measured yet. Open checks: [bench hardware](../project/open-items.md#bench-hardware).
+> **Status:** bench design. Separate central 5 V/GND distribution, the ESP32-fed RS-232 supply chain and the supply-voltage divider are selected; all currents are datasheet values or estimates, nothing is measured yet. Open checks: [bench hardware](../project/open-items.md#bench-hardware).
 
-📑 **On this page:** <kbd>[1 · 🔋 Supply path](#supply)</kbd> <kbd>[2 · ⏚ Grounding and loops](#ground)</kbd> <kbd>[3 · 📊 Current assumptions](#currents)</kbd> <kbd>[4 · ✂️ Wire-break cases](#wire-breaks)</kbd> <kbd>[5 · 🛡️ Protection](#protection)</kbd>
+📑 **On this page:** <kbd>[1 · 🔋 Supply path](#supply)</kbd> <kbd>[2 · ⏚ Grounding and loops](#ground)</kbd> <kbd>[3 · 📊 Current assumptions](#currents)</kbd> <kbd>[4 · ✂️ Wire-break cases](#wire-breaks)</kbd> <kbd>[5 · 🛡️ Protection](#protection)</kbd> <kbd>[6 · 🔎 Supply voltage sense](#voltage-sense)</kbd>
 
 Related: 🔌 [Signal wiring](wiring.md) · 🧱 [Modules and parts](modules.md) · 📚 [Sources](../research/sources.md)
 
@@ -111,14 +111,14 @@ What a single broken wire does:
 | Broken wire | Effect | Risk |
 | --- | --- | --- |
 | Radio supply ground (P1-13/25) | The radio's whole return current, up to 3 A (S10), flows through J1-21, GND-J, the UBEC ground path and the bridge ground wire. The radio keeps working. | 🔴 Overheated wiring; see the warning below |
-| Bridge supply ground | The bridge's ~0.15 A returns through J1-21 and the Zander and FLARM grounds. The bridge keeps working. | 🟡 Low; [ground check](wiring.md#bring-up) in step 13 catches a poor connection |
+| Bridge supply ground | The bridge's ~0.15 A returns through J1-21 and the Zander and FLARM grounds. The bridge keeps working. | 🟡 Low; [ground check](wiring.md#bring-up) in step 14 catches a poor connection |
 | Zander or FLARM supply ground | That device's supply current returns through its RS-232 ground and the bridge. | 🟡 Low; small currents |
 | Bridge +12 V or F1 | The bridge switches off; its unpowered interfaces do not feed the devices. | 🟢 None |
 | One signal ground (J1-21, Zander, FLARM) | The link stays referenced through the supply grounds. | 🟢 None |
 | Instrument-ground wire (DE-9 bridge → GND-J) | All three links lose their bridge-side signal ground at once and stay referenced through the supply grounds. | 🟢 None; bring-up step 8 catches it |
 
 > [!WARNING]
-> The direct J1-21 wire depends on the radio's own supply ground. If P1-13/25 lost their connection, up to 3 A of radio current would run through the instrument-ground wiring, junction and UBEC return path without any visible symptom. Size and verify the whole return path for this case; an internal ground junction does not provide isolation. Make sure both P1 ground pins are wired to the ground point and check them before connecting the bridge ([ground check](wiring.md#bring-up), step 13).
+> The direct J1-21 wire depends on the radio's own supply ground. If P1-13/25 lost their connection, up to 3 A of radio current would run through the instrument-ground wiring, junction and UBEC return path without any visible symptom. Size and verify the whole return path for this case; an internal ground junction does not provide isolation. Make sure both P1 ground pins are wired to the ground point and check them before connecting the bridge ([ground check](wiring.md#bring-up), step 14).
 
 ---
 
@@ -133,6 +133,44 @@ What a single broken wire does:
 > The wire between the supply connection and F1 is unprotected. Fit F1 directly at the supply connection and keep that wire as short as possible; agree the supply-cable details before connecting the bridge to the aircraft supply.
 
 Size F1 using the measured running current and switch-on inrush, the wire's allowable current and the fuse's time-current curve and DC interrupting rating ([fuse selection, S31](../research/sources.md#source-register)). The load estimate alone does not establish a fuse rating.
+
+---
+
+<a id="voltage-sense"></a>
+
+## 6. 🔎 Supply voltage sense
+
+> [!TIP]
+> **Selected:** a 100 kΩ / 10 kΩ divider from the 12 V input to GPIO34, read by the ESP32's own ADC ([ADR-07](../design/architecture.md#adr-07)). The 100 kΩ sits right at the 12 V tap, so the wire across the box never carries more than about 0.1 mA.
+
+| Part | From | To | Where |
+| --- | --- | --- | --- |
+| R-V1 100 kΩ | XT30 + (12 V input, after F1) | Sense wire | At the XT30 + solder cup or on the UBEC red input lead right behind it, in heat-shrink |
+| Sense wire | R-V1 | GPIO34 ([J2-5](modules.md#esp32-pinout)) | 26 AWG, routed beside the existing wires |
+| R-V2 10 kΩ | J2-5 | J2-14 (GND-J) | Along the header at pin-top level, insulated leads |
+| C-V 100 nF | J2-5 | J2-14 | In parallel with R-V2, at the pin |
+
+GPIO34 is on ADC1, which works while Wi-Fi is on; ADC2 is used by Wi-Fi (S121). It is an input-only pin with no internal pull resistor.
+
+### 6.1 Divider
+
+```math
+V_{\text{GPIO34}} = V_{\text{in}} \cdot \frac{10\text{ k}\Omega}{100\text{ k}\Omega + 10\text{ k}\Omega} = \frac{V_{\text{in}}}{11}
+```
+
+| Input | GPIO34 | Note |
+| ---: | ---: | --- |
+| 5.5 V | 0.50 V | UBEC minimum input (S14) |
+| 12 V | 1.09 V | — |
+| 14.6 V | 1.33 V | Battery on charge (estimate) |
+| 26 V | 2.36 V | UBEC maximum input (S14); still inside the ADC's specified 150–2450 mV range (S121) |
+| 39.6 V | 3.60 V | Pin limit, VDD + 0.3 V (S121) |
+
+- **Sense current:** about 0.11 mA at 12 V; 1.3 mW in R-V1.
+- **Filter:** 9.1 kΩ source resistance with 100 nF gives about 1 ms. Espressif specifies the ADC with an external 100 nF capacitor (S121).
+- **ESP32 unpowered with 12 V present** (for example a UBEC fault): R-V1 limits the current into the pin to about 0.1 mA.
+- **Accuracy:** the ADC's own error is up to ±60 mV at the pin after the factory calibration (S121), ±0.66 V at the input. With 1 % resistors the ratio adds up to about ±2 %. A one-point calibration against a multimeter on the [settings page](../project/roadmap.md#supply-voltage) removes most of both; about ±0.1 V is expected (estimate), measured in bring-up [step 13](wiring.md#bring-up).
+- **What it shows:** the voltage at the bridge's input, a few millivolts below the aircraft supply at F1 (estimate). Battery sag while the radio transmits shows up, since the radio's current does not flow through the bridge's supply wire.
 
 ---
 

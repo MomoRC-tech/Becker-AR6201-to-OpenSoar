@@ -40,7 +40,7 @@ The AZ-Delivery board follows Espressif's DevKitC V4 layout (S32). View from the
 | 2 | `EN` | — | `IO23` | — |
 | 3 | `VP` | — | `IO22` | — |
 | 4 | `VN` | — | `TX` | USB serial (boot only) |
-| 5 | `IO34` | — | `RX` | USB serial (boot only) |
+| 5 | `IO34` | **Supply voltage sense** via R-V1, R-V2 and C-V to J2-14 ([circuit](power.md#voltage-sense)) | `RX` | USB serial (boot only) |
 | 6 | `IO35` | — | `IO21` | — |
 | 7 | `IO32` | **Zander RX** (UART0) | `GND` | **Ground: R-B2** |
 | 8 | `IO33` | Not connected | `IO19` | — |
@@ -140,12 +140,14 @@ For one bridge, bridge end only — the device-side connectors and harness alrea
 | 4 | PS1 | 1 | Hobbywing UBEC 3A (2–6S), 86010010, set to 5 V | [Power](power.md#supply) |
 | 5 | R-B1, R-B2 | 1 each | 2.2 kΩ and 3.3 kΩ resistors, 0.125 W, DIN0204 axial (body about Ø1.6 × 3.6 mm) | Divider: R-B1 in the RO wire at J3-12, R-B2 across J3-12 and J3-7 |
 | 6 | R-D | 1 | 10 kΩ resistor, 0.125 W, DIN0204 axial | Pull-up J3-11 (GPIO17, DI) → RS-232-mod2 L2 (3V3); quiet radio line during boot |
-| 7 | F1 | 1 | Supply fuse in an inline holder at the supply end of the 12 V harness; specification tracked in [open items](../project/open-items.md#bench-hardware) | [Power](power.md#supply) |
-| 8 | — | existing | Becker harness, reused from its loose bridge-side ends | Check against [Becker wiring](wiring.md#becker); [inventory](../project/existing-installation.md#equipment) |
-| 9 | — | 1 pair | Standard XT30 male housing connector and mating female harness connector | [Power](power.md#supply), [mounting](housing.md#connectors) |
-| 10 | — | 1 pair | DE-9 male housing connector and female cable connector, solder cups and screw locking, with cable backshell and strain relief | [Combined instrument connector](wiring.md#overview) |
-| 11 | — | as needed | Hookup wire 26 AWG, stranded, silver-plated, PTFE-insulated (typical OD 0.9–1.0 mm) in violet, blue and black | Signals, RS-232 3.3 V/ground chain, resistor leads ([colours](housing.md#internal-routing)) |
-| 12 | — | as needed | Hookup wire 22 AWG, stranded, silver-plated, PTFE-insulated (typical OD about 1.3 mm) in orange and black | Power branches from the junctions and the instrument-ground wire; the UBEC's own input and output leads are used where they reach |
+| 7 | R-V1, R-V2 | 1 each | 100 kΩ and 10 kΩ resistors, 1 %, 0.125 W, DIN0204 axial | Supply voltage divider: R-V1 at the 12 V tap, R-V2 across J2-5 and J2-14 ([circuit](power.md#voltage-sense)) |
+| 8 | C-V | 1 | 100 nF ceramic capacitor, X7R, 50 V, leaded | ADC filter across J2-5 and J2-14 |
+| 9 | F1 | 1 | Supply fuse in an inline holder at the supply end of the 12 V harness; specification tracked in [open items](../project/open-items.md#bench-hardware) | [Power](power.md#supply) |
+| 10 | — | existing | Becker harness, reused from its loose bridge-side ends | Check against [Becker wiring](wiring.md#becker); [inventory](../project/existing-installation.md#equipment) |
+| 11 | — | 1 pair | Standard XT30 male housing connector and mating female harness connector | [Power](power.md#supply), [mounting](housing.md#connectors) |
+| 12 | — | 1 pair | DE-9 male housing connector and female cable connector, solder cups and screw locking, with cable backshell and strain relief | [Combined instrument connector](wiring.md#overview) |
+| 13 | — | as needed | Hookup wire 26 AWG, stranded, silver-plated, PTFE-insulated (typical OD 0.9–1.0 mm) in violet, blue and black | Signals, RS-232 3.3 V/ground chain, resistor leads ([colours](housing.md#internal-routing)) |
+| 14 | — | as needed | Hookup wire 22 AWG, stranded, silver-plated, PTFE-insulated (typical OD about 1.3 mm) in orange and black | Power branches from the junctions and the instrument-ground wire; the UBEC's own input and output leads are used where they reach |
 
 ---
 

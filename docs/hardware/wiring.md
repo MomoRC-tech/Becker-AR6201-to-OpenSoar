@@ -213,12 +213,18 @@ Feed one input at a time. Zander and FLARM use the same baud rate, so swapped pi
 - [ ] **11.** Zander input: adapter TXD on terminal 1, GND on 6 and 7. Bytes sent at the Zander baud rate arrive unchanged on the Zander port ([ports](../../firmware/bridge/README.md#project-settings)) over TCP; nothing arrives on the FLARM port.
 - [ ] **12.** FLARM input: move TXD to terminal 2. Bytes arrive on the FLARM port only.
 
-### 5.2 Aircraft integration
+### 5.2 Supply voltage sense
+
+With firmware step 3d ([supply voltage](../project/roadmap.md#supply-voltage)) and the [divider](power.md#voltage-sense) fitted:
+
+- [ ] **13.** Supply the bridge at 12.5 V, enter the multimeter reading at the XT30 on the settings page to calibrate, then compare the status page with the meter at 7, 12, 14.6 and 20 V. Record the errors; the plan expects about ±0.1 V.
+
+### 5.3 Aircraft integration
 
 After bench validation and separate approval ([work packages](../project/roadmap.md#work-packages)):
 
-- [ ] **13.** Before plugging in J1, check that the bridge ground and the radio's P1-13 and P1-25 each have low resistance (well under 1 Ω) to the common ground point ([why](power.md#wire-breaks)).
-- [ ] **14.** Listen for radio noise and check squelch with the bridge on and off.
+- [ ] **14.** Before plugging in J1, check that the bridge ground and the radio's P1-13 and P1-25 each have low resistance (well under 1 Ω) to the common ground point ([why](power.md#wire-breaks)).
+- [ ] **15.** Listen for radio noise and check squelch with the bridge on and off.
 
 ---
 

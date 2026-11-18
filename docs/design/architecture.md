@@ -7,7 +7,7 @@
 How the bridge is split up, which hardware is selected, and the decisions behind it.
 
 > [!NOTE]
-> **Status:** hardware design (ADR-04), update path (ADR-05) and schematic role (ADR-06) selected; radio path (ADR-01) and bridge firmware baseline (ADR-02) selected. Building and testing are tracked in the [roadmap](../project/roadmap.md).
+> **Status:** hardware design (ADR-04), update path (ADR-05) and schematic role (ADR-06) selected; radio path (ADR-01), bridge firmware baseline (ADR-02) and supply-voltage report (ADR-07) selected. Building and testing are tracked in the [roadmap](../project/roadmap.md).
 
 📑 **On this page:** <kbd>[1 · 🧩 Who does what](#responsibilities)</kbd> <kbd>[2 · 🔧 Hardware](#hardware)</kbd> <kbd>[3 · 📝 Decisions](#decisions)</kbd>
 
@@ -22,7 +22,7 @@ Related: 🔌 [Signal wiring](../hardware/wiring.md) · ⚡ [Power and grounding
 | Component | Responsibility |
 | --- | --- |
 | 📱 OpenSoar | Understands the radio protocol: builds frames, converts channels, tracks radio state and replies |
-| 🧠 ESP32 bridge | Forwards bytes unchanged; keeps radio, navigation and diagnostic traffic on separate paths |
+| 🧠 ESP32 bridge | Forwards bytes unchanged; keeps radio, navigation and diagnostic traffic on separate paths; reports its own supply voltage on a separate port ([ADR-07](#adr-07)) |
 | 📡📈 Navigation | FLARM and Zander send data to the bridge; no return lines to either instrument |
 | 📻 Radio interface | ESP32 UART ↔ 5 V MAX490 RS-422 board ([details](../hardware/modules.md#rs422-board)) |
 
@@ -39,6 +39,7 @@ Related: 🔌 [Signal wiring](../hardware/wiring.md) · ⚡ [Power and grounding
 | Becker | 5 V MAX490 RS-422 board; receiver output to the ESP32 through a 2.2 kΩ / 3.3 kΩ divider |
 | UARTs | UART0 (remapped) Zander, UART1 FLARM, UART2 Becker |
 | Supply | 12 V battery → supply fuse → Hobbywing UBEC at 5 V → ESP32 and MAX490; ESP32 3.3 V → RS-232 modules |
+| Supply voltage sense | 100 kΩ / 10 kΩ divider from the 12 V input to GPIO34 (ADC1) ([circuit](../hardware/power.md#voltage-sense)) |
 | Firmware | Yuri ESP-Serial-Bridge 130f731 as baseline ([ADR-02](#adr-02)), built in the steps of the [firmware plan](../project/roadmap.md#firmware-plan) |
 | OpenSoar review baseline | 7.46.26, `b2e745cfddfe0150f6ed7db467ac18c321b38d01` (S09); the installed build is not known yet |
 
@@ -59,6 +60,7 @@ Pin-by-pin details: [signal wiring](../hardware/wiring.md) and [power and ground
 | [ADR-04](#adr-04) | Bench hardware and power path | ✅ Selected |
 | [ADR-05](#adr-05) | Update path and Wi-Fi start-up | ✅ Selected |
 | [ADR-06](#adr-06) | KiCad schematic as a derived view of the pin tables | ✅ Selected |
+| [ADR-07](#adr-07) | Supply voltage as OpenVario data on its own port | ✅ Selected |
 
 <a id="adr-00"></a>
 
@@ -143,6 +145,26 @@ Bench step: [bring-up](../hardware/wiring.md#bring-up) step 3.
 | Module symbols | One project library; pin names as on the delivered boards' silkscreen ([modules](../hardware/modules.md)) |
 | Check after each change | ERC with zero errors; export the netlist and compare it with the tables, net by net, using a checklist per sheet. A comparison script only if manual checks become a burden |
 | Not committed | KiCad local files: `.kicad_prl`, `*-backups/`, `fp-info-cache`, `*.lck` |
+
+<a id="adr-07"></a>
+
+### 3.8 ADR-07 — supply voltage as OpenVario data on its own port
+
+> [!TIP]
+> **Selected:**
+> - The ESP32 measures its 12 V input with its own ADC through a divider ([circuit](../hardware/power.md#voltage-sense)); no extra module.
+> - The bridge sends the value as an OpenVario sentence, `$POV,V,<volts>*<checksum>`, once per second on a fourth TCP port. OpenSoar reads it with its existing OpenVario driver (S122); no OpenSoar change.
+> - The forwarded Zander, FLARM and Becker ports stay byte-exact and free of protocol handling ([R03](requirements.md#requirements)). Generated data never goes into a forwarded stream.
+
+| Item | Rule |
+| --- | --- |
+| Fields | `V` only. Fields the Zander supplies (pressure, airspeed, vario) are never sent, so no source competes with it |
+| Port | Default 4353, editable on the settings page like the other ports; several clients |
+| From OpenSoar | The OpenVario driver sends MacCready, ballast, bugs and polar (S122). The bridge reads and discards them |
+| No reading | No sentence while the sensor is switched off or the value is implausible, so OpenSoar shows no value instead of a wrong one |
+| Later sensors | Further measured values use the same port and the same rules, each with its own approval |
+
+Steps and checks: [supply voltage](../project/roadmap.md#supply-voltage).
 
 ---
 
