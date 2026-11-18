@@ -7,6 +7,11 @@
 // restart, crash or watchdog reset (not a power cut): the next start continues
 // them. log_page.h serves them on /log.
 //
+// Clock: the bridge has no clock of its own. The log page sends the phone's
+// time with every request; the first one sets the ESP32 system time (kept
+// across a software restart), and the lines of this start logged before it
+// get their time from it. Lines without a known time carry 0.
+//
 //   LOGE / LOGW / LOGI / LOGD(source, printf format, ...)
 //
 // Included by bridge.ino before settings.h, so every module can log. Without
@@ -23,17 +28,22 @@ enum LogSource : uint8_t { LOG_WIFI, LOG_PORTS, LOG_RADIO, LOG_SETTINGS, LOG_SYS
 #include <esp_attr.h>
 #include <esp_log.h>
 #include <esp_system.h>
+#include <sys/time.h>
 
 static const char* const kLogSource[LOG_SOURCES] = {"wifi", "ports", "radio", "settings", "system"};
 
 #define LOG_TEXT 100             // characters per line; longer lines are cut
 #define LOG_EVENTS 96            // Error, Warning and Info lines kept
 #define LOG_DEBUG 48             // Debug lines kept
-#define LOG_MAGIC 0x4C4F4731u    // "LOG1"; change it whenever LogStore changes
+#define LOG_MAGIC 0x4C4F4732u    // "LOG2"; change it whenever LogStore changes
+#define LOG_CLOCK_VALID 1700000000UL  // system time below this (2023) is not set
+#define LOG_CLOCK_SLACK_MS 2000       // a phone time this close is not applied
 
 struct LogLine {
     uint32_t seq;  // 1, 2, 3 ... across both rings and restarts; 0 = empty
     uint32_t ms;   // millis() of its start
+    uint32_t sec;  // clock time, Unix seconds UTC; 0 = not known
+    uint16_t milli;
     uint8_t boot;  // start number, counts up at every start
     char level;    // 'E', 'W', 'I', 'D'
     uint8_t src;   // LogSource
@@ -98,6 +108,11 @@ static void logWrite(char level, uint8_t src, const char* text, size_t len) {
     if (len == 0) return;
     LogLine l;
     l.ms = millis();
+    struct timeval tv;
+    gettimeofday(&tv, nullptr);
+    const bool known = tv.tv_sec >= (time_t)LOG_CLOCK_VALID;
+    l.sec = known ? (uint32_t)tv.tv_sec : 0;
+    l.milli = known ? (uint16_t)(tv.tv_usec / 1000) : 0;
     l.level = level;
     l.src = src;
     l.len = (uint8_t)len;
@@ -145,6 +160,37 @@ class LogPrint : public Print {
     size_t n = 0;
 };
 static LogPrint debug;
+
+template <size_t N>
+static void logBackfill(LogRing<N>& r, uint8_t boot, uint64_t bootEpochMs) {  // under logLock
+    for (LogLine& l : r.line) {
+        if (l.seq == 0 || l.sec != 0 || l.boot != boot) continue;
+        const uint64_t t = bootEpochMs + l.ms;
+        l.sec = (uint32_t)(t / 1000);
+        l.milli = (uint16_t)(t % 1000);
+    }
+}
+
+// The phone's time (Unix ms) from the log page: set the clock if it is not set
+// or off by more than LOG_CLOCK_SLACK_MS, then date the lines of this start.
+static void logSetClock(uint64_t phoneMs) {
+    if (phoneMs / 1000 < LOG_CLOCK_VALID) return;
+    struct timeval tv;
+    gettimeofday(&tv, nullptr);
+    const bool known = tv.tv_sec >= (time_t)LOG_CLOCK_VALID;
+    const int64_t off = (int64_t)phoneMs - ((int64_t)tv.tv_sec * 1000 + tv.tv_usec / 1000);
+    if (known && off > -LOG_CLOCK_SLACK_MS && off < LOG_CLOCK_SLACK_MS) return;
+    tv.tv_sec = (time_t)(phoneMs / 1000);
+    tv.tv_usec = (suseconds_t)(phoneMs % 1000) * 1000;
+    settimeofday(&tv, nullptr);
+    const uint64_t bootEpochMs = phoneMs - millis();
+    portENTER_CRITICAL(&logLock);
+    logBackfill(logStore.ev, logStore.boot, bootEpochMs);
+    logBackfill(logStore.dbg, logStore.boot, bootEpochMs);
+    portEXIT_CRITICAL(&logLock);
+    if (known) LOGI(LOG_SYSTEM, "Clock corrected from a phone by %+.1f s", off / 1000.0);
+    else LOGI(LOG_SYSTEM, "Clock set from a phone");
+}
 
 // ESP-IDF log lines ("E (1234) tag: text"), redirected so none goes out of UART0.
 static int logVprintf(const char* fmt, va_list ap) {

@@ -12,8 +12,11 @@ Checks:
  4. the radio port: owner taken and released (Info), second app refused (Warning)
  5. ?since= returns only newer lines, oldest first
  6. every line has a known level and source
+ 7. clock: the phone time sent with the request dates every line of this
+    start; a clock 60 s off is corrected and logged
 With --kept:
- 7. lines from before the restart are still there, with a lower start number
+ 8. lines from before the restart are still there, with a lower start number
+    and their clock time
 """
 
 import argparse
@@ -34,8 +37,10 @@ def check(name, ok, detail=""):
     print(("PASS " if ok else "FAIL ") + name + (f": {detail}" if detail else ""))
 
 
-def log(host, since=0):
-    with urllib.request.urlopen(f"http://{host}/api/log?since={since}", timeout=10) as r:
+def log(host, since=0, offset_ms=0):
+    """Read the log, sending this PC's clock (plus offset) as the phone time, as the page does."""
+    clock = int(time.time() * 1000) + offset_ms
+    with urllib.request.urlopen(f"http://{host}/api/log?since={since}&clock={clock}", timeout=10) as r:
         return json.loads(r.read())
 
 
@@ -59,6 +64,13 @@ def main():
     start = [l for l in now if l["s"] == "system" and l["m"].startswith("Start, firmware")]
     check("start line with firmware and reset reason", bool(start) and d["firmware"] in start[0]["m"] and "reset:" in start[0]["m"],
           start[0]["m"] if start else "missing")
+    pc = time.time() * 1000
+    undated = [l for l in now if not l["c"]]
+    check("every line of this start has a clock time", not undated, f"{len(undated)} without")
+    if start and start[0]["c"]:
+        expect = pc - (d["now"] - start[0]["t"])
+        check("start line time matches the phone clock", abs(start[0]["c"] - expect) < 3000,
+              f"{(start[0]['c'] - expect) / 1000:+.1f} s")
     check("settings logged at start-up", bool([l for l in now if l["s"] == "settings" and "Settings" in l["m"]]))
 
     seq = d["seq"]
@@ -91,10 +103,19 @@ def main():
     bad = [l for l in every if l["l"] not in LEVELS or l["s"] not in SOURCES]
     check("every line has a known level and source", not bad, f"{len(every)} lines")
 
+    seq = log(host)["seq"]
+    log(host, seq, 60000)
+    d = log(host, seq)  # back to the right time
+    fixes = [l["m"] for l in d["lines"] if l["s"] == "system" and l["m"].startswith("Clock corrected")]
+    steps = [float(m.split(" by ")[1].split(" s")[0]) for m in fixes]
+    check("a clock 60 s off is corrected both ways", len(steps) == 2 and abs(steps[0] - 60) < 1 and abs(steps[1] + 60) < 1,
+          "; ".join(fixes))
+
     if args.kept:
         boot = log(host)["boot"]
         old = [l for l in every if l["b"] < boot]
         check("lines from before the restart kept", bool(old), f"{len(old)} older lines, start number now {boot}")
+        check("lines from before the restart keep their clock time", bool(old) and all(l["c"] for l in old))
 
     print(f"{sum(results)}/{len(results)} checks passed")
     sys.exit(0 if all(results) else 1)

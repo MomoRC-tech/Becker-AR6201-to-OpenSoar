@@ -21,6 +21,7 @@ status page and commit the new image (AGENTS.md).
 
 import argparse
 import base64
+import datetime
 import json
 import re
 import shutil
@@ -73,6 +74,7 @@ def demo_monitor() -> dict:
     return {"seq": len(chunks), "lost": False, "now": t, "chunks": chunks}
 
 
+DEMO_START = datetime.datetime(2026, 11, 18, 14, 2, 0)  # clock time of start 2; start 1 had no phone time
 DEMO_LOG = [  # (start number, ms since start, level, source, message); start 2 is the current one
     (1, 412, "I", "system", "Start, firmware {fw}, reset: power on"),
     (1, 431, "I", "settings", "Settings: defaults, nothing stored"),
@@ -86,6 +88,7 @@ DEMO_LOG = [  # (start number, ms since start, level, source, message); start 2 
     (2, 15940, "W", "wifi", "Network your-network not reached, opening the hotspot"),
     (2, 17985, "I", "wifi", "Hotspot WiFi-BridgeTom open at 10.10.10.10"),
     (2, 31200, "I", "wifi", "A phone joined the hotspot, 1 connected"),
+    (2, 31950, "I", "system", "Clock set from a phone"),
     (2, 33010, "I", "ports", "Zander: data arriving"),
     (2, 33020, "I", "ports", "FLARM: data arriving"),
     (2, 35870, "I", "ports", "Zander: 1 app connected (before 0)"),
@@ -97,7 +100,8 @@ DEMO_LOG = [  # (start number, ms since start, level, source, message); start 2 
 
 
 def demo_log(firmware: str) -> dict:
-    lines = [{"q": q, "b": b, "t": t, "l": l, "s": s, "m": m.format(fw=firmware)}
+    start = int(DEMO_START.timestamp() * 1000)
+    lines = [{"q": q, "b": b, "t": t, "c": start + t if b == 2 else 0, "l": l, "s": s, "m": m.format(fw=firmware)}
              for q, (b, t, l, s, m) in enumerate(DEMO_LOG, 1)]
     return {"firmware": firmware, "boot": 2, "seq": len(lines), "now": 66000, "lost": False, "lines": lines}
 

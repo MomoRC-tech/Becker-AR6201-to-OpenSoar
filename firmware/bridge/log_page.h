@@ -124,8 +124,10 @@ static void logSend(uint32_t since) {
                 statusServer.sendContent(buf, n);
                 n = 0;
             }
-            n += snprintf(buf + n, sizeof(buf) - n, "%s{\"q\":%lu,\"b\":%u,\"t\":%lu,\"l\":\"%c\",\"s\":\"%s\",\"m\":\"",
-                          comma ? "," : "", (unsigned long)l.seq, l.boot, (unsigned long)l.ms, l.level, kLogSource[l.src]);
+            n += snprintf(buf + n, sizeof(buf) - n,
+                          "%s{\"q\":%lu,\"b\":%u,\"t\":%lu,\"c\":%llu,\"l\":\"%c\",\"s\":\"%s\",\"m\":\"", comma ? "," : "",
+                          (unsigned long)l.seq, l.boot, (unsigned long)l.ms,
+                          l.sec ? (unsigned long long)l.sec * 1000ULL + l.milli : 0ULL, l.level, kLogSource[l.src]);
             comma = true;
             for (uint8_t k = 0; k < l.len; k++) {
                 const uint8_t c = (uint8_t)l.text[k];
@@ -171,7 +173,7 @@ button{font:inherit;font-weight:600;border-radius:10px;padding:8px 14px;cursor:p
 button:focus-visible{outline:2px solid var(--green);outline-offset:1px}
 #st{color:var(--mute);font-size:14px;margin:0 0 8px}
 #log{background:var(--field);border:1px solid var(--rule);border-radius:10px;padding:10px 12px;height:62vh;overflow:auto;font:13px/1.5 ui-monospace,Consolas,"Roboto Mono",monospace;white-space:pre-wrap;word-break:break-word;margin:0}
-.ln{display:block;padding-left:19ch;text-indent:-19ch}
+.ln{display:block;padding-left:20ch;text-indent:-20ch}
 .t,.lD,.sep{color:var(--mute)}.lE{color:var(--red)}.lW{color:var(--amber)}.old{opacity:.65}
 .key{color:var(--mute);font-size:13px;margin-top:8px}
 </style>
@@ -182,7 +184,7 @@ button:focus-visible{outline:2px solid var(--green);outline-offset:1px}
 <div class="bar"><button id="pz" onclick="pause()">Pause</button><button onclick="clr()">Clear</button><button onclick="copy()">Copy</button><button onclick="save()">Save</button></div>
 <p id="st">Loading the log</p>
 <pre id="log" aria-live="off"></pre>
-<p class="key"><b>Important</b>: errors and warnings. <b>Events</b>: adds what the bridge does. <b>All</b>: adds debug details. Times are seconds since the bridge started; grey lines are from before a restart. Copy and Save take the lines shown. The bridge keeps its lines across a restart, not across a power cut.</p>
+<p class="key"><b>Important</b>: errors and warnings. <b>Events</b>: adds what the bridge does. <b>All</b>: adds debug details. The bridge takes the time from the phone that opens this page; <b>+95.1s</b> means seconds after a start whose time is not known. Grey lines are from before a restart. Copy and Save take the lines shown. The bridge keeps its lines across a restart, not across a power cut.</p>
 </main>
 <script>
 const $=i=>document.getElementById(i),MAX=1500,
@@ -200,15 +202,20 @@ function remember(){localStorage.setItem('bridgeLog',JSON.stringify({view:view,o
 function say(t){note=t;noteAt=Date.now();status()}
 function status(){const n=shown().length;
 $('st').textContent=(Date.now()-noteAt<4000?note+'. ':'')+(paused?'Paused. ':'')+(lines.length?n+' of '+lines.length+' lines shown':'No lines yet')}
-function draw(){const L=$('log'),end=L.scrollTop+L.clientHeight>=L.scrollHeight-20;let h=[],prev='';
-for(const l of shown()){const k=l.e+'/'+l.b;if(prev&&k!==prev)h.push('<span class="ln sep">── bridge restarted ──</span>');prev=k;
-h.push('<span class="ln'+(l.e===epoch&&l.b===info.boot?'':' old')+'"><span class="t">'+(l.t/1000).toFixed(1).padStart(7)+'</span> <span class="l'+l.l+'">'+l.l+' '+SRC[l.s].padEnd(8)+' '+esc(l.m)+'</span></span>')}
+function day(ms){const d=new Date(ms);return d.getFullYear()+'-'+two(d.getMonth()+1)+'-'+two(d.getDate())}
+function hms(ms){const d=new Date(ms);return two(d.getHours())+':'+two(d.getMinutes())+':'+two(d.getSeconds())}
+function after(t){const s=t/1000;return '+'+(s<1000?s.toFixed(1):Math.round(s))+'s'}
+const sep=t=>'<span class="ln sep">── '+t+' ──</span>';
+function draw(){const L=$('log'),end=L.scrollTop+L.clientHeight>=L.scrollHeight-20;let h=[],prev='',pday='';
+for(const l of shown()){const k=l.e+'/'+l.b;if(prev&&k!==prev)h.push(sep('bridge restarted'));prev=k;
+if(l.c&&day(l.c)!==pday){pday=day(l.c);h.push(sep(pday))}
+h.push('<span class="ln'+(l.e===epoch&&l.b===info.boot?'':' old')+'"><span class="t" title="'+(l.t/1000).toFixed(3)+' s after the start">'+(l.c?hms(l.c):after(l.t).padStart(8))+'</span> <span class="l'+l.l+'">'+l.l+' '+SRC[l.s].padEnd(8)+' '+esc(l.m)+'</span></span>')}
 L.innerHTML=h.join('');if(end)L.scrollTop=L.scrollHeight;status()}
-function poll(){fetch('/api/log?since='+since,{cache:'no-store'}).then(r=>r.json()).then(d=>{
+function poll(){fetch('/api/log?since='+since+'&clock='+Date.now(),{cache:'no-store'}).then(r=>r.json()).then(d=>{
 if(d.seq<since)epoch++;
-const at=Date.now();info=d;
-if(d.lost)lines.push({e:epoch,b:d.boot,t:d.now,c:at,l:'W',s:'system',m:'Some lines were overwritten before this page fetched them'});
-for(const l of d.lines)lines.push({e:epoch,b:l.b,t:l.t,c:l.b===d.boot?at-(d.now-l.t):0,l:l.l,s:l.s,m:l.m});
+info=d;
+if(d.lost)lines.push({e:epoch,b:d.boot,t:d.now,c:Date.now(),l:'W',s:'system',m:'Some lines were overwritten before this page fetched them'});
+for(const l of d.lines)lines.push({e:epoch,b:l.b,t:l.t,c:l.c,l:l.l,s:l.s,m:l.m});
 if(lines.length>MAX)lines.splice(0,lines.length-MAX);
 since=d.seq;if(!paused)draw();else status()}).catch(()=>{$('st').textContent='The bridge is not answering.'})}
 function ui(){$('views').innerHTML=Object.keys(VIEWS).map(k=>'<button aria-pressed="'+(k===view)+'" onclick="setView(\''+k+'\')">'+VIEWS[k][0]+'</button>').join('');
@@ -220,8 +227,8 @@ function pause(){paused=!paused;ui();draw()}
 function clr(){lines=[];draw()}
 function text(){const s=shown();return['# WIFI Bridge log, firmware '+(info.firmware||'?')+', saved '+stamp(new Date())+' (phone clock)',
 '# View: '+VIEWS[view][0]+'; sources: '+Object.keys(SRC).filter(k=>!off.has(k)).map(k=>SRC[k]).join(', '),
-'# Columns: clock time (estimated from the phone, - before a restart), seconds since start, start number, level, source, message']
-.concat(s.map(l=>[l.c?clock(l.c):'-',(l.t/1000).toFixed(3),l.b,LV[l.l],SRC[l.s],l.m].join('\t'))).join('\n')+'\n'}
+'# Columns: date and time (time zone of this phone; - not known), seconds since start, start number, level, source, message']
+.concat(s.map(l=>[l.c?day(l.c)+' '+clock(l.c):'-',(l.t/1000).toFixed(3),l.b,LV[l.l],SRC[l.s],l.m].join('\t'))).join('\n')+'\n'}
 function legacyCopy(t){const a=document.createElement('textarea');a.value=t;a.setAttribute('readonly','');a.style.position='fixed';a.style.top='0';a.style.opacity='0';
 document.body.appendChild(a);a.select();a.setSelectionRange(0,t.length);let ok=false;try{ok=document.execCommand('copy')}catch(e){}a.remove();return ok}
 function copy(){const t=text(),n=shown().length,done=()=>say('Copied '+n+' lines'),fail=()=>say('The browser blocked copying; use Save');
@@ -236,6 +243,7 @@ ui();poll();setInterval(poll,1000);
 static void logRoutes() {
     statusServer.on("/log", HTTP_GET, []() { statusServer.send(200, "text/html", kLogPage); });
     statusServer.on("/api/log", HTTP_GET, []() {
+        if (statusServer.hasArg("clock")) logSetClock(strtoull(statusServer.arg("clock").c_str(), nullptr, 10));
         logSend(statusServer.hasArg("since") ? strtoul(statusServer.arg("since").c_str(), nullptr, 10) : 0);
     });
 }

@@ -53,7 +53,7 @@
                              // incoming bytes while the loop waits on a UART write
 
 #ifdef ESP32
-#define VERSION "0.4.2-ESP32"     // Project: own version, 0.<plan step> until bench acceptance; .1 = device profiles (WP9), .2 = web log (step 3c)
+#define VERSION "0.4.3-ESP32"     // Project: own version, 0.<plan step> until bench acceptance; .1 = device profiles (WP9), .2 = web log (step 3c), .3 = log clock time
 #elif defined(ESP8266)
 #define VERSION "0.3b.1-ESP8266"
 #endif
