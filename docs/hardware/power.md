@@ -146,9 +146,9 @@ Size F1 using the measured running current and switch-on inrush, the wire's allo
 | Part | From | To | Where |
 | --- | --- | --- | --- |
 | R-V1 100 kΩ | XT30 + (net `12V-IN`, after F1) | Sense wire (net `V_SENSE`) | At the XT30 + solder cup or on the UBEC red input lead right behind it, in heat-shrink |
-| Sense wire | R-V1 | GPIO34 ([J2-5](modules.md#esp32-pinout)) | 26 AWG, routed beside the existing wires |
-| R-V2 10 kΩ | J2-5 | J2-14 (GND-J) | Along the header at pin-top level, insulated leads |
-| C-V 100 nF | J2-5 | J2-14 | In parallel with R-V2, at the pin |
+| Sense wire | R-V1 | GPIO34 ([J2-5](modules.md#esp32-pinout)) | 26 AWG grey, along the side wall at pin-top height ([installation](wire-installation.md#rs232-boards)) |
+| R-V2 10 kΩ | J2-5 | J2-14 (GND-J) | Beside the J2 header on the side-wall side, at pin-top height |
+| C-V 100 nF | J2-5 | J2-14 | In parallel with R-V2, about 2 mm below it |
 
 GPIO34 is on ADC1, which works while Wi-Fi is on; ADC2 is used by Wi-Fi (S121). It is an input-only pin with no internal pull resistor.
 

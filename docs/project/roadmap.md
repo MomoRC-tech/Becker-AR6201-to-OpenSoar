@@ -225,7 +225,7 @@ The firmware alone does not tune the radio: OpenSoar's driver cuts frames that c
 
 **In OpenSoar:** add a device "OpenVario", TCP client `10.10.10.10:4353`. The value shows in the System status page as "Supply voltage" and in the vario display's battery line. On Android, the "Battery" InfoBox shows it only while the phone is charging; otherwise it shows the phone's battery (S122).
 
-**Hardware tasks (WP3):** fit R-V1, R-V2 and C-V with the harness ([installation](../hardware/wire-installation.md)); add them to the supply diagram (`tools/diagrams.py`), the [KiCad schematic](../hardware/schematic.md) ([ADR-06](../design/architecture.md#adr-06)) and the Fusion harness; check the wired bridge in [bring-up step 13](../hardware/wiring.md#bring-up).
+**Hardware tasks (WP3):** fit R-V1, R-V2 and C-V with the harness ([installation](../hardware/wire-installation.md)); they are in the supply diagram, the [KiCad schematic](../hardware/schematic.md) and the Fusion harness (S128). Check the wired bridge in [bring-up step 13](../hardware/wiring.md#bring-up).
 
 ---
 

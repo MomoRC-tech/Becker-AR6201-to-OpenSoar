@@ -218,7 +218,8 @@ Sizes from owner measurements, seller listings or datasheets; see the source col
 | UBEC ferrite ring | 1 | Bare core: Ø14.2 outside × 5.4 axial, 2.9 radial wall (Ø8.4 bore calculated). Including wire turns: Ø17.5 outside × 9.5 axial | Owner measurements; S54 | Around both UBEC output leads; upright in the [integral cradle](#ferrite-cradle). Allow separately for the entering and leaving leads. |
 | XT30 male, panel | 1 | 10.55 × 5.25 body; 10.8 × 5.66 over the raised markings at the solder-cup end (owner measurement) | S51 | Press-fit pocket ([section 4](#connectors)) |
 | DE-9 male, panel | 1 | Flange 31 × 12.6 × 1.0, holes Ø3.1 at 25.0 spacing; D shell 17.85 × 9.2 outer; rear body behind the flange 19.3 × 10.9 × 5.0 deep, 8.0 including the solder cups (owner measurement) | S43 | Flange and rear side as the female plug model |
-| Resistors (dividers, pull-up) | 5 | DIN0204 axial, body about Ø1.6 × 3.6 | S45 | R-B1, R-B2, R-D; R-V1, R-V2 for the [supply voltage sense](power.md#voltage-sense), fitted on the bench and not in the CAD model |
+| Resistors (dividers, pull-up) | 5 | DIN0204 axial, body about Ø1.6 × 3.6 | S45 | R-B1, R-B2, R-D; R-V1, R-V2 for the [supply voltage sense](power.md#voltage-sense) (S128) |
+| Capacitor C-V | 1 | Envelope Ø2.0 × 3.8 (estimate for a leaded 100 nF) | S128 | Supply voltage sense |
 
 ### 3.1 ESP32 CAD reference
 
@@ -417,7 +418,8 @@ Use **Cable harness - Wire Generator** in the [v16 enclosure assembly](../../cad
 | Connector-wall lane | DE-9 4/5 to MAX490 A/B and 8/9 to Y/Z. The CAD shows each conductor envelope. Keep the pairs twisted up to the terminations |
 | J2-side lane | Module R2 outputs to J2-7 (GPIO32) and J2-10 (GPIO26). Route the GPIO32 wire around the J2-14 ground joint |
 | Local RS-232 supply and ground | 3.3 V from J2-1 to mod2 R3 then mod1 R3. Ground from J3-1, across the ESP32, to mod2 R4 then mod1 R4. Assemble the mod2 R3 feed and link on the bench |
-| Pin-top resistor connections | R-B1 at the RO splice, R-B2 across J3-12 and J3-7, and R-D from J3-11 to mod2 L2. R-V2 and C-V across J2-5 and J2-14 (not in the CAD model) |
+| Pin-top resistor connections | R-B1 at the RO splice, R-B2 across J3-12 and J3-7, and R-D from J3-11 to mod2 L2. R-V2 and C-V from J2-5 to J2-14 beside the header, side-wall side (S128) |
+| Supply voltage sense | Grey wire from R-V1 at the XT30 + cup along the side wall at pin-top height (Y 16.8, Z −26.5), above the J2-19 and J2-14 wires, down to the J2-5 pin top (S128) |
 
 Junction hardware and attachment are tracked in the [housing open items](../project/open-items.md#housing).
 
@@ -477,8 +479,10 @@ Follow the [illustrated installation sequence](wire-installation.md) when fittin
 | Signals | R-B1 between J3-12 and RO splice | Blue | 26 AWG PTFE / axial | Pin top / centre bus | 11.1 + 2.6 | Measure | Fit | Calculate |
 | Signals | R-B2 between J3-12 and J3-7 | Black | 26 AWG PTFE / axial | Pin top | 7.2 + 7.2 | Measure | Fit | Calculate |
 | Signals | R-D between J3-11 and mod2 L2 | Pink | 26 AWG PTFE / axial | Pin top | 2.5 + 7.4 | Measure | Fit | Calculate |
-| Bench | R-V1 at XT30 + → ESP32 J2-5 | Grey | 26 AWG PTFE / axial | Wall / floor / J2 | — | Measure | Fit | Measure on the bench; not in the CAD model |
-| Signals | R-V2 and C-V between J2-5 and J2-14 | — | Axial / leaded | Pin top | — | Measure | Fit | Fit the leads individually |
+| Bench | R-V1 leads at XT30 + cup | — | Axial | Wall | 7.2 | Measure | Fit | Fit the leads individually |
+| Signals | R-V1 → ESP32 J2-5 | Grey | 26 AWG PTFE | Side wall, pin top | 66.0 | Measure | Fit | Calculate |
+| Signals | R-V2 between J2-5 and J2-14 | — | Axial | Beside J2, pin top | 25.4 | Measure | Fit | Fit the leads individually |
+| Signals | C-V between J2-5 and J2-14 | — | Leaded | Beside J2, 2 mm below pin top | 29.0 | Measure | Fit | Fit the leads individually |
 
 ---
 

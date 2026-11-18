@@ -252,7 +252,7 @@
       ]
     }
   },
-  "geometry_source": "Fusion Housing body - Wire Generator harness, housing-v16 (S93)",
+  "geometry_source": "Fusion Housing body - Wire Generator harness, housing-v16 (S93); supply voltage sense in v6 (S128)",
   "waypoint_reference": "The waypoint arrays and per-path CAD lengths describe the v14 routing reference (S86–S87). Open housing-enclosure-fit.f3d for the selected path geometry and use release_cad_length_mm for the selected flexible conductors.",
   "junction_envelopes": {
     "Central 5V junction - bench splice envelope": {
@@ -1130,6 +1130,89 @@
             [48.59, 17.0, -2.7]
           ],
           "cad_length_mm": 7.4,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        }
+      ],
+      "cut_method": "fit and calculate"
+    },
+    {
+      "endpoints": "R-V1 at XT30 + \u2192 ESP32 J2-5",
+      "release_cad_length_mm": 66.03,
+      "release_length_method": "sketch centreline (native sweep, S128)",
+      "colour": "Grey",
+      "material": "26 AWG PTFE / axial",
+      "lane": "Wall, then side wall at pin top",
+      "build_step": "Bench / signals",
+      "paths": [
+        {
+          "waypoints_mm": [
+            [14.0, 7.5, -14.93],
+            [15.6, 9.2, -14.93],
+            [15.6, 9.2, -20.0]
+          ],
+          "cad_length_mm": 7.2,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        },
+        {
+          "waypoints_mm": [
+            [15.6, 9.2, -19.6],
+            [15.6, 9.2, -26.5],
+            [15.6, 16.8, -26.5],
+            [63.83, 16.8, -26.5],
+            [63.83, 16.8, -23.28],
+            [63.83, 15.0, -23.28]
+          ],
+          "cad_length_mm": 66.0,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        }
+      ],
+      "cut_method": "fit and calculate"
+    },
+    {
+      "endpoints": "R-V2 between J2-5 and J2-14",
+      "colour": "\u2014",
+      "material": "Axial",
+      "lane": "Beside J2, pin top",
+      "build_step": "Signals",
+      "paths": [
+        {
+          "waypoints_mm": [
+            [63.83, 15.0, -23.28],
+            [63.83, 15.0, -25.2],
+            [42.6, 15.0, -25.2],
+            [40.97, 15.0, -23.28]
+          ],
+          "cad_length_mm": 25.4,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        }
+      ],
+      "cut_method": "fit and calculate"
+    },
+    {
+      "endpoints": "C-V between J2-5 and J2-14",
+      "colour": "\u2014",
+      "material": "Leaded",
+      "lane": "Beside J2, 2 mm below pin top",
+      "build_step": "Signals",
+      "paths": [
+        {
+          "waypoints_mm": [
+            [63.83, 15.0, -23.28],
+            [63.83, 15.0, -25.2],
+            [63.83, 12.8, -25.2],
+            [42.6, 12.8, -25.2],
+            [42.6, 15.0, -25.2],
+            [40.97, 15.0, -23.28]
+          ],
+          "cad_length_mm": 29.0,
           "strip_allowance_mm": null,
           "service_slack_mm": null,
           "cutting_length_mm": null
