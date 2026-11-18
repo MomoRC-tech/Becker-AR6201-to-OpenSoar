@@ -1,21 +1,24 @@
-"""Bench checks for the lifetime record (firmware plan step 3f).
+"""Bench checks for the lifetime record and the saved log (firmware plan steps 3f, 3g).
 
     python tools/records_test.py <bridge address>
     python tools/records_test.py <bridge address> --write-load 120
 
 Needs the bridge firmware in network mode, so the address stays the same
 across the restart. Uses the password from firmware/bridge/credentials.h.
-Resets the lifetime record of the board it runs against.
+Resets the lifetime record and clears the saved log of the board it runs against.
 
 Checks:
 - /api/status has the lifetime block with storage available;
 - a reset with a wrong password changes nothing;
 - a reset with the password starts a new record (1 start, little operating time);
 - after a restart by the firmware the record is kept, with one more start and
-  the operating time carried over.
+  the operating time carried over;
+- saved log: this start's line is saved; a warning (a wrong password) is saved
+  within 10 s; both are still there after a restart, with the next start's
+  line; clearing needs the password and empties it.
 
---write-load SECONDS: resets the record every 2 s, each one a flash write, far
-more often than the firmware writes on its own, while
+--write-load SECONDS: every 2 s resets the record and sends a wrong password,
+so the record and the saved log are written far more often than in use, while
 tools/bridge_acceptance_test.py --radio-loop --baseline streams data through
 the step 2 jumper loops. Passes when that test passes and no UART receive
 errors were counted, so flash writes do not lose serial data.
@@ -110,6 +113,41 @@ def record_checks(host, pw):
           json.dumps([kept["max_chip"], kept["min_supply"]]))
 
 
+def saved_lines(host):
+    code, body = request(host, "/api/saved")
+    if code != 200:
+        return None
+    rows = [r.split(chr(9)) for r in body.decode("utf-8").splitlines() if r and not r.startswith("#")]
+    return [r for r in rows if len(r) >= 6]
+
+
+def saved_checks(host, pw):
+    s = status(host)
+    if not s.get("saved_log"):
+        print("no saved log in this firmware; skipped")
+        return
+    check("saved log available", s["saved_log"]["ready"] is True)
+    start = s["lifetime"]["starts"]
+    lines = saved_lines(host) or []
+    check("this start's line saved", any(r[0] == str(start) and r[5].startswith("Start, firmware") for r in lines),
+          f"start {start}, {len(lines)} lines")
+    code, _ = request(host, "/api/saved/clear", post=True, auth="wrong-password")
+    check("clear with a wrong password refused", code == 401, f"HTTP {code}")
+    time.sleep(12)  # the status task saves at most every 10 s
+    lines = saved_lines(host) or []
+    warned = [r for r in lines if r[0] == str(start) and r[3] == "W" and "Wrong settings password" in r[5]]
+    check("warning saved", len(warned) >= 1, f"{len(warned)} lines")
+    request(host, "/api/settings", post=True, auth=pw)  # restart
+    wait_back(host)
+    time.sleep(2)
+    lines = saved_lines(host) or []
+    check("kept through a restart", any(r[0] == str(start) and "Wrong settings password" in r[5] for r in lines))
+    check("next start's line saved", any(r[0] == str(start + 1) and r[5].startswith("Start, firmware") for r in lines))
+    code, _ = request(host, "/api/saved/clear", post=True, auth=pw)
+    lines = saved_lines(host)
+    check("clear with the password empties it", code == 200 and lines == [], f"HTTP {code}, {lines and len(lines)} lines")
+
+
 def write_load(host, pw, seconds):
     errors_before = uart_errors(host)
     stop = threading.Event()
@@ -119,6 +157,7 @@ def write_load(host, pw, seconds):
         while not stop.is_set():
             code, _ = request(host, "/api/lifetime/reset", post=True, auth=pw)
             writes[0 if code == 200 else 1] += 1
+            request(host, "/api/lifetime/reset", post=True, auth="wrong-password")  # a warning for the saved log
             stop.wait(2)
 
     t = threading.Thread(target=hammer, daemon=True)
@@ -129,7 +168,11 @@ def write_load(host, pw, seconds):
     t.join()
     print(test.stdout.strip())
     errors_after = uart_errors(host)
-    check(f"acceptance test under {writes[0]} flash writes", test.returncode == 0 and writes[0] > 0,
+    saved = saved_lines(host)
+    if saved is not None:
+        n = sum("Wrong settings password" in r[5] for r in saved)
+        print(f"saved log: {n} wrong-password warnings saved")
+    check(f"acceptance test under {writes[0]} record writes and the saved log", test.returncode == 0 and writes[0] > 0,
           f"exit {test.returncode}, {writes[1]} failed requests")
     check("no UART receive errors during the writes", errors_after == errors_before, f"{errors_before} -> {errors_after}")
 
@@ -144,6 +187,7 @@ def main():
         write_load(a.host, pw, a.write_load)
     else:
         record_checks(a.host, pw)
+        saved_checks(a.host, pw)
     print(f"{sum(results)}/{len(results)} checks passed")
     sys.exit(0 if all(results) else 1)
 

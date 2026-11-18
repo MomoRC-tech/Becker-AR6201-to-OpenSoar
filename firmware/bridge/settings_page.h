@@ -5,6 +5,7 @@
 // POST /api/keep          keep settings that are on trial (password)
 // POST /api/reset         forget all stored settings, then restart (password)
 // POST /api/lifetime/reset start a new lifetime record (password; lifetime.h)
+// POST /api/saved/clear   delete the saved log (password; savedlog.h)
 //
 // Password: HTTP basic authentication, user "bridge", the OTA password. The
 // active values come from the public /api/settings, which never sends passwords.
@@ -187,6 +188,7 @@ button{font:inherit;font-weight:600;border-radius:10px;padding:10px 18px;cursor:
 .main{background:var(--green);color:var(--paper)}
 .quiet{background:none;color:var(--ink);border-color:var(--rule)}
 #msg{margin-top:14px}
+#rec{margin-top:24px}
 </style>
 <main>
 <header><img src="/device.webp" width="240" height="317" alt=""><h1>Settings</h1><a href="/">Status page</a></header>
@@ -194,7 +196,7 @@ button{font:inherit;font-weight:600;border-radius:10px;padding:10px 18px;cursor:
 <form id="fm" onsubmit="return save(event)"><div id="fs">Loading</div>
 <p class="note">Saving restarts the bridge. A change to Wi-Fi, hotspot or ports (also the supply voltage port) runs on trial: reconnect and press Keep within 10 minutes, otherwise the previous settings come back. Leave a password empty to keep it.</p>
 <div class="btns"><button class="main" type="submit">Save and restart</button><button class="quiet" type="button" onclick="reset()">Reset to defaults</button></div></form>
-<fieldset id="rec" hidden><legend>Lifetime record</legend><p class="note">Operating time, starts, highest chip temperature and lowest supply voltage, kept through power cuts. Resetting starts a new record; the settings stay.</p><div class="btns"><button class="quiet" type="button" onclick="lreset()">Reset lifetime record</button></div></fieldset>
+<fieldset id="rec" hidden><legend>Records</legend><p class="note">Kept through power cuts: the lifetime record (operating time, starts, highest chip temperature, lowest supply voltage) and the saved log (errors and warnings). Clearing them leaves the settings as they are.</p><div class="btns"><button class="quiet" type="button" onclick="lreset()">Reset lifetime record</button><button class="quiet" type="button" id="sclr" hidden onclick="sclear()">Clear saved log</button></div></fieldset>
 <div id="msg" role="status"></div>
 </main>
 <script>
@@ -234,7 +236,9 @@ function reset(){if(!confirm('Forget all saved settings and restart with the fir
 post('/api/reset').then(()=>{$('fm').hidden=true;$('msg').textContent='Reset. The bridge restarts with the firmware defaults; the status page opens in 20 seconds.';setTimeout(()=>location.href='/',20000)})}
 function lreset(){if(!confirm('Start a new lifetime record? Operating time, starts and the extremes start again from zero.'))return;
 post('/api/lifetime/reset').then(r=>r.json()).then(()=>{$('msg').textContent='Lifetime record reset.'}).catch(()=>{$('msg').textContent='The bridge did not answer. Try again.'})}
-fetch('/api/status',{cache:'no-store'}).then(r=>r.json()).then(d=>{if(d.lifetime)$('rec').hidden=false}).catch(()=>{});
+function sclear(){if(!confirm('Delete all saved errors and warnings?'))return;
+post('/api/saved/clear').then(r=>r.json()).then(()=>{$('msg').textContent='Saved log cleared.'}).catch(()=>{$('msg').textContent='The bridge did not answer. Try again.'})}
+fetch('/api/status',{cache:'no-store'}).then(r=>r.json()).then(d=>{if(d.lifetime)$('rec').hidden=false;if(d.saved_log&&d.saved_log.ready)$('sclr').hidden=false}).catch(()=>{});
 load();
 </script>
 )HTML";
@@ -251,6 +255,13 @@ static void settingsRoutes() {
     statusServer.on("/api/lifetime/reset", HTTP_POST, []() {
         if (!settingsAuth()) return;
         lifetimeReset();
+        statusServer.send(200, "application/json", "{\"ok\":true}");
+    });
+#endif
+#ifdef SAVED_LOG
+    statusServer.on("/api/saved/clear", HTTP_POST, []() {
+        if (!settingsAuth()) return;
+        savedClear();
         statusServer.send(200, "application/json", "{\"ok\":true}");
     });
 #endif

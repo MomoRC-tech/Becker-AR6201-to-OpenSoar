@@ -40,6 +40,7 @@ static WebServer statusServer(80);
 #include "lifetime.h"  // Project: lifetime record in NVS (step 3f)
 #include "supply.h"  // Project: supply voltage, OpenVario port and chart (step 3d)
 #include "chiptemp.h"  // Project: ESP32 chip temperature (step 3e)
+#include "savedlog.h"  // Project: errors and warnings kept through power cuts (step 3g)
 
 // Status page; /device.webp is the housing lid photo from device_image.h.
 static const char kStatusPage[] = R"HTML(<!doctype html>
@@ -95,7 +96,7 @@ a{color:inherit}
 <section id="sup" hidden><div class="row"><span class="dot"></span><h2>Supply voltage</h2><span class="st" id="sv"></span></div><div class="brief" id="sb"></div><svg id="sc" viewBox="0 0 600 270" role="img" aria-label="Supply voltage since the bridge was switched on"></svg><p class="key" id="sk" hidden>Each minute since the bridge was switched on, up to 12 hours: line = mean, band = lowest to highest, dashed = <span id="sl"></span> V warning level.</p></section>
 <section class="set" id="lt" hidden><details><summary>Lifetime record</summary><div class="grp" id="lr"></div><p class="key">Kept through power cuts; operating time is saved every 10 minutes. Reset on the <a href="/settings">settings page</a> (password).</p></details></section>
 <section class="set"><details><summary>All settings</summary><div id="set">Loading</div><p class="key"><a href="/settings">Change settings</a> (password)</p></details></section>
-<footer><a href="/monitor">Data monitor</a>: see what passes the bridge. <a href="/log">Log</a>: what the bridge did. Read-only. Refreshes every 2 seconds; settings apply when the bridge starts. Data: <a href="/api/status">status</a>, <a href="/api/settings">settings</a>, <a href="/api/supply">voltage</a>.</footer>
+<footer><a href="/monitor">Data monitor</a>: see what passes the bridge. <a href="/log">Log</a>: what the bridge did; <a href="/saved">saved log</a>: errors and warnings kept through power cuts. Read-only. Refreshes every 2 seconds; settings apply when the bridge starts. Data: <a href="/api/status">status</a>, <a href="/api/settings">settings</a>, <a href="/api/supply">voltage</a>.</footer>
 </main>
 <script>
 const $=i=>document.getElementById(i),last={},frame={};let built=false;
@@ -204,6 +205,7 @@ static String statusJson() {
     supplyStatusJson(out);  // Project: supply voltage (step 3d)
     chipTempJson(out);      // Project: chip temperature (step 3e)
     lifetimeJson(out);      // Project: lifetime record (step 3f)
+    savedJson(out);         // Project: saved log (step 3g)
     out += "}";
     return out;
 }
@@ -313,7 +315,9 @@ static void statusTask(void*) {
     monitorRoutes();
     logRoutes();
     supplyRoutes();
+    savedRoutes();
     lifetimeBegin();
+    savedLogBegin();
     supplyBegin();
     statusServer.onNotFound([]() { statusServer.send(404, "text/plain", "Not found"); });
     statusServer.begin();
@@ -324,6 +328,7 @@ static void statusTask(void*) {
         supplyTick();
         chipTempTick();
         lifetimeTick();
+        savedLogTick();
         vTaskDelay(pdMS_TO_TICKS(5));
     }
 }

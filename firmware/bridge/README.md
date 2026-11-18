@@ -1,6 +1,6 @@
 # Bridge firmware
 
-Wi-Fi bridge firmware for Zander, FLARM and Becker, based on ESP-Serial-Bridge ([ADR-02](../../docs/design/architecture.md#adr-02)). The standalone ESP32 runs step 4 firmware with single-client radio ownership (S114) and the [web log](#web-log) (S116). Firmware 0.5.1 adds the [supply voltage](#supply-voltage) (step 3d), 0.5.2 the [chip temperature](#chip-temperature) (step 3e), 0.5.3 the [lifetime record](#lifetime-record) (step 3f). See the [firmware plan](../../docs/project/roadmap.md#firmware-plan) for the remaining wired checks.
+Wi-Fi bridge firmware for Zander, FLARM and Becker, based on ESP-Serial-Bridge ([ADR-02](../../docs/design/architecture.md#adr-02)). The standalone ESP32 runs step 4 firmware with single-client radio ownership (S114) and the [web log](#web-log) (S116). Firmware 0.5.1 adds the [supply voltage](#supply-voltage) (step 3d), 0.5.2 the [chip temperature](#chip-temperature) (step 3e), 0.5.3 the [lifetime record](#lifetime-record) (step 3f), 0.5.4 the [saved log](#saved-log) (step 3g). See the [firmware plan](../../docs/project/roadmap.md#firmware-plan) for the remaining wired checks.
 
 ## Origin and license
 
@@ -43,6 +43,7 @@ Set in `config.h`; everything else is upstream.
 | Supply voltage | `SUPPLY_SENSE`: 12 V input on GPIO34, OpenVario port 4353 and chart; pin, divider, port and warning levels under *Supply voltage* in `config.h`; see [below](#supply-voltage) |
 | Chip temperature | `CHIP_TEMP`: the ESP32's own temperature on the status page and in the web log, no shutdown; warning levels under *Chip temperature* in `config.h`; see [below](#chip-temperature) |
 | Lifetime record | `LIFETIME_RECORD`: starts, operating time and extremes kept in NVS through power cuts; see [below](#lifetime-record) |
+| Saved log | `SAVED_LOG`: errors, warnings and each start kept in LittleFS through power cuts, page `/saved`; see [below](#saved-log) |
 
 <a id="status-page"></a>
 
@@ -70,6 +71,7 @@ Open `http://<bridge address>/` (10.10.10.10 in hotspot mode) in a browser. [`st
 | `/monitor`, `/api/monitor` | [Data monitor](#data-monitor) |
 | `/log`, `/api/log` | [Web log](#web-log) |
 | `/api/supply` | [Supply voltage](#supply-voltage) chart data |
+| `/saved`, `/api/saved` | [Saved log](#saved-log) |
 
 After any change to the status, settings, monitor or log page, take new screenshots from the running bridge and commit them with the change: `python tools/status_screenshot.py <bridge address>`. It masks the network name, shows hotspot mode and uses demo data for the monitor and the log, since the repository is public.
 
@@ -99,6 +101,7 @@ Open *Change settings* under *All settings*, or `http://<bridge address>/setting
 | `POST /api/keep` | Keep settings on trial (password) |
 | `POST /api/reset` | Forget all stored values, then restart (password) |
 | `POST /api/lifetime/reset` | Start a new [lifetime record](#lifetime-record) (password) |
+| `POST /api/saved/clear` | Delete the [saved log](#saved-log) (password) |
 
 Bench check: `python tools/settings_test.py <bridge address> [--revert]` runs the password, refusal, save, device profile, trial, *Keep*, reset and (with `--revert`, 10 minutes) automatic revert checks. The bridge must be in network mode, so its address stays the same across restarts.
 
@@ -137,7 +140,7 @@ Open *Log* at the bottom of the status page, or `http://<bridge address>/log`. N
 - **Lines:** clock time, level letter (E, W, I, D), source, message. A date line marks each new day. On a PC, hover over the time for the seconds since the start.
 - **Clock:** the bridge has no clock of its own. The log page sends the phone's time with every request; the first one sets the ESP32 clock, and the lines of this start logged before it get their time from it ("Clock set from a phone"). A phone more than 2 s off corrects it ("Clock corrected"). The order of the lines is the order the bridge wrote them; times always run in that order: each start has one clock offset, a line takes its time and its number together under the lock, and a correction re-dates every line of that start, also on an open page. The clock keeps running through a restart, so lines after it get their time at once; after a power cut the time is unknown until a phone opens the log. Unknown times show as seconds after the start, for example `+95.1s`.
 - **Restarts:** grey lines are from before a restart; a separator marks it, and the first line after it names the reset reason (power on, restart by the firmware, crash, watchdog, brownout).
-- **Collection:** always on, in RAM: the last 96 Error/Warning/Info lines and, separately, the last 48 Debug lines (about 16 kB). The buffers sit in `.noinit` RAM, so they survive a restart, crash or watchdog reset, not a power cut. A line is copied under a short lock; nothing blocks and nothing goes to a UART.
+- **Collection:** errors and warnings also go to the [saved log](#saved-log), which survives a power cut. Always on, in RAM: the last 96 Error/Warning/Info lines and, separately, the last 48 Debug lines (about 16 kB). The buffers sit in `.noinit` RAM, so they survive a restart, crash or watchdog reset, not a power cut. A line is copied under a short lock; nothing blocks and nothing goes to a UART.
 - **Counters as lines:** once per second the web task compares the port counters: apps connected, data arriving or quiet for 10 s, receive errors and short writes (at most one line per port every 5 s, with the kind of the last receive error). A refused radio app is logged at most every 30 s, with the number of further refusals. Memory and Wi-Fi signal as Debug every 60 s.
 - **ESP32 system messages:** the ESP-IDF log output is redirected into the log as source System, so none goes out of UART0 on the Zander transmit pin. This core build compiles in only its error messages.
 - **Data:** `GET /api/log?since=<sequence>&clock=<phone time in Unix ms>` returns the newer lines as JSON, oldest first, with `o`, the clock offset of the current start (Unix ms minus ms since start, 0 = not known): `q` sequence, `b` start number, `t` ms since that start, `c` clock time in Unix ms UTC (0 = not known), `l` level, `s` source, `m` message. `lost` is true when lines were overwritten before they were fetched.
@@ -199,13 +202,35 @@ A few values kept through power cuts ([plan](../../docs/project/roadmap.md#firmw
 | Storage | One NVS blob, namespace `lifetime`, in the partition the settings use. *Reset to defaults* on the settings page does not touch it; a full flash erase over USB clears it |
 | Flash writes | At every start; then every 10 min; at most once a minute while a new extreme is being set; before a restart by the firmware. A power cut loses at most the last 10 min of operating time |
 | Status page | *Lifetime record*, collapsed, above *All settings* |
-| Reset | Settings page, *Reset lifetime record* (password). Starts a new record with this start as the first |
+| Reset | Settings page, *Records*, *Reset lifetime record* (password). Starts a new record with this start as the first |
 | Web log | Info at each start with the start number and operating time; a warning if the storage cannot be opened or a save fails |
 
 > [!IMPORTANT]
 > While the flash is written, the ESP32 pauses code from flash on both cores, and the UART receive interrupt of this core build does not run (S133). Keep flash writes rare and out of the forwarding loop. `python tools/records_test.py <bridge address> --write-load 120` runs the step 5 acceptance test while the record is written every 2 s.
 
 Bench check: `python tools/records_test.py <bridge address>` checks the status block, the password, the reset, and that the record survives a restart with one more start. It resets the record of that board. Survival of a power cut needs the USB cable pulled by hand.
+
+<a id="saved-log"></a>
+
+## Saved log
+
+Errors, warnings and one line per start, kept through power cuts ([plan](../../docs/project/roadmap.md#firmware-plan), step 3g). Open *saved log* at the bottom of the status page or the log page, or `http://<bridge address>/saved`. [`savedlog.h`](savedlog.h) holds the file handling and the page.
+
+![Saved log with demo data](../../docs/images/saved-page.png)
+
+| Part | How it works |
+| --- | --- |
+| What is kept | Error and Warning lines of the [web log](#web-log), and one line per start with the firmware and the reset reason. Info and Debug stay in RAM only |
+| Start numbers | From the [lifetime record](#lifetime-record), so they keep counting through power cuts; *Reset lifetime record* starts them again at 1 |
+| Times | The clock time if the bridge knew it when the line was saved, otherwise seconds after that start (`+95.1s`) |
+| Flash writes | The status task appends new lines at most every 10 s, in one write, and when the page is opened. Lines written just before a crash or restart are still in RAM at the next start and are saved then. If more lines arrive than the RAM log holds before they are saved, a warning line says so |
+| Storage | LittleFS on the 128 kB `spiffs` partition, formatted on first use. File `/saved.log`; above 32 kB it becomes `/saved.old` and the older one is deleted, so both stay below about 64 kB. Survives OTA updates; a full flash erase over USB clears it |
+| Page | Lines grouped by start, errors red, warnings amber; *Reload*, *Save* as a text file. Read-only, no password |
+| Clear | Settings page, *Records*, *Clear saved log* (password) |
+
+`GET /api/saved` returns `# used <bytes> of <bytes>`, then one line each, oldest first, tab-separated: start number, clock time in Unix ms (0 = not known), ms since that start, level, source, message.
+
+Bench check: `python tools/records_test.py <bridge address>` also checks the saved log: this start's line, a warning saved within 10 s, both kept through a restart, the password for clearing. `--write-load 120` adds a warning every 2 s during the acceptance test.
 
 ## Build
 

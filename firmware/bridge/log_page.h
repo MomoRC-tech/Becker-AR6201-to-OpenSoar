@@ -186,7 +186,7 @@ button:focus-visible{outline:2px solid var(--green);outline-offset:1px}
 <div class="bar"><button id="pz" onclick="pause()">Pause</button><button onclick="clr()">Clear</button><button onclick="copy()">Copy</button><button onclick="save()">Save</button></div>
 <p id="st">Loading the log</p>
 <pre id="log" aria-live="off"></pre>
-<p class="key"><b>Important</b>: errors and warnings. <b>Events</b>: adds what the bridge does. <b>All</b>: adds debug details. The bridge takes the time from the phone that opens this page; <b>+95.1s</b> means seconds after a start whose time is not known. Grey lines are from before a restart. Copy and Save take the lines shown. The bridge keeps its lines across a restart, not across a power cut.</p>
+<p class="key"><b>Important</b>: errors and warnings. <b>Events</b>: adds what the bridge does. <b>All</b>: adds debug details. The bridge takes the time from the phone that opens this page; <b>+95.1s</b> means seconds after a start whose time is not known. Grey lines are from before a restart. Copy and Save take the lines shown. The bridge keeps its lines across a restart, not across a power cut; errors and warnings are also in the <a href="/saved">saved log</a>, which survives it.</p>
 </main>
 <script>
 const $=i=>document.getElementById(i),MAX=1500,

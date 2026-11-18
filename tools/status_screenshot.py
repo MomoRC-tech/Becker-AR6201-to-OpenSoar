@@ -3,10 +3,10 @@
 Reads both pages, the image and the settings JSON from a running bridge,
 masks private details, and renders them at phone width (390 px, 2x) in the
 light theme: docs/images/status-page.png ("Lifetime record" and "All settings" open),
-docs/images/settings-page.png, docs/images/monitor-page.png and
-docs/images/log-page.png. The settings page login uses the OTA password from
+docs/images/settings-page.png, docs/images/monitor-page.png,
+docs/images/log-page.png and docs/images/saved-page.png. The settings page login uses the OTA password from
 firmware/bridge/credentials.h. The monitor, the log, the supply voltage
-(value and chart) and the lifetime record show fixed demo data, never real data: real NMEA contains
+(value and chart), the lifetime record and the saved log show fixed demo data, never real data: real NMEA contains
 positions, the real log network names and addresses, and a bench board
 without the divider has no meaningful voltage.
 
@@ -126,6 +126,21 @@ def demo_log(firmware: str) -> dict:
     return {"firmware": firmware, "boot": 2, "seq": len(lines), "now": 66000, "lost": False, "lines": lines}
 
 
+def demo_saved(firmware: str) -> str:
+    """Saved log as /api/saved sends it: start, Unix ms, ms since start, level, source, message."""
+    day = int(time.time() // 86400 * 86400 * 1000) - 2 * 86400 * 1000 + 13 * 3600 * 1000  # two days ago, 13:00 UTC
+    rows = [
+        (55, day, 900, "I", "system", f"Start, firmware {firmware}, reset: power on"),
+        (55, day + 1520000, 1521000, "W", "wifi", "Network connection lost: BEACON_TIMEOUT (200)"),
+        (55, day + 5410000, 5411000, "W", "system", "Chip temperature high: 81 °C for 60 s; the bridge keeps running"),
+        (56, 0, 950, "W", "system", "Start, firmware " + firmware + ", reset: brownout, the supply voltage dropped"),
+        (56, 0, 64000, "W", "system", "Supply voltage low: 11.32 V for 10 s"),
+        (57, day + 86400000, 880, "I", "system", f"Start, firmware {firmware}, reset: power on"),
+        (57, day + 86400000 + 734000, 735000, "W", "ports", "FLARM: 3 receive errors, last: framing, check baud and frame"),
+    ]
+    return "# used 16384 of 131072 bytes\n" + "".join("\t".join(str(x) for x in r) + "\n" for r in rows)
+
+
 def shoot(page: str, image: bytes, target: Path, height: int) -> None:
     with tempfile.TemporaryDirectory() as tmp:
         tmp = Path(tmp)
@@ -208,6 +223,14 @@ def main() -> None:
             ";window.fetch=u=>Promise.resolve({json:()=>Promise.resolve(u.includes('since=0')?_d:_e)});</script>")
     page = page.replace("/device.webp", "device.webp").replace("<main>", mock + "<main>", 1)
     shoot(page, image, IMAGES / "log-page.png", 900)
+
+    if status.get("saved_log"):
+        text = demo_saved(status["firmware"].replace("Wi-Fi bridge ", ""))
+        page = get(args.host, "/saved").decode("utf-8")
+        mock = ("<script>const _t=" + json.dumps(text) +
+                ";window.fetch=u=>Promise.resolve({ok:true,text:()=>Promise.resolve(_t)});</script>")
+        page = page.replace("/device.webp", "device.webp").replace("<main>", mock + "<main>", 1)
+        shoot(page, image, IMAGES / "saved-page.png", 840)
 
 
 if __name__ == "__main__":

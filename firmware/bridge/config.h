@@ -53,7 +53,7 @@
                              // incoming bytes while the loop waits on a UART write
 
 #ifdef ESP32
-#define VERSION "0.5.3-ESP32"     // Project: own version, 0.<plan step> until bench acceptance; 0.4.1 = device profiles (WP9), .2 = web log (step 3c), .3/.4 = log clock time; 0.5 = apps never hold up the bridge; 0.5.1 = supply voltage (step 3d); 0.5.2 = chip temperature (step 3e); 0.5.3 = lifetime record (step 3f)
+#define VERSION "0.5.4-ESP32"     // Project: own version, 0.<plan step> until bench acceptance; 0.4.1 = device profiles (WP9), .2 = web log (step 3c), .3/.4 = log clock time; 0.5 = apps never hold up the bridge; 0.5.1 = supply voltage (step 3d); 0.5.2 = chip temperature (step 3e); 0.5.3 = lifetime record (step 3f); 0.5.4 = saved log (step 3g)
 #elif defined(ESP8266)
 #define VERSION "0.3b.1-ESP8266"
 #endif
@@ -69,6 +69,7 @@
 #define SUPPLY_SENSE           // Project: supply voltage on GPIO34, OpenVario port and chart (step 3d, supply.h, needs STATUS_PAGE, ESP32 only)
 #define CHIP_TEMP              // Project: ESP32 chip temperature on the status page and in the log, no shutdown (step 3e, chiptemp.h, needs STATUS_PAGE, ESP32 only)
 #define LIFETIME_RECORD        // Project: starts, operating time and extremes kept in NVS through power cuts (step 3f, lifetime.h, needs STATUS_PAGE, ESP32 only)
+#define SAVED_LOG              // Project: errors and warnings kept through power cuts in LittleFS, page /saved (step 3g, savedlog.h, needs WEB_LOG and LIFETIME_RECORD)
 #define PORT_NAMES {"Zander", "FLARM", "Becker"}  // Project: COM 0, 1, 2 on the status page
 #define PORT_PROFILES {"zs1", "flarm", "ar6201"}  // Project: default device profile per COM (settings.h); baud and frame must match UART_BAUDn and SERIAL_PARAMn
 //#define BLUETOOTH 0          // uncomment to create a bluetooth serial bridge on the indicated serial port (ESP32 only)
@@ -143,6 +144,9 @@
 #endif
 #if defined(LIFETIME_RECORD) && !(defined(ESP32) && defined(STATUS_PAGE))
 #error "LIFETIME_RECORD needs STATUS_PAGE and an ESP32."
+#endif
+#if defined(SAVED_LOG) && !(defined(WEB_LOG) && defined(LIFETIME_RECORD))
+#error "SAVED_LOG needs WEB_LOG and LIFETIME_RECORD."
 #endif
 #if defined(WEB_LOG) && defined(DEBUG)
 #error "DEBUG prints on UART0, which serves the Zander; WEB_LOG shows the same lines on /log."
