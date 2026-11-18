@@ -25,6 +25,7 @@ struct PortStats {
     std::atomic<uint32_t> tcpClients{0};   // connected TCP clients
     std::atomic<uint32_t> uartErrors{0};   // receive buffer full, FIFO overflow, framing, parity, break
     std::atomic<uint32_t> shortWrites{0};  // TCP writes that took fewer bytes than offered
+    std::atomic<uint8_t> lastError{0};     // hardwareSerial_error_t of the last receive error (web log)
 };
 static PortStats portStats[NUM_COM];
 
@@ -85,7 +86,7 @@ a{color:inherit}
 <div class="down" id="down" hidden>The bridge is not answering. Check that this phone is on the bridge's Wi-Fi.</div>
 <div id="ports"></div>
 <section class="set"><details><summary>All settings</summary><div id="set">Loading</div><p class="key"><a href="/settings">Change settings</a> (password)</p></details></section>
-<footer><a href="/monitor">Data monitor</a>: see what passes the bridge. Read-only. Refreshes every 2 seconds; settings apply when the bridge starts. Data: <a href="/api/status">status</a>, <a href="/api/settings">settings</a>.</footer>
+<footer><a href="/monitor">Data monitor</a>: see what passes the bridge. <a href="/log">Log</a>: what the bridge did. Read-only. Refreshes every 2 seconds; settings apply when the bridge starts. Data: <a href="/api/status">status</a>, <a href="/api/settings">settings</a>.</footer>
 </main>
 <script>
 const $=i=>document.getElementById(i),last={},frame={};let built=false;
@@ -251,6 +252,7 @@ static String settingsJson() {
 
 #include "settings_page.h"  // Project: password-protected settings page (step 3a)
 #include "monitor.h"        // Project: data monitor (step 3b)
+#include "log_page.h"       // Project: web log (step 3c)
 
 static void statusTask(void*) {
     statusServer.on("/", HTTP_GET, []() { statusServer.send(200, "text/html", kStatusPage); });
@@ -268,18 +270,23 @@ static void statusTask(void*) {
     });
     settingsRoutes();
     monitorRoutes();
+    logRoutes();
     statusServer.onNotFound([]() { statusServer.send(404, "text/plain", "Not found"); });
     statusServer.begin();
     for (;;) {
         statusServer.handleClient();
         settingsTrialCheck();
+        logTick();
         vTaskDelay(pdMS_TO_TICKS(5));
     }
 }
 
 // Before COM[num]->begin(): count UART receive errors.
 static void statusAttachUart(int num) {
-    COM[num]->onReceiveError([num](hardwareSerial_error_t) { STAT(num, uartErrors, 1); });
+    COM[num]->onReceiveError([num](hardwareSerial_error_t e) {
+        STAT(num, uartErrors, 1);
+        portStats[num].lastError.store(e, std::memory_order_relaxed);
+    });
 }
 
 // At the end of setup(), once Wi-Fi is up.

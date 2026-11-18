@@ -3,10 +3,11 @@
 Reads both pages, the image and the settings JSON from a running bridge,
 masks private details, and renders them at phone width (390 px, 2x) in the
 light theme: docs/images/status-page.png ("All settings" open),
-docs/images/settings-page.png and docs/images/monitor-page.png. The
-settings page login uses the OTA password from firmware/bridge/credentials.h.
-The monitor shows fixed demo data, never real data: real NMEA contains
-positions.
+docs/images/settings-page.png, docs/images/monitor-page.png and
+docs/images/log-page.png. The settings page login uses the OTA password from
+firmware/bridge/credentials.h. The monitor and the log show fixed demo data,
+never real data: real NMEA contains positions, the real log network names and
+addresses.
 
     python tools/status_screenshot.py <bridge address>
 
@@ -70,6 +71,35 @@ def demo_monitor() -> dict:
         chunks.append({"t": t, "d": d, "x": (line + "\r\n").encode().hex()})
         t += 180 if d else 330
     return {"seq": len(chunks), "lost": False, "now": t, "chunks": chunks}
+
+
+DEMO_LOG = [  # (start number, ms since start, level, source, message); start 2 is the current one
+    (1, 412, "I", "system", "Start, firmware {fw}, reset: power on"),
+    (1, 431, "I", "settings", "Settings: defaults, nothing stored"),
+    (1, 937, "I", "wifi", "Joining network your-network for up to 15 s"),
+    (1, 3260, "I", "wifi", "Connected to the network, address 192.168.1.50"),
+    (1, 95120, "I", "system", "Firmware update started (sketch)"),
+    (1, 118470, "I", "system", "Firmware update received, restarting"),
+    (2, 409, "I", "system", "Start, firmware {fw}, reset: restart by the firmware"),
+    (2, 428, "I", "settings", "Settings: defaults, nothing stored"),
+    (2, 936, "I", "wifi", "Joining network your-network for up to 15 s"),
+    (2, 15940, "W", "wifi", "Network your-network not reached, opening the hotspot"),
+    (2, 17985, "I", "wifi", "Hotspot WiFi-BridgeTom open at 10.10.10.10"),
+    (2, 31200, "I", "wifi", "A phone joined the hotspot, 1 connected"),
+    (2, 33010, "I", "ports", "Zander: data arriving"),
+    (2, 33020, "I", "ports", "FLARM: data arriving"),
+    (2, 35870, "I", "ports", "Zander: 1 app connected (before 0)"),
+    (2, 35900, "I", "radio", "App 10.10.10.2 took the radio port"),
+    (2, 41550, "W", "radio", "App 10.10.10.3 refused: another app owns the radio port (0 more since the last line)"),
+    (2, 60010, "D", "system", "Memory free 182 kB, lowest 171 kB; hotspot, 1 phone(s)"),
+    (2, 64300, "W", "ports", "FLARM: 3 receive errors, last: framing, check baud and frame"),
+]
+
+
+def demo_log(firmware: str) -> dict:
+    lines = [{"q": q, "b": b, "t": t, "l": l, "s": s, "m": m.format(fw=firmware)}
+             for q, (b, t, l, s, m) in enumerate(DEMO_LOG, 1)]
+    return {"firmware": firmware, "boot": 2, "seq": len(lines), "now": 66000, "lost": False, "lines": lines}
 
 
 def shoot(page: str, image: bytes, target: Path, height: int) -> None:
@@ -137,6 +167,14 @@ def main() -> None:
             ";window.fetch=u=>Promise.resolve({json:()=>Promise.resolve(u.includes('since=0')?_d:_e)});</script>")
     mon = mon.replace("/device.webp", "device.webp").replace("<main>", mock + "<main>", 1)
     shoot(mon, image, IMAGES / "monitor-page.png", 760)
+
+    demo = demo_log(status["firmware"].replace("Wi-Fi bridge ", ""))
+    empty = dict(demo, lines=[])
+    page = get(args.host, "/log").decode("utf-8")
+    mock = ("<script>localStorage.clear();const _d=" + json.dumps(demo) + ",_e=" + json.dumps(empty) +
+            ";window.fetch=u=>Promise.resolve({json:()=>Promise.resolve(u.includes('since=0')?_d:_e)});</script>")
+    page = page.replace("/device.webp", "device.webp").replace("<main>", mock + "<main>", 1)
+    shoot(page, image, IMAGES / "log-page.png", 900)
 
 
 if __name__ == "__main__":

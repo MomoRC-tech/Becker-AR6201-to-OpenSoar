@@ -1,6 +1,6 @@
 # Bridge firmware
 
-Wi-Fi bridge firmware for Zander, FLARM and Becker, based on ESP-Serial-Bridge ([ADR-02](../../docs/design/architecture.md#adr-02)). The standalone ESP32 runs step 4 firmware with single-client radio ownership (S114). See the [firmware plan](../../docs/project/roadmap.md#firmware-plan) for the remaining wired checks.
+Wi-Fi bridge firmware for Zander, FLARM and Becker, based on ESP-Serial-Bridge ([ADR-02](../../docs/design/architecture.md#adr-02)). The standalone ESP32 runs step 4 firmware with single-client radio ownership (S114) and the [web log](#web-log) (S116). See the [firmware plan](../../docs/project/roadmap.md#firmware-plan) for the remaining wired checks.
 
 ## Origin and license
 
@@ -33,7 +33,7 @@ Set in `config.h`; everything else is upstream.
 | Wi-Fi start-up | `MODE_STA_AP`: join the network in `credentials.h` for 15 s, otherwise open hotspot `WiFi-BridgeTom` at 10.10.10.10. The upstream modes `MODE_STA` and `MODE_AP` stay selectable |
 | Hostname | `wifi-bridgetom`, for mDNS and OTA, as the OTA loader |
 | OTA | ArduinoOTA with the password from `credentials.h`, in both Wi-Fi modes |
-| Log output | `DEBUG` off: UART0 serves the Zander, so nothing is printed |
+| Log output | `DEBUG` off: UART0 serves the Zander, so nothing is printed there. `WEB_LOG` shows the log lines and the ESP32 system messages on the [web log](#web-log); the build stops if both are on |
 | UART receive buffer | 4096 bytes per UART, so bytes are kept while the loop waits on a UART write |
 | Build-time checks | The build stops if UDP is switched on, if Bluetooth is pointed at the radio port, or if not exactly one Wi-Fi mode is selected |
 | `BATTERY_SAVER` | Fixed so it lowers the transmit power; off |
@@ -63,8 +63,9 @@ Open `http://<bridge address>/` (10.10.10.10 in hotspot mode) in a browser. [`st
 | `/api/status` | Live counters as JSON |
 | `/api/settings` | Active settings, their defaults and source (`default`, `changed`, `invalid`), the trial state and the device profiles with the presets that fit each port, as JSON |
 | `/monitor`, `/api/monitor` | [Data monitor](#data-monitor) |
+| `/log`, `/api/log` | [Web log](#web-log) |
 
-After any change to the status, settings or monitor page, take new screenshots from the running bridge and commit them with the change: `python tools/status_screenshot.py <bridge address>`. It masks the network name, shows hotspot mode and uses demo data for the monitor, since the repository is public.
+After any change to the status, settings, monitor or log page, take new screenshots from the running bridge and commit them with the change: `python tools/status_screenshot.py <bridge address>`. It masks the network name, shows hotspot mode and uses demo data for the monitor and the log, since the repository is public.
 
 <a id="settings-page"></a>
 
@@ -110,6 +111,31 @@ Open *Data monitor* at the bottom of the status page, *Show data* in a device's 
 
 Bench check: `python tools/monitor_test.py <bridge address>` with the step 2 jumpers.
 
+<a id="web-log"></a>
+
+## Web log
+
+Open *Log* at the bottom of the status page, or `http://<bridge address>/log`. No password, like the status page. [`weblog.h`](weblog.h) keeps the lines; [`log_page.h`](log_page.h) holds the page. Message kinds per source: [plan](../../docs/project/roadmap.md#web-log).
+
+![Web log with demo data, Events view](../../docs/images/log-page.png)
+
+| Control | What it does |
+| --- | --- |
+| **Important / Events / All** | Errors and warnings / adds Info, what the bridge does (default) / adds Debug details |
+| Source buttons | Show or hide Wi-Fi, Ports, Radio, Settings, System. The browser remembers view and sources |
+| **Pause**, **Clear** | Freeze the view (lines keep arriving) / empty the view; the bridge keeps its lines |
+| **Copy** | Puts the shown lines on the clipboard, with a header: firmware, save time, view. Works over plain `http`, where the browser's clipboard API is blocked, through the older copy command |
+| **Save** | Downloads the same text as `bridge-log-<date>-<time>.txt`. Columns: clock time (estimated from the phone; `-` before a restart), seconds since start, start number, level, source, message |
+
+- **Lines:** time in seconds since the bridge started, level letter (E, W, I, D), source, message. Grey lines are from before a restart; a separator marks it, and the first line after it names the reset reason (power on, restart by the firmware, crash, watchdog, brownout).
+- **Collection:** always on, in RAM: the last 96 Error/Warning/Info lines and, separately, the last 48 Debug lines (about 16 kB). The buffers sit in `.noinit` RAM, so they survive a restart, crash or watchdog reset, not a power cut. A line is copied under a short lock; nothing blocks and nothing goes to a UART.
+- **Counters as lines:** once per second the web task compares the port counters: apps connected, data arriving or quiet for 10 s, receive errors and short writes (at most one line per port every 5 s, with the kind of the last receive error). A refused radio app is logged at most every 30 s, with the number of further refusals. Memory and Wi-Fi signal as Debug every 60 s.
+- **ESP32 system messages:** the ESP-IDF log output is redirected into the log as source System, so none goes out of UART0 on the Zander transmit pin. This core build compiles in only its error messages.
+- **Data:** `GET /api/log?since=<sequence>` returns the newer lines as JSON, oldest first: `q` sequence, `b` start number, `t` ms since that start, `l` level, `s` source, `m` message. `lost` is true when lines were overwritten before they were fetched.
+- **Privacy:** saved logs contain the network name and app addresses. Do not commit them to this public repository unredacted.
+
+Bench check: `python tools/log_test.py <bridge address>`, and after an OTA upload `--kept` to check that the lines from before the restart remain.
+
 ## Build
 
 Same toolchain and partition scheme as the [OTA loader](../ota-loader/README.md#build): Arduino-ESP32 3.3.x, board **ESP32 Dev Module**, Partition Scheme **Minimal SPIFFS (1.9MB APP with OTA/190KB SPIFFS)**.
@@ -132,7 +158,7 @@ The board must run an image with an OTA receiver (OTA loader or this firmware). 
 python espota.py -i <bridge address> -a "<OTA password>" -f build/bridge/bridge.ino.bin
 ```
 
-There is no serial log. Find the address through mDNS (`wifi-bridgetom.local`) or the router; in hotspot mode it is 10.10.10.10.
+There is no serial log; see the [web log](#web-log). Find the address through mDNS (`wifi-bridgetom.local`) or the router; in hotspot mode it is 10.10.10.10.
 
 ## Loop check (step 2)
 

@@ -34,6 +34,7 @@
 #endif
 
 #include "config.h"
+#include "weblog.h"  // Project: web log (step 3c); before every module that logs
 
 #ifdef FALLBACK_TEST  // Project: temporary hotspot fallback test build
 #include <esp_ota_ops.h>
@@ -135,24 +136,32 @@ static void closeRadioOwner(WiFiClient& owner) {
     portEXIT_CRITICAL(&radioStationLock);
 }
 
-static bool radioOwnerGone(WiFiClient& owner) {
+// Why the owner is gone (for the web log), or nullptr while it is still there.
+static const char* radioOwnerGone(WiFiClient& owner) {
     portENTER_CRITICAL(&radioStationLock);
     const bool left = radioStationLeft;
     portEXIT_CRITICAL(&radioStationLock);
-    if (left) return true;
-    if (owner.available() > 0) return false;
-    if (owner.fd() < 0) return true;
+    if (left) return "the phone left the hotspot";
+    if (owner.available() > 0) return nullptr;
+    if (owner.fd() < 0) return "connection closed";
 
     // Core 3.3.12 connected() treats a zero-length recv (TCP FIN) as connected.
     uint8_t byte;
     const int result = recv(owner.fd(), &byte, sizeof(byte), MSG_DONTWAIT | MSG_PEEK);
-    return result == 0 || (result < 0 && errno != EAGAIN && errno != EWOULDBLOCK && errno != EINTR);
+    if (result == 0) return "closed by the app";
+    if (result < 0 && errno != EAGAIN && errno != EWOULDBLOCK && errno != EINTR) return "connection lost";
+    return nullptr;
 }
 
 static void serviceRadioPort() {
     WiFiClient& owner = TCPClient[RADIO_COM][0];
     HardwareSerial& radio = *COM[RADIO_COM];
-    if (owner.fd() >= 0 && radioOwnerGone(owner)) closeRadioOwner(owner);
+    if (owner.fd() >= 0) {
+        if (const char* why = radioOwnerGone(owner)) {
+            LOGI(LOG_RADIO, "App released the radio port: %s", why);
+            closeRadioOwner(owner);
+        }
+    }
 
     if (server[RADIO_COM]->hasClient()) {
         WiFiClient candidate = server[RADIO_COM]->accept();
@@ -167,7 +176,19 @@ static void serviceRadioPort() {
             closeRadioOwner(owner);  // Clear tracking if the core closed the previous socket itself.
             owner = candidate;
             trackRadioStation(owner);
+            LOGI(LOG_RADIO, "App %s took the radio port", owner.remoteIP().toString().c_str());
         } else {
+            // One line per 30 s at most: an app may retry every second.
+            static uint32_t refusedAt = 0, refusedMore = 0;
+            if (refusedAt == 0 || millis() - refusedAt >= 30000) {
+                LOGW(LOG_RADIO, "App %s refused: %s (%lu more since the last line)", candidate.remoteIP().toString().c_str(),
+                     candidate.fd() < 0 ? "connection failed" : owner.fd() >= 0 ? "another app owns the radio port" : "socket setup failed",
+                     (unsigned long)refusedMore);
+                refusedAt = millis() | 1u;
+                refusedMore = 0;
+            } else {
+                refusedMore++;
+            }
             candidate.stop();
         }
     }
@@ -178,7 +199,10 @@ static void serviceRadioPort() {
             const size_t sent = radio.write(buf1[RADIO_COM], readCount);
             STAT(RADIO_COM, toDevice, sent);
             MON(RADIO_COM, 1, buf1[RADIO_COM], sent);
-            if (sent != (size_t)readCount) closeRadioOwner(owner);
+            if (sent != (size_t)readCount) {
+                LOGW(LOG_RADIO, "Radio took %u of %d bytes, session closed", (unsigned)sent, readCount);
+                closeRadioOwner(owner);
+            }
         }
     }
 
@@ -190,6 +214,7 @@ static void serviceRadioPort() {
             MON(RADIO_COM, 0, buf2[RADIO_COM], readCount);
             if (owner.fd() >= 0 && owner.write(buf2[RADIO_COM], readCount) != readCount) {
                 STAT(RADIO_COM, shortWrites, 1);
+                LOGW(LOG_RADIO, "App did not take %u radio bytes, session closed", (unsigned)readCount);
                 closeRadioOwner(owner);
             }
         }
@@ -224,6 +249,7 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
 #endif
 
     void setup() {
+        logStart();  // Project: web log (step 3c), before anything logs
         delay(500);
 
 #if defined(ESP32) && defined(PROTOCOL_TCP)
@@ -287,45 +313,40 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
 #endif
 
 #ifdef MODE_STA_AP  // Project: join the network for JOIN_TIMEOUT_MS, else open the hotspot (ADR-05, R12)
-        debug.println("Open ESP Station Mode, hotspot fallback");
         WiFi.persistent(false);  // Project: the core keeps no second copy of the network password (step 3a)
         WiFi.setHostname(HOSTNAME);
         WiFi.mode(WIFI_STA);
         WiFi.begin(settings.netSsid, settings.netPass);  // Project: stored settings (step 3a)
-        debug.printf("Joining %s for up to %u s\n", settings.netSsid, settings.joinSeconds);
+        LOGI(LOG_WIFI, "Joining network %s for up to %u s", settings.netSsid, settings.joinSeconds);
         {
             const unsigned long start = millis();
             while (WiFi.status() != WL_CONNECTED && millis() - start < settings.joinSeconds * 1000UL) {
                 delay(250);
             }
         }
-        if (WiFi.status() == WL_CONNECTED) {
-            debug.print("connected, IP address: ");
-            debug.println(WiFi.localIP());  // reconnects on its own after a drop
-        } else {
-            debug.println("Network not reached, opening hotspot");
+        if (WiFi.status() != WL_CONNECTED) {  // connected: logWifiEvent logs the address; reconnects on its own after a drop
+            LOGW(LOG_WIFI, "Network %s not reached, opening the hotspot", settings.netSsid);
             WiFi.disconnect(true);
             WiFi.mode(WIFI_AP);
             if (!WiFi.softAP(settings.hotspotSsid, settings.hotspotPass)) {
-                debug.println("Hotspot failed, restarting in 5 s");
+                LOGE(LOG_WIFI, "Hotspot failed, restarting in 5 s");
                 delay(5000);
                 ESP.restart();
             }
             delay(2000);  // as upstream MODE_AP before softAPConfig
             const IPAddress hotspotIp(settings.hotspotIp);
             WiFi.softAPConfig(hotspotIp, hotspotIp, NETMASK);
-            debug.print("Hotspot ");
-            debug.print(settings.hotspotSsid);
-            debug.print(", IP address: ");
-            debug.println(WiFi.softAPIP());
+            LOGI(LOG_WIFI, "Hotspot %s open at %s", settings.hotspotSsid, WiFi.softAPIP().toString().c_str());
         }
         if (MDNS.begin(HOSTNAME)) {
             MDNS.addService("_telnet", "_tcp", settings.port[0].tcpPort);
+        } else {
+            LOGW(LOG_WIFI, "Name %s.local not available (mDNS)", HOSTNAME);
         }
 #endif
 
 #ifdef OTA_HANDLER
-        // Project: password and hostname (R13); messages follow the DEBUG switch
+        // Project: password and hostname (R13); messages go to the web log (step 3c)
         ArduinoOTA.setHostname(HOSTNAME);
         ArduinoOTA.setPassword(OTA_PASSWORD);
         ArduinoOTA.onStart([]() {
@@ -340,24 +361,24 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
 
             // NOTE: if updating SPIFFS this would be the place to unmount
             // SPIFFS using SPIFFS.end()
-            debug.println("Start updating " + type);
+            LOGI(LOG_SYSTEM, "Firmware update started (%s)", type.c_str());
         });
-        ArduinoOTA.onEnd([]() { debug.println("\nEnd"); });
+        ArduinoOTA.onEnd([]() { LOGI(LOG_SYSTEM, "Firmware update received, restarting"); });
         ArduinoOTA.onProgress([](unsigned int progress, unsigned int total) {
-            debug.printf("Progress: %u%%\r", (progress / (total / 100)));
+            static unsigned int reported = 0;  // quarters reported
+            const unsigned int quarter = total ? (unsigned int)(4ULL * progress / total) : 0;
+            if (quarter == 0) reported = 0;
+            else if (quarter > reported) LOGD(LOG_SYSTEM, "Firmware update %u %%", 25 * (reported = quarter));
         });
         ArduinoOTA.onError([](ota_error_t error) {
-            debug.printf("Error[%u]: ", error);
-            if (error == OTA_AUTH_ERROR)
-                debug.println("Auth Failed");
-            else if (error == OTA_BEGIN_ERROR)
-                debug.println("Begin Failed");
-            else if (error == OTA_CONNECT_ERROR)
-                debug.println("Connect Failed");
-            else if (error == OTA_RECEIVE_ERROR)
-                debug.println("Receive Failed");
-            else if (error == OTA_END_ERROR)
-                debug.println("End Failed");
+            LOGE(LOG_SYSTEM, "Firmware update failed: %s (%u)",
+                 error == OTA_AUTH_ERROR      ? "wrong password"
+                 : error == OTA_BEGIN_ERROR   ? "could not begin"
+                 : error == OTA_CONNECT_ERROR ? "could not connect"
+                 : error == OTA_RECEIVE_ERROR ? "receive failed"
+                 : error == OTA_END_ERROR     ? "could not finish"
+                                              : "unknown",
+                 (unsigned)error);
         });
         // if DNSServer is started with "*" for domain name, it will reply with
         // provided IP to all DNS request

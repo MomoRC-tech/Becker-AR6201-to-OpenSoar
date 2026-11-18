@@ -18,6 +18,7 @@
 
 static bool settingsAuth() {
     if (statusServer.authenticate(SETTINGS_USER, OTA_PASSWORD)) return true;
+    if (statusServer.hasHeader("Authorization")) LOGW(LOG_SETTINGS, "Wrong settings password");  // the first request has none
     statusServer.requestAuthentication(BASIC_AUTH, "WIFI Bridge settings");
     return false;
 }
@@ -105,6 +106,7 @@ static void handleSettingsSave() {
         }
     }
     if (errors.length()) {
+        LOGW(LOG_SETTINGS, "Save refused: a field is wrong, nothing changed");
         statusServer.send(400, "application/json", "{\"ok\":false,\"errors\":{" + errors + "}}");
         return;
     }

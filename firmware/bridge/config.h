@@ -53,7 +53,7 @@
                              // incoming bytes while the loop waits on a UART write
 
 #ifdef ESP32
-#define VERSION "0.4.1-ESP32"     // Project: own version, 0.<plan step> until bench acceptance; .1 = device profiles (WP9)
+#define VERSION "0.4.2-ESP32"     // Project: own version, 0.<plan step> until bench acceptance; .1 = device profiles (WP9), .2 = web log (step 3c)
 #elif defined(ESP8266)
 #define VERSION "0.3b.1-ESP8266"
 #endif
@@ -64,6 +64,7 @@
 // Project: UDP (upstream PROTOCOL_UDP) is removed; the bridge serves TCP only
 #define STATUS_PAGE            // Project: read-only status page on port 80 and /api/status (ESP32 only)
 #define STORED_SETTINGS        // Project: settings stored on the ESP32 override the defaults here (step 3a, ESP32 only)
+#define WEB_LOG                // Project: event log on /log, kept across a restart (step 3c, weblog.h, needs STATUS_PAGE, ESP32 only)
 #define PORT_NAMES {"Zander", "FLARM", "Becker"}  // Project: COM 0, 1, 2 on the status page
 #define PORT_PROFILES {"zs1", "flarm", "ar6201"}  // Project: default device profile per COM (settings.h); baud and frame must match UART_BAUDn and SERIAL_PARAMn
 //#define BLUETOOTH 0          // uncomment to create a bluetooth serial bridge on the indicated serial port (ESP32 only)
@@ -112,10 +113,18 @@
 #ifdef PROTOCOL_UDP
 #error "UDP is removed from this firmware; the bridge serves TCP only."
 #endif
+#if defined(WEB_LOG) && !(defined(ESP32) && defined(STATUS_PAGE))
+#error "WEB_LOG needs STATUS_PAGE and an ESP32."
+#endif
+#if defined(WEB_LOG) && defined(DEBUG)
+#error "DEBUG prints on UART0, which serves the Zander; WEB_LOG shows the same lines on /log."
+#endif
 
 // perhaps a clever way to include/exclude serial debug messages...
 #ifdef DEBUG
     #define debug Serial
+#elif defined(WEB_LOG)
+    // Project: `debug` writes Debug lines to the web log (weblog.h)
 #else
     class Debug: public Print {
         virtual size_t write(byte b) { return 0; }

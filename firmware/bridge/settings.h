@@ -409,9 +409,12 @@ static void settingsTrialAtBoot() {
         copyNamespace(SETTINGS_BACKUP, SETTINGS_NAMESPACE);  // also clears the trial keys
         Preferences b;
         if (b.begin(SETTINGS_BACKUP, false)) { b.clear(); b.end(); }
+        LOGW(LOG_SETTINGS, "Trial not kept after %u starts: previous settings restored", SETTINGS_TRIAL_BOOTS);
         return;
     }
     settingsTrial = true;
+    LOGW(LOG_SETTINGS, "New settings on trial, start %u of %u: press Keep on the settings page within %lu min", boots,
+         SETTINGS_TRIAL_BOOTS, SETTINGS_TRIAL_MS / 60000UL);
 }
 
 // Keep the trial settings: drop the backup and the trial marks.
@@ -425,6 +428,7 @@ static void settingsKeep() {
     Preferences b;
     if (b.begin(SETTINGS_BACKUP, false)) { b.clear(); b.end(); }
     settingsTrial = false;
+    LOGI(LOG_SETTINGS, "Settings on trial kept");
 }
 
 // Trial not kept in time: restore the backup (the caller restarts).
@@ -432,6 +436,7 @@ static void settingsRevert() {
     copyNamespace(SETTINGS_BACKUP, SETTINGS_NAMESPACE);
     Preferences b;
     if (b.begin(SETTINGS_BACKUP, false)) { b.clear(); b.end(); }
+    LOGW(LOG_SETTINGS, "Trial not kept within %lu min: previous settings restored, restarting", SETTINGS_TRIAL_MS / 60000UL);
 }
 
 // Forget everything stored, including a trial (the caller restarts).
@@ -440,6 +445,7 @@ static void settingsReset() {
     if (p.begin(SETTINGS_NAMESPACE, false)) { p.clear(); p.end(); }
     Preferences b;
     if (b.begin(SETTINGS_BACKUP, false)) { b.clear(); b.end(); }
+    LOGI(LOG_SETTINGS, "Stored settings forgotten, restarting with the defaults");
 }
 
 // Save a checked candidate. Values equal to the default are removed, so they show
@@ -473,6 +479,7 @@ static bool settingsSave(const BridgeSettings& cand) {
     }
     p.putUInt("v", SETTINGS_FORMAT);
     p.end();
+    LOGI(LOG_SETTINGS, "Settings saved, restarting%s", trial ? " (on trial)" : "");
     return trial;
 }
 
@@ -484,10 +491,14 @@ static void settingsLoad() {
 #ifdef STORED_SETTINGS
     settingsTrialAtBoot();
     Preferences p;
-    if (!p.begin(SETTINGS_NAMESPACE, true)) return;  // nothing stored yet
+    if (!p.begin(SETTINGS_NAMESPACE, true)) {  // nothing stored yet
+        LOGI(LOG_SETTINGS, "Settings: defaults, nothing stored");
+        return;
+    }
     if (p.isKey("v") && p.getUInt("v", 0) != SETTINGS_FORMAT) {
         settingsFormatMismatch = true;  // written by another firmware version: use the defaults
         p.end();
+        LOGW(LOG_SETTINGS, "Stored settings are from another firmware version; defaults in use");
         return;
     }
     for (size_t i = 0; i < kSettingCount; i++) {
@@ -512,6 +523,17 @@ static void settingsLoad() {
         SettingItem& s = kSettings[i];
         if (s.type == T_PROFILE && ((custom >> portOf(s)) & 1) && s.origin == ORIGIN_DEFAULT) s.origin = ORIGIN_STORED;
     }
+    static const char* const portNames[NUM_COM] = PORT_NAMES;  // for the web log
+    int changed = 0, invalid = 0;
+    for (size_t i = 0; i < kSettingCount; i++) {
+        const SettingItem& s = kSettings[i];
+        if (s.origin == ORIGIN_STORED) changed++;
+        if (s.origin != ORIGIN_INVALID) continue;
+        invalid++;
+        const int n = portOf(s);
+        LOGW(LOG_SETTINGS, "Stored %s%s%s is invalid; default in use", n >= 0 ? portNames[n] : "", n >= 0 ? " " : "", settingName(s));
+    }
+    LOGI(LOG_SETTINGS, "Settings loaded: %d changed, %d invalid", changed, invalid);
 #endif
 }
 

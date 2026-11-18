@@ -36,7 +36,7 @@ ROOT = Path(__file__).resolve().parent.parent
 SKETCH = ROOT / "firmware" / "bridge"
 VARIANT_HEADER = SKETCH / "bridge_variant.h"
 FQBN = "esp32:esp32:esp32:PartitionScheme=min_spiffs"
-SKETCH_FILES = ("bridge.ino", "config.h")
+SKETCH_FILES = tuple(f.name for f in SKETCH.iterdir() if f.suffix in (".ino", ".h"))  # warnings from these are shown
 VARIANTS = {
     "normal": (ROOT / "build" / "bridge", None),
     "fallback-test": (ROOT / "build" / "bridge-fallback-test", "FALLBACK_TEST"),
