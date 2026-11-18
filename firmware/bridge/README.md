@@ -173,3 +173,16 @@ python tools/bridge_loop_test.py <bridge address> --radio-loop
 It sends every byte value and a pseudo-random block over TCP and checks that the looped port returns exactly the same bytes, and that UDP sent to the former upstream UDP ports reaches no device. Use the jumpers only while these pins are not soldered to the modules ([warning](../../docs/project/roadmap.md#firmware-plan)).
 
 Add `--radio-owner` for step 4. It checks that a second radio client is refused, navigation keeps flowing, and the radio port accepts the next client after a clean TCP close. The [wired checks](../../docs/project/roadmap.md#firmware-plan) cover the MAX490 path and recovery after Wi-Fi loss.
+
+<a id="slow-app-check"></a>
+
+## Slow-app check (step 5)
+
+With the same jumpers:
+
+```bash
+python tools/bridge_acceptance_test.py <bridge address> --radio-loop --baseline
+python tools/bridge_acceptance_test.py <bridge address> --radio-loop
+```
+
+It streams NMEA-like lines into the Zander port at 80 % of the line rate and reads them back on the FLARM port, with a second app there that never reads, like a phone with OpenSoar in the background. It passes when the bridge keeps taking data, the normal app gets every byte unchanged, and neither the FLARM data nor the radio loop is delayed by more than 2 s. `--baseline` leaves out the slow app. Firmware 0.4.4 fails it: one app that stops reading blocks all ports (S119).
