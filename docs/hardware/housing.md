@@ -72,8 +72,19 @@ PETG is selected because the housing sits in the shade. Heat resistance compared
 | PETG HF | 69 °C | 62 °C | S47 |
 | ASA | 100 °C | 92 °C | S48 |
 
-- **Keep it in the shade:** PETG is fine well below about 60 °C. Sun through the canopy can heat cockpit parts far above the outside air; focused sunlight has burnt instrument panels (S49).
-- **Loaded features creep first:** the RS-232 friction slots, the ESP32 bridge spring and the XT30 press fit. If the housing has to move into the sun, switch to ASA (about 30 °C more margin).
+- Choose a shaded spot. The heat deflection temperatures above are short tests under specific loads. Long-term retention depends on the filament actually printed, the load and time spent hot. Check the RS-232 clamp, ESP32 spring and XT30 fit after heat exposure. ASA is the higher-temperature option if the mounting spot must move into direct sun.
+
+<a id="climate"></a>
+
+**Covered outdoor storage and summer use.** Keep the slotted hood for the bench prototype. For installation, first establish whether the shaded mounting spot stays dry and how hot it gets with the canopy closed. The glider is normally stored outdoors under cover, including in winter (S124).
+
+| Condition | What matters for this box |
+| --- | --- |
+| Winter storage, power off | A cold board or connector can collect dew when warmer, damp air reaches it. The slots let the box dry when cockpit air dries, but also admit humid air, side drips and dust. Inspect above the box and along both cable runs for water tracks. Keep wet electronics unpowered until dry and inspected (S125). |
+| First use after a cold night | Both Hailege boards are listed as MAX3232CSE. If confirmed, their chips are specified for operation from **0 to 70 °C**. A dry board below freezing can therefore still be outside specification at switch-on. The chip's storage rating alone cannot establish a winter storage range for the assembled bridge (S26, S126). |
+| Summer parking and operation | Sun can heat a parked cockpit even with some ventilation (S127). The bridge adds roughly **1.8 W** while running, using the [estimated load and converter efficiency](power.md#currents). About 1.5 W goes to the boards and 0.26 W is lost in the UBEC. A solid hood still sheds heat through its walls. Its temperature rise depends on mounting, nearby surfaces and airflow. |
+
+If water can reach the box, first look for a dry position and route the cables so water drips off before reaching the plugs. Covering the slots leaves the step seam, XT30 and DE-9 as entry paths and can slow drying. If a dry position is impractical, a sealed seam and connector entries with a water-resistant pressure vent are an option for owner review. The membrane passes water vapour and equalises pressure. Its cooling performance would need a separate check (S125). See [housing item 8](../project/open-items.md#housing) for the proposed measurements.
 
 <a id="print-values"></a>
 
