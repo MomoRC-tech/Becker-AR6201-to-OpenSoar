@@ -145,7 +145,7 @@ Size F1 using the measured running current and switch-on inrush, the wire's allo
 
 | Part | From | To | Where |
 | --- | --- | --- | --- |
-| R-V1 100 kΩ | XT30 + (12 V input, after F1) | Sense wire | At the XT30 + solder cup or on the UBEC red input lead right behind it, in heat-shrink |
+| R-V1 100 kΩ | XT30 + (net `12V-IN`, after F1) | Sense wire (net `V_SENSE`) | At the XT30 + solder cup or on the UBEC red input lead right behind it, in heat-shrink |
 | Sense wire | R-V1 | GPIO34 ([J2-5](modules.md#esp32-pinout)) | 26 AWG, routed beside the existing wires |
 | R-V2 10 kΩ | J2-5 | J2-14 (GND-J) | Along the header at pin-top level, insulated leads |
 | C-V 100 nF | J2-5 | J2-14 | In parallel with R-V2, at the pin |

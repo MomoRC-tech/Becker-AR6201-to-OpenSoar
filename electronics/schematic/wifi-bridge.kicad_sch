@@ -6,7 +6,7 @@
 	(paper "A3")
 	(title_block
 		(title "Wi-Fi bridge: glider avionics to OpenSoar")
-		(date "2026-11-16")
+		(date "2026-11-18")
 		(rev "1")
 		(comment 1 "Derived view; source: docs/hardware/wiring.md, docs/hardware/power.md")
 	)
@@ -654,6 +654,161 @@
 						)
 					)
 					(number "9"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Device:C"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0.254)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "C"
+				(at 0.635 2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "C"
+				(at 0.635 -2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0.9652 -3.81 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Unpolarized capacitor"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "cap capacitor"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "C_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "C_0_1"
+				(polyline
+					(pts
+						(xy -2.032 0.762) (xy 2.032 0.762)
+					)
+					(stroke
+						(width 0.508)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -2.032 -0.762) (xy 2.032 -0.762)
+					)
+					(stroke
+						(width 0.508)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "C_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 2.794)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 2.794)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -2352,6 +2507,17 @@
 		)
 		(uuid "35e17aee-fbf3-4b3c-a683-ec0494bc27b8")
 	)
+	(text "Supply voltage sense (step 3d): R-V1 at the XT30 + cup,\nR-V2 and C-V at ESP32 J2-5 / J2-14. GPIO34 = 12V-IN / 11."
+		(exclude_from_sim no)
+		(at 180.34 58.42 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "36705518-5cdc-45a4-942f-1a2dfa19491b")
+	)
 	(text "120 ohm receive termination (A/B) is on the board.\nHeader TXD/RXD: identify RO and DI\non the board (bring-up step 5)."
 		(exclude_from_sim no)
 		(at 182.88 246.38 0)
@@ -2461,12 +2627,6 @@
 		(uuid "86f11d74-7b67-4e8a-bbdc-0e21ead40049")
 	)
 	(junction
-		(at 142.24 154.94)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "8b7f67b8-749c-486e-84cc-610ce6fac7af")
-	)
-	(junction
 		(at 170.18 48.26)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2525,10 +2685,6 @@
 	(no_connect
 		(at 215.9 147.32)
 		(uuid "36920474-4afd-4180-bd05-1c77a1ac7cff")
-	)
-	(no_connect
-		(at 190.5 127)
-		(uuid "37aa9237-8613-4d88-9384-414f156ce3fe")
 	)
 	(no_connect
 		(at 190.5 129.54)
@@ -2926,6 +3082,16 @@
 	)
 	(wire
 		(pts
+			(xy 198.12 68.58) (xy 198.12 74.93)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "65b51615-507c-4638-85b0-ee56e8bcb361")
+	)
+	(wire
+		(pts
 			(xy 137.16 114.3) (xy 157.48 114.3)
 		)
 		(stroke
@@ -3236,6 +3402,16 @@
 	)
 	(wire
 		(pts
+			(xy 189.23 68.58) (xy 198.12 68.58)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c446b521-740a-43b4-8717-d16ac80c7c60")
+	)
+	(wire
+		(pts
 			(xy 53.34 177.8) (xy 58.42 177.8)
 		)
 		(stroke
@@ -3424,6 +3600,16 @@
 		)
 		(uuid "fed73c48-ada1-4df9-aeb8-3991c847ec4d")
 	)
+	(label "V_SENSE"
+		(at 198.12 68.58 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "04a1ab34-0ace-41f8-9624-504f8fd4384a")
+	)
 	(label "GND-J"
 		(at 182.88 104.14 0)
 		(effects
@@ -3454,6 +3640,16 @@
 		)
 		(uuid "7910f289-3f48-40c7-95c4-ee3bfd4e4e83")
 	)
+	(label "GND-J"
+		(at 220.98 82.55 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "7a681285-9ebe-4250-81bb-a686de593f57")
+	)
 	(label "3V3"
 		(at 180.34 116.84 0)
 		(effects
@@ -3473,6 +3669,36 @@
 			(justify left bottom)
 		)
 		(uuid "8c5d4ada-6292-4767-b34c-b53eed930a01")
+	)
+	(label "12V-IN"
+		(at 43.18 50.8 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "9898045b-504e-4cd1-b678-ce6f6d757f82")
+	)
+	(label "GND-J"
+		(at 198.12 82.55 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "9c1b733a-0aae-432f-a9b9-efb43e1070f7")
+	)
+	(label "12V-IN"
+		(at 181.61 68.58 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "b3fcb7e1-2f8d-4530-8294-f9c4bdc302cf")
 	)
 	(label "TX2-"
 		(at 62.23 167.64 0)
@@ -3523,6 +3749,26 @@
 			(justify left bottom)
 		)
 		(uuid "da527eff-d754-4370-9e8a-fdc0de6d31f7")
+	)
+	(label "V_SENSE"
+		(at 190.5 127 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "e02d7527-731a-48ac-8f61-3fe7be1c2f3d")
+	)
+	(label "V_SENSE"
+		(at 220.98 74.93 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "e495d91d-566e-497f-90af-17f27af6485c")
 	)
 	(label "RX2-"
 		(at 62.23 170.18 0)
@@ -3703,6 +3949,85 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:R")
+		(at 198.12 78.74 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "06aa5bd4-5d9a-43bd-9d15-fccc57e066fe")
+		(property "Reference" "R5"
+			(at 202.565 77.47 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "10k R-V2"
+			(at 206.375 80.01 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 196.342 78.74 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 198.12 78.74 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 198.12 78.74 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "662d3f17-9090-4c20-a780-eedbd0bd785b")
+		)
+		(pin "2"
+			(uuid "733c1d0b-0a02-4985-80df-8d3249a8fd73")
+		)
+		(instances
+			(project "wifi-bridge"
+				(path "/c20146f5-62f0-41a2-a5ee-73a82d9a2ea7"
+					(reference "R5")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "wifi-bridge:Hailege_H-1-0290")
 		(at 127 152.4 0)
 		(unit 1)
@@ -3873,6 +4198,85 @@
 			(project "wifi-bridge"
 				(path "/c20146f5-62f0-41a2-a5ee-73a82d9a2ea7"
 					(reference "R2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 185.42 68.58 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "717b8870-87b4-44c3-ba59-6fe5ee83b97a")
+		(property "Reference" "R4"
+			(at 185.42 65.405 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "100k R-V1"
+			(at 185.42 72.39 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 185.42 70.358 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 185.42 68.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 185.42 68.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "53d5976f-1768-4924-802d-b0490443148b")
+		)
+		(pin "2"
+			(uuid "6a4928fa-67a0-4fac-9614-77b19476c9bf")
+		)
+		(instances
+			(project "wifi-bridge"
+				(path "/c20146f5-62f0-41a2-a5ee-73a82d9a2ea7"
+					(reference "R4")
 					(unit 1)
 				)
 			)
@@ -4596,6 +5000,87 @@
 			(project "wifi-bridge"
 				(path "/c20146f5-62f0-41a2-a5ee-73a82d9a2ea7"
 					(reference "U5")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 220.98 78.74 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "eccd0611-0877-4792-a505-a7656914afec")
+		(property "Reference" "C1"
+			(at 221.615 81.28 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100n C-V"
+			(at 221.615 76.2 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 221.945 74.93 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 220.98 78.74 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 220.98 78.74 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "b39a1f5f-fe46-4299-9088-2ac70295beb6")
+		)
+		(pin "2"
+			(uuid "e7312812-add1-4755-827b-ccfddb81a089")
+		)
+		(instances
+			(project "wifi-bridge"
+				(path "/c20146f5-62f0-41a2-a5ee-73a82d9a2ea7"
+					(reference "C1")
 					(unit 1)
 				)
 			)
