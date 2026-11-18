@@ -109,6 +109,85 @@ static void radioStationDisconnected(WiFiEvent_t, WiFiEventInfo_t info) {
     portEXIT_CRITICAL(&radioStationLock);
 }
 
+// Project (step 5): apps are sent to without waiting. The core's write() waits up to 10 s
+// for an app that does not read and holds up every port meanwhile (S119). Each app has a
+// small queue for data its socket cannot take yet (send buffer or segment queue full while
+// the phone's acknowledgements are on their way); the loop sends it on the next passes.
+#define APP_QUEUE 2048  // bytes per app, about 1 s at 19200 baud
+struct AppQueue {
+    uint16_t len;
+    uint32_t progressAt;  // last time the app took data, or its queue was empty
+    uint8_t data[APP_QUEUE];
+};
+// About 24 kB, taken from the heap at first use: static RAM has no room left for it.
+// Returns void*, since the sketch's generated prototypes come before the struct.
+static void* appQueueMemory() {
+    static void* const all = calloc(NUM_COM * MAX_NMEA_CLIENTS, sizeof(AppQueue));
+    configASSERT(all != nullptr);
+    return all;
+}
+#define queueOf(num, cln) (static_cast<AppQueue*>(appQueueMemory())[(num) * MAX_NMEA_CLIENTS + (cln)])
+static const char* const appPortName[NUM_COM] = PORT_NAMES;
+
+static void resetAppQueue(int num, int cln) {
+    queueOf(num, cln).len = 0;
+    queueOf(num, cln).progressAt = millis();
+}
+
+// Adds data to the app's queue. Returns the number of bytes that did not fit.
+static size_t queueForApp(int num, int cln, const uint8_t* data, size_t size) {
+    AppQueue& q = queueOf(num, cln);
+    if (q.len == 0) q.progressAt = millis();
+    const size_t room = APP_QUEUE - q.len;
+    const size_t n = size < room ? size : room;
+    memcpy(q.data + q.len, data, n);
+    q.len += n;
+    return size - n;
+}
+
+// Sends as much of the queue as the app's socket takes now. False when the connection
+// is lost; errorOut then holds the reason.
+static bool flushAppQueue(WiFiClient& client, int num, int cln, int& errorOut) {
+    AppQueue& q = queueOf(num, cln);
+    if (q.len == 0) return true;
+    const int fd = client.fd();
+    if (fd < 0) {
+        errorOut = 0;
+        return false;
+    }
+    const int sent = send(fd, q.data, q.len, MSG_DONTWAIT);
+    if (sent > 0) {
+        memmove(q.data, q.data + sent, q.len - sent);
+        q.len -= sent;
+        q.progressAt = millis();
+        return true;
+    }
+    errorOut = errno;
+    return sent == 0 || errorOut == EAGAIN || errorOut == EWOULDBLOCK || errorOut == EINTR || errorOut == ENOMEM;
+}
+
+// Zander and FLARM: an app that falls behind skips the data that does not fit its queue,
+// so the other apps and ports keep their data and its connection stays open. It is
+// closed only after it took no data at all for APP_STALL_CLOSE_MS, as a dead connection.
+static void serviceNavApps(int num) {
+    for (int cln = 0; cln < MAX_NMEA_CLIENTS; cln++) {
+        WiFiClient& client = TCPClient[num][cln];
+        if (!client) continue;
+        int error = 0;
+        if (!flushAppQueue(client, num, cln, error)) {
+            LOGI(LOG_PORTS, "%s: app %s connection lost (error %d), closed", appPortName[num],
+                 client.remoteIP().toString().c_str(), error);
+            client.stop();
+            resetAppQueue(num, cln);
+        } else if (queueOf(num, cln).len > 0 && millis() - queueOf(num, cln).progressAt >= APP_STALL_CLOSE_MS) {
+            LOGW(LOG_PORTS, "%s: app %s took no data for %lu s, closed", appPortName[num],
+                 client.remoteIP().toString().c_str(), (unsigned long)(APP_STALL_CLOSE_MS / 1000));
+            client.stop();
+            resetAppQueue(num, cln);
+        }
+    }
+}
+
 static void trackRadioStation(const WiFiClient& owner) {
     wifi_sta_list_t stations;
     wifi_sta_mac_ip_list_t addresses;
@@ -130,6 +209,7 @@ static void trackRadioStation(const WiFiClient& owner) {
 
 static void closeRadioOwner(WiFiClient& owner) {
     owner.stop();
+    resetAppQueue(RADIO_COM, 0);
     portENTER_CRITICAL(&radioStationLock);
     radioStationTracked = false;
     radioStationLeft = false;
@@ -212,12 +292,18 @@ static void serviceRadioPort() {
             STAT(RADIO_COM, fromDevice, readCount);
             STAT_RX(RADIO_COM);
             MON(RADIO_COM, 0, buf2[RADIO_COM], readCount);
-            if (owner.fd() >= 0 && owner.write(buf2[RADIO_COM], readCount) != readCount) {
+            // Project (step 5): queued, never waited for; the session closes rather than lose bytes.
+            if (owner.fd() >= 0 && queueForApp(RADIO_COM, 0, buf2[RADIO_COM], readCount) > 0) {
                 STAT(RADIO_COM, shortWrites, 1);
                 LOGW(LOG_RADIO, "App did not take %u radio bytes, session closed", (unsigned)readCount);
                 closeRadioOwner(owner);
             }
         }
+    }
+    int error = 0;
+    if (owner.fd() >= 0 && !flushAppQueue(owner, RADIO_COM, 0, error)) {
+        LOGI(LOG_RADIO, "App released the radio port: connection lost (error %d)", error);
+        closeRadioOwner(owner);
     }
     STAT_CLIENTS(RADIO_COM, owner.fd() >= 0 ? 1 : 0);
 }
@@ -461,6 +547,9 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
                     if (!TCPClient[num][i] || !TCPClient[num][i].connected()) {
                         if (TCPClient[num][i]) TCPClient[num][i].stop();
                         TCPClient[num][i] = server[num]->available();
+#ifdef ESP32
+                        resetAppQueue(num, i);  // Project (step 5): a new app starts with an empty queue
+#endif
                         debug.print("New client for COM");
                         debug.print(num);
                         debug.print(" #");
@@ -504,6 +593,9 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
                     }
                 }
                 STAT_CLIENTS(num, clients);  // Project
+#ifdef ESP32
+                serviceNavApps(num);  // Project (step 5): send queued data, close dead apps
+#endif
 #endif
 
                 if (COM[num]->available()) {
@@ -516,8 +608,12 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
 #ifdef PROTOCOL_TCP
                     for (byte cln = 0; cln < MAX_NMEA_CLIENTS; cln++) {
                         if (TCPClient[num][cln])
+#ifdef ESP32
+                            if (queueForApp(num, cln, buf2[num], readCount) > 0) STAT(num, shortWrites, 1);  // Project (step 5): skipped
+#else
                             if (TCPClient[num][cln].write(buf2[num], readCount) != (size_t)readCount)
                                 STAT(num, shortWrites, 1);  // Project: count short writes
+#endif
                     }
 #endif
 

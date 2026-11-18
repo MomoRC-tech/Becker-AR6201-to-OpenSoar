@@ -53,7 +53,7 @@ Open `http://<bridge address>/` (10.10.10.10 in hotspot mode) in a browser. [`st
 | --- | --- |
 | Header | Photo of the housing lid ([`device_image.h`](device_image.h), made by `tools/device_image.py`), firmware version, uptime, Wi-Fi: network address and the bridge's signal to the router, or hotspot address and the signal of each connected phone (no device addresses) |
 | Device row | Live dot (green while data arrives, pulses on new bytes), state (receiving, quiet for how long, no data yet), baud rate and frame, TCP port, connected apps; receive errors and short writes in red when not zero |
-| Details (collapsed) | Bytes from and to the device since start, receive errors (buffer full, FIFO overflow, framing, parity, break), short writes (TCP writes that took fewer bytes than offered); link to the [data monitor](#data-monitor) |
+| Details (collapsed) | Bytes from and to the device since start, receive errors (buffer full, FIFO overflow, framing, parity, break), short writes (data an app could not take: skipped for a Zander or FLARM app, session closed on the radio port); link to the [data monitor](#data-monitor) |
 | All settings (collapsed) | Active baud, frame and TCP port per device; network, join time, hotspot name and address. Amber: saved on the bridge; red: saved value invalid, default in use. Passwords are never sent |
 
 | Address | Content |
@@ -185,4 +185,4 @@ python tools/bridge_acceptance_test.py <bridge address> --radio-loop --baseline
 python tools/bridge_acceptance_test.py <bridge address> --radio-loop
 ```
 
-It streams NMEA-like lines into the Zander port at 80 % of the line rate and reads them back on the FLARM port, with a second app there that never reads, like a phone with OpenSoar in the background. It passes when the bridge keeps taking data, the normal app gets every byte unchanged, and neither the FLARM data nor the radio loop is delayed by more than 2 s. `--baseline` leaves out the slow app. Firmware 0.4.4 fails it: one app that stops reading blocks all ports (S119).
+It streams NMEA-like lines into the Zander port at 80 % of the line rate and reads them back on the FLARM port, with a second app there that never reads, like a phone with OpenSoar in the background. It passes when the bridge keeps taking data, the normal app gets every byte unchanged, and neither the FLARM data nor the radio loop is delayed by more than 2 s. `--baseline` leaves out the slow app. With `--seconds 30` the slow app must still be connected afterwards, with `--seconds 90` closed. Firmware 0.4.4 fails it: one app that stops reading blocks all ports (S119). Firmware 0.5 passes ([slow apps](../../docs/project/roadmap.md#firmware-plan), S120).

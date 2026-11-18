@@ -64,7 +64,7 @@ static void logTick() {
 
         const uint32_t s = p.shortWrites.load(std::memory_order_relaxed);
         if (num != RADIO_COM && s != shorts[num] && (shortAt[num] == 0 || now - shortAt[num] >= LOG_ERROR_MS)) {
-            LOGW(LOG_PORTS, "%s: %lu short write%s, an app does not read fast enough", name,
+            LOGW(LOG_PORTS, "%s: %lu short write%s, an app is behind and skipped data", name,
                  (unsigned long)(s - shorts[num]), s - shorts[num] == 1 ? "" : "s");
             shorts[num] = s;
             shortAt[num] = now | 1u;

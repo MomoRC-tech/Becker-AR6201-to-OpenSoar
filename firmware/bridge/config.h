@@ -53,7 +53,7 @@
                              // incoming bytes while the loop waits on a UART write
 
 #ifdef ESP32
-#define VERSION "0.4.4-ESP32"     // Project: own version, 0.<plan step> until bench acceptance; .1 = device profiles (WP9), .2 = web log (step 3c), .3/.4 = log clock time
+#define VERSION "0.5-ESP32"       // Project: own version, 0.<plan step> until bench acceptance; 0.4.1 = device profiles (WP9), .2 = web log (step 3c), .3/.4 = log clock time; 0.5 = apps never hold up the bridge
 #elif defined(ESP8266)
 #define VERSION "0.3b.1-ESP8266"
 #endif
@@ -61,6 +61,7 @@
 #define MODE_STA_AP            // MODE_STA, MODE_AP or MODE_STA_AP (Project: network, then hotspot; ESP32 only)
 #define PROTOCOL_TCP           // uncomment to enable TCP server
 #define MAX_NMEA_CLIENTS 4     // max TCP clients
+#define APP_STALL_CLOSE_MS 60000UL  // Project: close a Zander/FLARM app that took no data for this long; until then it skips data (step 5)
 // Project: UDP (upstream PROTOCOL_UDP) is removed; the bridge serves TCP only
 #define STATUS_PAGE            // Project: read-only status page on port 80 and /api/status (ESP32 only)
 #define STORED_SETTINGS        // Project: settings stored on the ESP32 override the defaults here (step 3a, ESP32 only)

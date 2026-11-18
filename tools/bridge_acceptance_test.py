@@ -21,7 +21,9 @@ With --baseline the slow app is left out, for comparison.
 
 The test passes when the bridge keeps taking data on the Zander port, the
 normal app gets every byte unchanged and no data is delayed by more than
---max-delay seconds. With --radio-loop it also
+--max-delay seconds. The slow app skips data but stays connected; only a
+run longer than 60 s without reading closes it (firmware APP_STALL_CLOSE_MS),
+so with --seconds 30 the check expects it open, with --seconds 90 closed. With --radio-loop it also
 sends a short frame through the radio loop every half second and checks
 that its round trip stays below --max-delay, so a stall on one port is
 seen on the others too.
@@ -41,6 +43,7 @@ import urllib.request
 ZANDER_TCP, FLARM_TCP, RADIO_TCP = 10110, 2000, 4352
 BAUD = 19200
 CHUNK = 64  # bytes per write into the Zander port
+STALL_CLOSE_S = 60  # firmware APP_STALL_CLOSE_MS: an app that takes no data for this long is closed
 
 
 def tcp(host: str, port: int, rcvbuf: int = 0) -> socket.socket:
@@ -226,6 +229,29 @@ def run(args: argparse.Namespace) -> bool:
         ok = pinger.lost == 0 and worst_rt <= args.max_delay
         print(f"{'PASS' if ok else 'FAIL'} radio loop during the test: {len(pinger.round_trips)} frames, "
               f"{pinger.lost} lost, worst round trip {worst_rt:.2f} s")
+        results.append(ok)
+
+    if slow is not None:
+        # The slow app's connection must stay open while it skips data, and close only
+        # after it took no data for STALL_CLOSE_S (firmware APP_STALL_CLOSE_MS).
+        expect_open = args.seconds < STALL_CLOSE_S - 5
+        slow.settimeout(2)
+        received, closed = 0, False
+        try:
+            while True:
+                chunk = slow.recv(65536)
+                if not chunk:
+                    closed = True
+                    break
+                received += len(chunk)
+        except socket.timeout:
+            pass
+        except OSError:
+            closed = True
+        ok = closed != expect_open
+        state = "closed by the bridge" if closed else "open"
+        print(f"{'PASS' if ok else 'FAIL'} slow app after {args.seconds:.0f} s without reading: {state}, "
+              f"{received} bytes waiting (expected {'open' if expect_open else 'closed'})")
         results.append(ok)
 
     print(f"after:  {counters(args.host)}")
