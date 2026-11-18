@@ -219,7 +219,7 @@ Sizes from owner measurements, seller listings or datasheets; see the source col
 | XT30 male, panel | 1 | 10.55 × 5.25 body; 10.8 × 5.66 over the raised markings at the solder-cup end (owner measurement) | S51 | Press-fit pocket ([section 4](#connectors)) |
 | DE-9 male, panel | 1 | Flange 31 × 12.6 × 1.0, holes Ø3.1 at 25.0 spacing; D shell 17.85 × 9.2 outer; rear body behind the flange 19.3 × 10.9 × 5.0 deep, 8.0 including the solder cups (owner measurement) | S43 | Flange and rear side as the female plug model |
 | Resistors (dividers, pull-up) | 5 | DIN0204 axial, body about Ø1.6 × 3.6 | S45 | R-B1, R-B2, R-D; R-V1, R-V2 for the [supply voltage sense](power.md#voltage-sense) (S128) |
-| Capacitor C-V | 1 | Envelope Ø2.0 × 3.8 (estimate for a leaded 100 nF) | S128 | Supply voltage sense |
+| Capacitor C-V | 1 | Ceramic disc, envelope Ø5 × 3 (estimate from a photo) | S130 | Supply voltage sense; owner's part marked 104 |
 
 ### 3.1 ESP32 CAD reference
 
@@ -482,7 +482,7 @@ Follow the [illustrated installation sequence](wire-installation.md) when fittin
 | Bench | R-V1 leads at XT30 + cup | — | Axial | Wall | 7.2 | Measure | Fit | Fit the leads individually |
 | Signals | R-V1 → ESP32 J2-5 | Grey | 26 AWG PTFE | Side wall, pin top | 66.0 | Measure | Fit | Calculate |
 | Signals | R-V2 between J2-5 and J2-14 | — | Axial | Beside J2, pin top | 25.4 | Measure | Fit | Fit the leads individually |
-| Signals | C-V between J2-5 and J2-14 | — | Leaded | Beside J2, 2 mm below pin top | 29.0 | Measure | Fit | Fit the leads individually |
+| Signals | C-V between J2-5 and J2-14 | — | Leaded disc | Beside J2, flat against the side wall | 15.9 + 11.4 | Measure | Fit | Fit the leads individually |
 
 ---
 

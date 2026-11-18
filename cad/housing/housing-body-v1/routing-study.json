@@ -1198,21 +1198,31 @@
     },
     {
       "endpoints": "C-V between J2-5 and J2-14",
-      "colour": "\u2014",
-      "material": "Leaded",
-      "lane": "Beside J2, 2 mm below pin top",
+      "colour": "—",
+      "material": "Leaded ceramic disc (104)",
+      "lane": "Beside J2, flat against the side wall",
       "build_step": "Signals",
       "paths": [
         {
           "waypoints_mm": [
             [63.83, 15.0, -23.28],
-            [63.83, 15.0, -25.2],
-            [63.83, 12.8, -25.2],
-            [42.6, 12.8, -25.2],
-            [42.6, 15.0, -25.2],
-            [40.97, 15.0, -23.28]
+            [62.6, 14.4, -26.6],
+            [51.57, 14.4, -26.6],
+            [51.57, 13.3, -25.7]
           ],
-          "cad_length_mm": 29.0,
+          "cad_length_mm": 15.9,
+          "strip_allowance_mm": null,
+          "service_slack_mm": null,
+          "cutting_length_mm": null
+        },
+        {
+          "waypoints_mm": [
+            [40.97, 15.0, -23.28],
+            [42.6, 14.4, -26.6],
+            [49.03, 14.4, -26.6],
+            [49.03, 13.3, -25.7]
+          ],
+          "cad_length_mm": 11.4,
           "strip_allowance_mm": null,
           "service_slack_mm": null,
           "cutting_length_mm": null

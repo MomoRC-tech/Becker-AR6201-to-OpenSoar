@@ -62,11 +62,11 @@ Solder the module pads on the bench. In this view, Zander **mod1** is on the lef
 
 Prepare the L3 ends in step 4 before seating the modules. Prepare the **mod2 L2** end of R-D on the bench while the pad is accessible. At the ESP32, **J3-1** takes only the mod2 return. **J2-14** takes the floor return from step 2 and the ground leads of R-V2 and C-V. **J2-19** takes the orange floor feed.
 
-Route the **grey** wire from R-V1 up to pin-top height and along the side wall, above the J2-19 and J2-14 wires, to **J2-5**. Fit **R-V2 (10 kΩ)** and **C-V (100 nF)** beside the J2 header on the side-wall side: R-V2 at pin-top height, C-V about 2 mm below it. Bend each lead from **J2-5** out to the side and back in at **J2-14**, so the leads stay clear of J2-6 to J2-13 and of the J2-7 and J2-10 wires. Sleeve the leads where they pass other joints. Solder the grey wire to J2-5 with them.
+Route the **grey** wire from R-V1 up to pin-top height and along the side wall, above the J2-19 and J2-14 wires, to **J2-5**. Fit **R-V2 (10 kΩ)** and **C-V (100 nF)** beside the J2 header on the side-wall side: R-V2 at pin-top height, C-V (the yellow ceramic disc marked 104) flat against the side wall below it. Bend each lead from **J2-5** out to the side and back in at **J2-14**, so the leads stay clear of J2-6 to J2-13 and of the J2-7 and J2-10 wires. Sleeve the leads where they pass other joints. Solder the grey wire to J2-5 with them.
 
 <a id="supply-sense-picture"></a>
 
-![Supply voltage sense from above: R-V1 in heat-shrink at the XT30 + cup, the grey wire along the side wall at pin-top height to ESP32 J2-5, and R-V2 at pin-top height and C-V 2 mm lower beside the J2 header, both looping from J2-5 to J2-14](../images/wire-installation/08-supply-sense.png) [Module pad map](modules.md#rs232-module) · [ESP32 header map](modules.md#esp32-pinout)
+![Supply voltage sense from above: R-V1 in heat-shrink at the XT30 + cup, the grey wire along the side wall at pin-top height to ESP32 J2-5, R-V2 at pin-top height beside the J2 header, and the C-V ceramic disc flat against the side wall below it, both connected from J2-5 to J2-14](../images/wire-installation/08-supply-sense.png) [Module pad map](modules.md#rs232-module) · [ESP32 header map](modules.md#esp32-pinout)
 
 ---
 

@@ -86,7 +86,7 @@ Checks on the [housing v16 bench prototype](../hardware/housing.md) as built, an
 | 25 | DE-9 nut stops | Measure usable jackpost stud length and nut thickness. Check thread engagement through the seated flange and front wall, then fit-print the gusseted stops and test whether they hold the nuts while tightening | Owner measurement and fit-print |
 | 26 | Integral ESP32 holder and front corners | Check the four feet, bridges and removal of the [breakaway platform](../hardware/housing.md#layout) on a test print. Check board insertion, spring retention, and that the revised RS-232 clamp foot sits flat on the shield. With the front screw fitted, check shield preload, rocking, rotation and clamp removal with wires connected. Inspect both front insert seats and fit the heat-set inserts and cover | Physical fit checks |
 | 27 | RS-232 ground picture | Update the [RS-232 board picture](../hardware/wire-installation.md#rs232-boards) for the J3-1 → mod2 R4 module ground, now in the Fusion assembly (S101) | Fusion render |
-| 28 | Supply voltage sense | Fit R-V1 at the XT30 + cup and R-V2 and C-V beside the J2 header as in the Fusion assembly and [picture](../hardware/wire-installation.md#supply-sense-picture) (S128, S129): lead bends, sleeving, the actual C-V size and the grey wire under the hood | Owner / physical fit test |
+| 28 | Supply voltage sense | Fit R-V1 at the XT30 + cup and R-V2 and C-V beside the J2 header as in the Fusion assembly and [picture](../hardware/wire-installation.md#supply-sense-picture) (S128–S130): lead bends, sleeving, the grey wire under the hood, and the 104 disc's diameter, thickness and lead pitch against the Ø5 × 3 mm envelope | Owner / physical fit test |
 
 ### 2.4 Measurements
 
