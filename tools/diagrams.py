@@ -4,7 +4,7 @@ Usage (from the repository root):  python tools/diagrams.py
 Writes the SVGs into docs/images. Edit the diagram sections below, run the
 script, and check the result in a browser before committing.
 
-Output: overview.svg (README), power-supply.svg, ground-loops.svg, ground-distribution.svg, wiring-overview.svg,
+Output: teaser.svg (README top), overview.svg (spare, not linked), power-supply.svg, ground-loops.svg, ground-distribution.svg, wiring-overview.svg,
 wiring-zander.svg, wiring-flarm.svg, wiring-becker.svg, pinout-rs422-to-ttl.svg, rs422-to-ttl-board.svg.
 """
 import base64
@@ -248,7 +248,7 @@ s.line([(720, 195), (810, 195)], "gnd"); s.tag(765, 188, "local J3-7", "gnd", si
 s.line([(520, 195), (590, 195)], "gnd"); s.tag(555, 215, "to GND-J", "gnd", size=11)
 s.legend(255, ["data", "sgnd", "gnd", "shield", ("v33", "3.3 V")], "Twisted pairs: TX2± and RX2±. VCC from 5V-J; GND from GND-J. No extra MAX490-to-ESP32 GND wire.")
 s.save("wiring-becker.svg")
-# ------------------------------------------------------- README overview (no pins)
+# ---------------------------------------- spare overview (no pins, not linked; kept as backup)
 s = Svg(900, 345, "What the bridge does",
         "Glider computer Zander ZS1 sends flight data and collision warning Classic FLARM sends traffic to the Wi-Fi bridge. "
         "The radio Becker AR6201 exchanges standby frequency and status with the bridge in both directions. "
@@ -347,3 +347,199 @@ for i, ((lname, ldetail), (rname, rdetail, kind)) in enumerate(zip(left, right))
     s.text(138, y+5, ldetail, size=14, anchor="end")
     s.text(422, y+5, rdetail, size=14, anchor="start")
 s.save("pinout-rs422-to-ttl.svg")
+
+# ---------------------------------------------------------------- README teaser
+# Product teaser at the top of the README: instruments -> bridge -> phone app,
+# inside a glider, with the key features around it. The housing is cut out of
+# the CAD preview (grid background removed by a flood fill from the edges).
+from PIL import Image, ImageFilter  # noqa: E402  (only this section needs Pillow)
+
+ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
+
+
+def housing_cutout():
+    """Return the closed-housing render with a transparent background, as WebP bytes."""
+    im = Image.open(os.path.join(ROOT, "cad", "housing", "housing-body-v1", "preview-closed.png")).convert("RGB")
+    im = im.crop((120, 70, 1200, 780)).resize((540, 355), Image.LANCZOS)
+    w, h = im.size
+    px = im.load()
+
+    def background(p):  # blue-grey grid, its shadows and the red axis line
+        r, g, b = p
+        return (b >= g + 3 and b >= r + 6) or (r > g + 25 and abs(g - b) < 20)
+
+    seen = bytearray(w * h)
+    stack = [(x, y) for x in range(w) for y in (0, h - 1)] + [(x, y) for y in range(h) for x in (0, w - 1)]
+    while stack:
+        x, y = stack.pop()
+        if seen[y * w + x] or not background(px[x, y]):
+            continue
+        seen[y * w + x] = 1
+        stack += [(x2, y2) for x2, y2 in ((x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)) if 0 <= x2 < w and 0 <= y2 < h]
+    mask = Image.frombytes("L", (w, h), bytes(0 if v else 255 for v in seen))
+    im.putalpha(mask.filter(ImageFilter.MinFilter(3)).filter(ImageFilter.GaussianBlur(0.7)))
+    im = im.crop(im.getbbox())
+    buf = io.BytesIO()
+    im.save(buf, "WEBP", quality=82, method=6)
+    return im.size, buf.getvalue()
+
+
+def esc(s):
+    return escape(s)
+
+
+def txt(x, y, s, size=13, color=INK, bold=False, anchor="start", extra=""):
+    b = ' font-weight="700"' if bold else ""
+    return f'<text x="{x}" y="{y}" font-size="{size}" fill="{color}" text-anchor="{anchor}"{b}{extra}>{esc(s)}</text>'
+
+
+def icon(kind, cx, cy, color):
+    """Small white line icon on a coloured disc, about 24 px wide."""
+    st = 'fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"'
+    o = [f'<circle cx="{cx}" cy="{cy}" r="21" fill="{color}"/>']
+    if kind == "radar":
+        o += [f'<circle cx="{cx}" cy="{cy}" r="11" {st}/>', f'<circle cx="{cx}" cy="{cy}" r="5" {st}/>',
+              f'<path d="M{cx} {cy} L{cx + 8} {cy - 8}" {st}/>',
+              f'<path d="M{cx - 9} {cy + 3} l3 -6 l3 6 z" fill="white"/>']
+    elif kind == "gauge":
+        o += [f'<path d="M{cx - 11} {cy + 5} A11 11 0 1 1 {cx + 11} {cy + 5}" {st}/>',
+              f'<path d="M{cx} {cy + 1} L{cx + 7} {cy - 7}" {st}/>', f'<circle cx="{cx}" cy="{cy + 1}" r="2.2" fill="white"/>',
+              f'<path d="M{cx - 7} {cy + 9} H{cx + 7}" {st}/>']
+    elif kind == "radio":
+        o += [f'<rect x="{cx - 12}" y="{cy - 8}" width="24" height="16" rx="2.5" {st}/>',
+              f'<rect x="{cx - 8}" y="{cy - 4}" width="11" height="6" rx="1" fill="white"/>',
+              f'<circle cx="{cx + 7}" cy="{cy + 1}" r="2.6" {st}/>', f'<path d="M{cx - 6} {cy - 8} L{cx + 2} {cy - 14}" {st}/>']
+    elif kind == "wifi":
+        o += [f'<path d="M{cx - 12} {cy - 3} A17 17 0 0 1 {cx + 12} {cy - 3}" {st}/>',
+              f'<path d="M{cx - 7} {cy + 2} A10 10 0 0 1 {cx + 7} {cy + 2}" {st}/>',
+              f'<circle cx="{cx}" cy="{cy + 7}" r="2.4" fill="white"/>']
+    elif kind == "browser":
+        o += [f'<rect x="{cx - 12}" y="{cy - 9}" width="24" height="18" rx="2.5" {st}/>', f'<path d="M{cx - 12} {cy - 4} H{cx + 12}" {st}/>',
+              f'<path d="M{cx - 7} {cy + 1} H{cx + 2} M{cx - 7} {cy + 5} H{cx + 6}" {st}/>']
+    elif kind == "monitor":
+        o += [f'<path d="M{cx - 11} {cy - 7} H{cx + 9} M{cx - 11} {cy - 2} H{cx + 3} M{cx - 11} {cy + 3} H{cx + 11} M{cx - 11} {cy + 8} H{cx + 1}" {st}/>']
+    elif kind == "update":
+        o += [f'<path d="M{cx + 10} {cy - 1} A10 10 0 1 1 {cx + 5} {cy - 8.5}" {st}/>',
+              f'<path d="M{cx + 6} {cy - 14} L{cx + 6} {cy - 8} L{cx} {cy - 8}" {st}/>']
+    return o
+
+
+W, H = 1060, 560
+SKY_TOP, SKY_BOTTOM, CARD_LINE = "#cfe6fa", "#f5faff", "#b8d2ec"
+WIFI = STYLE["wifi"]["color"]
+o = []
+o.append('<defs>'
+         f'<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="{SKY_TOP}"/><stop offset="1" stop-color="{SKY_BOTTOM}"/></linearGradient>'
+         '<filter id="shadow" x="-10%" y="-10%" width="120%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1e3a5f" flood-opacity="0.18"/></filter>'
+         '<clipPath id="screen"><rect x="686" y="164" width="112" height="222" rx="10"/></clipPath>'
+         '</defs>')
+o.append(f'<rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="22" fill="url(#sky)" stroke="{CARD_LINE}" stroke-width="2"/>')
+
+# Glider in plan view, nose up, as a faint watermark: the bridge sits in its fuselage.
+gx = 460
+wing = [(gx - 10, 130), (gx - 300, 141), (gx - 452, 148), (gx - 455, 156), (gx - 300, 160), (gx - 10, 168)]
+wing_r = [(2 * gx - x, y) for x, y in reversed(wing)]
+stab = [(gx - 4, 468), (gx - 78, 474), (gx - 80, 482), (gx - 4, 484)]
+stab_r = [(2 * gx - x, y) for x, y in reversed(stab)]
+pts = lambda p: " ".join(f"{x},{y}" for x, y in p)
+o.append('<g fill="white" opacity="0.6">'
+         f'<polygon points="{pts(wing + wing_r)}"/><polygon points="{pts(stab + stab_r)}"/>'
+         f'<path d="M{gx} 100 C{gx + 16} 104 {gx + 20} 130 {gx + 19} 175 C{gx + 16} 300 {gx + 7} 420 {gx + 4} 490 '
+         f'L{gx - 4} 490 C{gx - 7} 420 {gx - 16} 300 {gx - 19} 175 C{gx - 20} 130 {gx - 16} 104 {gx} 100 Z"/></g>')
+o.append(f'<ellipse cx="{gx}" cy="125" rx="9" ry="17" fill="#9cc3e6" opacity="0.7"/>')
+
+# Header
+o.append(txt(40, 60, "Wi-Fi Bridge for glider avionics", size=30, bold=True))
+o.append(txt(40, 88, "Cockpit instruments to your phone or tablet, without a cable", size=16, color=SUB))
+o.append(f'<rect x="838" y="36" width="196" height="30" rx="15" fill="#fff3e0" stroke="#ef6c00" stroke-width="1.5"/>')
+o.append(txt(936, 56, "PROTOTYPE · IN DEVELOPMENT", size=12, color="#c25400", bold=True, anchor="middle"))
+
+# Instruments (left)
+instruments = [("radar", "#c62828", "Classic FLARM", "Traffic and collision", "warnings · NMEA", 192),
+               ("gauge", "#1565c0", "Zander ZS1", "Flight and navigation", "data · NMEA", 282),
+               ("radio", "#6a1b9a", "Becker AR6201 radio", "Airfield frequency from", "the app into standby", 372)]
+for kind, color, name, l1, l2, cy in instruments:
+    o.append(f'<rect x="28" y="{cy - 37}" width="250" height="74" rx="14" fill="white" filter="url(#shadow)"/>')
+    o += icon(kind, 66, cy, color)
+    o.append(txt(98, cy - 12, name, size=15, bold=True))
+    o.append(txt(98, cy + 7, l1, color=SUB))
+    o.append(txt(98, cy + 24, l2, color=SUB))
+    # cable into the bridge
+    end_y = 270 + (cy - 282) * 0.35
+    o.append(f'<path d="M278 {cy} C318 {cy} 318 {end_y} 352 {end_y}" fill="none" stroke="{color}" stroke-width="2.5"/>')
+    o.append(f'<polygon points="{352 - 9},{end_y - 5} {352 - 9},{end_y + 5} {352},{end_y}" fill="{color}"/>')
+    if kind == "radio":
+        o.append(f'<polygon points="{278 + 9},{cy - 5} {278 + 9},{cy + 5} {278},{cy}" fill="{color}"/>')
+
+# The bridge (housing render)
+(iw, ih), webp = housing_cutout()
+hw = 255
+hh = round(hw * ih / iw)
+hx, hy = 330, 285 - hh // 2
+o.append(f'<ellipse cx="{hx + hw / 2 + 5}" cy="{hy + hh - 12}" rx="{hw * 0.46}" ry="14" fill="#1e3a5f" opacity="0.12"/>')
+o.append(f'<image x="{hx}" y="{hy}" width="{hw}" height="{hh}" href="data:image/webp;base64,{base64.b64encode(webp).decode("ascii")}"/>')
+o.append(txt(hx + hw / 2, hy + hh + 26, "The bridge: ESP32 in a 3D-printed box", size=14, bold=True, anchor="middle"))
+
+# Wi-Fi link
+o.append(f'<path d="M594 285 H692" stroke="{WIFI}" stroke-width="2.5" stroke-dasharray="7 5" fill="none"/>')
+o.append(f'<polygon points="683,280 683,290 692,285" fill="{WIFI}"/><polygon points="603,280 603,290 594,285" fill="{WIFI}"/>')
+for r in (9, 17, 25):
+    o.append(f'<path d="M{643 - r * 0.8} {268 - r * 0.6 + 6} A{r} {r} 0 0 1 {643 + r * 0.8} {268 - r * 0.6 + 6}" fill="none" stroke="{WIFI}" stroke-width="3" stroke-linecap="round"/>')
+o.append(f'<circle cx="643" cy="272" r="3.5" fill="{WIFI}"/>')
+o.append(txt(643, 312, "Wi-Fi", size=13, color=WIFI, bold=True, anchor="middle"))
+o.append(txt(643, 328, "NMEA over TCP", size=11, color=WIFI, anchor="middle"))
+
+# Phone with a moving map (drawn at x 680, shifted right)
+o.append('<g transform="translate(16 0)">')
+o.append(f'<rect x="680" y="152" width="124" height="246" rx="20" fill="#1f2937" filter="url(#shadow)"/>')
+o.append('<g clip-path="url(#screen)">')
+o.append('<rect x="686" y="164" width="112" height="222" fill="#eef3e2"/>')
+o.append('<path d="M686 250 C710 230 730 262 760 240 C780 226 790 236 798 230 V300 C780 310 760 292 735 306 C712 318 700 300 686 312 Z" fill="#dbe7c4"/>')
+o.append('<path d="M700 330 C712 318 732 322 736 334 C740 348 718 356 706 350 C698 346 696 338 700 330 Z" fill="#b5d5f1"/>')
+o.append('<circle cx="742" cy="232" r="34" fill="none" stroke="#e53935" stroke-width="1.5" stroke-dasharray="4 3"/>')
+o.append('<path d="M712 370 L742 282 L776 214" fill="none" stroke="#d81b60" stroke-width="2" stroke-dasharray="5 3"/>')
+o.append('<path d="M742 274 l0 18 M733 280 h18 M738 290 h8" stroke="#111" stroke-width="2.4" stroke-linecap="round"/>')
+o.append('<polygon points="768,252 774,264 762,264" fill="#e53935"/><polygon points="714,246 720,258 708,258" fill="#2e7d32"/>')
+o.append('<rect x="686" y="164" width="112" height="22" fill="#263238"/>')
+o.append(txt(692, 179, "STBY", size=9, color="#9ccc65", bold=True))
+o.append(txt(792, 179, "123.505", size=11, color="white", bold=True, anchor="end"))
+o.append('<rect x="686" y="364" width="112" height="22" fill="#263238"/>')
+o.append(txt(692, 379, "Vario", size=9, color="#b0bec5"))
+o.append(txt(792, 379, "+1.8 m/s", size=11, color="white", bold=True, anchor="end"))
+o.append('</g>')
+o.append('<rect x="726" y="156" width="32" height="4" rx="2" fill="#4b5563"/>')
+o.append(txt(742, 424, "e.g. OpenSoar", size=15, bold=True, anchor="middle"))
+o.append(txt(742, 442, "map, traffic, radio", size=12, color=SUB, anchor="middle"))
+o.append('</g>')
+
+# Features (right)
+features = [("wifi", WIFI, "Own Wi-Fi hotspot", "no cable to the phone"),
+            ("browser", "#1565c0", "Status and settings", "in the phone's browser"),
+            ("monitor", "#455a64", "Data monitor", "see each line live"),
+            ("update", "#2e7d32", "Updates over Wi-Fi", "no USB cable needed")]
+for i, (kind, color, l1, l2) in enumerate(features):
+    cy = 180 + i * 70
+    o.append(f'<rect x="846" y="{cy - 29}" width="192" height="58" rx="14" fill="white" filter="url(#shadow)"/>')
+    o += icon(kind, 876, cy, color)
+    o.append(txt(905, cy - 3, l1, size=14, bold=True))
+    o.append(txt(905, cy + 15, l2, size=12, color=SUB))
+
+# Extras (bottom row)
+extras = ["7–20 V supply", "Several apps at once", "Instrument presets", "Supply voltage monitor", "Original controls keep working"]
+widths = [len(e) * 7.2 + 28 for e in extras]
+x = (W - sum(widths) - 12 * (len(extras) - 1)) / 2
+for e, w in zip(extras, widths):
+    o.append(f'<rect x="{x:.0f}" y="490" width="{w:.0f}" height="30" rx="15" fill="white" stroke="{CARD_LINE}" stroke-width="1.5"/>')
+    o.append(txt(x + w / 2, 510, e, size=13, color=INK, anchor="middle"))
+    x += w + 12
+
+teaser = (f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-labelledby="title desc">\n'
+          '<title id="title">Wi-Fi Bridge for glider avionics</title>\n'
+          '<desc id="desc">A small 3D-printed box in the glider collects data from Classic FLARM (traffic), the Zander ZS1 glider computer '
+          '(flight data) and the Becker AR6201 radio, and sends it over Wi-Fi as NMEA over TCP to an app such as OpenSoar on a phone. '
+          'The app can put an airfield frequency into the radio standby slot. Features: own Wi-Fi hotspot, status and settings page, '
+          'data monitor, updates over Wi-Fi, 7 to 20 V supply, several apps at once, instrument presets, supply voltage monitor. '
+          'Prototype in development.</desc>\n'
+          '<g font-family="Segoe UI,Helvetica,Arial,sans-serif">\n' + "\n".join(o) + '\n</g>\n</svg>\n')
+with io.open(os.path.join(OUT, "teaser.svg"), "w", encoding="utf-8", newline="\n") as f:
+    f.write(teaser)

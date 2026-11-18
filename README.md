@@ -2,15 +2,11 @@
 
 # ✈️ Wi-Fi Bridge: Glider Avionics to OpenSoar
 
-**FLARM · Zander ZS1 glider computer · Becker AR6201 radio → OpenSoar on Android**
+<p align="center">
+  <img src="docs/images/teaser.svg" width="100%" alt="Wi-Fi Bridge for glider avionics: Classic FLARM (traffic), Zander ZS1 (flight data) and the Becker AR6201 radio connect to a small 3D-printed ESP32 box in the glider, which sends the data over Wi-Fi as NMEA over TCP to an app such as OpenSoar on a phone. Features: own Wi-Fi hotspot, status and settings page, data monitor, updates over Wi-Fi, 7–20 V supply, several apps at once, instrument presets, supply voltage monitor. Prototype in development.">
+</p>
 
-A small ESP32 box in the glider that collects data from the cockpit instruments and sends it over Wi-Fi to OpenSoar on a phone or tablet. No cables run to the Android device.
-
-- 📡 **Traffic:** FLARM collision-warning and position data appear in OpenSoar.
-- 📈 **Flight data:** the Zander ZS1 sends flight and navigation data.
-- 📻 **Radio:** pick an airfield in OpenSoar and its frequency goes into the Becker radio's standby slot.
-
-[![Housing prototype v1, closed: MomoRC logo and 7-20V on the hood, XT30 power socket and DE-9 instrument connector on the end wall](cad/housing/housing-body-v1/preview-closed.png)](cad/housing/housing-body-v1/README.md)
+A small ESP32 box in the glider collects data from the cockpit instruments and sends it over Wi-Fi to OpenSoar on a phone or tablet: FLARM and Zander data as standard NMEA over TCP, the radio on its own port. No cables run to the Android device.
 
 > [!NOTE]
 > **Status:** the housing design is accepted for the bench prototype. Physical fit, wiring and electrical checks are pending.
@@ -23,8 +19,6 @@ A small ESP32 box in the glider that collects data from the cockpit instruments 
 <a id="what-it-does"></a>
 
 ## 1. 🎯 What it does
-
-![Overview: glider computer Zander ZS1 and collision warning Classic FLARM send data to the Wi-Fi bridge; radio Becker AR6201 exchanges data both ways; the bridge talks to the navigation app OpenSoar over Wi-Fi](docs/images/overview.svg)
 
 | Device | What the bridge does |
 | --- | --- |
