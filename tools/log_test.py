@@ -13,7 +13,8 @@ Checks:
  5. ?since= returns only newer lines, oldest first
  6. every line has a known level and source
  7. clock: the phone time sent with the request dates every line of this
-    start; a clock 60 s off is corrected and logged
+    start; a clock 60 s off is corrected and logged; after both corrections
+    the times of this start still run in line order
 With --kept:
  8. lines from before the restart are still there, with a lower start number
     and their clock time
@@ -110,6 +111,11 @@ def main():
     steps = [float(m.split(" by ")[1].split(" s")[0]) for m in fixes]
     check("a clock 60 s off is corrected both ways", len(steps) == 2 and abs(steps[0] - 60) < 1 and abs(steps[1] + 60) < 1,
           "; ".join(fixes))
+    d = log(host)
+    times = [l["c"] for l in d["lines"] if l["b"] == d["boot"]]  # in line order
+    check("times of this start run in line order after the corrections", all(times) and times == sorted(times),
+          f"{len(times)} lines")
+    check("the reply carries the clock offset of this start", bool(d.get("o")) and abs(d["o"] + d["now"] - time.time() * 1000) < 3000)
 
     if args.kept:
         boot = log(host)["boot"]

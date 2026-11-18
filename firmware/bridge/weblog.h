@@ -9,8 +9,10 @@
 //
 // Clock: the bridge has no clock of its own. The log page sends the phone's
 // time with every request; the first one sets the ESP32 system time (kept
-// across a software restart), and the lines of this start logged before it
-// get their time from it. Lines without a known time carry 0.
+// across a software restart). Each start has one clock offset (Unix ms minus
+// millis()); a line's time is its millis() plus that offset, taken under the
+// lock with its sequence number, so times never run against the order. A
+// correction re-dates every line of this start. Unknown times are 0.
 //
 //   LOGE / LOGW / LOGI / LOGD(source, printf format, ...)
 //
@@ -69,6 +71,7 @@ struct LogStore {
 static __NOINIT_ATTR LogStore logStore;  // kept across a software restart
 static portMUX_TYPE logLock = portMUX_INITIALIZER_UNLOCKED;
 static bool logReady = false;
+static int64_t logClockOffset = 0;  // Unix ms minus millis() for this start; 0 = time not known
 
 template <size_t N>
 static void logCheckRing(LogRing<N>& r, uint32_t seq) {  // drop what a reset left damaged
@@ -91,7 +94,17 @@ static void logBegin() {
         logCheckRing(logStore.dbg, logStore.seq);
     }
     logStore.boot++;
+    struct timeval tv;
+    gettimeofday(&tv, nullptr);  // the clock runs on through a software restart
+    if (tv.tv_sec >= (time_t)LOG_CLOCK_VALID)
+        logClockOffset = (int64_t)tv.tv_sec * 1000 + tv.tv_usec / 1000 - (int64_t)millis();
     logReady = true;
+}
+
+static inline void logStamp(LogLine& l, int64_t offset) {  // clock time from the start's offset
+    const uint64_t t = offset ? (uint64_t)(offset + l.ms) : 0;
+    l.sec = (uint32_t)(t / 1000);
+    l.milli = (uint16_t)(t % 1000);
 }
 
 template <size_t N>
@@ -107,17 +120,13 @@ static void logWrite(char level, uint8_t src, const char* text, size_t len) {
     while (len && (text[len - 1] == '\n' || text[len - 1] == '\r' || text[len - 1] == ' ')) len--;
     if (len == 0) return;
     LogLine l;
-    l.ms = millis();
-    struct timeval tv;
-    gettimeofday(&tv, nullptr);
-    const bool known = tv.tv_sec >= (time_t)LOG_CLOCK_VALID;
-    l.sec = known ? (uint32_t)tv.tv_sec : 0;
-    l.milli = known ? (uint16_t)(tv.tv_usec / 1000) : 0;
     l.level = level;
     l.src = src;
     l.len = (uint8_t)len;
     memcpy(l.text, text, len);
     portENTER_CRITICAL(&logLock);
+    l.ms = millis();  // lock-free timer read: time and sequence number in step
+    logStamp(l, logClockOffset);
     l.seq = ++logStore.seq;
     l.boot = logStore.boot;
     if (level == 'D') logPut(logStore.dbg, l);
@@ -162,33 +171,29 @@ class LogPrint : public Print {
 static LogPrint debug;
 
 template <size_t N>
-static void logBackfill(LogRing<N>& r, uint8_t boot, uint64_t bootEpochMs) {  // under logLock
-    for (LogLine& l : r.line) {
-        if (l.seq == 0 || l.sec != 0 || l.boot != boot) continue;
-        const uint64_t t = bootEpochMs + l.ms;
-        l.sec = (uint32_t)(t / 1000);
-        l.milli = (uint16_t)(t % 1000);
-    }
+static void logRestamp(LogRing<N>& r, uint8_t boot, int64_t offset) {  // under logLock
+    for (LogLine& l : r.line)
+        if (l.seq != 0 && l.boot == boot) logStamp(l, offset);
 }
 
-// The phone's time (Unix ms) from the log page: set the clock if it is not set
-// or off by more than LOG_CLOCK_SLACK_MS, then date the lines of this start.
+// The phone's time (Unix ms) from the log page: set the clock if it is not known
+// or off by more than LOG_CLOCK_SLACK_MS, and re-date every line of this start.
 static void logSetClock(uint64_t phoneMs) {
     if (phoneMs / 1000 < LOG_CLOCK_VALID) return;
-    struct timeval tv;
-    gettimeofday(&tv, nullptr);
-    const bool known = tv.tv_sec >= (time_t)LOG_CLOCK_VALID;
-    const int64_t off = (int64_t)phoneMs - ((int64_t)tv.tv_sec * 1000 + tv.tv_usec / 1000);
-    if (known && off > -LOG_CLOCK_SLACK_MS && off < LOG_CLOCK_SLACK_MS) return;
-    tv.tv_sec = (time_t)(phoneMs / 1000);
-    tv.tv_usec = (suseconds_t)(phoneMs % 1000) * 1000;
-    settimeofday(&tv, nullptr);
-    const uint64_t bootEpochMs = phoneMs - millis();
+    const int64_t offset = (int64_t)phoneMs - (int64_t)millis();
     portENTER_CRITICAL(&logLock);
-    logBackfill(logStore.ev, logStore.boot, bootEpochMs);
-    logBackfill(logStore.dbg, logStore.boot, bootEpochMs);
+    const int64_t old = logClockOffset;
+    const bool apply = old == 0 || offset - old <= -LOG_CLOCK_SLACK_MS || offset - old >= LOG_CLOCK_SLACK_MS;
+    if (apply) {
+        logClockOffset = offset;
+        logRestamp(logStore.ev, logStore.boot, offset);
+        logRestamp(logStore.dbg, logStore.boot, offset);
+    }
     portEXIT_CRITICAL(&logLock);
-    if (known) LOGI(LOG_SYSTEM, "Clock corrected from a phone by %+.1f s", off / 1000.0);
+    if (!apply) return;
+    struct timeval tv = {(time_t)(phoneMs / 1000), (suseconds_t)(phoneMs % 1000) * 1000};
+    settimeofday(&tv, nullptr);  // kept through a software restart
+    if (old) LOGI(LOG_SYSTEM, "Clock corrected from a phone by %+.1f s; this start re-dated", (offset - old) / 1000.0);
     else LOGI(LOG_SYSTEM, "Clock set from a phone");
 }
 

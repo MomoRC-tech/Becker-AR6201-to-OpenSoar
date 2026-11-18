@@ -89,7 +89,9 @@ static void logSend(uint32_t since) {
     static char buf[1400];
     uint32_t last, dropped;
     uint8_t boot;
+    int64_t offset;
     portENTER_CRITICAL(&logLock);
+    offset = logClockOffset;
     last = logStore.seq;
     dropped = logStore.ev.dropped > logStore.dbg.dropped ? logStore.ev.dropped : logStore.dbg.dropped;
     boot = logStore.boot;
@@ -100,8 +102,8 @@ static void logSend(uint32_t since) {
     statusServer.sendHeader("Cache-Control", "no-store");
     statusServer.setContentLength(CONTENT_LENGTH_UNKNOWN);
     statusServer.send(200, "application/json", "");
-    size_t n = snprintf(buf, sizeof(buf), "{\"firmware\":\"%s\",\"boot\":%u,\"seq\":%lu,\"now\":%lu,\"lost\":%s,\"lines\":[",
-                        VERSION, boot, (unsigned long)last, (unsigned long)millis(), lost ? "true" : "false");
+    size_t n = snprintf(buf, sizeof(buf), "{\"firmware\":\"%s\",\"boot\":%u,\"o\":%lld,\"seq\":%lu,\"now\":%lu,\"lost\":%s,\"lines\":[",
+                        VERSION, boot, (long long)offset, (unsigned long)last, (unsigned long)millis(), lost ? "true" : "false");
     uint32_t cursor = since;
     bool comma = false;
     for (;;) {
@@ -214,6 +216,7 @@ L.innerHTML=h.join('');if(end)L.scrollTop=L.scrollHeight;status()}
 function poll(){fetch('/api/log?since='+since+'&clock='+Date.now(),{cache:'no-store'}).then(r=>r.json()).then(d=>{
 if(d.seq<since)epoch++;
 info=d;
+if(d.o)for(const l of lines)if(l.e===epoch&&l.b===d.boot)l.c=l.t+d.o;
 if(d.lost)lines.push({e:epoch,b:d.boot,t:d.now,c:Date.now(),l:'W',s:'system',m:'Some lines were overwritten before this page fetched them'});
 for(const l of d.lines)lines.push({e:epoch,b:l.b,t:l.t,c:l.c,l:l.l,s:l.s,m:l.m});
 if(lines.length>MAX)lines.splice(0,lines.length-MAX);
