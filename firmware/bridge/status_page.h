@@ -37,6 +37,7 @@ static const char* const kPortName[NUM_COM] = PORT_NAMES;
 
 static WebServer statusServer(80);
 
+#include "lifetime.h"  // Project: lifetime record in NVS (step 3f)
 #include "supply.h"  // Project: supply voltage, OpenVario port and chart (step 3d)
 #include "chiptemp.h"  // Project: ESP32 chip temperature (step 3e)
 
@@ -92,6 +93,7 @@ a{color:inherit}
 <div class="down" id="down" hidden>The bridge is not answering. Check that this phone is on the bridge's Wi-Fi.</div>
 <div id="ports"></div>
 <section id="sup" hidden><div class="row"><span class="dot"></span><h2>Supply voltage</h2><span class="st" id="sv"></span></div><div class="brief" id="sb"></div><svg id="sc" viewBox="0 0 600 270" role="img" aria-label="Supply voltage since the bridge was switched on"></svg><p class="key" id="sk" hidden>Each minute since the bridge was switched on, up to 12 hours: line = mean, band = lowest to highest, dashed = <span id="sl"></span> V warning level.</p></section>
+<section class="set" id="lt" hidden><details><summary>Lifetime record</summary><div class="grp" id="lr"></div><p class="key">Kept through power cuts; operating time is saved every 10 minutes. Reset on the <a href="/settings">settings page</a> (password).</p></details></section>
 <section class="set"><details><summary>All settings</summary><div id="set">Loading</div><p class="key"><a href="/settings">Change settings</a> (password)</p></details></section>
 <footer><a href="/monitor">Data monitor</a>: see what passes the bridge. <a href="/log">Log</a>: what the bridge did. Read-only. Refreshes every 2 seconds; settings apply when the bridge starts. Data: <a href="/api/status">status</a>, <a href="/api/settings">settings</a>, <a href="/api/supply">voltage</a>.</footer>
 </main>
@@ -115,10 +117,14 @@ if(p.uart_errors)b+=', <span class="bad">'+p.uart_errors+' receive error'+(p.uar
 if(p.short_writes)b+=', <span class="bad">'+p.short_writes+' short write'+(p.short_writes>1?'s':'')+'</span>';
 $('b'+n).innerHTML=b;
 $('x'+n).innerHTML='<div><dt>From device</dt><dd>'+size(p.bytes_from_device)+'</dd></div><div><dt>To device</dt><dd>'+size(p.bytes_to_device)+'</dd></div><div><dt>Receive errors</dt><dd'+(p.uart_errors?' class="bad"':'')+'>'+p.uart_errors+'</dd></div><div><dt>Short writes</dt><dd'+(p.short_writes?' class="bad"':'')+'>'+p.short_writes+'</dd></div>'});
-sup(d.supply)}).catch(()=>{$('down').hidden=false})}
+sup(d.supply);life(d.lifetime)}).catch(()=>{$('down').hidden=false})}
 function sup(s){if(!s)return;$('sup').hidden=false;const on=s.sensor&&s.volts!==null;$('sup').className=on?'on':'';
 $('sv').innerHTML=!s.sensor?'Sensor off':s.volts===null?'<span class="bad">No reading</span>':'<b class="'+(s.volts<s.low_v?'bad':'')+'">'+s.volts.toFixed(2)+' V</b>';
 $('sb').innerHTML=s.sensor?'OpenVario, TCP '+s.tcp_port+', '+(s.tcp_clients?s.tcp_clients+(s.tcp_clients>1?' apps':' app')+' connected':'no app connected'):'Switch the sensor on in the settings once the divider is fitted.'}
+function when(e){return 'at '+dur(e.up_s)+' operating time'+(e.unix?', '+new Date(e.unix*1000).toLocaleDateString()+' '+hm(e.unix*1000):'')}
+function life(l){if(!l)return;$('lt').hidden=false;const c=l.max_chip,v=l.min_supply;
+$('lr').innerHTML='<span>Operating time</span><div>'+dur(l.up_s)+'</div><span>Starts</span><div>'+l.starts+'</div>'+(l.since_unix?'<span>Since</span><div>'+new Date(l.since_unix*1000).toLocaleDateString()+'</div>':'')+
+'<span>Highest chip temperature</span><div>'+(c?'<b>'+Math.round(c.celsius)+' °C</b> '+when(c):'None yet')+'</div><span>Lowest supply voltage</span><div>'+(v?'<b>'+v.volts.toFixed(2)+' V</b> '+when(v)+' (held 10 s)':'None yet')+'</div>'+(l.storage?'':'<span class="bad">Storage</span><div class="bad">Not available: kept until power off only</div>')}
 let hist=null;function hg(){fetch('/api/supply',{cache:'no-store'}).then(r=>r.json()).then(h=>{hist=h;draw()}).catch(()=>{})}
 function hm(t){const d=new Date(t);return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}
 function draw(){const h=hist,c=$('sc');$('sk').hidden=!(h&&h.sensor);if(!h||!h.sensor){c.innerHTML='';c.style.display='none';return}c.style.display='';
@@ -197,6 +203,7 @@ static String statusJson() {
     out += "]";
     supplyStatusJson(out);  // Project: supply voltage (step 3d)
     chipTempJson(out);      // Project: chip temperature (step 3e)
+    lifetimeJson(out);      // Project: lifetime record (step 3f)
     out += "}";
     return out;
 }
@@ -306,6 +313,7 @@ static void statusTask(void*) {
     monitorRoutes();
     logRoutes();
     supplyRoutes();
+    lifetimeBegin();
     supplyBegin();
     statusServer.onNotFound([]() { statusServer.send(404, "text/plain", "Not found"); });
     statusServer.begin();
@@ -315,6 +323,7 @@ static void statusTask(void*) {
         logTick();
         supplyTick();
         chipTempTick();
+        lifetimeTick();
         vTaskDelay(pdMS_TO_TICKS(5));
     }
 }

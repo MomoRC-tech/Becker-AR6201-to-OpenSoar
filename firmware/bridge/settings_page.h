@@ -4,6 +4,7 @@
 // POST /api/settings      check and save, then restart (password)
 // POST /api/keep          keep settings that are on trial (password)
 // POST /api/reset         forget all stored settings, then restart (password)
+// POST /api/lifetime/reset start a new lifetime record (password; lifetime.h)
 //
 // Password: HTTP basic authentication, user "bridge", the OTA password. The
 // active values come from the public /api/settings, which never sends passwords.
@@ -25,6 +26,7 @@ static bool settingsAuth() {
 
 static void restartSoon() {
     delay(800);  // let the answer reach the phone
+    lifetimeSaveNow();
     ESP.restart();
 }
 
@@ -146,6 +148,7 @@ static void handleSettingsReset() {
 static void settingsTrialCheck() {
     if (settingsTrial && millis() > SETTINGS_TRIAL_MS) {
         settingsRevert();
+        lifetimeSaveNow();
         delay(200);
         ESP.restart();
     }
@@ -191,6 +194,7 @@ button{font:inherit;font-weight:600;border-radius:10px;padding:10px 18px;cursor:
 <form id="fm" onsubmit="return save(event)"><div id="fs">Loading</div>
 <p class="note">Saving restarts the bridge. A change to Wi-Fi, hotspot or ports (also the supply voltage port) runs on trial: reconnect and press Keep within 10 minutes, otherwise the previous settings come back. Leave a password empty to keep it.</p>
 <div class="btns"><button class="main" type="submit">Save and restart</button><button class="quiet" type="button" onclick="reset()">Reset to defaults</button></div></form>
+<fieldset id="rec" hidden><legend>Lifetime record</legend><p class="note">Operating time, starts, highest chip temperature and lowest supply voltage, kept through power cuts. Resetting starts a new record; the settings stay.</p><div class="btns"><button class="quiet" type="button" onclick="lreset()">Reset lifetime record</button></div></fieldset>
 <div id="msg" role="status"></div>
 </main>
 <script>
@@ -228,6 +232,9 @@ if(!d.trial)setTimeout(()=>location.href='/',20000)}).catch(()=>{$('msg').textCo
 function keep(){post('/api/keep').then(r=>r.json()).then(()=>{$('trial').hidden=true;$('msg').textContent='Kept. These settings stay.'})}
 function reset(){if(!confirm('Forget all saved settings and restart with the firmware defaults?'))return;
 post('/api/reset').then(()=>{$('fm').hidden=true;$('msg').textContent='Reset. The bridge restarts with the firmware defaults; the status page opens in 20 seconds.';setTimeout(()=>location.href='/',20000)})}
+function lreset(){if(!confirm('Start a new lifetime record? Operating time, starts and the extremes start again from zero.'))return;
+post('/api/lifetime/reset').then(r=>r.json()).then(()=>{$('msg').textContent='Lifetime record reset.'}).catch(()=>{$('msg').textContent='The bridge did not answer. Try again.'})}
+fetch('/api/status',{cache:'no-store'}).then(r=>r.json()).then(d=>{if(d.lifetime)$('rec').hidden=false}).catch(()=>{});
 load();
 </script>
 )HTML";
@@ -240,6 +247,13 @@ static void settingsRoutes() {
     statusServer.on("/api/settings", HTTP_POST, handleSettingsSave);
     statusServer.on("/api/keep", HTTP_POST, handleSettingsKeep);
     statusServer.on("/api/reset", HTTP_POST, handleSettingsReset);
+#ifdef LIFETIME_RECORD
+    statusServer.on("/api/lifetime/reset", HTTP_POST, []() {
+        if (!settingsAuth()) return;
+        lifetimeReset();
+        statusServer.send(200, "application/json", "{\"ok\":true}");
+    });
+#endif
 }
 
 #else

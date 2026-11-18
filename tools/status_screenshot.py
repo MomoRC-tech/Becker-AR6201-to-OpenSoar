@@ -2,11 +2,11 @@
 
 Reads both pages, the image and the settings JSON from a running bridge,
 masks private details, and renders them at phone width (390 px, 2x) in the
-light theme: docs/images/status-page.png ("All settings" open),
+light theme: docs/images/status-page.png ("Lifetime record" and "All settings" open),
 docs/images/settings-page.png, docs/images/monitor-page.png and
 docs/images/log-page.png. The settings page login uses the OTA password from
-firmware/bridge/credentials.h. The monitor, the log and the supply voltage
-(value and chart) show fixed demo data, never real data: real NMEA contains
+firmware/bridge/credentials.h. The monitor, the log, the supply voltage
+(value and chart) and the lifetime record show fixed demo data, never real data: real NMEA contains
 positions, the real log network names and addresses, and a bench board
 without the divider has no meaningful voltage.
 
@@ -30,6 +30,7 @@ import re
 import shutil
 import subprocess
 import tempfile
+import time
 import urllib.request
 from pathlib import Path
 
@@ -154,7 +155,7 @@ def browser() -> str:
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("host", help="bridge address")
-    ap.add_argument("--height", type=int, default=1400, help="page height in CSS pixels")
+    ap.add_argument("--height", type=int, default=1700, help="page height in CSS pixels")
     args = ap.parse_args()
 
     page = get(args.host, "/").decode("utf-8")
@@ -171,20 +172,26 @@ def main() -> None:
     status["wifi"] = {"mode": "hotspot", "ip": hotspot, "stations": [-52]}
     status["supply"], history = demo_supply()
     status["uptime_s"] = 5 * 3600 + 25  # matches the five-hour demo chart
+    if "lifetime" in status:  # demo record, consistent with the demo chart
+        now = int(time.time())
+        status["lifetime"] = {"storage": True, "starts": 57, "up_s": 123 * 3600 + 25 * 60, "since_unix": now - 40 * 86400,
+                              "max_chip": {"celsius": 61.4, "up_s": 98 * 3600 + 12 * 60, "unix": now - 9 * 86400},
+                              "min_supply": {"volts": 11.86, "up_s": 121 * 3600 + 3 * 60, "unix": now - 2 * 86400}}
 
     mock = ("<script>const _st=" + json.dumps(status) + ",_se=" + json.dumps(settings) + ",_su=" + json.dumps(history) +
             ";window.fetch=u=>Promise.resolve({json:()=>Promise.resolve(u.includes('settings')?_se:"
             "u.includes('supply')?_su:_st)});</script>")
     page = page.replace("/device.webp", "device.webp").replace("<main>", mock + "<main>", 1)
     page = page.replace('<section class="set"><details>', '<section class="set"><details open>', 1)
+    page = page.replace('id="lt" hidden><details>', 'id="lt" hidden><details open>', 1)
 
     shoot(page, image, IMAGES / "status-page.png", args.height)
 
     form = get(args.host, "/settings", ota_password()).decode("utf-8")
-    mock = ("<script>const _se=" + json.dumps(settings) +
-            ";window.fetch=u=>Promise.resolve({json:()=>Promise.resolve(_se)});</script>")
+    mock = ("<script>const _se=" + json.dumps(settings) + ",_st=" + json.dumps(status) +
+            ";window.fetch=u=>Promise.resolve({json:()=>Promise.resolve(u.includes('status')?_st:_se)});</script>")
     form = form.replace("/device.webp", "device.webp").replace("<main>", mock + "<main>", 1)
-    shoot(form, image, IMAGES / "settings-page.png", 2480)
+    shoot(form, image, IMAGES / "settings-page.png", 2700)
 
     demo = demo_monitor()
     empty = {"seq": demo["seq"], "lost": False, "now": demo["now"], "chunks": []}

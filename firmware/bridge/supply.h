@@ -184,9 +184,11 @@ static void supplySecond(float volts, float raw, bool ok) {
             LOGW(LOG_SYSTEM, "Supply voltage: no plausible reading (%.1f V); check the divider or switch the sensor off", raw);
             badSince = 1;  // once until a good reading
         }
+        lifetimeSupply(NAN);  // Project: lifetime record (step 3f)
         return;
     }
     badSince = 0;
+    lifetimeSupply(volts);
     if (first) {
         LOGI(LOG_SYSTEM, "Supply voltage %.2f V", volts);
         first = false;

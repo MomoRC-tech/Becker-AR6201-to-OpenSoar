@@ -25,6 +25,8 @@ extern "C" uint8_t temprature_sens_read();  // Arduino core (esp32-hal-misc.c): 
 #define CHIP_TEMP_MEAN 10                 // readings in the shown mean
 #define CHIP_TEMP_STUCK 128               // the value of a sensor that does not work
 #define CHIP_TEMP_NO_READING_MS 30000UL   // no working reading this long after start: one log line
+#define CHIP_TEMP_RECORD_N 60             // lifetime record: 1 min means (single readings scatter by several degrees)
+#define CHIP_TEMP_RECORD_AFTER_MS 120000UL  // and only from 2 min after the start, when start-up readings run high
 
 static float chipTempC = NAN;       // mean of the last readings in degrees Celsius; NAN = no reading
 static bool chipTempWorks = false;  // a value other than CHIP_TEMP_STUCK seen since start
@@ -33,6 +35,8 @@ static bool chipTempWorks = false;  // a value other than CHIP_TEMP_STUCK seen s
 static void chipTempTick() {
     static uint32_t at = 0, highSince = 0;
     static uint8_t ring[CHIP_TEMP_MEAN], count = 0, head = 0;
+    static uint16_t minuteSum = 0;
+    static uint8_t minuteCount = 0;
     static bool first = true, highLogged = false, noneLogged = false;
     const uint32_t now = millis();
     if (now - at < CHIP_TEMP_EVERY_MS) return;
@@ -56,6 +60,12 @@ static void chipTempTick() {
     for (uint8_t i = 0; i < count; i++) sum += ring[i];
     const float c = (sum / (float)count - 32.0f) / 1.8f;
     chipTempC = c;
+    minuteSum += raw;  // Project: lifetime record (step 3f)
+    if (++minuteCount == CHIP_TEMP_RECORD_N) {
+        if (now >= CHIP_TEMP_RECORD_AFTER_MS) lifetimeChip((minuteSum / (float)CHIP_TEMP_RECORD_N - 32.0f) / 1.8f);
+        minuteSum = 0;
+        minuteCount = 0;
+    }
 
     if (first && count == CHIP_TEMP_MEAN) {
         LOGI(LOG_SYSTEM, "Chip temperature %.0f \xC2\xB0" "C (ESP32 chip, approximate)", c);

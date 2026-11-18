@@ -1,6 +1,6 @@
 # Bridge firmware
 
-Wi-Fi bridge firmware for Zander, FLARM and Becker, based on ESP-Serial-Bridge ([ADR-02](../../docs/design/architecture.md#adr-02)). The standalone ESP32 runs step 4 firmware with single-client radio ownership (S114) and the [web log](#web-log) (S116). Firmware 0.5.1 adds the [supply voltage](#supply-voltage) (step 3d), 0.5.2 the [chip temperature](#chip-temperature) (step 3e). See the [firmware plan](../../docs/project/roadmap.md#firmware-plan) for the remaining wired checks.
+Wi-Fi bridge firmware for Zander, FLARM and Becker, based on ESP-Serial-Bridge ([ADR-02](../../docs/design/architecture.md#adr-02)). The standalone ESP32 runs step 4 firmware with single-client radio ownership (S114) and the [web log](#web-log) (S116). Firmware 0.5.1 adds the [supply voltage](#supply-voltage) (step 3d), 0.5.2 the [chip temperature](#chip-temperature) (step 3e), 0.5.3 the [lifetime record](#lifetime-record) (step 3f). See the [firmware plan](../../docs/project/roadmap.md#firmware-plan) for the remaining wired checks.
 
 ## Origin and license
 
@@ -42,6 +42,7 @@ Set in `config.h`; everything else is upstream.
 | Status page | `STATUS_PAGE`: read-only page on port 80 and `/api/status` as JSON, open to everyone on the bridge's Wi-Fi; see below |
 | Supply voltage | `SUPPLY_SENSE`: 12 V input on GPIO34, OpenVario port 4353 and chart; pin, divider, port and warning levels under *Supply voltage* in `config.h`; see [below](#supply-voltage) |
 | Chip temperature | `CHIP_TEMP`: the ESP32's own temperature on the status page and in the web log, no shutdown; warning levels under *Chip temperature* in `config.h`; see [below](#chip-temperature) |
+| Lifetime record | `LIFETIME_RECORD`: starts, operating time and extremes kept in NVS through power cuts; see [below](#lifetime-record) |
 
 <a id="status-page"></a>
 
@@ -57,13 +58,14 @@ Open `http://<bridge address>/` (10.10.10.10 in hotspot mode) in a browser. [`st
 | Device row | Live dot (green while data arrives, pulses on new bytes), state (receiving, quiet for how long, no data yet), baud rate and frame, TCP port, connected apps; receive errors and short writes in red when not zero |
 | Details (collapsed) | Bytes from and to the device since start, receive errors (buffer full, FIFO overflow, framing, parity, break), short writes (data an app could not take: skipped for a Zander or FLARM app, session closed on the radio port); link to the [data monitor](#data-monitor) |
 | Supply voltage | Value of the last second, OpenVario port and connected apps, and the [chart](#supply-voltage) |
+| Lifetime record (collapsed) | Operating time, starts, highest chip temperature and lowest supply voltage, with when they happened; see [below](#lifetime-record) |
 | All settings (collapsed) | Active baud, frame and TCP port per device; network, join time, hotspot name and address; supply voltage settings. Amber: saved on the bridge; red: saved value invalid, default in use. Passwords are never sent |
 
 | Address | Content |
 | --- | --- |
 | `/` | The page, about 7.4 kB |
 | `/device.webp` | Lid photo, 5.3 kB, cached for a day |
-| `/api/status` | Live counters, the supply voltage and the chip temperature as JSON |
+| `/api/status` | Live counters, the supply voltage, the chip temperature and the lifetime record as JSON |
 | `/api/settings` | Active settings, their defaults and source (`default`, `changed`, `invalid`), the trial state and the device profiles with the presets that fit each port, as JSON |
 | `/monitor`, `/api/monitor` | [Data monitor](#data-monitor) |
 | `/log`, `/api/log` | [Web log](#web-log) |
@@ -96,6 +98,7 @@ Open *Change settings* under *All settings*, or `http://<bridge address>/setting
 | `POST /api/settings` | Check and save form fields named by their keys (`p0`, `b0`, `f0`, `t0` ... `ns`, `np`, `nj`, `hs`, `hp`, `ha`, `vs`, `vc`, `vt`), then restart (password) |
 | `POST /api/keep` | Keep settings on trial (password) |
 | `POST /api/reset` | Forget all stored values, then restart (password) |
+| `POST /api/lifetime/reset` | Start a new [lifetime record](#lifetime-record) (password) |
 
 Bench check: `python tools/settings_test.py <bridge address> [--revert]` runs the password, refusal, save, device profile, trial, *Keep*, reset and (with `--revert`, 10 minutes) automatic revert checks. The bridge must be in network mode, so its address stays the same across restarts.
 
@@ -176,7 +179,33 @@ The ESP32 reads its own internal temperature sensor ([plan](../../docs/project/r
 | `/api/status` | `chip_temp`: `celsius` (one decimal, `null` = no reading) and `warn_c` |
 | Web log | Source System: the first reading after start; a warning after 60 s at or above 80 °C; Info when it is back below 75 °C. The Debug memory line every 60 s ends with the chip temperature. Without a working sensor, one Info line 30 s after start |
 | No shutdown | The bridge keeps forwarding at any temperature. Losing FLARM and radio data in flight is worse than running warm |
-| Warning level | 80 °C is provisional. Set it from the [heat check](../../docs/project/open-items.md#housing), where the chip reading is logged next to the measured temperatures |
+| Warning level | 80 °C is provisional; on the bench, heavy Wi-Fi traffic alone lifted the reading from about 55 to above 80 °C at room temperature (S134). Set it from the [heat check](../../docs/project/open-items.md#housing), where the chip reading is logged next to the measured temperatures |
+
+<a id="lifetime-record"></a>
+
+## Lifetime record
+
+A few values kept through power cuts ([plan](../../docs/project/roadmap.md#firmware-plan), step 3f). [`lifetime.h`](lifetime.h) runs in the status task; the forwarding loop never writes to the flash.
+
+| Value | How it is counted |
+| --- | --- |
+| Operating time | Seconds since the record was started, counted from each ESP32 start |
+| Starts | Every start, also restarts by the firmware |
+| Highest chip temperature | Highest 1 min mean of the [chip temperature](#chip-temperature), from 2 min after each start, with the operating time and, if the bridge knows the clock, the date. Single readings scatter by several degrees and run high just after a start (S134) |
+| Lowest supply voltage | Lowest [supply voltage](#supply-voltage) held for 10 s, so a short dip or the decay at switch-off does not count; with operating time and date. Only with the sensor switched on |
+
+| Part | How it works |
+| --- | --- |
+| Storage | One NVS blob, namespace `lifetime`, in the partition the settings use. *Reset to defaults* on the settings page does not touch it; a full flash erase over USB clears it |
+| Flash writes | At every start; then every 10 min; at most once a minute while a new extreme is being set; before a restart by the firmware. A power cut loses at most the last 10 min of operating time |
+| Status page | *Lifetime record*, collapsed, above *All settings* |
+| Reset | Settings page, *Reset lifetime record* (password). Starts a new record with this start as the first |
+| Web log | Info at each start with the start number and operating time; a warning if the storage cannot be opened or a save fails |
+
+> [!IMPORTANT]
+> While the flash is written, the ESP32 pauses code from flash on both cores, and the UART receive interrupt of this core build does not run (S133). Keep flash writes rare and out of the forwarding loop. `python tools/records_test.py <bridge address> --write-load 120` runs the step 5 acceptance test while the record is written every 2 s.
+
+Bench check: `python tools/records_test.py <bridge address>` checks the status block, the password, the reset, and that the record survives a restart with one more start. It resets the record of that board. Survival of a power cut needs the USB cable pulled by hand.
 
 ## Build
 
