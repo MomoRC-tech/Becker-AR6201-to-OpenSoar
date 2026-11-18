@@ -3,14 +3,10 @@
 # ✈️ Wi-Fi Bridge: Glider Avionics to OpenSoar
 
 <p align="center">
-  <img src="docs/images/teaser.svg" width="100%" alt="Wi-Fi Bridge for glider avionics: Classic FLARM (traffic), Zander ZS1 (flight data) and the Becker AR6201 radio connect to a small 3D-printed ESP32 box in the glider, which sends the data over Wi-Fi as NMEA over TCP to an app such as OpenSoar on a phone. Features: own Wi-Fi hotspot, status and settings page, data monitor, updates over Wi-Fi, 7–20 V supply, several apps at once, instrument presets, supply voltage monitor. Prototype in development.">
+  <a href="docs/images/product-teaser.png"><img src="docs/images/product-teaser.png" width="100%" alt="Your glider instruments. On your phone. Illustrated glider cockpit with a compact Wi-Fi Bridge tucked behind the instrument panel and a clearly labelled enlarged product view. Wi-Fi connects it to OpenSoar on a phone. Features: Classic FLARM traffic and position, Zander ZS1 flight and navigation data, Becker AR6201 radio standby tuning, and browser setup and monitoring."></a>
 </p>
 
 A small ESP32 box in the glider collects data from the cockpit instruments and sends it over Wi-Fi to OpenSoar on a phone or tablet: FLARM and Zander data as standard NMEA over TCP, the radio on its own port. No cables run to the Android device.
-
-> [!NOTE]
-> **Status:** the housing design is accepted for the bench prototype. Physical fit, wiring and electrical checks are pending.
-> **Current focus:** 🔧 WP3 wiring and bench validation, with the 💻 [bridge firmware](docs/project/roadmap.md#firmware-plan) in parallel. Driver work waits until WP3 is complete.
 
 📑 **On this page:** <kbd>[1 · 🎯 What it does](#what-it-does)</kbd> <kbd>[2 · 🚦 Project status](#status)</kbd> <kbd>[3 · 🗺️ Documentation map](#documentation)</kbd> <kbd>[4 · ⚠️ Safety](#safety)</kbd>
 
@@ -50,6 +46,10 @@ More: [status page](firmware/bridge/README.md#status-page), [settings page](firm
 <a id="status"></a>
 
 ## 2. 🚦 Project status
+
+> [!NOTE]
+> **Status:** the housing design is accepted for the bench prototype. Physical fit, wiring and electrical checks are pending.
+> **Current focus:** 🔧 WP3 wiring and bench validation, with the 💻 [bridge firmware](docs/project/roadmap.md#firmware-plan) in parallel. Driver work waits until WP3 is complete.
 
 | Stage | Status |
 | --- | --- |
