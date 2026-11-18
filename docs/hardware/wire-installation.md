@@ -7,7 +7,7 @@
 Install the bridge harness in housing v16, using the pictures to find each group of wires and its route.
 
 > [!NOTE]
-> **Status:** illustrated sequence from the accepted v16 Fusion model (S93). The [supply voltage sense](power.md#voltage-sense) (R-V1, R-V2, C-V and the grey wire) is in the Fusion model (S128) but not yet in the pictures; its steps are text only. Fit, actual cut lengths and electrical operation are bench checks.
+> **Status:** illustrated sequence from the accepted v16 Fusion model (S93). The [supply voltage sense](power.md#voltage-sense) (R-V1, R-V2, C-V and the grey wire) has its own picture in [section 3](#rs232-boards) (S128, S129); pictures 01, 03 and 07 do not show it. Fit, actual cut lengths and electrical operation are bench checks.
 
 📑 **On this page:** <kbd>[1 · 🔌 Prepare the connectors](#connectors)</kbd> <kbd>[2 · ⚡ Lay the power harness](#floor-power)</kbd> <kbd>[3 · 🧩 Wire the RS-232 boards](#rs232-boards)</kbd> <kbd>[4 · 📡 Connect Zander and FLARM](#rs232-connector)</kbd> <kbd>[5 · 📻 Wire the MAX490 header](#max490-header)</kbd> <kbd>[6 · 🔀 Fit the Becker pairs](#becker-pairs)</kbd> <kbd>[7 · ✅ Close up and check](#finish)</kbd>
 
@@ -24,7 +24,7 @@ Start with the [loose-board bench checks](wiring.md#bring-up) and disconnect pow
 ![Red and black factory leads from the XT30 down the connector wall and across the floor to the UBEC input](../images/wire-installation/01-xt30.png)
 
 1. With the connectors outside the tray, identify XT30 polarity from the moulded marks. Solder the red and black UBEC input leads to the corresponding cups. Keep the UBEC loose until step 7. The picture shows its final location so you can see where the leads go.
-2. Solder one lead of **R-V1 (100 kΩ)** into the **XT30 +** cup together with the red lead, or onto the red lead right behind the cup if the cup is full. Bend it up over the red lead and point the body toward the side wall next to the ESP32. Solder the **grey** sense wire to its free lead and cover R-V1 and both joints with heat-shrink, so no bare metal is left at the 12 V end. Leave the grey wire overlength. [Supply voltage sense](power.md#voltage-sense)
+2. Solder one lead of **R-V1 (100 kΩ)** into the **XT30 +** cup together with the red lead, or onto the red lead right behind the cup if the cup is full. Bend it up over the red lead and point the body toward the side wall next to the ESP32. Solder the **grey** sense wire to its free lead and cover R-V1 and both joints with heat-shrink, so no bare metal is left at the 12 V end. Leave the grey wire overlength. [Picture](#supply-sense-picture) · [Supply voltage sense](power.md#voltage-sense)
 3. Wire the **entire DE-9 pigtail on the bench before fastening the connector**. Start with the lower row, which is hard to reach once mounted. Using the moulded cup numbers, solder **white to cup 8 (MAX490 Y)** and **green to cup 9 (MAX490 Z)**. Fit the tinned bridge across **3, 6 and 7**, clear of the other cups and shell. Attach one black lead from the bridge to **GND-J**. Then solder the remaining signal leads at cups **1, 2, 4 and 5**.
 4. Leave the pigtail leads overlength at their free ends. Allow enough to feed the bundle through the front cutout, follow the guides and reach each termination with service slack. Check the cup assignments and isolation from neighbouring nets and the shell while the cups are accessible.
 5. Fit the XT30 in its inside pocket. Feed the DE-9 pigtail through the cutout from outside, seat and fasten the connector without pulling on the solder joints. Route the free ends, then trim and strip them at their destinations. [Connector mounting](housing.md#connectors) · [DE-9 cup map](wiring.md#de9-pinout)
@@ -62,7 +62,11 @@ Solder the module pads on the bench. In this view, Zander **mod1** is on the lef
 
 Prepare the L3 ends in step 4 before seating the modules. Prepare the **mod2 L2** end of R-D on the bench while the pad is accessible. At the ESP32, **J3-1** takes only the mod2 return. **J2-14** takes the floor return from step 2 and the ground leads of R-V2 and C-V. **J2-19** takes the orange floor feed.
 
-Route the **grey** wire from R-V1 up to pin-top height and along the side wall, above the J2-19 and J2-14 wires, to **J2-5**. Fit **R-V2 (10 kΩ)** and **C-V (100 nF)** beside the J2 header on the side-wall side: R-V2 at pin-top height, C-V about 2 mm below it. Bend each lead from **J2-5** out to the side and back in at **J2-14**, so the leads stay clear of J2-6 to J2-13 and of the J2-7 and J2-10 wires. Sleeve the leads where they pass other joints. Solder the grey wire to J2-5 with them. [Module pad map](modules.md#rs232-module) · [ESP32 header map](modules.md#esp32-pinout)
+Route the **grey** wire from R-V1 up to pin-top height and along the side wall, above the J2-19 and J2-14 wires, to **J2-5**. Fit **R-V2 (10 kΩ)** and **C-V (100 nF)** beside the J2 header on the side-wall side: R-V2 at pin-top height, C-V about 2 mm below it. Bend each lead from **J2-5** out to the side and back in at **J2-14**, so the leads stay clear of J2-6 to J2-13 and of the J2-7 and J2-10 wires. Sleeve the leads where they pass other joints. Solder the grey wire to J2-5 with them.
+
+<a id="supply-sense-picture"></a>
+
+![Supply voltage sense from above: R-V1 in heat-shrink at the XT30 + cup, the grey wire along the side wall at pin-top height to ESP32 J2-5, and R-V2 at pin-top height and C-V 2 mm lower beside the J2 header, both looping from J2-5 to J2-14](../images/wire-installation/08-supply-sense.png) [Module pad map](modules.md#rs232-module) · [ESP32 header map](modules.md#esp32-pinout)
 
 ---
 
