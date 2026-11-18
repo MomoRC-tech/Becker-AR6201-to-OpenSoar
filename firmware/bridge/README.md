@@ -1,6 +1,6 @@
 # Bridge firmware
 
-Wi-Fi bridge firmware for Zander, FLARM and Becker, based on ESP-Serial-Bridge ([ADR-02](../../docs/design/architecture.md#adr-02)). The standalone ESP32 runs step 4 firmware with single-client radio ownership (S114) and the [web log](#web-log) (S116). Firmware 0.5.1 adds the [supply voltage](#supply-voltage) (step 3d). See the [firmware plan](../../docs/project/roadmap.md#firmware-plan) for the remaining wired checks.
+Wi-Fi bridge firmware for Zander, FLARM and Becker, based on ESP-Serial-Bridge ([ADR-02](../../docs/design/architecture.md#adr-02)). The standalone ESP32 runs step 4 firmware with single-client radio ownership (S114) and the [web log](#web-log) (S116). Firmware 0.5.1 adds the [supply voltage](#supply-voltage) (step 3d), 0.5.2 the [chip temperature](#chip-temperature) (step 3e). See the [firmware plan](../../docs/project/roadmap.md#firmware-plan) for the remaining wired checks.
 
 ## Origin and license
 
@@ -41,6 +41,7 @@ Set in `config.h`; everything else is upstream.
 | Stored settings | `STORED_SETTINGS`: baud rates, frames, TCP ports, the network and the hotspot in this file are defaults; valid values saved on the [settings page](#settings-page) override them in `MODE_STA_AP`. An invalid stored value falls back to its default |
 | Status page | `STATUS_PAGE`: read-only page on port 80 and `/api/status` as JSON, open to everyone on the bridge's Wi-Fi; see below |
 | Supply voltage | `SUPPLY_SENSE`: 12 V input on GPIO34, OpenVario port 4353 and chart; pin, divider, port and warning levels under *Supply voltage* in `config.h`; see [below](#supply-voltage) |
+| Chip temperature | `CHIP_TEMP`: the ESP32's own temperature on the status page and in the web log, no shutdown; warning levels under *Chip temperature* in `config.h`; see [below](#chip-temperature) |
 
 <a id="status-page"></a>
 
@@ -52,7 +53,7 @@ Open `http://<bridge address>/` (10.10.10.10 in hotspot mode) in a browser. [`st
 
 | Part | Shows |
 | --- | --- |
-| Header | Photo of the housing lid ([`device_image.h`](device_image.h), made by `tools/device_image.py`), firmware version, uptime, Wi-Fi: network address and the bridge's signal to the router, or hotspot address and the signal of each connected phone (no device addresses) |
+| Header | Photo of the housing lid ([`device_image.h`](device_image.h), made by `tools/device_image.py`), firmware version, uptime, [chip temperature](#chip-temperature), Wi-Fi: network address and the bridge's signal to the router, or hotspot address and the signal of each connected phone (no device addresses) |
 | Device row | Live dot (green while data arrives, pulses on new bytes), state (receiving, quiet for how long, no data yet), baud rate and frame, TCP port, connected apps; receive errors and short writes in red when not zero |
 | Details (collapsed) | Bytes from and to the device since start, receive errors (buffer full, FIFO overflow, framing, parity, break), short writes (data an app could not take: skipped for a Zander or FLARM app, session closed on the radio port); link to the [data monitor](#data-monitor) |
 | Supply voltage | Value of the last second, OpenVario port and connected apps, and the [chart](#supply-voltage) |
@@ -62,7 +63,7 @@ Open `http://<bridge address>/` (10.10.10.10 in hotspot mode) in a browser. [`st
 | --- | --- |
 | `/` | The page, about 7.4 kB |
 | `/device.webp` | Lid photo, 5.3 kB, cached for a day |
-| `/api/status` | Live counters and the supply voltage as JSON |
+| `/api/status` | Live counters, the supply voltage and the chip temperature as JSON |
 | `/api/settings` | Active settings, their defaults and source (`default`, `changed`, `invalid`), the trial state and the device profiles with the presets that fit each port, as JSON |
 | `/monitor`, `/api/monitor` | [Data monitor](#data-monitor) |
 | `/log`, `/api/log` | [Web log](#web-log) |
@@ -160,6 +161,22 @@ The bridge measures its 12 V input through the [divider](../../docs/hardware/pow
 `GET /api/supply` returns `points`, the full minutes oldest first as `[lowest, mean, highest]` in hundredths of a volt (`null` = no reading that minute), `current` for the minute still running, and `age_s`, the seconds since the newest full minute ended.
 
 Bench check: `python tools/supply_test.py <bridge address>` checks the status block, the sentences and their checksum, that data from an app is dropped without closing it, and the chart data. With the sensor switched off: `--expect-off`. Accuracy against a multimeter: [bring-up step 13](../../docs/hardware/wiring.md#bring-up).
+
+<a id="chip-temperature"></a>
+
+## Chip temperature
+
+The ESP32 reads its own internal temperature sensor ([plan](../../docs/project/roadmap.md#firmware-plan), step 3e). [`chiptemp.h`](chiptemp.h) runs in the status task; the forwarding loop is not touched.
+
+| Part | How it works |
+| --- | --- |
+| What it measures | The ESP32 chip, not the air in the housing. On the classic ESP32 the sensor is undocumented, with no specified accuracy (S131); offsets are reported to differ from chip to chip. Read it as a trend |
+| Reading | Once per second, shown as the mean of the last 10 s |
+| Status page | Header line *Chip temperature*, red at or above the warning level; *no reading* when the chip's sensor does not work (it then returns 128 °F at every read) |
+| `/api/status` | `chip_temp`: `celsius` (one decimal, `null` = no reading) and `warn_c` |
+| Web log | Source System: the first reading after start; a warning after 60 s at or above 80 °C; Info when it is back below 75 °C. The Debug memory line every 60 s ends with the chip temperature. Without a working sensor, one Info line 30 s after start |
+| No shutdown | The bridge keeps forwarding at any temperature. Losing FLARM and radio data in flight is worse than running warm |
+| Warning level | 80 °C is provisional. Set it from the [heat check](../../docs/project/open-items.md#housing), where the chip reading is logged next to the measured temperatures |
 
 ## Build
 

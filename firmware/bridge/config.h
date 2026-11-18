@@ -53,7 +53,7 @@
                              // incoming bytes while the loop waits on a UART write
 
 #ifdef ESP32
-#define VERSION "0.5.1-ESP32"     // Project: own version, 0.<plan step> until bench acceptance; 0.4.1 = device profiles (WP9), .2 = web log (step 3c), .3/.4 = log clock time; 0.5 = apps never hold up the bridge; 0.5.1 = supply voltage (step 3d)
+#define VERSION "0.5.2-ESP32"     // Project: own version, 0.<plan step> until bench acceptance; 0.4.1 = device profiles (WP9), .2 = web log (step 3c), .3/.4 = log clock time; 0.5 = apps never hold up the bridge; 0.5.1 = supply voltage (step 3d); 0.5.2 = chip temperature (step 3e)
 #elif defined(ESP8266)
 #define VERSION "0.3b.1-ESP8266"
 #endif
@@ -67,6 +67,7 @@
 #define STORED_SETTINGS        // Project: settings stored on the ESP32 override the defaults here (step 3a, ESP32 only)
 #define WEB_LOG                // Project: event log on /log, kept across a restart (step 3c, weblog.h, needs STATUS_PAGE, ESP32 only)
 #define SUPPLY_SENSE           // Project: supply voltage on GPIO34, OpenVario port and chart (step 3d, supply.h, needs STATUS_PAGE, ESP32 only)
+#define CHIP_TEMP              // Project: ESP32 chip temperature on the status page and in the log, no shutdown (step 3e, chiptemp.h, needs STATUS_PAGE, ESP32 only)
 #define PORT_NAMES {"Zander", "FLARM", "Becker"}  // Project: COM 0, 1, 2 on the status page
 #define PORT_PROFILES {"zs1", "flarm", "ar6201"}  // Project: default device profile per COM (settings.h); baud and frame must match UART_BAUDn and SERIAL_PARAMn
 //#define BLUETOOTH 0          // uncomment to create a bluetooth serial bridge on the indicated serial port (ESP32 only)
@@ -110,6 +111,10 @@
 #define SUPPLY_OK_V 12.0f           // and Info when it is back above this
 #define SUPPLY_LOW_MS 10000UL
 #define SUPPLY_HISTORY_MIN 720      // chart: one point per minute, 12 hours
+/*************************  Chip temperature (Project, step 3e) ******/
+#define CHIP_TEMP_WARN_C 80         // web log warning after CHIP_TEMP_WARN_MS at or above this (chip, not air; provisional)
+#define CHIP_TEMP_OK_C 75           // and Info when it is back below this
+#define CHIP_TEMP_WARN_MS 60000UL
 
 /**************************  DO NOT EDIT BELOW HERE **************************/
 // Project: build-time checks for the Wi-Fi mode and the radio port rules
@@ -131,6 +136,9 @@
 #endif
 #if defined(SUPPLY_SENSE) && !(defined(ESP32) && defined(STATUS_PAGE))
 #error "SUPPLY_SENSE needs STATUS_PAGE and an ESP32."
+#endif
+#if defined(CHIP_TEMP) && !(defined(ESP32) && defined(STATUS_PAGE))
+#error "CHIP_TEMP needs STATUS_PAGE and an ESP32."
 #endif
 #if defined(WEB_LOG) && defined(DEBUG)
 #error "DEBUG prints on UART0, which serves the Zander; WEB_LOG shows the same lines on /log."

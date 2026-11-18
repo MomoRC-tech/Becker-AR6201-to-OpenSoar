@@ -38,6 +38,7 @@ static const char* const kPortName[NUM_COM] = PORT_NAMES;
 static WebServer statusServer(80);
 
 #include "supply.h"  // Project: supply voltage, OpenVario port and chart (step 3d)
+#include "chiptemp.h"  // Project: ESP32 chip temperature (step 3e)
 
 // Status page; /device.webp is the housing lid photo from device_image.h.
 static const char kStatusPage[] = R"HTML(<!doctype html>
@@ -104,7 +105,8 @@ function build(ports){let h='';ports.forEach((p,n)=>{h+='<section id="d'+n+'"><d
 function f(){fetch('/api/status',{cache:'no-store'}).then(r=>r.json()).then(d=>{
 $('down').hidden=true;const w=d.wifi;
 const link=w.mode==='hotspot'?'<div>Hotspot <b>'+w.ip+'</b></div><div>'+(w.stations.length?w.stations.length+(w.stations.length>1?' phones, ':' phone, ')+'signal <b>'+w.stations.map(x=>x+' dBm').join(', ')+'</b>':'No phone connected')+'</div>':'<div>Network <b>'+w.ip+'</b></div><div>Signal <b>'+w.rssi_dbm+' dBm</b></div>';
-$('meta').innerHTML='<div>Firmware <b>'+esc(d.firmware.replace('Wi-Fi bridge ',''))+'</b></div><div>Up <b>'+dur(d.uptime_s)+'</b></div>'+link;
+const ct=d.chip_temp,chip=ct?'<div>Chip temperature <b'+(ct.celsius!==null&&ct.celsius>=ct.warn_c?' class="bad"':'')+'>'+(ct.celsius===null?'no reading':Math.round(ct.celsius)+' °C')+'</b></div>':'';
+$('meta').innerHTML='<div>Firmware <b>'+esc(d.firmware.replace('Wi-Fi bridge ',''))+'</b></div><div>Up <b>'+dur(d.uptime_s)+'</b></div>'+chip+link;
 if(!built)build(d.ports);
 d.ports.forEach((p,n)=>{const on=p.last_data_ms_ago!==null&&p.last_data_ms_ago<5000,moved=last[n]!==undefined&&last[n]!==p.bytes_from_device;last[n]=p.bytes_from_device;
 $('d'+n).className=(on?'on':'')+(moved?' pulse':'');$('s'+n).textContent=ago(p.last_data_ms_ago);
@@ -194,6 +196,7 @@ static String statusJson() {
     }
     out += "]";
     supplyStatusJson(out);  // Project: supply voltage (step 3d)
+    chipTempJson(out);      // Project: chip temperature (step 3e)
     out += "}";
     return out;
 }
@@ -311,6 +314,7 @@ static void statusTask(void*) {
         settingsTrialCheck();
         logTick();
         supplyTick();
+        chipTempTick();
         vTaskDelay(pdMS_TO_TICKS(5));
     }
 }

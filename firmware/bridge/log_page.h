@@ -74,11 +74,11 @@ static void logTick() {
     if (now - lastMemory >= LOG_MEMORY_MS) {
         lastMemory = now;
         if (WiFi.getMode() & WIFI_MODE_AP)
-            LOGD(LOG_SYSTEM, "Memory free %lu kB, lowest %lu kB; hotspot, %u phone(s)", (unsigned long)ESP.getFreeHeap() / 1024,
-                 (unsigned long)ESP.getMinFreeHeap() / 1024, WiFi.softAPgetStationNum());
+            LOGD(LOG_SYSTEM, "Memory free %lu kB, lowest %lu kB; hotspot, %u phone(s)%s", (unsigned long)ESP.getFreeHeap() / 1024,
+                 (unsigned long)ESP.getMinFreeHeap() / 1024, WiFi.softAPgetStationNum(), chipTempText());
         else
-            LOGD(LOG_SYSTEM, "Memory free %lu kB, lowest %lu kB; Wi-Fi signal %d dBm", (unsigned long)ESP.getFreeHeap() / 1024,
-                 (unsigned long)ESP.getMinFreeHeap() / 1024, (int)WiFi.RSSI());
+            LOGD(LOG_SYSTEM, "Memory free %lu kB, lowest %lu kB; Wi-Fi signal %d dBm%s", (unsigned long)ESP.getFreeHeap() / 1024,
+                 (unsigned long)ESP.getMinFreeHeap() / 1024, (int)WiFi.RSSI(), chipTempText());
     }
 }
 
