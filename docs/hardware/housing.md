@@ -468,8 +468,8 @@ Follow the [illustrated installation sequence](wire-installation.md) when fittin
 | Boards | GND-J → MAX490 GND | Black | 22 AWG PTFE | Floor / MAX490 header | 30.1 | Measure | Fit | Calculate |
 | Signals | DE-9 1 → mod1 L3 | Brown | 26 AWG PTFE | Centre bus | 37.8 | Measure | Fit | Calculate |
 | Signals | DE-9 2 → mod2 L3 | Beige | 26 AWG PTFE | Centre bus | 51.9 | Measure | Fit | Calculate |
-| Signals | mod1 R1 → ESP32 J2-7 | Light blue | 26 AWG PTFE | J2 | 35.0 | Measure | Fit | Calculate |
-| Signals | mod2 R1 → ESP32 J2-10 | Mint green | 26 AWG PTFE | J2 | 16.4 | Measure | Fit | Calculate |
+| Signals | mod1 R1 → ESP32 J2-7 | Light blue | 26 AWG PTFE | J2 | 36.0 | Measure | Fit | Calculate |
+| Signals | mod2 R1 → ESP32 J2-10 | Mint green | 26 AWG PTFE | J2 | 18.3 | Measure | Fit | Calculate |
 | Signals | ESP32 J3-11 → MAX490 DI | Turquoise | 26 AWG PTFE | Centre bus / header | 51.4 | Measure | Fit | Calculate |
 | Signals | MAX490 RO → R-B1 splice | Blue | 26 AWG PTFE | Centre bus / header | 40.5 | Measure | Fit | Calculate |
 | Signals | DE-9 8 → MAX490 Y | White | 26 AWG PTFE | Wall, pair 8/9 | 15.4 | Measure | Fit | Measure after twisting |

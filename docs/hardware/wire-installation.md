@@ -48,12 +48,9 @@ Start with the [loose-board bench checks](wiring.md#bring-up) and disconnect pow
 
 ## 3. 🧩 Wire the RS-232 boards
 
-![Pink 3.3 V and black return links across the two module boards, with light blue and mint receive wires going to the ESP32 J2 header](../images/wire-installation/03-rs232-board-wires.png)
+![Pink 3.3 V and black return links across the two module boards, light blue and mint receive wires from the R1 pads to the ESP32 J2 header, and the module ground from mod2 R4 to ESP32 J3-1](../images/wire-installation/03-rs232-board-wires.png)
 
-Solder the module pads on the bench. In this view, Zander **mod1** is on the left and FLARM **mod2** is on the right. Leave both **R2** pads open.
-
-> [!IMPORTANT]
-> The Fusion pictures still show the light blue and mint receive wires on **R2**. Solder them to **R1**, the pad whose arrow points off the board, as in the table.
+Solder the module pads on the bench. In this view, Zander **mod1** is on the left and FLARM **mod2** is on the right. Leave both **R2** pads open; R1 is the pad whose arrow points off the board.
 
 | Colour | Connection |
 | --- | --- |
