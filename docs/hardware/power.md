@@ -7,7 +7,7 @@
 How the bridge is supplied and grounded, where ground loops close, which currents each wire carries, and what a broken wire does.
 
 > [!NOTE]
-> **Status:** bench design. Separate central 5 V/GND distribution, the ESP32-fed RS-232 supply chain and the supply-voltage divider are selected; all currents are datasheet values or estimates, nothing is measured yet. Open checks: [bench hardware](../project/open-items.md#bench-hardware).
+> **Status:** bench design. Separate central 5 V/GND distribution, the ESP32-fed RS-232 supply chain and the supply-voltage divider are selected; the bench bridge is built and its idle input power at 12 V is read from the supply (S141); all other currents are datasheet values or estimates. Open checks: [bench hardware](../project/open-items.md#bench-hardware).
 
 📑 **On this page:** <kbd>[1 · 🔋 Supply path](#supply)</kbd> <kbd>[2 · ⏚ Grounding and loops](#ground)</kbd> <kbd>[3 · 📊 Current assumptions](#currents)</kbd> <kbd>[4 · ✂️ Wire-break cases](#wire-breaks)</kbd> <kbd>[5 · 🛡️ Protection](#protection)</kbd> <kbd>[6 · 🔎 Supply voltage sense](#voltage-sense)</kbd>
 
@@ -79,7 +79,7 @@ Datasheet values carry their source ID; everything else is an estimate until the
 
 | Branch | Wire | Normal | Peak | Worst single break | Basis |
 | --- | --- | --- | --- | --- | --- |
-| Bridge +12 V feed (F1, harness, XT30, UBEC input) | About 22 AWG (owner) | ~0.15 A | Switch-on inrush, not measured | Short circuit, limited by F1 | Estimate |
+| Bridge +12 V feed (F1, harness, XT30, UBEC input) | About 22 AWG (owner) | 58–83 mA (0.7–1.0 W at 12 V, idle, Wi-Fi joined, no instruments) | Switch-on inrush, not measured | Short circuit, limited by F1 | Supply reading, S141 |
 | UBEC 5 V → ESP32 | Board header | ~250 mA | ~500 mA (Wi-Fi) | — | Typical datasheet values |
 | UBEC 5 V → MAX490 board | Board header | ~30 mA | — | — | Typical datasheet value |
 | ESP32 3.3 V → RS-232 modules and Becker DI pull-up | Board header | A few mA | — | — | Estimate |
@@ -148,7 +148,7 @@ Size F1 using the measured running current and switch-on inrush, the wire's allo
 | R-V1 100 kΩ | XT30 + (net `12V-IN`, after F1) | Sense wire (net `V_SENSE`) | At the XT30 + solder cup or on the UBEC red input lead right behind it, in heat-shrink |
 | Sense wire | R-V1 | GPIO34 ([J2-5](modules.md#esp32-pinout)) | 26 AWG grey, along the side wall at pin-top height ([installation](wire-installation.md#rs232-boards)) |
 | R-V2 10 kΩ | J2-5 | J2-14 (GND-J) | Beside the J2 header on the side-wall side, at pin-top height |
-| C-V 100 nF | J2-5 | J2-14 | In parallel with R-V2; ceramic disc (104) flat against the side wall below it |
+| C-V 100 nF | J2-5 | J2-14 | In parallel with R-V2; ceramic disc (104) flat against the side wall below it. Not fitted on the bench bridge (S141): the firmware's 1 s average is the only filter, and [bench step 13](wiring.md#bring-up) shows whether that is enough |
 
 GPIO34 is on ADC1, which works while Wi-Fi is on; ADC2 is used by Wi-Fi (S121). It is an input-only pin with no internal pull resistor.
 

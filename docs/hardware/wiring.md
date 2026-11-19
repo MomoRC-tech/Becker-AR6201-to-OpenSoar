@@ -150,7 +150,7 @@ R-B1 sits at the J3-12 end of the RO wire and R-D bridges J3-11 to the RS-232-mo
 ESP32 TX at 3.3 V drives DI directly (the MAX490 needs 2.0 V for a logic high). The pull-up R-D holds DI idle while GPIO17 is not driven (reset, boot, flashing), so no random bits reach the radio before the UART is set up. The firmware sets no internal pull-up on GPIO17 (S140), and none could act before the firmware runs.
 
 > [!TIP]
-> **R-D: optional, recommended.** Fit it unless there is a reason not to.
+> **R-D: optional, recommended.** Fit it unless there is a reason not to. Not fitted on the bench bridge (S141); [bench step 5](#bring-up) shows whether DI stays high without it.
 
 | RS-422 board | R-D |
 | --- | --- |

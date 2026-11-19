@@ -28,7 +28,7 @@ Start with the delivered boards and power supply, with all instruments disconnec
 | 3 | RS-232 modules | Continuity of both modules against the [pad map](../hardware/modules.md#rs232-module), and R1 as the TTL output ([bench step 4](../hardware/wiring.md#bring-up)); IC marking | Bench check |
 | 4 | ESP32 board | Module marking and header positions match the DevKitC V4 reference | Visual check |
 | 5 | UBEC | 5 V output with and without load; match the physical input/output polarity and XT30 cups to the labelled routing endpoints; fit in the enclosure | Bench measurement |
-| 6 | Current and fuse | Running current and switch-on inrush at 12 V; select fuse rating and speed using these measurements and the wire protection requirements | Bench measurement and owner selection |
+| 6 | Current and fuse | Running current under load (idle: 0.7–1.0 W at 12 V, S141) and switch-on inrush at 12 V; select fuse rating and speed using these measurements and the wire protection requirements | Bench measurement and owner selection |
 | 8 | Device connectors | Photos of the installed connectors (from Tom); device models are [installed-equipment items 1–3](#installed-equipment) | Confirms the pin views in the wiring tables |
 | 9 | Becker J1 | Installed J1 revision, moulded pin numbers and which pins are already used | Confirms the J1 pins and the J1-21 ground |
 | 10 | Radio noise | No audible noise or squelch opening caused by the bridge | Check in the aircraft |
@@ -85,7 +85,7 @@ Checks on the [housing v16 bench prototype](../hardware/housing.md) as built, an
 | 24 | Harness fit | Fit the [revised harness](../hardware/housing.md#internal-routing) around the raised floor, shifted connectors and new guides. Confirm usable factory lead lengths, bend radii and service slack before cutting | Bench fit |
 | 25 | DE-9 nut stops | Measure usable jackpost stud length and nut thickness. Check thread engagement through the seated flange and front wall, then fit-print the gusseted stops and test whether they hold the nuts while tightening | Owner measurement and fit-print |
 | 26 | Integral ESP32 holder and front corners | Check the four feet, bridges and removal of the [breakaway platform](../hardware/housing.md#layout) on a test print. Check board insertion, spring retention, and that the revised RS-232 clamp foot sits flat on the shield. With the front screw fitted, check shield preload, rocking, rotation and clamp removal with wires connected. Inspect both front insert seats and fit the heat-set inserts and cover | Physical fit checks |
-| 28 | Supply voltage sense | Fit R-V1 at the XT30 + cup and R-V2 and C-V beside the J2 header as in the Fusion assembly and [picture](../hardware/wire-installation.md#supply-sense-picture) (S128–S130): lead bends, sleeving, the grey wire under the hood, and the 104 disc's diameter, thickness and lead pitch against the Ø5 × 3 mm envelope | Owner / physical fit test |
+| 28 | Supply voltage sense | Fitted in the bench bridge without C-V (S141). Check R-V1 at the XT30 + cup and R-V2 beside the J2 header as in the Fusion assembly and [picture](../hardware/wire-installation.md#supply-sense-picture) (S128): lead bends, sleeving and the grey wire under the hood | Owner / physical fit test |
 
 ### 2.4 Measurements
 

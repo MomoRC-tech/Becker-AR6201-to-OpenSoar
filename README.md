@@ -48,7 +48,7 @@ More: [status page](firmware/bridge/README.md#status-page), [settings page](firm
 ## 2. 🚦 Project status
 
 > [!NOTE]
-> **Status:** the housing design is accepted for the bench prototype. Physical fit, wiring and electrical checks are pending.
+> **Status:** the bench bridge is built in the accepted housing design and powers up at 12 V. The bench checks are pending.
 > **Current focus:** 🔧 WP3 wiring and bench validation, with the 💻 [bridge firmware](docs/project/roadmap.md#firmware-plan) in parallel. Driver work waits until WP3 is complete.
 
 | Stage | Status |
@@ -62,7 +62,7 @@ More: [status page](firmware/bridge/README.md#status-page), [settings page](firm
 | 📻 OpenSoar driver changes | ⏸️ On hold until WP3 is complete |
 | ✈️ Aircraft integration | ⬜ Later |
 
-**Next step:** verify the bench supply and delivered parts using the [bring-up checklist](docs/hardware/wiring.md#bring-up). See [WP3 Hardware](docs/project/roadmap.md#work-packages) for the full work package.
+**Next step:** run the [bench checks](docs/hardware/wiring.md#bring-up) on the built bridge. See [WP3 Hardware](docs/project/roadmap.md#work-packages) for the full work package.
 
 ---
 
