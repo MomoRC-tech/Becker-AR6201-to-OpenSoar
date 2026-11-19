@@ -72,8 +72,8 @@ static void chipTempTick() {
         first = false;
     }
     if (c >= CHIP_TEMP_WARN_C) {
-        if (highSince == 0) highSince = now | 1u;
-        if (!highLogged && now - highSince >= CHIP_TEMP_WARN_MS) {
+        if (highSince == 0) highSince = now | 1u;  // can be now + 1: compare from the next reading on
+        else if (!highLogged && now - highSince >= CHIP_TEMP_WARN_MS) {
             LOGW(LOG_SYSTEM, "Chip temperature high: %.0f \xC2\xB0" "C for %lu s; the bridge keeps running", c,
                  CHIP_TEMP_WARN_MS / 1000);
             highLogged = true;

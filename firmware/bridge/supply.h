@@ -194,8 +194,8 @@ static void supplySecond(float volts, float raw, bool ok) {
         first = false;
     }
     if (volts < SUPPLY_LOW_V) {
-        if (lowSince == 0) lowSince = now | 1u;
-        if (!lowLogged && now - lowSince >= SUPPLY_LOW_MS) {
+        if (lowSince == 0) lowSince = now | 1u;  // can be now + 1: compare from the next reading on
+        else if (!lowLogged && now - lowSince >= SUPPLY_LOW_MS) {
             LOGW(LOG_SYSTEM, "Supply voltage low: %.2f V for %lu s", volts, SUPPLY_LOW_MS / 1000);
             lowLogged = true;
         }

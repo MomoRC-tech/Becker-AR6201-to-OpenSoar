@@ -53,7 +53,7 @@
                              // incoming bytes while the loop waits on a UART write
 
 #ifdef ESP32
-#define VERSION "0.5.4-ESP32"     // Project: own version, 0.<plan step> until bench acceptance; 0.4.1 = device profiles (WP9), .2 = web log (step 3c), .3/.4 = log clock time; 0.5 = apps never hold up the bridge; 0.5.1 = supply voltage (step 3d); 0.5.2 = chip temperature (step 3e); 0.5.3 = lifetime record (step 3f); 0.5.4 = saved log (step 3g)
+#define VERSION "0.5.5-ESP32"    // Project: own version, 0.<plan step> until bench acceptance; 0.4.1 = device profiles (WP9), .2 = web log (step 3c), .3/.4 = log clock time; 0.5 = apps never hold up the bridge; 0.5.1 = supply voltage (step 3d); 0.5.2 = chip temperature (step 3e); 0.5.3 = lifetime record (step 3f); 0.5.4 = saved log (step 3g); 0.5.5 = warning timers fixed
 #elif defined(ESP8266)
 #define VERSION "0.3b.1-ESP8266"
 #endif
