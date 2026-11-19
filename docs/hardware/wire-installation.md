@@ -13,6 +13,8 @@ Install the bridge harness in housing v16, using the pictures to find each group
 
 Start with the [loose-board bench checks](wiring.md#bring-up) and disconnect power before assembling. Use the [cutting table](housing.md#harness-cutting) to fit each conductor and leave enough slack to lift the carrier and clamp. The Fusion views show the relevant wires in their final position, with obstructing parts hidden where needed. The connector wall is on the left in each Fusion view. Arrowheads point to the labelled pin, pad, joint or wire.
 
+🖨️ **Printable version:** [bridge wiring instructions (PDF)](../../output/pdf/bridge-wiring-instructions.pdf), built from this page and the [bench checks](wiring.md#bring-up). After changing either page, commit it, then run `python tools/wiring_pdf.py` and commit the PDF.
+
 ---
 
 <a id="connectors"></a>
