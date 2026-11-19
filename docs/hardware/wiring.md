@@ -149,6 +149,15 @@ R-B1 sits at the J3-12 end of the RO wire and R-D bridges J3-11 to the RS-232-mo
 
 ESP32 TX at 3.3 V drives DI directly (the MAX490 needs 2.0 V for a logic high). The pull-up R-D holds DI idle while the ESP32 boots, so no random bits reach the radio before the UART is set up.
 
+Whether R-D is needed depends on the RS-422 board:
+
+| RS-422 board | R-D |
+| --- | --- |
+| No pull-up on DI | Required: DI is a CMOS input and floats while GPIO17 is not driven (reset, boot, flashing) |
+| Own pull-up on DI | Redundant; fitting it does no harm |
+
+The selected board has a resistor and LED from each header pin to VCC (S137). On the DI pin, that path pulls DI up to roughly 5 V minus the LED drop, which is a valid high. R-D stays in the design until [bench step 5](#bring-up) confirms that DI stays high with the ESP32 held in reset.
+
 > [!WARNING]
 > The MAX490 runs at 5 V, so RO idles near 5 V — above the ESP32's 3.6 V input limit (S34). Never connect RO directly to GPIO16.
 
@@ -178,7 +187,7 @@ Keep all instruments disconnected during bench bring-up. Start with the supply a
 - [ ] **2.** Match the ESP32 board's headers and module marking to the [pinout](modules.md#esp32-pinout). Switch off the bench supply before connecting the verified ESP32, then measure the UBEC output under load. Keep USB disconnected while the UBEC powers the ESP32 ([power rules](power.md#supply)).
 - [x] **3.** Flash the [OTA loader](../design/architecture.md#adr-05) over USB with its board setting, the UBEC and all instruments unplugged. First run `esptool flash-id` and expect 4 MB flash. Then power the ESP32 from the UBEC with USB unplugged: check that it joins the bench network and accepts one OTA upload; switch the network off (or upload the [fallback test build](../../firmware/ota-loader/README.md#variants)), restart, and check that its hotspot appears and accepts a client and one OTA upload. For M3 the owner accepted a phone join in place of the hotspot upload, which the bench PC cannot reach ([milestones](../project/roadmap.md#milestones)).
 - [ ] **4.** With both RS-232 boards unpowered, check continuity from L2 to R3 and from L1 to R4 on each board. Verify the rest of the [pad map](modules.md#rs232-module) before soldering the harness. Then feed each board 3.3 V on R3 and GND on R4: with L3 open, R1 reads about 3.3 V; bridging L3 to L2 pulls R1 to about 0 V, while R2 does not follow. Do not touch L4, it drives about ±5.5 V.
-- [ ] **5.** On the MAX490 board, identify RO and DI on the header and check the 120 Ω termination.
+- [ ] **5.** On the MAX490 board, identify RO and DI on the header (continuity to chip pin 2 = RO, pin 3 = DI) and check the 120 Ω termination. Note the LED colour and resistor value on the DI pin. Then, with the board at 5 V, GPIO17 wired to DI without R-D and the ESP32 held in reset (EN to GND), check that DI reads at least 2 V and Y stays above Z. If it does, R-D is [not needed](#becker).
 - [ ] **6.** With the MAX490 powered and nothing else on A/B, drive the receiver input with a 1.5 V cell and measure GPIO16 both ways: + to A, − to B gives about 3.0 V (high); + to B, − to A gives below 0.5 V (low). Without the cell, the 120 Ω termination holds A and B at the same level, so GPIO16 has no defined state.
 - [ ] **7.** Measure the bridge's current and switch-on inrush at 12 V, and update the [current assumptions](power.md#currents).
 - [ ] **8.** With power off and the instruments disconnected, use the moulded contact numbers to check each loose harness conductor end to end through the mated DE-9 against the [pinout](#de9-pinout). Check for unintended connections between signals and from signals to GND-J or the shell. Allow for the MAX490 receive termination and the three ground contacts that share GND-J.
