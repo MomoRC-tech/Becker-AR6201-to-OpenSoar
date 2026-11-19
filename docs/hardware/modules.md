@@ -73,11 +73,11 @@ GPIO16/17 are free only on WROOM boards (WROVER boards use them for PSRAM). D0�
 
 ## 3. 🔁 RS-232 modules (Zander, FLARM)
 
-Hailege H-1-0290: a MAX3232 RS-232 ↔ 3.3 V converter with edge pads. The pad map follows the seller image and the matching Sunrom layout (S26, S27). Verify it during [bench bring-up](wiring.md#bring-up).
+Hailege H-1-0290: a MAX3232 RS-232 ↔ 3.3 V converter with edge pads. The pad map follows the board marks: +/− for supply and ground, arrows for signal direction; the TTL output is the pad whose arrow points off the board (S26). Verify it during [bench bring-up](wiring.md#bring-up).
 
 | Chip side | Pad map |
 | --- | --- |
-| <img src="../images/hailege-h-1-0290-board.svg" width="240" alt="Hailege H-1-0290 board, chip side"> | <img src="../images/pinout-hailege.svg" width="420" alt="Hailege chip-side pad map. L1 ground, L2 supply, L3 RS-232 input, L4 RS-232 output. R1 TTL input, R2 TTL output, R3 supply, R4 ground."> |
+| <img src="../images/hailege-h-1-0290-board.svg" width="240" alt="Hailege H-1-0290 board, chip side"> | <img src="../images/pinout-hailege.svg" width="420" alt="Hailege chip-side pad map. L1 ground, L2 supply, L3 RS-232 input, L4 RS-232 output. R1 TTL output, R2 TTL input, R3 supply, R4 ground."> |
 
 > [!IMPORTANT]
 > The RS-232 and TTL sides share one 3.3 V net (L2 ↔ R3) and one ground net (L1 ↔ R4). Use R3 and R4 on each board for the [ESP32-fed daisy chain](power.md#supply). Mod2 L2 feeds only R-D; leave L1 and the mod1 L2 unwired.

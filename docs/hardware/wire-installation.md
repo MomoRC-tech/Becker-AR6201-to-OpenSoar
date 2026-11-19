@@ -50,14 +50,17 @@ Start with the [loose-board bench checks](wiring.md#bring-up) and disconnect pow
 
 ![Pink 3.3 V and black return links across the two module boards, with light blue and mint receive wires going to the ESP32 J2 header](../images/wire-installation/03-rs232-board-wires.png)
 
-Solder the module pads on the bench. In this view, Zander **mod1** is on the left and FLARM **mod2** is on the right. Leave both **R1** pads open.
+Solder the module pads on the bench. In this view, Zander **mod1** is on the left and FLARM **mod2** is on the right. Leave both **R2** pads open.
+
+> [!IMPORTANT]
+> The Fusion pictures still show the light blue and mint receive wires on **R2**. Solder them to **R1**, the pad whose arrow points off the board, as in the table.
 
 | Colour | Connection |
 | --- | --- |
 | Pink | ESP32 J2-1 → mod2 R3 → mod1 R3 |
 | Black | ESP32 J3-1 → mod2 R4 → mod1 R4 |
-| Light blue | mod1 R2 → ESP32 J2-7 (GPIO32) |
-| Mint green | mod2 R2 → ESP32 J2-10 (GPIO26) |
+| Light blue | mod1 R1 → ESP32 J2-7 (GPIO32) |
+| Mint green | mod2 R1 → ESP32 J2-10 (GPIO26) |
 | Grey | R-V1 at the XT30 → ESP32 J2-5 (GPIO34) |
 
 Prepare the L3 ends in step 4 before seating the modules. Prepare the **mod2 L2** end of R-D on the bench while the pad is accessible. At the ESP32, **J3-1** takes only the mod2 return. **J2-14** takes the floor return from step 2 and the ground leads of R-V2 and C-V. **J2-19** takes the orange floor feed.

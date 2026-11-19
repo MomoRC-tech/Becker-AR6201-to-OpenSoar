@@ -178,7 +178,7 @@ s.box(300, 145, 170, 56, "RS-232-mod2", ["MAX3232, 3.3 V"])
 s.box(300, 240, 170, 66, "RS-422 board", ["MAX490, 5 V"])
 s.box(660, 40, 130, 276, "ESP32", ["Wi-Fi bridge"])
 s.box(870, 148, 130, 56, "OpenSoar", ["Android"])
-for y, a, b in ((78, "TX → L3", "R2 → GPIO32 · UART0"), (173, "pin 5 TX → L3", "R2 → GPIO26 · UART1")):
+for y, a, b in ((78, "TX → L3", "R1 → GPIO32 · UART0"), (173, "pin 5 TX → L3", "R1 → GPIO26 · UART1")):
     s.line([(170, y), (300, y)], "data"); s.arrow(235, y, "right", "data")
     s.line([(470, y), (660, y)], "data"); s.arrow(565, y, "right", "data")
     s.tag(235, y - 8, a, "data", bold=False); s.tag(565, y - 8, b, "data", bold=False)
@@ -202,12 +202,12 @@ s.save("wiring-overview.svg")
 
 # -------------------------------------------------------------- RS-232 links
 def rs232_device(name,dev,tx_pin,gpio,source,fname):
-    s=Svg(930,365,f"{dev} through {name}",f"Instrument TX to L3, R2 to {gpio}; instrument ground to GND-J through the DE-9 ground bridge. Module R3/R4 supplied through {source}. L1 has no extra ground wire.")
+    s=Svg(930,365,f"{dev} through {name}",f"Instrument TX to L3, R1 to {gpio}; instrument ground to GND-J through the DE-9 ground bridge. Module R3/R4 supplied through {source}. L1 has no extra ground wire.")
     s.box(20,40,170,130,dev,["existing harness / DE-9"])
     s.box(330,40,240,130,name,["RS-232 / 3.3 V TTL"])
     s.box(720,40,190,90,"ESP32",[gpio])
     s.line([(190,65),(330,65)],"data");s.arrow(260,65,"right","data");s.tag(260,57,f"{tx_pin} → L3","data")
-    s.line([(570,65),(720,65)],"data");s.arrow(690,65,"right","data");s.tag(645,57,f"R2 → {gpio}","data")
+    s.line([(570,65),(720,65)],"data");s.arrow(690,65,"right","data");s.tag(645,57,f"R1 → {gpio}","data")
     s.box(330,210,240,65,"Central GND-J",["via DE-9 ground bridge"])
     s.line([(190,140),(250,140),(250,242),(330,242)],"sgnd");s.tag(245,132,"signal GND","sgnd",anchor="end",size=11)
     s.box(720,210,190,80,source,["3V3 / R3","GND / R4"])

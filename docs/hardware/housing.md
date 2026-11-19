@@ -416,7 +416,7 @@ Use **Cable harness - Wire Generator** in the [v16 enclosure assembly](../../cad
 | --- | --- |
 | Centre-axis signal bus | DE-9 pins 1 and 2 to the RS-232 L3 pads. RO and DI cross at the MAX490 header station. Check the MAX490 label orientation at the [bench](wiring.md#becker) |
 | Connector-wall lane | DE-9 4/5 to MAX490 A/B and 8/9 to Y/Z. The CAD shows each conductor envelope. Keep the pairs twisted up to the terminations |
-| J2-side lane | Module R2 outputs to J2-7 (GPIO32) and J2-10 (GPIO26). Route the GPIO32 wire around the J2-14 ground joint |
+| J2-side lane | Module R1 outputs to J2-7 (GPIO32) and J2-10 (GPIO26). Route the GPIO32 wire around the J2-14 ground joint |
 | Local RS-232 supply and ground | 3.3 V from J2-1 to mod2 R3 then mod1 R3. Ground from J3-1, across the ESP32, to mod2 R4 then mod1 R4. Assemble the mod2 R3 feed and link on the bench |
 | Pin-top resistor connections | R-B1 at the RO splice, R-B2 across J3-12 and J3-7, and R-D from J3-11 to mod2 L2. R-V2 and C-V from J2-5 to J2-14 beside the header, side-wall side (S128) |
 | Supply voltage sense | Grey wire from R-V1 at the XT30 + cup along the side wall at pin-top height (Y 16.8, Z −26.5), above the J2-19 and J2-14 wires, down to the J2-5 pin top (S128) |
@@ -468,8 +468,8 @@ Follow the [illustrated installation sequence](wire-installation.md) when fittin
 | Boards | GND-J → MAX490 GND | Black | 22 AWG PTFE | Floor / MAX490 header | 30.1 | Measure | Fit | Calculate |
 | Signals | DE-9 1 → mod1 L3 | Brown | 26 AWG PTFE | Centre bus | 37.8 | Measure | Fit | Calculate |
 | Signals | DE-9 2 → mod2 L3 | Beige | 26 AWG PTFE | Centre bus | 51.9 | Measure | Fit | Calculate |
-| Signals | mod1 R2 → ESP32 J2-7 | Light blue | 26 AWG PTFE | J2 | 35.0 | Measure | Fit | Calculate |
-| Signals | mod2 R2 → ESP32 J2-10 | Mint green | 26 AWG PTFE | J2 | 16.4 | Measure | Fit | Calculate |
+| Signals | mod1 R1 → ESP32 J2-7 | Light blue | 26 AWG PTFE | J2 | 35.0 | Measure | Fit | Calculate |
+| Signals | mod2 R1 → ESP32 J2-10 | Mint green | 26 AWG PTFE | J2 | 16.4 | Measure | Fit | Calculate |
 | Signals | ESP32 J3-11 → MAX490 DI | Turquoise | 26 AWG PTFE | Centre bus / header | 51.4 | Measure | Fit | Calculate |
 | Signals | MAX490 RO → R-B1 splice | Blue | 26 AWG PTFE | Centre bus / header | 40.5 | Measure | Fit | Calculate |
 | Signals | DE-9 8 → MAX490 Y | White | 26 AWG PTFE | Wall, pair 8/9 | 15.4 | Measure | Fit | Measure after twisting |
