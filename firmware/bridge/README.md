@@ -1,6 +1,6 @@
 # Bridge firmware
 
-Wi-Fi bridge firmware for Zander, FLARM and Becker, based on ESP-Serial-Bridge ([ADR-02](../../docs/design/architecture.md#adr-02)). The standalone ESP32 runs step 4 firmware with single-client radio ownership (S114) and the [web log](#web-log) (S116). Firmware 0.5.1 adds the [supply voltage](#supply-voltage) (step 3d), 0.5.2 the [chip temperature](#chip-temperature) (step 3e), 0.5.3 the [lifetime record](#lifetime-record) (step 3f), 0.5.4 the [saved log](#saved-log) (step 3g). 0.5.5 starts the low-voltage and chip-temperature warning timers correctly ([review](../../docs/research/reviews/2026-11-19-firmware-0.5.4-review.md), S138); built, not yet uploaded (S139). See the [firmware plan](../../docs/project/roadmap.md#firmware-plan) for the remaining wired checks.
+Wi-Fi bridge firmware for Zander, FLARM and Becker, based on ESP-Serial-Bridge ([ADR-02](../../docs/design/architecture.md#adr-02)). The standalone ESP32 runs step 4 firmware with single-client radio ownership (S114) and the [web log](#web-log) (S116). Firmware 0.5.1 adds the [supply voltage](#supply-voltage) (step 3d), 0.5.2 the [chip temperature](#chip-temperature) (step 3e), 0.5.3 the [lifetime record](#lifetime-record) (step 3f), 0.5.4 the [saved log](#saved-log) (step 3g). 0.5.5 starts the low-voltage and chip-temperature warning timers correctly ([review](../../docs/research/reviews/2026-11-19-firmware-0.5.4-review.md), S138); 0.5.6 raises the chip-temperature warning to 100 °C. The assembled bench bridge runs 0.5.6 (S142). See the [firmware plan](../../docs/project/roadmap.md#firmware-plan) for the remaining wired checks.
 
 ## Origin and license
 
@@ -30,7 +30,7 @@ Set in `config.h`; everything else is upstream.
 
 | Setting | Value |
 | --- | --- |
-| Wi-Fi start-up | `MODE_STA_AP`: join the network in `credentials.h` for 15 s, otherwise open hotspot `WiFi-BridgeTom` at 10.10.10.10. The upstream modes `MODE_STA` and `MODE_AP` stay selectable |
+| Wi-Fi start-up | `MODE_STA_AP`: join the network in `credentials.h` for 15 s, otherwise open hotspot `WiFi-BridgeTom` at 10.10.10.10 and stay there until the next restart. At about −90 dBm the join can miss the 15 s (S142); raise the join time on the settings page for a bridge far from the router. The upstream modes `MODE_STA` and `MODE_AP` stay selectable |
 | Hostname | `wifi-bridgetom`, for mDNS and OTA, as the OTA loader |
 | OTA | ArduinoOTA with the password from `credentials.h`, in both Wi-Fi modes |
 | Log output | `DEBUG` off: UART0 serves the Zander, so nothing is printed there. `WEB_LOG` shows the log lines and the ESP32 system messages on the [web log](#web-log); the build stops if both are on |
@@ -180,9 +180,9 @@ The ESP32 reads its own internal temperature sensor ([plan](../../docs/project/r
 | Reading | Once per second, shown as the mean of the last 10 s |
 | Status page | Header line *Chip temperature*, red at or above the warning level; *no reading* when the chip's sensor does not work (it then returns 128 °F at every read) |
 | `/api/status` | `chip_temp`: `celsius` (one decimal, `null` = no reading) and `warn_c` |
-| Web log | Source System: the first reading after start; a warning after 60 s at or above 80 °C; Info when it is back below 75 °C. The Debug memory line every 60 s ends with the chip temperature. Without a working sensor, one Info line 30 s after start |
+| Web log | Source System: the first reading after start; a warning after 60 s at or above 100 °C; Info when it is back below 95 °C. The Debug memory line every 60 s ends with the chip temperature. Without a working sensor, one Info line 30 s after start |
 | No shutdown | The bridge keeps forwarding at any temperature. Losing FLARM and radio data in flight is worse than running warm |
-| Warning level | 80 °C is provisional; on the bench, heavy Wi-Fi traffic alone lifted the reading from about 55 to above 80 °C at room temperature (S134). Set it from the [heat check](../../docs/project/open-items.md#housing), where the chip reading is logged next to the measured temperatures |
+| Warning level | 100 °C, set by the owner to cover the sensor's offset: the assembled bridge read 72–80 °C open on a desk at 23 °C room temperature while the ESP32 stayed barely warm to the touch at 0.8 W input (S142) |
 
 <a id="lifetime-record"></a>
 

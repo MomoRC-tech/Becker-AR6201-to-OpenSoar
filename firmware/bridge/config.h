@@ -53,7 +53,7 @@
                              // incoming bytes while the loop waits on a UART write
 
 #ifdef ESP32
-#define VERSION "0.5.5-ESP32"    // Project: own version, 0.<plan step> until bench acceptance; 0.4.1 = device profiles (WP9), .2 = web log (step 3c), .3/.4 = log clock time; 0.5 = apps never hold up the bridge; 0.5.1 = supply voltage (step 3d); 0.5.2 = chip temperature (step 3e); 0.5.3 = lifetime record (step 3f); 0.5.4 = saved log (step 3g); 0.5.5 = warning timers fixed
+#define VERSION "0.5.6-ESP32"    // Project: own version, 0.<plan step> until bench acceptance; 0.4.1 = device profiles (WP9), .2 = web log (step 3c), .3/.4 = log clock time; 0.5 = apps never hold up the bridge; 0.5.1 = supply voltage (step 3d); 0.5.2 = chip temperature (step 3e); 0.5.3 = lifetime record (step 3f); 0.5.4 = saved log (step 3g); 0.5.5 = warning timers fixed; 0.5.6 = chip warning at 100 degC
 #elif defined(ESP8266)
 #define VERSION "0.3b.1-ESP8266"
 #endif
@@ -114,8 +114,8 @@
 #define SUPPLY_LOW_MS 10000UL
 #define SUPPLY_HISTORY_MIN 720      // chart: one point per minute, 12 hours
 /*************************  Chip temperature (Project, step 3e) ******/
-#define CHIP_TEMP_WARN_C 80         // web log warning after CHIP_TEMP_WARN_MS at or above this (chip, not air; provisional)
-#define CHIP_TEMP_OK_C 75           // and Info when it is back below this
+#define CHIP_TEMP_WARN_C 100        // web log warning after CHIP_TEMP_WARN_MS at or above this (chip, not air); owner: covers the sensor offset
+#define CHIP_TEMP_OK_C 95           // and Info when it is back below this
 #define CHIP_TEMP_WARN_MS 60000UL
 
 /**************************  DO NOT EDIT BELOW HERE **************************/
