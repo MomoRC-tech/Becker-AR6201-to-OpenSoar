@@ -94,13 +94,13 @@ View from the component side, with the TTL header on the right and the screw ter
 
 | Component side | Pin map |
 | --- | --- |
-| <img src="../images/rs422-to-ttl-board.svg" width="320" alt="Selected blue RS422 TO TTL board, component side; TTL header at right and screw terminals at left."> | <img src="../images/pinout-rs422-to-ttl.svg" width="420" alt="RS-422 component-side pin map: right header top to bottom TXD, RXD, GND, VCC; left terminals top to bottom Y output positive, Z output negative, B input negative, A input positive. TXD/RXD are printed labels; RO/DI assignment requires the bench check."> |
+| <img src="../images/rs422-to-ttl-board.svg" width="320" alt="Selected blue RS422 TO TTL board, component side; TTL header at right and screw terminals at left."> | <img src="../images/pinout-rs422-to-ttl.svg" width="420" alt="RS-422 component-side pin map: right header top to bottom TXD, RXD, GND, VCC; left terminals top to bottom Y output positive, Z output negative, B input negative, A input positive. TXD is DI; RXD is RO (S144)."> |
 
 | Terminal | MAX490 function |
 | --- | --- |
 | A / B | Receiver input + / − (from the radio's TX2) |
 | Y / Z | Driver output + / − (to the radio's RX2) |
-| Header RXD / TXD | Receiver output (RO) and driver input (DI); assignment: [bench check](../project/open-items.md#bench-hardware). Each pin has its own resistor and LED to VCC (S137), which is a pull-up on DI |
+| Header RXD / TXD | RXD = receiver output (RO); TXD = driver input (DI), S144. Each pin has its own resistor and LED to VCC (S137), which is a pull-up on DI |
 | Header GND / VCC | Bridge ground / 5 V supply |
 
 > [!TIP]

@@ -224,7 +224,7 @@ s = Svg(980, 300, "Becker to RS-422 board to ESP32",
         "J1-21 D_GND to GND-J through the DE-9 ground bridge, without a series resistor. Cable shield to J1-11 at the radio end only. Receiver output RO through R-B1 (2.2 kΩ) to GPIO16, "
         "with R-B2 (3.3 kΩ) from GPIO16 to GND. GPIO17 to driver input DI, with R-D (10 kΩ, optional, recommended) from DI to 3V3. Board VCC and GND have separate branches from 5V-J and GND-J.")
 s.box(20, 30, 170, 190, "Becker J1", ["radio rear", "harness via DE-9"])
-s.box(330, 30, 190, 190, "MAX490 board", ["A B Y Z | RO DI", "5 V, 120 Ω term."])
+s.box(330, 30, 190, 190, "MAX490 board", ["A B Y Z | RXD TXD", "5 V, 120 Ω term."])
 s.box(810, 30, 150, 190, "ESP32", ["UART2"])
 s.line([(190, 55), (330, 55)], "data"); s.arrow(260, 55, "right", "data"); s.tag(260, 48, "2 TX2+ → A", "data", bold=False)
 s.line([(190, 80), (330, 80)], "data"); s.arrow(260, 80, "right", "data"); s.tag(260, 73, "9 TX2− → B", "data", bold=False)
@@ -236,10 +236,10 @@ s.line([(190, 205), (290, 205)], "shield"); s.tag(198, 198, "11 shield, radio en
 s.line([(810, 45), (640, 45), (640, 85)], "v33"); s.arrow(770, 45, "left", "v33"); s.tag(740, 38, "3V3 (mod2 L2)", "v33")
 s.resistor(640, 65, "v33", vertical=True); s.tag(630, 60, "R-D 10 kΩ", "v33", anchor="end"); s.tag(630, 75, "optional, recommended", "v33", anchor="end", bold=False, size=10)
 s.line([(810, 85), (520, 85)], "data"); s.arrow(570, 85, "left", "data"); s.dot(640, 85, "data")
-s.tag(745, 78, "DI ← GPIO17 (J3-11)", "data")
+s.tag(729, 78, "TXD (DI) ← GPIO17 (J3-11)", "data")
 # RO through R-B1, R-B2 to GND
 s.line([(520, 135), (810, 135)], "data"); s.arrow(790, 135, "right", "data")
-s.tag(527, 128, "RO", "data", anchor="start")
+s.tag(527, 128, "RXD", "data", anchor="start")
 s.resistor(600, 135, "data"); s.tag(600, 124, "R-B1 2.2 kΩ", "data", bold=False)
 s.dot(720, 135, "data"); s.tag(765, 128, "GPIO16 (J3-12)", "data", size=11)
 s.line([(720, 135), (720, 195)], "data"); s.resistor(720, 165, "data", vertical=True)
@@ -327,9 +327,9 @@ with io.open(os.path.join(OUT, "rs422-to-ttl-board.svg"), "w", encoding="utf-8",
 s = Svg(560, 280, "RS422 TO TTL · component side",
         "Component-side view, rotated clockwise: screw terminals at left, header at right. "
         "Left top to bottom: Y output positive, Z output negative, B input negative, A input positive. "
-        "Right top to bottom: TXD, RXD, GND, VCC. TXD/RXD are printed labels, not a verified RO/DI assignment.")
+        "Right top to bottom: TXD, RXD, GND, VCC. TXD is driver input DI; RXD is receiver output RO (S144).")
 s.text(18, 29, "RS422 TO TTL · component side", size=21, bold=True, anchor="start")
-s.text(18, 53, "Header at right · labels as printed (S34)", size=14, color=SUB, anchor="start")
+s.text(18, 53, "Header at right · ESP32 signal names (S34, S144)", size=14, color=SUB, anchor="start")
 s.text(100, 83, "RS-422 terminals", size=16, bold=True)
 s.text(460, 83, "TTL header", size=16, bold=True)
 s.groups.append('<rect x="180" y="97" width="200" height="166" rx="8" fill="#eaf1fb" stroke="#9cb1cc"/>')
@@ -337,7 +337,7 @@ s.text(280, 161, "MAX490", size=18, bold=True)
 s.text(280, 187, "RO → divider → ESP32", size=12, color=SUB)
 s.text(280, 207, "ESP32 → DI", size=12, color=SUB)
 left = [("Y", "Output +"), ("Z", "Output −"), ("B", "Input −"), ("A", "Input +")]
-right = [("TXD", "TTL signal", "data"), ("RXD", "TTL signal", "data"),
+right = [("TXD", "DI · from ESP32 TX", "data"), ("RXD", "RO · to RX divider", "data"),
          ("GND", "Ground", "gnd"), ("VCC", "5 V supply", "v5")]
 for i, ((lname, ldetail), (rname, rdetail, kind)) in enumerate(zip(left, right)):
     y = 113 + i * 44

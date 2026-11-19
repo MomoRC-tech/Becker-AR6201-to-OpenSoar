@@ -2289,7 +2289,7 @@
 					)
 				)
 			)
-			(property "Description" "Blue RS422 TO TTL board with MAX490, 5 V, 120 ohm termination. Screw terminals Y/Z/B/A, header TXD/RXD/GND/VCC. Pins named by MAX490 function; which header label (TXD/RXD) is RO and which is DI is a bench check."
+			(property "Description" "Blue RS422 TO TTL board with MAX490, 5 V, 120 ohm termination. Screw terminals Y/Z/B/A, header TXD/RXD/GND/VCC. Header TXD is DI (IC pin 3); RXD is RO (IC pin 2)."
 				(at 0 -10.16 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -2364,7 +2364,7 @@
 				(pin input line
 					(at 10.16 5.08 180)
 					(length 2.54)
-					(name "DI"
+					(name "TXD"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -2400,7 +2400,7 @@
 				(pin output line
 					(at 10.16 2.54 180)
 					(length 2.54)
-					(name "RO"
+					(name "RXD"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -2518,7 +2518,7 @@
 		)
 		(uuid "36705518-5cdc-45a4-942f-1a2dfa19491b")
 	)
-	(text "120 ohm receive termination (A/B) is on the board.\nHeader TXD/RXD: identify RO and DI\non the board (bring-up step 5)."
+	(text "ESP32 TX (GPIO17) -> TXD = DI (IC pin 3)\nESP32 RX (GPIO16) <- divider <- RXD = RO (IC pin 2)\n120 ohm receive termination on A/B."
 		(exclude_from_sim no)
 		(at 182.88 246.38 0)
 		(effects
@@ -4961,7 +4961,7 @@
 				)
 			)
 		)
-		(property "Description" "Blue RS422 TO TTL board with MAX490, 5 V, 120 ohm termination. Screw terminals Y/Z/B/A, header TXD/RXD/GND/VCC. Pins named by MAX490 function; which header label (TXD/RXD) is RO and which is DI is a bench check."
+		(property "Description" "Blue RS422 TO TTL board with MAX490, 5 V, 120 ohm termination. Screw terminals Y/Z/B/A, header TXD/RXD/GND/VCC. Header TXD is DI (IC pin 3); RXD is RO (IC pin 2)."
 			(at 190.5 218.44 0)
 			(hide yes)
 			(show_name no)

@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="560" height="280" viewBox="0 0 560 280" role="img" aria-labelledby="title desc">
 <title id="title">RS422 TO TTL · component side</title>
-<desc id="desc">Component-side view, rotated clockwise: screw terminals at left, header at right. Left top to bottom: Y output positive, Z output negative, B input negative, A input positive. Right top to bottom: TXD, RXD, GND, VCC. TXD/RXD are printed labels, not a verified RO/DI assignment.</desc>
+<desc id="desc">Component-side view, rotated clockwise: screw terminals at left, header at right. Left top to bottom: Y output positive, Z output negative, B input negative, A input positive. Right top to bottom: TXD, RXD, GND, VCC. TXD is driver input DI; RXD is receiver output RO (S144).</desc>
 <rect width="560" height="280" fill="white"/>
 <g font-family="Arial,sans-serif">
 <rect x="180" y="97" width="200" height="166" rx="8" fill="#eaf1fb" stroke="#9cb1cc"/>
@@ -13,7 +13,7 @@
 <rect x="150" y="231" width="60" height="28" rx="5" fill="#37474f"/>
 <rect x="350" y="231" width="60" height="28" rx="5" fill="#ef6c00"/>
 <text x="18" y="29" font-size="21" fill="#172b4d" text-anchor="start" font-weight="700">RS422 TO TTL · component side</text>
-<text x="18" y="53" font-size="14" fill="#475569" text-anchor="start">Header at right · labels as printed (S34)</text>
+<text x="18" y="53" font-size="14" fill="#475569" text-anchor="start">Header at right · ESP32 signal names (S34, S144)</text>
 <text x="100" y="83" font-size="16" fill="#172b4d" text-anchor="middle" font-weight="700">RS-422 terminals</text>
 <text x="460" y="83" font-size="16" fill="#172b4d" text-anchor="middle" font-weight="700">TTL header</text>
 <text x="280" y="161" font-size="18" fill="#172b4d" text-anchor="middle" font-weight="700">MAX490</text>
@@ -22,11 +22,11 @@
 <text x="180" y="119" font-size="15" fill="white" text-anchor="middle" font-weight="700">Y</text>
 <text x="380" y="119" font-size="15" fill="white" text-anchor="middle" font-weight="700">TXD</text>
 <text x="138" y="118" font-size="14" fill="#172b4d" text-anchor="end">Output +</text>
-<text x="422" y="118" font-size="14" fill="#172b4d" text-anchor="start">TTL signal</text>
+<text x="422" y="118" font-size="14" fill="#172b4d" text-anchor="start">DI · from ESP32 TX</text>
 <text x="180" y="163" font-size="15" fill="white" text-anchor="middle" font-weight="700">Z</text>
 <text x="380" y="163" font-size="15" fill="white" text-anchor="middle" font-weight="700">RXD</text>
 <text x="138" y="162" font-size="14" fill="#172b4d" text-anchor="end">Output −</text>
-<text x="422" y="162" font-size="14" fill="#172b4d" text-anchor="start">TTL signal</text>
+<text x="422" y="162" font-size="14" fill="#172b4d" text-anchor="start">RO · to RX divider</text>
 <text x="180" y="207" font-size="15" fill="white" text-anchor="middle" font-weight="700">B</text>
 <text x="380" y="207" font-size="15" fill="white" text-anchor="middle" font-weight="700">GND</text>
 <text x="138" y="206" font-size="14" fill="#172b4d" text-anchor="end">Input −</text>
