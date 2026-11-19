@@ -23,7 +23,7 @@ Start with the delivered boards and power supply, with all instruments disconnec
 
 | # | Item | What is needed | How it is closed |
 | :-: | --- | --- | --- |
-| 1 | MAX490 board | Which header pin is RO and which is DI; termination; current draw; whether the board's LED pull-up holds DI high during ESP32 reset, so R-D can be dropped ([bench step 5](../hardware/wiring.md#bring-up)) | Bench check on the delivered board; owner decides on R-D |
+| 1 | MAX490 board | Which header pin is RO and which is DI; termination; current draw; whether the board's LED pull-up holds DI high during ESP32 reset; if not, the optional R-D is required ([bench step 5](../hardware/wiring.md#bring-up)) | Bench check on the delivered board |
 | 2 | GPIO16 input | High and low level at GPIO16 behind the divider, also at power-up and power-down | Bench measurement |
 | 3 | RS-232 modules | Continuity of both modules against the [pad map](../hardware/modules.md#rs232-module), and R1 as the TTL output ([bench step 4](../hardware/wiring.md#bring-up)); IC marking | Bench check |
 | 4 | ESP32 board | Module marking and header positions match the DevKitC V4 reference | Visual check |

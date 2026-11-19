@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1020" height="380" viewBox="0 0 1020 380" role="img" aria-labelledby="title desc">
 <title id="title">Bridge signal overview</title>
-<desc id="desc">Zander ZS1 to RS-232-mod1 to ESP32 UART0 (receive only). Classic FLARM to RS-232-mod2 to ESP32 UART1 (receive only). Becker AR6201 to and from the MAX490 RS-422 board and ESP32 UART2 in both directions. The RS-232 transmitter inputs are unconnected. RO through R-B1 to GPIO16 with R-B2 to ground; R-D from DI to 3V3. The ESP32 talks to OpenSoar over Wi-Fi.</desc>
+<desc id="desc">Zander ZS1 to RS-232-mod1 to ESP32 UART0 (receive only). Classic FLARM to RS-232-mod2 to ESP32 UART1 (receive only). Becker AR6201 to and from the MAX490 RS-422 board and ESP32 UART2 in both directions. The RS-232 transmitter inputs are unconnected. RO through R-B1 to GPIO16 with R-B2 to ground; R-D from DI to 3V3, optional and recommended. The ESP32 talks to OpenSoar over Wi-Fi.</desc>
 <rect width="1020" height="380" fill="white"/>
 <g font-family="Arial,sans-serif">
 <path d="M170 78 L300 78" stroke="#37474f" stroke-width="2.5" fill="none"/>
@@ -63,7 +63,7 @@
 <text x="565" y="70" font-size="12" fill="#37474f" text-anchor="middle">R1 → GPIO32 · UART0</text>
 <text x="235" y="165" font-size="12" fill="#37474f" text-anchor="middle">pin 5 TX → L3</text>
 <text x="565" y="165" font-size="12" fill="#37474f" text-anchor="middle">R1 → GPIO26 · UART1</text>
-<text x="638" y="246" font-size="11" fill="#8e24aa" text-anchor="start">R-D</text>
+<text x="620" y="236" font-size="11" fill="#8e24aa" text-anchor="end">R-D, optional, recommended</text>
 <text x="630" y="216" font-size="11" fill="#8e24aa" text-anchor="middle" font-weight="700">3V3</text>
 <text x="530" y="302" font-size="11" fill="#37474f" text-anchor="middle">R-B1</text>
 <text x="608" y="310" font-size="11" fill="#37474f" text-anchor="start">R-B2</text>

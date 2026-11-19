@@ -126,7 +126,7 @@ for name,top in [("RS-232-mod2",20),("RS-232-mod1",150)]:
     r3=top+15
     s.box(960,top,140,60,name)
     s.text(966,r3+4,"R3",size=11,color=SUB,anchor="start")
-s.resistor(1050,280,"v33");s.tag(1050,269,"R-D 10 kΩ","v33")
+s.resistor(1050,280,"v33");s.tag(1050,269,"R-D 10 kΩ","v33");s.tag(1050,300,"optional, recommended","v33",bold=False,size=11)
 s.dot(960,280,"v33");s.tag(950,284,"DI / GPIO17","v33",anchor="end",size=11)
 # Supply voltage sense: R-V1 at the 12 V input, R-V2 and C-V at the ESP32 header (power.md, voltage sense).
 s.dot(420,73,"v12");s.line([(420,73),(420,153)],"v12");s.resistor(420,140,"v12",vertical=True)
@@ -169,7 +169,7 @@ s.save("ground-distribution.svg")
 # ------------------------------------------------------------- signal overview
 s = Svg(1020, 380, "Bridge signal overview",
         "Zander ZS1 to RS-232-mod1 to ESP32 UART0 (receive only). Classic FLARM to RS-232-mod2 to ESP32 UART1 (receive only). "
-        "Becker AR6201 to and from the MAX490 RS-422 board and ESP32 UART2 in both directions. The RS-232 transmitter inputs are unconnected. RO through R-B1 to GPIO16 with R-B2 to ground; R-D from DI to 3V3. The ESP32 talks to OpenSoar over Wi-Fi.")
+        "Becker AR6201 to and from the MAX490 RS-422 board and ESP32 UART2 in both directions. The RS-232 transmitter inputs are unconnected. RO through R-B1 to GPIO16 with R-B2 to ground; R-D from DI to 3V3, optional and recommended. The ESP32 talks to OpenSoar over Wi-Fi.")
 s.box(20, 50, 150, 56, "Zander ZS1", ["RS-232"])
 s.box(20, 145, 150, 56, "Classic FLARM", ["RS-232"])
 s.box(20, 240, 150, 66, "Becker AR6201", ["RS-422, J1"])
@@ -187,7 +187,7 @@ s.line([(300, 286), (170, 286)], "data"); s.arrow(235, 286, "left", "data")
 # DI with pull-up R-D to 3V3
 s.line([(660, 262), (470, 262)], "data"); s.arrow(495, 262, "left", "data"); s.dot(630, 262, "data")
 s.line([(630, 262), (630, 222)], "v33"); s.resistor(630, 242, "v33", vertical=True)
-s.tag(638, 246, "R-D", "v33", anchor="start", bold=False, size=11); s.tag(630, 216, "3V3", "v33", size=11)
+s.tag(620, 236, "R-D, optional, recommended", "v33", anchor="end", bold=False, size=11); s.tag(630, 216, "3V3", "v33", size=11)
 # RO through R-B1 to GPIO16, R-B2 to ground
 s.line([(470, 286), (660, 286)], "data"); s.arrow(648, 286, "right", "data"); s.resistor(530, 286, "data")
 s.dot(600, 286, "data"); s.line([(600, 286), (600, 326)], "data"); s.resistor(600, 306, "data", vertical=True); s.ground(600, 326)
@@ -222,7 +222,7 @@ rs232_device("RS-232-mod2","Classic FLARM","pin 5 TX","GPIO26","ESP32 J2-1 / J3-
 s = Svg(980, 300, "Becker to RS-422 board to ESP32",
         "Becker J1 TX2+ and TX2- (pins 2, 9) to MAX490 receiver inputs A and B; MAX490 driver outputs Y and Z to J1 RX2+ and RX2- (pins 3, 10). "
         "J1-21 D_GND to GND-J through the DE-9 ground bridge, without a series resistor. Cable shield to J1-11 at the radio end only. Receiver output RO through R-B1 (2.2 kΩ) to GPIO16, "
-        "with R-B2 (3.3 kΩ) from GPIO16 to GND. GPIO17 to driver input DI, with R-D (10 kΩ) from DI to 3V3. Board VCC and GND have separate branches from 5V-J and GND-J.")
+        "with R-B2 (3.3 kΩ) from GPIO16 to GND. GPIO17 to driver input DI, with R-D (10 kΩ, optional, recommended) from DI to 3V3. Board VCC and GND have separate branches from 5V-J and GND-J.")
 s.box(20, 30, 170, 190, "Becker J1", ["radio rear", "harness via DE-9"])
 s.box(330, 30, 190, 190, "MAX490 board", ["A B Y Z | RO DI", "5 V, 120 Ω term."])
 s.box(810, 30, 150, 190, "ESP32", ["UART2"])
@@ -234,7 +234,7 @@ s.line([(190, 175), (280, 175), (280, 235)], "sgnd"); s.tag(285, 232, "21 → GN
 s.line([(190, 205), (290, 205)], "shield"); s.tag(198, 198, "11 shield, radio end only", "shield", bold=False, size=11, anchor="start")
 # 3V3 rail and R-D (pull-up on DI)
 s.line([(810, 45), (640, 45), (640, 85)], "v33"); s.arrow(770, 45, "left", "v33"); s.tag(740, 38, "3V3 (mod2 L2)", "v33")
-s.resistor(640, 65, "v33", vertical=True); s.tag(630, 69, "R-D 10 kΩ", "v33", anchor="end")
+s.resistor(640, 65, "v33", vertical=True); s.tag(630, 60, "R-D 10 kΩ", "v33", anchor="end"); s.tag(630, 75, "optional, recommended", "v33", anchor="end", bold=False, size=10)
 s.line([(810, 85), (520, 85)], "data"); s.arrow(570, 85, "left", "data"); s.dot(640, 85, "data")
 s.tag(745, 78, "DI ← GPIO17 (J3-11)", "data")
 # RO through R-B1, R-B2 to GND

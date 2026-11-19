@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="980" height="300" viewBox="0 0 980 300" role="img" aria-labelledby="title desc">
 <title id="title">Becker to RS-422 board to ESP32</title>
-<desc id="desc">Becker J1 TX2+ and TX2- (pins 2, 9) to MAX490 receiver inputs A and B; MAX490 driver outputs Y and Z to J1 RX2+ and RX2- (pins 3, 10). J1-21 D_GND to GND-J through the DE-9 ground bridge, without a series resistor. Cable shield to J1-11 at the radio end only. Receiver output RO through R-B1 (2.2 kΩ) to GPIO16, with R-B2 (3.3 kΩ) from GPIO16 to GND. GPIO17 to driver input DI, with R-D (10 kΩ) from DI to 3V3. Board VCC and GND have separate branches from 5V-J and GND-J.</desc>
+<desc id="desc">Becker J1 TX2+ and TX2- (pins 2, 9) to MAX490 receiver inputs A and B; MAX490 driver outputs Y and Z to J1 RX2+ and RX2- (pins 3, 10). J1-21 D_GND to GND-J through the DE-9 ground bridge, without a series resistor. Cable shield to J1-11 at the radio end only. Receiver output RO through R-B1 (2.2 kΩ) to GPIO16, with R-B2 (3.3 kΩ) from GPIO16 to GND. GPIO17 to driver input DI, with R-D (10 kΩ, optional, recommended) from DI to 3V3. Board VCC and GND have separate branches from 5V-J and GND-J.</desc>
 <rect width="980" height="300" fill="white"/>
 <g font-family="Arial,sans-serif">
 <path d="M190 55 L330 55" stroke="#37474f" stroke-width="2.5" fill="none"/>
@@ -51,7 +51,8 @@
 <text x="285" y="232" font-size="11" fill="#171717" text-anchor="start">21 → GND-J</text>
 <text x="198" y="198" font-size="11" fill="#9e9e9e" text-anchor="start">11 shield, radio end only</text>
 <text x="740" y="38" font-size="12" fill="#8e24aa" text-anchor="middle" font-weight="700">3V3 (mod2 L2)</text>
-<text x="630" y="69" font-size="12" fill="#8e24aa" text-anchor="end" font-weight="700">R-D 10 kΩ</text>
+<text x="630" y="60" font-size="12" fill="#8e24aa" text-anchor="end" font-weight="700">R-D 10 kΩ</text>
+<text x="630" y="75" font-size="10" fill="#8e24aa" text-anchor="end">optional, recommended</text>
 <text x="745" y="78" font-size="12" fill="#37474f" text-anchor="middle" font-weight="700">DI ← GPIO17 (J3-11)</text>
 <text x="527" y="128" font-size="12" fill="#37474f" text-anchor="start" font-weight="700">RO</text>
 <text x="600" y="124" font-size="12" fill="#37474f" text-anchor="middle">R-B1 2.2 kΩ</text>
