@@ -134,6 +134,21 @@ What a single broken wire does:
 
 Size F1 using the measured running current, the wire's allowable current and the fuse's time-current curve and DC interrupting rating ([fuse selection, S31](../research/sources.md#source-register)). The switch-on inrush is not measured; allow for it when reading the time-current curve.
 
+<a id="integrated-fuse"></a>
+
+### 5.1 Integrated board and aircraft branch protection
+
+**Keep source-end protection.** A dedicated aircraft fuse or breaker at the bridge takeoff can serve as F1 if its DC interrupt rating and time-current curve protect the smallest wire, contact and input copper over the credible fault range. The present feed record identifies no upstream fuse. Retain the selected source-end F1 until the installation is identified. Consider a second fuse on the PCB only if it clears a damaging internal fault sooner and reliably coordinates with the source device.
+
+| Fault | What carries the current | What to verify |
+| --- | --- | --- |
+| Supply cable or XT30 shorts | The source feeds the fault ahead of any possible PCB fuse. | Source protection clears before the cable or connector overheats. |
+| D2 or a protected-input capacitor shorts | J2.2 → Q1 → VIN_PROT → short → GND → J2.1. D2 clamps transient voltage. Q1 conducts forward fault current. | Compare fuse clearing energy with TVS, Q1, copper and contact withstand. Include both low-current sustained heating and the largest prospective short. |
+| 3.3 V shorts | U4 can enter current limit and hiccup. A positive-input fuse may stay closed. | Check rail and regulator temperatures separately. A failed high-side switch can expose the rail to VIN before a fuse opens. |
+| Becker supply ground opens | The radio's separate feed can drive the estimated 3.2 A return-path case through the instrument connector and J2.1. | Both bridge positive fuses are outside this loop. Check the mated contacts, wire and joints under load. |
+
+Before choosing an amperage, measure integrated-board inrush and peak load. Establish source current limits, wiring impedance, temperature and the actual device curves. With two devices in series, compare the downstream maximum clearing time with the upstream minimum melt or trip time. Use rated DC breaking capacity and applicable clearing-energy data. The 60–90 mA measured on the UBEC prototype covers steady operation only. [Evidence and installation references, S194](../research/sources.md#source-register) · [Bench and installation inputs](../project/open-items.md#pcb-study)
+
 ---
 
 <a id="voltage-sense"></a>
