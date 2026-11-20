@@ -7,7 +7,7 @@
 Use this plan to take the module-based bench bridge through a smaller four-layer design, first articles and a repeatable JLCPCB order.
 
 > [!NOTE]
-> **Status:** Development schematic and unrouted four-layer placement for ten production units. See the [approved requirements](requirements.md#requirements), [KiCad project](../../electronics/integrated/compact-bridge.kicad_pro) and [evidence register S170–S177](../research/sources.md).
+> **Status:** Power and instrument fault returns are routed on the four-layer development board for ten units. Signal routing follows the test-point and expansion review. [Requirements](requirements.md#requirements) · [KiCad project](../../electronics/integrated/compact-bridge.kicad_pro) · [Evidence S173, S178–S180](../research/sources.md#source-register).
 
 📑 **On this page:** <kbd>[1 · 🔌 Circuits](#circuits)</kbd> <kbd>[2 · 📐 Housing and layout](#layout)</kbd> <kbd>[3 · 🌡️ Heat and verification](#heat)</kbd> <kbd>[4 · 💶 Production cost](#cost)</kbd> <kbd>[5 · 📦 Design to order](#order)</kbd>
 
@@ -24,7 +24,7 @@ Use this plan to take the module-based bench bridge through a smaller four-layer
 | Becker | SN65HVD1470DR full duplex at 3.3 V. Populate R4 to enable TX; R3 biases DI high, R5 defines DE if link removed. Receiver enabled, no receive termination fitted. SN65HVD35DR alternate subject to qualification. | Verify separate pairs and idle levels through reset and brownout. Compare loaded cable waveforms and bytes in both directions. |
 | Supply | External F1, DMP6023LE reverse-polarity MOSFET, 100 kΩ gate network, 12 V gate clamp, provisional SMBJ20A, LMR33610ADDAR synchronous 400 kHz buck to 3.3 V. Draft power stage uses 6.8 µH, two 10 µF/100 V inputs, four 22 µF/25 V outputs. | Scope actual hot clamp and ringing against every input limit. Verify inrush, MOSFET gate, minimum effective capacitance after DC bias and thermal limits. See S172. |
 | Battery measurement | R8/R9 divider from protected input to ground, C18 on the divider. TMUX1574PWR connects GPIO34 to ground while PG is low, then to the divider. Output bleed preserves nominal ×11 scaling with the selected resistor network. | Calibrate against XT30 at 7–20 V. Scope GPIO34 and measure injection into unpowered 3.3 V at hot/cold start, hard collapse, reverse input and maximum clamped input. |
-| Harness | Right-angle male Amphenol LD09P13A4GV00LF and AMASS XT30PW-M30.G.Y with housing support. Retain [DE-9 pinout](../hardware/wiring.md#de9-pinout), separate instrument returns and existing shield contract. | Dimension and check mounting loads, contact numbering, drills, actual cable exits, board thickness and shell handling. See S173. |
+| Harness | Right-angle male Amphenol LD09P13A4GV00LF and AMASS XT30PW-M30.G.Y. J1 follows the [DE-9 pinout](../hardware/wiring.md#de9-pinout). J2 pad 1 is ground and pad 2 is the raw supply. Both J1 shell locks are isolated from board ground. | Check the mating plugs, jackscrews, polarity and housing support with actual parts. S173. |
 
 <a id="layout"></a>
 
@@ -33,9 +33,12 @@ Use this plan to take the module-based bench bridge through a smaller four-layer
 One 50 × 55.5 mm four-layer PCB, populated from the top with through-hole connectors. The housing study targets **72 × 60 × 25 mm** versus 92 × 70 × 25 mm, about 33% less exterior volume. The native board contains the proposed walls and an XT30 clearance model. These are placement dimensions, pending mated fit and installed clearance. The original housing stays the reference.
 
 - Keep the ESP32 antenna past the PCB edge, with all-layer clearance to the host board, nearby metal and the mounted harness. Test Wi-Fi and Bluetooth inside the closed housing.
-- Start with top signals and power, an uninterrupted inner ground plane, an inner power/ground layer and bottom signals/ground. Keep buck input and switching loops short, provide thermal copper for its exposed pad and keep feedback and ADC away from the switch node.
-- Carry the DE-9 instrument fault return directly to XT30 minus. For scale, 25 mm of 2 mm wide, 35 µm copper at 85 °C is roughly 7.6 mΩ, 24 mV and 0.078 W at 3.2 A. Include vias, spokes, pad necks and contacts in the finished check. The bridge-positive fuse cannot break an external return current. [Fault paths](../hardware/power.md#wire-breaks)
-- **Placement checkpoint:** KiCad 10.0.8 reports zero schematic ERC errors or warnings, zero board/schematic parity issues, 124 unconnected items and twelve 0.20 mm U1 ground-pad holes below the default 0.30 mm rule. Confirm the drill and paste process with the assembler. Prioritize the buck loops and return path before signal routing.
+- C13 bridges VIN and GND beside U4. C10 connects directly to BOOT and SW. Fit the stripe on L1 over SW pad 1. Feedback is taken from the output capacitor bank and routed below the inner ground plane.
+- A dedicated bottom trace joins J1 pins 3, 6 and 7 to XT30 minus. From pin 3 the calculated trace drop is 31 mV at 3.2 A and 85 °C. The external bridge fuse cannot interrupt this return. [Fault paths](../hardware/power.md#wire-breaks)
+- The J1 flange aligns with the board edge, 0.50 mm inside the proposed front wall. The XT30 mouth is recessed about 2.15 mm from the outside of that wall. Allow clearance for the plug body and jackscrews and transfer mating loads to the housing. S173.
+- U1 has nine separate paste windows and twelve open Ø0.20 mm holes. U4 has twelve Ø0.254 mm vias under one paste aperture. Send mask, paste and plated drill files together for the [assembler review](../project/open-items.md#pcb-study). S179.
+
+KiCad 10.0.8 reports zero ERC and schematic parity findings. Board DRC identifies one silkscreen mark at the U1 antenna-side edge and 34 unconnected items. All supply and ground pads are connected. S180.
 
 ---
 
@@ -48,7 +51,7 @@ One 50 × 55.5 mm four-layer PCB, populated from the top with through-hole conne
 | Energy and thermal load | At the XT30 log input voltage, current peaks and integrated Wh with three loaded Wi-Fi ports, with Bluetooth off, with an additional Bluetooth link and in fallback. Repeat across 7–20 V and under hot closed-box conditions. Probe the buck, inductor, protection device, module, connectors and loaded housing supports. Use the same traffic and phone for any controller comparison. |
 | Outdoor storage | Log site temperature and RH, cold surfaces on warm-up and hot parked-canopy conditions. Cycle the unpowered assembly through representative condensation, dry before powering, and check insulation, corrosion, retention, ADC, rail stability and all three streams. Test dry cold starts and sustained hot operation at the measured limits. |
 | Limits | XT30 −20…+120 °C operating, TRS3232E −40…+85 °C ambient, H4 and DE-9 up to +105 °C, HVD1470 up to +125 °C ambient. Buck limit is junction temperature. Loaded PETG features may govern earlier. Check the matching plugs, capacitors and remaining BOM as well. See S170–S174 and the [housing climate study](../hardware/housing.md#climate). |
-| Fabrication | Evaluate JLC04161H-7628 1.6 mm FR-4, green solder mask, 1 oz outer copper. Confirm actual laminate, finished thickness, finish and thermal-pad process at quote. Compare lead-free HASL and ENIG. If acrylic coating is needed, mask antenna, connectors, shell bonds and probes. Inspect coverage and re-test RF and leakage. Require a cleaner compatible with the module and an assembly sequence respecting its single reflow. |
+| Fabrication | The KiCad project uses JLC04161H-7628 four-layer FR-4, nominal 1.6 mm, green mask and lead-free HASL as the quote baseline. Default track/space is 0.20/0.20 mm and default via land/drill is 0.60/0.30 mm. S178 records the limits. Quote thermal-pad treatment and any change of finish separately. For coating, mask antenna, connectors, shell bonds and probes. Use a module-compatible cleaner and a single module reflow. |
 | Installed use | Ask the responsible certifying staff to assess the actual aircraft, connection to the Becker and any standby-frequency command. Supply wiring, fuse and isolation, failure effects, installed radio/compass interference checks, mounting and continued-maintenance information. S177 records the regulatory context. |
 
 ---

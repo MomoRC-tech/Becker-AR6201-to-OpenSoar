@@ -4,9 +4,43 @@
       "defaults": {},
       "diff_pair_dimensions": [],
       "drc_exclusions": [],
-      "rules": {},
-      "track_widths": [],
-      "via_dimensions": []
+      "rules": {
+        "min_clearance": 0.2,
+        "min_track_width": 0.2,
+        "min_via_annular_width": 0.15,
+        "min_via_diameter": 0.45,
+        "min_through_hole_diameter": 0.2,
+        "min_hole_to_hole": 0.45,
+        "min_hole_clearance": 0.3,
+        "min_copper_edge_clearance": 0.25,
+        "min_silk_clearance": 0.15,
+        "solder_mask_to_copper_clearance": 0.09,
+        "min_text_height": 1.0,
+        "min_text_thickness": 0.15
+      },
+      "track_widths": [
+        0.0,
+        0.2,
+        0.25,
+        0.3,
+        0.5,
+        0.75,
+        1.0
+      ],
+      "via_dimensions": [
+        {
+          "diameter": 0.0,
+          "drill": 0.0
+        },
+        {
+          "diameter": 0.6,
+          "drill": 0.3
+        },
+        {
+          "diameter": 0.8,
+          "drill": 0.4
+        }
+      ]
     }
   },
   "boards": [],
@@ -19,7 +53,16 @@
     "version": 1
   },
   "net_settings": {
-    "classes": [],
+    "classes": [
+      {
+        "name": "Default",
+        "clearance": 0.2,
+        "track_width": 0.2,
+        "via_diameter": 0.6,
+        "via_drill": 0.3,
+        "priority": 2147483647
+      }
+    ],
     "meta": {
       "version": 0
     }
