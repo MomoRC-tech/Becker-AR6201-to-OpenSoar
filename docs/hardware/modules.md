@@ -120,10 +120,10 @@ MAX490 in SO-8, top view ([datasheet Fig. 2](https://www.analog.com/media/en/tec
 | Signal | VCC | **RO** | **DI** | GND | Y | Z | B | A |
 
 - [ ] Read the IC marking and find pin 1.
-- [ ] Power off, meter on beep: each header pin to chip pins 2 and 3. The pin that beeps to **3 (DI)** takes GPIO17 directly. The pin that beeps to **2 (RO)** goes through the divider to GPIO16. Ignore the header labels.
+- [ ] Power off, meter on beep: each header pin to chip pins 2 and 3. Identify **3 (DI)** and **2 (RO)**. RO goes through the divider to GPIO16. Keep GPIO17 disconnected until the DI voltage check below.
 - [ ] Beep the screw terminals to chip pins 5–8 to confirm Y, Z, B, A. A series resistor (about 100 Ω) in a line is normal.
 - [ ] Ω across A–B: about 120 Ω means a termination is fitted; tens of kΩ means it is open. The selected setup has it [open](wiring.md#becker).
-- [ ] Board at 5 V, DI header pin unconnected: DI to GND at 2 V or more means the board's own pull-up is enough. Below 2 V, fit 10 kΩ from J3-11 to 3V3.
+- [ ] With the replacement board powered at 5 V and the ESP32 disconnected, measure DI to board GND. DI needs at least 2.0 V for idle high (S34). The upper limit at GPIO17 is its I/O supply + 0.3 V (3.6 V at a nominal 3.3 V, S121). A 5 V pull-up exceeds that limit. If the bias circuit is unknown, DI floats, or the voltage is outside these limits, leave GPIO17 disconnected for interface review. For a compatible board, switch power off before wiring and repeat [bench step 5](wiring.md#bring-up) with the ESP32 held in reset.
 
 ---
 

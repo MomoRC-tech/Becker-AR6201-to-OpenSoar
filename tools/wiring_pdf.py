@@ -3,13 +3,12 @@
 Usage (from the repository root):  python tools/wiring_pdf.py [--dirty]
 Writes output/pdf/bridge-wiring-instructions.pdf from docs/hardware/wire-installation.md
 (the illustrated steps) and the bench checks in docs/hardware/wiring.md, printed with
-headless Edge or Chrome. The footer names the last commit that changed those pages or
-their pictures, so commit them first; --dirty builds anyway and marks the revision as
+headless Chrome or Edge. The footer names the last commit that changed the source pages,
+their pictures or this generator. Commit them first; --dirty marks the revision as
 "+ local changes".
 Rebuild after changing either page, then commit the PDF in its own commit.
 Needs markdown-it-py (pip install markdown-it-py).
 """
-import os
 import re
 import shutil
 import subprocess
@@ -27,22 +26,15 @@ ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "docs/hardware"
 OUT = ROOT / "output/pdf/bridge-wiring-instructions.pdf"
 HOUSING = "v16"
-SOURCES = ["docs/hardware", "docs/images/wire-installation", "docs/images/pins"]
-BROWSERS = [r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
+SOURCES = ["docs/hardware", "docs/images/wire-installation", "docs/images/pins", "tools/wiring_pdf.py"]
+BROWSERS = [r"C:\Program Files\Google\Chrome\Application\chrome.exe",
+            r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
             r"C:\Program Files\Microsoft\Edge\Application\msedge.exe",
-            r"C:\Program Files\Google\Chrome\Application\chrome.exe",
             "msedge", "google-chrome", "chromium", "chromium-browser"]
 
 
 def git(*args):
     return subprocess.run(["git", "-C", str(ROOT), *args], check=True, capture_output=True, text=True).stdout.strip()
-
-
-def browser():
-    for b in BROWSERS:
-        if Path(b).is_file() or shutil.which(b):
-            return b
-    sys.exit("Neither Edge nor Chrome found; add its path to BROWSERS.")
 
 
 rev = git("log", "-1", "--format=%h", "--", *SOURCES)  # last commit that changed the pages and their pictures
@@ -86,8 +78,7 @@ if len(sects) < 7:
 
 page("Before soldering",
      '<p class="lead">Build and check the harness with all instruments disconnected. Start with the supply and loose boards. '
-     "Switch off power before making connections.</p><p>The illustrated routes come from the accepted housing model. Physical fit, "
-     "wire cut lengths and wired electrical operation still require bench checks. Leave service slack and trim at the destination.</p>"
+     "Switch off power before making connections. Leave service slack and trim each wire at its destination.</p>"
      "<h2>Supply and board identification</h2>" + checks(1, 2) + checks(4, 5) +
      "<p>The standalone ESP32 loader milestone (check 3) is already recorded in the project. Keep USB unplugged whenever the UBEC "
      "supplies the ESP32.</p><h2>Reference documents</h2>" +
@@ -114,34 +105,55 @@ for n, title in [(4, "Connect Zander and FLARM"), (5, "Wire the MAX490 header"),
     body = fmt(sects[n - 1].split("<kbd>")[0])
     if n == 5:
         body += ('<div class="box"><b>Protect GPIO16.</b> MAX490 RO runs near 5 V. Use R-B1 (2.2 kΩ) in series and R-B2 (3.3 kΩ) '
-                 "to ground. GPIO17 goes straight to TXD, with no resistor. Keep blue insulation on both sides of R-B1.</div>")
+                 "to ground. GPIO17 goes straight to TXD, with no resistor on the tested board. Keep blue insulation on both sides of R-B1.</div>")
     page(f"{n}. {title}", body)
-xt30 = wire.index("XT30 side")
-table = wire[wire.rfind("\n|", 0, wire.index("\n| ---", xt30)):wire.index("\n\n", wire.index("| 9 |", xt30))]
-page("Check the finished harness",
-     '<p class="lead">Before applying power, complete the end-to-end check through the mated connector. Keep the instruments '
-     "disconnected throughout.</p>" + checks(8, 8) + "<h2>DE-9 continuity reference</h2>" + fmt(table, "wiring.md") +
+pinout_section = re.search(r'^<a id="de9-pinout"></a>\s*^### [^\n]+\n(.*?)(?=^#{1,3} |\Z)', wire, re.M | re.S)
+if not pinout_section:
+    sys.exit("Cannot find the wiring.md#de9-pinout subsection.")
+pinout = pinout_section[1]
+tables = [token for token in md.parse(pinout) if token.type == "table_open"]
+if len(tables) != 1:
+    sys.exit("Expected one solder-cup table in wiring.md#de9-pinout.")
+start, end = tables[0].map
+table = "\n".join(pinout.splitlines()[start:end])
+if re.findall(r"^\| (\d+) \|", table, re.M) != [str(n) for n in range(1, 10)]:
+    sys.exit("Expected DE-9 solder cups 1 through 9 in the pinout table.")
+page("Check the bridge DE-9",
+     checks(8, 8) + "<h2>Pin reference for the mating female plug</h2>" + fmt(table, "wiring.md") +
      "<h2>Powered checks</h2>" + checks(6, 7), "Bench verification")
 page("Test at the DE-9",
-     '<p class="lead">Use a female DE-9 breakout and a PC USB RS-232 adapter. Once the modules are soldered, never fit a loopback '
+     '<p class="lead">Use a female DE-9 breakout and an RS-232 source. Once the modules are soldered, never fit a loopback '
      "jumper on the ESP32 itself.</p>" + checks(9, 12) +
      "<p>A passing radio loop can hide a reversal of both pairs. Check the individual pin assignments and the receiver polarity on "
-     "the preceding page.</p><h2>Calibrate the voltage input</h2>" + checks(13, 13) +
+     "the preceding page. Check the mating instrument harness separately at installation (step 16).</p>" +
+     fmt("[Bench source and breakout wiring](wiring.md#bus-test)") + "<h2>Check the voltage input</h2>" + checks(13, 13) +
      '<div class="box">Record the wired test results before connecting instruments. Aircraft integration requires separate approval.</div>',
      "Bench verification")
 
 CSS = """@page{size:A4;margin:0}*{box-sizing:border-box}body{margin:0;font:11pt/1.38 'Segoe UI',sans-serif;color:#172d39}section{height:296mm;padding:12mm 16mm 15mm;position:relative;break-after:page}section:last-child{break-after:auto}header,footer{font-size:9pt;color:#395e70;border-bottom:1px solid #a7bec5;padding-bottom:3mm;font-weight:600}span{float:right}aside{color:#066d71;text-transform:uppercase;letter-spacing:1px;font-size:9pt;font-weight:bold;margin-top:6mm}h1{font-size:23pt;line-height:1.13;margin:2mm 0 4mm}h2{font-size:15pt;color:#155961;margin:4mm 0 2mm}p{margin:2.7mm 0}li{margin-bottom:2mm}ol,ul{padding-left:7mm}img{display:block;width:100%;height:88mm;object-fit:contain}a{color:#1d6073}table{border-collapse:collapse;width:100%;font-size:10.5pt}td,th{padding:1.5mm 2.5mm;text-align:left;border-bottom:1px solid #becdd0}th,.box{background:#e8f2f2}.box{padding:3mm;margin-top:4mm;border-left:3px solid teal}.lead{font-size:12pt;font-weight:600}footer{position:absolute;bottom:8mm;left:16mm;right:16mm;border:0;border-top:1px solid #a7bec5;padding-top:2mm}"""
 
 OUT.parent.mkdir(parents=True, exist_ok=True)
-with tempfile.TemporaryDirectory() as tmp:
+with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as tmp:
     html = Path(tmp) / "guide.html"
     html.write_text("<meta charset=utf-8><title>Bridge wiring instructions</title><style>" + CSS + "</style>" + "".join(pages), "utf-8")
-    before = OUT.stat().st_mtime if OUT.exists() else 0
-    subprocess.run([browser(), "--headless", "--disable-gpu", "--no-pdf-header-footer", f"--user-data-dir={Path(tmp) / 'profile'}",
-                    f"--print-to-pdf={OUT}", html.as_uri()], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-if not OUT.exists() or OUT.stat().st_mtime <= before:
-    sys.exit("The browser did not write the PDF.")
-count = len(re.findall(rb"/Type\s*/Page\b", OUT.read_bytes()))
+    for name in BROWSERS:
+        executable = shutil.which(name)
+        if not executable:
+            continue
+        profile = Path(tmp) / Path(executable).stem
+        pdf = profile.with_suffix(".pdf")
+        cmd = [executable, "--headless", "--disable-gpu", "--no-first-run", "--no-pdf-header-footer",
+               f"--user-data-dir={profile}", f"--print-to-pdf={pdf}", html.as_uri()]
+        try:
+            result = subprocess.run(cmd, timeout=60, capture_output=True)
+        except subprocess.TimeoutExpired:
+            continue
+        if result.returncode == 0 and pdf.is_file():
+            break
+    else:
+        sys.exit("Neither Chrome nor Edge produced a PDF.")
+    count = len(re.findall(rb"/Type\s*/Page\b", pdf.read_bytes()))
+    if count != len(pages):
+        sys.exit(f"Expected {len(pages)} PDF pages, got {count}. Check the layout.")
+    shutil.copyfile(pdf, OUT)
 print(f"{OUT.relative_to(ROOT)}: {count} pages, {OUT.stat().st_size:,} bytes, wiring revision {rev}")
-if count != len(pages):
-    print(f"Warning: {len(pages)} sections but {count} PDF pages; a page overflows. Check the layout.")

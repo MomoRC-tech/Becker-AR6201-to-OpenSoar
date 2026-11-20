@@ -7,7 +7,7 @@
 Install the bridge harness in housing v16, using the pictures to find each group of wires and its route.
 
 > [!NOTE]
-> **Status:** illustrated sequence from the accepted v16 Fusion model (S93). The [supply voltage sense](power.md#voltage-sense) (R-V1, R-V2, C-V and the grey wire) has its own picture in [section 3](#rs232-boards) (S128, S129); pictures 01, 03 and 07 do not show it. Fit, actual cut lengths and electrical operation are bench checks.
+> **Status:** illustrated sequence from the accepted v16 Fusion model (S93). The [supply voltage sense](power.md#voltage-sense) (R-V1, R-V2, C-V and the grey wire) has its own picture in [section 3](#rs232-boards) (S128, S129); pictures 01, 03 and 07 do not show it. The assembled bench housing passed its fit check (S156). Trim each conductor to fit.
 
 📑 **On this page:** <kbd>[1 · 🔌 Prepare the connectors](#connectors)</kbd> <kbd>[2 · ⚡ Lay the power harness](#floor-power)</kbd> <kbd>[3 · 🧩 Wire the RS-232 boards](#rs232-boards)</kbd> <kbd>[4 · 📡 Connect Zander and FLARM](#rs232-connector)</kbd> <kbd>[5 · 📻 Wire the MAX490 header](#max490-header)</kbd> <kbd>[6 · 🔀 Fit the Becker pairs](#becker-pairs)</kbd> <kbd>[7 · ✅ Close up and check](#finish)</kbd>
 
@@ -62,9 +62,9 @@ Solder the module pads on the bench. In this view, Zander **mod1** is on the lef
 | Mint green | mod2 R1 → ESP32 J2-10 (GPIO26) |
 | Grey | R-V1 at the XT30 → ESP32 J2-5 (GPIO34) |
 
-Prepare the L3 ends in step 4 before seating the modules. At the ESP32, **J3-1** takes only the mod2 return. **J2-14** takes the floor return from step 2 and the ground leads of R-V2 and C-V. **J2-19** takes the orange floor feed.
+Prepare the L3 ends in step 4 before seating the modules. At the ESP32, **J3-1** takes only the mod2 return. **J2-14** takes the floor return from step 2 and the ground lead of R-V2. **J2-19** takes the orange floor feed.
 
-Route the **grey** wire from R-V1 up to pin-top height and along the side wall, above the J2-19 and J2-14 wires, to **J2-5**. Fit **R-V2 (10 kΩ)** and **C-V (100 nF)** beside the J2 header on the side-wall side: R-V2 at pin-top height, C-V (the yellow ceramic disc marked 104) flat against the side wall below it. Bend each lead from **J2-5** out to the side and back in at **J2-14**, so the leads stay clear of J2-6 to J2-13 and of the J2-7 and J2-10 wires. Sleeve the leads where they pass other joints. Solder the grey wire to J2-5 with them.
+Route the **grey** wire from R-V1 up to pin-top height and along the side wall, above the J2-19 and J2-14 wires, to **J2-5**. Fit **R-V2 (10 kΩ)** at pin-top height beside the J2 header, between **J2-5** and **J2-14**. Bend and sleeve its leads to clear J2-6 through J2-13. Solder the grey wire to J2-5. The picture also shows C-V (100 nF) across R-V2. The bench bridge was built and measured with C-V omitted (S141, S148).
 
 <a id="supply-sense-picture"></a>
 
@@ -97,7 +97,7 @@ Set the MAX490 RS-422 board on its floor posts first. Keep the UBEC and carrier 
 | Turquoise | ESP32 **J3-11** → MAX490 **DI** |
 | Blue | MAX490 **RO** → **R-B1** splice → ESP32 **J3-12** |
 
-Fit **R-B2** across **J3-12 and J3-7**. The J3-11 wire carries no resistor. Insulate the resistors and their joints with heat-shrink. Support the leads next to the ESP32 so movement of the harness cannot load the joints. [Divider wiring](wiring.md#becker)
+Fit **R-B2** across **J3-12 and J3-7**. Wire J3-11 directly to TXD. The CAD picture shows a third resistor, R-D. Omit it on the tested QYF-998 board (S145). Insulate the resistors and their joints with heat-shrink. Support the leads next to the ESP32 so movement of the harness cannot load the joints. [Divider wiring](wiring.md#becker)
 
 ---
 
@@ -123,7 +123,7 @@ Twist and fit each prewired pair separately, then trim and strip at the MAX490 e
 ![Completed v16 harness viewed from above with the UBEC carrier fitted, ferrite at right and the hood removed](../images/wire-installation/07-installed.png)
 
 - [ ] After finishing the MAX490 header and both Becker pairs, place the UBEC carrier over the MAX490. Fasten both with the shared four screws and secure the ferrite in its cradle. Check for pinched wires under the carrier and clamp. [Carrier and ferrite mounting](housing.md#ubec-carrier)
-- [ ] Check that service slack lets the carrier and clamp lift clear. Retain the floor wires, the grey sense wire and the insulated resistor and capacitor leads without pinching the insulation. Trial-fit the hood and check for contact with the harness.
+- [ ] Check that service slack lets the carrier and clamp lift clear. Retain the floor wires, the grey sense wire and the insulated component leads without pinching the insulation. Trial-fit the hood and check for contact with the harness.
 - [ ] With the instruments disconnected, check continuity, polarity and shorts before applying power. Follow the [bench bring-up checklist](wiring.md#bring-up) before connecting any instrument.
 
 ---

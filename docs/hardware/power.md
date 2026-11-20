@@ -169,7 +169,7 @@ V_{\text{GPIO34}} = V_{\text{in}} \cdot \frac{10\text{ k}\Omega}{100\text{ k}\Om
 - **Sense current:** about 0.11 mA at 12 V; 1.3 mW in R-V1.
 - **Filter:** 9.1 kΩ source resistance with 100 nF gives about 1 ms. Espressif specifies the ADC with an external 100 nF capacitor (S121).
 - **ESP32 unpowered with 12 V present** (for example a UBEC fault): R-V1 limits the current into the pin to about 0.1 mA.
-- **Accuracy:** the ADC's own error is up to ±60 mV at the pin after the factory calibration (S121), ±0.66 V at the input. With 1 % resistors the ratio adds up to about ±2 %. A one-point calibration against a multimeter on the [settings page](../project/roadmap.md#supply-voltage) removes most of both; measured after a one-point calibration at 12 V: within ±0.1 V from 12 to 14.6 V, +0.21 V at 7 V and −0.18 V at 18 V ([step 13](wiring.md#bring-up), S148).
+- **Accuracy:** the ADC's own error is up to ±60 mV at the pin after the factory calibration (S121), ±0.66 V at the input. With 1 % resistors the ratio adds up to about ±2 %. A one-point calibration against a multimeter on the [settings page](../project/roadmap.md#supply-voltage) removes most of both; measured after a one-point calibration at 12 V: against the supply display, +0.02 V at 12 V, −0.08 V at 14.6 V, +0.21 V at 7 V and −0.18 V at 18 V ([step 13](wiring.md#bring-up), S148).
 - **What it shows:** the voltage at the bridge's input, a few millivolts below the aircraft supply at F1 (estimate). Battery sag while the radio transmits shows up, since the radio's current does not flow through the bridge's supply wire.
 
 ---

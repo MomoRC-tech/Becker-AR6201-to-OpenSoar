@@ -19,7 +19,7 @@ Related: 🧱 [Modules and parts](modules.md) · 🔌 [Signal wiring](wiring.md)
 
 ## 1. 🎯 Requirements
 
-- **Holds:** ESP32 board, 2 × RS-232 modules, MAX490 board, UBEC (with jumper, leads, ferrite ring). The three Becker interface resistors sit at the ESP32 header and the adjacent module supply pad, so there is no extra board.
+- **Holds:** ESP32 board, 2 × RS-232 modules, MAX490 board, UBEC (with jumper, leads, ferrite ring). The two Becker receiver-divider resistors fit at the ESP32 header and in the adjacent RO wire.
 - **On the housing:** XT30 for power, DE-9 for the three instruments ([section 4](#connectors)).
 - **F1:** in the 12 V harness at its supply end, not in the housing ([power](power.md#protection)).
 - **Wiring:** connector mating forces must not load solder joints.

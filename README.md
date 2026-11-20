@@ -3,7 +3,7 @@
 # ✈️ Wi-Fi Bridge: Glider Avionics to OpenSoar
 
 <p align="center">
-  <a href="docs/images/product-teaser.png"><img src="docs/images/product-teaser.png" width="100%" alt="Your glider instruments. On your phone. Illustrated glider cockpit with a compact Wi-Fi Bridge tucked behind the instrument panel and a clearly labelled enlarged product view. Wi-Fi connects it to OpenSoar on a phone. Features: Classic FLARM traffic and position, Zander ZS1 flight and navigation data, Becker AR6201 radio standby tuning, and browser setup and monitoring."></a>
+  <a href="docs/images/product-teaser.png"><img src="docs/images/product-teaser.png" width="100%" alt="Your glider instruments. On your phone. Illustrated glider cockpit with a compact Wi-Fi Bridge tucked behind the instrument panel and a clearly labelled enlarged product view. Wi-Fi connects it to OpenSoar on a phone. Features: Classic FLARM traffic and position, Zander ZS1 flight and navigation data, planned Becker AR6201 radio standby tuning, and browser setup and monitoring."></a>
 </p>
 
 A small ESP32 box in the glider collects data from the cockpit instruments and sends it over Wi-Fi to OpenSoar on a phone or tablet: FLARM and Zander data as standard NMEA over TCP, the radio on its own port. No cables run to the Android device.
@@ -20,9 +20,9 @@ A small ESP32 box in the glider collects data from the cockpit instruments and s
 | --- | --- |
 | 📈 Glider computer: Zander ZS1 | Sends flight and navigation data to OpenSoar |
 | 📡 Collision warning: Classic FLARM | Sends traffic and navigation data to OpenSoar |
-| 📻 Radio: Becker AR6201 | Puts the selected airfield frequency into standby; reports radio status where supported |
+| 📻 Radio: Becker AR6201 | Carries radio data over a dedicated TCP port. Standby tuning and radio readback are planned |
 
-The bridge never changes the active frequency, and the radio's own controls keep working. Not planned: active tuning, frequency swap, volume and squelch.
+The radio requirement is to keep the active frequency and local controls working during standby tuning. The [OpenSoar driver](docs/research/becker-driver.md#opensoar-driver) still needs changes and a test with the installed radio.
 
 <details>
 <summary><b>📱 Show the status page, settings and data monitor</b> (click to expand)</summary>
@@ -49,13 +49,13 @@ More: [status page](firmware/bridge/README.md#status-page), [settings page](firm
 ## 2. 🚦 Project status
 
 > [!NOTE]
-> **Status:** the bench bridge is built in the accepted housing design and powers up at 12 V. The bench checks are pending.
+> **Status:** the assembled 12 V bench bridge passed the Becker loopback and separate Zander and FLARM input tests. [Remaining bench checks](docs/hardware/wiring.md#bring-up) cover the boards, supply and voltage accuracy.
 > **Current focus:** 🔧 WP3 wiring and bench validation, with the 💻 [bridge firmware](docs/project/roadmap.md#firmware-plan) in parallel. Driver work waits until WP3 is complete.
 
 | Stage | Status |
 | --- | --- |
 | 🔬 Research and documentation | ✅ Done |
-| 📦 Mechanical design | ✅ Accepted — [housing v16](docs/hardware/housing.md); physical fit checks open |
+| 📦 Mechanical design | ✅ Accepted — [housing v16](docs/hardware/housing.md); bench fit passed, vibration and heat checks open |
 | 🔧 Wiring and bench validation | 🟡 **Current focus** |
 | 🛩️ Existing installation details | 🟡 Waiting for equipment information |
 | 📶 Bench OTA loader | ✅ Flashed and updatable over Wi-Fi ([M3](docs/project/roadmap.md#milestones)); [ready-made hotspot-only image](firmware/ota-loader/bin/README.md) for the first USB flash |
@@ -102,7 +102,7 @@ Working on the repository? Read the [work instructions](AGENTS.md) first.
 ## 4. ⚠️ Safety
 
 > [!WARNING]
-> Nothing here is verified on real hardware. Do the [bench checks](docs/project/open-items.md#bench-hardware) before connecting any aircraft equipment. The existing installation stays untouched as a backup.
+> Keep aircraft equipment disconnected during bench checks. Aircraft connection requires separate approval and verification of the installed wiring and radio revision. The existing installation stays untouched as a backup.
 
 ---
 
