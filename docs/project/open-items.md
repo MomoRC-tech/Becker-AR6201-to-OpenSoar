@@ -24,7 +24,7 @@ Start with the delivered boards and power supply, with all instruments disconnec
 | # | Item | What is needed | How it is closed |
 | :-: | --- | --- | --- |
 | 1 | MAX490 board | Current draw | Bench check on the delivered board |
-| 3 | RS-232 modules | Continuity of both modules against the [pad map](../hardware/modules.md#rs232-module), and R1 as the TTL output ([bench step 4](../hardware/wiring.md#bring-up)); IC marking | Bench check |
+| 3 | RS-232 replacement modules | IC marking, continuity against the [pad map](../hardware/modules.md#rs232-module) and R1 as the TTL output | [Loose-board check](../hardware/wiring.md#bring-up) before fitting a replacement |
 | 4 | ESP32 board | Module marking and header positions match the DevKitC V4 reference | Visual check |
 | 5 | UBEC | 5 V output with and without load; match the physical input/output polarity and XT30 cups to the labelled routing endpoints; fit in the enclosure | Bench measurement |
 | 6 | Fuse | Select fuse rating and speed from the running current (60–90 mA at 12 V, S147) and the wire protection requirements; switch-on inrush is not measured | Owner selection |
