@@ -206,7 +206,7 @@ def main() -> None:
     mock = ("<script>const _se=" + json.dumps(settings) + ",_st=" + json.dumps(status) +
             ";window.fetch=u=>Promise.resolve({json:()=>Promise.resolve(u.includes('status')?_st:_se)});</script>")
     form = form.replace("/device.webp", "device.webp").replace("<main>", mock + "<main>", 1)
-    shoot(form, image, IMAGES / "settings-page.png", 2700)
+    shoot(form, image, IMAGES / "settings-page.png", 3020)
 
     demo = demo_monitor()
     empty = {"seq": demo["seq"], "lost": False, "now": demo["now"], "chunks": []}

@@ -154,9 +154,10 @@ static void frameFromCode(uint32_t code, char* out) {
 
 // ---- checks ------------------------------------------------------------------
 
+// Scan order after the current setting and hardware estimate (ZS1 rates first).
+static constexpr uint32_t kSerialRates[] = {4800, 19200, 9600, 38400, 57600, 115200, 230400, 2400, 1200};
 static bool validBaud(uint32_t b) {
-    static const uint32_t allowed[] = {1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200, 230400};
-    for (uint32_t a : allowed)
+    for (uint32_t a : kSerialRates)
         if (a == b) return true;
     return false;
 }

@@ -93,6 +93,10 @@ uint8_t BTbuf[BUFFERSIZE];
 uint16_t iBT = 0;
 
 #include "settings.h"     // Project: stored settings (step 3a)
+#if defined(ESP32) && defined(STATUS_PAGE) && defined(STORED_SETTINGS)
+#define NAV_DETECTION
+#include "nav_scan.h"
+#endif
 #include "status_page.h"  // Project: status page and counters (step 3)
 
 #if defined(ESP32) && defined(PROTOCOL_TCP)
@@ -524,7 +528,11 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
 
 #ifdef ESP32
 #ifdef BLUETOOTH
-        if (SerialBT.hasClient()) {
+        if (SerialBT.hasClient()
+#ifdef NAV_DETECTION
+            && navPort.load() != BLUETOOTH
+#endif
+        ) {
             while (SerialBT.available()) {
                 BTbuf[iBT] = SerialBT.read();
                 iBT++;
@@ -565,6 +573,12 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
 #endif
 
         for (int num = 0; num < NUM_COM; num++) {
+#ifdef NAV_DETECTION
+            if (navPort.load() == num) {
+                navScan.tick(num);
+                continue;
+            }
+#endif
 #if defined(ESP32) && defined(PROTOCOL_TCP)
             if (num == RADIO_COM) {
                 serviceRadioPort();

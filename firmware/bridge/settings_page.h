@@ -31,6 +31,39 @@ static void restartSoon() {
     ESP.restart();
 }
 
+static void handleNavScan() {
+    if (!settingsAuth()) return;
+    statusServer.sendHeader("Cache-Control", "no-store");
+    if (statusServer.method() == HTTP_POST) {
+        if (statusServer.hasArg("cancel")) {
+            const NavResult current = navSnapshot();
+            if (statusServer.arg("cancel") != String(current.id)) {
+                statusServer.send(409, "text/plain", "This scan has been replaced.");
+                return;
+            }
+            navCancel.store(true);
+        } else {
+            const String p = statusServer.arg("port");
+            if (p != "0" && p != "1") {
+                statusServer.send(400, "text/plain", "Select a navigation input.");
+                return;
+            }
+            if (!navStart(p == "0" ? 0 : 1)) {
+                statusServer.send(409, "text/plain", "A navigation scan is already running.");
+                return;
+            }
+        }
+    }
+    const NavResult r = navSnapshot();
+    static const char* states[] = {"idle", "listening", "measuring", "found", "quiet", "undecoded", "cancelled"};
+    char body[192];
+    snprintf(body, sizeof(body),
+             "{\"id\":%u,\"port\":%d,\"state\":\"%s\",\"baud\":%lu,\"frame\":\"%s\",\"zander\":%u,\"flarm\":%u,\"generic\":%u}",
+             r.id, r.port, states[unsigned(r.state)], (unsigned long)r.baud, r.frame,
+             r.counts.zander, r.counts.flarm, r.counts.generic);
+    statusServer.send(200, "application/json", body);
+}
+
 static const char* settingHint(SettingType type, int portNum) {
     switch (type) {
         case T_PROFILE: return "Choose a listed device; the others do not fit this port's wiring";
@@ -206,12 +239,13 @@ const BAUD=[1200,2400,4800,9600,19200,38400,57600,115200,230400],FRAME=['8N1','8
 let items=[],PROF={},PORTS=[],NAME={custom:'Custom'};
 function field(i){const id='k_'+i.key,lab=esc(i.name.charAt(0).toUpperCase()+i.name.slice(1)),n=i.key[1],dev=i.port&&i.key[0]==='p';let c,w='';
 if(dev){const P=PORTS[+n];c='<select id="'+id+'" name="'+i.key+'" onchange="preset('+n+')">'+P.profiles.concat('custom').map(x=>'<option value="'+x+'"'+(x===i.value?' selected':'')+'>'+esc(NAME[x])+'</option>').join('')+'</select>';w='<span class="def">Wiring: '+esc(P.interface)+'. Presets fill in baud and frame.</span>'}
-else if(i.port&&(i.key[0]==='b'||i.key[0]==='f')){const o=i.key[0]==='b'?BAUD:FRAME;c='<select id="'+id+'" name="'+i.key+'" onchange="manual('+n+')">'+o.map(x=>'<option'+(String(x)===i.value?' selected':'')+'>'+x+'</option>').join('')+'</select>'}
+else if(i.port&&(i.key[0]==='b'||i.key[0]==='f')){const o=i.key[0]==='b'?BAUD:[...new Set([...FRAME,i.value])];c='<select id="'+id+'" name="'+i.key+'" onchange="manual('+n+')">'+o.map(x=>'<option'+(String(x)===i.value?' selected':'')+'>'+esc(x)+'</option>').join('')+'</select>'}
 else if(i.secret)c='<input id="'+id+'" name="'+i.key+'" type="password" autocomplete="new-password" placeholder="Unchanged">';
 else if(i.key==='vs')c='<select id="'+id+'" name="vs">'+['on','off'].map(x=>'<option'+(x===i.value?' selected':'')+'>'+x+'</option>').join('')+'</select>';
 else{const num=i.key[0]==='t'||i.key==='nj'||i.key==='vt',dec=i.key==='vc';c='<input id="'+id+'" name="'+i.key+'" value="'+esc(i.value)+'"'+(num?' inputmode="numeric"':dec?' inputmode="decimal"':'')+'>';
 if(dec)w='<label for="mv">Calibrate: multimeter reading at the XT30, V</label><input id="mv" inputmode="decimal"><button class="quiet" type="button" onclick="cal()">Set factor</button><span class="def" id="cm"></span>'}
 const dv=dev?NAME[i.default]||i.default:i.default;
+if(dev && +n<2)w+='<p class="def">Detection briefly pauses forwarding on this input.</p><div class="btns"><button class="quiet detect" type="button" onclick="startScan('+n+')">Detect</button><button class="quiet" id="cancel'+n+'" hidden type="button" onclick="cancelScan()">Cancel scan</button><button class="quiet" id="use'+n+'" hidden type="button" onclick="useScan('+n+')">Use these settings</button></div><span class="def" role="status" id="scan'+n+'"></span>';
 const d=i.secret?'':'<span class="def'+(i.origin==='changed'?' chg':'')+'">'+(i.origin==='changed'?'Changed, default ':'Default ')+esc(dv)+'</span>';
 return '<div'+(dev||w?' class="dev"':'')+'><label for="'+id+'">'+lab+'</label>'+c+d+(w?'<br>'+w:'')+'<div class="err" id="e_'+i.key+'"></div></div>'}
 function cal(){const m=parseFloat($('mv').value.replace(',','.'));fetch('/api/status',{cache:'no-store'}).then(r=>r.json()).then(d=>{const s=d.supply;
@@ -226,6 +260,55 @@ for(const i of d.items){const k=i.group||i.port||'Wi-Fi';if(!g[k]){g[k]=[];o.pus
 $('fs').innerHTML=o.map(k=>'<fieldset><legend>'+esc(k)+'</legend><div class="f'+(k==='Wi-Fi'?' w':'')+'">'+g[k].map(field).join('')+'</div></fieldset>').join('');
 if(d.trial&&d.trial.active){$('trial').hidden=false;$('tt').textContent='These Wi-Fi or port settings are on trial. Keep them within '+Math.ceil(d.trial.seconds_left/60)+' min, otherwise the previous settings come back.'}})}
 function post(u,body){return fetch(u,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body||''})}
+const scanUrl='/api/nav-scan', suggestions=[];
+let scanId=0;
+async function scanReply(response){
+    if(!response.ok)throw Error(response.status===409?await response.text():'Bridge did not accept the scan request.');
+    return response.json();
+}
+function displayScan(r){
+    const n=r.port, labels=[];
+    if(r.zander>=3)labels.push('Zander ('+r.zander+')');
+    if(r.flarm>=3)labels.push('FLARM ('+r.flarm+')');
+    if(!labels.length)labels.push('Generic NMEA ('+r.generic+')');
+    const messages={listening:r.baud?'Listening at '+r.baud+' baud, '+r.frame+'…':'Starting scan…',
+        measuring:'Measuring the incoming bit rate…',found:labels.join(' + ')+' · '+r.baud+' baud · read using '+r.frame,
+        quiet:'No signal observed.',undecoded:'Activity observed, decoding unresolved.',cancelled:'Scan cancelled.'};
+    $('scan'+n).textContent=messages[r.state];
+    if(r.state==='found'){suggestions[n]=r;$('use'+n).hidden=false}
+    return r.state==='listening'||r.state==='measuring';
+}
+async function startScan(n){
+    const buttons=document.querySelectorAll('.detect');
+    buttons.forEach(b=>b.disabled=true);
+    $('use'+n).hidden=true;
+    $('scan'+n).textContent='Starting scan…';
+    try{
+        let r=await scanReply(await post(scanUrl,'port='+n));
+        scanId=r.id;
+        $('cancel'+n).hidden=false;
+        while(displayScan(r)){
+            await new Promise(resolve=>setTimeout(resolve,500));
+            r=await scanReply(await fetch(scanUrl,{cache:'no-store'}));
+            if(r.id!==scanId||r.port!==n)throw Error('This scan has been replaced.');
+        }
+    }catch(e){$('scan'+n).textContent=e.message+' Any running scan ends automatically.'}
+    finally{scanId=0;$('cancel'+n).hidden=true;buttons.forEach(b=>b.disabled=false)}
+}
+async function cancelScan(){
+    try{await scanReply(await post(scanUrl,'cancel='+scanId))}
+    catch(e){$('msg').textContent=e.message}
+}
+function useScan(n){
+    const r=suggestions[n];
+    const id=r.zander>=3 && r.flarm<3?'zs1':r.flarm>=3 && r.zander<3?'flarm':'custom';
+    const p=PROF[id];
+    $('k_p'+n).value=p && String(p.baud)===String(r.baud) && p.frame===r.frame?id:'custom';
+    $('k_b'+n).value=r.baud;
+    $('k_f'+n).value=r.frame;
+    $('use'+n).hidden=true;
+    $('scan'+n).textContent+=' · Added to form. Save and restart to apply.';
+}
 function save(e){e.preventDefault();document.querySelectorAll('.err').forEach(x=>x.textContent='');
 const b=new URLSearchParams();for(const i of items){const el=$('k_'+i.key);if(el&&!el.disabled)b.append(i.key,el.value)}
 post('/api/settings',b).then(r=>r.json()).then(d=>{if(!d.ok){for(const k in d.errors){const x=$('e_'+k);if(x)x.textContent=d.errors[k]}$('msg').textContent='Not saved. Correct the marked fields.';return}
@@ -244,6 +327,8 @@ load();
 )HTML";
 
 static void settingsRoutes() {
+    statusServer.on("/api/nav-scan", HTTP_GET, handleNavScan);
+    statusServer.on("/api/nav-scan", HTTP_POST, handleNavScan);
     statusServer.on("/settings", HTTP_GET, []() {
         if (!settingsAuth()) return;
         statusServer.send(200, "text/html", kSettingsPage);

@@ -1,6 +1,6 @@
 # Bridge firmware
 
-Wi-Fi bridge firmware for Zander, FLARM and Becker, based on ESP-Serial-Bridge ([ADR-02](../../docs/design/architecture.md#adr-02)). The standalone ESP32 runs step 4 firmware with single-client radio ownership (S114) and the [web log](#web-log) (S116). Firmware 0.5.1 adds the [supply voltage](#supply-voltage) (step 3d), 0.5.2 the [chip temperature](#chip-temperature) (step 3e), 0.5.3 the [lifetime record](#lifetime-record) (step 3f), 0.5.4 the [saved log](#saved-log) (step 3g). 0.5.5 starts the low-voltage and chip-temperature warning timers correctly ([review](../../docs/research/reviews/2026-11-19-firmware-0.5.4-review.md), S138); 0.5.6 raises the chip-temperature warning to 100 °C. The assembled bench bridge runs 0.5.6 (S142). See the [firmware plan](../../docs/project/roadmap.md#firmware-plan) for the remaining wired checks.
+Wi-Fi bridge firmware for Zander, FLARM and Becker, based on ESP-Serial-Bridge ([ADR-02](../../docs/design/architecture.md#adr-02)). The standalone ESP32 runs step 4 firmware with single-client radio ownership (S114) and the [web log](#web-log) (S116). Firmware 0.5.1 adds the [supply voltage](#supply-voltage) (step 3d), 0.5.2 the [chip temperature](#chip-temperature) (step 3e), 0.5.3 the [lifetime record](#lifetime-record) (step 3f), 0.5.4 the [saved log](#saved-log) (step 3g). 0.5.5 starts the low-voltage and chip-temperature warning timers correctly ([review](../../docs/research/reviews/2026-11-19-firmware-0.5.4-review.md), S138); 0.5.6 raises the chip-temperature warning to 100 °C. The assembled bench bridge runs 0.5.7 with optional navigation detection (S154). See the [firmware plan](../../docs/project/roadmap.md#firmware-plan) for the remaining wired checks.
 
 ## Origin and license
 
@@ -85,6 +85,7 @@ Open *Change settings* under *All settings*, or `http://<bridge address>/setting
 
 | What | How it works |
 | --- | --- |
+| Detect | On either navigation input, press **Detect** for a one-time receive-only scan. Only that input pauses. The bridge tries its current settings, measures the incoming bit rate, then tries supported rates with 8N1. Three matching sentences identify Zander or FLARM. The result can also report both streams, generic NMEA, undecodable activity or silence. The bridge restores forwarding before showing the result, even if the browser leaves. **Use these settings** fills the form. **Save and restart** applies it. The Becker port stays manual. |
 | Values | Per device: device profile, baud, frame, TCP port. Wi-Fi: network name and password, join time, hotspot name, password and address. Supply voltage: sensor fitted, calibration factor, TCP port. Pins, radio port rules, hostname and OTA password stay fixed in the firmware |
 | Device profiles | Choose the instrument on a port: Zander ZS1, Classic FLARM, Becker AR6201 or Custom. A preset fills in baud and frame; changing either by hand selects Custom. Only presets that fit the port's wiring are offered and accepted: Zander and FLARM ports (RS-232, bridge receives only) take ZS1 or Classic FLARM, the Becker port (RS-422, both ways) takes AR6201. The page shows the port's wiring under the choice. Preset values are the candidates in `config.h`. Settings saved before profiles existed keep working: a preset that no longer matches its baud and frame shows as Custom. The TCP port stays separate
 | Checks | Every field is checked on the bridge; a refused save names each wrong field and changes nothing. TCP ports, including the supply voltage port, may not repeat and may not be 80 |
@@ -97,6 +98,7 @@ Open *Change settings* under *All settings*, or `http://<bridge address>/setting
 | Address | Content |
 | --- | --- |
 | `GET /settings` | The page (password) |
+| `POST /api/nav-scan`, `GET /api/nav-scan` | Start with form field `port=0` or `port=1`, cancel with `cancel=<scan id>`, or read progress with GET (password). Baud and frame describe the setting used to decode the stream. |
 | `POST /api/settings` | Check and save form fields named by their keys (`p0`, `b0`, `f0`, `t0` ... `ns`, `np`, `nj`, `hs`, `hp`, `ha`, `vs`, `vc`, `vt`), then restart (password) |
 | `POST /api/keep` | Keep settings on trial (password) |
 | `POST /api/reset` | Forget all stored values, then restart (password) |

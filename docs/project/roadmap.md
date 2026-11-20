@@ -7,7 +7,7 @@
 The single work queue: which work package comes next and what finishes it.
 
 > [!NOTE]
-> **Status:** WP3 continues with bench validation: the bench bridge is built and powered up (S141). In the [bridge firmware plan](#firmware-plan) (WP6), steps 1–3b are done and step 4 firmware is on the standalone ESP32. Step 3c, a web log, is done on the standalone ESP32. Step 3d, the [supply voltage](#supply-voltage) with its chart, is in firmware 0.5.1 on the standalone ESP32 (S123); the checks with a real voltage and OpenSoar remain. Step 3e shows the ESP32's [chip temperature](../../firmware/bridge/README.md#chip-temperature), firmware 0.5.2. Step 3f keeps a [lifetime record](../../firmware/bridge/README.md#lifetime-record) through power cuts, firmware 0.5.3; step 3g a [saved log](../../firmware/bridge/README.md#saved-log) of errors and warnings, firmware 0.5.4. The wired bridge runs firmware 0.5.6 (S142). The wired checks for steps 4 and 5 remain. The software part of the device profiles (WP9) is brought forward and runs on the standalone ESP32. The driver packages (WP4, WP5) wait until WP3 is complete. Work outside the approved plan needs the owner's approval.
+> **Status:** WP3 continues with bench validation: the bench bridge is built and powered up (S141). In the [bridge firmware plan](#firmware-plan) (WP6), steps 1–3b are done and step 4 firmware is on the standalone ESP32. Step 3c, a web log, is done on the standalone ESP32. Step 3d, the [supply voltage](#supply-voltage) with its chart, is in firmware 0.5.1 on the standalone ESP32 (S123); the checks with a real voltage and OpenSoar remain. Step 3e shows the ESP32's [chip temperature](../../firmware/bridge/README.md#chip-temperature), firmware 0.5.2. Step 3f keeps a [lifetime record](../../firmware/bridge/README.md#lifetime-record) through power cuts, firmware 0.5.3; step 3g a [saved log](../../firmware/bridge/README.md#saved-log) of errors and warnings, firmware 0.5.4. The wired bridge runs firmware 0.5.7 with [navigation detection](#navigation-detection) (S154). Step 4 passed on the wired bridge (S150, S153). Step 5 acceptance remains. The software part of the device profiles (WP9) is brought forward and runs on the standalone ESP32. The driver packages (WP4, WP5) wait until WP3 is complete. Work outside the approved plan needs the owner's approval.
 
 📑 **On this page:** <kbd>[1 · 📦 Work packages](#work-packages)</kbd> <kbd>[2 · 💻 Bridge firmware plan](#firmware-plan)</kbd> <kbd>[3 · 🏁 Milestones](#milestones)</kbd> <kbd>[4 · ✅ Test coverage for the software phase](#test-coverage)</kbd>
 
@@ -29,7 +29,7 @@ Related: ❓ [Open items](open-items.md) · 🎯 [Requirements](../design/requir
 | WP5 Host tests | ⏸️ Send regression only ([review](../research/reviews/2026-11-08-becker-send.md)) | After WP4 scope is approved | Framing, state, reply and reconnect cases pass |
 | WP6 Bridge firmware | 🟡 Step 4 firmware checked on the standalone ESP32 (S114); slow-app handling for step 5 in firmware 0.5 (S120) | Run the step 4 [wired checks](#firmware-plan), then step 5 | Radio path byte-exact, single owner, navigation unaffected; phone signal readable on the status page in hotspot mode ([R10](../design/requirements.md#requirements)) |
 | WP8 Aircraft integration | ⬜ Later | Needs verified hardware and separate approval | Installation, protection and approval requirements met |
-| WP9 Device profiles | 🟡 Software part brought forward: [profiles](#device-profiles) in firmware 0.4.1 on the standalone ESP32 (S115) | Replace the candidate preset values once the [installed settings](open-items.md#installed-equipment) are known; check them on the wired bridge | Presets and manual settings work on compatible ports, survive restart and OTA, and preserve existing configurations |
+| WP9 Device profiles | 🟡 [Profiles](#device-profiles) and optional [navigation detection](#navigation-detection) in firmware 0.5.7 (S115, S154) | Replace the candidate preset values once the [installed settings](open-items.md#installed-equipment) are known; check them on the wired bridge | Presets and manual settings work on compatible ports, survive restart and OTA, and preserve existing configurations |
 
 ### 1.1 Work loop
 
@@ -55,24 +55,15 @@ flowchart LR
 
 <a id="navigation-detection"></a>
 
-### 1.3 Proposed WP9 extension — detect navigation baud and protocol
+### 1.3 Navigation baud and protocol detection (WP9)
 
-Offer a one-time **Detect** action on either RS-232 navigation input during setup. Presets and **Custom** stay available on all three ports. Becker setup stays manual. Firmware implementation needs separate approval.
+Firmware 0.5.7 adds **Detect** to the two RS-232 inputs on the [settings page](../../firmware/bridge/README.md#settings-page). The radio uses its existing preset or manual settings.
 
-| Setup step | Proposed behavior |
+| Check | Coverage |
 | --- | --- |
-| Start | From the password-protected [settings page](#settings-page), select one input. Pause forwarding on that input while listening. Keep the other input and the radio running. Allow one scan at a time. |
-| Find the rate | Try the active baud and frame first. If decoding fails, try supported rates with 8N1. Prioritize the ESP32 baud estimate when available and the Zander rates of 4,800 and 19,200 (S22). Bound each attempt and the whole scan on the bridge. |
-| Recognize the stream | Start with a threshold of three complete, valid sentences per protocol at one setting. Check sentence structure and any supplied checksum. Use Zander `PZAN` sentences and checksum-valid FLARM `PFLAU` heartbeats (S22–S24). Report both if both qualify. Give instrument-specific sentences time to arrive after generic GPS data. |
-| Report and resume | Show the protocol, rate, frame used and count of matching sentences. Other outcomes are **Generic NMEA**, **Activity, decoding unresolved** and **No signal observed**. Restore the original UART settings and forwarding on completion, cancellation or timeout, including when the browser disconnects. |
-| Review and save | **Use these settings** fills only the selected input’s serial fields and matching profile in the form. For example, Zander at 4,800 baud uses **Custom** with today’s 19,200 preset. Keep the TCP port and other pending edits. The user can adjust the result or discard it. Only **Save and restart** persists it. |
-
-| Increment | Acceptance check |
-| --- | --- |
-| 1. Recognize sample streams | Exercise Zander, FLARM heartbeats, generic GPS and mixed streams. Split sentences across reads and inject noise, truncated lines and bad checksums. Verify the reported protocol and evidence count. |
-| 2. Scan one UART | Start at correct and mismatched rates. Exercise silence, cancellation, timeout and browser loss. Check restoration of the selected input and byte-exact traffic on both unaffected ports throughout the scan. |
-| 3. Integrate settings | Check authentication, concurrent scan requests, manual overrides, preservation of unsaved fields and saved values after restart. |
-| 4. Validate on the wired bridge | Feed each navigation input at known rates, including both Zander rates. Measure recognition time and forwarding interruption to set the scan limits. Verify recognition separately with the installed instruments. |
+| Recognition | Three matching sentences at one setting. Zander, FLARM, both protocols, generic NMEA, undecodable activity or silence (S22–S24, S154). |
+| Settings | The scan restores the original UART before review. The user can copy the suggestion into the form, adjust it or discard it. TCP ports and other edits stay independent. |
+| Bench acceptance | [Wired scan checks](../../tools/nav_scan_test.py) and remaining instrument checks in S154 and [installed equipment](open-items.md#installed-equipment). |
 
 ---
 

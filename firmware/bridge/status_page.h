@@ -336,6 +336,12 @@ static void statusTask(void*) {
 // Before COM[num]->begin(): count UART receive errors.
 static void statusAttachUart(int num) {
     COM[num]->onReceiveError([num](hardwareSerial_error_t e) {
+#ifdef NAV_DETECTION
+        if (navPort.load() == num) {
+            navRxError.store(true);
+            return;  // Deliberately trying a mismatched rate is normal during detection.
+        }
+#endif
         STAT(num, uartErrors, 1);
         portStats[num].lastError.store(e, std::memory_order_relaxed);
     });

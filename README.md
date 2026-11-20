@@ -32,6 +32,7 @@ Connect the phone to the bridge's Wi-Fi and open `http://10.10.10.10` (or `http:
 - **Top:** which bridge, firmware, uptime and Wi-Fi signal.
 - **One row per device:** green dot while data arrives, the active baud rate and port, connected apps, errors in red. Counters are under *Details*.
 - **All settings:** baud, frame and ports per device, network and hotspot. Amber marks a value saved on the bridge instead of the firmware default. Passwords are never shown.
+- **Detect** on either navigation input checks its baud rate and recognizes Zander or FLARM sentences. Review the suggestion or set the port manually.
 - **Data monitor:** the data passing each device, readable as text or hex, to check that data comes in. Pause and download.
 - **Change settings** (password, user `bridge`): baud, frame and ports per device, network and hotspot. Saving restarts the bridge. A Wi-Fi, hotspot or port change runs on trial: press *Keep* within 10 minutes, otherwise the old settings come back by themselves.
 
