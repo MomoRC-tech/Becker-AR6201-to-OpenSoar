@@ -7,9 +7,9 @@
 What the OpenSoar AR62xx radio driver does today, how other implementations solve the same problems, and which protocol facts are still missing.
 
 > [!NOTE]
-> **Status:** the readback-only patch applies to OpenSoar 7.46.26. The Linux app builds and the focused host tests pass (S164). See the [remaining checks](../project/open-items.md#software-and-acceptance).
+> **Status:** the project uses the built-in Becker AR62xx driver. The findings below apply to stock OpenSoar 7.46.26. See the [remaining checks](../project/open-items.md#software-and-acceptance).
 
-📑 **On this page:** <kbd>[1 · 🔍 OpenSoar driver findings](#opensoar-driver)</kbd> <kbd>[2 · 📚 Other implementations](#other-implementations)</kbd> <kbd>[3 · 🛠️ Readback-only patch](#consequences)</kbd> <kbd>[4 · 📖 Manuals and commercial adapters](#manuals)</kbd>
+📑 **On this page:** <kbd>[1 · 🔍 OpenSoar driver findings](#opensoar-driver)</kbd> <kbd>[2 · 📚 Other implementations](#other-implementations)</kbd> <kbd>[3 · 📱 OpenSoar setup](#consequences)</kbd> <kbd>[4 · 📖 Manuals and commercial adapters](#manuals)</kbd>
 
 Related: 📶 [Bridge firmware](bridge-firmware.md) · 📚 [Sources](sources.md) · ❓ [Open items](../project/open-items.md#software-and-acceptance)
 
@@ -107,36 +107,16 @@ Once the radio is identified, ask Becker for: the remote-control protocol for th
 
 <a id="consequences"></a>
 
-## 3. 🛠️ Readback-only patch
+## 3. 📱 OpenSoar setup
 
-> [!TIP]
-> **Selected:** keep active and standby frequency readback. Block active tuning, standby tuning and swap from OpenSoar. The known tuning command writes both channels, so the last reported active frequency could overwrite a more recent change at the radio.
+| OpenSoar device setting | Value |
+| --- | --- |
+| Driver | **Becker AR62xx**, included in the standard app |
+| Port type | **TCP client** |
+| Host | Bridge address (default hotspot address `10.10.10.10`) |
+| TCP port | Configured Becker port (default `4352`) |
 
-The receiver uses the existing decoder's framing, CRC algorithm and channel mapping. It buffers split frames per device, requires a matching CRC, and publishes both frequencies to OpenSoar when it receives a valid frequency status frame. Radio acceptance is tracked in [open items](../project/open-items.md#software-and-acceptance).
-
-### 3.1 Apply and verify
-
-Use a clean checkout at the pinned OpenSoar 7.46.26 commit. The [patch](../../patches/opensoar/ar62xx-readback-only.patch) is tied to that revision. From the directory containing both checkouts:
-
-```bash
-git clone https://github.com/OpenSoaring/OpenSoar.git
-cd OpenSoar
-git switch -c becker-readback b2e745cfddfe0150f6ed7db467ac18c321b38d01
-git apply --check ../Becker-AR6201-to-OpenSoar/patches/opensoar/ar62xx-readback-only.patch
-git apply ../Becker-AR6201-to-OpenSoar/patches/opensoar/ar62xx-readback-only.patch
-```
-
-Install the prerequisites for your target. [OpenSoar build guide](https://github.com/OpenSoaring/OpenSoar/blob/b2e745cfddfe0150f6ed7db467ac18c321b38d01/doc/build.rst)
-
-Build the Linux app and run the focused test:
-
-```bash
-make TARGET=UNIX DEBUG=n
-make TARGET=UNIX DEBUG=n output/UNIX/bin/TestAR62xx
-output/UNIX/bin/TestAR62xx
-```
-
-In the patched app, select **Becker AR62xx** for the radio connection and enable **Sync. from device** to show both frequencies when the radio reports them.
+The bridge forwards the driver's bytes both ways. For a standby tuning bench check, compare both frequencies on the Becker front panel before and after the request. The stock driver can report success without a radio reply (S01/S02).
 
 ---
 

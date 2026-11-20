@@ -84,7 +84,7 @@ One work queue: the [roadmap](../project/roadmap.md). Requirements live in [requ
 > - Keep the upstream features except UDP (removed, not implemented); removing another needs the owner's answer first.
 > - Add the OTA loader's start-up, exclusive radio ownership, counted writes and a read-only status page.
 
-Reviews: [adoption review](../research/reviews/2026-11-16-yuri-adoption.md), [first review](../research/reviews/2026-11-08-yuri-bridge.md). Steps and feature selections: [firmware plan](../project/roadmap.md#firmware-plan). OpenSoar driver fixes are planned separately (WP4).
+Reviews: [adoption review](../research/reviews/2026-11-16-yuri-adoption.md), [first review](../research/reviews/2026-11-08-yuri-bridge.md). Steps and feature selections: [firmware plan](../project/roadmap.md#firmware-plan). WP4 uses the [built-in OpenSoar driver](../research/becker-driver.md#consequences).
 
 <a id="adr-03"></a>
 

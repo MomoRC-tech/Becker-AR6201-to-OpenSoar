@@ -54,7 +54,7 @@ Things the plan relies on but that are not yet confirmed.
 | --- | --- | --- | --- |
 | A01 | The installed radio is an AR6201 variant that supports remote control. | Radio identity (WP1), matching manual (WP2) | Final wiring |
 | A03 | The installed OpenSoar build supports the Becker driver over TCP alongside the navigation feeds. | Installed build (WP1), integration review (WP4) | End-to-end software choice |
-| A04 | Radio status gives a fresh enough active frequency before a standby command. | Protocol evidence (WP2), state design (WP4) | Safe command design |
+| A04 | Radio status gives a fresh enough active frequency before a standby command. | Protocol evidence (WP2), stock driver bench check (WP4) | Standby tuning acceptance |
 | A05 | A separate radio TCP endpoint works without disturbing the navigation feeds. | Topology (WP1), coexistence tests (WP6) | Radio path acceptance ([ADR-01](architecture.md#adr-01)) |
 | A06 | The ESP32 can carry both navigation paths plus the radio path. | UART plan (done), coexistence tests (WP6) | Bridge acceptance |
 
@@ -69,8 +69,8 @@ All risks are open.
 | ID | Prio | Risk | How it is reduced |
 | --- | :-: | --- | --- |
 | K01 | P0 | The wrong manual or radio variant leads to incompatible wiring — Becker publishes separate manuals per hardware generation (S03). | Match model, revision and connector view before wiring |
-| K02 | P0 | A standby command carries an unknown or stale active frequency (F04). | Block tuning in the [readback-only patch](../research/becker-driver.md#consequences) |
-| K03 | P0 | Binary writes are truncated or report false success (F02/F03). | Verify zero writes from tuning calls in the readback-only patch (S164) |
+| K02 | P0 | A standby command carries an unknown or stale active frequency (F04). | Check both frequencies on the radio during [stock driver validation](../research/becker-driver.md#consequences), including after a local frequency change |
+| K03 | P0 | Binary writes are truncated or report false success (F02/F03). | Compare stock app traffic to the expected frame and confirm the result on the radio (S12) |
 | K04 | P0 | Bridge overflow, several writers or debug output corrupt radio traffic (S05/S06). | Firmware audit, byte-exact load and failure tests, separate radio path |
 | K05 | P0 | The new bridge interrupts navigation data. | Compare with today's installation; coexistence tests (WP6) |
 | K06 | P0 | A simulator only repeats the driver's own assumptions. | Independent protocol evidence; label synthetic tests; simulation is never acceptance |
