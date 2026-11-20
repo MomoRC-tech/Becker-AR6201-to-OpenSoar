@@ -7,7 +7,7 @@
 Use this plan to take the module-based bench bridge through a smaller four-layer design, first articles and a repeatable JLCPCB order.
 
 > [!NOTE]
-> **Status:** Three DA-15 placement studies cover the connectors, controller and service circuits. The production layout must also fit the USB-C/XT30 power path required by [PCB12](requirements.md#production-pcb). The native DE-9 layout and its copper measurements below are the comparison baseline. [Requirements](requirements.md#requirements) · [KiCad project](../../electronics/integrated/compact-bridge.kicad_pro) · [Evidence S173, S178–S180, S189–S190, S196–S200](../research/sources.md#source-register).
+> **Status:** The owner rejected the 54 × 57 mm side-entry XT30 layout. Follow the [front-panel restart](../project/roadmap.md#work-packages). The saved study passed its CAD checks and includes the dual supply, upright USB-C, CP2102N auto-reset and two side-view LEDs. See the [side-entry study drawing](../images/integrated-da15-top.svg), [six-sheet schematic PDF](../images/integrated-da15-schematic.pdf), [native KiCad project](../../electronics/integrated/compact-bridge.kicad_pro) and [first-article checks](../project/open-items.md#pcb-study).
 
 📑 **On this page:** <kbd>[1 · 🔌 Circuits](#circuits)</kbd> <kbd>[2 · 📐 Housing and layout](#layout)</kbd> <kbd>[3 · 🌡️ Heat and verification](#heat)</kbd> <kbd>[4 · 💶 Production cost](#cost)</kbd> <kbd>[5 · 📦 Production](#production)</kbd>
 
@@ -22,17 +22,31 @@ The [supplier circuit requirements and schematic comparison](requirements.md#pcb
 | Function | Captured circuit | Verification before release |
 | --- | --- | --- |
 | Controller | ESP32-WROOM-32E-H4 with antenna and shield, no PSRAM. Local decoupling and six top-side 3.3 V logic programming pads. Fixture senses 3.3 V, board powers itself. | Check boot and OTA recovery, unpowered UART injection and instrument-port startup bytes. H4 stock and assembly profile per S170/S175. |
-| Navigation | One TRS3232EIPWR receives Zander and FLARM independently on GPIO32 and GPIO26. | The current schematic is receive-only. Both transmit paths are required for production ([PCB11](requirements.md#requirements)). Check polarity, loading and powered-off behaviour in both directions. |
+| Navigation | TRS3232EIPWR connects two independent RS-232 ports. Zander uses GPIO32 RX and GPIO33 TX. FLARM uses GPIO26 RX and GPIO27 TX. | Exercise both ports simultaneously at J1. Check polarity, loading and powered-off behaviour in both directions. |
 | Becker | SN65HVD1470DR full duplex at 3.3 V. Populate R4 to enable TX; R3 biases DI high, R5 defines DE if link removed. Receiver enabled, no receive termination fitted. SN65HVD35DR alternate subject to qualification. | Verify separate pairs and idle levels through reset and brownout. Compare loaded cable waveforms and bytes in both directions. |
 | Supply | External F1, DMP6023LE reverse-polarity MOSFET, 100 kΩ gate network, 12 V gate clamp, provisional SMBJ20A, LMR33610ADDAR synchronous 400 kHz buck to 3.3 V. Draft power stage uses 6.8 µH, two 10 µF/100 V inputs, four 22 µF/25 V outputs. | Scope actual hot clamp and ringing against every input limit. Verify inrush, MOSFET gate, minimum effective capacitance after DC bias and thermal limits. See S172. |
 | Battery measurement | R8/R9 divider from protected input to ground, C18 on the divider. While U5 is powered and enabled, PG low selects ground for GPIO34 and PG high selects the divider. At zero supply U5 isolates the signal paths and R12 pulls GPIO34 down. Output bleed preserves nominal ×11 scaling. | Calibrate against XT30 at 7–20 V. Scope GPIO34 and measure injection into unpowered 3.3 V at hot/cold start, hard collapse, reverse input and maximum clamped input. |
-| Harness | Right-angle male Amphenol D09P33E4GV00LF and AMASS XT30PW-M30.G.Y. J1 follows the [DE-9 pinout](../hardware/wiring.md#de9-pinout). J2 pad 1 is ground and pad 2 is the raw supply. Both J1 shell locks are isolated from board ground. | Check the mating plugs, jackscrews, polarity and housing support with actual parts. S173, S196. |
+| Harness | Right-angle male Amphenol D15P33E4GV00LF and AMASS XT30PW-M30.G.Y. See the [DA-15 pinout](#smaller-dsub). J2 pad 1 is ground and pad 2 is the raw supply. Both J1 shell locks are isolated from board ground. | Check the mating plugs, jackscrews, polarity and housing support with actual parts. S173, S196. |
 
 <a id="layout"></a>
 
 ## 2. 📐 Compact placement
 
 <a id="placement-comparison"></a>
+
+![Component-side drawing with plug outlines, screw tools, antenna, LEDs and 17 probe lands](../images/integrated-da15-top.svg)
+
+![Baseline and three fully populated outlines with cables, tools, probes and antenna](../images/integrated-da15-placement-options.svg)
+
+| Complete placement | Area / change from DE-9 | Side gap each / antenna tip to rear wall | Ø2 mm probe / Ø7 mm screw tool margin | TP10 to TP11 |
+| --- | --- | --- | --- | --- |
+| 55 × 55 mm | 3,025 mm² / +35.5% | 0.5 / 5.31 mm | 0.98 / 0.20 mm | 10.82 mm |
+| **54 × 57 mm, rejected side-entry study** | **3,078 mm² / +37.9%** | **1.0 / 3.31 mm** | **0.99 / 0.20 mm** | **4.00 mm** |
+| 54 × 58 mm | 3,132 mm² / +40.3% | 1.0 / 2.31 mm | 0.99 / 0.20 mm | 4.00 mm |
+
+All three include the protection and supply parts, service circuits and probes. The DA-15 mates at the front, XT30 at the left and USB-C from above. The 54 × 57 mm study reserves a 14 × 9 mm USB plug envelope. The ESP32 antenna projects 6.19 mm past the PCB. Both side-emitting LEDs face right, 1.50 mm from the board edge at their centers. The dimensions are planar clearances against reference envelopes. The side opening shown in these studies conflicts with the front-panel requirement. The older 55 mm extension at its original mounting position crossed the wall by 2 mm.
+
+**Earlier studies at `0304d9b`.** These predate placement of both ideal diodes.
 
 ![Three complete placements at the same scale, with the antenna, DA-15, XT30, service port, LEDs and probes](../images/integrated-placement-comparison.svg)
 
@@ -58,29 +72,29 @@ KiCad render of the 48 × 46.5 mm placement. The preview uses Amphenol’s [DE-9
 
 - Keep the ESP32 antenna past the PCB edge, with all-layer clearance to the host board, nearby metal and the mounted harness. Test Wi-Fi and Bluetooth inside the closed housing.
 - C13 bridges VIN and GND beside U4. C10 connects directly to BOOT and SW. Fit the stripe on L1 over SW pad 1. Feedback is taken from the output capacitor bank and routed below the inner ground plane.
-- A dedicated bottom trace joins J1 pins 3, 6 and 7 to XT30 minus. From pin 3 the calculated trace drop is 33 mV at 3.2 A and 85 °C. The external bridge fuse cannot interrupt this return. [Fault paths](../hardware/power.md#wire-breaks)
-- The J1 flange aligns with the board edge, 0.50 mm inside the proposed front wall. The XT30 mouth is recessed about 2.15 mm from the outside of that wall. Allow clearance for the plug body and jackscrews and transfer mating loads to the housing. S173.
+- A dedicated bottom trace joins J1 pins 3, 6 and 7 to XT30 minus. On the DE-9 baseline the calculated drop from pin 3 was 33 mV at 3.2 A and 85 °C. The external bridge fuse cannot interrupt this return. [Fault paths](../hardware/power.md#wire-breaks)
+- On the DE-9 baseline the J1 flange aligns with the board edge, 0.50 mm inside the proposed front wall. The XT30 mouth is recessed about 2.15 mm from the outside of that wall. Allow clearance for the plug body and jackscrews and transfer mating loads to the housing. S173.
 - U1 has nine separate paste windows and twelve open Ø0.20 mm holes. U4 has twelve Ø0.254 mm vias under one paste aperture. Send mask, paste and plated drill files together for the [assembler review](../project/open-items.md#pcb-study). S179.
 
-The [compact-board review](../research/reviews/2026-11-20-compact-board-physical.md) covers the current antenna, connector loading, vibration, heat, climate and circuit placement. The [circuit and fabrication review](../research/reviews/2026-11-20-integrated-pcb.md) gives the schematic fault cases and exposed-pad artwork. S186–S190.
+The DA-15 return widths and calculated drops are in the [fabrication settings](#production). The [compact-board review](../research/reviews/2026-11-20-compact-board-physical.md) covers the DE-9 baseline antenna, connector loading, vibration, heat, climate and circuit placement. The [circuit and fabrication review](../research/reviews/2026-11-20-integrated-pcb.md) gives the schematic fault cases and exposed-pad artwork. S186–S190.
 
 <a id="expansion"></a>
 
 ### 2.1 Internal I²C expansion and probe access
 
-**Bus selection:** 3.3 V I²C on U1.33 (GPIO21/SDA) and U1.36 (GPIO22/SCL). Both are bidirectional, outside the flash and boot-strap assignments. For I²C, provide pull-ups to the bridge 3.3 V rail and check their combined resistance and rise time with the chosen peripheral. Keep an externally powered peripheral from driving an unpowered bridge. Both signals run to the normally empty J3 row on 0.30 mm copper, each with one via from the front to the back layer. [ESP32 pinout](https://documentation.espressif.com/esp32-wroom-32e_esp32-wroom-32ue_datasheet_en.html) · [Espressif I²C defaults](https://docs.espressif.com/projects/arduino-esp32/en/latest/api/i2c.html)
+**Bus selection:** 3.3 V I²C on U1.33 (GPIO21/SDA) and U1.36 (GPIO22/SCL). Both are bidirectional, outside the flash and boot-strap assignments. For I²C, provide pull-ups to the bridge 3.3 V rail and check their combined resistance and rise time with the chosen peripheral. Keep an externally powered peripheral from driving an unpowered bridge. J3 is a normally empty 2.54 mm row. The drawing below shows its DE-9 baseline location. [ESP32 pinout](https://documentation.espressif.com/esp32-wroom-32e_esp32-wroom-32ue_datasheet_en.html) · [Espressif I²C defaults](https://docs.espressif.com/projects/arduino-esp32/en/latest/api/i2c.html)
 
 ![J3 top view, pin order and clearance for the optional 2.54 mm header](../images/integrated-i2c-fit.png)
 
 | Fit or load | Measured in CAD or proposed for test |
 | --- | --- |
 | Assembly | Leave J3 empty on all ten boards. A standard 1 × 4 vertical pin header can be soldered in later. J3 is excluded from the assembly BOM and placement export. |
-| Pinout | From R2 toward J1: **1 GND** (square), **2 3V3 output**, **3 SDA** (GPIO21), **4 SCL** (GPIO22). Pin 1 center X133.45/Y146.04 mm, 2.54 mm pitch toward +Y. Four Ø1.00 mm plated holes with 1.70 mm lands. |
-| Optional header fit | The 2.54 × 10.16 mm reference body clears R2 by 0.81 mm and J1 by 0.91 mm. Courtyard gaps are 0.05 mm and 0.04 mm respectively. S197. |
+| Pinout | From R2 toward J1: **1 GND** (square), **2 3V3 output**, **3 SDA** (GPIO21), **4 SCL** (GPIO22). DE-9 baseline pin 1 center X133.45/Y146.04 mm, 2.54 mm pitch toward +Y. Four Ø1.00 mm plated holes with 1.70 mm lands. |
+| Optional header fit | On the DE-9 baseline the 2.54 × 10.16 mm reference body clears R2 by 0.81 mm and J1 by 0.91 mm. Courtyard gaps are 0.05 mm and 0.04 mm respectively. S197. |
 | Vertical clearance and retention | The reference pins project 8.54 mm above the PCB and 1.40 mm below a 1.60 mm board. Check the selected socket, extraction space, wire bend, independent restraint and enclosure against the [first-article checks](../project/open-items.md#pcb-study). |
 | 3.3 V budget | U4 is rated at 1 A. Reserving 500 mA for the ESP32 supply leaves 500 mA before the transceivers, other loads and thermal margin. Use **50 mA total at the port as a proposed first-article test load** (0.165 W at 3.3 V). Publish usable current only after measuring peak rail sag, startup/inrush and closed-box temperature at 7–20 V with three active streams and the peripheral fitted. |
 
-**Probe map on the present board.** Viewed from the component side with J1 at the bottom, the two columns are 3.35 mm apart. TP2 is a fixture voltage-sense input. J2 powers the bridge.
+**Production probe map.** TP1–TP6 form a 2 × 3 fixture on 4.0 mm centers. TP2 senses the board voltage. All 17 probe lands have 2.5 mm exposed diameter. See the [DA-15 top view](../images/integrated-da15-top.svg) for pad locations.
 
 | Row from antenna toward J1 | Left pad | Right pad |
 | --- | --- | --- |
@@ -94,17 +108,18 @@ The [compact-board review](../research/reviews/2026-11-20-compact-board-physical
 | --- | --- | --- |
 | 7 / 8 | TP7 VIN_RAW / TP8 VIN_PROT | Supply before and after reverse-polarity protection |
 | 9 | TP9 PG_3V3 | Buck power-good |
-| V / 11 | TP10 V_SENSE / TP11 GND | U5 output at GPIO34 and a local ground connected to the ground plane, 7.31 mm apart |
+| 10 / 11 | TP10 V_SENSE / TP11 GND | U5 output at GPIO34 and a local ground connected to the ground plane, 4.00 mm apart on the DA-15 board |
 | 12 / 13 | TP12 ZS_RX / TP13 FL_RX | Zander and FLARM receiver logic |
 | 14 / 15 | TP14 BKR_RX / TP15 BKR_TX | Becker receive and transmit logic |
+| 16 / 17 | TP16 ZS_TX / TP17 FL_TX | Zander and FLARM transmit logic |
 
-On the DE-9 baseline, TP11 is Ø1.0 mm and the other 14 pads are Ø1.5 mm. For the DA-15 placement use the larger [PCB08 pad target](requirements.md#production-pcb) and reserve room for the probe body and ground connection with all cables fitted. Lay out the six fixture pads on a 4.0 mm trial pitch and move TP9 clear of V_SENSE. The [fixed-position trial, S204](../research/sources.md#source-register) shows where the larger lands need new positions. The drawing uses cable reference envelopes. [First-article probe checks](../project/open-items.md#pcb-study) · [S198](../research/sources.md#source-register)
+On the DE-9 baseline, TP11 was Ø1.0 mm and the other 14 pads were Ø1.5 mm. [First-article probe checks](../project/open-items.md#pcb-study)
 
 <a id="usb-programming"></a>
 
-### 2.2 Upright USB-C programming study
+### 2.2 Upright USB-C programming
 
-On the saved DE-9 board, J2 supplies power and TP1–TP6 serve a 3.3 V USB-to-UART pogo fixture. For production, program the WROOM through an upright USB-C port with the lid removed. [PCB12](requirements.md#production-pcb) defines the three supply modes and bench checks.
+On the DE-9 baseline, J2 supplies power and TP1–TP6 serve a 3.3 V USB-to-UART pogo fixture. For production, program the WROOM through an upright USB-C port with the lid removed. [PCB12](requirements.md#production-pcb) defines the three supply modes and bench checks.
 
 ![Top-entry USB-C placement study beside H2 showing the existing board and right housing wall](../images/integrated-usb-fit.png)
 
@@ -114,7 +129,7 @@ On the saved DE-9 board, J2 supplies power and TP1–TP6 serve a 3.3 V USB-to-UA
 | Existing outline | The 10.6 × 6.0 mm study envelope found no free position on a 0.25 mm grid at 0° or 90°. Repeating the check with TP1–TP6 removed also found no clear position. A same-outline design needs component rearrangement. |
 | Wider layout | A 7 mm extension beside H2 provides the socket envelope and a 6 × 15 mm trial area for electronics. The 55 mm board would cross the drawn right inner wall by 2.0 mm at the present mounting position. Shifting the assembly 2.5 mm left would leave only 0.5 mm per side and move both front cutouts and mounts. |
 | Programming circuit | Use the CP2102N QFN24 (4 × 4 mm) between USB-C D+/D− and ESP32 UART0. Use Espressif’s two-transistor auto-reset circuit from DTR/RTS to GPIO0/EN. Allow for ESD protection, VBUS sensing and local decoupling. Keep TP1–TP6 for production and recovery. |
-| Production power path | Use one Wuxi Maxinmicro MX5050S6030A1 (ESOP-8L, C54800033) on each input to U4. Feed one from protected XT30 and one from USB VBUS. XT30 takes priority at 7-20 V. Tap the battery divider before the XT30 device. Fit a separate 5.1 kΩ pull-down on each CC pin. The USB device needs at least 5 V on VS for specified active operation, including during USB-only startup. See [S208](../research/sources.md#source-register), [PCB12](requirements.md#production-pcb) and the [USB bias and bench checks](../project/open-items.md#pcb-study). |
+| Production power path | Use one Wuxi Maxinmicro MX5050S6030A1 (ESOP-8L, C54800033) on each input to U4. Feed one from protected XT30 and one from USB VBUS. XT30 takes priority at 7-20 V. Tap the battery divider before the XT30 device. Fit a separate 5.1 kΩ pull-down on each CC pin. Each VS pin connects to its own input. Below 5 V at the USB receptacle, active operation and USB-only startup fall outside the specified range. The owner accepts this cable-drop risk. See [S208](../research/sources.md#source-register), [PCB12](requirements.md#production-pcb) and the [USB bias and bench checks](../project/open-items.md#pcb-study). |
 
 Use the 55 mm extension as a comparison when placing the complete circuit for the [new layout](../project/roadmap.md#work-packages). Check the plug overmold, cable withdrawal, H2 tool access and enclosure support on each candidate. [Open interface choices](../project/open-items.md#pcb-study) · [S201](../research/sources.md#source-register)
 
@@ -128,10 +143,21 @@ The production J1 is the Amphenol **D15P33E4GV00LF** male right-angle DA-15, wit
 | --- | --- |
 | 1, 2 | Zander and FLARM instrument TX into the bridge, respectively |
 | 3, 6, 7 | Existing instrument returns, each retained on its original number |
-| 4, 5 / 8, 9 | Becker bridge TX +/− and RX +/−, respectively |
+| 4, 5 / 8, 9 | 4/5 carry Becker radio TX +/− to bridge U3.12 (A) and U3.11 (B). 8/9 carry bridge U3.9 (Y) and U3.10 (Z) to Becker radio RX +/−. |
 | 10 | GPIO33 → U2.11 / T1IN → U2.14 / T1OUT → Zander instrument RX |
 | 11 | GPIO27 → U2.10 / T2IN → U2.7 / T2OUT → FLARM instrument RX |
 | 12–15 | Spare, no connection |
+
+**Differential routing.** Lengths below are planar copper centerlines between pad centers. Vertical travel through a via is excluded. Plus and minus are measured independently for each USB plug orientation. [S210](../research/sources.md#source-register)
+
+| Signal path | Plus / minus (mm) | Difference | Vias (+ / −) |
+| --- | ---: | ---: | ---: |
+| USB-C A6/A7 → U8 pins 3/4, via D3 | 16.30 / 14.61 | 1.69 mm | 0 / 0 |
+| USB-C B6/B7 → U8 pins 3/4, via D3 | 19.48 / 21.21 | 1.73 mm | 0 / 2 |
+| Becker radio TX, J1.4/5 → U3 A/B | 18.56 / 18.53 | 0.03 mm | 1 / 1 |
+| Becker radio RX, U3 Y/Z → J1.8/9 | 12.15 / 30.90 | 18.75 mm | 1 / 1 |
+
+The A-side USB path stays on F.Cu over In1 ground. The B-side D− crossover uses In2 locally between the two connector vias. Both Becker pairs transition together to In2. The DA-15 places pins 8 and 9 in different rows, 18.04 mm apart. The driver pair separates on approach to those contacts. The JLC04161H-7628 reference stack gives approximately 93–97 Ω in a straight 0.30 mm pair with a 0.25–0.32 mm gap in the 2D model. The short contact exits, fanouts, component lands and vias change the geometry. The 90 Ω target still needs fabricator confirmation and a hardware check. [Model assumptions S211](../research/sources.md#source-register) [First-article checks](../project/open-items.md#pcb-study)
 
 The module-based bridge uses its existing [DE-9 harness](../hardware/wiring.md#de9-pinout). [DA-15 drawing and cable reference, S202](../research/sources.md#source-register)
 
@@ -155,7 +181,7 @@ The module-based bridge uses its existing [DE-9 harness](../hardware/wiring.md#d
 
 ## 4. 💶 Ten-board cost comparison
 
-Supplier snapshot on 20 November 2026, USD per part. Six major lines only, before passives, protection, ADC switch, fabrication, assembly, test, freight and tax. S175 covers the five unchanged lines. S196 gives a distributor reference for J1 pending the assembler quote.
+For the DA-15 prototype see the [JLCPCB BOM audit](../research/reviews/2026-11-20-integrated-jlcpcb-bom.md). The six-line DE-9 comparison below uses USD per part on 20 November 2026, before passives, protection, ADC switch, fabrication, assembly, test, freight and tax. S175 covers the five unchanged lines. S196 gives a distributor reference for J1 pending the assembler quote.
 
 | Part | One | Ten, each | Ten, line total |
 | --- | ---: | ---: | ---: |
@@ -184,11 +210,11 @@ Open the project in KiCad, then open **PCB Editor → Board Setup** to inspect t
 | Setting | Value used for the ten-board design | Saved in |
 | --- | --- | --- |
 | Stackup and finish | JLC04161H-7628, four-layer FR-4, nominal 1.6 mm. Outer copper 35 µm, inner copper 15.2 µm. Green solder mask, white silkscreen, lead-free HASL quote baseline. | [KiCad board](../../electronics/integrated/compact-bridge.kicad_pcb) |
-| Tracks and copper | Default track 0.30 mm, minimum width and spacing 0.25 mm, routed-edge clearance 0.50 mm. Narrowest existing track 0.28 mm. Select wider power and return paths for their electrical load. | [KiCad project](../../electronics/integrated/compact-bridge.kicad_pro) |
+| Tracks and copper | Default track 0.30 mm, minimum width and spacing 0.25 mm, routed-edge clearance 0.50 mm. USB uses 0.25 mm contact exits, 0.30 mm paired runs and 0.36 mm through the ESD section. Becker uses 0.30 mm. J4 contact lands have 0.20 mm gaps and permit 0.225 mm pad-to-track clearance. U8 permits 0.225 mm between its own lands. See the [local rules](../../electronics/integrated/compact-bridge.kicad_dru). Select wider power and return paths for their electrical load. | [KiCad project](../../electronics/integrated/compact-bridge.kicad_pro) |
 | Vias and drilling | Default via Ø0.70/0.30 mm land/drill. Minimum via land Ø0.65 mm, annular ring 0.175 mm, hole-to-hole 0.50 mm and hole-to-other-net copper 0.35 mm. Ø0.30 mm is the ordinary drill. U1 and U4 use their separate exposed-pad patterns. | KiCad project and board |
 | Mask and legend | Mask opening to other copper 0.12 mm, silk clearance 0.20 mm. New text 1.20 mm high with 0.20 mm strokes. Green mask with 1:1 openings and ordinary vias tented both sides. Aim for ≥0.15 mm drawn webs on new lands where possible. KiCad merges openings below 0.10 mm. | [KiCad board](../../electronics/integrated/compact-bridge.kicad_pcb) and project |
 
-The selected four-layer process lists 0.09/0.09 mm trace/space for 1 oz copper. The dedicated B.Cu return is 1.45–2.00 mm wide. A 20% width reduction raises its calculated 3.2 A drop from 32.8 to about 41 mV and loss from 0.105 to 0.131 W at 85 °C, holding copper thickness constant. Measure the complete mated return under load. [S192, S196](../research/sources.md#source-register)
+The selected four-layer process lists 0.09/0.09 mm trace/space for 1 oz copper. Dedicated 1.80 mm B.Cu branches join a 2.00 mm trunk to XT30 minus. For J1.3 / .6 / .7 the centerline lengths are 20.74 / 28.96 / 31.70 mm. At 3.2 A, 85 °C and 35 µm copper, their calculated drops are 20.9 / 29.0 / 31.7 mV. At 30 µm they are 24.4 / 33.9 / 37.0 mV. These trace-only estimates omit parallel ground pours, contacts, harness and solder resistance. Measure the complete mated return under load. [S192, S196](../research/sources.md#source-register)
 
 For the ten-board quote, submit the ESP32 (U1) and buck (U4) mask, paste and drill plots together. Their exposed-pad artwork needs a separate assembly decision on via treatment and stencil openings. [JLCPCB stackups](https://jlcpcb.com/impedance) · [Fabrication capabilities](https://jlcpcb.com/capabilities/pcb-capabilities) · [Quote items](../project/open-items.md#pcb-study)
 
