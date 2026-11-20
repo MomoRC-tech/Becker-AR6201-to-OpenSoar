@@ -110,7 +110,7 @@ On the saved DE-9 board, J2 supplies power and TP1–TP6 serve a 3.3 V USB-to-UA
 
 | Study item | Result |
 | --- | --- |
-| Candidate socket | GCT USB4145-03-0230-C, vertical USB 2.0 data receptacle. Its body stands 7.46 mm high. The four 2.30 mm shell stakes extend a nominal 0.70 mm below the 1.60 mm PCB. Allow support near the socket for the 5–20 N insertion load. |
+| Selected socket | GCT USB4145-03-0230-C, vertical USB 2.0 data receptacle. Its body stands 7.46 mm high. The four 2.30 mm shell stakes extend a nominal 0.70 mm below the 1.60 mm PCB. Allow support near the socket for the 5–20 N insertion load. |
 | Existing outline | The 10.6 × 6.0 mm study envelope found no free position on a 0.25 mm grid at 0° or 90°. Repeating the check with TP1–TP6 removed also found no clear position. A same-outline design needs component rearrangement. |
 | Wider layout | A 7 mm extension beside H2 provides the socket envelope and a 6 × 15 mm trial area for electronics. The 55 mm board would cross the drawn right inner wall by 2.0 mm at the present mounting position. Shifting the assembly 2.5 mm left would leave only 0.5 mm per side and move both front cutouts and mounts. |
 | Programming circuit | Candidate CP2102N QFN24 (4 × 4 mm): USB D+/D− to UART0, DTR/RTS through the Espressif two-transistor auto-reset circuit to GPIO0/EN. Allow for ESD protection, VBUS sensing and local decoupling. Keep TP1–TP6 for production and recovery. |
