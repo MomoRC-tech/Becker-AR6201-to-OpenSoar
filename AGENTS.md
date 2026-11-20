@@ -12,7 +12,7 @@ The roadmap is the single work queue. A listed package, proposed ADR or recommen
 
 Several agents (Claude, ChatGPT/Codex) work on this repository. Before the first edit of a task:
 
-1. `git fetch origin`. If the checkout is behind `origin/main`, update it first (fast-forward only). If it has commits or uncommitted changes that are not part of this task, stop and report.
+1. `git fetch origin`. If the checkout is behind `origin/main`, update it first (fast-forward only). If it has commits or uncommitted changes that are not part of this task, stop and report. Ignore untracked files under the repository-root `.codex-attachments/` directory for this check and the pre-commit review. Leave them untouched and unstaged. Tracked changes there follow the usual rules.
 2. Fusion: compare the cloud version of the housing design with the newest Fusion version recorded in docs/research/sources.md (the latest S-entry for the housing design). If the cloud version is newer, someone else changed it: stop and report. After saving, record the new version there in the same commit as the export.
 
 Finish every task with a push to `main` (see Preservation and delivery), so the next agent starts from it. Do not leave finished work on a side branch.
