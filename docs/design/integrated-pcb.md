@@ -98,7 +98,7 @@ The [compact-board review](../research/reviews/2026-11-20-compact-board-physical
 | 12 / 13 | TP12 ZS_RX / TP13 FL_RX | Zander and FLARM receiver logic |
 | 14 / 15 | TP14 BKR_RX / TP15 BKR_TX | Becker receive and transmit logic |
 
-Approach vertically with the lid removed and both cables attached. Use a fine tip on the Ø1.0 mm TP11 land. The other diagnostic lands are Ø1.5 mm. The drawing uses cable reference envelopes. [First-article probe checks](../project/open-items.md#pcb-study) · [S198](../research/sources.md#source-register)
+On the DE-9 baseline, TP11 is Ø1.0 mm and the other 14 pads are Ø1.5 mm. For the DA-15 placement use the larger [PCB08 pad target](requirements.md#production-pcb) and reserve room for the probe body and ground connection with all cables fitted. The drawing uses cable reference envelopes. [First-article probe checks](../project/open-items.md#pcb-study) · [S198](../research/sources.md#source-register)
 
 <a id="usb-programming"></a>
 
@@ -113,7 +113,7 @@ On the saved DE-9 board, J2 supplies power and TP1–TP6 serve a 3.3 V USB-to-UA
 | Selected socket | GCT USB4145-03-0230-C, vertical USB 2.0 data receptacle. Its body stands 7.46 mm high. The four 2.30 mm shell stakes extend a nominal 0.70 mm below the 1.60 mm PCB. Allow support near the socket for the 5–20 N insertion load. |
 | Existing outline | The 10.6 × 6.0 mm study envelope found no free position on a 0.25 mm grid at 0° or 90°. Repeating the check with TP1–TP6 removed also found no clear position. A same-outline design needs component rearrangement. |
 | Wider layout | A 7 mm extension beside H2 provides the socket envelope and a 6 × 15 mm trial area for electronics. The 55 mm board would cross the drawn right inner wall by 2.0 mm at the present mounting position. Shifting the assembly 2.5 mm left would leave only 0.5 mm per side and move both front cutouts and mounts. |
-| Programming circuit | Candidate CP2102N QFN24 (4 × 4 mm): USB D+/D− to UART0, DTR/RTS through the Espressif two-transistor auto-reset circuit to GPIO0/EN. Allow for ESD protection, VBUS sensing and local decoupling. Keep TP1–TP6 for production and recovery. |
+| Programming circuit | Use the CP2102N QFN24 (4 × 4 mm) between USB-C D+/D− and ESP32 UART0. The proposed Espressif two-transistor auto-reset circuit connects DTR/RTS to GPIO0/EN. Allow for ESD protection, VBUS sensing and local decoupling. Keep TP1–TP6 for production and recovery. |
 | Production power path candidate | Feed the existing U4 buck through two blocking diodes, one from protected XT30 and one from USB VBUS. The higher XT30 voltage gives it priority. Tap the battery divider before the XT30 diode. Fit a separate 5.1 kΩ pull-down on each CC pin. Charger startup must work without USB enumeration. See [PCB12](requirements.md#production-pcb), [S203](../research/sources.md#source-register) and the [electrical checks](../project/open-items.md#pcb-study). |
 
 Use the 55 mm extension as a comparison when placing the complete circuit for the [new layout](../project/roadmap.md#work-packages). Check the plug overmold, cable withdrawal, H2 tool access and enclosure support on each candidate. [Open interface choices](../project/open-items.md#pcb-study) · [S201](../research/sources.md#source-register)
