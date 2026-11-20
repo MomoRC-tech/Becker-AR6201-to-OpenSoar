@@ -107,6 +107,24 @@ View from the component side, with the TTL header on the right and the screw ter
 > [!TIP]
 > **Selected:** keep the 5 V board; its receiver output reaches the ESP32 only through a 2.2 kΩ / 3.3 kΩ divider. Details: [Becker wiring](wiring.md#becker).
 
+<a id="rs422-check"></a>
+
+### 4.1 Check a new board
+
+"RS422 TO TTL" boards from other sellers or batches differ in header labels, DI pull-up and termination. The values above are for the QYF-998 board only. Check every new or replacement board loose, before wiring it, and record the results in [sources](../research/sources.md).
+
+MAX490 in SO-8, top view ([datasheet Fig. 2](https://www.analog.com/media/en/technical-documentation/data-sheets/MAX1487-MAX491.pdf#page=8), S144): pin 1 is at the dot or notch, and the pins count anticlockwise from there.
+
+| Chip pin | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Signal | VCC | **RO** | **DI** | GND | Y | Z | B | A |
+
+- [ ] Read the IC marking and find pin 1.
+- [ ] Power off, meter on beep: each header pin to chip pins 2 and 3. The pin that beeps to **3 (DI)** takes GPIO17 directly. The pin that beeps to **2 (RO)** goes through the divider to GPIO16. Ignore the header labels.
+- [ ] Beep the screw terminals to chip pins 5–8 to confirm Y, Z, B, A. A series resistor (about 100 Ω) in a line is normal.
+- [ ] Ω across A–B: about 120 Ω means a termination is fitted; tens of kΩ means it is open. The selected setup has it [open](wiring.md#becker).
+- [ ] Board at 5 V, DI header pin unconnected: DI to GND at 2 V or more means the board's own pull-up is enough. Below 2 V, fit 10 kΩ from J3-11 to 3V3.
+
 ---
 
 <a id="ubec"></a>
