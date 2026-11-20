@@ -75,7 +75,17 @@ The [compact-board review](../research/reviews/2026-11-20-compact-board-physical
 | 2 | TP3 EN | TP4 BOOT / GPIO0 |
 | 3 | TP5 PROG_TX (ESP32 output) | TP6 PROG_RX (ESP32 input) |
 
-For diagnostic pad placement, the native net anchors are J2.2 (VIN_RAW), C19.1 (VIN_PROT), R11.2 (PG_3V3), U1.6 (V_SENSE), U2.12/.9 (ZS_RX/FL_RX) and U3.2/.5 (BKR_RX/BKR_TX). The last four are logic-side signals. U5.4 to U1.6 spans 24.56 mm. Place the ADC probe near GPIO34 with a nearby ground and review the route against the switch node and feedback path. These anchors identify the nets for PCB08. Place the additional pads on the component side for access with the lid removed and both cables connected. [Open items](../project/open-items.md#pcb-study) · [S191, S196](../research/sources.md#source-register)
+![Top-side programming and diagnostic pads with the DE-9 and XT30 harness envelopes shown at the front](../images/integrated-probe-access.png)
+
+| Board mark | Probe | Measure |
+| --- | --- | --- |
+| 7 / 8 | TP7 VIN_RAW / TP8 VIN_PROT | Supply before and after reverse-polarity protection |
+| 9 | TP9 PG_3V3 | Buck power-good |
+| V / 11 | TP10 V_SENSE / TP11 GND | ADC at GPIO34 and local ground, 7.31 mm apart |
+| 12 / 13 | TP12 ZS_RX / TP13 FL_RX | Zander and FLARM receiver logic |
+| 14 / 15 | TP14 BKR_RX / TP15 BKR_TX | Becker receive and transmit logic |
+
+Approach vertically with the lid removed and both cables attached. Use a fine tip on the Ø1.0 mm TP11 land. The other diagnostic lands are Ø1.5 mm. The drawing uses cable reference envelopes. [First-article probe checks](../project/open-items.md#pcb-study) · [S198](../research/sources.md#source-register)
 
 <a id="smaller-dsub"></a>
 
