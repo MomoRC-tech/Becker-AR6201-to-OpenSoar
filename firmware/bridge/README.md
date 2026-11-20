@@ -49,7 +49,7 @@ Set in `config.h`; everything else is upstream.
 
 ## Status page
 
-Open `http://<bridge address>/` (10.10.10.10 in hotspot mode) in a browser. In hotspot mode an Android phone may send the browser over mobile data, since the hotspot has no internet: switch mobile data off to open the page. TCP apps reach the bridge either way (S149, S151). [`status_page.h`](status_page.h) holds the page; the forwarding loop only adds to counters, and a low-priority task on the other CPU core serves it. The page refreshes its values every 2 s in place, so opened sections stay open. Light or dark follows the phone.
+Open `http://<bridge address>/` (10.10.10.10 in hotspot mode) in a browser. In hotspot mode, answer Android's prompt to stay connected without internet with yes, then type `http://10.10.10.10/`; mobile data can stay on (S152). If the page still does not open, switch mobile data off. TCP apps reach the bridge either way (S151). [`status_page.h`](status_page.h) holds the page; the forwarding loop only adds to counters, and a low-priority task on the other CPU core serves it. The page refreshes its values every 2 s in place, so opened sections stay open. Light or dark follows the phone.
 
 ![Status page on a phone, all settings open](../../docs/images/status-page.png)
 
