@@ -7,7 +7,7 @@
 Use this plan to take the module-based bench bridge through a smaller four-layer design, first articles and a repeatable JLCPCB order.
 
 > [!NOTE]
-> **Status:** The ten-board layout has routed power, instrument fault returns and both I²C signals. The diagnostic pads are placed. Signal and probe routing continues. [Requirements](requirements.md#requirements) · [KiCad project](../../electronics/integrated/compact-bridge.kicad_pro) · [Evidence S173, S178–S180, S189–S190, S196–S199](../research/sources.md#source-register).
+> **Status:** The ten-board layout has routed power, instrument fault returns, I²C and the GPIO34 sense output. The remaining signals and probe connections are in layout. [Requirements](requirements.md#requirements) · [KiCad project](../../electronics/integrated/compact-bridge.kicad_pro) · [Evidence S173, S178–S180, S189–S190, S196–S200](../research/sources.md#source-register).
 
 📑 **On this page:** <kbd>[1 · 🔌 Circuits](#circuits)</kbd> <kbd>[2 · 📐 Housing and layout](#layout)</kbd> <kbd>[3 · 🌡️ Heat and verification](#heat)</kbd> <kbd>[4 · 💶 Production cost](#cost)</kbd> <kbd>[5 · 📦 Production](#production)</kbd>
 
@@ -81,7 +81,7 @@ The [compact-board review](../research/reviews/2026-11-20-compact-board-physical
 | --- | --- | --- |
 | 7 / 8 | TP7 VIN_RAW / TP8 VIN_PROT | Supply before and after reverse-polarity protection |
 | 9 | TP9 PG_3V3 | Buck power-good |
-| V / 11 | TP10 V_SENSE / TP11 GND | ADC at GPIO34 and local ground, 7.31 mm apart |
+| V / 11 | TP10 V_SENSE / TP11 GND | U5 output at GPIO34 and a local ground connected to the ground plane, 7.31 mm apart |
 | 12 / 13 | TP12 ZS_RX / TP13 FL_RX | Zander and FLARM receiver logic |
 | 14 / 15 | TP14 BKR_RX / TP15 BKR_TX | Becker receive and transmit logic |
 
