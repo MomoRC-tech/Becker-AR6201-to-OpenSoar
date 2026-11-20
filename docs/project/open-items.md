@@ -9,7 +9,7 @@ The one list of everything still missing: what is needed, who provides it, and w
 > [!NOTE]
 > **Status:** all listed items are open. Current focus: bench hardware. Housing checks carry forward to prototype assembly and installation.
 
-📑 **On this page:** <kbd>[1 · 🔧 Bench hardware — current focus](#bench-hardware)</kbd> <kbd>[2 · 📦 Housing fit and installation](#housing)</kbd> <kbd>[3 · 🛩️ Installed equipment](#installed-equipment)</kbd> <kbd>[4 · 💻 Software and acceptance — later](#software-and-acceptance)</kbd>
+📑 **On this page:** <kbd>[1 · 🔧 Bench hardware — current focus](#bench-hardware)</kbd> <kbd>[2 · 📦 Housing fit and installation](#housing)</kbd> <kbd>[3 · 🛩️ Installed equipment](#installed-equipment)</kbd> <kbd>[4 · 💻 Software and acceptance — later](#software-and-acceptance)</kbd> <kbd>[5 · 🧩 Integrated PCB study](#pcb-study)</kbd>
 
 Related: 🗺️ [Roadmap](roadmap.md) · 🤔 [Assumptions](../design/requirements.md#assumptions) · 🛩️ [Existing installation](existing-installation.md)
 
@@ -110,6 +110,19 @@ See the [bridge firmware plan](roadmap.md#firmware-plan) and the [OpenSoar readb
 | 9 | Firmware review checks | Cross-port delay during bulk writes at low baud and remaining connection capacity. Repeated clean closes on quiet Zander and the ordinary two-app connection load passed (S160). [Firmware review](../research/reviews/2026-11-19-firmware-0.5.4-review.md#missing-checks) | Severity of findings 1 and 4 |
 | 10 | mDNS memory error | One `mdns_networking: Cannot allocate memory` error while the radio port refused repeated clients (S150): cause, and whether it repeats or affects the ports | Bridge reliability |
 | 11 | Settings under power loss | Interrupt a save and an automatic rollback on a spare ESP32, then check that the stored configuration is complete (S162) | Physical settings persistence |
+---
+
+<a id="pcb-study"></a>
+
+## 5. 🧩 Integrated PCB study
+
+| Input or decision | Owner | What it releases |
+| --- | --- | --- |
+| Mating interfaces and maximum installed envelope, including plug removal and tie mounts | Owner supplies installation clearance and chooses the connector arrangement first | Connector wall and PCB placement |
+| Continuous input, transient envelope, return-current path and hot/cold mounting-site conditions | Designer and owner, using the installation data above | Front-end ratings, ground design and thermal pass limits |
+| Controller variant, programming access, power converter, serial ICs and radio TX idle/enable strategy | Designer presents options with a recommendation for each, owner selects individually | Component and schematic freeze for the [PCB proposal](../design/integrated-pcb.md#circuits) |
+| Prototype and repeat quantity, delivery destination and factory versus local connector fitting | Owner before quote | Comparable delivered prices and exact order settings |
+
 ---
 
 <kbd>[⬆️ Back to top](#top)</kbd> <kbd>[🏠 Overview](../../README.md)</kbd>
