@@ -7,7 +7,7 @@
 Use this plan to take the module-based bench bridge through a smaller four-layer design, first articles and a repeatable JLCPCB order.
 
 > [!NOTE]
-> **Status:** Power and instrument fault returns are routed on the four-layer development board for ten units. Signal routing follows the test-point and expansion review. [Requirements](requirements.md#requirements) · [KiCad project](../../electronics/integrated/compact-bridge.kicad_pro) · [Evidence S173, S178–S180](../research/sources.md#source-register).
+> **Status:** Power and instrument fault returns are routed on the four-layer development board for ten units. Signal routing follows the test-point and expansion review. [Requirements](requirements.md#requirements) · [KiCad project](../../electronics/integrated/compact-bridge.kicad_pro) · [Evidence S173, S178–S180, S189–S190](../research/sources.md#source-register).
 
 📑 **On this page:** <kbd>[1 · 🔌 Circuits](#circuits)</kbd> <kbd>[2 · 📐 Housing and layout](#layout)</kbd> <kbd>[3 · 🌡️ Heat and verification](#heat)</kbd> <kbd>[4 · 💶 Production cost](#cost)</kbd> <kbd>[5 · 📦 Production](#production)</kbd>
 
@@ -32,14 +32,14 @@ The [supplier circuit requirements and schematic comparison](requirements.md#pcb
 
 ## 2. 📐 Compact placement
 
-One 50 × 55.5 mm four-layer PCB, populated from the top with through-hole connectors. The housing study targets **72 × 60 × 25 mm** versus 92 × 70 × 25 mm, about 33% less exterior volume. The native board contains the proposed walls and an XT30 clearance model. These are placement dimensions, pending mated fit and installed clearance. The original housing stays the reference.
+**48 × 46.5 mm**, four layers and one populated side. This saves 543 mm² (19.6%) from the 50 × 55.5 mm layout. The same-edge DE-9 and XT30 occupy 47.0 mm across their courtyards. Six service pads form a 2 × 3 array at 3.35 mm pitch. The housing study still uses a 72 × 60 × 25 mm exterior. Mated access and mounting are first-article checks.
 
 <details>
 <summary><b>🖼️ Show populated PCB in 3D</b> (click to expand)</summary>
 
 ![KiCad component-side view with the overhanging ESP32 antenna at the rear, the XT30 at front left and the DE-9 at front right](../images/integrated-pcb-3d.png)
 
-KiCad render of board revision `4452cce`. The preview uses Amphenol’s [DE-9 download](https://www.amphenol-cs.cn/media/wysiwyg/files/3d/sld09p13a4gv00lf.zip), the [C431092](https://jlcpcb.com/partdetail/C431092) XT30 family model and a matching KiCad package body for U4. Connector colors and tail details are illustrative.
+KiCad render of the 48 × 46.5 mm placement. The preview uses Amphenol’s [DE-9 download](https://www.amphenol-cs.cn/media/wysiwyg/files/3d/sld09p13a4gv00lf.zip), the [C431092](https://jlcpcb.com/partdetail/C431092) XT30 family model and a matching KiCad package body for U4. Connector colors and tail details are illustrative.
 
 </details>
 
@@ -49,7 +49,7 @@ KiCad render of board revision `4452cce`. The preview uses Amphenol’s [DE-9 do
 - The J1 flange aligns with the board edge, 0.50 mm inside the proposed front wall. The XT30 mouth is recessed about 2.15 mm from the outside of that wall. Allow clearance for the plug body and jackscrews and transfer mating loads to the housing. S173.
 - U1 has nine separate paste windows and twelve open Ø0.20 mm holes. U4 has twelve Ø0.254 mm vias under one paste aperture. Send mask, paste and plated drill files together for the [assembler review](../project/open-items.md#pcb-study). S179.
 
-The [engineering review](../research/reviews/2026-11-20-integrated-pcb.md) gives the antenna clearances on all layers, fault-current paths, reference-layout comparison and ten-board fabrication findings. S186–S188.
+The [compact-board review](../research/reviews/2026-11-20-compact-board-physical.md) covers the current antenna, connector loading, vibration, heat, climate and circuit placement. The [circuit and fabrication review](../research/reviews/2026-11-20-integrated-pcb.md) gives the schematic fault cases and exposed-pad artwork. S186–S190.
 
 ---
 
