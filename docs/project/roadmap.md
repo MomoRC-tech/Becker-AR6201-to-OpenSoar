@@ -53,6 +53,27 @@ flowchart LR
 - First presets: Zander ZS1, Classic FLARM and Becker AR6201, with the candidate values from `config.h` until the installed settings are verified. The page shows each port's wiring and offers presets only where wiring and direction fit ([firmware](../../firmware/bridge/README.md#settings-page)). Candidate additions are LXNAV S80/S100, PowerFLARM Fusion, TQ KRT2 and f.u.n.k.e. ATR833, subject to model and interface checks.
 - Keep device protocol handling in OpenSoar and retain [one writer on the dedicated radio port](../design/architecture.md#adr-01).
 
+<a id="navigation-detection"></a>
+
+### 1.3 Proposed WP9 extension — detect navigation baud and protocol
+
+Offer a one-time **Detect** action on either RS-232 navigation input during setup. Presets and **Custom** stay available on all three ports. Becker setup stays manual. Firmware implementation needs separate approval.
+
+| Setup step | Proposed behavior |
+| --- | --- |
+| Start | From the password-protected [settings page](#settings-page), select one input. Pause forwarding on that input while listening. Keep the other input and the radio running. Allow one scan at a time. |
+| Find the rate | Try the active baud and frame first. If decoding fails, try supported rates with 8N1. Prioritize the ESP32 baud estimate when available and the Zander rates of 4,800 and 19,200 (S22). Bound each attempt and the whole scan on the bridge. |
+| Recognize the stream | Start with a threshold of three complete, valid sentences per protocol at one setting. Check sentence structure and any supplied checksum. Use Zander `PZAN` sentences and checksum-valid FLARM `PFLAU` heartbeats (S22–S24). Report both if both qualify. Give instrument-specific sentences time to arrive after generic GPS data. |
+| Report and resume | Show the protocol, rate, frame used and count of matching sentences. Other outcomes are **Generic NMEA**, **Activity, decoding unresolved** and **No signal observed**. Restore the original UART settings and forwarding on completion, cancellation or timeout, including when the browser disconnects. |
+| Review and save | **Use these settings** fills only the selected input’s serial fields and matching profile in the form. For example, Zander at 4,800 baud uses **Custom** with today’s 19,200 preset. Keep the TCP port and other pending edits. The user can adjust the result or discard it. Only **Save and restart** persists it. |
+
+| Increment | Acceptance check |
+| --- | --- |
+| 1. Recognize sample streams | Exercise Zander, FLARM heartbeats, generic GPS and mixed streams. Split sentences across reads and inject noise, truncated lines and bad checksums. Verify the reported protocol and evidence count. |
+| 2. Scan one UART | Start at correct and mismatched rates. Exercise silence, cancellation, timeout and browser loss. Check restoration of the selected input and byte-exact traffic on both unaffected ports throughout the scan. |
+| 3. Integrate settings | Check authentication, concurrent scan requests, manual overrides, preservation of unsaved fields and saved values after restart. |
+| 4. Validate on the wired bridge | Feed each navigation input at known rates, including both Zander rates. Measure recognition time and forwarding interruption to set the scan limits. Verify recognition separately with the installed instruments. |
+
 ---
 
 <a id="firmware-plan"></a>
