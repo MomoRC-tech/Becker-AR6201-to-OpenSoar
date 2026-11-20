@@ -77,6 +77,22 @@ The [compact-board review](../research/reviews/2026-11-20-compact-board-physical
 
 For diagnostic pad placement, the native net anchors are J2.2 (VIN_RAW), C19.1 (VIN_PROT), R11.2 (PG_3V3), U1.6 (V_SENSE), U2.12/.9 (ZS_RX/FL_RX) and U3.2/.5 (BKR_RX/BKR_TX). The last four are logic-side signals. U5.4 to U1.6 spans 24.56 mm. Place the ADC probe near GPIO34 with a nearby ground and review the route against the switch node and feedback path. These anchors identify the nets for PCB08. Dedicated labeled diagnostic access and a mated-fixture check follow the fit decision. [Open items](../project/open-items.md#pcb-study) · [S191](../research/sources.md#source-register)
 
+<a id="smaller-dsub"></a>
+
+### 2.2 Smaller D-sub options
+
+J1's Amphenol LD09P13A4GV00LF flange is about 30.8 mm wide with 24.99 mm screw spacing. The existing cable hood is about 31.5 mm wide. A Micro-D needs a new locking cable mate, pin map, footprint and front opening. Preserve all six signals, three separate returns and the isolated shell.
+
+| Candidate | Size evidence | Suitability |
+| --- | --- | --- |
+| **Omnetics hybrid Micro-D, size 15** | Reference 45° hood A97000-015 is 23.75 mm wide, 7.75 mm narrower than the existing hood. | First choice for a fit study. One 7.5 A contact can carry the Becker return. Six signals and the other two returns occupy eight of nine 3 A contacts. Verify Zander ground-loss current and hot contact ratings. |
+| **Omnetics hybrid Micro-D, size 21** | Reference hood A97000-021 is 27.56 mm wide, 3.94 mm narrower than the existing hood. | Three 7.5 A power contacts and seven ordinary contacts accommodate a separate power contact for each return. Compare if size 15 has insufficient margin. |
+| **ITT Cannon MDM-9PCBRP** | Right-angle Micro-D-9. Flange 19.94 mm maximum, jackpost spacing 14.35 mm. About 10.9 mm narrower than J1. | The 3 A contact rating falls below the conservative 3.2 A return-path case. Selection needs supplier overload data, a bounded fault duration and hot mated-harness tests. |
+| **NorComp 381-009-112L565** | Micro-D-9 flange 19.69 mm nominal, mounting centers 14.35 mm apart. | Exclude for this return. The exact drawing specifies 1 A and requires standoff removal when mating with a 380-series female. |
+| **Amphenol D09P33E4GV00LF** | Conventional DE-9, 30.81 mm flange. PCB backset 8.08 mm versus 10.40 mm on J1. | Option for depth only. Retains the external mating format and has 5 A contacts. The changed rows and board locks require a new footprint and shell-isolation check. |
+
+The Omnetics hood dimensions are screening references. Obtain an exact right-angle hybrid and mating assembly drawing, include lock access, cable exit, bend radius and restraint beside the XT30, then compare board and enclosure outlines. [Manufacturer data, S193](../research/sources.md#source-register) · [Decisions and fit checks](../project/open-items.md#pcb-study)
+
 ---
 
 <a id="heat"></a>
