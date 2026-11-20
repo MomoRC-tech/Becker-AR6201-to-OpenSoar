@@ -40,7 +40,7 @@ One 50 × 55.5 mm four-layer PCB, populated from the top with through-hole conne
 - The J1 flange aligns with the board edge, 0.50 mm inside the proposed front wall. The XT30 mouth is recessed about 2.15 mm from the outside of that wall. Allow clearance for the plug body and jackscrews and transfer mating loads to the housing. S173.
 - U1 has nine separate paste windows and twelve open Ø0.20 mm holes. U4 has twelve Ø0.254 mm vias under one paste aperture. Send mask, paste and plated drill files together for the [assembler review](../project/open-items.md#pcb-study). S179.
 
-KiCad 10.0.8 reports zero ERC and schematic parity findings. Board DRC identifies one silkscreen mark at the U1 antenna-side edge and 34 unconnected items. All supply and ground pads are connected. S180.
+The [engineering review](../research/reviews/2026-11-20-integrated-pcb.md) gives the antenna clearances on all layers, fault-current paths, reference-layout comparison and ten-board fabrication findings. S186–S188.
 
 ---
 

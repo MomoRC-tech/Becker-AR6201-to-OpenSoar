@@ -31,7 +31,7 @@ Related: ❓ [Open items](open-items.md) · 🎯 [Requirements](../design/requir
 | WP8 Aircraft integration | ⬜ Later | Needs verified hardware and separate approval | Installation, protection and approval requirements met |
 | WP9 Device profiles | 🟡 [Profiles](#device-profiles) and optional [navigation detection](#navigation-detection) in firmware 0.5.7 (S115, S154) | Replace the candidate preset values once the [installed settings](open-items.md#installed-equipment) are known; check them on the wired bridge | Presets and manual settings work on compatible ports, survive restart and OTA, and preserve existing configurations |
 
-**Compact production branch:** [Ten-board PCB layout](../design/integrated-pcb.md#layout) · [Production and saved JLCPCB settings](../design/integrated-pcb.md#production). Power and instrument fault returns routed. Next, complete test-point access and propose the expansion interface before signal routing. [Connector, assembler and first-article checks](open-items.md#pcb-study).
+**Compact production branch:** [Ten-board PCB layout](../design/integrated-pcb.md#layout) · [Production and saved JLCPCB settings](../design/integrated-pcb.md#production). [Circuit, RF and fabrication review](../research/reviews/2026-11-20-integrated-pcb.md) complete for the routed power and instrument returns. Next, complete test-point access and propose the expansion interface before signal routing. [Connector, assembler and first-article checks](open-items.md#pcb-study).
 
 ### 1.1 Work loop
 
