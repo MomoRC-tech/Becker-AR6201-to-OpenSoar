@@ -1,0 +1,2 @@
+# Unified diffs preserve whitespace from their input, including removed lines.
+ar62xx-readback-only.patch text eol=lf -whitespace

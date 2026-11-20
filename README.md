@@ -20,9 +20,9 @@ A small ESP32 box in the glider collects data from the cockpit instruments and s
 | --- | --- |
 | 📈 Glider computer: Zander ZS1 | Sends flight and navigation data to OpenSoar |
 | 📡 Collision warning: Classic FLARM | Sends traffic and navigation data to OpenSoar |
-| 📻 Radio: Becker AR6201 | Carries radio data over a dedicated TCP port. Standby tuning and radio readback are planned |
+| 📻 Radio: Becker AR6201 | Carries radio data over a dedicated TCP port. A readback-only OpenSoar patch is available for bench verification |
 
-The radio requirement is to keep the active frequency and local controls working during standby tuning. The [OpenSoar driver](docs/research/becker-driver.md#opensoar-driver) still needs changes and a test with the installed radio.
+The [OpenSoar patch](docs/research/becker-driver.md#consequences) blocks active tuning, standby tuning and swap. Standby tuning remains deferred pending protocol evidence.
 
 <details>
 <summary><b>📱 Show the status page, settings and data monitor</b> (click to expand)</summary>
@@ -50,7 +50,7 @@ More: [status page](firmware/bridge/README.md#status-page), [settings page](firm
 
 > [!NOTE]
 > **Status:** the assembled 12 V bench bridge passed the Becker loopback and separate Zander and FLARM input tests. [Remaining bench checks](docs/hardware/wiring.md#bring-up) cover the boards, supply and voltage accuracy.
-> **Current focus:** 🔧 WP3 wiring and bench validation, with the 💻 [bridge firmware](docs/project/roadmap.md#firmware-plan) in parallel. Driver work waits until WP3 is complete.
+> **Current focus:** 🔧 WP3 wiring and bench validation, with the 💻 [bridge firmware](docs/project/roadmap.md#firmware-plan) in parallel.
 
 | Stage | Status |
 | --- | --- |
@@ -60,7 +60,7 @@ More: [status page](firmware/bridge/README.md#status-page), [settings page](firm
 | 🛩️ Existing installation details | 🟡 Waiting for equipment information |
 | 📶 Bench OTA loader | ✅ Flashed and updatable over Wi-Fi ([M3](docs/project/roadmap.md#milestones)); [ready-made hotspot-only image](firmware/ota-loader/bin/README.md) for the first USB flash |
 | 💻 Bridge firmware | 🟡 Step 4 [radio port](docs/project/roadmap.md#firmware-plan) done on the wired bench bridge. Step 5 passed the FLARM and radio slow-client checks. The full three-port run and OpenSoar phone checks remain |
-| 📻 OpenSoar driver changes | ⏸️ On hold until WP3 is complete |
+| 📻 OpenSoar readback | 🟡 Focused host checks passed. Full app build and radio readback checks remain |
 | ✈️ Aircraft integration | ⬜ Later |
 
 **Next step:** run the [bench checks](docs/hardware/wiring.md#bring-up) on the built bridge. See [WP3 Hardware](docs/project/roadmap.md#work-packages) for the full work package.

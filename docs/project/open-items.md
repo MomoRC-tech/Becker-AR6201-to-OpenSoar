@@ -97,19 +97,19 @@ Facts about the equipment already in the aircraft, mostly from Tom. What is know
 
 ## 4. 💻 Software and acceptance — later
 
-The bridge firmware follows its [plan](roadmap.md#firmware-plan) in parallel with the bench build. Driver work is on hold until the hardware is finished.
+See the [bridge firmware plan](roadmap.md#firmware-plan) and the [OpenSoar readback-only patch](../research/becker-driver.md#consequences).
 
 | # | Item | What is needed | Unblocks |
 | :-: | --- | --- | --- |
-| 1 | Protocol | Authoritative framing, ACK/NAK, CRC rules, status requests, channel vectors ([details](../research/becker-driver.md#protocol-details)) | Driver plan; independent test vectors |
+| 1 | Protocol | Authoritative framing, ACK/NAK, CRC rules, status requests, channel vectors ([details](../research/becker-driver.md#protocol-details)) | Standby tuning |
 | 2 | Radio configuration | Matching manual; serial settings (the bridge uses 9600 8N1 until confirmed, [check](../research/reviews/2026-11-17-bridge-projects-check.md#other-projects)); remote control and Tandem mode enabled, as LXNAV and SD-Link require; this changes how the radio behaves, so the owner or installer decides before it is switched on | Port configuration |
-| 3 | Application integration | AR62xx driver over TCP alongside navigation; status display | Driver plan |
+| 3 | Application integration | Full OpenSoar build with the readback-only patch, AR62xx over TCP alongside navigation, and frequency display | Application acceptance |
 | 5 | Network settings | Network to join in the aircraft and the passwords of the new bridge; hotspot name ([ADR-05](../design/architecture.md#adr-05)), address and ports ([firmware plan](roadmap.md#firmware-plan)) are selected | App and bridge configuration |
-| 6 | Driver regression | Zero/A5 bytes, short frames, bad CRC, unknown start state, two instances, missing or late replies | Software verification (M4) |
 | 7 | Bridge reliability | Byte-exact tests both ways, bursts, slow clients, partial writes, reconnects, navigation in parallel | Software verification (M4) |
-| 8 | Physical acceptance | Frequency change and readback on the real radio, local controls and navigation unaffected | Aircraft integration |
+| 8 | Physical acceptance | Tune locally on the matching radio, check both frequencies in OpenSoar and verify that local controls and navigation keep working | Radio readback acceptance |
 | 9 | Firmware review checks | Cross-port delay during bulk writes at low baud and remaining connection capacity. Repeated clean closes on quiet Zander and the ordinary two-app connection load passed (S160). [Firmware review](../research/reviews/2026-11-19-firmware-0.5.4-review.md#missing-checks) | Severity of findings 1 and 4 |
 | 10 | mDNS memory error | One `mdns_networking: Cannot allocate memory` error while the radio port refused repeated clients (S150): cause, and whether it repeats or affects the ports | Bridge reliability |
+| 11 | Settings under power loss | Interrupt a save and an automatic rollback on a spare ESP32, then check that the stored configuration is complete (S162) | Physical settings persistence |
 ---
 
 <kbd>[⬆️ Back to top](#top)</kbd> <kbd>[🏠 Overview](../../README.md)</kbd>

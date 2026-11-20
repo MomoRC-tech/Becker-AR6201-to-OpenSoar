@@ -7,9 +7,9 @@
 What the OpenSoar AR62xx radio driver does today, how other implementations solve the same problems, and which protocol facts are still missing.
 
 > [!NOTE]
-> **Status:** source review (S11) plus one host test (S12); nothing tested on a radio. Driver work is on hold until the hardware is finished.
+> **Status:** the readback-only patch applies to OpenSoar 7.46.26 and passes focused host tests (S164). See the [remaining checks](../project/open-items.md#software-and-acceptance).
 
-📑 **On this page:** <kbd>[1 · 🔍 OpenSoar driver findings](#opensoar-driver)</kbd> <kbd>[2 · 📚 Other implementations](#other-implementations)</kbd> <kbd>[3 · ➡️ What this means for the driver work](#consequences)</kbd> <kbd>[4 · 📖 Manuals and commercial adapters](#manuals)</kbd>
+📑 **On this page:** <kbd>[1 · 🔍 OpenSoar driver findings](#opensoar-driver)</kbd> <kbd>[2 · 📚 Other implementations](#other-implementations)</kbd> <kbd>[3 · 🛠️ Readback-only patch](#consequences)</kbd> <kbd>[4 · 📖 Manuals and commercial adapters](#manuals)</kbd>
 
 Related: 📶 [Bridge firmware](bridge-firmware.md) · 📚 [Sources](sources.md) · ❓ [Open items](../project/open-items.md#software-and-acceptance)
 
@@ -107,12 +107,35 @@ Once the radio is identified, ask Becker for: the remote-control protocol for th
 
 <a id="consequences"></a>
 
-## 3. ➡️ What this means for the driver work
+## 3. 🛠️ Readback-only patch
 
 > [!TIP]
-> Start the driver work (WP4) with mapping callers, state and display. Then fix one thing per step: counted send, state freshness, parsing, replies. Even a fresh paired readback leaves a race with someone tuning the radio by hand.
+> **Selected:** keep active and standby frequency readback. Block active tuning, standby tuning and swap from OpenSoar. The known tuning command writes both channels, so the last reported active frequency could overwrite a more recent change at the radio.
 
-Test cases from the code: 118.000 → `00 00` (cut off by the send bug); 119.030 → `00 A5` (parser reset). These come from the code, not from Becker. After the framing is confirmed, test every split position and several frames per read.
+The receiver uses the existing decoder's framing, CRC algorithm and channel mapping. It buffers split frames per device, requires a matching CRC, and publishes both frequencies to OpenSoar when it receives a valid frequency status frame. Radio acceptance is tracked in [open items](../project/open-items.md#software-and-acceptance).
+
+### 3.1 Apply and verify
+
+Use a clean checkout at the pinned OpenSoar 7.46.26 commit. The [patch](../../patches/opensoar/ar62xx-readback-only.patch) is tied to that revision. From the directory containing both checkouts:
+
+```bash
+git clone https://github.com/OpenSoaring/OpenSoar.git
+cd OpenSoar
+git switch -c becker-readback b2e745cfddfe0150f6ed7db467ac18c321b38d01
+git apply --check ../Becker-AR6201-to-OpenSoar/patches/opensoar/ar62xx-readback-only.patch
+git apply ../Becker-AR6201-to-OpenSoar/patches/opensoar/ar62xx-readback-only.patch
+```
+
+Install the prerequisites for your target. [OpenSoar build guide](https://github.com/OpenSoaring/OpenSoar/blob/b2e745cfddfe0150f6ed7db467ac18c321b38d01/doc/build.rst)
+
+Run the focused test on Linux:
+
+```bash
+make TARGET=UNIX output/UNIX/bin/TestAR62xx
+output/UNIX/bin/TestAR62xx
+```
+
+In the patched app, select **Becker AR62xx** for the radio connection and enable **Sync. from device** to show both frequencies when the radio reports them.
 
 ---
 
@@ -122,7 +145,7 @@ Test cases from the code: 118.000 → `00 00` (cut off by the send bug); 119.030
 
 | Reference | Finding |
 | --- | --- |
-| [Becker DV14307.03 Issue 06 §2.5.3.2 p.59](https://www.becker-avionics.com/wp-content/uploads/00_Literature/6200_Series_IO_en.pdf#page=59) | J1: 2/9 TX2+/−, 3/10 RX2+/−, 21/22/23 D_GND |
+| [Becker DV14307.03 Issue 06, pp. 24, 59](https://www.becker-avionics.com/wp-content/uploads/00_Literature/6200_Series_IO_en.pdf#page=24) (S163) | Describes Tandem operation. J1: 2/9 TX2+/−, 3/10 RX2+/−, 21/22/23 D_GND |
 | [First-design manual p.22](https://becker-avionics.com/wp-content/uploads/2017/08/AR6201_IO_SW3050149.pdf#page=22), [catalog](https://becker-avionics.com/manual-instructions-downloads/) | The older manual lists pin 2 as an input; Issue 06 as an output. J1-5 also differs by revision — use the manual that matches the radio |
 | [LXNAV manual rev.21 pp.10–11](https://www.lx-avionik.de/wp/download/manuals/lx232BridgeManualEnglishVer0210Rev21.pdf#page=10), [harness](https://www.navboys.com/lxnav-to-becker-ar6201-harness-for-radio-bridge-j1-plug.html) | AR6201 adapter on interface 2 with ground on pin 21; uses an RS-232 ↔ RS-422 adapter. Needs remote control/Tandem and minimum Becker software SCI1050S305 3.05 / SCI1051S305 1.49 |
 | [SD-Link](https://sdlink.de/en/Manual/ar620x/), [installation manual v1.0](https://sdlink.de/wp-content/uploads/2026/02/SD-AR620X-E-NG_en_easyvfr_installation_v1.0.pdf) | Commercial Bluetooth adapter: needs a free J1, Tandem mode and AR6201 serial ≥ 3001 — product-specific, not general requirements |

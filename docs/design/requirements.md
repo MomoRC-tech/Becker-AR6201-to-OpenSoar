@@ -21,10 +21,10 @@ Related: 🏗️ [Architecture](architecture.md) · ❓ [Open items](../project/
 
 | ID | Prio | The bridge must… | How it is checked |
 | --- | :-: | --- | --- |
-| R01 | P0 | Put the selected airfield frequency into standby and never change the active frequency. | Readback from the real radio |
+| R01 | P0 | Put the selected airfield frequency into standby and never change the active frequency. Deferred pending [protocol evidence](../project/open-items.md#software-and-acceptance). | Readback from the real radio |
 | R02 | P0 | Keep Zander and FLARM data reaching OpenSoar. | Compare with today's installation, then test both together with the radio path (WP6) |
 | R03 | P0 | Pass radio bytes both ways exactly — no truncation, conversion, filtering or mixing with other data. | Byte-exact tests including zero/A5 bytes, split and bursty traffic, slow readers (WP5/WP6) |
-| R04 | P0 | Tell "sent", "accepted by the radio" and "confirmed state" apart, and report failures or unknown state. | Tests for valid, missing, late and malformed replies and disconnects (WP5); a successful write alone never passes |
+| R04 | P0 | For future standby tuning, distinguish sending, radio acceptance and confirmed state, and report failures or unknown state. | Tests for valid, missing, late and malformed replies and disconnects |
 | R05 | P0 | Leave the radio's own controls working when the bridge disconnects or loses power. | Test on the real radio |
 | R06 | P0 | Match the electrical interface and serial settings of the installed equipment. | Matching manual, connector view and settings; no incompatible signal levels on ESP32 pins |
 | R07 | P1 | Be reproducible and reuse existing work where possible. | Recorded versions and configuration; license check before reuse |
@@ -69,8 +69,8 @@ All risks are open.
 | ID | Prio | Risk | How it is reduced |
 | --- | :-: | --- | --- |
 | K01 | P0 | The wrong manual or radio variant leads to incompatible wiring — Becker publishes separate manuals per hardware generation (S03). | Match model, revision and connector view before wiring |
-| K02 | P0 | A standby command carries an unknown or stale active frequency (F04). | Explicit state validity in the driver; startup, reconnect and local-tuning tests |
-| K03 | P0 | Binary writes are truncated or report false success (F02/F03). | Driver fix and regression tests (WP4/WP5) |
+| K02 | P0 | A standby command carries an unknown or stale active frequency (F04). | Block tuning in the [readback-only patch](../research/becker-driver.md#consequences) |
+| K03 | P0 | Binary writes are truncated or report false success (F02/F03). | Verify zero writes from tuning calls in the readback-only patch (S164) |
 | K04 | P0 | Bridge overflow, several writers or debug output corrupt radio traffic (S05/S06). | Firmware audit, byte-exact load and failure tests, separate radio path |
 | K05 | P0 | The new bridge interrupts navigation data. | Compare with today's installation; coexistence tests (WP6) |
 | K06 | P0 | A simulator only repeats the driver's own assumptions. | Independent protocol evidence; label synthetic tests; simulation is never acceptance |
