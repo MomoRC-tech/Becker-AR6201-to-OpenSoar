@@ -60,7 +60,7 @@ More: [status page](firmware/bridge/README.md#status-page), [settings page](firm
 | 🛩️ Existing installation details | 🟡 Waiting for equipment information |
 | 📶 Bench OTA loader | ✅ Flashed and updatable over Wi-Fi ([M3](docs/project/roadmap.md#milestones)); [ready-made hotspot-only image](firmware/ota-loader/bin/README.md) for the first USB flash |
 | 💻 Bridge firmware | 🟡 Step 4 [radio port](docs/project/roadmap.md#firmware-plan) done on the wired bench bridge. Step 5 passed the FLARM and radio slow-client checks. The full three-port run and OpenSoar phone checks remain |
-| 📻 OpenSoar readback | 🟡 Focused host checks passed. Full app build and radio readback checks remain |
+| 📻 OpenSoar readback | 🟡 Linux build and focused host checks passed. Phone and radio checks remain |
 | ✈️ Aircraft integration | ⬜ Later |
 
 **Next step:** run the [bench checks](docs/hardware/wiring.md#bring-up) on the built bridge. See [WP3 Hardware](docs/project/roadmap.md#work-packages) for the full work package.
