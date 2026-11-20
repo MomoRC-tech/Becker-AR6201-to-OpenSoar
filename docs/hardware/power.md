@@ -7,7 +7,7 @@
 How the bridge is supplied and grounded, where ground loops close, which currents each wire carries, and what a broken wire does.
 
 > [!NOTE]
-> **Status:** bench design. Separate central 5 V/GND distribution, the ESP32-fed RS-232 supply chain and the supply-voltage divider are selected; the bench bridge is built and its idle input power at 12 V is read from the supply (S141); all other currents are datasheet values or estimates. Open checks: [bench hardware](../project/open-items.md#bench-hardware).
+> **Status:** bench design. Separate central 5 V/GND distribution, the ESP32-fed RS-232 supply chain and the supply-voltage divider are selected; the bench bridge is built and its input current at 12 V is read from the supply (S141, S147); all other currents are datasheet values or estimates. Open checks: [bench hardware](../project/open-items.md#bench-hardware).
 
 📑 **On this page:** <kbd>[1 · 🔋 Supply path](#supply)</kbd> <kbd>[2 · ⏚ Grounding and loops](#ground)</kbd> <kbd>[3 · 📊 Current assumptions](#currents)</kbd> <kbd>[4 · ✂️ Wire-break cases](#wire-breaks)</kbd> <kbd>[5 · 🛡️ Protection](#protection)</kbd> <kbd>[6 · 🔎 Supply voltage sense](#voltage-sense)</kbd>
 
@@ -79,10 +79,10 @@ Datasheet values carry their source ID; everything else is an estimate until the
 
 | Branch | Wire | Normal | Peak | Worst single break | Basis |
 | --- | --- | --- | --- | --- | --- |
-| Bridge +12 V feed (F1, harness, XT30, UBEC input) | About 22 AWG (owner) | 58–83 mA (0.7–1.0 W at 12 V, idle, Wi-Fi joined, no instruments) | Switch-on inrush, not measured | Short circuit, limited by F1 | Supply reading, S141 |
+| Bridge +12 V feed (F1, harness, XT30, UBEC input) | About 22 AWG (owner) | 60–90 mA (up to 1.1 W at 12 V, no instruments); no visible change with Wi-Fi and radio-port traffic | Switch-on inrush, not measured | Short circuit, limited by F1 | Supply readings, S141, S147 |
 | UBEC 5 V → ESP32 | Board header | ~250 mA | ~500 mA (Wi-Fi) | — | Typical datasheet values |
 | UBEC 5 V → MAX490 board | Board header | ~30 mA | — | — | Typical datasheet value |
-| ESP32 3.3 V → RS-232 modules and Becker DI pull-up | Board header | A few mA | — | — | Estimate |
+| ESP32 3.3 V → RS-232 modules | Board header | A few mA | — | — | Estimate |
 | Bridge ground wire | Not yet selected | ~0.15 A + radio share | ~0.35 A while the radio transmits | ~3.2 A if the radio's P1 ground breaks | Estimate, S10 |
 | Instrument-ground wire (DE-9 bridge → GND-J) | 22 AWG PTFE | ~14 mA radio share + small Zander and FLARM shares | ~0.2 A while the radio transmits | ~3.2 A if the radio's P1 ground breaks | Estimate, S10 |
 | J1-21 | Becker harness (gauge open) | ~14 mA radio share | ~0.2 A while the radio transmits | Up to 3 A if the radio's P1 ground breaks | Estimate, S10 |

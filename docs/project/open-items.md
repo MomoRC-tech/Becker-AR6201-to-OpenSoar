@@ -28,7 +28,7 @@ Start with the delivered boards and power supply, with all instruments disconnec
 | 3 | RS-232 modules | Continuity of both modules against the [pad map](../hardware/modules.md#rs232-module), and R1 as the TTL output ([bench step 4](../hardware/wiring.md#bring-up)); IC marking | Bench check |
 | 4 | ESP32 board | Module marking and header positions match the DevKitC V4 reference | Visual check |
 | 5 | UBEC | 5 V output with and without load; match the physical input/output polarity and XT30 cups to the labelled routing endpoints; fit in the enclosure | Bench measurement |
-| 6 | Current and fuse | Running current under load (idle: 0.7–1.0 W at 12 V, S141) and switch-on inrush at 12 V; select fuse rating and speed using these measurements and the wire protection requirements | Bench measurement and owner selection |
+| 6 | Current and fuse | Switch-on inrush at 12 V (running current 60–90 mA, S147); select fuse rating and speed using these measurements and the wire protection requirements | Bench measurement and owner selection |
 | 8 | Device connectors | Photos of the installed connectors (from Tom); device models are [installed-equipment items 1–3](#installed-equipment) | Confirms the pin views in the wiring tables |
 | 9 | Becker J1 | Installed J1 revision, moulded pin numbers and which pins are already used | Confirms the J1 pins and the J1-21 ground |
 | 10 | Radio noise | No audible noise or squelch opening caused by the bridge | Check in the aircraft |
