@@ -1,0 +1,1 @@
+(sym_lib_table (version 7) (lib (name "Compact")(type "KiCad")(uri "${KIPRJMOD}/compact.kicad_sym")(options "")(descr "Production bridge symbols")))

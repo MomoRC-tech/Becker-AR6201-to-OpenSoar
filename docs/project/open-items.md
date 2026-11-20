@@ -118,10 +118,14 @@ See the [bridge firmware plan](roadmap.md#firmware-plan) and the [OpenSoar readb
 
 | Input or decision | Owner | What it releases |
 | --- | --- | --- |
-| Mating interfaces and maximum installed envelope, including plug removal and tie mounts | Owner supplies installation clearance and chooses the connector arrangement first | Connector wall and PCB placement |
-| Continuous input, transient envelope, return-current path and hot/cold mounting-site conditions | Designer and owner, using the installation data above | Front-end ratings, ground design and thermal pass limits |
-| Controller variant, programming access, power converter, serial ICs and radio TX idle/enable strategy | Designer presents options with a recommendation for each, owner selects individually | Component and schematic freeze for the [PCB proposal](../design/integrated-pcb.md#circuits) |
-| Prototype and repeat quantity, delivery destination and factory versus local connector fitting | Owner before quote | Comparable delivered prices and exact order settings |
+| Installed equipment, mating parts, space for connector removal, tie mounts and final housing supports | Owner and designer to compare installed parts, a print or coupon and manufacturer patterns | Lock external clearance, connector loads and pin 1 orientation |
+| Continuous input, surges and shared fault return | Record voltage, polarity, duration, repetition and source impedance/current at the XT30 for switching and credible faults. On a controlled bench reproduce that envelope and scope the protected input, regulator VIN, gate/source, 3.3 V and GPIO34 including hard collapse and live reversal. | Coordinate F1, MOSFET, TVS, capacitors, ADC limits and 36 V regulator margin |
+| Cold outdoor storage, condensation and parked cockpit heat | Log site RH, surface and air temperatures through cold-to-warm changes and hot soak. Check loaded PETG, mated connectors and closed-box component temperatures. | Choose climate margins, coating and a tested operating/storage envelope |
+| Complete board lands, routing and test access | Designer to check exact DE-9 and XT30 mating/board-lock drawings, H4 thermal-pad drill and paste process, inductor land, passive ratings, fault-path copper, DRC and factory test fixture | Reviewed board, mated enclosure and first-article order pack |
+| Flight endurance and optional Bluetooth | Log input Wh and peaks during three Wi-Fi streams with Bluetooth off/on and fallback on Android. Agree acceptable draw using the battery allocation and actual duty cycle. | Measured endurance and transport acceptance |
+| Aircraft-specific installation path | Responsible certifying staff to check equipment identity, permitted data connections, possible transmit commands, failure effects, documentation and release route | Installation decision |
+| Ten-board landed quote | Designer to confirm H4 suffix, stock with attrition, panel rails, connector soldering, coating/finish and passives. Owner supplies delivery destination for delivered price. | Reproducible order or dated JLCPCB offer |
+
 
 ---
 

@@ -1,0 +1,342 @@
+(kicad_sch (version 20260306)(generator eeschema)(generator_version "10.0") (uuid 2d9cbd1e-e36a-51e6-bf99-6ca663ed5318) (paper "A3")(title_block (title "Becker | Full-duplex differential interface")(rev "A development")(comment 1 "Integrated PCB | Engineering review"))(lib_symbols (symbol "Compact:SN65HVD1470DR" (in_bom yes) (on_board yes) (property "Reference" "U" (at 0 13 0) (effects (font (size 1.15 1.15)) ))(property "Value" "SN65HVD1470DR" (at 0 10 0) (effects (font (size 1.15 1.15)) )) (symbol "SN65HVD1470DR_0_1" (rectangle (start -10.16 11.43)(end 10.16 -11.43)(stroke(width 0.254)(type default))(fill(type background)))) (symbol "SN65HVD1470DR_1_1" (pin output line (at -12.7 7.62 0) (length 2.54)(name "R" (effects (font (size 1.1 1.1)) ))(number "2" (effects (font (size 1.1 1.1)) )))(pin input line (at -12.7 5.08 0) (length 2.54)(name "~{RE}" (effects (font (size 1.1 1.1)) ))(number "3" (effects (font (size 1.1 1.1)) )))(pin input line (at -12.7 2.54 0) (length 2.54)(name "DE" (effects (font (size 1.1 1.1)) ))(number "4" (effects (font (size 1.1 1.1)) )))(pin input line (at -12.7 0 0) (length 2.54)(name "D" (effects (font (size 1.1 1.1)) ))(number "5" (effects (font (size 1.1 1.1)) )))(pin power_in line (at -12.7 -2.54 0) (length 2.54)(name "GND" (effects (font (size 1.1 1.1)) ))(number "6" (effects (font (size 1.1 1.1)) )))(pin power_in line (at -12.7 -5.08 0) (length 2.54)(name "GND" (effects (font (size 1.1 1.1)) ))(number "7" (effects (font (size 1.1 1.1)) )))(pin no_connect line (at -12.7 -7.62 0) (length 2.54)(name "NC" (effects (font (size 1.1 1.1)) ))(number "1" (effects (font (size 1.1 1.1)) )))(pin input line (at 12.7 7.62 180) (length 2.54)(name "A" (effects (font (size 1.1 1.1)) ))(number "12" (effects (font (size 1.1 1.1)) )))(pin input line (at 12.7 5.08 180) (length 2.54)(name "B" (effects (font (size 1.1 1.1)) ))(number "11" (effects (font (size 1.1 1.1)) )))(pin output line (at 12.7 2.54 180) (length 2.54)(name "Y" (effects (font (size 1.1 1.1)) ))(number "9" (effects (font (size 1.1 1.1)) )))(pin output line (at 12.7 0 180) (length 2.54)(name "Z" (effects (font (size 1.1 1.1)) ))(number "10" (effects (font (size 1.1 1.1)) )))(pin power_in line (at 12.7 -2.54 180) (length 2.54)(name "VCC" (effects (font (size 1.1 1.1)) ))(number "13" (effects (font (size 1.1 1.1)) )))(pin power_in line (at 12.7 -5.08 180) (length 2.54)(name "VCC" (effects (font (size 1.1 1.1)) ))(number "14" (effects (font (size 1.1 1.1)) )))(pin no_connect line (at 12.7 -7.62 180) (length 2.54)(name "NC" (effects (font (size 1.1 1.1)) ))(number "8" (effects (font (size 1.1 1.1)) )))))
+(symbol "Device:R"
+		(pin_numbers
+			(hide yes)
+		)
+		(pin_names
+			(offset 0)
+		)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(duplicate_pin_numbers_are_jumpers no)
+		(property "Reference" "R"
+			(at 2.032 0 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "R"
+			(at 0 0 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at -1.778 0 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_keywords" "R res resistor"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_fp_filters" "R_*"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(symbol "R_0_1"
+			(rectangle
+				(start -1.016 -2.54)
+				(end 1.016 2.54)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+		)
+		(symbol "R_1_1"
+			(pin passive line
+				(at 0 3.81 270)
+				(length 1.27)
+				(name ""
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 0 -3.81 90)
+				(length 1.27)
+				(name ""
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+		)
+		(embedded_fonts no)
+)
+(symbol "Device:C"
+		(pin_numbers
+			(hide yes)
+		)
+		(pin_names
+			(offset 0.254)
+		)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(duplicate_pin_numbers_are_jumpers no)
+		(property "Reference" "C"
+			(at 0.635 2.54 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "C"
+			(at 0.635 -2.54 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 0.9652 -3.81 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_keywords" "cap capacitor"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_fp_filters" "C_*"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(symbol "C_0_1"
+			(polyline
+				(pts
+					(xy -2.032 0.762) (xy 2.032 0.762)
+				)
+				(stroke
+					(width 0.508)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(polyline
+				(pts
+					(xy -2.032 -0.762) (xy 2.032 -0.762)
+				)
+				(stroke
+					(width 0.508)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+		)
+		(symbol "C_1_1"
+			(pin passive line
+				(at 0 3.81 270)
+				(length 2.794)
+				(name ""
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 0 -3.81 90)
+				(length 2.794)
+				(name ""
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+		)
+		(embedded_fonts no)
+))
+(text "R4 fitted enables the driver. R5 holds it disabled when the link is removed." (at 25.4 25.4 0) (effects (font (size 1.55 1.55)) (justify left))(uuid 47f00dc5-c873-5923-b4a4-eba5109dedc6))
+(symbol (lib_id "Compact:SN65HVD1470DR") (at 81.28 78.74 0) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid 297d5083-396c-50e6-bf79-1337a40e480e) (property "Reference" "U3" (at 90.28 66.12 0) (effects (font (size 1.15 1.15)) ))(property "Value" "SN65HVD1470DR" (at 90.28 68.12 0) (effects (font (size 1.15 1.15)) ))(property "Footprint" "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" (at 81.28 78.74 0) (hide yes) (effects (font (size 1.15 1.15)) ))(property "MPN" "SN65HVD1470DR" (at 81.28 78.74 0) (hide yes) (effects (font (size 1.15 1.15)) ))(property "LCSC" "C2865785" (at 81.28 78.74 0) (hide yes) (effects (font (size 1.15 1.15)) ))(instances (project "compact-bridge" (path "/6319aed7-0dca-5db1-a49f-58f5f416475f/fc24623a-2850-57f6-ad7a-d87b08b776a7" (reference "U3") (unit 1)))))
+(wire (pts (xy 68.58 71.12) (xy 63.5 71.12)) (stroke (width 0) (type default)) (uuid 4d4b22fa-6cbf-5965-a720-522fda107dd2))
+(global_label "BKR_RX" (shape bidirectional) (at 63.5 71.12 180) (effects (font (size 1.05 1.05)) (justify right))(uuid b1ce9989-160e-55a9-bd09-ad692322fe5b))
+(wire (pts (xy 68.58 73.66) (xy 63.5 73.66)) (stroke (width 0) (type default)) (uuid aa311c37-cada-52c9-ac45-7d0275d8bd14))
+(global_label "GND" (shape bidirectional) (at 63.5 73.66 180) (effects (font (size 1.05 1.05)) (justify right))(uuid 25cb9334-2249-539a-883a-6c991a783247))
+(wire (pts (xy 68.58 76.2) (xy 63.5 76.2)) (stroke (width 0) (type default)) (uuid 0363cbe2-8962-5925-b51f-3926c100ffbe))
+(global_label "TX_ENABLE" (shape bidirectional) (at 63.5 76.2 180) (effects (font (size 1.05 1.05)) (justify right))(uuid 9e6f8b06-0e5d-5e60-a0a3-4d59eb50acfa))
+(wire (pts (xy 68.58 78.74) (xy 63.5 78.74)) (stroke (width 0) (type default)) (uuid 5bcb8841-f7cb-533d-91c6-be732fdb07d1))
+(global_label "BKR_TX" (shape bidirectional) (at 63.5 78.74 180) (effects (font (size 1.05 1.05)) (justify right))(uuid 82a1539d-1974-5a39-a4c0-27883d4a191d))
+(wire (pts (xy 68.58 81.28) (xy 63.5 81.28)) (stroke (width 0) (type default)) (uuid 16bd9087-2fc6-568c-acfe-06aa3cb58e89))
+(global_label "GND" (shape bidirectional) (at 63.5 81.28 180) (effects (font (size 1.05 1.05)) (justify right))(uuid aedfa2bf-112f-574a-8778-3a578d74cdc6))
+(wire (pts (xy 68.58 83.82) (xy 63.5 83.82)) (stroke (width 0) (type default)) (uuid 1e33a12c-3053-5ecf-9724-328749064df1))
+(global_label "GND" (shape bidirectional) (at 63.5 83.82 180) (effects (font (size 1.05 1.05)) (justify right))(uuid ddd12317-c8a8-581b-ab96-4f537041940d))
+(wire (pts (xy 93.98 71.12) (xy 99.06 71.12)) (stroke (width 0) (type default)) (uuid 532d8344-8277-523c-90c8-b98e488d5c7e))
+(global_label "BKR_TX_P" (shape bidirectional) (at 99.06 71.12 0) (effects (font (size 1.05 1.05)) (justify left))(uuid 0ad98c5a-9e97-5108-8125-a01ba8348a50))
+(wire (pts (xy 93.98 73.66) (xy 99.06 73.66)) (stroke (width 0) (type default)) (uuid e5a33a00-b569-5db8-a530-bdf94e98bff8))
+(global_label "BKR_TX_N" (shape bidirectional) (at 99.06 73.66 0) (effects (font (size 1.05 1.05)) (justify left))(uuid 8cef50eb-deeb-5297-a1ef-e68920403d71))
+(wire (pts (xy 93.98 76.2) (xy 99.06 76.2)) (stroke (width 0) (type default)) (uuid 5d066917-1e84-5c44-b8cc-e34889913902))
+(global_label "BKR_RX_P" (shape bidirectional) (at 99.06 76.2 0) (effects (font (size 1.05 1.05)) (justify left))(uuid e410d682-a80f-5938-9034-e83deb3d904d))
+(wire (pts (xy 93.98 78.74) (xy 99.06 78.74)) (stroke (width 0) (type default)) (uuid f7e28f7e-7ca1-5339-9396-5dcdc8ec8ea7))
+(global_label "BKR_RX_N" (shape bidirectional) (at 99.06 78.74 0) (effects (font (size 1.05 1.05)) (justify left))(uuid e19ff807-464a-5829-b412-1c0bcf9769e5))
+(wire (pts (xy 93.98 81.28) (xy 99.06 81.28)) (stroke (width 0) (type default)) (uuid 0e8bb1f0-ee7e-5945-945e-15ee6c322982))
+(global_label "3V3" (shape bidirectional) (at 99.06 81.28 0) (effects (font (size 1.05 1.05)) (justify left))(uuid 6a99d867-0e40-52ff-b9f1-4bc3493266e3))
+(wire (pts (xy 93.98 83.82) (xy 99.06 83.82)) (stroke (width 0) (type default)) (uuid ba5f0c63-3f57-5e75-bb51-d77ea5f71efa))
+(global_label "3V3" (shape bidirectional) (at 99.06 83.82 0) (effects (font (size 1.05 1.05)) (justify left))(uuid 9ba0deac-aee0-51ba-a119-7f1827ffa3bf))
+(symbol (lib_id "Device:R") (at 157.48 53.34 0) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid 6e85d5e4-4319-5fe2-961c-5da4d73e61f3) (property "Reference" "R3" (at 163.48 44.53 0) (effects (font (size 1.15 1.15)) ))(property "Value" "4.7k" (at 163.48 46.53 0) (effects (font (size 1.15 1.15)) ))(property "Footprint" "Resistor_SMD:R_0603_1608Metric" (at 157.48 53.34 0) (hide yes) (effects (font (size 1.15 1.15)) ))(property "MPN" "" (at 157.48 53.34 0) (hide yes) (effects (font (size 1.15 1.15)) ))(property "LCSC" "" (at 157.48 53.34 0) (hide yes) (effects (font (size 1.15 1.15)) ))(instances (project "compact-bridge" (path "/6319aed7-0dca-5db1-a49f-58f5f416475f/fc24623a-2850-57f6-ad7a-d87b08b776a7" (reference "R3") (unit 1)))))
+(wire (pts (xy 157.48 49.53) (xy 157.48 44.45)) (stroke (width 0) (type default)) (uuid e5f32818-a0f7-5895-870e-00a6f9c83d3c))
+(global_label "3V3" (shape bidirectional) (at 157.48 44.45 0) (effects (font (size 1.05 1.05)) (justify left))(uuid 7218e479-5577-5ee4-9e59-475c17c685bc))
+(wire (pts (xy 157.48 57.15) (xy 157.48 62.23)) (stroke (width 0) (type default)) (uuid 5e85a47f-6105-5c48-8b27-e799b43cab5d))
+(global_label "BKR_TX" (shape bidirectional) (at 157.48 62.23 0) (effects (font (size 1.05 1.05)) (justify left))(uuid b320c1a9-abfa-5fe9-a70d-6203ffc4f0b5))
+(symbol (lib_id "Device:R") (at 200.66 53.34 0) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid ba1897e8-c369-5e6c-a3e3-86302019f60d) (property "Reference" "R4" (at 206.66 44.53 0) (effects (font (size 1.15 1.15)) ))(property "Value" "0R" (at 206.66 46.53 0) (effects (font (size 1.15 1.15)) ))(property "Footprint" "Resistor_SMD:R_0603_1608Metric" (at 200.66 53.34 0) (hide yes) (effects (font (size 1.15 1.15)) ))(property "MPN" "" (at 200.66 53.34 0) (hide yes) (effects (font (size 1.15 1.15)) ))(property "LCSC" "" (at 200.66 53.34 0) (hide yes) (effects (font (size 1.15 1.15)) ))(instances (project "compact-bridge" (path "/6319aed7-0dca-5db1-a49f-58f5f416475f/fc24623a-2850-57f6-ad7a-d87b08b776a7" (reference "R4") (unit 1)))))
+(wire (pts (xy 200.66 49.53) (xy 200.66 44.45)) (stroke (width 0) (type default)) (uuid 8121f58e-74d9-55c6-adf4-4a5c654f859e))
+(global_label "3V3" (shape bidirectional) (at 200.66 44.45 0) (effects (font (size 1.05 1.05)) (justify left))(uuid d91e6ca2-2a10-5a8d-803b-468bd8b14b43))
+(wire (pts (xy 200.66 57.15) (xy 200.66 62.23)) (stroke (width 0) (type default)) (uuid 27e9d141-2b68-5a1e-8c1d-6145ec402350))
+(global_label "TX_ENABLE" (shape bidirectional) (at 200.66 62.23 0) (effects (font (size 1.05 1.05)) (justify left))(uuid 86b97939-bf0e-524c-8740-d71f0534b991))
+(symbol (lib_id "Device:R") (at 243.84 53.34 0) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid 48702b5b-ce7c-5288-bc3c-955746278dd3) (property "Reference" "R5" (at 249.84 44.53 0) (effects (font (size 1.15 1.15)) ))(property "Value" "10k" (at 249.84 46.53 0) (effects (font (size 1.15 1.15)) ))(property "Footprint" "Resistor_SMD:R_0603_1608Metric" (at 243.84 53.34 0) (hide yes) (effects (font (size 1.15 1.15)) ))(property "MPN" "" (at 243.84 53.34 0) (hide yes) (effects (font (size 1.15 1.15)) ))(property "LCSC" "" (at 243.84 53.34 0) (hide yes) (effects (font (size 1.15 1.15)) ))(instances (project "compact-bridge" (path "/6319aed7-0dca-5db1-a49f-58f5f416475f/fc24623a-2850-57f6-ad7a-d87b08b776a7" (reference "R5") (unit 1)))))
+(wire (pts (xy 243.84 49.53) (xy 243.84 44.45)) (stroke (width 0) (type default)) (uuid 8e255a0d-ee1c-547f-86bf-c8a066efc445))
+(global_label "TX_ENABLE" (shape bidirectional) (at 243.84 44.45 0) (effects (font (size 1.05 1.05)) (justify left))(uuid 572963cf-4caa-5e90-8456-ad756e761a31))
+(wire (pts (xy 243.84 57.15) (xy 243.84 62.23)) (stroke (width 0) (type default)) (uuid 6dc4a163-60a1-5729-8792-fbf2c3aef32e))
+(global_label "GND" (shape bidirectional) (at 243.84 62.23 0) (effects (font (size 1.05 1.05)) (justify left))(uuid d9aa6769-3192-5b30-9cff-e9610395e65f))
+(symbol (lib_id "Device:C") (at 157.48 99.06 0) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid 81047e87-4754-5367-afb9-b40e809a1cb9) (property "Reference" "C9" (at 163.48 90.25 0) (effects (font (size 1.15 1.15)) ))(property "Value" "100nF" (at 163.48 92.25 0) (effects (font (size 1.15 1.15)) ))(property "Footprint" "Capacitor_SMD:C_0603_1608Metric" (at 157.48 99.06 0) (hide yes) (effects (font (size 1.15 1.15)) ))(property "MPN" "" (at 157.48 99.06 0) (hide yes) (effects (font (size 1.15 1.15)) ))(property "LCSC" "" (at 157.48 99.06 0) (hide yes) (effects (font (size 1.15 1.15)) ))(instances (project "compact-bridge" (path "/6319aed7-0dca-5db1-a49f-58f5f416475f/fc24623a-2850-57f6-ad7a-d87b08b776a7" (reference "C9") (unit 1)))))
+(wire (pts (xy 157.48 95.25) (xy 157.48 90.17)) (stroke (width 0) (type default)) (uuid 512381d8-1048-558b-bb5c-e2a3c75fc83e))
+(global_label "3V3" (shape bidirectional) (at 157.48 90.17 0) (effects (font (size 1.05 1.05)) (justify left))(uuid 6db95049-4660-51bb-92e0-52e7961f3a4b))
+(wire (pts (xy 157.48 102.87) (xy 157.48 107.95)) (stroke (width 0) (type default)) (uuid bf3f0636-bb7d-59c4-8bbe-f3009604b7c9))
+(global_label "GND" (shape bidirectional) (at 157.48 107.95 0) (effects (font (size 1.05 1.05)) (justify left))(uuid 1ba9a55f-43b6-5774-a684-46abc670b8fc)))

@@ -31,7 +31,7 @@ Related: ❓ [Open items](open-items.md) · 🎯 [Requirements](../design/requir
 | WP8 Aircraft integration | ⬜ Later | Needs verified hardware and separate approval | Installation, protection and approval requirements met |
 | WP9 Device profiles | 🟡 [Profiles](#device-profiles) and optional [navigation detection](#navigation-detection) in firmware 0.5.7 (S115, S154) | Replace the candidate preset values once the [installed settings](open-items.md#installed-equipment) are known; check them on the wired bridge | Presets and manual settings work on compatible ports, survive restart and OTA, and preserve existing configurations |
 
-**Branch research:** [Integrated bridge PCB, compact housing and JLCPCB order plan](../design/integrated-pcb.md). Next decision and inputs are in the [PCB study](open-items.md#pcb-study).
+**Compact production branch:** [Ten-board design and JLCPCB delivery](../design/integrated-pcb.md). Schematic and four-layer placement captured. Next, verify the connector lands and ESP32 ground-pad process, then place and route the power and fault returns. [Installation inputs and release checks](open-items.md#pcb-study).
 
 ### 1.1 Work loop
 
