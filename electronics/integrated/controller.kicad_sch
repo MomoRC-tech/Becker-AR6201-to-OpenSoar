@@ -1,4 +1,221 @@
-(kicad_sch (version 20260306)(generator eeschema)(generator_version "10.0") (uuid 37b27df1-5cc9-57fb-b7ad-b070ae2ab0c2) (paper "A3")(title_block (title "ESP32, reset and programming fixture")(rev "A development")(comment 1 "Integrated PCB | Engineering review"))(lib_symbols (symbol "RF_Module:ESP32-WROOM-32E"
+(kicad_sch (version 20260306)(generator eeschema)(generator_version "10.0") (uuid 37b27df1-5cc9-57fb-b7ad-b070ae2ab0c2) (paper "A3")(title_block (title "ESP32, reset and programming fixture")(rev "A development")(comment 1 "Integrated PCB | Engineering review"))(lib_symbols
+	(symbol "Connector_Generic:Conn_01x04"
+		(pin_names
+			(offset 1.016)
+			(hide yes)
+		)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(duplicate_pin_numbers_are_jumpers no)
+		(property "Reference" "J"
+			(at 0 5.08 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Conn_01x04"
+			(at 0 -7.62 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Generic connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_keywords" "connector"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_fp_filters" "Connector*:*_1x??_*"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(symbol "Conn_01x04_1_1"
+			(rectangle
+				(start -1.27 3.81)
+				(end 1.27 -6.35)
+				(stroke
+					(width 0.254)
+					(type default)
+				)
+				(fill
+					(type background)
+				)
+			)
+			(rectangle
+				(start -1.27 2.667)
+				(end 0 2.413)
+				(stroke
+					(width 0.1524)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(rectangle
+				(start -1.27 0.127)
+				(end 0 -0.127)
+				(stroke
+					(width 0.1524)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(rectangle
+				(start -1.27 -2.413)
+				(end 0 -2.667)
+				(stroke
+					(width 0.1524)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(rectangle
+				(start -1.27 -4.953)
+				(end 0 -5.207)
+				(stroke
+					(width 0.1524)
+					(type default)
+				)
+				(fill
+					(type none)
+				)
+			)
+			(pin passive line
+				(at -5.08 2.54 0)
+				(length 3.81)
+				(name "Pin_1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -5.08 0 0)
+				(length 3.81)
+				(name "Pin_2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -5.08 -2.54 0)
+				(length 3.81)
+				(name "Pin_3"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "3"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -5.08 -5.08 0)
+				(length 3.81)
+				(name "Pin_4"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "4"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+		)
+		(embedded_fonts no)
+	)
+(symbol "RF_Module:ESP32-WROOM-32E"
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
@@ -1204,12 +1421,14 @@
 (no_connect (at 93.98 66.04) (uuid 8e9c7d7b-e9e8-59da-93a6-3d4a2a2c6be7))
 (no_connect (at 93.98 83.82) (uuid 9a1c882e-6d31-592c-b39c-bee2232b4d2d))
 (no_connect (at 93.98 86.36) (uuid 80a82a26-3e67-5177-a91c-df10f2a41470))
-(no_connect (at 93.98 88.9) (uuid 5986ba28-3361-5af3-b763-31bf47aadf84))
+(wire (pts (xy 93.98 88.9) (xy 99.06 88.9)) (stroke (width 0) (type default)) (uuid 8b21670d-d54b-43e4-877e-22c221f81bcb))
+(global_label "I2C_SDA" (shape bidirectional) (at 99.06 88.9 0) (effects (font (size 1.05 1.05)) (justify left)) (uuid c787d173-a7e4-4895-965b-4b7b9c118c02))
 (wire (pts (xy 93.98 60.96) (xy 99.06 60.96)) (stroke (width 0) (type default)) (uuid ecfa01dd-88f4-59f7-a1ed-a74d197db079))
 (global_label "PROG_RX" (shape bidirectional) (at 99.06 60.96 0) (effects (font (size 1.05 1.05)) (justify left))(uuid 9c4dbf85-2366-50e1-910c-17e2e1be8849))
 (wire (pts (xy 93.98 55.88) (xy 99.06 55.88)) (stroke (width 0) (type default)) (uuid dc66e00a-0643-548b-89a5-4a966367d8a1))
 (global_label "PROG_TX" (shape bidirectional) (at 99.06 55.88 0) (effects (font (size 1.05 1.05)) (justify left))(uuid 5c063f93-e76b-53e4-a4d8-40caab57e404))
-(no_connect (at 93.98 91.44) (uuid af47cba1-1f07-5b3f-9bc4-3894c2b78fa7))
+(wire (pts (xy 93.98 91.44) (xy 99.06 91.44)) (stroke (width 0) (type default)) (uuid e917092b-262c-48c3-bec3-f3ab8701a2a1))
+(global_label "I2C_SCL" (shape bidirectional) (at 99.06 91.44 0) (effects (font (size 1.05 1.05)) (justify left)) (uuid 2b5f2b3e-152e-4f6e-9b51-4b735c5b4fca))
 (no_connect (at 93.98 93.98) (uuid 155eccd2-18f0-55dd-b089-54bba50af364))
 (wire (pts (xy 78.74 119.38) (xy 78.74 124.46)) (stroke (width 0) (type default)) (uuid 612a4a24-d318-5cee-99f1-07e985b388d3))
 (global_label "GND" (shape bidirectional) (at 78.74 124.46 0) (effects (font (size 1.05 1.05)) (justify left))(uuid 53b22c61-d804-5316-8a58-4131f1739a8f))
@@ -1255,4 +1474,14 @@
 (global_label "PROG_TX" (shape bidirectional) (at 254 152.4 0) (effects (font (size 1.05 1.05)) (justify left))(uuid 3fa81074-4ff3-5289-b6bd-6a467a82eb9d))
 (symbol (lib_id "Connector:TestPoint") (at 279.4 147.32 0) (unit 1) (in_bom no) (on_board yes) (dnp no) (uuid 40cdfe28-d73d-5c7b-aaf4-03bc482baafb) (property "Reference" "TP6" (at 279.4 142.32 0) (effects (font (size 1.15 1.15)) ))(property "Value" "PROG_RX" (at 279.4 144.32 0) (effects (font (size 1.15 1.15)) ))(property "Footprint" "TestPoint:TestPoint_Pad_D1.5mm" (at 279.4 147.32 0) (hide yes) (effects (font (size 1.15 1.15)) ))(property "MPN" "" (at 279.4 147.32 0) (hide yes) (effects (font (size 1.15 1.15)) ))(property "LCSC" "" (at 279.4 147.32 0) (hide yes) (effects (font (size 1.15 1.15)) ))(instances (project "compact-bridge" (path "/6319aed7-0dca-5db1-a49f-58f5f416475f/6bd84f27-0c6d-51e3-94cd-59854f7ba3f0" (reference "TP6") (unit 1)))))
 (wire (pts (xy 279.4 147.32) (xy 279.4 152.4)) (stroke (width 0) (type default)) (uuid 77c9ac52-a955-5ef4-b432-f177c8213300))
-(global_label "PROG_RX" (shape bidirectional) (at 279.4 152.4 0) (effects (font (size 1.05 1.05)) (justify left))(uuid 8b45c2cb-23be-5558-98ad-aaa06d1a3fc7)))
+(global_label "PROG_RX" (shape bidirectional) (at 279.4 152.4 0) (effects (font (size 1.05 1.05)) (justify left))(uuid 8b45c2cb-23be-5558-98ad-aaa06d1a3fc7))
+(symbol (lib_id "Connector_Generic:Conn_01x04") (at 218.44 83.82 0) (unit 1) (in_bom no) (on_board yes) (in_pos_files no) (dnp yes) (uuid 2d730351-641f-4920-966e-2c8ce47d7f41)
+(property "Reference" "J3" (at 220.98 81.28 0) (effects (font (size 1.15 1.15)) (justify left)))(property "Value" "I2C expansion" (at 220.98 83.82 0) (effects (font (size 1.15 1.15)) (justify left)))(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical" (at 220.98 83.82 0) (hide yes) (effects (font (size 1.15 1.15)) (justify left)))(instances (project "compact-bridge" (path "/6319aed7-0dca-5db1-a49f-58f5f416475f/6bd84f27-0c6d-51e3-94cd-59854f7ba3f0" (reference "J3") (unit 1)))))
+(wire (pts (xy 213.36 81.28) (xy 208.28 81.28)) (stroke (width 0) (type default)) (uuid e2f119de-6729-454c-a922-272209986c47))
+(global_label "GND" (shape bidirectional) (at 208.28 81.28 180) (effects (font (size 1.05 1.05)) (justify right)) (uuid db50e8bc-1d52-4be0-9013-34e172d3ab23))
+(wire (pts (xy 213.36 83.82) (xy 208.28 83.82)) (stroke (width 0) (type default)) (uuid 7e41cba2-23e4-4adb-90c8-a586e3c7fa9b))
+(global_label "3V3" (shape bidirectional) (at 208.28 83.82 180) (effects (font (size 1.05 1.05)) (justify right)) (uuid 009bbc6d-14aa-4d28-9017-dceea7c725cb))
+(wire (pts (xy 213.36 86.36) (xy 208.28 86.36)) (stroke (width 0) (type default)) (uuid 07428d7e-f634-4cfc-9ed7-33ffd5b6571c))
+(global_label "I2C_SDA" (shape bidirectional) (at 208.28 86.36 180) (effects (font (size 1.05 1.05)) (justify right)) (uuid 391e563b-fdd2-4ddb-aac2-0caaf6192f89))
+(wire (pts (xy 213.36 88.9) (xy 208.28 88.9)) (stroke (width 0) (type default)) (uuid a787ea8b-802a-413a-8734-abab7cc249e3))
+(global_label "I2C_SCL" (shape bidirectional) (at 208.28 88.9 180) (effects (font (size 1.05 1.05)) (justify right)) (uuid c66f61c0-a26b-4f9b-b99e-c2c0c2d433bb)))

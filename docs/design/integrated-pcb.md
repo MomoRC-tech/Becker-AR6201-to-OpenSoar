@@ -7,7 +7,7 @@
 Use this plan to take the module-based bench bridge through a smaller four-layer design, first articles and a repeatable JLCPCB order.
 
 > [!NOTE]
-> **Status:** Power and instrument fault returns are routed on the four-layer development board for ten units. Signal routing follows the test-point and expansion review. [Requirements](requirements.md#requirements) · [KiCad project](../../electronics/integrated/compact-bridge.kicad_pro) · [Evidence S173, S178–S180, S189–S190, S196](../research/sources.md#source-register).
+> **Status:** Power and instrument fault returns are routed on the four-layer development board for ten units. Signal routing follows the test-point and expansion review. [Requirements](requirements.md#requirements) · [KiCad project](../../electronics/integrated/compact-bridge.kicad_pro) · [Evidence S173, S178–S180, S189–S190, S196–S197](../research/sources.md#source-register).
 
 📑 **On this page:** <kbd>[1 · 🔌 Circuits](#circuits)</kbd> <kbd>[2 · 📐 Housing and layout](#layout)</kbd> <kbd>[3 · 🌡️ Heat and verification](#heat)</kbd> <kbd>[4 · 💶 Production cost](#cost)</kbd> <kbd>[5 · 📦 Production](#production)</kbd>
 
@@ -55,16 +55,16 @@ The [compact-board review](../research/reviews/2026-11-20-compact-board-physical
 
 ### 2.1 Internal I²C expansion and probe access
 
-**Bus selection:** 3.3 V I²C on U1.33 (GPIO21/SDA) and U1.36 (GPIO22/SCL). Both are bidirectional, outside the flash and boot-strap assignments. For I²C, provide pull-ups to the bridge 3.3 V rail and check their combined resistance and rise time with the chosen peripheral. Keep an externally powered peripheral from driving an unpowered bridge. The development schematic still marks both pins unused pending footprint selection. [ESP32 pinout](https://documentation.espressif.com/esp32-wroom-32e_esp32-wroom-32ue_datasheet_en.html) · [Espressif I²C defaults](https://docs.espressif.com/projects/arduino-esp32/en/latest/api/i2c.html)
+**Bus selection:** 3.3 V I²C on U1.33 (GPIO21/SDA) and U1.36 (GPIO22/SCL). Both are bidirectional, outside the flash and boot-strap assignments. For I²C, provide pull-ups to the bridge 3.3 V rail and check their combined resistance and rise time with the chosen peripheral. Keep an externally powered peripheral from driving an unpowered bridge. J3 brings both pins out to a normally empty four-hole row. [ESP32 pinout](https://documentation.espressif.com/esp32-wroom-32e_esp32-wroom-32ue_datasheet_en.html) · [Espressif I²C defaults](https://docs.espressif.com/projects/arduino-esp32/en/latest/api/i2c.html)
 
-![Optional four-pin header shown on a temporary KiCad assembly, with measured clearances to R2 and the DE-9](../images/integrated-i2c-fit.png)
+![J3 top view, pin order and clearance for the optional 2.54 mm header](../images/integrated-i2c-fit.png)
 
 | Fit or load | Measured in CAD or proposed for test |
 | --- | --- |
-| Production board | A 3.0 × 9.0 mm rule area behind J1 reserves component space on both sides. A second 1.8 × 7.8 mm corridor protects the possible lands and drills from future routing on all four layers. Plane pours are allowed. The board carries no J3 pads, drills or connector. |
-| Trial pinout | From R2 toward J1: 1 GND, 2 3V3 output, 3 SDA, 4 SCL. Pin 1 center X133.45/Y145.82 mm, 2.00 mm pitch along +Y. The candidate has four Ø0.80 mm finished holes and 1.35 mm lands. Check the intended wire size or header tails before choosing the footprint. |
-| Plan clearance | The 2.0 × 8.0 mm header body clears R2 by 0.86 mm and J1 by 3.02 mm. Native courtyard clearance is 0.10 mm at R2 and 2.15 mm at J1. Body to U3 is 3.05 mm and to the U1 antenna rectangle 22.82 mm. A larger plug, daughterboard or bent wire needs its own envelope. |
-| Vertical clearance and retention | The generic bare header reaches 6.0 mm above the PCB and 1.2 mm below the underside of a nominal 1.6 mm board. The 25 mm exterior height does not establish headroom above a mated socket. Check PCB mounting height, lid, floor, plug removal and a restraint independent of the solder joints. |
+| Assembly | Leave J3 empty on all ten boards. A standard 1 × 4 vertical pin header can be soldered in later. J3 is excluded from the assembly BOM and placement export. |
+| Pinout | From R2 toward J1: **1 GND** (square), **2 3V3 output**, **3 SDA** (GPIO21), **4 SCL** (GPIO22). Pin 1 center X133.45/Y146.04 mm, 2.54 mm pitch toward +Y. Four Ø1.00 mm plated holes with 1.70 mm lands. |
+| Optional header fit | The 2.54 × 10.16 mm reference body clears R2 by 0.81 mm and J1 by 0.91 mm. Courtyard gaps are 0.05 mm and 0.04 mm respectively. S197. |
+| Vertical clearance and retention | The reference pins project 8.54 mm above the PCB and 1.40 mm below a 1.60 mm board. Check the selected socket, extraction space, wire bend, independent restraint and enclosure against the [first-article checks](../project/open-items.md#pcb-study). |
 | 3.3 V budget | U4 is rated at 1 A. Reserving 500 mA for the ESP32 supply leaves 500 mA before the transceivers, other loads and thermal margin. Use **50 mA total at the port as a proposed first-article test load** (0.165 W at 3.3 V). Publish usable current only after measuring peak rail sag, startup/inrush and closed-box temperature at 7–20 V with three active streams and the peripheral fitted. |
 
 **Probe map on the present board.** Viewed from the component side with J1 at the bottom, the two columns are 3.35 mm apart. TP2 is a fixture voltage-sense input. J2 powers the bridge.
@@ -75,7 +75,7 @@ The [compact-board review](../research/reviews/2026-11-20-compact-board-physical
 | 2 | TP3 EN | TP4 BOOT / GPIO0 |
 | 3 | TP5 PROG_TX (ESP32 output) | TP6 PROG_RX (ESP32 input) |
 
-For diagnostic pad placement, the native net anchors are J2.2 (VIN_RAW), C19.1 (VIN_PROT), R11.2 (PG_3V3), U1.6 (V_SENSE), U2.12/.9 (ZS_RX/FL_RX) and U3.2/.5 (BKR_RX/BKR_TX). The last four are logic-side signals. U5.4 to U1.6 spans 24.56 mm. Place the ADC probe near GPIO34 with a nearby ground and review the route against the switch node and feedback path. These anchors identify the nets for PCB08. Dedicated labeled diagnostic access and a mated-fixture check follow the fit decision. [Open items](../project/open-items.md#pcb-study) · [S191, S196](../research/sources.md#source-register)
+For diagnostic pad placement, the native net anchors are J2.2 (VIN_RAW), C19.1 (VIN_PROT), R11.2 (PG_3V3), U1.6 (V_SENSE), U2.12/.9 (ZS_RX/FL_RX) and U3.2/.5 (BKR_RX/BKR_TX). The last four are logic-side signals. U5.4 to U1.6 spans 24.56 mm. Place the ADC probe near GPIO34 with a nearby ground and review the route against the switch node and feedback path. These anchors identify the nets for PCB08. Place the additional pads on the component side for access with the lid removed and both cables connected. [Open items](../project/open-items.md#pcb-study) · [S191, S196](../research/sources.md#source-register)
 
 <a id="smaller-dsub"></a>
 
