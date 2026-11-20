@@ -72,7 +72,7 @@ More: [status page](firmware/bridge/README.md#status-page), [settings page](firm
 
 | | Section | Page | What you find there |
 | :-: | --- | --- | --- |
-| 🔧 | **Hardware** | [🔌 Signal wiring](docs/hardware/wiring.md) | Pin-by-pin signal wiring and bench bring-up |
+| 🔧 | **Hardware** | [🔌 Connect the bridge to your glider](docs/hardware/wiring.md#overview) | Instrument plug solder-side view, pinout and bench checks |
 | | | [⚡ Power and grounding](docs/hardware/power.md) | Supply, ground loops and currents |
 | | | [🧾 Schematic](docs/hardware/schematic.md) | All boards and connections on one KiCad sheet |
 | | | [🧱 Modules and parts](docs/hardware/modules.md) | Module details, parts list |

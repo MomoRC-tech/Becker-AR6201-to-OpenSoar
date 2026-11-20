@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 650 368" role="img" aria-labelledby="title desc">
+<title id="title">Female DE-9 · glider harness</title>
+<desc id="desc">Look into the solder cups with the wide row up. Each lead runs straight to its labelled cup.</desc>
+<defs>
+  <linearGradient id="flange" x2="0" y2="1"><stop stop-color="#eef1f3"/><stop offset=".5" stop-color="#c5cfd5"/><stop offset="1" stop-color="#aab8c2"/></linearGradient>
+  <linearGradient id="brass"><stop stop-color="#835d29"/><stop offset=".3" stop-color="#edd092"/><stop offset=".65" stop-color="#ffdf98"/><stop offset="1" stop-color="#846231"/></linearGradient>
+</defs>
+<rect width="650" height="368" rx="12" fill="#eef4f9"/>
+<g font-family="Segoe UI,Arial,sans-serif">
+<rect x="10" y="128" width="630" height="128" rx="18" fill="url(#flange)" stroke="#889ba9" stroke-width="2"/>
+<g fill="#eef4f9" stroke="#8c9ca7" stroke-width="3"><circle cx="40" cy="192" r="12"/><circle cx="610" cy="192" r="12"/></g>
+<path d="M78 136 H572 Q587 136 584 152 L568 231 Q565 248 550 248 H100 Q85 248 82 231 L66 152 Q63 136 78 136Z" fill="#253a4c" stroke="#6e8190" stroke-width="4"/>
+<text x="24" y="32" font-size="24" fill="#172b4d" text-anchor="start" font-weight="700">Female DE-9  ·  glider harness</text>
+<text x="24" y="56" font-size="17" fill="#172b4d" text-anchor="start">Wire side facing you  /  five solder cups on top</text>
+<rect x="114" y="150" width="22" height="20" rx="6" fill="url(#brass)" stroke="#82642f"/>
+<ellipse cx="125" cy="160" rx="7" ry="6" fill="#6e5734"/>
+<path d="M125 160 v-15" stroke="#c4ced4" stroke-width="6" stroke-linecap="round"/>
+<path d="M125 148 v-33" stroke="#536575" stroke-width="8" stroke-linecap="round"/>
+<path d="M124 147 v-31" stroke="#95a3ae" stroke-width="3" stroke-linecap="round"/>
+<text x="125" y="187" font-size="19" fill="#fff" text-anchor="middle" font-weight="700">1</text>
+<text x="125" y="84" font-size="17" fill="#172b4d" text-anchor="middle" font-weight="700">Zander</text>
+<text x="125" y="104" font-size="16" fill="#172b4d" text-anchor="middle">TX</text>
+<rect x="214" y="150" width="22" height="20" rx="6" fill="url(#brass)" stroke="#82642f"/>
+<ellipse cx="225" cy="160" rx="7" ry="6" fill="#6e5734"/>
+<path d="M225 160 v-15" stroke="#c4ced4" stroke-width="6" stroke-linecap="round"/>
+<path d="M225 148 v-33" stroke="#536575" stroke-width="8" stroke-linecap="round"/>
+<path d="M224 147 v-31" stroke="#95a3ae" stroke-width="3" stroke-linecap="round"/>
+<text x="225" y="187" font-size="19" fill="#fff" text-anchor="middle" font-weight="700">2</text>
+<text x="225" y="84" font-size="17" fill="#172b4d" text-anchor="middle" font-weight="700">FLARM</text>
+<text x="225" y="104" font-size="16" fill="#172b4d" text-anchor="middle">TX</text>
+<rect x="314" y="150" width="22" height="20" rx="6" fill="url(#brass)" stroke="#82642f"/>
+<ellipse cx="325" cy="160" rx="7" ry="6" fill="#6e5734"/>
+<path d="M325 160 v-15" stroke="#c4ced4" stroke-width="6" stroke-linecap="round"/>
+<path d="M325 148 v-33" stroke="#536575" stroke-width="8" stroke-linecap="round"/>
+<path d="M324 147 v-31" stroke="#95a3ae" stroke-width="3" stroke-linecap="round"/>
+<text x="325" y="187" font-size="19" fill="#fff" text-anchor="middle" font-weight="700">3</text>
+<text x="325" y="84" font-size="17" fill="#172b4d" text-anchor="middle" font-weight="700">Becker</text>
+<text x="325" y="104" font-size="16" fill="#172b4d" text-anchor="middle">J1-21 GND</text>
+<rect x="414" y="150" width="22" height="20" rx="6" fill="url(#brass)" stroke="#82642f"/>
+<ellipse cx="425" cy="160" rx="7" ry="6" fill="#6e5734"/>
+<path d="M425 160 v-15" stroke="#c4ced4" stroke-width="6" stroke-linecap="round"/>
+<path d="M425 148 v-33" stroke="#536575" stroke-width="8" stroke-linecap="round"/>
+<path d="M424 147 v-31" stroke="#95a3ae" stroke-width="3" stroke-linecap="round"/>
+<text x="425" y="187" font-size="19" fill="#fff" text-anchor="middle" font-weight="700">4</text>
+<text x="425" y="84" font-size="17" fill="#172b4d" text-anchor="middle" font-weight="700">Becker</text>
+<text x="425" y="104" font-size="16" fill="#172b4d" text-anchor="middle">J1-2 TX2+</text>
+<rect x="514" y="150" width="22" height="20" rx="6" fill="url(#brass)" stroke="#82642f"/>
+<ellipse cx="525" cy="160" rx="7" ry="6" fill="#6e5734"/>
+<path d="M525 160 v-15" stroke="#c4ced4" stroke-width="6" stroke-linecap="round"/>
+<path d="M525 148 v-33" stroke="#536575" stroke-width="8" stroke-linecap="round"/>
+<path d="M524 147 v-31" stroke="#95a3ae" stroke-width="3" stroke-linecap="round"/>
+<text x="525" y="187" font-size="19" fill="#fff" text-anchor="middle" font-weight="700">5</text>
+<text x="525" y="84" font-size="17" fill="#172b4d" text-anchor="middle" font-weight="700">Becker</text>
+<text x="525" y="104" font-size="16" fill="#172b4d" text-anchor="middle">J1-9 TX2−</text>
+<rect x="164" y="212" width="22" height="20" rx="6" fill="url(#brass)" stroke="#82642f"/>
+<ellipse cx="175" cy="222" rx="7" ry="6" fill="#6e5734"/>
+<path d="M175 222 v15" stroke="#c4ced4" stroke-width="6" stroke-linecap="round"/>
+<path d="M175 234 v33" stroke="#536575" stroke-width="8" stroke-linecap="round"/>
+<path d="M174 235 v31" stroke="#95a3ae" stroke-width="3" stroke-linecap="round"/>
+<text x="175" y="207" font-size="19" fill="#fff" text-anchor="middle" font-weight="700">6</text>
+<text x="175" y="303" font-size="17" fill="#172b4d" text-anchor="middle" font-weight="700">Zander</text>
+<text x="175" y="323" font-size="16" fill="#172b4d" text-anchor="middle">Signal GND</text>
+<rect x="264" y="212" width="22" height="20" rx="6" fill="url(#brass)" stroke="#82642f"/>
+<ellipse cx="275" cy="222" rx="7" ry="6" fill="#6e5734"/>
+<path d="M275 222 v15" stroke="#c4ced4" stroke-width="6" stroke-linecap="round"/>
+<path d="M275 234 v33" stroke="#536575" stroke-width="8" stroke-linecap="round"/>
+<path d="M274 235 v31" stroke="#95a3ae" stroke-width="3" stroke-linecap="round"/>
+<text x="275" y="207" font-size="19" fill="#fff" text-anchor="middle" font-weight="700">7</text>
+<text x="275" y="303" font-size="17" fill="#172b4d" text-anchor="middle" font-weight="700">FLARM</text>
+<text x="275" y="323" font-size="16" fill="#172b4d" text-anchor="middle">Signal GND</text>
+<rect x="364" y="212" width="22" height="20" rx="6" fill="url(#brass)" stroke="#82642f"/>
+<ellipse cx="375" cy="222" rx="7" ry="6" fill="#6e5734"/>
+<path d="M375 222 v15" stroke="#c4ced4" stroke-width="6" stroke-linecap="round"/>
+<path d="M375 234 v33" stroke="#536575" stroke-width="8" stroke-linecap="round"/>
+<path d="M374 235 v31" stroke="#95a3ae" stroke-width="3" stroke-linecap="round"/>
+<text x="375" y="207" font-size="19" fill="#fff" text-anchor="middle" font-weight="700">8</text>
+<text x="375" y="303" font-size="17" fill="#172b4d" text-anchor="middle" font-weight="700">Becker</text>
+<text x="375" y="323" font-size="16" fill="#172b4d" text-anchor="middle">J1-3 RX2+</text>
+<rect x="464" y="212" width="22" height="20" rx="6" fill="url(#brass)" stroke="#82642f"/>
+<ellipse cx="475" cy="222" rx="7" ry="6" fill="#6e5734"/>
+<path d="M475 222 v15" stroke="#c4ced4" stroke-width="6" stroke-linecap="round"/>
+<path d="M475 234 v33" stroke="#536575" stroke-width="8" stroke-linecap="round"/>
+<path d="M474 235 v31" stroke="#95a3ae" stroke-width="3" stroke-linecap="round"/>
+<text x="475" y="207" font-size="19" fill="#fff" text-anchor="middle" font-weight="700">9</text>
+<text x="475" y="303" font-size="17" fill="#172b4d" text-anchor="middle" font-weight="700">Becker</text>
+<text x="475" y="323" font-size="16" fill="#172b4d" text-anchor="middle">J1-10 RX2−</text>
+<text x="325" y="354" font-size="16" fill="#475569" text-anchor="middle">TX and RX are named at the instrument.</text>
+</g></svg>

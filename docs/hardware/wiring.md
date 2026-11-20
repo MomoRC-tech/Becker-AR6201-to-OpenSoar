@@ -4,12 +4,12 @@
 
 🏠 [Overview](../../README.md) › 🔧 Hardware › **Signal wiring**
 
-How the bridge's signals connect to the Zander, the FLARM and the Becker radio — pin by pin. Supply and grounding: [power and grounding](power.md). The device-side connectors and harness already exist in the aircraft; this page covers the bridge end only.
+Use the existing instrument leads to build the glider-side plug for the bridge, then check the harness on the bench.
 
 > [!NOTE]
 > **Status:** wiring design in progress. See [open items](../project/open-items.md) for the remaining wiring decisions and [bench checks](../project/open-items.md#bench-hardware).
 
-📑 **On this page:** <kbd>[1 · 🧭 Overview and UART plan](#overview)</kbd> <kbd>[2 · 📈 Zander ZS1](#zander)</kbd> <kbd>[3 · 📡 FLARM](#flarm)</kbd> <kbd>[4 · 📻 Becker radio](#becker)</kbd> <kbd>[5 · 🧪 Bench bring-up](#bring-up)</kbd>
+📑 **On this page:** <kbd>[1 · 🧭 Connect the bridge to your glider](#overview)</kbd> <kbd>[2 · 📈 Zander ZS1](#zander)</kbd> <kbd>[3 · 📡 FLARM](#flarm)</kbd> <kbd>[4 · 📻 Becker radio](#becker)</kbd> <kbd>[5 · 🧪 Bench bring-up](#bring-up)</kbd>
 
 Related: ⚡ [Power and grounding](power.md) · 🧱 [Modules and parts](modules.md) · 📚 [Sources](../research/sources.md)
 
@@ -17,42 +17,40 @@ Related: ⚡ [Power and grounding](power.md) · 🧱 [Modules and parts](modules
 
 <a id="overview"></a>
 
-## 1. 🧭 Overview and UART plan
+## 1. 🧭 Connect the bridge to your glider
+
+The box has two connections. Plug the instrument harness into the **male DE-9** on the box. Supply power through the separate [XT30 power connector](power.md#supply).
+
+<a id="de9-pinout"></a>
+
+### 1.1 Build the female instrument plug
+
+Hold the loose **female DE-9** with the **solder cups facing you** and the **five-cup row on top**. Cup **1** is at the upper left. Match the moulded numbers before soldering.
+
+![Female DE-9 from the wire side. Upper row, left to right: 1 Zander TX, 2 FLARM TX, 3 Becker ground, 4 Becker TX2+, 5 Becker TX2−. Lower row: 6 Zander ground, 7 FLARM ground, 8 Becker RX2+, 9 Becker RX2−.](../images/de9-glider-harness.svg)
+
+| Solder cup | Glider harness lead | Contact at the instrument |
+| ---: | --- | --- |
+| 1 | [Zander ZS1](#zander) data out | Existing harness TX |
+| 2 | [Classic FLARM](#flarm) data out | Power/Data 5 (IGC numbering) |
+| 3 | [Becker](#becker) signal ground | J1-21 D_GND |
+| 4 | Becker data out + | J1-2 TX2+ |
+| 5 | Becker data out − | J1-9 TX2− |
+| 6 | Zander signal ground | Existing harness signal ground |
+| 7 | FLARM signal ground | Power/Data ground (IGC 7/8) |
+| 8 | Becker data in + | J1-3 RX2+ |
+| 9 | Becker data in − | J1-10 RX2− |
+
+1. Identify each conductor on the existing harness by its instrument connection. Check the installed Becker model and revision against the [radio connector reference](#becker).
+2. Fit any backshell parts that must slide over the cable before soldering. Land the three signal grounds individually on cups **3, 6 and 7**. The common link is already [inside the box](wire-installation.md#connectors).
+3. Keep Becker **4/5** and **8/9** as two separate twisted pairs up to the cups. Insulate the shield drain at this end and connect the shield at the radio only.
+4. With power off and instruments disconnected, do the [harness continuity check (step 8)](#bring-up). Fit the backshell, secure the cable in the strain relief and tighten the plug's locking screws when mated.
+
+### 1.2 UART plan
 
 ![Signal overview: Zander and FLARM through RS-232 modules into ESP32 UART0 and UART1, receive only; Becker through the MAX490 RS-422 board to UART2 in both directions; ESP32 to OpenSoar over Wi-Fi](../images/wiring-overview.svg)
 
 Zander and FLARM are receive-only at the bridge. No return wires or connector contacts are fitted for their RX inputs. The Becker path works in both directions.
-
-### 1.1 Combined instrument connector
-
-Use one standard-density DE-9 connector for Becker, Zander and FLARM: a male connector (pins) on the housing and a mating female cable connector, with solder-cup contacts and screw locking. Terminate the existing instrument wires directly in the cable connector and support the cables with a backshell and strain relief. Power uses the separate [XT30 connector](power.md#supply).
-
-<a id="de9-pinout"></a>
-
-> [!TIP]
-> **Selected DE-9 pinout.** View the male housing connector from outside with the five-pin row up and the XT30 on the left. The housing-side solder-cup view is mirrored. Use the moulded contact numbers on both connector halves.
-
-```text
-XT30 side                         MAX490 side
-      1      2      3      4      5
-          6      7      8      9
-```
-
-| DE-9 pin | Instrument harness | Inside the bridge |
-| ---: | --- | --- |
-| 1 | [Zander ZS1](#zander) TX | RS-232 mod1 L3 |
-| 2 | [FLARM](#flarm) TX | RS-232 mod2 L3 |
-| 3 | [Becker](#becker) J1-21 D_GND | GND-J |
-| 4 | Becker J1-2 TX2+ | MAX490 A |
-| 5 | Becker J1-9 TX2− | MAX490 B |
-| 6 | Zander ZS1 signal ground | GND-J |
-| 7 | FLARM signal ground | GND-J |
-| 8 | Becker J1-3 RX2+ | MAX490 Y |
-| 9 | Becker J1-10 RX2− | MAX490 Z |
-
-Inside the bridge, link solder cups 3, 6 and 7 with a short tinned bridge and run one instrument-ground wire from it to GND-J, sized for the [fault current](power.md#currents). Keep pins 4/5 and 8/9 as separate twisted pairs up to the solder cups. Follow the [Becker shield termination](#becker) and insulate the drain at the bridge end. Use the dedicated instrument harness with this custom pinout. See [housing](housing.md#connectors) for mounting and [open items](../project/open-items.md#bench-hardware) for parts and fit checks.
-
-### 1.2 UART plan
 
 The ESP32 has three UARTs; each device gets one.
 

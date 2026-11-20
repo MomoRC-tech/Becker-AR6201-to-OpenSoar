@@ -535,3 +535,49 @@ teaser = (f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" vie
           '<g font-family="Segoe UI,Helvetica,Arial,sans-serif">\n' + "\n".join(o) + '\n</g>\n</svg>\n')
 with io.open(os.path.join(OUT, "teaser.svg"), "w", encoding="utf-8", newline="\n") as f:
     f.write(teaser)
+
+# Glider-side DE-9. Neutral insulation avoids assigning colours to aircraft wiring.
+def glider_harness_view():
+    parts = ['''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 650 368" role="img" aria-labelledby="title desc">
+<title id="title">Female DE-9 · glider harness</title>
+<desc id="desc">Look into the solder cups with the wide row up. Each lead runs straight to its labelled cup.</desc>
+<defs>
+  <linearGradient id="flange" x2="0" y2="1"><stop stop-color="#eef1f3"/><stop offset=".5" stop-color="#c5cfd5"/><stop offset="1" stop-color="#aab8c2"/></linearGradient>
+  <linearGradient id="brass"><stop stop-color="#835d29"/><stop offset=".3" stop-color="#edd092"/><stop offset=".65" stop-color="#ffdf98"/><stop offset="1" stop-color="#846231"/></linearGradient>
+</defs>
+<rect width="650" height="368" rx="12" fill="#eef4f9"/>
+<g font-family="Segoe UI,Arial,sans-serif">
+<rect x="10" y="128" width="630" height="128" rx="18" fill="url(#flange)" stroke="#889ba9" stroke-width="2"/>
+<g fill="#eef4f9" stroke="#8c9ca7" stroke-width="3"><circle cx="40" cy="192" r="12"/><circle cx="610" cy="192" r="12"/></g>
+<path d="M78 136 H572 Q587 136 584 152 L568 231 Q565 248 550 248 H100 Q85 248 82 231 L66 152 Q63 136 78 136Z" fill="#253a4c" stroke="#6e8190" stroke-width="4"/>''']
+    parts.append(txt(24, 32, "Female DE-9  ·  glider harness", size=24, bold=True))
+    parts.append(txt(24, 56, "Wire side facing you  /  five solder cups on top", size=17))
+    contacts = [
+        (1, "Zander", "TX"), (2, "FLARM", "TX"), (3, "Becker", "J1-21 GND"),
+        (4, "Becker", "J1-2 TX2+"), (5, "Becker", "J1-9 TX2−"),
+        (6, "Zander", "Signal GND"), (7, "FLARM", "Signal GND"),
+        (8, "Becker", "J1-3 RX2+"), (9, "Becker", "J1-10 RX2−"),
+    ]
+    for pin, device, signal in contacts:
+        if pin <= 5:
+            x, y, direction, label_y = 125 + 100 * (pin - 1), 160, -1, 84
+        else:
+            x, y, direction, label_y = 175 + 100 * (pin - 6), 222, 1, 303
+        # Each wire enters from its label, leaving the number clear between rows.
+        parts.extend([
+            f'<rect x="{x-11}" y="{y-10}" width="22" height="20" rx="6" fill="url(#brass)" stroke="#82642f"/>',
+            f'<ellipse cx="{x}" cy="{y}" rx="7" ry="6" fill="#6e5734"/>',
+            f'<path d="M{x} {y} v{direction*15}" stroke="#c4ced4" stroke-width="6" stroke-linecap="round"/>',
+            f'<path d="M{x} {y+direction*12} v{direction*33}" stroke="#536575" stroke-width="8" stroke-linecap="round"/>',
+            f'<path d="M{x-1} {y+direction*13} v{direction*31}" stroke="#95a3ae" stroke-width="3" stroke-linecap="round"/>',
+            txt(x, y-direction*21+6, str(pin), size=19, bold=True, color="#fff", anchor="middle"),
+            txt(x, label_y, device, size=17, bold=True, anchor="middle"),
+            txt(x, label_y+20, signal, size=16, anchor="middle"),
+        ])
+    parts.append(txt(325, 354, "TX and RX are named at the instrument.", size=16, color=SUB, anchor="middle"))
+    parts.append("</g></svg>")
+    with io.open(os.path.join(OUT, "de9-glider-harness.svg"), "w", encoding="utf-8", newline="\n") as stream:
+        stream.write("\n".join(parts) + "\n")
+
+
+glider_harness_view()
