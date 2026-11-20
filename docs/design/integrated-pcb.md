@@ -87,9 +87,27 @@ The [compact-board review](../research/reviews/2026-11-20-compact-board-physical
 
 Approach vertically with the lid removed and both cables attached. Use a fine tip on the Ø1.0 mm TP11 land. The other diagnostic lands are Ø1.5 mm. The drawing uses cable reference envelopes. [First-article probe checks](../project/open-items.md#pcb-study) · [S198](../research/sources.md#source-register)
 
+<a id="usb-programming"></a>
+
+### 2.2 Upright USB-C programming study
+
+TP1–TP6 provide the signals for a 3.3 V USB-to-UART pogo fixture. Power the board at J2. UART0, EN and BOOT still need copper and a first flash test. The preferred service option is an upright USB-C port accessible with the lid removed.
+
+![Top-entry USB-C placement study beside H2 showing the existing board and right housing wall](../images/integrated-usb-fit.png)
+
+| Study item | Result |
+| --- | --- |
+| Socket | GCT USB4145-03-0230-C, vertical USB 2.0 data receptacle. Its body stands 7.46 mm high. The four 2.30 mm shell stakes extend a nominal 0.70 mm below the 1.60 mm PCB. Allow support near the socket for the 5–20 N insertion load. |
+| Existing outline | The 10.6 × 6.0 mm study envelope found no free position on a 0.25 mm grid at 0° or 90°. Repeating the check with TP1–TP6 removed also found no clear position. A same-outline design needs component rearrangement. |
+| Wider layout | A 7 mm extension beside H2 provides the socket envelope and a 6 × 15 mm trial area for electronics. The 55 mm board would cross the drawn right inner wall by 2.0 mm at the present mounting position. Shifting the assembly 2.5 mm left would leave only 0.5 mm per side and move both front cutouts and mounts. |
+| Programming circuit | Candidate CP2102N QFN24 (4 × 4 mm): USB D+/D− to UART0, DTR/RTS through the Espressif two-transistor auto-reset circuit to GPIO0/EN. Allow for separate CC1/CC2 pulldowns, ESD protection, VBUS sensing and local decoupling. Keep TP1–TP6 for production and recovery. |
+| Proposed service power | Use a bench supply at J2 and the USB cable for data. Check VBUS sensing and powered-off leakage with only USB connected, reset behaviour on cable insertion/removal and contention with the pogo adapter. USB-only power would require a separate power-path design. |
+
+**Recommendation:** Trial a locally wider housing at H2 before changing copper. This preserves the front connector locations and routed power stage. The component placement, plug overmold, cable withdrawal, H2 tool access and enclosure support need a dimensioned fit. [Owner decision](../project/open-items.md#pcb-study) · [S201](../research/sources.md#source-register)
+
 <a id="smaller-dsub"></a>
 
-### 2.2 Shallower PCB footprint for the existing DE-9 plug
+### 2.3 Shallower PCB footprint for the existing DE-9 plug
 
 J1 is the Amphenol **D09P33E4GV00LF**, a male right-angle DE-9 with 5 A contacts, the existing cable pinout, 24.99 mm screw spacing and two UNC 4-40 female locks. Its 30.81 mm flange sits at the front PCB edge. The body extends 12.60 mm onto the board, freeing 2.05 mm of depth (about 63 mm² of rectangular body envelope).
 
