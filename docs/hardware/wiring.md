@@ -226,7 +226,7 @@ Feed one input at a time. Zander and FLARM use the same baud rate, so swapped pi
 
 With firmware step 3d ([supply voltage](../project/roadmap.md#supply-voltage)) and the [divider](power.md#voltage-sense) fitted:
 
-- [ ] **13.** Supply the bridge at 12.5 V, enter the multimeter reading at the XT30 on the settings page to calibrate, then compare the status page with the meter at 7, 12, 14.6 and 20 V. Record the errors; the plan expects about ±0.1 V.
+- [x] **13.** Supply the bridge at 12.5 V, enter the multimeter reading at the XT30 on the settings page to calibrate, then compare the status page with the meter at 7, 12, 14.6 and 20 V. Record the errors; the plan expects about ±0.1 V. Done against the lab supply display, 18 V in place of 20 V: within ±0.1 V from 12 to 14.6 V, +0.21 V at 7 V, −0.18 V at 18 V (S148).
 
 ### 5.3 Aircraft integration
 
