@@ -103,7 +103,7 @@ See the [bridge firmware plan](roadmap.md#firmware-plan) and the [OpenSoar readb
 | :-: | --- | --- | --- |
 | 1 | Protocol | Authoritative framing, ACK/NAK, CRC rules, status requests, channel vectors ([details](../research/becker-driver.md#protocol-details)) | Standby tuning |
 | 2 | Radio configuration | Matching manual; serial settings (the bridge uses 9600 8N1 until confirmed, [check](../research/reviews/2026-11-17-bridge-projects-check.md#other-projects)); remote control and Tandem mode enabled, as LXNAV and SD-Link require; this changes how the radio behaves, so the owner or installer decides before it is switched on | Port configuration |
-| 3 | Application integration | Full OpenSoar build with the readback-only patch, AR62xx over TCP alongside navigation, and frequency display | Application acceptance |
+| 3 | Application integration | Build the patched OpenSoar app for Android and check AR62xx over TCP alongside navigation | Application acceptance |
 | 5 | Network settings | Network to join in the aircraft and the passwords of the new bridge; hotspot name ([ADR-05](../design/architecture.md#adr-05)), address and ports ([firmware plan](roadmap.md#firmware-plan)) are selected | App and bridge configuration |
 | 7 | Bridge reliability | Byte-exact tests both ways, bursts, slow clients, partial writes, reconnects, navigation in parallel | Software verification (M4) |
 | 8 | Physical acceptance | Tune locally on the matching radio, check both frequencies in OpenSoar and verify that local controls and navigation keep working | Radio readback acceptance |

@@ -7,7 +7,7 @@
 What the OpenSoar AR62xx radio driver does today, how other implementations solve the same problems, and which protocol facts are still missing.
 
 > [!NOTE]
-> **Status:** the readback-only patch applies to OpenSoar 7.46.26 and passes focused host tests (S164). See the [remaining checks](../project/open-items.md#software-and-acceptance).
+> **Status:** the readback-only patch applies to OpenSoar 7.46.26. The Linux app builds and the focused host tests pass (S164). See the [remaining checks](../project/open-items.md#software-and-acceptance).
 
 📑 **On this page:** <kbd>[1 · 🔍 OpenSoar driver findings](#opensoar-driver)</kbd> <kbd>[2 · 📚 Other implementations](#other-implementations)</kbd> <kbd>[3 · 🛠️ Readback-only patch](#consequences)</kbd> <kbd>[4 · 📖 Manuals and commercial adapters](#manuals)</kbd>
 
@@ -128,10 +128,11 @@ git apply ../Becker-AR6201-to-OpenSoar/patches/opensoar/ar62xx-readback-only.pat
 
 Install the prerequisites for your target. [OpenSoar build guide](https://github.com/OpenSoaring/OpenSoar/blob/b2e745cfddfe0150f6ed7db467ac18c321b38d01/doc/build.rst)
 
-Run the focused test on Linux:
+Build the Linux app and run the focused test:
 
 ```bash
-make TARGET=UNIX output/UNIX/bin/TestAR62xx
+make TARGET=UNIX DEBUG=n
+make TARGET=UNIX DEBUG=n output/UNIX/bin/TestAR62xx
 output/UNIX/bin/TestAR62xx
 ```
 
