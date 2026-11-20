@@ -131,6 +131,7 @@ The bridge firmware follows its [plan](roadmap.md#firmware-plan) in parallel wit
 | 7 | Bridge reliability | Byte-exact tests both ways, bursts, slow clients, partial writes, reconnects, navigation in parallel | Software verification (M4) |
 | 8 | Physical acceptance | Frequency change and readback on the real radio, local controls and navigation unaffected | Aircraft integration |
 | 9 | Firmware review checks | Three bench checks from the [0.5.4 review](../research/reviews/2026-11-19-firmware-0.5.4-review.md#missing-checks) (S138): two writers above the wire rate on one port; repeated clean closes on a quiet port; connections up to the 16-socket limit | Severity of findings 1, 2 and 4 |
+| 10 | mDNS memory error | One `mdns_networking: Cannot allocate memory` error while the radio port refused repeated clients (S150): cause, and whether it repeats or affects the ports | Bridge reliability |
 ---
 
 <kbd>[⬆️ Back to top](#top)</kbd> <kbd>[🏠 Overview](../../README.md)</kbd>

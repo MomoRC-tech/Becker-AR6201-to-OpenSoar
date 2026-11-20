@@ -30,7 +30,7 @@ Set in `config.h`; everything else is upstream.
 
 | Setting | Value |
 | --- | --- |
-| Wi-Fi start-up | `MODE_STA_AP`: join the network in `credentials.h` for 15 s, otherwise open hotspot `WiFi-BridgeTom` at 10.10.10.10 and stay there until the next restart. At about −90 dBm the join can miss the 15 s (S142); raise the join time on the settings page for a bridge far from the router. The upstream modes `MODE_STA` and `MODE_AP` stay selectable |
+| Wi-Fi start-up | `MODE_STA_AP`: join the network in `credentials.h` for 15 s, otherwise open hotspot `WiFi-BridgeTom` at 10.10.10.10 and stay there until the next restart. The join can miss 15 s, at about −90 dBm (S142) and once at −45 dBm (S149); the bench bridge uses 30 s, set on the settings page. The upstream modes `MODE_STA` and `MODE_AP` stay selectable |
 | Hostname | `wifi-bridgetom`, for mDNS and OTA, as the OTA loader |
 | OTA | ArduinoOTA with the password from `credentials.h`, in both Wi-Fi modes |
 | Log output | `DEBUG` off: UART0 serves the Zander, so nothing is printed there. `WEB_LOG` shows the log lines and the ESP32 system messages on the [web log](#web-log); the build stops if both are on |
