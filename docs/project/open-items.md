@@ -23,8 +23,8 @@ Start with the delivered boards and power supply, with all instruments disconnec
 
 | # | Item | What is needed | How it is closed |
 | :-: | --- | --- | --- |
-| 1 | MAX490 board | Current draw; receiver output with A and B open ([bench step 6](../hardware/wiring.md#bring-up)) | Bench check on the delivered board |
-| 2 | GPIO16 input | High and low level at GPIO16 behind the divider, also at power-up and power-down | Bench measurement |
+| 1 | MAX490 board | Current draw | Bench check on the delivered board |
+| 2 | GPIO16 input | Level at GPIO16 during power-up and power-down (steady levels pass, S146) | Bench measurement |
 | 3 | RS-232 modules | Continuity of both modules against the [pad map](../hardware/modules.md#rs232-module), and R1 as the TTL output ([bench step 4](../hardware/wiring.md#bring-up)); IC marking | Bench check |
 | 4 | ESP32 board | Module marking and header positions match the DevKitC V4 reference | Visual check |
 | 5 | UBEC | 5 V output with and without load; match the physical input/output polarity and XT30 cups to the labelled routing endpoints; fit in the enclosure | Bench measurement |
