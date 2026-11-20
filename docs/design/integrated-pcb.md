@@ -79,19 +79,19 @@ For diagnostic pad placement, the native net anchors are J2.2 (VIN_RAW), C19.1 (
 
 <a id="smaller-dsub"></a>
 
-### 2.2 Smaller D-sub options
+### 2.2 Shallower PCB footprint for the existing DE-9 plug
 
-J1's Amphenol LD09P13A4GV00LF flange is about 30.8 mm wide with 24.99 mm screw spacing. The existing cable hood is about 31.5 mm wide. A Micro-D needs a new locking cable mate, pin map, footprint and front opening. Preserve all six signals, three separate returns and the isolated shell.
+Keep the male nine-pin DE-9 face, the existing cable plug and pinout, and the two UNC 4-40 screw locks. The proposed Amphenol D09P33E4GV00LF uses a shorter right-angle body. Compare both parts from the same front flange plane.
 
-| Candidate | Size evidence | Suitability |
-| --- | --- | --- |
-| **Omnetics hybrid Micro-D, size 15** | Reference 45° hood A97000-015 is 23.75 mm wide, 7.75 mm narrower than the existing hood. | First choice for a fit study. One 7.5 A contact can carry the Becker return. Six signals and the other two returns occupy eight of nine 3 A contacts. Verify Zander ground-loss current and hot contact ratings. |
-| **Omnetics hybrid Micro-D, size 21** | Reference hood A97000-021 is 27.56 mm wide, 3.94 mm narrower than the existing hood. | Three 7.5 A power contacts and seven ordinary contacts accommodate a separate power contact for each return. Compare if size 15 has insufficient margin. |
-| **ITT Cannon MDM-9PCBRP** | Right-angle Micro-D-9. Flange 19.94 mm maximum, jackpost spacing 14.35 mm. About 10.9 mm narrower than J1. | The 3 A contact rating falls below the conservative 3.2 A return-path case. Selection needs supplier overload data, a bounded fault duration and hot mated-harness tests. |
-| **NorComp 381-009-112L565** | Micro-D-9 flange 19.69 mm nominal, mounting centers 14.35 mm apart. | Exclude for this return. The exact drawing specifies 1 A and requires standoff removal when mating with a 380-series female. |
-| **Amphenol D09P33E4GV00LF** | Conventional DE-9, 30.81 mm flange. PCB backset 8.08 mm versus 10.40 mm on J1. | Option for depth only. Retains the external mating format and has 5 A contacts. The changed rows and board locks require a new footprint and shell-isolation check. |
+| Nominal dimension | Selected LD09P13A4GV00LF | Proposed D09P33E4GV00LF |
+| --- | ---: | ---: |
+| Flange width / screw spacing | 30.81 / 24.99 mm | 30.81 / 24.99 mm |
+| Body depth behind flange | 14.65 mm | **12.60 mm** |
+| Flange to first / second PCB contact row | 10.40 / 12.94 mm | 8.08 / 10.92 mm |
+| Flange to board-lock centerline | 11.67 mm | 9.50 mm |
+| Mating center above PCB | 7.20 mm | **6.30 mm** |
 
-The Omnetics hood dimensions are screening references. Obtain an exact right-angle hybrid and mating assembly drawing, include lock access, cable exit, bend radius and restraint beside the XT30, then compare board and enclosure outlines. [Manufacturer data, S193](../research/sources.md#source-register) · [Decisions and fit checks](../project/open-items.md#pcb-study)
+The candidate frees a nominal **2.05 mm strip** behind J1, about **63 mm²** across its flange width. This is the rectangular body envelope at fixed flange position. Usable routing space depends on the pads and assembly courtyard. Both parts have a nominal 5 A contact rating. The new rear-row and lock positions require a revised footprint and a recheck of the B.Cu instrument return. The 0.90 mm lower mating center affects the panel opening and supports. [Drawings and calculation, S195](../research/sources.md#source-register) · [Owner decision and fit checks](../project/open-items.md#pcb-study)
 
 ---
 
