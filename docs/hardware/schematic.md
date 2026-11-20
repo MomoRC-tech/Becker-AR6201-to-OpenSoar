@@ -17,12 +17,12 @@ Related: 🔌 [Signal wiring](wiring.md) · ⚡ [Power and grounding](power.md) 
 
 ## 1. 🗺️ Bridge sheet
 
-[![KiCad schematic: XT30 and UBEC feed 5V-J and GND-J; ESP32 in the middle; two RS-232 modules for Zander and FLARM on the left; the MAX490 RS-422 board with the RX divider and DI pull-up at the bottom; supply voltage divider R-V1, R-V2 and C-V above the ESP32; DE-9 instrument connector on the left](../images/schematic-wifi-bridge.svg)](../images/schematic-wifi-bridge.svg)
+[![KiCad schematic: XT30 and UBEC feed 5V-J and GND-J; ESP32 in the middle; two RS-232 modules for Zander and FLARM on the left; the MAX490 RS-422 board with the RX divider at the bottom; supply voltage divider R-V1, R-V2 and C-V above the ESP32; DE-9 instrument connector on the left](../images/schematic-wifi-bridge.svg)](../images/schematic-wifi-bridge.svg)
 
 Click the image to open it full size. KiCad project: [`electronics/schematic`](../../electronics/schematic).
 
 - Net names follow the pin tables: `12V-IN`, `5V-J`, `GND-J`, `3V3`, `V_SENSE`, `TX2±`, `RX2±`, `ZS1_TX`, `FLARM_TX`.
-- Two connections exist only on the boards and are shown with a repeated net label: ESP32 GND pins, and RS-232 module L2 ↔ R3.
+- One connection exists only on the board and is shown with a repeated net label: the ESP32 GND pins. The RS-232 modules' L2 pads (joined to R3 on each board) are unused.
 - The schematic shows nets, not wire routing. The branch order (5V-J, GND-J, module chain) is in [power and grounding](power.md#supply).
 
 ---

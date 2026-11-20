@@ -133,31 +133,32 @@ Start at the loose ends of the existing Becker harness ([installed wiring](../pr
 
 Run TX2± and RX2± as two separate twisted pairs in a shielded cable, as Becker requires for the interface lines (S10). Connect the shield to J1-11 at the radio end only and leave it unconnected at the bridge end, so it carries no ground current. Connect J1-21 to GND-J with a separate wire in the same cable, not the shield or drain wire. J1-21 also closes ground loop B; see [grounding and loops](power.md#ground).
 
+> [!TIP]
+> **Selected: no termination on A–B.** Leave the board's 120 Ω receive resistor unlinked, as delivered (S145). One driver feeds one receiver over the short harness at 9600 baud, so the line needs no termination, and the radio's TX2 driver carries no 120 Ω load.
+
 ### 4.2 TTL side — board header
 
 | Board signal | Bridge connection |
 | --- | --- |
 | **RXD** · receiver output (RO) | 2.2 kΩ (R-B1) in the wire to GPIO16 (J3-12); 3.3 kΩ (R-B2) across the header pins J3-12 and J3-7 (GND) (<img src="../images/pins/rx.svg" alt="RX" width="20" height="14">) |
-| **TXD** · driver input (DI) | GPIO17 (J3-11), plus a 10 kΩ pull-up (R-D, optional, recommended) from J3-11 to 3V3 at the RS-232-mod2 L2 pad (<img src="../images/pins/tx.svg" alt="TX" width="20" height="14">) |
+| **TXD** · driver input (DI) | GPIO17 (J3-11), direct, no resistor (<img src="../images/pins/tx.svg" alt="TX" width="20" height="14">) |
 | VCC | Own branch from central 5V-J |
 | GND | Own branch from central GND-J; no extra wire to ESP32 |
 
-R-B1 sits at the J3-12 end of the RO wire and R-D bridges J3-11 to the RS-232-mod2 L2 pad with an insulated lead. Cover each resistor and both its joints with heat-shrink and tie the wire down next to the ESP32, so vibration does not load the joints.
+R-B1 sits at the J3-12 end of the RO wire. Cover each resistor and both its joints with heat-shrink and tie the wire down next to the ESP32, so vibration does not load the joints.
 
 > [!IMPORTANT]
-> **Wire TX to TXD and RX to RXD on this MAX490 board.** The header labels name the ESP32 signals. Connect GPIO17 (TX) to **TXD**. Connect **RXD** through R-B1/R-B2 to GPIO16 (RX). Continuity on an identical loose board confirmed TXD → MAX490ESA pin 3 (DI) and RXD → pin 2 (RO), S144.
+> **Wire TX to TXD and RX to RXD on this MAX490 board.** The header labels name the ESP32 signals. Connect GPIO17 (TX) straight to **TXD**; a divider or series resistor in this line stops the driver from switching (S145). Connect **RXD** through R-B1/R-B2 to GPIO16 (RX). Continuity on an identical loose board confirmed TXD → MAX490ESA pin 3 (DI) and RXD → pin 2 (RO), S144.
 
-ESP32 TX at 3.3 V drives DI directly (the MAX490 needs 2.0 V for a logic high). The pull-up R-D holds DI idle while GPIO17 is not driven (reset, boot, flashing), so no random bits reach the radio before the UART is set up. The firmware sets no internal pull-up on GPIO17 (S140), and none could act before the firmware runs.
+ESP32 TX at 3.3 V drives DI directly (the MAX490 needs 2.0 V for a logic high). While GPIO17 is not driven (reset, boot, flashing), DI must still idle high, so no random bits reach the radio before the UART is set up. The firmware sets no internal pull-up on GPIO17 (S140), and none could act before the firmware runs.
 
 > [!TIP]
-> **R-D: optional, recommended.** Fit it unless there is a reason not to. The bench bridge omits R-D (S141). Repeat [bench step 5](#bring-up) after correcting the header wiring. The earlier Y–Z reading of +4.66 V (S143) predates the correction.
+> **Selected: no extra pull-up on DI.** The board's own 1 kΩ + LED to VCC holds DI at 3.1 V with the ESP32 in reset, and the driver output stays high (Y–Z +4.6 V), S145.
 
-| RS-422 board | R-D |
+| Replacement RS-422 board | DI pull-up |
 | --- | --- |
-| No pull-up on DI | Required: DI is a CMOS input and floats while GPIO17 is not driven |
-| Own pull-up on DI | Optional, recommended: it keeps DI high even if the board's pull-up is weak or a replacement board has none |
-
-The selected board has a resistor and LED from each header pin to VCC (S137). On the DI pin, that path pulls DI up to roughly 5 V minus the LED drop, which is a valid high. [Bench step 5](#bring-up) checks this with the ESP32 held in reset.
+| No pull-up on DI | Add 10 kΩ from J3-11 to 3V3: DI is a CMOS input and floats while GPIO17 is not driven |
+| Own pull-up on DI | None; repeat [bench step 5](#bring-up) to check it holds DI at 2 V or more |
 
 > [!WARNING]
 > The MAX490 runs at 5 V, so RO idles near 5 V — above the ESP32's 3.6 V input limit (S34). Never connect RO directly to GPIO16.
@@ -188,10 +189,10 @@ Keep all instruments disconnected during bench bring-up. Start with the supply a
 - [ ] **2.** Match the ESP32 board's headers and module marking to the [pinout](modules.md#esp32-pinout). Switch off the bench supply before connecting the verified ESP32, then measure the UBEC output under load. Keep USB disconnected while the UBEC powers the ESP32 ([power rules](power.md#supply)).
 - [x] **3.** Flash the [OTA loader](../design/architecture.md#adr-05) over USB with its board setting, the UBEC and all instruments unplugged. First run `esptool flash-id` and expect 4 MB flash. Then power the ESP32 from the UBEC with USB unplugged: check that it joins the bench network and accepts one OTA upload; switch the network off (or upload the [fallback test build](../../firmware/ota-loader/README.md#variants)), restart, and check that its hotspot appears and accepts a client and one OTA upload. For M3 the owner accepted a phone join in place of the hotspot upload, which the bench PC cannot reach ([milestones](../project/roadmap.md#milestones)).
 - [ ] **4.** With both RS-232 boards unpowered, check continuity from L2 to R3 and from L1 to R4 on each board. Verify the rest of the [pad map](modules.md#rs232-module) before soldering the harness. Then feed each board 3.3 V on R3 and GND on R4: with L3 open, R1 reads about 3.3 V; bridging L3 to L2 pulls R1 to about 0 V, while R2 does not follow. Do not touch L4, it drives about ±5.5 V.
-- [ ] **5.** With power disconnected, check the installed MAX490 board against the measured header mapping (TXD to chip pin 3, RXD to chip pin 2) and check the 120 Ω termination. Note the LED colour and resistor value on the DI pin. Then, with the board at 5 V, GPIO17 wired to DI without R-D and the ESP32 held in reset (EN to GND), check that DI reads at least 2 V and Y stays above Z. If it does, R-D is [optional](#becker); fitting it is still recommended. If it does not, R-D is required.
-- [ ] **6.** With the MAX490 powered and nothing else on A/B, drive the receiver input with a 1.5 V cell and measure GPIO16 both ways: + to A, − to B gives about 3.0 V (high); + to B, − to A gives below 0.5 V (low). Without the cell, the 120 Ω termination holds A and B at the same level, so GPIO16 has no defined state.
+- [x] **5.** With power disconnected, check GPIO17 (J3-11) straight to TXD with no resistor, RXD through the divider to GPIO16, and the A–B resistance (no termination: tens of kΩ). Then, with the board at 5 V and the ESP32 held in reset (EN to GND), check that DI reads at least 2 V and Y stays above Z, so the board's own pull-up [is enough](#becker). Passed on the bench bridge after the TX line was corrected (S145).
+- [ ] **6.** With the MAX490 powered and nothing else on A/B (loop links removed), drive the receiver input with a 1.5 V cell and measure GPIO16 both ways: + to A, − to B gives about 3.0 V (high); + to B, − to A gives below 0.5 V (low). Also record GPIO16 without the cell, with A and B open.
 - [ ] **7.** Measure the bridge's current and switch-on inrush at 12 V, and update the [current assumptions](power.md#currents).
-- [ ] **8.** With power off and the instruments disconnected, use the moulded contact numbers to check each loose harness conductor end to end through the mated DE-9 against the [pinout](#de9-pinout). Check for unintended connections between signals and from signals to GND-J or the shell. Allow for the MAX490 receive termination and the three ground contacts that share GND-J.
+- [ ] **8.** With power off and the instruments disconnected, use the moulded contact numbers to check each loose harness conductor end to end through the mated DE-9 against the [pinout](#de9-pinout). Check for unintended connections between signals and from signals to GND-J or the shell. Allow for the three ground contacts that share GND-J.
 
 <a id="bus-test"></a>
 
@@ -219,7 +220,7 @@ Test the finished bridge from the DE-9 inward, with the instruments still discon
 Feed one input at a time. Zander and FLARM use the same baud rate, so swapped pins show up only when each input gets its own test. The PC test script drives the adapter; its serial mode comes with [firmware step 4](../project/roadmap.md#firmware-plan).
 
 - [ ] **9.** Check the adapter: its TXD idles below −3 V against GND. A TTL cable does not and cannot be used.
-- [ ] **10.** Radio loop: fit the links 4–8 and 5–9, plug the breakout in and run the radio-port loop test.
+- [x] **10.** Radio loop: fit the links 4–8 and 5–9, plug the breakout in and run the radio-port loop test. Passed with links on the DE-9 pins (S145).
 - [ ] **11.** Zander input: adapter TXD on terminal 1, GND on 6 and 7. Bytes sent at the Zander baud rate arrive unchanged on the Zander port ([ports](../../firmware/bridge/README.md#project-settings)) over TCP; nothing arrives on the FLARM port.
 - [ ] **12.** FLARM input: move TXD to terminal 2. Bytes arrive on the FLARM port only.
 

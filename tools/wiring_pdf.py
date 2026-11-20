@@ -114,7 +114,7 @@ for n, title in [(4, "Connect Zander and FLARM"), (5, "Wire the MAX490 header"),
     body = fmt(sects[n - 1].split("<kbd>")[0])
     if n == 5:
         body += ('<div class="box"><b>Protect GPIO16.</b> MAX490 RO runs near 5 V. Use R-B1 (2.2 kΩ) in series and R-B2 (3.3 kΩ) '
-                 "to ground. R-D is the 10 kΩ pull-up: optional, recommended. Keep blue insulation on both sides of R-B1.</div>")
+                 "to ground. GPIO17 goes straight to TXD, with no resistor. Keep blue insulation on both sides of R-B1.</div>")
     page(f"{n}. {title}", body)
 xt30 = wire.index("XT30 side")
 table = wire[wire.rfind("\n|", 0, wire.index("\n| ---", xt30)):wire.index("\n\n", wire.index("| 9 |", xt30))]

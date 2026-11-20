@@ -62,7 +62,7 @@ Solder the module pads on the bench. In this view, Zander **mod1** is on the lef
 | Mint green | mod2 R1 → ESP32 J2-10 (GPIO26) |
 | Grey | R-V1 at the XT30 → ESP32 J2-5 (GPIO34) |
 
-Prepare the L3 ends in step 4 before seating the modules. Prepare the **mod2 L2** end of R-D on the bench while the pad is accessible. At the ESP32, **J3-1** takes only the mod2 return. **J2-14** takes the floor return from step 2 and the ground leads of R-V2 and C-V. **J2-19** takes the orange floor feed.
+Prepare the L3 ends in step 4 before seating the modules. At the ESP32, **J3-1** takes only the mod2 return. **J2-14** takes the floor return from step 2 and the ground leads of R-V2 and C-V. **J2-19** takes the orange floor feed.
 
 Route the **grey** wire from R-V1 up to pin-top height and along the side wall, above the J2-19 and J2-14 wires, to **J2-5**. Fit **R-V2 (10 kΩ)** and **C-V (100 nF)** beside the J2 header on the side-wall side: R-V2 at pin-top height, C-V (the yellow ceramic disc marked 104) flat against the side wall below it. Bend each lead from **J2-5** out to the side and back in at **J2-14**, so the leads stay clear of J2-6 to J2-13 and of the J2-7 and J2-10 wires. Sleeve the leads where they pass other joints. Solder the grey wire to J2-5 with them.
 
@@ -97,7 +97,7 @@ Set the MAX490 RS-422 board on its floor posts first. Keep the UBEC and carrier 
 | Turquoise | ESP32 **J3-11** → MAX490 **DI** |
 | Blue | MAX490 **RO** → **R-B1** splice → ESP32 **J3-12** |
 
-Fit **R-B2** across **J3-12 and J3-7**. Finish the **J3-11** end of **R-D** from **mod2 L2**. Insulate the resistors and their joints with heat-shrink. Support the leads next to the ESP32 so movement of the harness cannot load the joints. [Divider and pull-up wiring](wiring.md#becker)
+Fit **R-B2** across **J3-12 and J3-7**. The J3-11 wire carries no resistor. Insulate the resistors and their joints with heat-shrink. Support the leads next to the ESP32 so movement of the harness cannot load the joints. [Divider wiring](wiring.md#becker)
 
 ---
 

@@ -46,7 +46,7 @@ The AZ-Delivery board follows Espressif's DevKitC V4 layout (S32). View from the
 | 8 | `IO33` | Not connected | `IO19` | — |
 | 9 | `IO25` | — | `IO18` | — |
 | 10 | `IO26` | **FLARM RX** (UART1) | `IO5` | — |
-| 11 | `IO27` | Not connected | `IO17` | **Becker TX** (UART2), R-D to RS-232-mod2 L2 |
+| 11 | `IO27` | Not connected | `IO17` | **Becker TX** (UART2), direct to MAX490 TXD |
 | 12 | `IO14` | — | `IO16` | **Becker RX** via R-B1 (UART2), R-B2 to J3-7 |
 | 13 | `IO12` | — | `IO4` | — |
 | 14 | `GND` | **Ground: central GND-J** | `IO0` | — |
@@ -80,7 +80,7 @@ Hailege H-1-0290: a MAX3232 RS-232 ↔ 3.3 V converter with edge pads. The pad m
 | <img src="../images/hailege-h-1-0290-board.svg" width="240" alt="Hailege H-1-0290 board, chip side"> | <img src="../images/pinout-hailege.svg" width="420" alt="Hailege chip-side pad map. L1 ground, L2 supply, L3 RS-232 input, L4 RS-232 output. R1 TTL output, R2 TTL input, R3 supply, R4 ground."> |
 
 > [!IMPORTANT]
-> The RS-232 and TTL sides share one 3.3 V net (L2 ↔ R3) and one ground net (L1 ↔ R4). Use R3 and R4 on each board for the [ESP32-fed daisy chain](power.md#supply). Mod2 L2 feeds only R-D; leave L1 and the mod1 L2 unwired.
+> The RS-232 and TTL sides share one 3.3 V net (L2 ↔ R3) and one ground net (L1 ↔ R4). Use R3 and R4 on each board for the [ESP32-fed daisy chain](power.md#supply). Leave both L1 and both L2 pads unwired.
 
 ---
 
@@ -88,7 +88,7 @@ Hailege H-1-0290: a MAX3232 RS-232 ↔ 3.3 V converter with edge pads. The pad m
 
 ## 4. 📻 RS-422 board (Becker)
 
-A blue "RS422 TO TTL" board with a 4-pin header (TXD/RXD/GND/VCC) and four screw terminals (Y/Z/B/A), S34. The seller lists a MAX490, 5 V supply, 120 Ω termination and ESD protection.
+A blue "RS422 TO TTL" board with a 4-pin header (TXD/RXD/GND/VCC) and four screw terminals (Y/Z/B/A), S34; PCB marked QYF-998, V1165 (S145). The seller lists a MAX490, 5 V supply, 120 Ω termination and ESD protection.
 
 View from the component side, with the TTL header on the right and the screw terminals on the left.
 
@@ -100,7 +100,8 @@ View from the component side, with the TTL header on the right and the screw ter
 | --- | --- |
 | A / B | Receiver input + / − (from the radio's TX2) |
 | Y / Z | Driver output + / − (to the radio's RX2) |
-| Header RXD / TXD | RXD = receiver output (RO); TXD = driver input (DI), S144. Each pin has its own resistor and LED to VCC (S137), which is a pull-up on DI |
+| Header RXD / TXD | RXD = receiver output (RO); TXD = driver input (DI), S144. Each pin has its own 1 kΩ and LED to VCC (S137, S145); on DI this pull-up holds 3.1 V while GPIO17 is released |
+| Line parts | One TVS diode and one 100 Ω series resistor per line. Each pair has a 120 Ω resistor that ends on an isolated pad, so neither pair is terminated as delivered (S145) |
 | Header GND / VCC | Bridge ground / 5 V supply |
 
 > [!TIP]
@@ -139,15 +140,14 @@ For one bridge, bridge end only — the device-side connectors and harness alrea
 | 3 | RS-422 mod | 1 | MAX490 RS-422 board, 5 V | [Becker](wiring.md#becker) |
 | 4 | PS1 | 1 | Hobbywing UBEC 3A (2–6S), 86010010, set to 5 V | [Power](power.md#supply) |
 | 5 | R-B1, R-B2 | 1 each | 2.2 kΩ and 3.3 kΩ resistors, 0.125 W, DIN0204 axial (body about Ø1.6 × 3.6 mm) | Divider: R-B1 in the RO wire at J3-12, R-B2 across J3-12 and J3-7 |
-| 6 | R-D | 1 | 10 kΩ resistor, 0.125 W, DIN0204 axial | Pull-up J3-11 (GPIO17, DI) → RS-232-mod2 L2 (3V3); quiet radio line during boot. Optional, recommended; required if the RS-422 board has no DI pull-up ([details](wiring.md#becker)) |
-| 7 | R-V1, R-V2 | 1 each | 100 kΩ and 10 kΩ resistors, 1 %, 0.125 W, DIN0204 axial | Supply voltage divider: R-V1 at the 12 V tap, R-V2 across J2-5 and J2-14 ([circuit](power.md#voltage-sense)) |
-| 8 | C-V | 1 | 100 nF ceramic disc capacitor marked 104, leaded (owner's part); any rating from 6.3 V up is enough, the pin sees at most 3.6 V | ADC filter across J2-5 and J2-14 |
-| 9 | F1 | 1 | Supply fuse in an inline holder at the supply end of the 12 V harness; specification tracked in [open items](../project/open-items.md#bench-hardware) | [Power](power.md#supply) |
-| 10 | — | existing | Becker harness, reused from its loose bridge-side ends | Check against [Becker wiring](wiring.md#becker); [inventory](../project/existing-installation.md#equipment) |
-| 11 | — | 1 pair | Standard XT30 male housing connector and mating female harness connector | [Power](power.md#supply), [mounting](housing.md#connectors) |
-| 12 | — | 1 pair | DE-9 male housing connector and female cable connector, solder cups and screw locking, with cable backshell and strain relief | [Combined instrument connector](wiring.md#overview) |
-| 13 | — | as needed | Hookup wire 26 AWG, stranded, silver-plated, PTFE-insulated (typical OD 0.9–1.0 mm) in violet, blue and black | Signals, RS-232 3.3 V/ground chain, resistor leads ([colours](housing.md#internal-routing)) |
-| 14 | — | as needed | Hookup wire 22 AWG, stranded, silver-plated, PTFE-insulated (typical OD about 1.3 mm) in orange and black | Power branches from the junctions and the instrument-ground wire; the UBEC's own input and output leads are used where they reach |
+| 6 | R-V1, R-V2 | 1 each | 100 kΩ and 10 kΩ resistors, 1 %, 0.125 W, DIN0204 axial | Supply voltage divider: R-V1 at the 12 V tap, R-V2 across J2-5 and J2-14 ([circuit](power.md#voltage-sense)) |
+| 7 | C-V | 1 | 100 nF ceramic disc capacitor marked 104, leaded (owner's part); any rating from 6.3 V up is enough, the pin sees at most 3.6 V | ADC filter across J2-5 and J2-14 |
+| 8 | F1 | 1 | Supply fuse in an inline holder at the supply end of the 12 V harness; specification tracked in [open items](../project/open-items.md#bench-hardware) | [Power](power.md#supply) |
+| 9 | — | existing | Becker harness, reused from its loose bridge-side ends | Check against [Becker wiring](wiring.md#becker); [inventory](../project/existing-installation.md#equipment) |
+| 10 | — | 1 pair | Standard XT30 male housing connector and mating female harness connector | [Power](power.md#supply), [mounting](housing.md#connectors) |
+| 11 | — | 1 pair | DE-9 male housing connector and female cable connector, solder cups and screw locking, with cable backshell and strain relief | [Combined instrument connector](wiring.md#overview) |
+| 12 | — | as needed | Hookup wire 26 AWG, stranded, silver-plated, PTFE-insulated (typical OD 0.9–1.0 mm) in violet, blue and black | Signals, RS-232 3.3 V/ground chain, resistor leads ([colours](housing.md#internal-routing)) |
+| 13 | — | as needed | Hookup wire 22 AWG, stranded, silver-plated, PTFE-insulated (typical OD about 1.3 mm) in orange and black | Power branches from the junctions and the instrument-ground wire; the UBEC's own input and output leads are used where they reach |
 
 ---
 
