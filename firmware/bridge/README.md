@@ -274,11 +274,25 @@ Add `--radio-owner` for step 4. It checks that a second radio client is refused,
 
 ## Slow-app check (step 5)
 
-Use these commands on a bare ESP32 with the step 2 jumpers. Once the converters are wired, use the [DE-9 bus-level checks](../../docs/hardware/wiring.md#bus-test). The commands below cannot run the assembled-bridge slow-app acceptance test.
+**Assembled bridge.** Disconnect the instruments. Use the [DE-9 breakout and RS-232 source wiring](../../docs/hardware/wiring.md#bus-test). Fit links 4–8 and 5–9 for `--radio-loop`. Run the PC checks with the navigation and radio clients on the phone disconnected. Wired mode needs pyserial and reads the active TCP ports, baud rates and serial formats from the bridge.
 
 ```bash
-python tools/bridge_acceptance_test.py <bridge address> --radio-loop --baseline
-python tools/bridge_acceptance_test.py <bridge address> --radio-loop
+python tools/bridge_acceptance_test.py <bridge address> --feed COM4 --input flarm --radio-loop --baseline --seconds 15
+python tools/bridge_acceptance_test.py <bridge address> --feed COM4 --input flarm --radio-loop --seconds 30
+python tools/bridge_acceptance_test.py <bridge address> --feed COM4 --input flarm --radio-loop --seconds 120
 ```
 
-It streams NMEA-like lines into the Zander port at 80 % of the line rate and reads them back on the FLARM port, with a second app there that never reads, like a phone with OpenSoar in the background. It passes when the bridge keeps taking data, the normal app gets every byte unchanged, and neither the FLARM data nor the radio loop is delayed by more than 2 s. `--baseline` leaves out the slow app. With `--seconds 30` the slow app must still be connected afterwards, with `--seconds 90` closed. Firmware 0.4.4 fails it: one app that stops reading blocks all ports (S119). Firmware 0.5 passes ([slow apps](../../docs/project/roadmap.md#firmware-plan), S120).
+| Run | What to check |
+| --- | --- |
+| Baseline | The selected input receives every byte in order at 80% of its line rate. The other input stays quiet. The radio returns each probe through the final echo. The default delay limit is 2 s. |
+| Short slow-client run | The healthy reader and radio still pass while a second navigation client falls behind. The bridge reports skipped data for the slow client and keeps it connected. |
+| Sustained slow-client run | The bridge log records a closure after 60 s without send progress. The healthy reader and radio continue. A client can stop reading before its TCP buffers fill, so elapsed test time alone cannot establish a stall. |
+| One hour on all three ports | Connect two independent RS-232 sources, one to each navigation input, plus the DE-9 radio loop. Use the command below with the actual PC port names. The sources send different streams so swapped inputs fail. |
+
+```bash
+python tools/bridge_acceptance_test.py <bridge address> --zander-feed COM5 --flarm-feed COM4 --radio-loop --seconds 3600
+```
+
+**Phone checks.** Disconnect the PC test clients so OpenSoar can own the radio port. Feed recognizable Zander and FLARM sentences for the phone checks. Verify all three device connections and that fresh navigation data appears in OpenSoar. The Becker loop checks the transport only. Power-cycle the bridge in network mode and hotspot mode, then drop and restore phone Wi-Fi. Record which ports resume automatically, how long they take, and whether the phone needed a manual reconnect. Repeat with mobile data enabled. With a second phone, put its navigation client in the background or turn its screen off and check the first phone keeps receiving current data. Record the app version and Wi-Fi mode with each result. [Step 5 acceptance criteria](../../docs/project/roadmap.md#firmware-plan)
+
+**Bare ESP32 only.** The original `--radio-loop --baseline` and `--radio-loop` commands without serial-feed options use the step 2 GPIO jumpers (S120). Never fit GPIO jumpers once the converters are soldered.
