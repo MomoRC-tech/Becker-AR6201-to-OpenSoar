@@ -1,7 +1,7 @@
 // Project: settings stored on the ESP32 (firmware plan step 3a, R15). ESP32 only.
 //
 // The values in config.h and credentials.h are the defaults. The NVS
-// namespace "bridge" holds only values changed on the settings page. At
+// namespace "bridge-state" holds settings changed on the settings page. At
 // start-up every stored value is checked; an invalid one falls back to its
 // default and is marked, so a bad entry can never stop the bridge.
 //
@@ -13,9 +13,10 @@
 #ifdef ESP32
 
 #include <Preferences.h>
+#include <nvs.h>
 
 #define SETTINGS_NAMESPACE "bridge"
-#define SETTINGS_FORMAT 1  // stored key "v"; another value means: ignore everything stored
+#define SETTINGS_FORMAT 1  // legacy format stored under "v"
 
 enum SettingOrigin : uint8_t { ORIGIN_DEFAULT, ORIGIN_STORED, ORIGIN_INVALID };
 enum SettingType : uint8_t { T_PROFILE, T_BAUD, T_FRAME, T_TCP, T_SSID, T_NETPASS, T_APPASS, T_SECONDS, T_IP, T_FLAG, T_CAL };
@@ -83,7 +84,7 @@ static bool settingsFormatMismatch = false;
 
 // Trial (confirm or revert): Wi-Fi, hotspot and port changes apply after a restart
 // and must be kept on the settings page within SETTINGS_TRIAL_MS, otherwise the
-// previous values come back from the backup namespace.
+// previous values come back from the saved snapshot.
 #define SETTINGS_BACKUP "bridge-prev"
 #define SETTINGS_TRIAL_MS (10UL * 60UL * 1000UL)
 #define SETTINGS_TRIAL_BOOTS 3  // starts without Keep before the backup is restored at once
@@ -240,6 +241,10 @@ static int profilesMatchValues(BridgeSettings& b) {
 
 static bool settingSecret(const SettingItem& s) { return s.type == T_NETPASS || s.type == T_APPASS; }
 
+static bool settingText(const SettingItem& s) {
+    return s.type == T_PROFILE || s.type == T_FRAME || s.type == T_SSID || settingSecret(s);
+}
+
 // Short name of the value, without the port: "baud", "TCP port", "network" ...
 static const char* settingName(const SettingItem& s) {
     switch (s.type) {
@@ -352,6 +357,7 @@ static bool readStored(Preferences& p, SettingItem& s) {
             const size_t cap = valueSize(s.type);
             const size_t len = p.getStringLength(s.key);  // includes the terminating zero
             if (p.getType(s.key) != PT_STR || len == 0 || len > cap) return false;
+            memset(s.value, 0, cap);
             return p.getString(s.key, (char*)s.value, cap) > 0;
         }
     }
@@ -393,160 +399,108 @@ static bool trialKey(const SettingItem& s) {  // changes that can cut the phone 
            s.type == T_APPASS || s.type == T_SECONDS || s.type == T_IP;
 }
 
-static void putValue(Preferences& p, SettingType type, const char* key, const void* v) {
-    switch (type) {
-        case T_BAUD:
-        case T_IP: p.putUInt(key, *(const uint32_t*)v); break;
-        case T_TCP:
-        case T_SECONDS:
-        case T_CAL: p.putUShort(key, *(const uint16_t*)v); break;
-        case T_FLAG: p.putUChar(key, *(const uint8_t*)v); break;
-        default: p.putString(key, (const char*)v); break;
-    }
-}
-
-// Copy every setting key (and the format key) from one namespace to another; keys
-// missing in the source are removed in the target.
-static void copyNamespace(const char* from, const char* to) {
-    Preferences src, dst;
-    const bool haveSrc = src.begin(from, true);
-    dst.begin(to, false);
-    dst.clear();
-    if (haveSrc) {
-        uint8_t buf[64];
-        for (size_t i = 0; i < kSettingCount; i++) {
-            const SettingItem& s = kSettings[i];
-            if (!src.isKey(s.key)) continue;
-            memset(buf, 0, sizeof(buf));
-            switch (s.type) {
-                case T_BAUD:
-                case T_IP: *(uint32_t*)buf = src.getUInt(s.key); break;
-                case T_TCP:
-                case T_SECONDS:
-                case T_CAL: *(uint16_t*)buf = src.getUShort(s.key); break;
-                case T_FLAG: *(uint8_t*)buf = src.getUChar(s.key); break;
-                default: src.getString(s.key, (char*)buf, sizeof(buf)); break;
-            }
-            putValue(dst, s.type, s.key, buf);
-        }
-        if (src.isKey("v")) dst.putUInt("v", src.getUInt("v"));
-        src.end();
-    }
-    dst.end();
-}
-
-// At start-up: count starts in a trial; after too many without Keep, restore the backup.
-static void settingsTrialAtBoot() {
-    Preferences p;
-    if (!p.begin(SETTINGS_NAMESPACE, false)) return;
-    if (!p.getBool("tr", false)) {
-        p.end();
-        return;
-    }
-    const uint8_t boots = p.getUChar("tc", 0) + 1;
-    p.putUChar("tc", boots);
-    p.end();
-    if (boots > SETTINGS_TRIAL_BOOTS) {
-        copyNamespace(SETTINGS_BACKUP, SETTINGS_NAMESPACE);  // also clears the trial keys
-        Preferences b;
-        if (b.begin(SETTINGS_BACKUP, false)) { b.clear(); b.end(); }
-        LOGW(LOG_SETTINGS, "Trial not kept after %u starts: previous settings restored", SETTINGS_TRIAL_BOOTS);
-        return;
-    }
-    settingsTrial = true;
-    LOGW(LOG_SETTINGS, "New settings on trial, start %u of %u: press Keep on the settings page within %lu min", boots,
-         SETTINGS_TRIAL_BOOTS, SETTINGS_TRIAL_MS / 60000UL);
-}
-
-// Keep the trial settings: drop the backup and the trial marks.
-static void settingsKeep() {
-    Preferences p;
-    if (p.begin(SETTINGS_NAMESPACE, false)) {
-        p.remove("tr");
-        p.remove("tc");
-        p.end();
-    }
-    Preferences b;
-    if (b.begin(SETTINGS_BACKUP, false)) { b.clear(); b.end(); }
-    settingsTrial = false;
-    LOGI(LOG_SETTINGS, "Settings on trial kept");
-}
-
-// Trial not kept in time: restore the backup (the caller restarts).
-static void settingsRevert() {
-    copyNamespace(SETTINGS_BACKUP, SETTINGS_NAMESPACE);
-    Preferences b;
-    if (b.begin(SETTINGS_BACKUP, false)) { b.clear(); b.end(); }
-    LOGW(LOG_SETTINGS, "Trial not kept within %lu min: previous settings restored, restarting", SETTINGS_TRIAL_MS / 60000UL);
-}
-
-// Forget everything stored, including a trial (the caller restarts).
-static void settingsReset() {
-    Preferences p;
-    if (p.begin(SETTINGS_NAMESPACE, false)) { p.clear(); p.end(); }
-    Preferences b;
-    if (b.begin(SETTINGS_BACKUP, false)) { b.clear(); b.end(); }
-    LOGI(LOG_SETTINGS, "Stored settings forgotten, restarting with the defaults");
-}
-
-// Save a checked candidate. Values equal to the default are removed, so they show
-// as default. Returns true if a trial starts with the next restart.
-static bool settingsSave(const BridgeSettings& cand) {
-    BridgeSettings defaults;
-    fillDefaults(defaults);
-    bool risky = false;
-    for (size_t i = 0; i < kSettingCount; i++) {
-        const SettingItem& s = kSettings[i];
-        const size_t off = (const uint8_t*)s.value - (const uint8_t*)&settings;
-        if (trialKey(s) && memcmp((const uint8_t*)&cand + off, s.value, valueSize(s.type)) != 0) risky = true;
-    }
-    Preferences p;
-    if (!p.begin(SETTINGS_NAMESPACE, false)) return false;
-    const bool trialRunning = p.getBool("tr", false);
-    p.end();
-    if (risky && !trialRunning) copyNamespace(SETTINGS_NAMESPACE, SETTINGS_BACKUP);  // keep the last good values
-    p.begin(SETTINGS_NAMESPACE, false);
-    const bool trial = risky || trialRunning;
-    if (trial) {  // mark first: a power loss during the writes below still ends in the trial
-        p.putBool("tr", true);
-        p.putUChar("tc", 0);
-    }
-    for (size_t i = 0; i < kSettingCount; i++) {
-        const SettingItem& s = kSettings[i];
-        const size_t off = (const uint8_t*)s.value - (const uint8_t*)&settings;
-        const void* v = (const uint8_t*)&cand + off;
-        if (memcmp(v, (const uint8_t*)&defaults + off, valueSize(s.type)) == 0) p.remove(s.key);
-        else putValue(p, s.type, s.key, v);
-    }
-    p.putUInt("v", SETTINGS_FORMAT);
-    p.end();
-    LOGI(LOG_SETTINGS, "Settings saved, restarting%s", trial ? " (on trial)" : "");
-    return trial;
-}
-
-static void settingsLoad() {
-    BridgeSettings defaults;
-    fillDefaults(defaults);
-    settings = defaults;
-    for (size_t i = 0; i < kSettingCount; i++) kSettings[i].origin = ORIGIN_DEFAULT;
 #ifdef STORED_SETTINGS
-    settingsTrialAtBoot();
-    Preferences p;
-    if (!p.begin(SETTINGS_NAMESPACE, true)) {  // nothing stored yet
-        LOGI(LOG_SETTINGS, "Settings: defaults, nothing stored");
-        return;
+
+// The record is the sole authority once present. NVS replaces a blob as one
+// value, so active settings, rollback settings and trial metadata move together.
+// Keep the field order, types and kSettings indices stable for this format.
+#define SETTINGS_STATE_NAMESPACE "bridge-state"
+#define SETTINGS_STATE_KEY "state"
+static constexpr uint32_t kSettingsStateVersion = 2;
+
+struct SettingsSnapshot {
+    uint32_t overrides;
+    BridgeSettings values;
+};
+
+struct SettingsState {
+    uint32_t version;
+    uint8_t trial;
+    uint8_t boots;
+    uint16_t reserved;
+    SettingsSnapshot active;
+    SettingsSnapshot previous;
+};
+
+static_assert(sizeof(PortSettings) == 20 && sizeof(BridgeSettings) == 272 &&
+              sizeof(SettingsState) == 560 && kSettingCount <= 32, "settings record layout changed");
+
+static SettingsState settingsState;
+static bool settingsStorageReady = false;
+static bool settingsHasRecord = false;
+static bool settingsWriteUncertain = false;
+
+static uint32_t settingBit(size_t i) { return uint32_t(1) << i; }
+
+static size_t settingOffset(const SettingItem& s) {
+    return (const uint8_t*)s.value - (const uint8_t*)&settings;
+}
+
+static void normalizeLoadedSettings(const BridgeSettings& defaults) {
+    settingsCrossCheck(defaults);
+    const int custom = profilesMatchValues(settings);
+    for (SettingItem& s : kSettings) {
+        if (s.type == T_PROFILE && ((custom >> portOf(s)) & 1) && s.origin == ORIGIN_DEFAULT)
+            s.origin = ORIGIN_STORED;
     }
-    if (p.isKey("v") && p.getUInt("v", 0) != SETTINGS_FORMAT) {
-        settingsFormatMismatch = true;  // written by another firmware version: use the defaults
-        p.end();
-        LOGW(LOG_SETTINGS, "Stored settings are from another firmware version; defaults in use");
-        return;
-    }
+}
+
+static void clearLoadedSettings(const BridgeSettings& defaults) {
+    settings = defaults;
+    for (SettingItem& s : kSettings) s.origin = ORIGIN_DEFAULT;
+}
+
+static void applySnapshot(const SettingsSnapshot& source, const BridgeSettings& defaults) {
+    clearLoadedSettings(defaults);
     for (size_t i = 0; i < kSettingCount; i++) {
         SettingItem& s = kSettings[i];
-#ifdef FALLBACK_TEST
-        if (s.value == settings.netSsid) continue;  // the test build must miss the network
-#endif
+        if (!(source.overrides & settingBit(i))) continue;
+        const void* value = (const uint8_t*)&source.values + settingOffset(s);
+        const size_t size = valueSize(s.type);
+        const bool text = settingText(s);
+        if ((!text || memchr(value, 0, size)) && validAt(s.type, value, portOf(s))) {
+            memset(s.value, 0, size);
+            memcpy(s.value, value, text ? strlen((const char*)value) + 1 : size);
+            s.origin = ORIGIN_STORED;
+        } else {
+            s.origin = ORIGIN_INVALID;
+        }
+    }
+    normalizeLoadedSettings(defaults);
+}
+
+static SettingsSnapshot snapshotOf(const BridgeSettings& values, const BridgeSettings& defaults) {
+    SettingsSnapshot snapshot = {};
+    for (size_t i = 0; i < kSettingCount; i++) {
+        const SettingItem& s = kSettings[i];
+        const size_t off = settingOffset(s);
+        const void* value = (const uint8_t*)&values + off;
+        const size_t size = valueSize(s.type);
+        if (memcmp(value, (const uint8_t*)&defaults + off, size) == 0) continue;
+        memcpy((uint8_t*)&snapshot.values + off, value, size);
+        snapshot.overrides |= settingBit(i);
+    }
+    return snapshot;
+}
+
+// Prior firmware stored independent keys. Read them in place and leave them
+// untouched until the single authoritative record is committed.
+static esp_err_t loadLegacy(const char* name, const BridgeSettings& defaults,
+                           bool& trial, uint8_t& boots) {
+    clearLoadedSettings(defaults);
+    nvs_handle_t nvs;
+    const esp_err_t result = nvs_open(name, NVS_READONLY, &nvs);
+    if (result == ESP_ERR_NVS_NOT_FOUND) return ESP_OK;
+    if (result != ESP_OK) return result;
+    nvs_close(nvs);
+    Preferences p;
+    if (!p.begin(name, true)) return ESP_FAIL;
+    if (p.isKey("v") && p.getUInt("v", 0) != SETTINGS_FORMAT) {
+        settingsFormatMismatch = true;
+        LOGW(LOG_SETTINGS, "Legacy settings from another firmware version; defaults in use");
+        return ESP_OK;
+    }
+    for (SettingItem& s : kSettings) {
         if (!p.isKey(s.key)) continue;
         if (readStored(p, s) && validValue(s, portOf(s))) {
             s.origin = ORIGIN_STORED;
@@ -555,15 +509,210 @@ static void settingsLoad() {
             s.origin = ORIGIN_INVALID;
         }
     }
-    p.end();
-    settingsCrossCheck(defaults);
-    // Values saved before profiles existed, or edited by hand: a preset that no longer
-    // matches its baud and frame shows as Custom.
-    const int custom = profilesMatchValues(settings);
-    for (size_t i = 0; i < kSettingCount; i++) {
-        SettingItem& s = kSettings[i];
-        if (s.type == T_PROFILE && ((custom >> portOf(s)) & 1) && s.origin == ORIGIN_DEFAULT) s.origin = ORIGIN_STORED;
+    normalizeLoadedSettings(defaults);
+    trial = p.getBool("tr", false);
+    boots = p.getUChar("tc", 0);
+    return ESP_OK;
+}
+
+static esp_err_t readSettingsState(SettingsState& state) {
+    nvs_handle_t nvs;
+    esp_err_t result = nvs_open(SETTINGS_STATE_NAMESPACE, NVS_READONLY, &nvs);
+    if (result != ESP_OK) return result;
+    size_t size = sizeof(state);
+    result = nvs_get_blob(nvs, SETTINGS_STATE_KEY, &state, &size);
+    nvs_close(nvs);
+    if (result == ESP_OK && size != sizeof(state)) return ESP_ERR_NVS_INVALID_LENGTH;
+    return result;
+}
+
+static bool writeSettingsState(const SettingsState& next) {
+    nvs_handle_t nvs;
+    esp_err_t result = nvs_open(SETTINGS_STATE_NAMESPACE, NVS_READWRITE, &nvs);
+    if (result == ESP_OK) {
+        // A flash error can be reported after NVS has written the new value.
+        // Require a successful write before treating a later no-op as saved.
+        settingsWriteUncertain = true;
+        result = nvs_set_blob(nvs, SETTINGS_STATE_KEY, &next, sizeof(next));
+        if (result == ESP_OK) result = nvs_commit(nvs);
+        nvs_close(nvs);
     }
+    if (result != ESP_OK) {
+        LOGW(LOG_SETTINGS, "Could not write settings to flash (0x%x)", unsigned(result));
+        return false;
+    }
+    settingsState = next;
+    settingsWriteUncertain = false;
+    settingsHasRecord = true;
+    settingsStorageReady = true;
+    return true;
+}
+
+static SettingsState restoredState() {
+    SettingsState next = {};
+    next.version = kSettingsStateVersion;
+    next.active = settingsState.previous;
+    return next;
+}
+
+static void selectTrialAtBoot(const BridgeSettings& defaults) {
+    const bool expired = settingsState.boots >= SETTINGS_TRIAL_BOOTS;
+    SettingsState next = expired ? restoredState() : settingsState;
+    if (!expired) next.boots++;
+    if (!writeSettingsState(next)) {
+        // We could not account for this boot. Run the last good settings so
+        // repeated storage failures cannot strand the user on a trial.
+        applySnapshot(settingsState.previous, defaults);
+        settingsStorageReady = false;
+        LOGW(LOG_SETTINGS, "Could not update trial in flash: previous settings in use for this start");
+        return;
+    }
+    settingsTrial = next.trial;
+    applySnapshot(next.active, defaults);
+    if (expired) {
+        LOGW(LOG_SETTINGS, "Trial not kept after %u starts: previous settings restored", SETTINGS_TRIAL_BOOTS);
+    } else {
+        LOGW(LOG_SETTINGS, "New settings on trial, start %u of %u: press Keep on the settings page within %lu min",
+             unsigned(next.boots), SETTINGS_TRIAL_BOOTS, SETTINGS_TRIAL_MS / 60000UL);
+    }
+}
+
+static bool settingsKeep() {
+    if (!settingsStorageReady) return false;
+    if (!settingsTrial) return !settingsWriteUncertain || writeSettingsState(settingsState);
+    SettingsState next = settingsState;
+    next.trial = 0;
+    next.boots = 0;
+    next.previous = {};
+    if (!writeSettingsState(next)) return false;
+    settingsTrial = false;
+    LOGI(LOG_SETTINGS, "Settings on trial kept");
+    return true;
+}
+
+static bool settingsRevert() {
+    if (!settingsStorageReady || !settingsTrial || !writeSettingsState(restoredState())) return false;
+    settingsTrial = false;
+    LOGW(LOG_SETTINGS, "Trial not kept within %lu min: previous settings restored, restarting", SETTINGS_TRIAL_MS / 60000UL);
+    return true;
+}
+
+static bool eraseLegacySettings(const char* name) {
+    nvs_handle_t nvs;
+    // An absent namespace needs no write.
+    esp_err_t result = nvs_open(name, NVS_READONLY, &nvs);
+    if (result == ESP_ERR_NVS_NOT_FOUND) return true;
+    if (result == ESP_OK) {
+        nvs_close(nvs);
+        result = nvs_open(name, NVS_READWRITE, &nvs);
+        if (result == ESP_OK) {
+            result = nvs_erase_all(nvs);
+            if (result == ESP_OK) result = nvs_commit(nvs);
+            nvs_close(nvs);
+        }
+    }
+    if (result != ESP_OK) {
+        LOGW(LOG_SETTINGS, "Could not erase legacy settings (0x%x)", unsigned(result));
+        return false;
+    }
+    return true;
+}
+
+static bool settingsReset() {
+    // When still using independent legacy keys, commit their equivalent
+    // record first. A failed erase then leaves the old settings usable.
+    if (!settingsHasRecord) {
+        if (!settingsStorageReady || !writeSettingsState(settingsState)) return false;
+    }
+    if (!eraseLegacySettings(SETTINGS_NAMESPACE) || !eraseLegacySettings(SETTINGS_BACKUP)) return false;
+    SettingsState next = {};
+    next.version = kSettingsStateVersion;
+    if (!writeSettingsState(next)) return false;
+    settingsTrial = false;
+    LOGI(LOG_SETTINGS, "Stored settings forgotten, restarting with the defaults");
+    return true;
+}
+
+static bool settingsSave(const BridgeSettings& cand, bool& trial) {
+    if (!settingsStorageReady) return false;
+    bool changed = false;
+    bool risky = false;
+    for (const SettingItem& s : kSettings) {
+        const void* value = (const uint8_t*)&cand + settingOffset(s);
+        if (memcmp(value, s.value, valueSize(s.type)) == 0) continue;
+        changed = true;
+        risky |= trialKey(s);
+    }
+    trial = risky || settingsTrial;
+    if (!changed) return !settingsWriteUncertain || writeSettingsState(settingsState);
+
+    BridgeSettings defaults;
+    fillDefaults(defaults);
+    SettingsState next = {};
+    next.version = kSettingsStateVersion;
+    next.active = snapshotOf(cand, defaults);
+    next.trial = trial;
+    if (trial) {
+        next.previous = settingsTrial ? settingsState.previous : snapshotOf(settings, defaults);
+    }
+    if (!writeSettingsState(next)) return false;
+    LOGI(LOG_SETTINGS, "Settings saved, restarting%s", trial ? " (on trial)" : "");
+    return true;
+}
+
+#endif  // STORED_SETTINGS
+
+static void settingsLoad() {
+    BridgeSettings defaults;
+    fillDefaults(defaults);
+    settings = defaults;
+    for (SettingItem& s : kSettings) s.origin = ORIGIN_DEFAULT;
+#ifdef STORED_SETTINGS
+    settingsState = {};
+    settingsTrial = false;
+    settingsFormatMismatch = false;
+    settingsStorageReady = false;
+    settingsWriteUncertain = false;
+    const esp_err_t result = readSettingsState(settingsState);
+    settingsHasRecord = result == ESP_OK || result == ESP_ERR_NVS_INVALID_LENGTH ||
+                        result == ESP_ERR_NVS_TYPE_MISMATCH;
+    if (result == ESP_ERR_NVS_NOT_FOUND) {
+        bool trial = false;
+        uint8_t boots = 0;
+        esp_err_t legacyResult = loadLegacy(SETTINGS_NAMESPACE, defaults, trial, boots);
+        if (legacyResult == ESP_OK) {
+            settingsState.version = kSettingsStateVersion;
+            settingsState.active = snapshotOf(settings, defaults);
+            if (trial) {
+                settingsState.trial = 1;
+                settingsState.boots = boots;
+                legacyResult = loadLegacy(SETTINGS_BACKUP, defaults, trial, boots);
+                if (legacyResult == ESP_OK) {
+                    settingsState.previous = snapshotOf(settings, defaults);
+                    selectTrialAtBoot(defaults);
+                }
+            } else {
+                settingsStorageReady = true;
+            }
+        }
+        if (legacyResult != ESP_OK) LOGW(LOG_SETTINGS, "Could not read legacy settings (0x%x)", unsigned(legacyResult));
+    } else if (result != ESP_OK || settingsState.version != kSettingsStateVersion ||
+               settingsState.trial > 1 || settingsState.reserved != 0) {
+        settingsFormatMismatch = settingsHasRecord;
+        LOGW(LOG_SETTINGS, "Could not read stored settings (0x%x); defaults in use", unsigned(result));
+    } else if (settingsState.trial) {
+        selectTrialAtBoot(defaults);
+    } else {
+        settingsStorageReady = true;
+        applySnapshot(settingsState.active, defaults);
+    }
+#ifdef FALLBACK_TEST
+    for (SettingItem& s : kSettings) {
+        if (s.value != settings.netSsid) continue;
+        restoreDefault(s, defaults);  // the test build must miss the network
+        s.origin = ORIGIN_DEFAULT;
+    }
+#endif
     static const char* const portNames[NUM_COM] = PORT_NAMES;  // for the web log
     int changed = 0, invalid = 0;
     for (size_t i = 0; i < kSettingCount; i++) {

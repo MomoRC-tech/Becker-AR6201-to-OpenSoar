@@ -134,6 +134,11 @@ static void addError(String& errors, const char* key, const char* text) {
     jsonString(errors, text);
 }
 
+static void settingsStorageError() {
+    statusServer.send(503, "application/json",
+                      "{\"ok\":false,\"message\":\"Could not update settings in flash. Try again.\"}");
+}
+
 static void handleSettingsSave() {
     if (!settingsAuth()) return;
     BridgeSettings cand = settings;  // fields not sent keep their active value
@@ -160,28 +165,42 @@ static void handleSettingsSave() {
         return;
     }
     profilesMatchValues(cand);  // a preset with edited baud or frame is stored as Custom
-    const bool trial = settingsSave(cand);
+    bool trial = false;
+    if (!settingsSave(cand, trial)) {
+        settingsStorageError();
+        return;
+    }
     statusServer.send(200, "application/json", trial ? "{\"ok\":true,\"trial\":true}" : "{\"ok\":true,\"trial\":false}");
     restartSoon();
 }
 
 static void handleSettingsKeep() {
     if (!settingsAuth()) return;
-    settingsKeep();
+    if (!settingsKeep()) {
+        settingsStorageError();
+        return;
+    }
     statusServer.send(200, "application/json", "{\"ok\":true}");
 }
 
 static void handleSettingsReset() {
     if (!settingsAuth()) return;
-    settingsReset();
+    if (!settingsReset()) {
+        settingsStorageError();
+        return;
+    }
     statusServer.send(200, "application/json", "{\"ok\":true}");
     restartSoon();
 }
 
 // Called from the status task loop: a trial that was not kept in time goes back.
 static void settingsTrialCheck() {
-    if (settingsTrial && millis() > SETTINGS_TRIAL_MS) {
-        settingsRevert();
+    static uint32_t lastAttempt = 0;
+    const uint32_t now = millis();
+    if (settingsTrial && now > SETTINGS_TRIAL_MS &&
+        (lastAttempt == 0 || now - lastAttempt >= 5000)) {
+        lastAttempt = now;
+        if (!settingsRevert()) return;
         lifetimeSaveNow();
         delay(200);
         ESP.restart();
@@ -309,14 +328,21 @@ function useScan(n){
     $('use'+n).hidden=true;
     $('scan'+n).textContent+=' · Added to form. Save and restart to apply.';
 }
+async function settingsReply(r){
+    if(r.status===401)throw Error('Settings password required. Reopen this page and sign in.');
+    const d=await r.json().catch(()=>({}));
+    if((r.ok&&d.ok===true)||(r.status===400&&d.errors))return d;
+    throw Error(d.message||'The bridge could not update settings.');
+}
+function settingsError(e){$('msg').textContent=e instanceof TypeError?'The bridge did not answer. Check the Wi-Fi connection and try again.':e.message}
 function save(e){e.preventDefault();document.querySelectorAll('.err').forEach(x=>x.textContent='');
 const b=new URLSearchParams();for(const i of items){const el=$('k_'+i.key);if(el&&!el.disabled)b.append(i.key,el.value)}
-post('/api/settings',b).then(r=>r.json()).then(d=>{if(!d.ok){for(const k in d.errors){const x=$('e_'+k);if(x)x.textContent=d.errors[k]}$('msg').textContent='Not saved. Correct the marked fields.';return}
+post('/api/settings',b).then(settingsReply).then(d=>{if(!d.ok){for(const k in d.errors){const x=$('e_'+k);if(x)x.textContent=d.errors[k]}$('msg').textContent='Not saved. Correct the marked fields.';return}
 $('fm').hidden=true;$('msg').textContent=d.trial?'Saved. The bridge restarts now. Reconnect to its Wi-Fi, open this page again and press Keep within 10 minutes.':'Saved. The bridge restarts now; the status page opens in 20 seconds.';
-if(!d.trial)setTimeout(()=>location.href='/',20000)}).catch(()=>{$('msg').textContent='The bridge did not answer. Check the Wi-Fi connection and try again.'});return false}
-function keep(){post('/api/keep').then(r=>r.json()).then(()=>{$('trial').hidden=true;$('msg').textContent='Kept. These settings stay.'})}
+if(!d.trial)setTimeout(()=>location.href='/',20000)}).catch(settingsError);return false}
+function keep(){post('/api/keep').then(settingsReply).then(()=>{$('trial').hidden=true;$('msg').textContent='Kept. These settings stay.'}).catch(settingsError)}
 function reset(){if(!confirm('Forget all saved settings and restart with the firmware defaults?'))return;
-post('/api/reset').then(()=>{$('fm').hidden=true;$('msg').textContent='Reset. The bridge restarts with the firmware defaults; the status page opens in 20 seconds.';setTimeout(()=>location.href='/',20000)})}
+post('/api/reset').then(settingsReply).then(()=>{$('fm').hidden=true;$('msg').textContent='Reset. The bridge restarts with the firmware defaults; the status page opens in 20 seconds.';setTimeout(()=>location.href='/',20000)}).catch(settingsError)}
 function lreset(){if(!confirm('Start a new lifetime record? Operating time, starts and the extremes start again from zero.'))return;
 post('/api/lifetime/reset').then(r=>r.json()).then(()=>{$('msg').textContent='Lifetime record reset.'}).catch(()=>{$('msg').textContent='The bridge did not answer. Try again.'})}
 function sclear(){if(!confirm('Delete all saved errors and warnings?'))return;

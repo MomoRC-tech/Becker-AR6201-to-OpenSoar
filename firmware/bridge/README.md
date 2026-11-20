@@ -90,10 +90,10 @@ Open *Change settings* under *All settings*, or `http://<bridge address>/setting
 | Device profiles | Choose the instrument on a port: Zander ZS1, Classic FLARM, Becker AR6201 or Custom. A preset fills in baud and frame; changing either by hand selects Custom. Only presets that fit the port's wiring are offered and accepted: Zander and FLARM ports (RS-232, bridge receives only) take ZS1 or Classic FLARM, the Becker port (RS-422, both ways) takes AR6201. The page shows the port's wiring under the choice. Preset values are the candidates in `config.h`. Settings saved before profiles existed keep working: a preset that no longer matches its baud and frame shows as Custom. The TCP port stays separate
 | Checks | Every field is checked on the bridge; a refused save names each wrong field and changes nothing. TCP ports, including the supply voltage port, may not repeat and may not be 80 |
 | Passwords | Never shown. Leave the field empty to keep the current one |
-| Save and restart | Values equal to the default are not stored, so they show as default. The bridge restarts and uses the new values |
+| Save and restart | Values equal to the default show as default. The bridge restarts after a successful save. A flash write failure shows an error and skips the restart |
 | Trial | A change to Wi-Fi, hotspot or ports runs on trial. Reconnect, open the settings page and press *Keep* within 10 minutes. Otherwise the bridge restores the values from before and restarts; after the 3rd start without *Keep* it restores them at once. Serial-only changes apply directly |
 | Reset to defaults | Forgets all stored values, including a trial, and restarts with the firmware defaults |
-| Storage | NVS namespaces `bridge` (active values, format version, trial marks) and `bridge-prev` (backup during a trial). Survives restarts and OTA updates; a full flash erase over USB clears it |
+| Storage | One NVS record in `bridge-state` holds the overrides, rollback values and trial state. Firmware 0.5.8 reads legacy `bridge` / `bridge-prev` settings and writes the new record on the first change or during trial recovery. The legacy keys stay until a reset, so firmware downgraded to 0.5.7 reads the old configuration. Settings survive restarts and OTA updates. A full USB flash erase clears them |
 
 | Address | Content |
 | --- | --- |
@@ -105,7 +105,7 @@ Open *Change settings* under *All settings*, or `http://<bridge address>/setting
 | `POST /api/lifetime/reset` | Start a new [lifetime record](#lifetime-record) (password) |
 | `POST /api/saved/clear` | Delete the [saved log](#saved-log) (password) |
 
-Bench check: `python tools/settings_test.py <bridge address> [--revert]` runs the password, refusal, save, device profile, trial, *Keep*, reset and (with `--revert`, 10 minutes) automatic revert checks. The bridge must be in network mode, so its address stays the same across restarts.
+Use `python tools/settings_test.py <bridge address> [--revert]` on a spare bridge in network mode. The script ends with a factory reset. For a configured bench bridge, compare its settings and origins before and after OTA, then let a temporary change on an unused TCP port revert and verify that the original settings and listener return.
 
 <a id="data-monitor"></a>
 
