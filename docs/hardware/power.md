@@ -132,7 +132,7 @@ What a single broken wire does:
 > [!WARNING]
 > The wire between the supply connection and F1 is unprotected. Fit F1 directly at the supply connection and keep that wire as short as possible; agree the supply-cable details before connecting the bridge to the aircraft supply.
 
-Size F1 using the measured running current and switch-on inrush, the wire's allowable current and the fuse's time-current curve and DC interrupting rating ([fuse selection, S31](../research/sources.md#source-register)). The load estimate alone does not establish a fuse rating.
+Size F1 using the measured running current, the wire's allowable current and the fuse's time-current curve and DC interrupting rating ([fuse selection, S31](../research/sources.md#source-register)). The switch-on inrush is not measured; allow for it when reading the time-current curve.
 
 ---
 
