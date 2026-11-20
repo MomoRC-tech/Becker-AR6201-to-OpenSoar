@@ -115,7 +115,7 @@ flowchart LR
 | --- | --- |
 | Transmit direction on the RS-232 ports | Keep for Zander and FLARM |
 | UDP | Not implemented: removed by the owner, 2026-11-17. OpenSoar connects by TCP; broadcast over Wi-Fi lost single datagrams on the bench (S112) |
-| Bluetooth | Classic Bluetooth stays disabled. The build refuses the radio port as its target. See the [optional FLARM BLE decision](#bluetooth-decision) |
+| Bluetooth | Classic Bluetooth stays disabled. The build refuses the radio port as its target. See the [BLE operating mode decision](#bluetooth-decision) |
 | ESP8266 support | Keep the upstream branches unchanged. Project additions (radio port rules, status page) are ESP32 only; the ESP8266 build is not tested |
 | `BATTERY_SAVER` | Keep, and fix it so the switch really lowers the Wi-Fi transmit power; off by default |
 
@@ -255,14 +255,19 @@ Later, each needing its own approval: firmware upload from the browser, contribu
 
 <a id="bluetooth-decision"></a>
 
-### 3.1 Optional FLARM Bluetooth output
+### 3.1 Bluetooth Low Energy with Wi-Fi off
 
-**Decision gate:** after WP3 bench validation and WP6 step 5 pass, the owner chooses whether to start a BLE prototype or keep Wi-Fi only. Step 5 includes the one-hour Zander + FLARM + Becker loop run and reconnect checks with stock OpenSoar on Android. M4 can close with Wi-Fi only.
+**Goal:** reduce energy use at the bridge’s 12 V input. Use BLE for normal operation and start Wi-Fi on demand for settings and firmware updates.
 
-| If the owner approves | Check before enabling BLE for use |
-| --- | --- |
-| Prototype one read-only FLARM feed using the [SoftRF approach](../research/bridge-firmware.md#softrf). Keep the existing Wi-Fi feeds and Becker's single-owner TCP port. | Build with NimBLE for the current ESP32 and OTA partition. Check static RAM and image size, then measure free heap under simultaneous Wi-Fi and BLE load. |
-| Test on stock OpenSoar with a slow or reconnecting BLE phone. | Check fresh FLARM sentences after reconnect, count dropped bytes, and repeat the step 5 Wi-Fi delay and byte checks with the Becker loop running. |
+**Decision gate:** after WP3 and WP6 step 5 pass (including the one-hour three-port run and stock OpenSoar phone reconnect checks), the owner decides whether to start a prototype. M4 can close with Wi-Fi only.
+
+If the owner approves the prototype:
+
+- [ ] **FLARM first.** Build a read-only [NimBLE feed](../research/bridge-firmware.md#softrf) for the current ESP32 and OTA slot. Check static RAM, image size and minimum free heap. Stall and reconnect the phone. Count drops, check that fresh sentences resume and repeat the step 5 Wi-Fi delay and byte checks with the Becker loop running.
+- [ ] **Stock OpenSoar with Wi-Fi fully off.** Run FLARM and Zander together. If they share one stream, preserve complete sentences and select the GPS source when both provide fixes. Check whether the app can simultaneously open a separate two-way Becker BLE connection on the same bridge. Use the bench loop to check byte order, reconnects and single ownership. Get owner approval before changing the TCP-only radio design. Decide whether to carry the OpenVario supply-voltage feed over BLE as well.
+- [ ] **Measure energy savings.** At 12 V, compare whole-bridge average input current in Wi-Fi-only and BLE-only modes using the same serial traffic, phone workload and measurement interval. Record the difference in mA and Wh over five hours. Use the [existing supply readings](../hardware/power.md#currents) (S147) as context.
+- [ ] **On-demand maintenance.** Test a deliberate way to start the password-protected hotspot from BLE and a recovery path if pairing fails. Open the existing settings page, save a setting and run the existing Wi-Fi OTA update. Keep the hotspot awake throughout the update, then verify it shuts down and BLE operation resumes. Retain USB for initial flashing and recovery.
+- [ ] **Decide on adoption.** Review simultaneous instrument support and measured savings with the owner before enabling the mode. Consider a Web Bluetooth settings page or BLE firmware updater separately only if maintenance also needs to work with Wi-Fi off.
 
 ---
 
