@@ -61,36 +61,14 @@ Checks on the [housing v16 bench prototype](../hardware/housing.md) as built, an
 - [ ] On the bench, reproduce the hot mounting-site air temperature and orientation after an unpowered soak. Run the fully wired bridge on its normal supply with sustained Wi-Fi and representative serial traffic. Log input volts and amps, air beside the box and RS-232 boards, surface temperatures at the ESP32 regulator, UBEC and loaded PETG clamp, and the bridge's [chip temperature](../../firmware/bridge/README.md#chip-temperature), until stable. Check for resets, serial errors and loss of retention after cooling.
 - [ ] If considering a solid hood, repeat with the slots temporarily blanked on the dry bench, at the same ambient, load and clearances. Compare each temperature rise above local ambient. Stop before an applicable limit. Advance the preferred configuration only with dry boards and connectors, temperature margin and retained fit. Resolve any water path, unknown critical rating or loss of margin before installation.
 
-### 2.2 Manufacturing and print rules
+### 2.2 Construction
+
+Fit and assembly of the bench build passed (S156).
 
 | # | Item | What is needed | How it is closed |
 | :-: | --- | --- | --- |
-| 10 | Print dimensions | Free-fit and snug-fit gaps, smallest feature and bridge length are still [starting values](../hardware/housing.md#print-values) | Check on the first housing print |
-
-### 2.3 Construction
-
-| # | Item | What is needed | How it is closed |
-| :-: | --- | --- | --- |
-| 4 | Holders | Slice, print and fit the [UBEC carrier](../hardware/housing.md#ubec-carrier): check support-free legs, end solder clearance, 19 mm support, tie threading and actual tie-head size, hood clearance, M2.5 × 12 head/driver access, the offset shafts through the PCB holes and thread holding; check the base's R1 post roots and 0.4 mm pilot-hole floors. Choose a glue that holds the XT30 in PETG | Owner / fit test; remaining selections separately |
-| 15 | Ferrite cradle | Slice and fit-print the [cradle](../hardware/housing.md#ferrite-cradle). Check the exposed core sector seats without trapping wire turns. Confirm lead exits, hood and rear-strap clearance, tie thickness and head size, and access for threading the single passage. Check retention with the hood removed, under vibration and at the expected loaded temperature | Owner / physical fit test |
-| 18 | Centre-floor wire guide | Fit-print the [staggered fingers and tie eyes](../hardware/housing.md#floor-guide). Thread the actual ties and fit the insulated bundle. Check finger strength, opening and removal, side exits, splice access and bends | Physical fit check |
-| 19 | Ferrite-end guide | Fit-print the [staggered ferrite-end guide](../hardware/housing.md#floor-guide). Check that both leads feed in and out, clear the tie head and nearby parts, and reach the splices with the required bend radius | Physical fit check with items 18, 21 and 24 |
-| 14 | Internal wiring details | Buy the [selected wire](../hardware/modules.md#parts-list), measure its outside diameter and set the allowable bend radii. Fit-check the inboard XT30 pair and carrier tool access using the [routing study](../hardware/housing.md#internal-routing). Check hood gaps, bends, supports, tie tunnels and seam. Set termination allowance and service slack. Check restraint beside R-B1 and along the other harness runs during assembly | Owner selection and physical routing/maintenance check |
-| 21 | Ferrite supply and return fit | Move and rewind the ring as [selected](../hardware/housing.md#ferrite-cradle) after measuring the factory turn count and winding sense. Fit-check the short approach from the UBEC output and the departure into the floor bus with cradle ties and actual windings in place. Check bends, clearance and service slack for lifting the carrier | Physical fit check |
-| 22 | RS-232 harness fit | Fit-check the R3 solder joints (mod2 R3 takes two conductors). Check that pre-soldered modules can slide into the clamp, and that both modules lift clear with slack at the pads and access to the screw | Verify pad functions before soldering. Check assembly and removal, then confirm stable Zander and FLARM reception with both R2 inputs open |
-| 23 | MAX490 logic fit | Fit-check the modelled [RO and DI routes](../hardware/housing.md#internal-routing) with the actual resistor leads, insulated joints and tools. Check that the insulated leads can be tied down beside the ESP32 without loading the joints. Check the installed connections against the [measured header mapping](../hardware/wiring.md#becker) (S144) | Owner reviews retention. Measure GPIO16 through the divider on the bench |
-| 17 | Central distribution | Size the [selected bench-made 5V-J and GND-J splices](../hardware/housing.md#internal-routing) and their heat-shrink; fit them in the floor bus near the ferrite, support the leads, preserve removal access, and rate the full ground path for the documented fault currents. Verify the ESP32 → RS-232-mod2 → mod1 supply/return chain has no redundant ground link | Owner selects hardware; bench continuity and fit check |
-| 20 | Internal harness retention | Check the selected [floor retainers](../hardware/housing.md#floor-guide) and support at the DE-9 breakout, signal runs, board branches and ferrite rise against [R11](../design/requirements.md#requirements). Check movement, chafing and continuity after representative vibration | Physical fit and vibration checks |
-| 24 | Harness fit | Fit the [revised harness](../hardware/housing.md#internal-routing) around the raised floor, shifted connectors and new guides. Confirm usable factory lead lengths, bend radii and service slack before cutting | Bench fit |
-| 25 | DE-9 nut stops | Measure usable jackpost stud length and nut thickness. Check thread engagement through the seated flange and front wall, then fit-print the gusseted stops and test whether they hold the nuts while tightening | Owner measurement and fit-print |
-| 26 | Integral ESP32 holder and front corners | Check the four feet, bridges and removal of the [breakaway platform](../hardware/housing.md#layout) on a test print. Check board insertion, spring retention, and that the revised RS-232 clamp foot sits flat on the shield. With the front screw fitted, check shield preload, rocking, rotation and clamp removal with wires connected. Inspect both front insert seats and fit the heat-set inserts and cover | Physical fit checks |
-| 28 | Supply voltage sense | Fitted in the bench bridge without C-V (S141). Check R-V1 at the XT30 + cup and R-V2 beside the J2 header as in the Fusion assembly and [picture](../hardware/wire-installation.md#supply-sense-picture) (S128): lead bends, sleeving and the grey wire under the hood | Owner / physical fit test |
-
-### 2.4 Measurements
-
-| # | Item | What is needed | How it is closed |
-| :-: | --- | --- | --- |
-| 1 | Part sizes | Compare the ESP32 with its [CAD reference](../hardware/housing.md#contents): solder-joint height underneath, header spacing, overall length including antenna and USB protrusion, overall height with headers, USB-plug and wiring clearance; measure RS-232 assembled height on both sides and soldered-wire clearance against its CAD reference on the same page; measure the RS-422 board's hole positions, PCB thickness and screw-terminal height against its CAD reference; check the UBEC and ferrite lead-exit envelopes beyond the recorded body and winding dimensions | Bench measurement |
+| 20 | Internal harness retention | Check the [floor retainers](../hardware/housing.md#floor-guide), the [ferrite cradle](../hardware/housing.md#ferrite-cradle) and support at the DE-9 breakout, signal runs and board branches against [R11](../design/requirements.md#requirements): movement, chafing and continuity after representative vibration, and cradle retention at the expected loaded temperature | Physical vibration and heat checks |
+| 17 | Ground path rating | Rate the full ground path through the [GND-J splice](../hardware/housing.md#internal-routing) for the documented fault currents | Owner check against the [power page](../hardware/power.md) |
 
 ---
 

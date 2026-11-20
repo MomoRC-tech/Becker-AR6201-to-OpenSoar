@@ -7,7 +7,7 @@
 Mechanical design of the bridge: what goes inside, part sizes, connectors on the housing, internal layout.
 
 > [!NOTE]
-> **Status:** the bench prototype uses the housing v16 baseline (S93) with the shield-supported RS-232 clamp and revised base (S102). Follow the [physical fit and retention checks](../project/open-items.md#housing).
+> **Status:** the bench prototype uses the housing v16 baseline (S93) with the shield-supported RS-232 clamp and revised base (S102). The bench build fits as designed (S156); retention under vibration and heat is an [open item](../project/open-items.md#housing).
 
 📑 **On this page:** <kbd>[1 · 🎯 Requirements](#requirements)</kbd> <kbd>[2 · 📐 Design rules](#rules)</kbd> <kbd>[3 · 📏 Contents and sizes](#contents)</kbd> <kbd>[4 · 🔌 Connectors on the housing](#connectors)</kbd> <kbd>[5 · 🧩 Internal layout](#layout)</kbd>
 
@@ -448,7 +448,7 @@ Follow the [illustrated installation sequence](wire-installation.md) when fittin
 
 - **Cut length = fitted route length + both end allowances + service slack.** Measure the end allowance against each cup, pad or terminal. Count the stripped portion once. Fit enough slack to lift the carrier or the RS-232 modules where needed.
 - Twist and dress the Becker pairs before measuring each conductor. Count the ferrite turns before rewinding the factory output leads. Form the DE-9 tinned bridge against the real contacts.
-- Record the measurements from [housing items 14 and 21–23](../project/open-items.md#housing) before cutting. For R-B1 and R-B2, fit the insulated leads and axial overlaps individually.
+- Measure the actual wire and leads before cutting. For R-B1 and R-B2, fit the insulated leads and axial overlaps individually.
 
 | Build step | From → to | Colour | Wire | Lane | CAD length | Strip / end allowance | Service slack | Cut |
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- |

@@ -188,7 +188,7 @@ Keep all instruments disconnected during bench bring-up. Start with the supply a
 - [x] **5.** On the loose board, run the [board check](modules.md#rs422-check). With power disconnected, check GPIO17 (J3-11) straight to TXD with no resistor, RXD through the divider to GPIO16, and the A–B resistance (no termination: tens of kΩ). Then, with the board at 5 V and the ESP32 held in reset (EN to GND), check that DI reads at least 2 V and Y stays above Z, so the board's own pull-up [is enough](#becker). Passed on the bench bridge after the TX line was corrected (S145).
 - [x] **6.** With the MAX490 powered and nothing else on A/B (loop links removed), drive the receiver input with a 1.5 V cell and measure GPIO16 both ways: + to A, − to B gives about 3.0 V (high); + to B, − to A gives below 0.5 V (low). Also record GPIO16 without the cell, with A and B open. Passed: about 3.0 V high, 0.15 V low, high with A and B open (S146).
 - [x] **7.** Measure the bridge's running current at 12 V and update the [current assumptions](power.md#currents). Done: 60–90 mA (S147); switch-on inrush is not measured.
-- [ ] **8.** With power off and the instruments disconnected, use the moulded contact numbers to check each loose harness conductor end to end through the mated DE-9 against the [pinout](#de9-pinout). Check for unintended connections between signals and from signals to GND-J or the shell. Allow for the three ground contacts that share GND-J.
+- [ ] **8.** With power off and nothing plugged in, check the bridge's DE-9 with a continuity tester: no beep between pins 1, 2, 4, 5, 8 and 9, nor from any of them to pins 3, 6, 7 or the shell (4–5 reads about 32 kΩ through the MAX490 board, S145); pins 3, 6 and 7 beep to each other (GND-J). Signal continuity through each pin is covered by the bus-level test below.
 
 <a id="bus-test"></a>
 
@@ -247,6 +247,7 @@ After bench validation and separate approval ([work packages](../project/roadmap
 
 - [ ] **14.** Before plugging in J1, check that the bridge ground and the radio's P1-13 and P1-25 each have low resistance (well under 1 Ω) to the common ground point ([why](power.md#wire-breaks)).
 - [ ] **15.** Listen for radio noise and check squelch with the bridge on and off.
+- [ ] **16.** Before the first connection, with power off and the instruments disconnected, use the moulded contact numbers to check each harness conductor end to end through the mated DE-9 against the [pinout](#de9-pinout). Check for unintended connections between signals and from signals to ground or the shell. Allow for the three ground contacts that share GND-J.
 
 ---
 
