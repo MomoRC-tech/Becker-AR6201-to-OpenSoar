@@ -7,7 +7,7 @@
 Use this plan to take the module-based bench bridge through a smaller four-layer design, first articles and a repeatable JLCPCB order.
 
 > [!NOTE]
-> **Status:** Power and instrument fault returns are routed on the four-layer development board for ten units. Signal routing follows the test-point and expansion review. [Requirements](requirements.md#requirements) · [KiCad project](../../electronics/integrated/compact-bridge.kicad_pro) · [Evidence S173, S178–S180, S189–S190, S196–S197](../research/sources.md#source-register).
+> **Status:** The ten-board layout has routed power, instrument fault returns and both I²C signals. The diagnostic pads are placed. Signal and probe routing continues. [Requirements](requirements.md#requirements) · [KiCad project](../../electronics/integrated/compact-bridge.kicad_pro) · [Evidence S173, S178–S180, S189–S190, S196–S199](../research/sources.md#source-register).
 
 📑 **On this page:** <kbd>[1 · 🔌 Circuits](#circuits)</kbd> <kbd>[2 · 📐 Housing and layout](#layout)</kbd> <kbd>[3 · 🌡️ Heat and verification](#heat)</kbd> <kbd>[4 · 💶 Production cost](#cost)</kbd> <kbd>[5 · 📦 Production](#production)</kbd>
 
@@ -55,7 +55,7 @@ The [compact-board review](../research/reviews/2026-11-20-compact-board-physical
 
 ### 2.1 Internal I²C expansion and probe access
 
-**Bus selection:** 3.3 V I²C on U1.33 (GPIO21/SDA) and U1.36 (GPIO22/SCL). Both are bidirectional, outside the flash and boot-strap assignments. For I²C, provide pull-ups to the bridge 3.3 V rail and check their combined resistance and rise time with the chosen peripheral. Keep an externally powered peripheral from driving an unpowered bridge. J3 brings both pins out to a normally empty four-hole row. [ESP32 pinout](https://documentation.espressif.com/esp32-wroom-32e_esp32-wroom-32ue_datasheet_en.html) · [Espressif I²C defaults](https://docs.espressif.com/projects/arduino-esp32/en/latest/api/i2c.html)
+**Bus selection:** 3.3 V I²C on U1.33 (GPIO21/SDA) and U1.36 (GPIO22/SCL). Both are bidirectional, outside the flash and boot-strap assignments. For I²C, provide pull-ups to the bridge 3.3 V rail and check their combined resistance and rise time with the chosen peripheral. Keep an externally powered peripheral from driving an unpowered bridge. Both signals run to the normally empty J3 row on 0.30 mm copper, each with one via from the front to the back layer. [ESP32 pinout](https://documentation.espressif.com/esp32-wroom-32e_esp32-wroom-32ue_datasheet_en.html) · [Espressif I²C defaults](https://docs.espressif.com/projects/arduino-esp32/en/latest/api/i2c.html)
 
 ![J3 top view, pin order and clearance for the optional 2.54 mm header](../images/integrated-i2c-fit.png)
 
