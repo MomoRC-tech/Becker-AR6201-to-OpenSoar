@@ -56,7 +56,7 @@ Write for a person building the bridge, not for an auditor.
 
 ## Page layout
 
-Pages must be easy to scan for a human reader. Every page in docs/ (except the frozen reviews) follows this pattern:
+Pages must be easy to scan for a human reader. Every page in docs/ (except the frozen reviews and the agent configuration in docs/agents) follows this pattern:
 
 | Element | Form |
 | --- | --- |
@@ -109,3 +109,19 @@ Commit and push relevant, verified changes to `main` on the project remote at th
 Never force-push, reset, check out over or clean away changes, amend pushed commits, skip hooks (`--no-verify`), or use a bare `git stash` / `git stash pop` (the stash is shared with other worktrees).
 
 Finish with a concise outcome, meaningful verification, commit/publication status and unresolved items. Include a very brief emoji summary. Keep the existing English documentation language unless the user requests otherwise; communicate with the user in their chosen language.
+
+---
+
+## Agent skills
+
+### Issue tracker
+
+GitHub Issues on MomoRC-tech/Becker-AR6201-to-OpenSoar via `gh`; the roadmap stays the single work queue. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Default five-role vocabulary (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`). See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context; decisions live in `docs/design/architecture.md`, not `docs/adr/`. See `docs/agents/domain.md`.
