@@ -126,8 +126,11 @@ Open the project in KiCad, then open **PCB Editor → Board Setup** to inspect t
 | Setting | Value used for the ten-board design | Saved in |
 | --- | --- | --- |
 | Stackup and finish | JLC04161H-7628, four-layer FR-4, nominal 1.6 mm. Outer copper 35 µm, inner copper 15.2 µm. Green solder mask, white silkscreen, lead-free HASL quote baseline. | [KiCad board](../../electronics/integrated/compact-bridge.kicad_pcb) |
-| Routing and drill rules | Default track width and clearance 0.20 mm each. Default via 0.60 mm land with 0.30 mm drill. Minimum drill 0.20 mm and copper-to-board-edge clearance 0.25 mm. | [KiCad project](../../electronics/integrated/compact-bridge.kicad_pro) |
-| Solder mask | Zero pad-to-mask expansion, 0.10 mm minimum mask web. Ordinary vias are tented on both sides by default. | [KiCad board](../../electronics/integrated/compact-bridge.kicad_pcb) |
+| Tracks and copper | Default track 0.30 mm, minimum width and spacing 0.25 mm, routed-edge clearance 0.50 mm. Narrowest existing track 0.28 mm. Select wider power and return paths for their electrical load. | [KiCad project](../../electronics/integrated/compact-bridge.kicad_pro) |
+| Vias and drilling | Default via Ø0.70/0.30 mm land/drill. Minimum via land Ø0.65 mm, annular ring 0.175 mm, hole-to-hole 0.50 mm and hole-to-other-net copper 0.35 mm. Ø0.30 mm is the ordinary drill. U1 and U4 use their separate exposed-pad patterns. | KiCad project and board |
+| Mask and legend | Mask opening to other copper 0.12 mm, silk clearance 0.20 mm. New text 1.20 mm high with 0.20 mm strokes. Green mask with 1:1 openings and ordinary vias tented both sides. Aim for ≥0.15 mm drawn webs on new lands where possible. KiCad merges openings below 0.10 mm. | [KiCad board](../../electronics/integrated/compact-bridge.kicad_pcb) and project |
+
+The selected four-layer process lists 0.09/0.09 mm trace/space for 1 oz copper. The dedicated B.Cu return is 1.45–2.00 mm wide. A 20% width reduction raises its calculated 3.2 A drop from 31 to about 39 mV and loss from 0.10 to 0.125 W at 85 °C, holding copper thickness constant. Measure the complete mated return under load. [S192](../research/sources.md#source-register)
 
 For the ten-board quote, submit the ESP32 (U1) and buck (U4) mask, paste and drill plots together. Their exposed-pad artwork needs a separate assembly decision on via treatment and stencil openings. [JLCPCB stackups](https://jlcpcb.com/impedance) · [Fabrication capabilities](https://jlcpcb.com/capabilities/pcb-capabilities) · [Quote items](../project/open-items.md#pcb-study)
 

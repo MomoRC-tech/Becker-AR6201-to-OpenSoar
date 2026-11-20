@@ -1,31 +1,40 @@
 {
   "board": {
     "design_settings": {
-      "defaults": {},
+      "defaults": {
+        "silk_line_width": 0.18,
+        "silk_text_size_h": 1.2,
+        "silk_text_size_v": 1.2,
+        "silk_text_thickness": 0.2
+      },
       "diff_pair_dimensions": [],
       "drc_exclusions": [],
       "rules": {
-        "min_clearance": 0.2,
-        "min_track_width": 0.2,
-        "min_via_annular_width": 0.15,
-        "min_via_diameter": 0.45,
+        "min_clearance": 0.25,
+        "min_track_width": 0.25,
+        "min_via_annular_width": 0.175,
+        "min_via_diameter": 0.65,
         "min_through_hole_diameter": 0.2,
-        "min_hole_to_hole": 0.45,
-        "min_hole_clearance": 0.3,
-        "min_copper_edge_clearance": 0.25,
-        "min_silk_clearance": 0.15,
-        "solder_mask_to_copper_clearance": 0.09,
+        "min_hole_to_hole": 0.5,
+        "min_hole_clearance": 0.35,
+        "min_copper_edge_clearance": 0.5,
+        "min_silk_clearance": 0.2,
+        "solder_mask_to_copper_clearance": 0.12,
         "min_text_height": 1.0,
         "min_text_thickness": 0.15
       },
       "track_widths": [
         0.0,
-        0.2,
         0.25,
         0.3,
+        0.4,
         0.5,
         0.75,
-        1.0
+        1.0,
+        1.4,
+        1.5,
+        1.8,
+        2.0
       ],
       "via_dimensions": [
         {
@@ -33,7 +42,7 @@
           "drill": 0.0
         },
         {
-          "diameter": 0.6,
+          "diameter": 0.7,
           "drill": 0.3
         },
         {
@@ -56,9 +65,9 @@
     "classes": [
       {
         "name": "Default",
-        "clearance": 0.2,
-        "track_width": 0.2,
-        "via_diameter": 0.6,
+        "clearance": 0.25,
+        "track_width": 0.3,
+        "via_diameter": 0.7,
         "via_drill": 0.3,
         "priority": 2147483647
       }
