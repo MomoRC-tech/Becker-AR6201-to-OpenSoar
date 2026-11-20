@@ -91,7 +91,7 @@ Approach vertically with the lid removed and both cables attached. Use a fine ti
 
 ### 2.2 Upright USB-C programming study
 
-TP1–TP6 provide the signals for a 3.3 V USB-to-UART pogo fixture. Power the board at J2. UART0, EN and BOOT still need copper and a first flash test. The preferred service option is an upright USB-C port accessible with the lid removed.
+TP1–TP6 provide the signals for a 3.3 V USB-to-UART pogo fixture. Power the board at J2. UART0, EN and BOOT still need copper and a first flash test. The next production layout includes an upright USB-C programming port accessible with the lid removed.
 
 ![Top-entry USB-C placement study beside H2 showing the existing board and right housing wall](../images/integrated-usb-fit.png)
 
@@ -103,7 +103,7 @@ TP1–TP6 provide the signals for a 3.3 V USB-to-UART pogo fixture. Power the bo
 | Programming circuit | Candidate CP2102N QFN24 (4 × 4 mm): USB D+/D− to UART0, DTR/RTS through the Espressif two-transistor auto-reset circuit to GPIO0/EN. Allow for separate CC1/CC2 pulldowns, ESD protection, VBUS sensing and local decoupling. Keep TP1–TP6 for production and recovery. |
 | Proposed service power | Use a bench supply at J2 and the USB cable for data. Check VBUS sensing and powered-off leakage with only USB connected, reset behaviour on cable insertion/removal and contention with the pogo adapter. USB-only power would require a separate power-path design. |
 
-**Recommendation:** Trial a locally wider housing at H2 before changing copper. This preserves the front connector locations and routed power stage. The component placement, plug overmold, cable withdrawal, H2 tool access and enclosure support need a dimensioned fit. [Owner decision](../project/open-items.md#pcb-study) · [S201](../research/sources.md#source-register)
+Use the 55 mm extension as a comparison when placing the complete circuit for the [new layout](../project/roadmap.md#work-packages). Check the plug overmold, cable withdrawal, H2 tool access and enclosure support on each candidate. [Open interface choices](../project/open-items.md#pcb-study) · [S201](../research/sources.md#source-register)
 
 <a id="smaller-dsub"></a>
 
