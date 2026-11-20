@@ -7,9 +7,9 @@
 Existing ESP32 serial-to-Wi-Fi firmware that could run on the bridge, and what each one would need.
 
 > [!NOTE]
-> **Status:** source reviews from 2026-11-08 and 2026-11-16. Candidate 1 is the selected baseline ([ADR-02](../design/architecture.md#adr-02)); the project's [bridge firmware](../../firmware/bridge/README.md) built from it runs on the bench ESP32 (S104–S107). Progress: [firmware plan](../project/roadmap.md#firmware-plan).
+> **Status:** firmware and Bluetooth source reviews through 2026-11-20. Candidate 1 is the selected baseline ([ADR-02](../design/architecture.md#adr-02)); the project's [bridge firmware](../../firmware/bridge/README.md) built from it runs on the bench ESP32 (S104–S107). Progress: [firmware plan](../project/roadmap.md#firmware-plan).
 
-📑 **On this page:** <kbd>[1 · 📐 Requirements for any firmware](#firmware-requirements)</kbd> <kbd>[2 · 🧪 Candidates](#candidates)</kbd> <kbd>[3 · 🔀 Alternatives](#alternatives)</kbd>
+📑 **On this page:** <kbd>[1 · 📐 Requirements for any firmware](#firmware-requirements)</kbd> <kbd>[2 · 🧪 Candidates](#candidates)</kbd> <kbd>[3 · 🔀 Alternatives](#alternatives)</kbd> <kbd>[4 · 📡 SoftRF Bluetooth](#softrf)</kbd>
 
 Related: 📻 [Becker driver](becker-driver.md) · 📚 [Sources](sources.md)
 
@@ -51,6 +51,23 @@ In order of preference.
 | [XCVario](https://github.com/iltis42/XCVario/tree/1c5ad83a9e0911b81bb0bd5a47243bea5746f6c2) — GPL-2.0 | ESP32 gliding instrument with serial/Wi-Fi routing (`Router.cpp`) | Good reference for coexistence; adopting the whole firmware is out of scope |
 | [GS-Traffic2WIFI 7b1d41d](https://github.com/gs-avionik-gunnar/GS-Traffic2WIFI/tree/7b1d41d2a97f66d70715768199aa15746753cadf) — MIT | One FLARM/NMEA port to TCP, network with hotspot fallback, web page in its own task; drops a client after three short writes | Reference for client handling in step 5 ([check](reviews/2026-11-17-bridge-projects-check.md#other-projects)) |
 | [BtBridge 62ebaf6](https://github.com/iltis42/BtBridge/tree/62ebaf63b6522b3dbd273aa22181e6ce32764842) — GPL-2.0 | Two serial ports (FLARM, radios) to Wi-Fi TCP or Bluetooth; only the first client writes to the device | Reference only (GPL) |
+
+---
+
+<a id="softrf"></a>
+
+## 4. 📡 SoftRF Bluetooth
+
+SoftRF provides a reference for sending FLARM sentences to stock OpenSoar over Bluetooth Low Energy (S165). See the [implementation decision gate](../project/roadmap.md#bluetooth-decision).
+
+| SoftRF practice | Application to the bridge |
+| --- | --- |
+| HM-10 BLE serial service with notifications | Try NimBLE with service `FFE0` and characteristic `FFE1`. Forward the original FLARM sentences to the phone. |
+| Device-specific name and advertising after disconnect | Give the bridge a recognizable Bluetooth name independent of the Wi-Fi SSID. Clear queued traffic on disconnect so the next session starts with current data. |
+| Bounded transmit queue and paced notifications | Isolate the BLE reader from the Wi-Fi forwarding loop. Count overflow and size the send rate against sustained FLARM input. SoftRF’s pacing falls short of a continuous 19,200-baud 8N1 feed (S165). |
+| Phone setup illustrated in the navigation app | Capture the settings and incoming data during the existing [stock OpenSoar phone checks](../../firmware/bridge/README.md#slow-app-check). |
+
+The Classic Bluetooth build exceeded static RAM (S166). A BLE-only build needs its own measurements.
 
 ---
 

@@ -115,7 +115,7 @@ flowchart LR
 | --- | --- |
 | Transmit direction on the RS-232 ports | Keep for Zander and FLARM |
 | UDP | Not implemented: removed by the owner, 2026-11-17. OpenSoar connects by TCP; broadcast over Wi-Fi lost single datagrams on the bench (S112) |
-| Bluetooth | Keep in the code, switched off as upstream. The build refuses the radio port as its target |
+| Bluetooth | Classic Bluetooth stays disabled. The build refuses the radio port as its target. See the [optional FLARM BLE decision](#bluetooth-decision) |
 | ESP8266 support | Keep the upstream branches unchanged. Project additions (radio port rules, status page) are ESP32 only; the ESP8266 build is not tested |
 | `BATTERY_SAVER` | Keep, and fix it so the switch really lowers the Wi-Fi transmit power; off by default |
 
@@ -251,7 +251,18 @@ Later, each needing its own approval: firmware upload from the browser, contribu
 | M1 | Installed equipment and interfaces are understood | ⬜ Open |
 | M2 | Hardware design and driver plan are selected | 🟡 Mechanical design accepted; WP3 wiring and bench validation in progress |
 | M3 | Bench ESP32 updatable over Wi-Fi: OTA loader flashed over USB, joins the configured network or opens its hotspot, and accepts an OTA upload in both modes ([ADR-05](../design/architecture.md#adr-05), [bring-up](../hardware/wiring.md#bring-up) step 3) | ✅ Done (S97–S99); hotspot OTA accepted on the fallback test and a phone join, without an upload over the hotspot |
-| M4 | Software verified | ⬜ Open |
+| M4 | Software verified | ⬜ Open. Acceptance of the three-port Wi-Fi bridge in WP6 step 5 triggers the [Bluetooth decision](#bluetooth-decision) once WP3 is complete. |
+
+<a id="bluetooth-decision"></a>
+
+### 3.1 Optional FLARM Bluetooth output
+
+**Decision gate:** after WP3 bench validation and WP6 step 5 pass, the owner chooses whether to start a BLE prototype or keep Wi-Fi only. Step 5 includes the one-hour Zander + FLARM + Becker loop run and reconnect checks with stock OpenSoar on Android. M4 can close with Wi-Fi only.
+
+| If the owner approves | Check before enabling BLE for use |
+| --- | --- |
+| Prototype one read-only FLARM feed using the [SoftRF approach](../research/bridge-firmware.md#softrf). Keep the existing Wi-Fi feeds and Becker's single-owner TCP port. | Build with NimBLE for the current ESP32 and OTA partition. Check static RAM and image size, then measure free heap under simultaneous Wi-Fi and BLE load. |
+| Test on stock OpenSoar with a slow or reconnecting BLE phone. | Check fresh FLARM sentences after reconnect, count dropped bytes, and repeat the step 5 Wi-Fi delay and byte checks with the Becker loop running. |
 
 ---
 
