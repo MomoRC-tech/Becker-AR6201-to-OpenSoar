@@ -274,7 +274,7 @@ Add `--radio-owner` for step 4. It checks that a second radio client is refused,
 
 ## Slow-app check (step 5)
 
-With the same jumpers:
+Use these commands on a bare ESP32 with the step 2 jumpers. Once the converters are wired, use the [DE-9 bus-level checks](../../docs/hardware/wiring.md#bus-test). The commands below cannot run the assembled-bridge slow-app acceptance test.
 
 ```bash
 python tools/bridge_acceptance_test.py <bridge address> --radio-loop --baseline

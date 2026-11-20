@@ -4,7 +4,9 @@
     python tools/bridge_acceptance_test.py 192.168.1.50
     python tools/bridge_acceptance_test.py 192.168.1.50 --radio-loop --seconds 120
 
-Needs the bench ESP32 running the bridge firmware with the step 2 jumper
+For the bare ESP32 only, before the converter boards are wired. Never fit
+GPIO jumpers to the assembled bridge. Its bus-level procedure is in
+docs/hardware/wiring.md#bus-test. This script needs the step 2 jumper
 loops (GPIO33 -> GPIO26, GPIO27 -> GPIO32, and GPIO17 -> GPIO16 with
 --radio-loop), see tools/bridge_loop_test.py and
 docs/project/roadmap.md#firmware-plan.
@@ -123,29 +125,39 @@ class RadioPinger(threading.Thread):
     def __init__(self, sock: socket.socket):
         super().__init__(daemon=True)
         self.sock, self.round_trips, self.lost, self.stop = sock, [], 0, False
+        self.completed = False
+        self.error = ""
 
     def run(self) -> None:
         n = 0
-        while not self.stop:
+        while True:
+            last_probe = self.stop
             frame = bytes([0xA5, 0x00, n & 0xFF, 0x5A])
             start = time.monotonic()
-            self.sock.sendall(frame)
             got = bytearray()
-            self.sock.settimeout(10)
             try:
+                self.sock.settimeout(10)
+                self.sock.sendall(frame)
                 while len(got) < len(frame):
+                    remaining = 10 - (time.monotonic() - start)
+                    if remaining <= 0:
+                        raise TimeoutError("radio echo timed out")
+                    self.sock.settimeout(remaining)
                     chunk = self.sock.recv(len(frame) - len(got))
                     if not chunk:
-                        return
+                        raise ConnectionError("radio connection closed before echo completed")
                     got += chunk
-            except socket.timeout:
+            except OSError as error:
                 self.lost += 1
-                drain(self.sock)
-                continue
+                self.error = str(error)
+                return
             if bytes(got) != frame:
                 self.lost += 1
             else:
                 self.round_trips.append(time.monotonic() - start)
+            if last_probe:
+                self.completed = True
+                return
             n += 1
             time.sleep(max(0.0, 0.5 - (time.monotonic() - start)))
 
@@ -199,7 +211,8 @@ def run(args: argparse.Namespace) -> bool:
     reader.stop = True
     if pinger:
         pinger.stop = True
-        pinger.join(timeout=12)
+        # A probe already in flight and the final probe each have a 10 s deadline.
+        pinger.join(timeout=22)
     reader.join(timeout=1)
 
     results = [send_ok]
@@ -226,9 +239,11 @@ def run(args: argparse.Namespace) -> bool:
 
     if pinger:
         worst_rt = max(pinger.round_trips) if pinger.round_trips else float("inf")
-        ok = pinger.lost == 0 and worst_rt <= args.max_delay
+        ok = pinger.completed and not pinger.is_alive() and pinger.lost == 0 and worst_rt <= args.max_delay
         print(f"{'PASS' if ok else 'FAIL'} radio loop during the test: {len(pinger.round_trips)} frames, "
               f"{pinger.lost} lost, worst round trip {worst_rt:.2f} s")
+        if not pinger.completed:
+            print(f"radio check incomplete: {pinger.error or 'final echo was not confirmed'}")
         results.append(ok)
 
     if slow is not None:
