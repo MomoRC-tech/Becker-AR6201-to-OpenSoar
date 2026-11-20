@@ -33,7 +33,7 @@ Related: ❓ [Open items](open-items.md) · 🎯 [Requirements](../design/requir
 
 **Next production PCB task — restart placement and routing for the ten-board run.** Compare compact placements for the complete circuit, including the [upright USB-C programming port and USB-to-UART circuit](../design/integrated-pcb.md#usb-programming), both [bidirectional RS-232 ports](../design/requirements.md#requirements), Becker, power, J3, the lid-off probes and two status LEDs with their drive components. Include LED visibility in the placement comparison. Use the 48 × 46.5 mm layout at `75f9453` as the comparison baseline. Record outline dimensions, area and mated access before choosing the smallest practical arrangement. Route the board afresh in reviewable increments.
 
-Retain the [DE-9 and XT30 mating interfaces, antenna clearance, power and fault-return functions](../design/integrated-pcb.md#layout) and [PCB10 fabrication margins](../design/integrated-pcb.md#production). Resolve the [navigation TX harness paths and USB circuit choices](open-items.md#pcb-study) with the owner. Compare refilled copper, ERC, schematic parity and DRC with the baseline; keep U1/U4 exposed-pad processing open for the ten-board quote.
+Use the approved [DA-15 pinout](../design/integrated-pcb.md#smaller-dsub), XT30, antenna clearance, power and fault-return functions and [PCB10 fabrication margins](../design/integrated-pcb.md#production). Review the [three complete placements](../design/integrated-pcb.md#placement-comparison) and the [remaining service-circuit and first-article checks](open-items.md#pcb-study). Compare refilled copper, ERC, schematic parity and DRC with the baseline; keep U1/U4 exposed-pad processing open for the ten-board quote.
 
 ### 1.1 Work loop
 

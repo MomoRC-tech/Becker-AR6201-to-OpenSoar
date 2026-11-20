@@ -7,7 +7,7 @@
 Use this plan to take the module-based bench bridge through a smaller four-layer design, first articles and a repeatable JLCPCB order.
 
 > [!NOTE]
-> **Status:** The ten-board layout has routed power, instrument fault returns, I²C and the GPIO34 sense output. The remaining signals and probe connections are in layout. [Requirements](requirements.md#requirements) · [KiCad project](../../electronics/integrated/compact-bridge.kicad_pro) · [Evidence S173, S178–S180, S189–S190, S196–S200](../research/sources.md#source-register).
+> **Status:** Three complete component-side placements are available for the ten-board DA-15 revision. The native DE-9 layout and its copper measurements below are the comparison baseline. [Requirements](requirements.md#requirements) · [KiCad project](../../electronics/integrated/compact-bridge.kicad_pro) · [Evidence S173, S178–S180, S189–S190, S196–S200](../research/sources.md#source-register).
 
 📑 **On this page:** <kbd>[1 · 🔌 Circuits](#circuits)</kbd> <kbd>[2 · 📐 Housing and layout](#layout)</kbd> <kbd>[3 · 🌡️ Heat and verification](#heat)</kbd> <kbd>[4 · 💶 Production cost](#cost)</kbd> <kbd>[5 · 📦 Production](#production)</kbd>
 
@@ -32,7 +32,20 @@ The [supplier circuit requirements and schematic comparison](requirements.md#pcb
 
 ## 2. 📐 Compact placement
 
-**48 × 46.5 mm**, four layers and one populated side. This saves 543 mm² (19.6%) from the 50 × 55.5 mm layout. The same-edge DE-9 and XT30 occupy 47.0 mm across their courtyards. Six service pads form a 2 × 3 array at 3.35 mm pitch. The housing study still uses a 72 × 60 × 25 mm exterior. Mated access and mounting are first-article checks.
+<a id="placement-comparison"></a>
+
+![Three complete placements at the same scale, with the antenna, DA-15, XT30, service port, LEDs and probes](../images/integrated-placement-comparison.svg)
+
+| Placement | Outline / area | Mated connector access | Top-side probe and LED access |
+| --- | --- | --- | --- |
+| DE-9 baseline at `75f9453` | 48 × 46.5 mm / 2,232 mm² | 2.95 mm projected gap between the reference cable bodies (S198). No upright USB-C. | Six fixture and nine diagnostic pads. No status LEDs. |
+| DA-15 and XT30 at front, narrow | 55.75 × 45.25 mm / 2,522.7 mm² | 2.71 mm cable-body gap. Centering the board leaves 0.125 mm per side in the 56 mm study cavity. | Minimum Ø2 mm shaft margin 0.05 mm. LED centers 1.30 mm from the left edge. |
+| DA-15 and XT30 at front, wider | 57 × 45 mm / 2,565 mm² | 3.96 mm cable-body gap. A centered board needs 59 mm internal width for 1 mm assembly space per side. | Minimum shaft margin 0.30 mm. LED centers 1.28 mm from the right edge. |
+| Front DA-15, side XT30 | 54 × 48 mm / 2,592 mm² | Independent withdrawal directions. Needs a side opening and room for the XT30 cable bend. 1 mm nominal board clearance per side. | Minimum shaft margin 0.05 mm. LEDs 1.71 mm from the right edge. TP10 and its ground are 39.6 mm apart. |
+
+The two front-entry candidates leave 15.06 and 15.31 mm respectively between the antenna tip and the drawn rear wall. Side entry reduces this to 12.31 mm. All three reserve a 14 × 9 mm vertical USB plug approach, a 5 × 13 mm optional J3 mating envelope and individual sites for the USB, auto-reset and LED support parts. All probes clear those reservations in plan. The LEDs face a side wall for viewing through vents where possible. Slot height, viewing angle, real plugs, tool reach and mating loads need the actual enclosure and first article. [Placement evidence S202](../research/sources.md#source-register)
+
+**DE-9 baseline.** 48 × 46.5 mm, four layers and one populated side. This saves 543 mm² (19.6%) from the 50 × 55.5 mm layout. The same-edge DE-9 and XT30 occupy 47.0 mm across their courtyards. Six service pads form a 2 × 3 array at 3.35 mm pitch. The housing study still uses a 72 × 60 × 25 mm exterior. Mated access and mounting are first-article checks.
 
 <details>
 <summary><b>🖼️ Show populated PCB in 3D</b> (click to expand)</summary>
@@ -107,17 +120,20 @@ Use the 55 mm extension as a comparison when placing the complete circuit for th
 
 <a id="smaller-dsub"></a>
 
-### 2.3 Shallower PCB footprint for the existing DE-9 plug
+### 2.3 Production DA-15 and bench DE-9
 
-J1 is the Amphenol **D09P33E4GV00LF**, a male right-angle DE-9 with 5 A contacts, the existing cable pinout, 24.99 mm screw spacing and two UNC 4-40 female locks. Its 30.81 mm flange sits at the front PCB edge. The body extends 12.60 mm onto the board, freeing 2.05 mm of depth (about 63 mm² of rectangular body envelope).
+The production J1 is the Amphenol **D15P33E4GV00LF** male right-angle DA-15, with two rows, nominal 5 A contacts, a 39.14 mm flange and 33.32 mm between the 4-40 locks. Its mating axis is 6.30 mm above the PCB. Fit a new female DA-15 harness plug. Retain the XT30 and isolate the two J1 board locks from ground.
 
-| J1 feature | Dimension from the flange or PCB |
+| Production J1 | Assignment |
 | --- | --- |
-| Contact rows and board locks | 8.08 and 10.92 mm behind flange, locks at 9.50 mm. Contact pitch 2.74 mm, stagger 1.37 mm. |
-| Mating center | 6.30 mm above PCB top, 0.90 mm lower than the previous J1. Use this height for the panel opening and supports. |
-| Cable and shell | Existing female cable plug and screwlocks. Both shell pads are isolated from board GND. |
+| 1, 2 | Zander and FLARM instrument TX into the bridge, respectively |
+| 3, 6, 7 | Existing instrument returns, each retained on its original number |
+| 4, 5 / 8, 9 | Becker bridge TX +/− and RX +/−, respectively |
+| 10 | GPIO33 → U2.11 / T1IN → U2.14 / T1OUT → Zander instrument RX |
+| 11 | GPIO27 → U2.10 / T2IN → U2.7 / T2OUT → FLARM instrument RX |
+| 12–15 | Spare, no connection |
 
-[Supplier drawing and board checks, S195–S196](../research/sources.md#source-register) · [Mated fit and fault checks](../project/open-items.md#pcb-study)
+The module-based bridge uses its existing [DE-9 harness](../hardware/wiring.md#de9-pinout). LED 1 indicates 3.3 V before firmware starts and adds a heartbeat while running. LED 2 indicates valid instrument traffic. [DA-15 drawing and cable reference, S202](../research/sources.md#source-register)
 
 ---
 

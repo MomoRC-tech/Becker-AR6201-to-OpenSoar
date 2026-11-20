@@ -1,0 +1,666 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 466" role="img" aria-labelledby="title desc">
+<title id="title">DA-15 component placement comparison</title><desc id="desc">Component-side projections at the same scale. USB, probes, expansion and LED drive circuits are included. Dashed lines mark the original inner side walls.</desc>
+<rect width="1080" height="466" fill="white"/>
+<g font-family="Arial,sans-serif" fill="#203449">
+<text x="15.00" y="22.00" font-size="17" font-weight="bold">Narrow front</text>
+<text x="15.00" y="43.00" font-size="13" font-weight="normal">55.75 × 45.25 mm  ·  2,523 mm²</text>
+<text x="15.00" y="62.00" font-size="12" font-weight="normal">2.71 mm between reference plug bodies</text>
+<g transform="translate(180.00,86) scale(5.55) translate(-130,-114)">
+<rect x="102.125" y="123.250" width="55.750" height="45.250" rx="0.05" stroke="#214b40" fill="#e8f1eb" stroke-width=".11"/>
+<path d="M102 114v55" stroke="#a13d47" stroke-dasharray=".7 .5" stroke-width=".20"/>
+<path d="M158 114v55" stroke="#a13d47" stroke-dasharray=".7 .5" stroke-width=".20"/>
+<rect x="124.063" y="117.060" width="18.000" height="6.190" rx="0.05" stroke="#967d38" fill="#e8d79a" stroke-width=".11"/>
+<text x="127.66" y="121.15" font-size="1.9" font-weight="normal">Antenna</text>
+<g><title>J1 · X 117.22, Y 155.34 · 40.25 × 19.81 mm</title><rect x="117.225" y="155.345" width="40.250" height="19.810" rx="0.05" stroke="#657975" fill="#9dc9db" stroke-width=".11"/>
+<text x="137.350" y="165.861" text-anchor="middle" font-size="1.850">DA-15</text>
+</g>
+<g><title>J2 · X 102.53, Y 154.53 · 14.53 × 15.93 mm</title><rect x="102.525" y="154.535" width="14.530" height="15.930" rx="0.05" stroke="#657975" fill="#9dc9db" stroke-width=".11"/>
+<text x="109.790" y="163.111" text-anchor="middle" font-size="1.850">XT30</text>
+</g>
+<g><title>H1 · X 102.62, Y 136.10 · 7.00 × 7.00 mm</title><rect x="102.625" y="136.100" width="7.000" height="7.000" rx="0.05" stroke="#657975" fill="#fff" stroke-width=".11"/>
+<text x="106.125" y="140.210" text-anchor="middle" font-size="1.850">H1</text>
+</g>
+<g><title>H2 · X 150.32, Y 148.00 · 7.00 × 7.00 mm</title><rect x="150.325" y="148.000" width="7.000" height="7.000" rx="0.05" stroke="#657975" fill="#fff" stroke-width=".11"/>
+<text x="153.825" y="152.111" text-anchor="middle" font-size="1.850">H2</text>
+</g>
+<g><title>U1 · X 123.26, Y 123.25 · 19.60 × 20.15 mm</title><rect x="123.263" y="123.250" width="19.600" height="20.150" rx="0.05" stroke="#657975" fill="#a5bbc5" stroke-width=".11"/>
+<text x="133.063" y="133.935" text-anchor="middle" font-size="1.850">U1</text>
+</g>
+<g><title>U4 · X 111.69, Y 131.87 · 7.59 × 5.59 mm</title><rect x="111.689" y="131.874" width="7.590" height="5.590" rx="0.05" stroke="#657975" fill="#a5bbc5" stroke-width=".11"/>
+<text x="115.484" y="135.279" text-anchor="middle" font-size="1.850">U4</text>
+</g>
+<g><title>L1 · X 112.36, Y 124.04 · 7.35 × 7.15 mm</title><rect x="112.359" y="124.044" width="7.350" height="7.150" rx="0.05" stroke="#657975" fill="#a5bbc5" stroke-width=".11"/>
+<text x="116.034" y="128.229" text-anchor="middle" font-size="1.850">L1</text>
+</g>
+<g><title>C10 · X 119.91, Y 131.87 · 1.55 × 3.05 mm</title><rect x="119.909" y="131.874" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C11 · X 119.51, Y 135.29 · 3.05 × 1.55 mm</title><rect x="119.509" y="135.294" width="3.050" height="1.550" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C12 · X 104.89, Y 132.37 · 4.69 × 3.29 mm</title><rect x="104.889" y="132.374" width="4.690" height="3.290" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C13 · X 109.63, Y 132.26 · 1.55 × 3.05 mm</title><rect x="109.629" y="132.264" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C14 · X 102.72, Y 123.85 · 4.69 × 3.29 mm</title><rect x="102.725" y="123.850" width="4.690" height="3.290" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C15 · X 107.53, Y 123.85 · 4.69 × 3.29 mm</title><rect x="107.535" y="123.850" width="4.690" height="3.290" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C16 · X 102.72, Y 127.26 · 4.69 × 3.29 mm</title><rect x="102.725" y="127.260" width="4.690" height="3.290" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C17 · X 107.53, Y 127.26 · 4.69 × 3.29 mm</title><rect x="107.535" y="127.260" width="4.690" height="3.290" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>J3 · X 118.26, Y 142.34 · 5.00 × 13.00 mm</title><rect x="118.263" y="142.345" width="5.000" height="13.000" rx="0.05" stroke="#657975" fill="#9dc9db" stroke-width=".11"/>
+<text x="120.763" y="149.456" text-anchor="middle" font-size="1.850">J3</text>
+</g>
+<g><title>USB · X 142.86, Y 139.00 · 14.00 × 9.00 mm</title><rect x="142.863" y="139.000" width="14.000" height="9.000" rx="0.05" stroke="#657975" fill="#9dc9db" stroke-width=".11"/>
+<text x="149.863" y="144.111" text-anchor="middle" font-size="1.850">USB-C</text>
+</g>
+<g><title>TP1 · X 142.92, Y 129.65 · 2.59 × 2.59 mm</title><rect x="142.916" y="129.653" width="2.594" height="2.594" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="144.213" y="131.506" text-anchor="middle" font-size="1.686">1</text>
+</g>
+<g><title>TP2 · X 146.27, Y 129.65 · 2.59 × 2.59 mm</title><rect x="146.266" y="129.653" width="2.594" height="2.594" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="147.563" y="131.506" text-anchor="middle" font-size="1.686">2</text>
+</g>
+<g><title>TP3 · X 142.92, Y 133.00 · 2.59 × 2.59 mm</title><rect x="142.916" y="133.003" width="2.594" height="2.594" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="144.213" y="134.856" text-anchor="middle" font-size="1.686">3</text>
+</g>
+<g><title>TP4 · X 146.27, Y 133.00 · 2.59 × 2.59 mm</title><rect x="146.266" y="133.003" width="2.594" height="2.594" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="147.563" y="134.856" text-anchor="middle" font-size="1.686">4</text>
+</g>
+<g><title>TP5 · X 142.92, Y 136.35 · 2.59 × 2.59 mm</title><rect x="142.916" y="136.353" width="2.594" height="2.594" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="144.213" y="138.206" text-anchor="middle" font-size="1.686">5</text>
+</g>
+<g><title>TP6 · X 146.27, Y 136.35 · 2.59 × 2.59 mm</title><rect x="146.266" y="136.353" width="2.594" height="2.594" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="147.563" y="138.206" text-anchor="middle" font-size="1.686">6</text>
+</g>
+<g><title>U2 · X 125.07, Y 146.40 · 5.59 × 7.79 mm</title><rect x="125.068" y="146.400" width="5.590" height="7.790" rx="0.05" stroke="#657975" fill="#a5bbc5" stroke-width=".11"/>
+<text x="127.863" y="150.906" text-anchor="middle" font-size="1.850">U2</text>
+</g>
+<g><title>C4 · X 130.88, Y 145.57 · 1.55 × 3.05 mm</title><rect x="130.878" y="145.570" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C5 · X 130.88, Y 148.75 · 1.55 × 3.05 mm</title><rect x="130.878" y="148.750" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C6 · X 130.88, Y 151.93 · 1.55 × 3.05 mm</title><rect x="130.878" y="151.930" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C7 · X 123.30, Y 145.57 · 1.55 × 3.05 mm</title><rect x="123.298" y="145.570" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C8 · X 123.30, Y 148.75 · 1.55 × 3.05 mm</title><rect x="123.298" y="148.750" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>U3 · X 132.51, Y 146.03 · 9.25 × 7.49 mm</title><rect x="132.513" y="146.030" width="9.250" height="7.490" rx="0.05" stroke="#657975" fill="#a5bbc5" stroke-width=".11"/>
+<text x="137.138" y="150.386" text-anchor="middle" font-size="1.850">U3</text>
+</g>
+<g><title>C9 · X 135.61, Y 153.73 · 3.05 × 1.55 mm</title><rect x="135.613" y="153.730" width="3.050" height="1.550" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>UART · X 148.96, Y 133.15 · 5.50 × 5.50 mm</title><rect x="148.963" y="133.150" width="5.500" height="5.500" rx="0.05" stroke="#657975" fill="#a5bbc5" stroke-width=".11"/>
+<text x="151.713" y="136.511" text-anchor="middle" font-size="1.850">UART</text>
+</g>
+<g><title>Cu1 · X 154.76, Y 132.81 · 2.20 × 1.20 mm</title><rect x="154.763" y="132.810" width="2.200" height="1.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>Cu2 · X 154.76, Y 134.05 · 2.20 × 1.20 mm</title><rect x="154.763" y="134.050" width="2.200" height="1.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>Cu3 · X 154.76, Y 135.29 · 2.20 × 1.20 mm</title><rect x="154.763" y="135.290" width="2.200" height="1.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>Cu4 · X 154.76, Y 136.53 · 2.20 × 1.20 mm</title><rect x="154.763" y="136.530" width="2.200" height="1.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>Rrst · X 154.76, Y 137.77 · 2.20 × 1.20 mm</title><rect x="154.763" y="137.770" width="2.200" height="1.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>Q1 · X 110.97, Y 145.65 · 7.29 × 8.89 mm</title><rect x="110.973" y="145.645" width="7.290" height="8.890" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>D2 · X 103.58, Y 143.10 · 7.39 × 4.59 mm</title><rect x="103.583" y="143.100" width="7.390" height="4.590" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>U5 · X 149.17, Y 123.82 · 7.79 × 5.59 mm</title><rect x="149.168" y="123.815" width="7.790" height="5.590" rx="0.05" stroke="#657975" fill="#a5bbc5" stroke-width=".11"/>
+<text x="153.063" y="127.221" text-anchor="middle" font-size="1.850">U5</text>
+</g>
+<g><title>C18 · X 155.02, Y 129.64 · 1.55 × 3.05 mm</title><rect x="155.018" y="129.635" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>R8 · X 153.22, Y 129.64 · 1.55 × 3.05 mm</title><rect x="153.218" y="129.635" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>R9 · X 151.42, Y 129.64 · 1.55 × 3.05 mm</title><rect x="151.418" y="129.635" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C20 · X 149.62, Y 129.64 · 1.55 × 3.05 mm</title><rect x="149.618" y="129.635" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>LED1 · X 102.67, Y 149.19 · 1.50 × 2.30 mm</title><rect x="102.675" y="149.185" width="1.500" height="2.300" rx="0.05" stroke="#657975" fill="#e67b43" stroke-width=".11"/>
+</g>
+<g><title>Rl1 · X 104.48, Y 149.24 · 1.20 × 2.20 mm</title><rect x="104.475" y="149.235" width="1.200" height="2.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>LED2 · X 102.67, Y 151.97 · 1.50 × 2.30 mm</title><rect x="102.675" y="151.975" width="1.500" height="2.300" rx="0.05" stroke="#657975" fill="#e67b43" stroke-width=".11"/>
+</g>
+<g><title>Rl2 · X 104.48, Y 152.03 · 1.20 × 2.20 mm</title><rect x="104.475" y="152.025" width="1.200" height="2.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>C19 · X 114.97, Y 138.41 · 3.29 × 4.69 mm</title><rect x="114.973" y="138.410" width="3.290" height="4.690" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>D1 · X 110.97, Y 143.10 · 4.79 × 2.39 mm</title><rect x="110.973" y="143.100" width="4.790" height="2.390" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>ESD · X 147.32, Y 148.00 · 3.00 × 3.30 mm</title><rect x="147.325" y="148.000" width="3.000" height="3.300" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>Ql2 · X 119.76, Y 139.15 · 3.50 × 3.20 mm</title><rect x="119.763" y="139.145" width="3.500" height="3.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>R7 · X 110.14, Y 135.31 · 1.55 × 3.05 mm</title><rect x="110.139" y="135.314" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>Ql1 · X 111.69, Y 139.60 · 3.20 × 3.50 mm</title><rect x="111.689" y="139.600" width="3.200" height="3.500" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>R10 · X 132.46, Y 144.45 · 3.05 × 1.55 mm</title><rect x="132.463" y="144.445" width="3.050" height="1.550" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C1 · X 129.41, Y 143.69 · 3.05 × 1.55 mm</title><rect x="129.413" y="143.695" width="3.050" height="1.550" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C2 · X 119.77, Y 129.82 · 3.49 × 2.05 mm</title><rect x="119.773" y="129.824" width="3.490" height="2.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>R12 · X 126.36, Y 143.69 · 3.05 × 1.55 mm</title><rect x="126.363" y="143.695" width="3.050" height="1.550" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>R5 · X 123.31, Y 143.69 · 3.05 × 1.55 mm</title><rect x="123.313" y="143.695" width="3.050" height="1.550" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>Qboot · X 141.81, Y 151.84 · 3.20 × 3.50 mm</title><rect x="141.813" y="151.845" width="3.200" height="3.500" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>R6 · X 111.69, Y 138.05 · 3.05 × 1.55 mm</title><rect x="111.689" y="138.050" width="3.050" height="1.550" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>R3 · X 135.51, Y 144.44 · 3.05 × 1.55 mm</title><rect x="135.513" y="144.445" width="3.050" height="1.550" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>R1 · X 121.71, Y 132.24 · 1.55 × 3.05 mm</title><rect x="121.713" y="132.244" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>Qen · X 141.81, Y 148.34 · 3.20 × 3.50 mm</title><rect x="141.813" y="148.345" width="3.200" height="3.500" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>TP12 · X 138.56, Y 143.40 · 2.59 × 2.59 mm</title><rect x="138.563" y="143.400" width="2.593" height="2.592" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="139.859" y="145.252" text-anchor="middle" font-size="1.685">12</text>
+</g>
+<g><title>R2 · X 118.26, Y 137.59 · 3.05 × 1.55 mm</title><rect x="118.263" y="137.595" width="3.050" height="1.550" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>TP14 · X 145.01, Y 151.30 · 2.59 × 2.59 mm</title><rect x="145.013" y="151.300" width="2.593" height="2.592" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="146.309" y="153.152" text-anchor="middle" font-size="1.685">14</text>
+</g>
+<g><title>TP16 · X 147.72, Y 151.30 · 2.60 × 2.60 mm</title><rect x="147.725" y="151.300" width="2.600" height="2.600" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="149.025" y="153.158" text-anchor="middle" font-size="1.690">16</text>
+</g>
+<g><title>TP7 · X 105.78, Y 151.94 · 2.59 × 2.59 mm</title><rect x="105.775" y="151.942" width="2.592" height="2.593" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="107.071" y="153.795" text-anchor="middle" font-size="1.685">7</text>
+</g>
+<g><title>TP15 · X 108.37, Y 147.69 · 2.59 × 2.59 mm</title><rect x="108.367" y="147.690" width="2.593" height="2.592" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="109.663" y="149.542" text-anchor="middle" font-size="1.685">15</text>
+</g>
+<g><title>R4 · X 145.77, Y 148.25 · 1.55 × 3.05 mm</title><rect x="145.775" y="148.250" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>TP13 · X 108.38, Y 150.28 · 2.59 × 2.59 mm</title><rect x="108.380" y="150.282" width="2.593" height="2.592" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="109.676" y="152.134" text-anchor="middle" font-size="1.685">13</text>
+</g>
+<g><title>C3 · X 120.21, Y 128.27 · 3.05 × 1.55 mm</title><rect x="120.213" y="128.274" width="3.050" height="1.550" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>Rb2 · X 122.06, Y 136.84 · 1.20 × 2.20 mm</title><rect x="122.063" y="136.844" width="1.200" height="2.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>R11 · X 120.21, Y 126.72 · 3.05 × 1.55 mm</title><rect x="120.213" y="126.724" width="3.050" height="1.550" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>Riso2 · X 141.16, Y 143.40 · 1.20 × 2.20 mm</title><rect x="141.156" y="143.400" width="1.200" height="2.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>TP9 · X 120.67, Y 124.13 · 2.59 × 2.59 mm</title><rect x="120.671" y="124.131" width="2.592" height="2.593" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="121.967" y="125.984" text-anchor="middle" font-size="1.685">9</text>
+</g>
+<g><title>TP8 · X 105.78, Y 149.35 · 2.59 × 2.59 mm</title><rect x="105.775" y="149.349" width="2.592" height="2.593" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="107.071" y="151.202" text-anchor="middle" font-size="1.685">8</text>
+</g>
+<g><title>Riso1 · X 118.56, Y 139.15 · 1.20 × 2.20 mm</title><rect x="118.563" y="139.145" width="1.200" height="2.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>Rcc2 · X 115.76, Y 144.45 · 2.20 × 1.20 mm</title><rect x="115.763" y="144.445" width="2.200" height="1.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>TP17 · X 142.86, Y 127.00 · 2.60 × 2.60 mm</title><rect x="142.863" y="127.000" width="2.600" height="2.600" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="144.163" y="128.858" text-anchor="middle" font-size="1.690">17</text>
+</g>
+<g><title>Creset · X 145.01, Y 154.15 · 2.20 × 1.20 mm</title><rect x="145.013" y="154.145" width="2.200" height="1.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>TP10 · X 145.46, Y 127.01 · 2.59 × 2.59 mm</title><rect x="145.463" y="127.008" width="2.593" height="2.592" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="146.759" y="128.860" text-anchor="middle" font-size="1.685">10</text>
+</g>
+<g><title>Rcc1 · X 115.76, Y 143.25 · 2.20 × 1.20 mm</title><rect x="115.763" y="143.245" width="2.200" height="1.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>Ren · X 147.21, Y 153.90 · 2.20 × 1.20 mm</title><rect x="147.213" y="153.900" width="2.200" height="1.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>Rv1 · X 142.86, Y 124.80 · 1.20 × 2.20 mm</title><rect x="142.863" y="124.800" width="1.200" height="2.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>TP11 · X 145.46, Y 124.92 · 2.09 × 2.09 mm</title><rect x="145.463" y="124.916" width="2.093" height="2.092" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="146.509" y="126.411" text-anchor="middle" font-size="1.360">11</text>
+</g>
+<g><title>Rb1 · X 106.17, Y 147.74 · 2.20 × 1.20 mm</title><rect x="106.167" y="147.735" width="2.200" height="1.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>Rv2 · X 110.49, Y 140.90 · 1.20 × 2.20 mm</title><rect x="110.489" y="140.900" width="1.200" height="2.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>Rboot · X 144.06, Y 124.80 · 1.20 × 2.20 mm</title><rect x="144.063" y="124.800" width="1.200" height="2.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+</g>
+<text x="375.00" y="22.00" font-size="17" font-weight="bold">Wider front</text>
+<text x="375.00" y="43.00" font-size="13" font-weight="normal">57 × 45 mm  ·  2,565 mm²</text>
+<text x="375.00" y="62.00" font-size="12" font-weight="normal">3.96 mm between reference plug bodies</text>
+<g transform="translate(540.00,86) scale(5.55) translate(-130,-114)">
+<rect x="101.500" y="123.500" width="57.000" height="45.000" rx="0.05" stroke="#214b40" fill="#e8f1eb" stroke-width=".11"/>
+<path d="M102 114v55" stroke="#a13d47" stroke-dasharray=".7 .5" stroke-width=".20"/>
+<path d="M158 114v55" stroke="#a13d47" stroke-dasharray=".7 .5" stroke-width=".20"/>
+<rect x="124.201" y="117.310" width="18.000" height="6.190" rx="0.05" stroke="#967d38" fill="#e8d79a" stroke-width=".11"/>
+<text x="127.80" y="121.40" font-size="1.9" font-weight="normal">Antenna</text>
+<g><title>J1 · X 117.85, Y 155.34 · 40.25 × 19.81 mm</title><rect x="117.850" y="155.345" width="40.250" height="19.810" rx="0.05" stroke="#657975" fill="#9dc9db" stroke-width=".11"/>
+<text x="137.975" y="165.861" text-anchor="middle" font-size="1.850">DA-15</text>
+</g>
+<g><title>J2 · X 101.90, Y 154.53 · 14.53 × 15.93 mm</title><rect x="101.900" y="154.535" width="14.530" height="15.930" rx="0.05" stroke="#657975" fill="#9dc9db" stroke-width=".11"/>
+<text x="109.165" y="163.111" text-anchor="middle" font-size="1.850">XT30</text>
+</g>
+<g><title>H1 · X 102.00, Y 136.10 · 7.00 × 7.00 mm</title><rect x="102.000" y="136.100" width="7.000" height="7.000" rx="0.05" stroke="#657975" fill="#fff" stroke-width=".11"/>
+<text x="105.500" y="140.210" text-anchor="middle" font-size="1.850">H1</text>
+</g>
+<g><title>H2 · X 150.95, Y 148.00 · 7.00 × 7.00 mm</title><rect x="150.950" y="148.000" width="7.000" height="7.000" rx="0.05" stroke="#657975" fill="#fff" stroke-width=".11"/>
+<text x="154.450" y="152.111" text-anchor="middle" font-size="1.850">H2</text>
+</g>
+<g><title>U1 · X 123.40, Y 123.50 · 19.60 × 20.15 mm</title><rect x="123.401" y="123.500" width="19.600" height="20.150" rx="0.05" stroke="#657975" fill="#a5bbc5" stroke-width=".11"/>
+<text x="133.201" y="134.185" text-anchor="middle" font-size="1.850">U1</text>
+</g>
+<g><title>U4 · X 111.16, Y 132.11 · 7.59 × 5.59 mm</title><rect x="111.164" y="132.106" width="7.590" height="5.590" rx="0.05" stroke="#657975" fill="#a5bbc5" stroke-width=".11"/>
+<text x="114.959" y="135.511" text-anchor="middle" font-size="1.850">U4</text>
+</g>
+<g><title>L1 · X 111.83, Y 124.28 · 7.35 × 7.15 mm</title><rect x="111.834" y="124.276" width="7.350" height="7.150" rx="0.05" stroke="#657975" fill="#a5bbc5" stroke-width=".11"/>
+<text x="115.509" y="128.461" text-anchor="middle" font-size="1.850">L1</text>
+</g>
+<g><title>C10 · X 119.38, Y 132.11 · 1.55 × 3.05 mm</title><rect x="119.384" y="132.106" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C11 · X 118.98, Y 135.53 · 3.05 × 1.55 mm</title><rect x="118.984" y="135.526" width="3.050" height="1.550" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C12 · X 104.36, Y 132.61 · 4.69 × 3.29 mm</title><rect x="104.364" y="132.606" width="4.690" height="3.290" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C13 · X 109.10, Y 132.50 · 1.55 × 3.05 mm</title><rect x="109.104" y="132.496" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C14 · X 102.10, Y 124.10 · 4.69 × 3.29 mm</title><rect x="102.100" y="124.100" width="4.690" height="3.290" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C15 · X 106.91, Y 124.10 · 4.69 × 3.29 mm</title><rect x="106.910" y="124.100" width="4.690" height="3.290" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C16 · X 102.10, Y 127.51 · 4.69 × 3.29 mm</title><rect x="102.100" y="127.510" width="4.690" height="3.290" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C17 · X 106.91, Y 127.51 · 4.69 × 3.29 mm</title><rect x="106.910" y="127.510" width="4.690" height="3.290" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>J3 · X 116.43, Y 137.70 · 5.00 × 13.00 mm</title><rect x="116.430" y="137.696" width="5.000" height="13.000" rx="0.05" stroke="#657975" fill="#9dc9db" stroke-width=".11"/>
+<text x="118.930" y="144.806" text-anchor="middle" font-size="1.850">J3</text>
+</g>
+<g><title>USB · X 144.00, Y 139.00 · 14.00 × 9.00 mm</title><rect x="144.000" y="139.000" width="14.000" height="9.000" rx="0.05" stroke="#657975" fill="#9dc9db" stroke-width=".11"/>
+<text x="151.000" y="144.111" text-anchor="middle" font-size="1.850">USB-C</text>
+</g>
+<g><title>TP1 · X 148.30, Y 148.05 · 2.59 × 2.59 mm</title><rect x="148.303" y="148.053" width="2.594" height="2.594" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="149.600" y="149.906" text-anchor="middle" font-size="1.686">1</text>
+</g>
+<g><title>TP2 · X 148.30, Y 151.40 · 2.59 × 2.59 mm</title><rect x="148.303" y="151.403" width="2.594" height="2.594" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="149.600" y="153.256" text-anchor="middle" font-size="1.686">2</text>
+</g>
+<g><title>TP3 · X 144.95, Y 148.05 · 2.59 × 2.59 mm</title><rect x="144.953" y="148.053" width="2.594" height="2.594" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="146.250" y="149.906" text-anchor="middle" font-size="1.686">3</text>
+</g>
+<g><title>TP4 · X 144.95, Y 151.40 · 2.59 × 2.59 mm</title><rect x="144.953" y="151.403" width="2.594" height="2.594" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="146.250" y="153.256" text-anchor="middle" font-size="1.686">4</text>
+</g>
+<g><title>TP5 · X 141.60, Y 148.05 · 2.59 × 2.59 mm</title><rect x="141.603" y="148.053" width="2.594" height="2.594" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="142.900" y="149.906" text-anchor="middle" font-size="1.686">5</text>
+</g>
+<g><title>TP6 · X 141.60, Y 151.40 · 2.59 × 2.59 mm</title><rect x="141.603" y="151.403" width="2.594" height="2.594" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="142.900" y="153.256" text-anchor="middle" font-size="1.686">6</text>
+</g>
+<g><title>U2 · X 123.23, Y 144.81 · 5.59 × 7.79 mm</title><rect x="123.235" y="144.805" width="5.590" height="7.790" rx="0.05" stroke="#657975" fill="#a5bbc5" stroke-width=".11"/>
+<text x="126.030" y="149.311" text-anchor="middle" font-size="1.850">U2</text>
+</g>
+<g><title>C4 · X 129.04, Y 143.97 · 1.55 × 3.05 mm</title><rect x="129.045" y="143.975" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C5 · X 129.04, Y 147.16 · 1.55 × 3.05 mm</title><rect x="129.045" y="147.155" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C6 · X 129.04, Y 150.34 · 1.55 × 3.05 mm</title><rect x="129.045" y="150.335" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C7 · X 121.47, Y 143.97 · 1.55 × 3.05 mm</title><rect x="121.465" y="143.975" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C8 · X 121.47, Y 147.16 · 1.55 × 3.05 mm</title><rect x="121.465" y="147.155" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>U3 · X 130.68, Y 146.03 · 9.25 × 7.49 mm</title><rect x="130.680" y="146.030" width="9.250" height="7.490" rx="0.05" stroke="#657975" fill="#a5bbc5" stroke-width=".11"/>
+<text x="135.305" y="150.386" text-anchor="middle" font-size="1.850">U3</text>
+</g>
+<g><title>C9 · X 133.78, Y 153.73 · 3.05 × 1.55 mm</title><rect x="133.780" y="153.730" width="3.050" height="1.550" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>U5 · X 107.45, Y 143.35 · 5.59 × 7.79 mm</title><rect x="107.445" y="143.355" width="5.590" height="7.790" rx="0.05" stroke="#657975" fill="#a5bbc5" stroke-width=".11"/>
+<text x="110.240" y="147.861" text-anchor="middle" font-size="1.850">U5</text>
+</g>
+<g><title>C18 · X 113.27, Y 143.74 · 3.05 × 1.55 mm</title><rect x="113.265" y="143.745" width="3.050" height="1.550" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>R8 · X 113.27, Y 145.54 · 3.05 × 1.55 mm</title><rect x="113.265" y="145.545" width="3.050" height="1.550" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>R9 · X 113.27, Y 147.34 · 3.05 × 1.55 mm</title><rect x="113.265" y="147.345" width="3.050" height="1.550" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C20 · X 113.27, Y 149.14 · 3.05 × 1.55 mm</title><rect x="113.265" y="149.145" width="3.050" height="1.550" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>Q1 · X 143.00, Y 124.05 · 7.29 × 8.89 mm</title><rect x="143.001" y="124.050" width="7.290" height="8.890" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>UART · X 152.15, Y 130.85 · 5.50 × 5.50 mm</title><rect x="152.150" y="130.850" width="5.500" height="5.500" rx="0.05" stroke="#657975" fill="#a5bbc5" stroke-width=".11"/>
+<text x="154.900" y="134.211" text-anchor="middle" font-size="1.850">UART</text>
+</g>
+<g><title>Cu1 · X 156.79, Y 136.65 · 1.20 × 2.20 mm</title><rect x="156.790" y="136.650" width="1.200" height="2.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>Cu2 · X 155.55, Y 136.65 · 1.20 × 2.20 mm</title><rect x="155.550" y="136.650" width="1.200" height="2.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>Cu3 · X 154.31, Y 136.65 · 1.20 × 2.20 mm</title><rect x="154.310" y="136.650" width="1.200" height="2.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>Cu4 · X 153.07, Y 136.65 · 1.20 × 2.20 mm</title><rect x="153.070" y="136.650" width="1.200" height="2.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>Rrst · X 151.83, Y 136.65 · 1.20 × 2.20 mm</title><rect x="151.830" y="136.650" width="1.200" height="2.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>D2 · X 109.04, Y 137.70 · 7.39 × 4.59 mm</title><rect x="109.040" y="137.696" width="7.390" height="4.590" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>D1 · X 150.29, Y 126.01 · 2.39 × 4.79 mm</title><rect x="150.291" y="126.010" width="2.390" height="4.790" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C19 · X 120.11, Y 127.42 · 3.29 × 4.69 mm</title><rect x="120.111" y="127.416" width="3.290" height="4.690" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>LED1 · X 156.47, Y 125.45 · 1.50 × 2.30 mm</title><rect x="156.470" y="125.450" width="1.500" height="2.300" rx="0.05" stroke="#657975" fill="#e67b43" stroke-width=".11"/>
+</g>
+<g><title>Rl1 · X 154.93, Y 125.50 · 1.20 × 2.20 mm</title><rect x="154.930" y="125.500" width="1.200" height="2.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>LED2 · X 156.47, Y 128.24 · 1.50 × 2.30 mm</title><rect x="156.470" y="128.240" width="1.500" height="2.300" rx="0.05" stroke="#657975" fill="#e67b43" stroke-width=".11"/>
+</g>
+<g><title>Rl2 · X 154.93, Y 128.29 · 1.20 × 2.20 mm</title><rect x="154.930" y="128.290" width="1.200" height="2.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>C2 · X 130.63, Y 143.94 · 3.49 × 2.05 mm</title><rect x="130.630" y="143.945" width="3.490" height="2.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>Qen · X 140.50, Y 144.80 · 3.50 × 3.20 mm</title><rect x="140.500" y="144.800" width="3.500" height="3.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>C3 · X 121.85, Y 132.11 · 1.55 × 3.05 mm</title><rect x="121.851" y="132.106" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>R11 · X 139.98, Y 152.29 · 1.55 × 3.05 mm</title><rect x="139.980" y="152.295" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>ESD · X 148.50, Y 136.00 · 3.30 × 3.00 mm</title><rect x="148.500" y="136.000" width="3.300" height="3.000" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>R2 · X 143.00, Y 132.94 · 1.55 × 3.05 mm</title><rect x="143.001" y="132.940" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>R6 · X 119.18, Y 124.37 · 1.55 × 3.05 mm</title><rect x="119.184" y="124.366" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>Ql1 · X 118.23, Y 150.70 · 3.20 × 3.50 mm</title><rect x="118.230" y="150.696" width="3.200" height="3.500" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>Ql2 · X 145.00, Y 135.80 · 3.50 × 3.20 mm</title><rect x="145.000" y="135.800" width="3.500" height="3.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>TP12 · X 115.64, Y 151.40 · 2.59 × 2.59 mm</title><rect x="115.637" y="151.400" width="2.593" height="2.592" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="116.934" y="153.252" text-anchor="middle" font-size="1.685">12</text>
+</g>
+<g><title>TP14 · X 144.55, Y 133.21 · 2.59 × 2.59 mm</title><rect x="144.551" y="133.208" width="2.593" height="2.592" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="145.847" y="135.060" text-anchor="middle" font-size="1.685">14</text>
+</g>
+<g><title>TP8 · X 148.50, Y 133.41 · 2.59 × 2.59 mm</title><rect x="148.500" y="133.408" width="2.593" height="2.592" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="149.797" y="135.260" text-anchor="middle" font-size="1.685">8</text>
+</g>
+<g><title>Qboot · X 103.93, Y 143.10 · 3.50 × 3.20 mm</title><rect x="103.930" y="143.100" width="3.500" height="3.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>TP9 · X 120.81, Y 124.05 · 2.59 × 2.59 mm</title><rect x="120.809" y="124.050" width="2.592" height="2.593" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="122.105" y="125.903" text-anchor="middle" font-size="1.685">9</text>
+</g>
+<g><title>R10 · X 139.98, Y 149.24 · 1.55 × 3.05 mm</title><rect x="139.980" y="149.245" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>R7 · X 108.11, Y 130.80 · 3.05 × 1.55 mm</title><rect x="108.114" y="130.800" width="3.050" height="1.550" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>R1 · X 121.43, Y 137.08 · 1.55 × 3.05 mm</title><rect x="121.430" y="137.076" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>R4 · X 134.12, Y 143.65 · 3.05 × 1.55 mm</title><rect x="134.120" y="143.650" width="3.050" height="1.550" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>TP17 · X 113.04, Y 151.94 · 2.60 × 2.60 mm</title><rect x="113.037" y="151.935" width="2.600" height="2.600" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="114.337" y="153.793" text-anchor="middle" font-size="1.690">17</text>
+</g>
+<g><title>TP7 · X 110.45, Y 151.94 · 2.59 × 2.59 mm</title><rect x="110.445" y="151.942" width="2.592" height="2.593" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="111.741" y="153.795" text-anchor="middle" font-size="1.685">7</text>
+</g>
+<g><title>R3 · X 137.45, Y 144.44 · 3.05 × 1.55 mm</title><rect x="137.450" y="144.445" width="3.050" height="1.550" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>Rb2 · X 143.00, Y 136.80 · 1.20 × 2.20 mm</title><rect x="143.001" y="136.800" width="1.200" height="2.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>R12 · X 121.85, Y 140.13 · 1.55 × 3.05 mm</title><rect x="121.851" y="140.126" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C1 · X 121.43, Y 153.75 · 3.05 × 1.55 mm</title><rect x="121.430" y="153.750" width="3.050" height="1.550" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>TP15 · X 102.00, Y 151.40 · 2.59 × 2.59 mm</title><rect x="102.000" y="151.400" width="2.593" height="2.592" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="103.296" y="153.252" text-anchor="middle" font-size="1.685">15</text>
+</g>
+<g><title>Rcc1 · X 141.53, Y 154.05 · 2.20 × 1.20 mm</title><rect x="141.530" y="154.050" width="2.200" height="1.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>Rv2 · X 128.43, Y 153.75 · 2.20 × 1.20 mm</title><rect x="128.430" y="153.750" width="2.200" height="1.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>Ren · X 126.23, Y 153.75 · 2.20 × 1.20 mm</title><rect x="126.230" y="153.750" width="2.200" height="1.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>R5 · X 108.90, Y 151.40 · 1.55 × 3.05 mm</title><rect x="108.895" y="151.400" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>TP16 · X 104.59, Y 151.94 · 2.60 × 2.60 mm</title><rect x="104.593" y="151.935" width="2.600" height="2.600" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="105.893" y="153.793" text-anchor="middle" font-size="1.690">16</text>
+</g>
+<g><title>Rcc2 · X 147.30, Y 132.94 · 1.20 × 2.20 mm</title><rect x="147.300" y="132.940" width="1.200" height="2.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>Rboot · X 143.73, Y 154.15 · 2.20 × 1.20 mm</title><rect x="143.730" y="154.145" width="2.200" height="1.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>Riso1 · X 145.93, Y 154.05 · 2.20 × 1.20 mm</title><rect x="145.930" y="154.050" width="2.200" height="1.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>TP13 · X 104.84, Y 149.34 · 2.59 × 2.59 mm</title><rect x="104.838" y="149.342" width="2.592" height="2.593" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="106.134" y="151.195" text-anchor="middle" font-size="1.685">13</text>
+</g>
+<g><title>TP10 · X 104.84, Y 146.75 · 2.59 × 2.59 mm</title><rect x="104.838" y="146.749" width="2.592" height="2.593" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="106.134" y="148.602" text-anchor="middle" font-size="1.685">10</text>
+</g>
+<g><title>Riso2 · X 116.65, Y 153.99 · 1.20 × 2.20 mm</title><rect x="116.650" y="153.992" width="1.200" height="2.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>TP11 · X 102.00, Y 146.30 · 2.09 × 2.09 mm</title><rect x="102.000" y="146.300" width="2.093" height="2.092" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="103.047" y="147.795" text-anchor="middle" font-size="1.360">11</text>
+</g>
+<g><title>Creset · X 148.13, Y 154.15 · 2.20 × 1.20 mm</title><rect x="148.130" y="154.145" width="2.200" height="1.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>Rb1 · X 107.70, Y 152.34 · 1.20 × 2.20 mm</title><rect x="107.695" y="152.335" width="1.200" height="2.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>Rv1 · X 116.65, Y 156.19 · 1.20 × 2.20 mm</title><rect x="116.650" y="156.192" width="1.200" height="2.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+</g>
+<text x="735.00" y="22.00" font-size="17" font-weight="bold">Side power entry</text>
+<text x="735.00" y="43.00" font-size="13" font-weight="normal">54 × 48 mm  ·  2,592 mm²</text>
+<text x="735.00" y="62.00" font-size="12" font-weight="normal">XT30 cable exits through the left wall</text>
+<g transform="translate(900.00,86) scale(5.55) translate(-130,-114)">
+<rect x="103.000" y="120.500" width="54.000" height="48.000" rx="0.05" stroke="#214b40" fill="#e8f1eb" stroke-width=".11"/>
+<path d="M102 114v55" stroke="#a13d47" stroke-dasharray=".7 .5" stroke-width=".20"/>
+<path d="M158 114v55" stroke="#a13d47" stroke-dasharray=".7 .5" stroke-width=".20"/>
+<rect x="124.360" y="114.310" width="18.000" height="6.190" rx="0.05" stroke="#967d38" fill="#e8d79a" stroke-width=".11"/>
+<text x="127.96" y="118.40" font-size="1.9" font-weight="normal">Antenna</text>
+<g><title>J1 · X 109.88, Y 155.34 · 40.25 × 19.81 mm</title><rect x="109.875" y="155.345" width="40.250" height="19.810" rx="0.05" stroke="#657975" fill="#9dc9db" stroke-width=".11"/>
+<text x="130.000" y="165.861" text-anchor="middle" font-size="1.850">DA-15</text>
+</g>
+<g><title>J2 · X 101.03, Y 140.30 · 15.93 × 14.53 mm</title><rect x="101.035" y="140.300" width="15.930" height="14.530" rx="0.05" stroke="#657975" fill="#9dc9db" stroke-width=".11"/>
+<text x="109.000" y="148.175" text-anchor="middle" font-size="1.850">XT30</text>
+</g>
+<g><title>H1 · X 118.00, Y 148.00 · 7.00 × 7.00 mm</title><rect x="118.000" y="148.000" width="7.000" height="7.000" rx="0.05" stroke="#657975" fill="#fff" stroke-width=".11"/>
+<text x="121.500" y="152.111" text-anchor="middle" font-size="1.850">H1</text>
+</g>
+<g><title>H2 · X 149.45, Y 148.00 · 7.00 × 7.00 mm</title><rect x="149.450" y="148.000" width="7.000" height="7.000" rx="0.05" stroke="#657975" fill="#fff" stroke-width=".11"/>
+<text x="152.950" y="152.111" text-anchor="middle" font-size="1.850">H2</text>
+</g>
+<g><title>U1 · X 123.56, Y 120.50 · 19.60 × 20.15 mm</title><rect x="123.560" y="120.500" width="19.600" height="20.150" rx="0.05" stroke="#657975" fill="#a5bbc5" stroke-width=".11"/>
+<text x="133.360" y="131.185" text-anchor="middle" font-size="1.850">U1</text>
+</g>
+<g><title>U4 · X 112.53, Y 131.17 · 7.59 × 5.59 mm</title><rect x="112.532" y="131.167" width="7.590" height="5.590" rx="0.05" stroke="#657975" fill="#a5bbc5" stroke-width=".11"/>
+<text x="116.327" y="134.572" text-anchor="middle" font-size="1.850">U4</text>
+</g>
+<g><title>L1 · X 113.20, Y 123.34 · 7.35 × 7.15 mm</title><rect x="113.202" y="123.337" width="7.350" height="7.150" rx="0.05" stroke="#657975" fill="#a5bbc5" stroke-width=".11"/>
+<text x="116.877" y="127.522" text-anchor="middle" font-size="1.850">L1</text>
+</g>
+<g><title>C10 · X 120.75, Y 131.17 · 1.55 × 3.05 mm</title><rect x="120.752" y="131.167" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C11 · X 120.35, Y 134.59 · 3.05 × 1.55 mm</title><rect x="120.352" y="134.587" width="3.050" height="1.550" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C12 · X 105.73, Y 131.67 · 4.69 × 3.29 mm</title><rect x="105.732" y="131.667" width="4.690" height="3.290" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C13 · X 110.47, Y 131.56 · 1.55 × 3.05 mm</title><rect x="110.472" y="131.557" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C14 · X 103.60, Y 121.10 · 4.69 × 3.29 mm</title><rect x="103.600" y="121.100" width="4.690" height="3.290" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C15 · X 108.41, Y 121.10 · 4.69 × 3.29 mm</title><rect x="108.410" y="121.100" width="4.690" height="3.290" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C16 · X 103.60, Y 124.51 · 4.69 × 3.29 mm</title><rect x="103.600" y="124.510" width="4.690" height="3.290" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C17 · X 108.41, Y 124.51 · 4.69 × 3.29 mm</title><rect x="108.410" y="124.510" width="4.690" height="3.290" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>USB · X 140.45, Y 141.34 · 9.00 × 14.00 mm</title><rect x="140.450" y="141.345" width="9.000" height="14.000" rx="0.05" stroke="#657975" fill="#9dc9db" stroke-width=".11"/>
+<text x="144.950" y="148.956" text-anchor="middle" font-size="1.850">USB-C</text>
+</g>
+<g><title>J3 · X 125.00, Y 150.34 · 13.00 × 5.00 mm</title><rect x="125.000" y="150.345" width="13.000" height="5.000" rx="0.05" stroke="#657975" fill="#9dc9db" stroke-width=".11"/>
+<text x="131.500" y="153.456" text-anchor="middle" font-size="1.850">J3</text>
+</g>
+<g><title>TP1 · X 134.45, Y 140.70 · 2.59 × 2.59 mm</title><rect x="134.453" y="140.703" width="2.594" height="2.594" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="135.750" y="142.556" text-anchor="middle" font-size="1.686">1</text>
+</g>
+<g><title>TP2 · X 137.80, Y 140.70 · 2.59 × 2.59 mm</title><rect x="137.803" y="140.703" width="2.594" height="2.594" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="139.100" y="142.556" text-anchor="middle" font-size="1.686">2</text>
+</g>
+<g><title>TP3 · X 134.45, Y 144.05 · 2.59 × 2.59 mm</title><rect x="134.453" y="144.053" width="2.594" height="2.594" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="135.750" y="145.906" text-anchor="middle" font-size="1.686">3</text>
+</g>
+<g><title>TP4 · X 137.80, Y 144.05 · 2.59 × 2.59 mm</title><rect x="137.803" y="144.053" width="2.594" height="2.594" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="139.100" y="145.906" text-anchor="middle" font-size="1.686">4</text>
+</g>
+<g><title>TP5 · X 134.45, Y 147.40 · 2.59 × 2.59 mm</title><rect x="134.453" y="147.403" width="2.594" height="2.594" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="135.750" y="149.256" text-anchor="middle" font-size="1.686">5</text>
+</g>
+<g><title>TP6 · X 137.80, Y 147.40 · 2.59 × 2.59 mm</title><rect x="137.803" y="147.403" width="2.594" height="2.594" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="139.100" y="149.256" text-anchor="middle" font-size="1.686">6</text>
+</g>
+<g><title>Q1 · X 116.97, Y 140.71 · 8.89 × 7.29 mm</title><rect x="116.965" y="140.710" width="8.890" height="7.290" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>U2 · X 144.32, Y 133.95 · 7.79 × 5.59 mm</title><rect x="144.315" y="133.950" width="7.790" height="5.590" rx="0.05" stroke="#657975" fill="#a5bbc5" stroke-width=".11"/>
+<text x="148.210" y="137.356" text-anchor="middle" font-size="1.850">U2</text>
+</g>
+<g><title>C4 · X 143.49, Y 132.18 · 3.05 × 1.55 mm</title><rect x="143.485" y="132.180" width="3.050" height="1.550" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C5 · X 146.67, Y 132.18 · 3.05 × 1.55 mm</title><rect x="146.665" y="132.180" width="3.050" height="1.550" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C6 · X 149.85, Y 132.18 · 3.05 × 1.55 mm</title><rect x="149.845" y="132.180" width="3.050" height="1.550" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C7 · X 143.49, Y 139.76 · 3.05 × 1.55 mm</title><rect x="143.485" y="139.760" width="3.050" height="1.550" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C8 · X 146.67, Y 139.76 · 3.05 × 1.55 mm</title><rect x="146.665" y="139.760" width="3.050" height="1.550" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>U3 · X 143.20, Y 122.85 · 7.49 × 9.25 mm</title><rect x="143.195" y="122.845" width="7.490" height="9.250" rx="0.05" stroke="#657975" fill="#a5bbc5" stroke-width=".11"/>
+<text x="146.940" y="128.081" text-anchor="middle" font-size="1.850">U3</text>
+</g>
+<g><title>C9 · X 150.90, Y 125.95 · 1.55 × 3.05 mm</title><rect x="150.895" y="125.945" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>D2 · X 103.50, Y 154.83 · 4.59 × 7.39 mm</title><rect x="103.500" y="154.830" width="4.590" height="7.390" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>UART · X 150.65, Y 155.05 · 5.50 × 5.50 mm</title><rect x="150.650" y="155.050" width="5.500" height="5.500" rx="0.05" stroke="#657975" fill="#a5bbc5" stroke-width=".11"/>
+<text x="153.400" y="158.411" text-anchor="middle" font-size="1.850">UART</text>
+</g>
+<g><title>Cu1 · X 155.29, Y 160.85 · 1.20 × 2.20 mm</title><rect x="155.290" y="160.850" width="1.200" height="2.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>Cu2 · X 154.05, Y 160.85 · 1.20 × 2.20 mm</title><rect x="154.050" y="160.850" width="1.200" height="2.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>Cu3 · X 152.81, Y 160.85 · 1.20 × 2.20 mm</title><rect x="152.810" y="160.850" width="1.200" height="2.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>Cu4 · X 151.57, Y 160.85 · 1.20 × 2.20 mm</title><rect x="151.570" y="160.850" width="1.200" height="2.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>Rrst · X 150.33, Y 160.85 · 1.20 × 2.20 mm</title><rect x="150.330" y="160.850" width="1.200" height="2.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>U5 · X 126.35, Y 140.67 · 7.79 × 5.59 mm</title><rect x="126.355" y="140.665" width="7.790" height="5.590" rx="0.05" stroke="#657975" fill="#a5bbc5" stroke-width=".11"/>
+<text x="130.250" y="144.071" text-anchor="middle" font-size="1.850">U5</text>
+</g>
+<g><title>C18 · X 132.20, Y 146.49 · 1.55 × 3.05 mm</title><rect x="132.205" y="146.485" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>R8 · X 130.40, Y 146.49 · 1.55 × 3.05 mm</title><rect x="130.405" y="146.485" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>R9 · X 128.60, Y 146.49 · 1.55 × 3.05 mm</title><rect x="128.605" y="146.485" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C20 · X 126.80, Y 146.49 · 1.55 × 3.05 mm</title><rect x="126.805" y="146.485" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>LED1 · X 154.14, Y 141.38 · 2.30 × 1.50 mm</title><rect x="154.140" y="141.385" width="2.300" height="1.500" rx="0.05" stroke="#657975" fill="#e67b43" stroke-width=".11"/>
+</g>
+<g><title>Rl1 · X 151.00, Y 141.53 · 2.20 × 1.20 mm</title><rect x="151.000" y="141.535" width="2.200" height="1.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>LED2 · X 154.14, Y 142.96 · 2.30 × 1.50 mm</title><rect x="154.140" y="142.955" width="2.300" height="1.500" rx="0.05" stroke="#657975" fill="#e67b43" stroke-width=".11"/>
+</g>
+<g><title>Rl2 · X 151.00, Y 143.11 · 2.20 × 1.20 mm</title><rect x="151.000" y="143.105" width="2.200" height="1.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>C19 · X 118.87, Y 137.01 · 4.69 × 3.29 mm</title><rect x="118.870" y="137.010" width="4.690" height="3.290" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>D1 · X 114.08, Y 136.76 · 4.79 × 2.39 mm</title><rect x="114.080" y="136.757" width="4.790" height="2.390" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>Qen · X 149.45, Y 144.50 · 3.20 × 3.50 mm</title><rect x="149.450" y="144.500" width="3.200" height="3.500" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>ESD · X 153.50, Y 144.70 · 3.00 × 3.30 mm</title><rect x="153.500" y="144.700" width="3.000" height="3.300" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>C2 · X 121.51, Y 127.68 · 2.05 × 3.49 mm</title><rect x="121.510" y="127.677" width="2.050" height="3.490" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>R3 · X 138.00, Y 150.05 · 1.55 × 3.05 mm</title><rect x="138.000" y="150.050" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>Ql2 · X 110.58, Y 136.76 · 3.50 × 3.20 mm</title><rect x="110.580" y="136.757" width="3.500" height="3.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>R2 · X 122.01, Y 124.63 · 1.55 × 3.05 mm</title><rect x="122.010" y="124.627" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>R10 · X 153.26, Y 139.80 · 3.05 × 1.55 mm</title><rect x="153.260" y="139.795" width="3.050" height="1.550" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>R5 · X 109.48, Y 135.21 · 3.05 × 1.55 mm</title><rect x="109.482" y="135.207" width="3.050" height="1.550" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>C3 · X 120.51, Y 121.79 · 3.05 × 1.55 mm</title><rect x="120.510" y="121.787" width="3.050" height="1.550" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>R7 · X 111.65, Y 128.12 · 1.55 × 3.05 mm</title><rect x="111.652" y="128.117" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>TP12 · X 107.99, Y 137.71 · 2.59 × 2.59 mm</title><rect x="107.988" y="137.707" width="2.592" height="2.593" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="109.284" y="139.560" text-anchor="middle" font-size="1.685">12</text>
+</g>
+<g><title>R11 · X 108.32, Y 154.83 · 1.55 × 3.05 mm</title><rect x="108.325" y="154.830" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>TP9 · X 106.89, Y 134.96 · 2.59 × 2.59 mm</title><rect x="106.890" y="134.957" width="2.592" height="2.593" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="108.186" y="136.810" text-anchor="middle" font-size="1.685">9</text>
+</g>
+<g><title>Qboot · X 153.26, Y 136.30 · 3.20 × 3.50 mm</title><rect x="153.260" y="136.295" width="3.200" height="3.500" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>Ql1 · X 108.45, Y 127.80 · 3.20 × 3.50 mm</title><rect x="108.452" y="127.800" width="3.200" height="3.500" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>R12 · X 153.26, Y 134.75 · 3.05 × 1.55 mm</title><rect x="153.260" y="134.745" width="3.050" height="1.550" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>R1 · X 143.16, Y 121.25 · 3.05 × 1.55 mm</title><rect x="143.160" y="121.245" width="3.050" height="1.550" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>R4 · X 108.09, Y 157.88 · 1.55 × 3.05 mm</title><rect x="108.090" y="157.880" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>Ren · X 138.00, Y 153.10 · 1.20 × 2.20 mm</title><rect x="138.000" y="153.100" width="1.200" height="2.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>C1 · X 117.46, Y 121.79 · 3.05 × 1.55 mm</title><rect x="117.460" y="121.787" width="3.050" height="1.550" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>Rv2 · X 139.25, Y 153.10 · 1.20 × 2.20 mm</title><rect x="139.250" y="153.100" width="1.200" height="2.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>R6 · X 106.90, Y 127.80 · 1.55 × 3.05 mm</title><rect x="106.902" y="127.800" width="1.550" height="3.050" rx="0.05" stroke="#657975" fill="#d1dcd7" stroke-width=".11"/>
+</g>
+<g><title>TP13 · X 105.40, Y 137.55 · 2.59 × 2.59 mm</title><rect x="105.395" y="137.550" width="2.593" height="2.592" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="106.692" y="139.402" text-anchor="middle" font-size="1.685">13</text>
+</g>
+<g><title>TP8 · X 104.30, Y 134.96 · 2.59 × 2.59 mm</title><rect x="104.297" y="134.957" width="2.593" height="2.592" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="105.593" y="136.809" text-anchor="middle" font-size="1.685">8</text>
+</g>
+<g><title>Rv1 · X 122.30, Y 131.17 · 1.20 × 2.20 mm</title><rect x="122.302" y="131.167" width="1.200" height="2.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>TP17 · X 153.26, Y 132.15 · 2.60 × 2.60 mm</title><rect x="153.260" y="132.145" width="2.600" height="2.600" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="154.560" y="134.003" text-anchor="middle" font-size="1.690">17</text>
+</g>
+<g><title>TP10 · X 152.51, Y 129.55 · 2.59 × 2.59 mm</title><rect x="152.510" y="129.553" width="2.593" height="2.592" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="153.807" y="131.405" text-anchor="middle" font-size="1.685">10</text>
+</g>
+<g><title>TP7 · X 104.31, Y 129.07 · 2.59 × 2.59 mm</title><rect x="104.310" y="129.074" width="2.592" height="2.593" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="105.606" y="130.927" text-anchor="middle" font-size="1.685">7</text>
+</g>
+<g><title>TP14 · X 153.91, Y 126.96 · 2.59 × 2.59 mm</title><rect x="153.907" y="126.961" width="2.593" height="2.592" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="155.203" y="128.813" text-anchor="middle" font-size="1.685">14</text>
+</g>
+<g><title>TP15 · X 152.51, Y 124.37 · 2.59 × 2.59 mm</title><rect x="152.510" y="124.369" width="2.593" height="2.592" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="153.807" y="126.221" text-anchor="middle" font-size="1.685">15</text>
+</g>
+<g><title>TP16 · X 153.90, Y 121.77 · 2.60 × 2.60 mm</title><rect x="153.900" y="121.769" width="2.600" height="2.600" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="155.200" y="123.627" text-anchor="middle" font-size="1.690">16</text>
+</g>
+<g><title>Riso1 · X 149.45, Y 141.34 · 1.20 × 2.20 mm</title><rect x="149.450" y="141.345" width="1.200" height="2.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>Rboot · X 120.81, Y 125.48 · 1.20 × 2.20 mm</title><rect x="120.810" y="125.477" width="1.200" height="2.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>Rb1 · X 104.70, Y 127.87 · 2.20 × 1.20 mm</title><rect x="104.702" y="127.874" width="2.200" height="1.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>Rcc2 · X 120.55, Y 123.43 · 2.20 × 1.20 mm</title><rect x="120.552" y="123.427" width="2.200" height="1.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>Creset · X 152.51, Y 127.35 · 1.20 × 2.20 mm</title><rect x="152.510" y="127.353" width="1.200" height="2.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>Riso2 · X 155.10, Y 129.55 · 1.20 × 2.20 mm</title><rect x="155.103" y="129.553" width="1.200" height="2.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>Rb2 · X 103.50, Y 138.10 · 1.20 × 2.20 mm</title><rect x="103.500" y="138.100" width="1.200" height="2.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>Rcc1 · X 116.26, Y 121.05 · 1.20 × 2.20 mm</title><rect x="116.260" y="121.050" width="1.200" height="2.200" rx="0.05" stroke="#657975" fill="#d7cce8" stroke-width=".11"/>
+</g>
+<g><title>TP11 · X 114.17, Y 121.05 · 2.09 × 2.09 mm</title><rect x="114.168" y="121.050" width="2.092" height="2.093" rx="0.05" stroke="#657975" fill="#fee4a9" stroke-width=".11"/>
+<text x="115.214" y="122.545" text-anchor="middle" font-size="1.360">11</text>
+</g>
+</g>
+<text x="15.00" y="454.00" font-size="13" font-weight="normal">Blue: connector / mated service envelope     Gold: top-side probes     Orange: LEDs     Violet: proposed support parts     Dashed: original inner walls</text>
+</g></svg>
