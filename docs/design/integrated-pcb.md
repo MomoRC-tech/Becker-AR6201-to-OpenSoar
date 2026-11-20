@@ -7,7 +7,7 @@
 Use this plan to take the module-based bench bridge through a smaller four-layer design, first articles and a repeatable JLCPCB order.
 
 > [!NOTE]
-> **Status:** Three complete component-side placements are available for the ten-board DA-15 revision. The native DE-9 layout and its copper measurements below are the comparison baseline. [Requirements](requirements.md#requirements) · [KiCad project](../../electronics/integrated/compact-bridge.kicad_pro) · [Evidence S173, S178–S180, S189–S190, S196–S200](../research/sources.md#source-register).
+> **Status:** Three DA-15 placement studies cover the connectors, controller and service circuits. The production layout must also fit the USB-C/XT30 power path required by [PCB12](requirements.md#production-pcb). The native DE-9 layout and its copper measurements below are the comparison baseline. [Requirements](requirements.md#requirements) · [KiCad project](../../electronics/integrated/compact-bridge.kicad_pro) · [Evidence S173, S178–S180, S189–S190, S196–S200](../research/sources.md#source-register).
 
 📑 **On this page:** <kbd>[1 · 🔌 Circuits](#circuits)</kbd> <kbd>[2 · 📐 Housing and layout](#layout)</kbd> <kbd>[3 · 🌡️ Heat and verification](#heat)</kbd> <kbd>[4 · 💶 Production cost](#cost)</kbd> <kbd>[5 · 📦 Production](#production)</kbd>
 
@@ -104,17 +104,17 @@ Approach vertically with the lid removed and both cables attached. Use a fine ti
 
 ### 2.2 Upright USB-C programming study
 
-TP1–TP6 provide the signals for a 3.3 V USB-to-UART pogo fixture. Power the board at J2. UART0, EN and BOOT still need copper and a first flash test. The next production layout includes an upright USB-C programming port accessible with the lid removed.
+On the saved DE-9 board, J2 supplies power and TP1–TP6 serve a 3.3 V USB-to-UART pogo fixture. For production, program the WROOM through an upright USB-C port with the lid removed. [PCB12](requirements.md#production-pcb) defines the three supply modes and bench checks.
 
 ![Top-entry USB-C placement study beside H2 showing the existing board and right housing wall](../images/integrated-usb-fit.png)
 
 | Study item | Result |
 | --- | --- |
-| Socket | GCT USB4145-03-0230-C, vertical USB 2.0 data receptacle. Its body stands 7.46 mm high. The four 2.30 mm shell stakes extend a nominal 0.70 mm below the 1.60 mm PCB. Allow support near the socket for the 5–20 N insertion load. |
+| Candidate socket | GCT USB4145-03-0230-C, vertical USB 2.0 data receptacle. Its body stands 7.46 mm high. The four 2.30 mm shell stakes extend a nominal 0.70 mm below the 1.60 mm PCB. Allow support near the socket for the 5–20 N insertion load. |
 | Existing outline | The 10.6 × 6.0 mm study envelope found no free position on a 0.25 mm grid at 0° or 90°. Repeating the check with TP1–TP6 removed also found no clear position. A same-outline design needs component rearrangement. |
 | Wider layout | A 7 mm extension beside H2 provides the socket envelope and a 6 × 15 mm trial area for electronics. The 55 mm board would cross the drawn right inner wall by 2.0 mm at the present mounting position. Shifting the assembly 2.5 mm left would leave only 0.5 mm per side and move both front cutouts and mounts. |
 | Programming circuit | Candidate CP2102N QFN24 (4 × 4 mm): USB D+/D− to UART0, DTR/RTS through the Espressif two-transistor auto-reset circuit to GPIO0/EN. Allow for separate CC1/CC2 pulldowns, ESD protection, VBUS sensing and local decoupling. Keep TP1–TP6 for production and recovery. |
-| Proposed service power | Use a bench supply at J2 and the USB cable for data. Check VBUS sensing and powered-off leakage with only USB connected, reset behaviour on cable insertion/removal and contention with the pogo adapter. USB-only power would require a separate power-path design. |
+| Production power path | Provide a 3.3 V supply from USB-C or the protected XT30 input. Keep the battery divider on the XT30 side of source selection. Include source isolation and USB input-current requirements when sizing the layout. [Power-path decisions](../project/open-items.md#pcb-study) |
 
 Use the 55 mm extension as a comparison when placing the complete circuit for the [new layout](../project/roadmap.md#work-packages). Check the plug overmold, cable withdrawal, H2 tool access and enclosure support on each candidate. [Open interface choices](../project/open-items.md#pcb-study) · [S201](../research/sources.md#source-register)
 
@@ -133,7 +133,7 @@ The production J1 is the Amphenol **D15P33E4GV00LF** male right-angle DA-15, wit
 | 11 | GPIO27 → U2.10 / T2IN → U2.7 / T2OUT → FLARM instrument RX |
 | 12–15 | Spare, no connection |
 
-The module-based bridge uses its existing [DE-9 harness](../hardware/wiring.md#de9-pinout). LED 1 indicates 3.3 V before firmware starts and adds a heartbeat while running. LED 2 indicates valid instrument traffic. [DA-15 drawing and cable reference, S202](../research/sources.md#source-register)
+The module-based bridge uses its existing [DE-9 harness](../hardware/wiring.md#de9-pinout). [DA-15 drawing and cable reference, S202](../research/sources.md#source-register)
 
 ---
 
