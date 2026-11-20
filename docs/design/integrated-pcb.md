@@ -34,6 +34,15 @@ The [supplier circuit requirements and schematic comparison](requirements.md#pcb
 
 One 50 × 55.5 mm four-layer PCB, populated from the top with through-hole connectors. The housing study targets **72 × 60 × 25 mm** versus 92 × 70 × 25 mm, about 33% less exterior volume. The native board contains the proposed walls and an XT30 clearance model. These are placement dimensions, pending mated fit and installed clearance. The original housing stays the reference.
 
+<details>
+<summary><b>🖼️ Show populated PCB in 3D</b> (click to expand)</summary>
+
+![KiCad component-side view with the overhanging ESP32 antenna at the rear, the XT30 at front left and the DE-9 at front right](../images/integrated-pcb-3d.png)
+
+KiCad render of board revision `4452cce`. The preview uses Amphenol’s [DE-9 download](https://www.amphenol-cs.cn/media/wysiwyg/files/3d/sld09p13a4gv00lf.zip), the [C431092](https://jlcpcb.com/partdetail/C431092) XT30 family model and a matching KiCad package body for U4. Connector colors and tail details are illustrative.
+
+</details>
+
 - Keep the ESP32 antenna past the PCB edge, with all-layer clearance to the host board, nearby metal and the mounted harness. Test Wi-Fi and Bluetooth inside the closed housing.
 - C13 bridges VIN and GND beside U4. C10 connects directly to BOOT and SW. Fit the stripe on L1 over SW pad 1. Feedback is taken from the output capacitor bank and routed below the inner ground plane.
 - A dedicated bottom trace joins J1 pins 3, 6 and 7 to XT30 minus. From pin 3 the calculated trace drop is 31 mV at 3.2 A and 85 °C. The external bridge fuse cannot interrupt this return. [Fault paths](../hardware/power.md#wire-breaks)
