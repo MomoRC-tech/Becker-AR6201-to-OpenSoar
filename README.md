@@ -82,6 +82,7 @@ More: [status page](firmware/bridge/README.md#status-page), [settings page](firm
 | | | [📐 CAD downloads and credits](cad/reference/README.md) | Reference models, original sources and reuse terms |
 | 🧩 | **Design** | [🏗️ Architecture](docs/design/architecture.md) | How the bridge is built and why |
 | | | [🎯 Requirements](docs/design/requirements.md) | Requirements, assumptions, risks |
+| 📦 | **Production** | [Integrated PCB production](docs/design/integrated-pcb.md#production) | Saved JLCPCB settings, KiCad files and ten-board ordering steps |
 | 📋 | **Project** | [🗺️ Roadmap](docs/project/roadmap.md) | Work plan |
 | | | [💶 Hardware cost](docs/project/cost.md) | Cost breakdown for one bridge |
 | | | [❓ Open items](docs/project/open-items.md) | Everything still missing |

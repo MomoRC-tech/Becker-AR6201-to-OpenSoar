@@ -9,7 +9,7 @@ Use this plan to take the module-based bench bridge through a smaller four-layer
 > [!NOTE]
 > **Status:** Power and instrument fault returns are routed on the four-layer development board for ten units. Signal routing follows the test-point and expansion review. [Requirements](requirements.md#requirements) · [KiCad project](../../electronics/integrated/compact-bridge.kicad_pro) · [Evidence S173, S178–S180](../research/sources.md#source-register).
 
-📑 **On this page:** <kbd>[1 · 🔌 Circuits](#circuits)</kbd> <kbd>[2 · 📐 Housing and layout](#layout)</kbd> <kbd>[3 · 🌡️ Heat and verification](#heat)</kbd> <kbd>[4 · 💶 Production cost](#cost)</kbd> <kbd>[5 · 📦 Design to order](#order)</kbd>
+📑 **On this page:** <kbd>[1 · 🔌 Circuits](#circuits)</kbd> <kbd>[2 · 📐 Housing and layout](#layout)</kbd> <kbd>[3 · 🌡️ Heat and verification](#heat)</kbd> <kbd>[4 · 💶 Production cost](#cost)</kbd> <kbd>[5 · 📦 Production](#production)</kbd>
 
 ---
 
@@ -51,7 +51,7 @@ KiCad 10.0.8 reports zero ERC and schematic parity findings. Board DRC identifie
 | Energy and thermal load | At the XT30 log input voltage, current peaks and integrated Wh with three loaded Wi-Fi ports, with Bluetooth off, with an additional Bluetooth link and in fallback. Repeat across 7–20 V and under hot closed-box conditions. Probe the buck, inductor, protection device, module, connectors and loaded housing supports. Use the same traffic and phone for any controller comparison. |
 | Outdoor storage | Log site temperature and RH, cold surfaces on warm-up and hot parked-canopy conditions. Cycle the unpowered assembly through representative condensation, dry before powering, and check insulation, corrosion, retention, ADC, rail stability and all three streams. Test dry cold starts and sustained hot operation at the measured limits. |
 | Limits | XT30 −20…+120 °C operating, TRS3232E −40…+85 °C ambient, H4 and DE-9 up to +105 °C, HVD1470 up to +125 °C ambient. Buck limit is junction temperature. Loaded PETG features may govern earlier. Check the matching plugs, capacitors and remaining BOM as well. See S170–S174 and the [housing climate study](../hardware/housing.md#climate). |
-| Fabrication | The KiCad project uses JLC04161H-7628 four-layer FR-4, nominal 1.6 mm, green mask and lead-free HASL as the quote baseline. Default track/space is 0.20/0.20 mm and default via land/drill is 0.60/0.30 mm. S178 records the limits. Quote thermal-pad treatment and any change of finish separately. For coating, mask antenna, connectors, shell bonds and probes. Use a module-compatible cleaner and a single module reflow. |
+| Cleaning and coating | Use a module-compatible cleaner and a single module reflow. If coating is fitted, mask the antenna, connectors, shell bonds and probe pads. |
 | Installed use | Ask the responsible certifying staff to assess the actual aircraft, connection to the Becker and any standby-frequency command. Supply wiring, fuse and isolation, failure effects, installed radio/compass interference checks, mounting and continued-maintenance information. S177 records the regulatory context. |
 
 ---
@@ -78,9 +78,25 @@ Supplier snapshot on 20 November 2026, USD per part. Six major lines only, befor
 
 ---
 
+<a id="production"></a>
+
+## 5. 📦 Production
+
+### 5.1 Saved JLCPCB settings
+
+Open the project in KiCad, then open **PCB Editor → Board Setup** to inspect the settings used for this layout.
+
+| Setting | Value used for the ten-board design | Saved in |
+| --- | --- | --- |
+| Stackup and finish | JLC04161H-7628, four-layer FR-4, nominal 1.6 mm. Outer copper 35 µm, inner copper 15.2 µm. Green solder mask, white silkscreen, lead-free HASL quote baseline. | [KiCad board](../../electronics/integrated/compact-bridge.kicad_pcb) |
+| Routing and drill rules | Default track width and clearance 0.20 mm each. Default via 0.60 mm land with 0.30 mm drill. Minimum drill 0.20 mm and copper-to-board-edge clearance 0.25 mm. | [KiCad project](../../electronics/integrated/compact-bridge.kicad_pro) |
+| Solder mask | Zero pad-to-mask expansion, 0.10 mm minimum mask web. Ordinary vias are tented on both sides by default. | [KiCad board](../../electronics/integrated/compact-bridge.kicad_pcb) |
+
+For the ten-board quote, submit the ESP32 (U1) and buck (U4) mask, paste and drill plots together. Their exposed-pad artwork needs a separate assembly decision on via treatment and stencil openings. [JLCPCB stackups](https://jlcpcb.com/impedance) · [Fabrication capabilities](https://jlcpcb.com/capabilities/pcb-capabilities) · [Quote items](../project/open-items.md#pcb-study)
+
 <a id="order"></a>
 
-## 5. 📦 From design to JLCPCB order
+### 5.2 From design to JLCPCB order
 
 | Gate | Work product | Ready to proceed when |
 | --- | --- | --- |
