@@ -199,28 +199,43 @@ Keep all instruments disconnected during bench bring-up. Start with the supply a
 Test the finished bridge from the DE-9 inward, with the instruments still disconnected. Once the modules are soldered, the jumper loop on the ESP32 is no longer allowed ([warning](../project/roadmap.md#firmware-plan)).
 
 > [!TIP]
-> **Selected:** a DE-9 female screw-terminal breakout as the test plug, and a USB RS-232 adapter on the PC as the source for the Zander and FLARM inputs.
+> **Selected:** a DE-9 female screw-terminal breakout as the test plug. Source for the Zander and FLARM inputs: an Arduino Uno with its main chip held in reset, so its USB-serial chip serves as the PC's serial port, driving a spare [Hailege MAX3232 board](modules.md#rs232-module) at 5 V (S153).
 
 | Breakout terminal | Radio loop | RS-232 feed |
 | ---: | --- | --- |
-| 1 | — | Adapter TXD (adapter DE-9 pin 3), Zander test |
-| 2 | — | Adapter TXD, FLARM test |
+| 1 | — | Source RS-232 output, Zander test |
+| 2 | — | Source RS-232 output, FLARM test |
 | 3 | — | — |
 | 4 | Link to 8 | — |
 | 5 | Link to 9 | — |
-| 6, 7 | — | Adapter GND (adapter DE-9 pin 5) |
+| 6, 7 | — | Source ground |
 
 | Test | Covers | Not covered |
 | --- | --- | --- |
 | Radio loop | DE-9 pins 4/5/8/9, MAX490 driver and receiver, divider, UART2, radio port | Pair polarity towards the radio: a loop with both pairs reversed still passes. Items 6 and 8 cover it |
 | RS-232 feed | DE-9 pins 1/2/6/7, module receivers at RS-232 levels, GPIO32/26, baud rate, forwarding over TCP | The RS-232 transmit direction (not wired); device protocol and installed baud rates ([open items](../project/open-items.md#installed-equipment)) |
 
-Feed one input at a time. Zander and FLARM use the same baud rate, so swapped pins show up only when each input gets its own test. The PC test script drives the adapter; its serial mode comes with [firmware step 4](../project/roadmap.md#firmware-plan).
+RS-232 source wiring. Pads by their board marks; the Uno pads are in the 4×3 block below the ISCP header (top row RX, TX, 5V, GND):
 
-- [ ] **9.** Check the adapter: its TXD idles below −3 V against GND. A TTL cable does not and cannot be used.
+| Uno | MAX3232 board | Test plug |
+| --- | --- | --- |
+| RESET ↔ GND jumper on the power header | — | — |
+| 5V | TTL side **+** | — |
+| GND | TTL side **−** | — |
+| RX (D0): carries the PC's data while the main chip is in reset | TTL side, arrow into the board | — |
+| — | RS-232 side, arrow off the board | Terminal 1 or 2 |
+| — | RS-232 side **−** | Terminal 6 |
+
+Feed one input at a time. Zander and FLARM use the same baud rate, so swapped pins show up only when each input gets its own test. Run it with:
+
+```bash
+python tools/bridge_loop_test.py <bridge address> --feed <COM port> --input zander
+```
+
+- [x] **9.** Check the source: its RS-232 output idles below −3 V against ground. A TTL cable does not and cannot be used. Passed at −7.8 V (S153).
 - [x] **10.** Radio loop: fit the links 4–8 and 5–9, plug the breakout in and run the radio-port loop test. Passed with links on the DE-9 pins (S145).
-- [ ] **11.** Zander input: adapter TXD on terminal 1, GND on 6 and 7. Bytes sent at the Zander baud rate arrive unchanged on the Zander port ([ports](../../firmware/bridge/README.md#project-settings)) over TCP; nothing arrives on the FLARM port.
-- [ ] **12.** FLARM input: move TXD to terminal 2. Bytes arrive on the FLARM port only.
+- [x] **11.** Zander input: source output on terminal 1, ground on 6. Bytes sent at the Zander baud rate arrive unchanged on the Zander port ([ports](../../firmware/bridge/README.md#project-settings)) over TCP; nothing arrives on the FLARM port. Passed (S153).
+- [x] **12.** FLARM input: move the source output to terminal 2. Bytes arrive on the FLARM port only. Passed (S153).
 
 ### 5.2 Supply voltage sense
 

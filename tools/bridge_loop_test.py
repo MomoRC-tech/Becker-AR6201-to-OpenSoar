@@ -4,6 +4,7 @@
     python tools/bridge_loop_test.py 192.168.1.50 --radio-loop
     python tools/bridge_loop_test.py 192.168.1.50 --radio-loop --radio-owner
     python tools/bridge_loop_test.py 192.168.1.50 --radio-only --radio-owner
+    python tools/bridge_loop_test.py <bridge address> --feed COM5 --input zander
 
 Needs the bench ESP32 running the bridge firmware and jumper wires
 (firmware plan step 2, docs/project/roadmap.md#firmware-plan):
@@ -28,13 +29,21 @@ With --radio-only, use the wired bridge instead: the DE-9 links 4-8 and 5-9
 loop the radio port (bench step 10, docs/hardware/wiring.md#bus-test). The
 Zander and FLARM loops and the navigation check are left out, since the
 jumper loops are not allowed once the modules are soldered.
+
+With --feed, use the wired bridge and a PC serial port that drives one
+RS-232 input at RS-232 levels (bench steps 11 and 12,
+docs/hardware/wiring.md#bus-test). The bytes must arrive unchanged on the
+selected input's TCP port and nothing on the other one. The baud rate is
+read from the bridge's /api/status. Needs pyserial.
 """
 
 import argparse
+import json
 import random
 import socket
 import sys
 import time
+import urllib.request
 
 ZANDER_TCP, FLARM_TCP, RADIO_TCP = 10110, 2000, 4352
 FORMER_UDP = (14550, 14551, 14552)  # upstream UDP ports; the firmware has no UDP
@@ -143,13 +152,49 @@ def radio_owner_checks(host: str, zander: socket.socket | None, flarm: socket.so
     return [r for r in (established, refused, intact, navigation, released, reopened) if r is not None]
 
 
+def feed_checks(host: str, com_port: str, target: str) -> list[bool]:
+    import serial  # pyserial, only needed for the feed test
+
+    with urllib.request.urlopen(f"http://{host}/api/status", timeout=5) as reply:
+        ports = {p["name"].lower(): p for p in json.load(reply)["ports"]}
+    other = "flarm" if target == "zander" else "zander"
+    baud = ports[target]["baud"]
+    print(f"Feeding {com_port} at {baud} baud into the {target} input")
+
+    want, quiet = tcp(host, ports[target]["tcp_port"]), tcp(host, ports[other]["tcp_port"])
+    for sock in (want, quiet):
+        drain(sock)
+    data = payload(11 if target == "zander" else 12)
+    with serial.Serial(com_port, baud, timeout=1) as feed:
+        time.sleep(0.5)  # let the adapter settle after opening
+        feed.reset_input_buffer()
+        feed.write(data)
+        feed.flush()
+        got = read_tcp(want, len(data), len(data) * 10 / baud * 1.5 + 3.0)
+    stray = read_tcp(quiet, 1, 1.0)
+    want.close()
+    quiet.close()
+    results = [compare(f"RS-232 feed -> {target} TCP {ports[target]['tcp_port']}", data, got)]
+    ok = stray == b""
+    print(f"{'PASS' if ok else 'FAIL'} nothing on {other} TCP {ports[other]['tcp_port']}: {len(stray)} bytes")
+    return results + [ok]
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("host", help="bridge address, 10.10.10.10 in hotspot mode")
     parser.add_argument("--radio-loop", action="store_true", help="GPIO17 is looped to GPIO16")
     parser.add_argument("--radio-owner", action="store_true", help="test step 4 TCP ownership on the looped board")
     parser.add_argument("--radio-only", action="store_true", help="wired bridge with DE-9 links 4-8 and 5-9: radio port only")
+    parser.add_argument("--feed", metavar="COM", help="PC serial port that drives one RS-232 input (bench steps 11, 12)")
+    parser.add_argument("--input", choices=("zander", "flarm"), help="input fed by --feed")
     args = parser.parse_args()
+    if args.feed:
+        if not args.input:
+            parser.error("--feed requires --input")
+        results = feed_checks(args.host, args.feed, args.input)
+        print(f"{sum(results)}/{len(results)} checks passed")
+        return 0 if all(results) else 1
     if args.radio_only:
         args.radio_loop = True
     if args.radio_owner and not args.radio_loop:

@@ -58,7 +58,7 @@ More: [status page](firmware/bridge/README.md#status-page), [settings page](firm
 | 🔧 Wiring and bench validation | 🟡 **Current focus** |
 | 🛩️ Existing installation details | 🟡 Waiting for equipment information |
 | 📶 Bench OTA loader | ✅ Flashed and updatable over Wi-Fi ([M3](docs/project/roadmap.md#milestones)); [ready-made hotspot-only image](firmware/ota-loader/bin/README.md) for the first USB flash |
-| 💻 Bridge firmware | 🟡 Step 4 [radio port ownership](docs/project/roadmap.md#firmware-plan) checked on the standalone ESP32. Wired checks for steps 4–5 remain |
+| 💻 Bridge firmware | 🟡 Step 4 [radio port](docs/project/roadmap.md#firmware-plan) done on the wired bench bridge. Step 5 bench acceptance remains |
 | 📻 OpenSoar driver changes | ⏸️ On hold until WP3 is complete |
 | ✈️ Aircraft integration | ⬜ Later |
 
