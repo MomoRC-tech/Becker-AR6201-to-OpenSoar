@@ -7,7 +7,7 @@
 Use this page for the front-panel board layout, connector pinouts, programming instructions and priced BOM.
 
 > [!NOTE]
-> **Status:** The 58.50 × 46.50 mm front-panel placement is approved. Power, the three fault returns and USB data are routed. The Becker, Zander and FLARM interfaces are routed through to the ESP32. KiCad reports 26 connections left. The ten-board quote and first-article checks are pending.
+> **Status:** The 58.50 × 46.50 mm front-panel placement is approved. Power, the three fault returns, USB data, both CC pull-downs and VBUS sense are routed. The Becker, Zander and FLARM interfaces are routed through to the ESP32. KiCad reports 22 connections left. The ten-board quote and first-article checks are pending.
 
 📑 **On this page:** <kbd>[1 · 🔌 Circuits](#circuits)</kbd> <kbd>[2 · 📐 Compact placement](#layout)</kbd> <kbd>[3 · 🌡️ Heat and verification](#heat)</kbd> <kbd>[4 · 💶 Production cost](#cost)</kbd> <kbd>[5 · 📦 Production](#production)</kbd>
 
@@ -121,6 +121,8 @@ Both USB-C orientations run through D3 to the CH9102F. The coupled front-layer s
 | --- | --- | --- |
 | A | A6 · 9.80 mm | A7 · 9.72 mm |
 | B | B6 · 13.27 mm | B7 · 16.64 mm including two via traversals |
+
+J4.A5 runs to R13 and J4.B5 to R14. Each has its own 4.7 kΩ path to ground. R15 carries VBUS to U8 pin 8 with R16 unpopulated. [USB control routing, S240](../research/sources.md#source-register)
 
 B7 crosses on In2.Cu for 3.51 mm over bottom-layer ground. Ground stitching by J4 and D3 connects the two reference planes. The filled copper covers the data paths outside their own signal-via clearances. [Copper checks, S234](../research/sources.md#source-register) · [First-article checks](../project/open-items.md#pcb-study)
 
