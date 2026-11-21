@@ -22,9 +22,9 @@ The [supplier circuit requirements and schematic comparison](requirements.md#pcb
 | Function | Captured circuit | Verification before release |
 | --- | --- | --- |
 | Controller | ESP32-WROOM-32E-H4 with antenna and shield, no PSRAM. Local decoupling and six top-side 3.3 V logic programming pads. Fixture senses 3.3 V, board powers itself. | Check boot and OTA recovery, unpowered UART injection and instrument-port startup bytes. H4 stock and assembly profile per S170/S175. |
-| Navigation | TRS3232EIPWR connects two independent RS-232 ports. Zander uses GPIO32 RX and GPIO33 TX. FLARM uses GPIO26 RX and GPIO27 TX. R24 and R25 pull U2 pins 11 and 10 up to 3.3 V through 10 kΩ each, holding both transmit lines at UART idle during reset. | Exercise both ports simultaneously at J1. Check polarity, loading and powered-off behaviour in both directions. |
-| Becker | SIT3491EESD full duplex at 3.3 V. Populate R4 to enable TX; R3 biases DI high, R5 defines DE if link removed. Receiver enabled, no receive termination fitted. | Verify separate pairs and idle levels through reset and brownout. Compare loaded cable waveforms and bytes in both directions. |
-| Supply | XT30 7–16 V continuous or nominal 5 V USB. External F1, DMP6023LE reverse protection, 100 kΩ gate network, 12 V gate clamp and SMBJ16A surge diode. TPS62933PDRLR supplies 3.3 V at 500 kHz with a 4.7 µH Sunlord inductor. | Check hot clamp and ringing at U4, startup/inrush, effective capacitance and loaded temperature. S228. |
+| Navigation | MaxLinear SP3232EEY-L/TR connects two independent RS-232 ports. Zander uses GPIO32 RX and GPIO33 TX. FLARM uses GPIO26 RX and GPIO27 TX. R24 and R25 pull U2 pins 11 and 10 up to 3.3 V through 10 kΩ each, holding both transmit lines at UART idle during reset. | Exercise both ports simultaneously at J1. Check polarity, loading and powered-off behaviour in both directions. |
+| Becker | SIT3491EESD full duplex at 3.3 V. R4 (1 kΩ) and R5 (100 kΩ) hold DE at 3.27 V, which enables TX independently of the SIT3491E’s VIH. Leave R4 unfitted for receive-only. R3 biases DI high. Receiver enabled, no receive termination fitted. | Verify separate pairs and idle levels through reset and brownout. Compare loaded cable waveforms and bytes in both directions. |
+| Supply | XT30 7–16 V continuous or nominal 5 V USB. External F1, DMP6023LE reverse protection, 100 kΩ gate network, 12 V gate clamp and SMBJ16A surge diode. TPS62933PDRLR supplies 3.3 V at 500 kHz with a 4.7 µH Sunlord inductor. At VIN, C12 (10 µF 50 V X5R, 1206) and C13 (100 nF) follow TI’s typical input pair. | Check hot clamp and ringing at U4, ripple across C12, startup/inrush, effective capacitance and loaded temperature. S228, S230. |
 | Battery measurement | R8 (100 kΩ) from protected XT30 to V_SENSE. R9 (10 kΩ) and C18 (100 nF) connect V_SENSE to ground. GPIO34 and TP10 read the divider directly. Firmware scales the reading by 11. S224. | Calibrate against XT30 at 7–16 V. |
 | Harness | Right-angle male Amphenol D15P33E4GV00LF and AMASS XT30PW-M30.G.Y. See the [DA-15 pinout](#smaller-dsub). J2 pad 1 is ground and pad 2 is the raw supply. Both J1 shell locks are isolated from board ground. | Check the mating plugs, jackscrews, polarity and housing support with actual parts. S173, S196. |
 
@@ -166,8 +166,8 @@ On the DE-9 baseline, J2 supplies power and TP1–TP6 serve a 3.3 V USB-to-UART 
 | Selected socket | GCT USB4145-03-0230-C, vertical USB 2.0 data receptacle. Its body stands 7.46 mm high. The four 2.30 mm shell stakes extend a nominal 0.70 mm below the 1.60 mm PCB. Allow support near the socket for the 5–20 N insertion load. |
 | Existing outline | The 10.6 × 6.0 mm study envelope found no free position on a 0.25 mm grid at 0° or 90°. Repeating the check with TP1–TP6 removed also found no clear position. A same-outline design needs component rearrangement. |
 | Wider layout | A 7 mm extension beside H2 provides the socket envelope and a 6 × 15 mm trial area for electronics. The 55 mm board would cross the drawn right inner wall by 2.0 mm at the present mounting position. Shifting the assembly 2.5 mm left would leave only 0.5 mm per side and move both front cutouts and mounts. |
-| Programming circuit | CH9102F connects USB-C to ESP32 UART0. R18 (1 kΩ) feeds ESP32 RX. DTR (U8.23) and RTS (U8.19) are open. R15 (1 kΩ) feeds VBUS sense at U8.8. Leave R16 unpopulated. D3 protects D+/D−. |
-| Production power path | Use one Wuxi Maxinmicro MX5050S6030A1 (ESOP-8L, C54800033) on each input to U4. Feed one from protected XT30 and one from USB VBUS. XT30 takes priority at 7–16 V. Tap the battery divider before the XT30 device. Fit a separate 5.1 kΩ pull-down on each CC pin. Each VS pin connects to its own input. Below 5 V at the USB receptacle, active operation and USB-only startup fall outside the specified range. The owner accepts this cable-drop risk. See [S208](../research/sources.md#source-register), [PCB12](requirements.md#production-pcb) and the [USB bias and bench checks](../project/open-items.md#pcb-study). |
+| Programming circuit | CH9102F connects USB-C to ESP32 UART0. R18 (1 kΩ) feeds ESP32 RX. DTR (U8.23) and RTS (U8.19) are open. R15 (1 kΩ) feeds VBUS sense at U8.8. Leave R16 unpopulated. D3 protects D+/D−. Its rail pin 5 connects to 3.3 V, not VBUS. U8’s internal D+ pull-up therefore cannot hold VBUS above U8.8’s 1.7 V threshold while XT30 powers the board, so U8 detects the detach and suspends. VBUS has no clamp. U7 (60 V absolute maximum) and R15 sit between the receptacle and U8.8 (6.5 V absolute maximum). S230. |
+| Production power path | Use one Wuxi Maxinmicro MX5050S6030A1 (ESOP-8L, C54800033) on each input to U4. Feed one from protected XT30 and one from USB VBUS. XT30 takes priority at 7–16 V. Tap the battery divider before the XT30 device. Fit a separate 4.7 kΩ pull-down (R13, R14) on each CC pin, within USB-C’s 5.1 kΩ ±20% Rd. Each VS pin connects to its own input. Below 5 V at the USB receptacle, active operation and USB-only startup fall outside the specified range. The owner accepts this cable-drop risk. See [S208](../research/sources.md#source-register), [PCB12](requirements.md#production-pcb) and the [USB bias and bench checks](../project/open-items.md#pcb-study). |
 
 Use the 55 mm extension as a comparison when placing the complete circuit for the [new layout](../project/roadmap.md#work-packages). Check the plug overmold, cable withdrawal, H2 tool access and enclosure support on each candidate. [Open interface choices](../project/open-items.md#pcb-study) · [S201](../research/sources.md#source-register)
 
@@ -209,7 +209,7 @@ The module-based bridge uses its existing [DE-9 harness](../hardware/wiring.md#d
 | --- | --- |
 | Energy and thermal load | At the XT30 log input voltage, current peaks and integrated Wh with three loaded Wi-Fi ports, with Bluetooth off, with an additional Bluetooth link and in fallback. Repeat across 7–16 V and under hot closed-box conditions. Probe the buck, inductor, protection device, module, connectors and loaded housing supports. Use the same traffic and phone for any controller comparison. |
 | Outdoor storage | Log site temperature and RH, cold surfaces on warm-up and hot parked-canopy conditions. Cycle the unpowered assembly through representative condensation, dry before powering, and check insulation, corrosion, retention, ADC, rail stability and all three streams. Test dry cold starts and sustained hot operation at the measured limits. |
-| Limits | XT30 −20…+120 °C operating, TRS3232E −40…+85 °C ambient, H4 up to +105 °C, DE-9 −55…+125 °C, SIT3491E up to +125 °C ambient. Buck limit is junction temperature. Loaded PETG features may govern earlier. Check the matching plugs, capacitors and remaining BOM as well. See S170–S174 and the [housing climate study](../hardware/housing.md#climate). |
+| Limits | XT30 −20…+120 °C operating, SP3232E −40…+85 °C ambient, H4 up to +105 °C, DE-9 −55…+125 °C, SIT3491E up to +125 °C ambient. Buck limit is junction temperature. Loaded PETG features may govern earlier. Check the matching plugs, capacitors and remaining BOM as well. See S170–S174, S230 and the [housing climate study](../hardware/housing.md#climate). |
 | Cleaning and coating | Use a module-compatible cleaner and a single module reflow. If coating is fitted, mask the antenna, connectors, shell bonds and probe pads. |
 | Installed use | Ask the responsible certifying staff to assess the actual aircraft, connection to the Becker and any standby-frequency command. Supply wiring, fuse and isolation, failure effects, installed radio/compass interference checks, mounting and continued-maintenance information. S177 records the regulatory context. |
 
@@ -219,9 +219,9 @@ The module-based bridge uses its existing [DE-9 harness](../hardware/wiring.md#d
 
 ## 4. 💶 Ten-board cost comparison
 
-**Front-panel prototype · 21 November 2026.** The [native KiCad schematic](../../electronics/integrated/front-panel/compact-bridge.kicad_sch) has 29 fitted lines, 55 placements per board and 550 for ten. Leave J3 and R16 unpopulated. TP1–TP17 are solder lands.
+**Front-panel prototype · 21 November 2026.** The [native KiCad schematic](../../electronics/integrated/front-panel/compact-bridge.kicad_sch) has 27 fitted lines, 54 placements per board and 540 for ten. Leave J3 and R16 unpopulated. TP1–TP17 are solder lands.
 
-Use Standard PCBA for U1. Stock is JLCPCB catalogue inventory. USD/pc uses the price break for the fitted ten-board quantity, before attrition, purchasing minimums, assembly, freight and tax. Rows are sorted by fitted cost per board, highest first. [Download the review BOM (CSV)](../../electronics/integrated/front-panel/fitted-bom.csv). S227–S229.
+Use Standard PCBA for U1. Stock is JLCPCB catalogue inventory. USD/pc uses the price break for the fitted ten-board quantity, before attrition, purchasing minimums, assembly, freight and tax. Rows are sorted by fitted cost per board, highest first. [Download the review BOM (CSV)](../../electronics/integrated/front-panel/fitted-bom.csv). S227–S230.
 
 | Fitted references | Orderable MPN | JLCPCB SKU | Process | JLC tier | Per board | For ten | Stock, 21 Nov | USD/pc | USD/board |
 | --- | --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
@@ -229,48 +229,46 @@ Use Standard PCBA for U1. Stock is JLCPCB catalogue inventory. USD/pc uses the p
 | J1 | D15P33E4GV00LF | [C3139986](https://jlcpcb.com/partdetail/C3139986) | Wave | Extended | 1 | 10 | 572 | 1.8275 | 1.8275 |
 | J4 | USB4145-03-0230-C | [C5291559](https://jlcpcb.com/partdetail/C5291559) | SMT | Extended | 1 | 10 | 422 | 1.1338 | 1.1338 |
 | U8 | CH9102F | [C2858418](https://jlcpcb.com/partdetail/C2858418) | SMT | Extended | 1 | 10 | 13,582 | 1.0259 | 1.0259 |
-| C12, C19 | C3225X7R2A106KT000E | [C49296968](https://jlcpcb.com/partdetail/C49296968) | SMT | Extended | 2 | 20 | 7,443 | 0.4663 | 0.9326 |
 | U6–U7 | MX5050S6030A1 | [C54800033](https://jlcpcb.com/partdetail/C54800033) | SMT | Extended | 2 | 20 | 2,774 | 0.4042 | 0.8084 |
-| Q1 | DMP6023LE-13 | [C154901](https://jlcpcb.com/partdetail/C154901) | SMT | Extended | 1 | 10 | 2,703 | 0.7854 | 0.7854 |
+| Q1 | DMP6023LE-13 | [C154901](https://jlcpcb.com/partdetail/C154901) | SMT | Extended | 1 | 10 | 2,701 | 0.7854 | 0.7854 |
 | U4 | TPS62933PDRLR | [C5219254](https://jlcpcb.com/partdetail/C5219254) | SMT | Extended | 1 | 10 | 5,766 | 0.6757 | 0.6757 |
-| U2 | TRS3232EIPWR | [C2652868](https://jlcpcb.com/partdetail/C2652868) | SMT | Extended | 1 | 10 | 11,304 | 0.6283 | 0.6283 |
 | U3 | SIT3491EESD | [C496617](https://jlcpcb.com/partdetail/C496617) | SMT | Extended | 1 | 10 | 3,462 | 0.4303 | 0.4303 |
-| J2 | XT30PW-M30.G.Y | [C431092](https://jlcpcb.com/partdetail/C431092) | Wave | Extended | 1 | 10 | 94,803 | 0.3354 | 0.3354 |
-| C14–C15 | CL31A226KAHNNNE | [C12891](https://jlcpcb.com/partdetail/C12891) | SMT | Basic | 2 | 20 | 2,575,380 | 0.1028 | 0.2056 |
-| D3 | USBLC6-2SC6 | [C7519](https://jlcpcb.com/partdetail/C7519) | SMT | Extended | 1 | 10 | 43,635 | 0.1561 | 0.1561 |
+| J2 | XT30PW-M30.G.Y | [C431092](https://jlcpcb.com/partdetail/C431092) | Wave | Extended | 1 | 10 | 94,579 | 0.3354 | 0.3354 |
+| U2 | SP3232EEY-L/TR | [C13482](https://jlcpcb.com/partdetail/C13482) | SMT | Basic | 1 | 10 | 216,181 | 0.3163 | 0.3163 |
+| C14–C15 | CL31A226KAHNNNE | [C12891](https://jlcpcb.com/partdetail/C12891) | SMT | Basic | 2 | 20 | 2,572,259 | 0.1028 | 0.2056 |
+| D3 | USBLC6-2SC6 | [C7519](https://jlcpcb.com/partdetail/C7519) | SMT | Extended | 1 | 10 | 43,431 | 0.1561 | 0.1561 |
 | D2 | SMBJ16A | [C151254](https://jlcpcb.com/partdetail/C151254) | SMT | Extended | 1 | 10 | 2,227 | 0.1347 | 0.1347 |
-| L1 | MWSA0603S-4R7MT | [C408447](https://jlcpcb.com/partdetail/C408447) | SMT | Extended | 1 | 10 | 17,381 | 0.1098 | 0.1098 |
-| C3–C10, C13, C18 | CC0603KRX7R9BB104 | [C14663](https://jlcpcb.com/partdetail/C14663) | SMT | Basic | 10 | 100 | 53,209,794 | 0.0056 | 0.0560 |
+| C12 | CL31A106KBHNNNE | [C13585](https://jlcpcb.com/partdetail/C13585) | SMT | Basic | 1 | 10 | 4,049,915 | 0.1226 | 0.1226 |
+| L1 | MWSA0603S-4R7MT | [C408447](https://jlcpcb.com/partdetail/C408447) | SMT | Extended | 1 | 10 | 17,380 | 0.1098 | 0.1098 |
+| C3–C10, C13, C18 | CC0603KRX7R9BB104 | [C14663](https://jlcpcb.com/partdetail/C14663) | SMT | Basic | 10 | 100 | 53,169,882 | 0.0056 | 0.0560 |
 | C1, C26 | CC0603KRX7R8BB105 | [C106858](https://jlcpcb.com/partdetail/C106858) | SMT | Extended | 2 | 20 | 243,689 | 0.0180 | 0.0360 |
-| D5 | LTST-S270KRKT | [C125114](https://jlcpcb.com/partdetail/C125114) | SMT | Extended | 1 | 10 | 34,050 | 0.0320 | 0.0320 |
-| C2 | CL21A106KAYNNNE | [C15850](https://jlcpcb.com/partdetail/C15850) | SMT | Basic | 1 | 10 | 8,814,739 | 0.0311 | 0.0311 |
-| D4 | LTST-S270KGKT | [C125113](https://jlcpcb.com/partdetail/C125113) | SMT | Extended | 1 | 10 | 2,005 | 0.0288 | 0.0288 |
-| D1 | BZT52C12 | [C19077410](https://jlcpcb.com/partdetail/C19077410) | SMT | Extended | 1 | 10 | 313,858 | 0.0169 | 0.0169 |
-| R1–R2, R5, R9, R11, R24–R25 | 0603WAF1002T5E | [C25804](https://jlcpcb.com/partdetail/C25804) | SMT | Basic | 7 | 70 | 42,672,234 | 0.0017 | 0.0119 |
-| R15, R17–R18, R21–R23 | 0603WAF1001T5E | [C21190](https://jlcpcb.com/partdetail/C21190) | SMT | Basic | 6 | 60 | 40,629,586 | 0.0016 | 0.0096 |
-| R8, R10 | 0603WAF1003T5E | [C25803](https://jlcpcb.com/partdetail/C25803) | SMT | Basic | 2 | 20 | 13,060,531 | 0.0029 | 0.0058 |
-| R13–R14 | 0603WAF5101T5E | [C23186](https://jlcpcb.com/partdetail/C23186) | SMT | Basic | 2 | 20 | 18,400,347 | 0.0015 | 0.0030 |
-| R3 | 0603WAF4701T5E | [C23162](https://jlcpcb.com/partdetail/C23162) | SMT | Basic | 1 | 10 | 19,317,065 | 0.0028 | 0.0028 |
-| R4 | 0603WAF0000T5E | [C21189](https://jlcpcb.com/partdetail/C21189) | SMT | Basic | 1 | 10 | 15,627,426 | 0.0021 | 0.0021 |
-| R6 | 0603WAF7502T5E | [C23242](https://jlcpcb.com/partdetail/C23242) | SMT | Basic | 1 | 10 | 628,658 | 0.0021 | 0.0021 |
-| R7 | 0603WAF2402T5E | [C23352](https://jlcpcb.com/partdetail/C23352) | SMT | Basic | 1 | 10 | 662,702 | 0.0019 | 0.0019 |
+| D5 | LTST-S270KRKT | [C125114](https://jlcpcb.com/partdetail/C125114) | SMT | Extended | 1 | 10 | 34,030 | 0.0320 | 0.0320 |
+| C2 | CL21A106KAYNNNE | [C15850](https://jlcpcb.com/partdetail/C15850) | SMT | Basic | 1 | 10 | 8,807,078 | 0.0311 | 0.0311 |
+| D4 | LTST-S270KGKT | [C125113](https://jlcpcb.com/partdetail/C125113) | SMT | Extended | 1 | 10 | 1,825 | 0.0288 | 0.0288 |
+| D1 | BZT52C12 | [C19077410](https://jlcpcb.com/partdetail/C19077410) | SMT | Extended | 1 | 10 | 313,228 | 0.0169 | 0.0169 |
+| R4, R15, R17–R18, R21–R23 | 0603WAF1001T5E | [C21190](https://jlcpcb.com/partdetail/C21190) | SMT | Basic | 7 | 70 | 40,604,954 | 0.0016 | 0.0112 |
+| R1–R2, R9, R11, R24–R25 | 0603WAF1002T5E | [C25804](https://jlcpcb.com/partdetail/C25804) | SMT | Basic | 6 | 60 | 42,620,670 | 0.0017 | 0.0102 |
+| R5, R8, R10 | 0603WAF1003T5E | [C25803](https://jlcpcb.com/partdetail/C25803) | SMT | Basic | 3 | 30 | 13,049,045 | 0.0029 | 0.0087 |
+| R3, R13–R14 | 0603WAF4701T5E | [C23162](https://jlcpcb.com/partdetail/C23162) | SMT | Basic | 3 | 30 | 19,323,654 | 0.0028 | 0.0084 |
+| R6 | 0603WAF7502T5E | [C23242](https://jlcpcb.com/partdetail/C23242) | SMT | Basic | 1 | 10 | 628,647 | 0.0021 | 0.0021 |
+| R7 | 0603WAF2402T5E | [C23352](https://jlcpcb.com/partdetail/C23352) | SMT | Basic | 1 | 10 | 662,659 | 0.0019 | 0.0019 |
 
-**Fitted parts** total **$133.38 for ten** ($13.34 per board). Eleven Basic SKUs account for 340 placements and 18 Extended SKUs for 210. The 27 distinct SMT feeders add $41.31 at S213’s Standard rate. J1 and J2 use wave soldering. Quote their fitting charge separately.
+**Fitted parts** total **$122.19 for ten** ($12.22 per board). Eleven Basic SKUs account for 360 placements and 16 Extended SKUs for 180. The 25 distinct SMT feeders add $38.25 at S213’s Standard rate. J1 and J2 use wave soldering. Quote their fitting charge separately.
 
-**Converter comparison · USD per board at ten-board quantities.** The stage includes input and output capacitors, power-good pull-up and the regulator’s other local parts. The green rail/heartbeat indicator (D4, R21 and R22) adds $0.0320 and three placements to every option. Input selection and reverse protection are common. Prices, capacitance assumptions and distributor checks are in [S225–S228](../research/sources.md#source-register).
+**Converter comparison · USD per board at ten-board quantities.** The stage includes input and output capacitors, power-good pull-up and the regulator’s other local parts. The green rail/heartbeat indicator (D4, R21 and R22) adds $0.0320 and three placements to every option. Input selection and reverse protection are common. Prices, capacitance assumptions and distributor checks are in [S225–S228](../research/sources.md#source-register). The alternative rows are priced with the earlier input pair and have not been repriced (S225–S226). The fitted row uses the single Basic C12 (S230).
 
 | JLCPCB Extended converter | IC / module | Stage cost | Placements | JLC stock | Stage configuration |
 | --- | ---: | ---: | ---: | ---: | --- |
-| [TPS62933PDRLR](https://jlcpcb.com/partdetail/C5219254) · fitted | $0.6757 | $1.94 | 11 | 5,766 | Native PG, 500 kHz, 4.7 µH and two Basic Samsung 22 µF outputs. Including D2 and the green indicator, $2.1073 per board. Saves $9.87 for ten versus the previous fitted design at 70058ef. |
+| [TPS62933PDRLR](https://jlcpcb.com/partdetail/C5219254) · fitted | $0.6757 | $1.13 | 10 | 5,766 | Native PG, 500 kHz, 4.7 µH, one Basic Samsung 10 µF 50 V input and two Basic Samsung 22 µF outputs. Including D2 and the green indicator, $1.2973 per board. |
 | [Mornsun K7803MT-1000R4](https://jlcpcb.com/partdetail/C2692188) | $1.8864 | ≈ $4.53 | 11 | 601 | Fixed 3.3 V, 1 A, external window monitor at TP9. The module has no native PG. Mornsun excludes hot swap. |
 | [TLVM23615RDNR](https://jlcpcb.com/partdetail/C19274388) | $3.2313 | ≈ $5.15 | 13 | 289 | Integrated inductor, three 22 µF outputs for TI’s 40 µF effective minimum at 800 kHz, external feedback and frequency setting. |
-| [MPS MPM3510AGQV-Z](https://jlcpcb.com/partdetail/C6992851) | $3.8510 | $5.23 | 9 | 1,133 | Integrated inductor, native PG, 47 µF output and fixed switching frequency. Two fewer placements for $3.29 more per board. |
+| [MPS MPM3510AGQV-Z](https://jlcpcb.com/partdetail/C6992851) | $3.8510 | $5.23 | 9 | 1,133 | Integrated inductor, native PG, 47 µF output and fixed switching frequency. |
 | [LMZM23601V3SILR](https://jlcpcb.com/partdetail/C2864948) | $64.6887 | $66.25 | 6 | 392 | Fixed 3.3 V, two input and two output capacitors plus the PG pull-up. JLC’s other reel code C2876786 costs $49.2867 each at ten and has zero stock. |
 
 - **C14 and C15.** The two Basic Samsung CL31A226KAHNNNE outputs (1206 X5R, ±10%, −55 to +85 °C) give about 35.0 µF combined at 3.3 V on the typical 25 °C curve. TI Table 10-2 lists 15 µF minimum and 40 µF typical effective at 500 kHz. See the [power-stage checks](../project/open-items.md#pcb-study). S227–S228.
 - **Feedback.** R6 at 75 kΩ and R7 at 24 kΩ give 3.300 V nominal from the 0.8 V reference. Both are 1% Basic resistors.
 - **J1.** The exact Amphenol part is listed for wave soldering. For external fitting, use DigiKey 609-1492-ND (€25.66 for ten in the EU catalogue snapshot) and omit J1 from the assembler’s BOM and placement list. After reflow, seat the board locks, align the mating face to the panel and hand-solder the through-hole contacts and solderable mounting features per the drawing. Inspect solder fill and check continuity before installing the harness. S219.
-- A 3PEAK TPT3232E-TS3R at $0.4636 changes receiver limits and charge-pump sizing. A $0.8520 LMR51420YDDCR needs a new regulator layout and a replacement for the power-good indication at TP9.
+- A $0.8520 LMR51420YDDCR needs a new regulator layout and a replacement for the power-good indication at TP9.
 - Reverse protection costs about $0.78 more per board using the MOSFET network than a series Schottky. At 0.10 A input over 10 h, a 0.4 V diode costs 0.40 Wh versus 0.0035 Wh in a 35 mΩ MOSFET channel, plus gate bias. Verify actual flight draw.
 - Quote ten on Standard PCBA with one SMT side, panel rails/fiducials, connector soldering and attrition. The published one-side setup and stencil example totals $33.77 per order. Compare charges for ENIG, optional coating, connector hand fitting, shipping and tax separately. Report cost per accepted unit. S168–S169.
 
