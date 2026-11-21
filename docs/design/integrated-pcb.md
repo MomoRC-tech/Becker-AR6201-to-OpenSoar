@@ -7,7 +7,7 @@
 Use this page for the front-panel board layout, connector pinouts, programming instructions and priced BOM.
 
 > [!NOTE]
-> **Status:** The 58.50 × 46.50 mm front-panel placement is approved. Power and the three fault returns are routed. KiCad reports 59 connections left, including the RS-232 charge pump and signal wiring. The ten-board quote and first-article checks are pending.
+> **Status:** The 58.50 × 46.50 mm front-panel placement is approved. Power, the three fault returns and USB data are routed. KiCad reports 51 connections left, including the Becker pairs and RS-232 charge pump. The ten-board quote and first-article checks are pending.
 
 📑 **On this page:** <kbd>[1 · 🔌 Circuits](#circuits)</kbd> <kbd>[2 · 📐 Compact placement](#layout)</kbd> <kbd>[3 · 🌡️ Heat and verification](#heat)</kbd> <kbd>[4 · 💶 Production cost](#cost)</kbd> <kbd>[5 · 📦 Production](#production)</kbd>
 
@@ -111,6 +111,17 @@ Program the ESP32 through J4 with the lid removed. [PCB12](requirements.md#produ
 | Programming circuit | CH9102F connects USB-C to ESP32 UART0. R18 (1 kΩ) feeds ESP32 RX. DTR (U8.23) and RTS (U8.19) are open. R15 (1 kΩ) feeds VBUS sense at U8.8. Leave R16 unpopulated. D3 protects D+/D−. Its rail pin 5 connects to 3.3 V. U8’s internal D+ pull-up therefore cannot hold VBUS above U8.8’s 1.7 V threshold while XT30 powers the board, so U8 detects the detach and suspends. VBUS has no clamp. R15 connects VBUS to the U8 sense input (6.5 V absolute maximum). U7 feeds the separate regulator supply path. S230. |
 | Production power path | Use one Wuxi Maxinmicro MX5050S6030A1 (ESOP-8L, C54800033) on each input to U4. Feed one from protected XT30 and one from USB VBUS. XT30 takes priority at 7–16 V. Tap the battery divider before the XT30 device. Fit a separate 4.7 kΩ pull-down (R13, R14) on each CC pin, within USB-C’s 5.1 kΩ ±20% Rd. Each VS pin connects to its own input. Below 5 V at the USB receptacle, active operation and USB-only startup fall outside the specified range. The owner accepts this cable-drop risk. See [S208](../research/sources.md#source-register), [PCB12](requirements.md#production-pcb) and the [USB bias and bench checks](../project/open-items.md#pcb-study). |
 
+<a id="usb-data-routing"></a>
+
+Both USB-C orientations run through D3 to the CH9102F. The coupled front-layer section uses 0.315 mm tracks with a 0.25 mm gap over In1.Cu ground (90 Ω model, S233).
+
+| J4 orientation | D+ via D3 pins 1 and 6 to U8 pin 3 | D− via D3 pins 3 and 4 to U8 pin 4 |
+| --- | --- | --- |
+| A | A6 · 9.80 mm | A7 · 9.72 mm |
+| B | B6 · 13.27 mm | B7 · 16.64 mm including two via traversals |
+
+B7 crosses on In2.Cu for 3.51 mm over bottom-layer ground. Ground stitching by J4 and D3 connects the two reference planes. The filled copper covers the data paths outside their own signal-via clearances. [Copper checks, S234](../research/sources.md#source-register) · [First-article checks](../project/open-items.md#pcb-study)
+
 <a id="smaller-dsub"></a>
 
 ### 2.3 DA-15 harness pinout
@@ -125,8 +136,6 @@ The production J1 is the Amphenol **D15P33E4GV00LF** male right-angle DA-15, wit
 | 10 | GPIO33 → U2.11 / T1IN → U2.14 / T1OUT → Zander instrument RX |
 | 11 | GPIO27 → U2.10 / T2IN → U2.7 / T2OUT → FLARM instrument RX |
 | 12–15 | Spare, no connection |
-
-Route both USB-C orientations through D3 to U8 over a continuous ground reference. Use the USB_FS net class for the coupled runs on F.Cu over In1.Cu ground. The 0.315 mm width and 0.25 mm edge gap model at 90 Ω (S233). Keep the pair over ground through the D3 fanout, clear of the 3.3 V via antipad. Check the lengths, via transitions and return paths of each USB and Becker pair on the routed board. [First-article checks](../project/open-items.md#pcb-study)
 
 For the separate module-based bench bridge, use the [DE-9 harness](../hardware/wiring.md#de9-pinout). [DA-15 drawing and cable reference, S202](../research/sources.md#source-register)
 
