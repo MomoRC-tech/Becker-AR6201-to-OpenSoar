@@ -97,7 +97,7 @@
 (global_label "FL_TX" (shape bidirectional) (at 311.15 137.16 0) (effects (font (size 0.92 0.92)) (justify left)) (uuid 1c6e0238-36dd-4132-9354-675fdac8bac1))
 (wire (pts (xy 146.05 54.61) (xy 146.05 67.31)) (stroke (width 0) (type default)) (uuid a0d5914d-fc24-442d-9f07-a82f1129b218))
 (wire (pts (xy 124.46 67.31) (xy 146.05 67.31)) (stroke (width 0) (type default)) (uuid c60a5073-8a71-44fd-a49c-e2ff4c04fa73))
-(global_label "BOOT" (shape bidirectional) (at 124.46 67.31 180) (effects (font (size 0.92 0.92)) (justify right)) (uuid af9afc3b-ba98-47eb-8b55-1cd1d4a508fe))
+(global_label "BOOT" (shape bidirectional) (at 146.05 67.31 0) (effects (font (size 0.92 0.92)) (justify left)) (uuid af9afc3b-ba98-47eb-8b55-1cd1d4a508fe))
 (wire (pts (xy 222.25 111.76) (xy 222.25 115.57)) (stroke (width 0) (type default)) (uuid 500d0e6b-e75f-4fa3-9aae-3c9e463e01fe))
 (global_label "BOOT" (shape bidirectional) (at 222.25 115.57 0) (effects (font (size 0.92 0.92)) (justify left)) (uuid f1262231-a65c-44e6-b77d-ac9e82dcd21a))
 (wire (pts (xy 124.46 92.71) (xy 128.27 92.71)) (stroke (width 0) (type default)) (uuid cebd3dd0-39f8-45ae-beb9-118b776c79ee))

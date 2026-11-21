@@ -52,6 +52,6 @@
 (wire (pts (xy 76.2 50.8) (xy 76.2 66.04)) (stroke (width 0) (type default)) (uuid f724ae25-95d1-47ad-8e3c-4d0da5f0ce8e))
 (wire (pts (xy 146.05 90.17) (xy 158.75 90.17)) (stroke (width 0) (type default)) (uuid 3266bf05-5d5c-4f79-9899-62a42676ccc6))
 (junction (at 158.75 92.71) (diameter 0) (color 0 0 0 0) (uuid 232cb754-b5ba-417e-bca9-4c9aa0aefd91))
-(global_label "3V3" (shape bidirectional) (at 146.05 90.17 180) (effects (font (size 0.92 0.92)) (justify right)) (uuid c97055b2-95ed-47d9-a970-7a7efbce180a))
+(global_label "3V3" (shape bidirectional) (at 179.07 92.71 0) (effects (font (size 0.92 0.92)) (justify left)) (uuid c97055b2-95ed-47d9-a970-7a7efbce180a))
 (global_label "3V3" (shape bidirectional) (at 76.2 50.8 180) (effects (font (size 0.92 0.92)) (justify right)) (uuid fa8682a4-93f7-4396-92a6-0b24fb92d39b))
 )
