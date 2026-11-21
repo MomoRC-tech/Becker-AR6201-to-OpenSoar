@@ -7,7 +7,7 @@
 Use this plan to take the module-based bench bridge through a smaller four-layer design, first articles and a repeatable JLCPCB order.
 
 > [!NOTE]
-> **Status:** Review the [front-panel placement](#placement-comparison) before routing. The wider candidate uses the original XT30 and mounting positions. The ten-board quote and first article follow mechanical and electrical acceptance.
+> **Status:** Review the [front-panel placement](#placement-comparison) before routing. The compact candidate uses the original XT30 and mounting positions. The ten-board quote and first article follow mechanical and electrical acceptance.
 
 📑 **On this page:** <kbd>[1 · 🔌 Circuits](#circuits)</kbd> <kbd>[2 · 📐 Housing and layout](#layout)</kbd> <kbd>[3 · 🌡️ Heat and verification](#heat)</kbd> <kbd>[4 · 💶 Production cost](#cost)</kbd> <kbd>[5 · 📦 Production](#production)</kbd>
 
@@ -21,11 +21,11 @@ The [supplier circuit requirements and schematic comparison](requirements.md#pcb
 
 | Function | Captured circuit | Verification before release |
 | --- | --- | --- |
-| Controller | ESP32-WROOM-32E-H4 with antenna and shield, no PSRAM. Local decoupling and six top-side 3.3 V logic programming pads. Fixture senses 3.3 V, board powers itself. | Check boot and OTA recovery, unpowered UART injection and instrument-port startup bytes. H4 stock and assembly profile per S170/S175. |
+| Controller | ESP32-WROOM-32E-H4 with antenna and shield, no PSRAM. J5 provides manual BOOT and EN. J4 provides the USB programming link. | Check boot and OTA recovery, unpowered UART injection and instrument-port startup bytes. H4 stock and assembly profile per S170/S175. |
 | Navigation | MaxLinear SP3232EEY-L/TR connects two independent RS-232 ports. Zander uses GPIO32 RX and GPIO33 TX. FLARM uses GPIO26 RX and GPIO27 TX. R24 and R25 pull U2 pins 11 and 10 up to 3.3 V through 10 kΩ each, holding both transmit lines at UART idle during reset. | Exercise both ports simultaneously at J1. Check polarity, loading and powered-off behaviour in both directions. |
 | Becker | SIT3491EESD full duplex at 3.3 V. R4 (1 kΩ) and R5 (100 kΩ) hold DE at 3.27 V, which enables TX independently of the SIT3491E’s VIH. Leave R4 unfitted for receive-only. R3 biases DI high. Receiver enabled, no receive termination fitted. | Verify separate pairs and idle levels through reset and brownout. Compare loaded cable waveforms and bytes in both directions. |
 | Supply | XT30 7–16 V continuous or nominal 5 V USB. External F1, DMP6023LE reverse protection, 100 kΩ gate network, 12 V gate clamp and SMBJ16A surge diode. TPS62933PDRLR supplies 3.3 V at 500 kHz with a 4.7 µH Sunlord inductor. At VIN, C12 (10 µF 50 V X5R, 1206) and C13 (100 nF) follow TI’s typical input pair. | Check hot clamp and ringing at U4, ripple across C12, startup/inrush, effective capacitance and loaded temperature. S228, S230. |
-| Battery measurement | R8 (100 kΩ) from protected XT30 to V_SENSE. R9 (10 kΩ) and C18 (100 nF) connect V_SENSE to ground. GPIO34 and TP10 read the divider directly. Firmware scales the reading by 11. S224. | Calibrate against XT30 at 7–16 V. |
+| Battery measurement | R8 (100 kΩ) from protected XT30 to V_SENSE. R9 (10 kΩ) and C18 (100 nF) connect V_SENSE to ground. GPIO34 reads the divider directly. J5 pin 5 exposes the same node. Firmware scales the reading by 11. S224. | Calibrate against XT30 at 7–16 V. |
 | Harness | Right-angle male Amphenol D15P33E4GV00LF and AMASS XT30PW-M30.G.Y. See the [DA-15 pinout](#smaller-dsub). J2 pad 1 is ground and pad 2 is the raw supply. Both J1 shell locks are isolated from board ground. | Check the mating plugs, jackscrews, polarity and housing support with actual parts. S173, S196. |
 
 <a id="layout"></a>
@@ -34,21 +34,21 @@ The [supplier circuit requirements and schematic comparison](requirements.md#pcb
 
 <a id="placement-comparison"></a>
 
-**Front-panel proposal for review.** Both connectors face forward. All 73 electrical footprints and the two original mounting holes are on the candidate drawing. Both MX5050s, the input protection, buck components, USB support, J3 and the 17 probes are placed.
+**Front-panel proposal for review.** Both connectors face forward. The 58.50 × 46.50 mm outline occupies 2,720.25 mm². It carries 54 fitted parts, three unpopulated footprints (J3, J5 and R16) and the two original mounting holes.
 
 ![Original connector axes and proposed front-panel placement at equal scale](../images/integrated-front-fit.png)
 
-| Dimension | 48.00 × 46.50 mm baseline with DA-15 on the old axis | 64.50 × 46.50 mm candidate |
+| Dimension | 48.00 × 46.50 mm baseline with DA-15 on the old axis | 58.50 × 46.50 mm candidate |
 | --- | --- | --- |
-| DA-15 centre X / XT30 centre X | 136.70 / 112.90 mm | 149.75 / 112.90 mm |
-| Connector body / mated cable envelope | 2.42 / 1.05 mm overlap | 10.63 / 12.00 mm clear |
+| DA-15 centre X / XT30 centre X | 136.70 / 112.90 mm | 143.75 / 112.90 mm |
+| Connector body / mated cable envelope | 2.42 / 1.05 mm overlap | 4.63 / 6.00 mm clear |
 | Right DA-15 lock land | Extends 2.485 mm past PCB edge | 0.965 mm copper-to-edge |
-| Front and housing | DE-9 screw pitch 24.99 mm | DA-15 pitch 33.32 mm. Proposed right inner wall X170.50, 12.50 mm beyond the reference wall |
-| Service with lid off | Fixed H1 and H2 | Ø7 mm driver; 14 × 9 mm USB plug allowance; 13.81 mm antenna tip to rear wall; LEDs face right |
+| Front and housing | DE-9 screw pitch 24.99 mm | DA-15 pitch 33.32 mm. Proposed right inner wall X164.50, 6.50 mm beyond the reference wall |
+| Service with lid off | Fixed H1 and H2 | Ø7 mm driver clears the XT30 plug by 5.59 mm laterally. USB plug allowance 14 × 9 mm. Antenna tip to rear wall 13.81 mm. LEDs face right |
 
-Ten diagnostic solder lands occupy two columns between the front connectors on 4 mm centres (6.50 × 18.50 mm across the lands). TP9 sits alongside TP8. TP1–TP6 retain the programming fixture pattern. C14 and C15 sit on the output side of L1, 4.19 and 2.51 mm from pad 2 to their positive lands. U4 SW to L1 pad 1 spans 3.84 mm. The nearest approach of a centred Ø2 mm probe shaft to another courtyard is 0.916 mm at TP5 beside U2 (S224).
+The [eight-pin J5 service header](#expansion) sits behind the front connectors. Its courtyard is 11.25 × 6.18 mm. C14 and C15 sit on the output side of L1, 4.19 and 2.51 mm from pad 2 to their positive lands. U4 SW to L1 pad 1 spans 3.84 mm.
 
-[USB bypass placement detail](../images/integrated-front-usb-bypass.pdf) · [Vector overlay](../images/integrated-front-fit.pdf) · [Cropped vector board view](../images/integrated-front-top.pdf) · [Complete schematic · single-sheet vector PDF](../images/integrated-front-schematic.pdf) · [Candidate KiCad project](../../electronics/integrated/front-panel/compact-bridge.kicad_pro). See [S212](../research/sources.md#source-register) for placement checks and the [open items](../project/open-items.md#pcb-study) before routing.
+[USB bypass placement detail](../images/integrated-front-usb-bypass.pdf) · [Vector overlay](../images/integrated-front-fit.pdf) · [Cropped vector board view](../images/integrated-front-top.pdf) · [Complete schematic · single-sheet vector PDF](../images/integrated-front-schematic.pdf) · [Candidate KiCad project](../../electronics/integrated/front-panel/compact-bridge.kicad_pro). See [S231](../research/sources.md#source-register) for placement checks and the [open items](../project/open-items.md#pcb-study) before routing.
 
 **Archived side-entry study**
 
@@ -107,31 +107,19 @@ The DA-15 return widths and calculated drops are in the [fabrication settings](#
 | Fit or load | Measured in CAD or proposed for test |
 | --- | --- |
 | Assembly | Leave J3 empty on all ten boards. A standard 1 × 4 vertical pin header can be soldered in later. J3 is excluded from the assembly BOM and placement export. |
-| Pinout | From R2 toward J1: **1 GND** (square), **2 3V3 output**, **3 SDA** (GPIO21), **4 SCL** (GPIO22). DE-9 baseline pin 1 center X133.45/Y146.04 mm, 2.54 mm pitch toward +Y. Four Ø1.00 mm plated holes with 1.70 mm lands. |
+| Pinout | **1 GND** (square), **2 3V3 output**, **3 SDA** (GPIO21), **4 SCL** (GPIO22). DE-9 baseline pin 1 center X133.45/Y146.04 mm, 2.54 mm pitch toward +Y. Four Ø1.00 mm plated holes with 1.70 mm lands. |
 | Optional header fit | On the DE-9 baseline the 2.54 × 10.16 mm reference body clears R2 by 0.81 mm and J1 by 0.91 mm. Courtyard gaps are 0.05 mm and 0.04 mm respectively. S197. |
 | Vertical clearance and retention | The reference pins project 8.54 mm above the PCB and 1.40 mm below a 1.60 mm board. Check the selected socket, extraction space, wire bend, independent restraint and enclosure against the [first-article checks](../project/open-items.md#pcb-study). |
 | 3.3 V budget | U4 is a 3 A device. Use the existing 1 A board design budget. Reserving 500 mA for the ESP32 supply leaves 500 mA before the transceivers, other loads and thermal margin. Use **50 mA total at the port as a proposed first-article test load** (0.165 W at 3.3 V). Publish usable current only after measuring peak rail sag, startup/inrush and closed-box temperature at 7–16 V with three active streams and the peripheral fitted. |
 
-**Production probe map.** TP1–TP6 form a 2 × 3 fixture on 4.0 mm centers. TP2 senses the board voltage. TP1–TP17 each provide a Ø2.50 mm top-side SMD solder land with an open mask and no stencil aperture. Hand-solder a fine insulated wire to the required net and strain-relieve it at the housing. Keep fixture pads accessible if the pogo adapter is needed. Use J3 for plug-in I²C expansion. [Front-panel pad locations](../images/integrated-front-top.pdf)
+**J5 service header.** Leave the standard 2 × 4 vertical header unpopulated. The eight plated holes have 2.54 mm pitch, 1.00 mm drills and 1.70 mm lands. The square pad marks pin 1. Fit a header for repeated measurements or solder a temporary lead and strain-relieve it. [Component-side drawing](../images/integrated-front-top.pdf)
 
-| Row from antenna toward J1 | Left pad | Right pad |
-| --- | --- | --- |
-| 1 | TP1 GND | TP2 3V3 |
-| 2 | TP3 EN | TP4 BOOT / GPIO0 |
-| 3 | TP5 PROG_TX (ESP32 output) | TP6 PROG_RX (ESP32 input) |
+| Component side, DA-15 facing the builder | Column 1 (left) | Column 2 | Column 3 | Column 4 (right) |
+| --- | --- | --- | --- | --- |
+| Row toward antenna | 2 · BOOT | 4 · 3V3 | 6 · PG_3V3 | 8 · VIN_RAW |
+| Row toward front | **1 · GND ▪** | 3 · EN | 5 · V_SENSE | 7 · VIN_PROT |
 
-![Top-side programming and diagnostic pads with the DE-9 and XT30 harness envelopes shown at the front](../images/integrated-probe-access.png)
-
-| Board mark | Probe | Measure |
-| --- | --- | --- |
-| 7 / 8 | TP7 VIN_RAW / TP8 VIN_PROT | Supply before and after reverse-polarity protection |
-| 9 | TP9 PG_3V3 | Buck power-good |
-| 10 / 11 | TP10 V_SENSE / TP11 GND | Divider midpoint at GPIO34 and a local ground connected to the ground plane, 4.00 mm apart on the DA-15 board |
-| 12 / 13 | TP12 ZS_RX / TP13 FL_RX | Zander and FLARM receiver logic |
-| 14 / 15 | TP14 BKR_RX / TP15 BKR_TX | Becker receive and transmit logic |
-| 16 / 17 | TP16 ZS_TX / TP17 FL_TX | Zander and FLARM transmit logic |
-
-On the DE-9 baseline, TP11 was Ø1.0 mm and the other 14 pads were Ø1.5 mm. [First-article probe checks](../project/open-items.md#pcb-study)
+Pins 7 and 8 carry the XT30 supply voltage. Use pins 1 and 2 for the BOOT jumper. One ground serves all measurements. J4 carries the programming UART. Use a bench peer or loopback at J1 to test each instrument port through its transceiver. Direct access to the six instrument UART logic signals would require probing component pins.
 
 <a id="usb-programming"></a>
 
@@ -148,14 +136,14 @@ On the DE-9 baseline, J2 supplies power and TP1–TP6 serve a 3.3 V USB-to-UART 
 **First flash or USB recovery**
 
 1. Build the [normal bridge firmware](../../firmware/bridge/README.md#build) with the project’s OTA partition layout. Connect a USB data cable to J4 and select the CH9102F serial port. The example uses COM3.
-2. Hold **TP4 (BOOT/GPIO0)** to **TP1 (GND)**. Momentarily connect **TP3 (EN)** to TP1, then release EN while BOOT stays grounded. The ESP32 samples GPIO0 when EN rises.
-3. From the repository root, run the command below. Release TP4 once esptool identifies the ESP32. The merged image contains the bootloader, partition table and bridge application.
+2. Hold **J5 pin 2 (BOOT/GPIO0)** to **J5 pin 1 (GND)**. Momentarily connect **J5 pin 3 (EN)** to pin 1, then release EN while BOOT stays grounded. The ESP32 samples GPIO0 when EN rises.
+3. From the repository root, run the command below. Release pin 2 once esptool identifies the ESP32. The merged image contains the bootloader, partition table and bridge application.
 
    ```text
    esptool --chip esp32 --port COM3 --before no-reset --after no-reset write-flash 0x0 build/bridge/bridge.ino.merged.bin
    ```
 
-4. After esptool verifies the write, leave TP4 released and pulse TP3 to TP1 again to start the firmware.
+4. After esptool verifies the write, leave pin 2 released and pulse pin 3 to pin 1 again to start the firmware.
 
 **Later updates** use the [password-protected Wi-Fi upload](../../firmware/bridge/README.md#upload-over-wi-fi) with the application image `build/bridge/bridge.ino.bin`. USB is normally needed once per blank board. Use the manual procedure for recovery if the firmware cannot boot or accept OTA, or to install a new partition layout. S106, S229.
 
@@ -210,7 +198,7 @@ The module-based bridge uses its existing [DE-9 harness](../hardware/wiring.md#d
 | Energy and thermal load | At the XT30 log input voltage, current peaks and integrated Wh with three loaded Wi-Fi ports, with Bluetooth off, with an additional Bluetooth link and in fallback. Repeat across 7–16 V and under hot closed-box conditions. Probe the buck, inductor, protection device, module, connectors and loaded housing supports. Use the same traffic and phone for any controller comparison. |
 | Outdoor storage | Log site temperature and RH, cold surfaces on warm-up and hot parked-canopy conditions. Cycle the unpowered assembly through representative condensation, dry before powering, and check insulation, corrosion, retention, ADC, rail stability and all three streams. Test dry cold starts and sustained hot operation at the measured limits. |
 | Limits | XT30 −20…+120 °C operating, SP3232E −40…+85 °C ambient, H4 up to +105 °C, DE-9 −55…+125 °C, SIT3491E up to +125 °C ambient. Buck limit is junction temperature. Loaded PETG features may govern earlier. Check the matching plugs, capacitors and remaining BOM as well. See S170–S174, S230 and the [housing climate study](../hardware/housing.md#climate). |
-| Cleaning and coating | Use a module-compatible cleaner and a single module reflow. If coating is fitted, mask the antenna, connectors, shell bonds and probe pads. |
+| Cleaning and coating | Use a module-compatible cleaner and a single module reflow. If coating is fitted, mask the antenna, connectors, shell bonds and service header holes. |
 | Installed use | Ask the responsible certifying staff to assess the actual aircraft, connection to the Becker and any standby-frequency command. Supply wiring, fuse and isolation, failure effects, installed radio/compass interference checks, mounting and continued-maintenance information. S177 records the regulatory context. |
 
 ---
@@ -219,7 +207,7 @@ The module-based bridge uses its existing [DE-9 harness](../hardware/wiring.md#d
 
 ## 4. 💶 Ten-board cost comparison
 
-**Front-panel prototype · 21 November 2026.** The [native KiCad schematic](../../electronics/integrated/front-panel/compact-bridge.kicad_sch) has 27 fitted lines, 54 placements per board and 540 for ten. Leave J3 and R16 unpopulated. TP1–TP17 are solder lands.
+**Front-panel prototype · 21 November 2026.** The [native KiCad schematic](../../electronics/integrated/front-panel/compact-bridge.kicad_sch) has 27 fitted lines, 54 placements per board and 540 for ten. Leave J3, J5 and R16 unpopulated.
 
 Use Standard PCBA for U1. Stock is JLCPCB catalogue inventory. USD/pc uses the price break for the fitted ten-board quantity, before attrition, purchasing minimums, assembly, freight and tax. Rows are sorted by fitted cost per board, highest first. [Download the review BOM (CSV)](../../electronics/integrated/front-panel/fitted-bom.csv). S227–S230.
 
@@ -260,7 +248,7 @@ Use Standard PCBA for U1. Stock is JLCPCB catalogue inventory. USD/pc uses the p
 | JLCPCB Extended converter | IC / module | Stage cost | Placements | JLC stock | Stage configuration |
 | --- | ---: | ---: | ---: | ---: | --- |
 | [TPS62933PDRLR](https://jlcpcb.com/partdetail/C5219254) · fitted | $0.6757 | $1.13 | 10 | 5,766 | Native PG, 500 kHz, 4.7 µH, one Basic Samsung 10 µF 50 V input and two Basic Samsung 22 µF outputs. Including D2 and the green indicator, $1.2973 per board. |
-| [Mornsun K7803MT-1000R4](https://jlcpcb.com/partdetail/C2692188) | $1.8864 | ≈ $4.53 | 11 | 601 | Fixed 3.3 V, 1 A, external window monitor at TP9. The module has no native PG. Mornsun excludes hot swap. |
+| [Mornsun K7803MT-1000R4](https://jlcpcb.com/partdetail/C2692188) | $1.8864 | ≈ $4.53 | 11 | 601 | Fixed 3.3 V, 1 A, external window monitor at J5 pin 6. The module has no native PG. Mornsun excludes hot swap. |
 | [TLVM23615RDNR](https://jlcpcb.com/partdetail/C19274388) | $3.2313 | ≈ $5.15 | 13 | 289 | Integrated inductor, three 22 µF outputs for TI’s 40 µF effective minimum at 800 kHz, external feedback and frequency setting. |
 | [MPS MPM3510AGQV-Z](https://jlcpcb.com/partdetail/C6992851) | $3.8510 | $5.23 | 9 | 1,133 | Integrated inductor, native PG, 47 µF output and fixed switching frequency. |
 | [LMZM23601V3SILR](https://jlcpcb.com/partdetail/C2864948) | $64.6887 | $66.25 | 6 | 392 | Fixed 3.3 V, two input and two output capacitors plus the PG pull-up. JLC’s other reel code C2876786 costs $49.2867 each at ten and has zero stock. |
@@ -268,7 +256,7 @@ Use Standard PCBA for U1. Stock is JLCPCB catalogue inventory. USD/pc uses the p
 - **C14 and C15.** The two Basic Samsung CL31A226KAHNNNE outputs (1206 X5R, ±10%, −55 to +85 °C) give about 35.0 µF combined at 3.3 V on the typical 25 °C curve. TI Table 10-2 lists 15 µF minimum and 40 µF typical effective at 500 kHz. See the [power-stage checks](../project/open-items.md#pcb-study). S227–S228.
 - **Feedback.** R6 at 75 kΩ and R7 at 24 kΩ give 3.300 V nominal from the 0.8 V reference. Both are 1% Basic resistors.
 - **J1.** The exact Amphenol part is listed for wave soldering. For external fitting, use DigiKey 609-1492-ND (€25.66 for ten in the EU catalogue snapshot) and omit J1 from the assembler’s BOM and placement list. After reflow, seat the board locks, align the mating face to the panel and hand-solder the through-hole contacts and solderable mounting features per the drawing. Inspect solder fill and check continuity before installing the harness. S219.
-- A $0.8520 LMR51420YDDCR needs a new regulator layout and a replacement for the power-good indication at TP9.
+- A $0.8520 LMR51420YDDCR needs a new regulator layout and a replacement for the power-good indication at J5 pin 6.
 - Reverse protection costs about $0.78 more per board using the MOSFET network than a series Schottky. At 0.10 A input over 10 h, a 0.4 V diode costs 0.40 Wh versus 0.0035 Wh in a 35 mΩ MOSFET channel, plus gate bias. Verify actual flight draw.
 - Quote ten on Standard PCBA with one SMT side, panel rails/fiducials, connector soldering and attrition. The published one-side setup and stencil example totals $33.77 per order. Compare charges for ENIG, optional coating, connector hand fitting, shipping and tax separately. Report cost per accepted unit. S168–S169.
 
@@ -304,6 +292,6 @@ For the ten-board quote, submit U1 mask, paste and drill plots together for the 
 | 3 · Place and route | Four-layer board and STEP export, mated compact housing study, placement and thermal review | Fit with connectors and service fixture, continuous return paths, fault-current capacity, antenna clearance, thermal pad and test access. Check JLC stackup, copper, annular rings, drills, mask/paste, routed slots, board-edge distances and panel rails/fiducials. DRC and schematic/PCB parity pass. |
 | 4 · Obtain ten-board quote | One revision-stamped ZIP with Gerbers for every copper, mask, silk, paste and outline layer, plus Excellon plated/non-plated drills. Separate JLC BOM and CPL, dimensioned fabrication and assembly drawings, fitted/DNP and hand-fit list, editable KiCad source and STEP | Reopen plots/drills in an independent viewer. Match fitted designators exactly between BOM and CPL. BOM carries value, footprint, designator and JLC/LCSC code. CPL carries designator, X/Y in mm, rotation and side using one origin. Inspect polarity, pin 1, module antenna direction, connector face and rotations in JLC's placement preview. S169. |
 | 5 · Owner order | Dated quote or reproducible ordering pack with stackup, board thickness/copper/finish, mask, assembly side, service tier, quantities, accepted parts, stock snapshot, lead time, shipping and price breakdown | Every fitted part is matched or explicitly listed for local fitting. Record any substitutions, quote validity shown by vendor and assembly-review corrections. Owner reviews the final amount and places the order. Arrange first-article inspection and acceptance before committing the remaining assembly where available. |
-| 6 · Accept and repeat | Serialized first-article results against section 3, defects and corrected revision where needed. Bundle flash/recovery instructions and fixture pinout with the release | Run the closed-box thermal, electrical, mechanical and radio tests on actual hardware. Use the accepted revision and a fresh stock/price check for the production order. |
+| 6 · Accept and repeat | Serialized first-article results against section 3, defects and corrected revision where needed. Bundle flash/recovery instructions and service header pinout with the release | Run the closed-box thermal, electrical, mechanical and radio tests on actual hardware. Use the accepted revision and a fresh stock/price check for the production order. |
 
 <kbd>[⬆️ Back to top](#top)</kbd> <kbd>[🏠 Overview](../../README.md)</kbd>
