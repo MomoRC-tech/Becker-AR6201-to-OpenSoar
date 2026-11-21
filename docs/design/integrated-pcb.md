@@ -7,7 +7,7 @@
 Use this page for the front-panel board layout, connector pinouts, programming instructions and priced BOM.
 
 > [!NOTE]
-> **Status:** The 58.50 × 46.50 mm front-panel placement is approved. Power, the three fault returns, USB data, both Becker pairs, the U2 charge pump and all four J1–U2 navigation lines are routed. KiCad reports 37 connections left. The ten-board quote and first-article checks are pending.
+> **Status:** The 58.50 × 46.50 mm front-panel placement is approved. Power, the three fault returns, USB data, both Becker pairs and both navigation ports are routed, including the U2 charge pump and ESP32 UART connections. KiCad reports 31 connections left. The ten-board quote and first-article checks are pending.
 
 📑 **On this page:** <kbd>[1 · 🔌 Circuits](#circuits)</kbd> <kbd>[2 · 📐 Compact placement](#layout)</kbd> <kbd>[3 · 🌡️ Heat and verification](#heat)</kbd> <kbd>[4 · 💶 Production cost](#cost)</kbd> <kbd>[5 · 📦 Production](#production)</kbd>
 
@@ -141,9 +141,14 @@ The production J1 is the Amphenol **D15P33E4GV00LF** male right-angle DA-15, wit
 
 The RX lengths include the estimated via traversal. In1.Cu ground serves the front tracks and B.Cu ground serves the RX tracks on In2.Cu. [Routed copper and polarity check, S235](../research/sources.md#source-register)
 
-U2 uses five 100 nF capacitors. C4 spans pins 1 and 3 through In2.Cu. C5 spans pins 4 and 5 on F.Cu. C6 and C8 connect the positive and negative pump rails to ground. C7 bypasses the supply with 2.02 mm of front copper to each of pins 16 and 15. [Charge-pump routing, S236](../research/sources.md#source-register)
+U2 uses five 100 nF capacitors. C4 spans pins 1 and 3 through B.Cu. C5 spans pins 4 and 5 on F.Cu. C6 and C8 connect the positive and negative pump rails to ground. C7 bypasses the supply with 2.02 mm of front copper to each of pins 16 and 15. [Charge-pump routing, S238](../research/sources.md#source-register)
 
-All four navigation RS-232 tracks between J1 and U2 are 0.30 mm wide. [Routed lengths and pin checks, S237](../research/sources.md#source-register)
+All four J1–U2 RS-232 tracks are 0.30 mm wide. The UART tracks use 0.25 mm at the U2 pads and 0.30 mm beyond the first vias. [Routed copper and pin checks, S237–S238](../research/sources.md#source-register)
+
+| Port | U2 receiver output → ESP32 | ESP32 → U2 driver input | TX pull-up to 3.3 V |
+| --- | --- | --- | --- |
+| Zander | U2.12 → GPIO32 | GPIO33 → U2.11 | R24, 10 kΩ |
+| FLARM | U2.9 → GPIO26 | GPIO27 → U2.10 | R25, 10 kΩ |
 
 For the separate module-based bench bridge, use the [DE-9 harness](../hardware/wiring.md#de9-pinout). [DA-15 drawing and cable reference, S202](../research/sources.md#source-register)
 
