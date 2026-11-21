@@ -199,7 +199,7 @@ The module-based bridge uses its existing [DE-9 harness](../hardware/wiring.md#d
 
 ## 4. 💶 Ten-board cost comparison
 
-For the DA-15 prototype see the [JLCPCB BOM audit](../research/reviews/2026-11-20-integrated-jlcpcb-bom.md). The six-line DE-9 comparison below uses USD per part on 20 November 2026, before passives, protection, ADC switch, fabrication, assembly, test, freight and tax. S175 covers the five unchanged lines. S196 gives a distributor reference for J1 pending the assembler quote.
+For the DA-15 prototype use the [ten-board stock, unit prices and proposed alternatives](../research/reviews/2026-11-21-integrated-ten-board-sourcing.md) (S213). The [original BOM audit](../research/reviews/2026-11-20-integrated-jlcpcb-bom.md) records the native selections. The six-line DE-9 comparison below uses USD per part on 20 November 2026, before passives, protection, ADC switch, fabrication, assembly, test, freight and tax. S175 covers the five unchanged lines. S196 gives a distributor reference for J1 pending the assembler quote.
 
 | Part | One | Ten, each | Ten, line total |
 | --- | ---: | ---: | ---: |

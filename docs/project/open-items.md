@@ -137,7 +137,7 @@ See the [bridge firmware plan](roadmap.md#firmware-plan) and the [OpenSoar readb
 | Signal layout review | With the signal routes in place, compare U2 charge-pump loops, U3 bypass and bus entry, and U5 bypass and signal paths with the manufacturers’ layout examples (TRS3232E Fig. 8-3, SN65HVD1470 Fig. 41, TMUX1574 Fig. 46). | Routed-board comparison before fabrication plots |
 | Flight endurance and optional Bluetooth | Log input Wh and peaks during three Wi-Fi streams with Bluetooth off/on and fallback on Android. Agree acceptable draw using the battery allocation and actual duty cycle. | Measured endurance and transport acceptance |
 | Aircraft-specific installation path | Responsible certifying staff to check equipment identity, permitted data connections, possible transmit commands, failure effects, documentation and release route | Installation decision |
-| Ten-board landed quote | Designer to confirm H4 suffix, stock with attrition, panel rails, connector soldering, coating/finish and passives. Owner supplies delivery destination for delivered price. | Reproducible order or dated JLCPCB offer |
+| Ten-board landed quote | Review the [37-line sourcing check](../research/reviews/2026-11-21-integrated-ten-board-sourcing.md). Select C10, C11, C14–C17 and R7. Confirm U3 allocation with attrition, J1 fitting, panel rails, coating/finish and the remaining unassigned part fields. Owner supplies delivery destination for delivered price. | Reproducible order or dated JLCPCB offer |
 
 
 ---
