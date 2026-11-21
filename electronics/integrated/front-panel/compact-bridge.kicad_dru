@@ -1,0 +1,16 @@
+(version 1)
+(rule "USB4145 contact lands per GCT A1"
+  (condition "A.Type == 'Pad' && B.Type == 'Pad' && A.Reference == 'J4' && B.Reference == 'J4'")
+  (constraint clearance (min 0.20mm)))
+(rule "CP2102N exposed pad to perimeter lands"
+  (condition "A.Type == 'Pad' && B.Type == 'Pad' && A.Reference == 'U8' && B.Reference == 'U8'")
+  (constraint clearance (min 0.225mm)))
+(rule "USB4145 pad exits at 0.5 mm pitch"
+  (condition "A.Type == 'Pad' && A.Reference == 'J4' && B.Type == 'Track'")
+  (constraint clearance (min 0.225mm)))
+(rule "USB Full Speed data traces"
+  (condition "A.NetName == 'USB_D+' || A.NetName == 'USB_D-'")
+  (constraint track_width (min 0.25mm) (opt 0.30mm) (max 0.36mm)))
+(rule "Becker differential copper"
+  (condition "A.NetName == 'BKR_RX_P' || A.NetName == 'BKR_RX_N' || A.NetName == 'BKR_TX_P' || A.NetName == 'BKR_TX_N'")
+  (constraint track_width (min 0.30mm) (opt 0.30mm) (max 0.30mm)))

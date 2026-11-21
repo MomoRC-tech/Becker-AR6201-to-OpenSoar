@@ -7,7 +7,7 @@
 Use this plan to take the module-based bench bridge through a smaller four-layer design, first articles and a repeatable JLCPCB order.
 
 > [!NOTE]
-> **Status:** The owner rejected the 54 × 57 mm side-entry XT30 layout. Follow the [front-panel restart](../project/roadmap.md#work-packages). The saved study passed its CAD checks and includes the dual supply, upright USB-C, CP2102N auto-reset and two side-view LEDs. See the [side-entry study drawing](../images/integrated-da15-top.svg), [six-sheet schematic PDF](../images/integrated-da15-schematic.pdf), [native KiCad project](../../electronics/integrated/compact-bridge.kicad_pro) and [first-article checks](../project/open-items.md#pcb-study).
+> **Status:** Review the [front-panel placement](#placement-comparison) before routing. The wider candidate uses the original XT30 and mounting positions. The ten-board quote and first article follow mechanical and electrical acceptance.
 
 📑 **On this page:** <kbd>[1 · 🔌 Circuits](#circuits)</kbd> <kbd>[2 · 📐 Housing and layout](#layout)</kbd> <kbd>[3 · 🌡️ Heat and verification](#heat)</kbd> <kbd>[4 · 💶 Production cost](#cost)</kbd> <kbd>[5 · 📦 Production](#production)</kbd>
 
@@ -33,6 +33,22 @@ The [supplier circuit requirements and schematic comparison](requirements.md#pcb
 ## 2. 📐 Compact placement
 
 <a id="placement-comparison"></a>
+
+**Front-panel proposal for review.** Both connectors face forward. All 84 electrical footprints and the two original mounting holes are on the candidate drawing. Both MX5050s, the input protection, buck components, USB support, J3 and the 17 probes are placed.
+
+![Original connector axes and proposed front-panel placement at equal scale](../images/integrated-front-fit.png)
+
+| Dimension | 48.00 × 46.50 mm baseline with DA-15 on the old axis | 64.50 × 46.50 mm candidate |
+| --- | --- | --- |
+| DA-15 centre X / XT30 centre X | 136.70 / 112.90 mm | 140.80 / 112.90 mm |
+| Connector body / mated cable envelope | 2.42 / 1.05 mm overlap | 1.68 / 3.05 mm clear |
+| Right DA-15 lock land | Extends 2.485 mm past PCB edge | Inside outline |
+| Front and housing | DE-9 screw pitch 24.99 mm | DA-15 pitch 33.32 mm. Proposed right inner wall X170.50, 12.50 mm beyond the reference wall |
+| Service with lid off | Fixed H1 and H2 | Ø7 mm driver; 14 × 9 mm USB plug allowance; 13.81 mm antenna tip to rear wall; LEDs face right |
+
+[Vector overlay](../images/integrated-front-fit.pdf) · [Cropped vector board view](../images/integrated-front-top.pdf) · [Searchable schematic](../images/integrated-front-schematic.pdf) · [Candidate KiCad project](../../electronics/integrated/front-panel/compact-bridge.kicad_pro). See [S212](../research/sources.md#source-register) for placement checks and the [open items](../project/open-items.md#pcb-study) before routing.
+
+**Archived side-entry study**
 
 ![Component-side drawing with plug outlines, screw tools, antenna, LEDs and 17 probe lands](../images/integrated-da15-top.svg)
 
