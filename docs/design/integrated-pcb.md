@@ -48,7 +48,7 @@ The [supplier circuit requirements and schematic comparison](requirements.md#pcb
 
 Ten diagnostic solder lands occupy two columns between the front connectors on 4 mm centres (6.50 × 18.50 mm across the lands). TP9 sits alongside TP8. TP1–TP6 retain the programming fixture pattern. The four 22 µF output capacitors now sit in one row on the output side of L1. The longest straight-line span from L1 pad 2 to a bank positive pad is 10.77 mm, down from 40.79 mm. The nearest approach of a centred Ø2 mm probe shaft to another courtyard is 0.799 mm at TP11 beside U5.
 
-[Vector overlay](../images/integrated-front-fit.pdf) · [Cropped vector board view](../images/integrated-front-top.pdf) · [Searchable schematic](../images/integrated-front-schematic.pdf) · [Candidate KiCad project](../../electronics/integrated/front-panel/compact-bridge.kicad_pro). See [S212](../research/sources.md#source-register) for placement checks and the [open items](../project/open-items.md#pcb-study) before routing.
+[USB bypass placement detail](../images/integrated-front-usb-bypass.pdf) · [Vector overlay](../images/integrated-front-fit.pdf) · [Cropped vector board view](../images/integrated-front-top.pdf) · [Searchable schematic](../images/integrated-front-schematic.pdf) · [Candidate KiCad project](../../electronics/integrated/front-panel/compact-bridge.kicad_pro). See [S212](../research/sources.md#source-register) for placement checks and the [open items](../project/open-items.md#pcb-study) before routing.
 
 **Archived side-entry study**
 
@@ -137,6 +137,16 @@ On the DE-9 baseline, TP11 was Ø1.0 mm and the other 14 pads were Ø1.5 mm. [Fi
 
 ### 2.2 Upright USB-C programming
 
+The front-panel board places a 100 nF and a 4.7 µF capacitor beside each CP2102N supply pin. The table gives straight-line pad-centre distances for the proposed placement. Route the small capacitor directly to its pin and give each ground pad a short return to the reference plane. [Vector placement detail](../images/integrated-front-usb-bypass.pdf)
+
+| U8 supply pin | 100 nF to pin | 4.7 µF to pin |
+| --- | ---: | ---: |
+| 5 · VIO | C22 · 1.81 mm | C21 · 3.93 mm |
+| 6 · VDD | C23 · 2.23 mm | C24 · 3.85 mm |
+| 7 · VREGIN | C26 · 1.93 mm | C25 · 3.50 mm |
+
+![Component-side detail of U8 and the six bypass capacitors](../images/integrated-front-usb-bypass.svg)
+
 On the DE-9 baseline, J2 supplies power and TP1–TP6 serve a 3.3 V USB-to-UART pogo fixture. For production, program the WROOM through an upright USB-C port with the lid removed. [PCB12](requirements.md#production-pcb) defines the three supply modes and bench checks.
 
 ![Top-entry USB-C placement study beside H2 showing the existing board and right housing wall](../images/integrated-usb-fit.png)
@@ -199,16 +209,16 @@ The module-based bridge uses its existing [DE-9 harness](../hardware/wiring.md#d
 
 ## 4. 💶 Ten-board cost comparison
 
-**Selected for the front-panel BOM.** The native schematic and PCB specify these 11 catalogue SKUs for 37 placements per board. The 34 Basic placements use nine SKUs. Three placements use two Extended SKUs. See S214–S217 for the component checks.
+**Selected for the front-panel BOM.** The native schematic and PCB specify these 11 catalogue SKUs for 40 placements per board. The 35 Basic placements use nine SKUs. Five placements use two Extended SKUs. See S214–S218 for the component checks.
 
 | Positions | Selection | Tier |
 | --- | --- | --- |
 | Nineteen resistors | UNI-ROYAL 0603, 0 Ω link and 1 kΩ, 4.7 kΩ, 5.1 kΩ, 10 kΩ and 100 kΩ resistors | Basic |
-| C3–C10, C18, C20, C22, C23 | Yageo C14663, 100 nF / 50 V X7R, 0603 | Basic |
+| C3–C10, C18, C20, C22, C23, C26 | Yageo C14663, 100 nF / 50 V X7R, 0603 | Basic |
 | C2 | Samsung C15850, 10 µF / 25 V X5R, 0805 | Basic |
 | Q2, Q3 | JSCJ C20526, MMBT3904, SOT-23 | Basic |
 | C1, C11 | Yageo C106858, 1 µF / 25 V X7R, 0603 | Extended |
-| C21 | Samsung C69335, 4.7 µF / 25 V X5R, 0603 | Extended |
+| C21, C24, C25 | Samsung C69335, 4.7 µF / 25 V X5R, 0603 | Extended |
 
 For the DA-15 prototype use the [ten-board stock, unit prices and proposed alternatives](../research/reviews/2026-11-21-integrated-ten-board-sourcing.md) (S213). The [original BOM audit](../research/reviews/2026-11-20-integrated-jlcpcb-bom.md) records the native selections. The six-line DE-9 comparison below uses USD per part on 20 November 2026, before passives, protection, ADC switch, fabrication, assembly, test, freight and tax. S175 covers the five unchanged lines. S196 gives a distributor reference for J1 pending the assembler quote.
 
