@@ -74,10 +74,18 @@ def export(cli):
             compose(source, drawing)
             drawing.save(result, garbage=4, deflate=True, use_objstms=1)
 
-        refs = {part.attrib["ref"] for part in ElementTree.parse(netlist).findall(".//components/comp")
-                if not part.attrib["ref"].startswith("#")}
+        refs = set()
+        for part in ElementTree.parse(netlist).findall(".//components/comp"):
+            ref = part.attrib["ref"]
+            if ref.startswith("#"):
+                continue
+            units = part.findall("units/unit")
+            if len(units) > 1:
+                refs.update(ref + unit.attrib["name"] for unit in units)
+            else:
+                refs.add(ref)
         with pdf.open(result) as drawing:
-            visible = set(re.findall(r"\b[A-Z]+[0-9]+\b", drawing[0].get_text()))
+            visible = set(re.findall(r"\b[A-Z]+[0-9]+[A-Z]*\b", drawing[0].get_text()))
             if len(drawing) != 1 or drawing[0].get_images() or refs - visible:
                 raise ValueError(f"Vector export or reference check failed: {sorted(refs - visible)}")
         OUTPUT.write_bytes(result.read_bytes())
