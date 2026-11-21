@@ -7,7 +7,7 @@
 Use this page for the front-panel board layout, connector pinouts, programming instructions and priced BOM.
 
 > [!NOTE]
-> **Status:** The 58.50 × 46.50 mm front-panel placement is approved. Power, the three fault returns, USB data, both Becker pairs and both navigation ports are routed, including the U2 charge pump and ESP32 UART connections. KiCad reports 31 connections left. The ten-board quote and first-article checks are pending.
+> **Status:** The 58.50 × 46.50 mm front-panel placement is approved. Power, the three fault returns and USB data are routed. The Becker, Zander and FLARM interfaces are routed through to the ESP32. KiCad reports 26 connections left. The ten-board quote and first-article checks are pending.
 
 📑 **On this page:** <kbd>[1 · 🔌 Circuits](#circuits)</kbd> <kbd>[2 · 📐 Compact placement](#layout)</kbd> <kbd>[3 · 🌡️ Heat and verification](#heat)</kbd> <kbd>[4 · 💶 Production cost](#cost)</kbd> <kbd>[5 · 📦 Production](#production)</kbd>
 
@@ -33,6 +33,8 @@ The [supplier circuit requirements and schematic comparison](requirements.md#pcb
 ## 2. 📐 Compact placement
 
 <a id="placement-comparison"></a>
+
+[View the routed copper on all four layers](../images/integrated-front-routing.png).
 
 Both the DA-15 and XT30 face forward. The board occupies 2,720.25 mm² and carries 54 fitted parts, three unpopulated footprints (J3, J5 and R16) and two mounting holes.
 
@@ -140,6 +142,8 @@ The production J1 is the Amphenol **D15P33E4GV00LF** male right-angle DA-15, wit
 | 12–15 | Spare, no connection |
 
 The RX lengths include the estimated via traversal. In1.Cu ground serves the front tracks and B.Cu ground serves the RX tracks on In2.Cu. [Routed copper and polarity check, S235](../research/sources.md#source-register)
+
+On the logic side, U3.2 (RO) feeds GPIO16 and GPIO17 drives U3.5 (DI). R3 pulls DI high. R4 and R5 set the level on U3.4 (DE). [Becker copper and bias checks, S239](../research/sources.md#source-register)
 
 U2 uses five 100 nF capacitors. C4 spans pins 1 and 3 through B.Cu. C5 spans pins 4 and 5 on F.Cu. C6 and C8 connect the positive and negative pump rails to ground. C7 bypasses the supply with 2.02 mm of front copper to each of pins 16 and 15. [Charge-pump routing, S238](../research/sources.md#source-register)
 
