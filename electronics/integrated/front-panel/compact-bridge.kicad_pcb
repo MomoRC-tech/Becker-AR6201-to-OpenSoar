@@ -7369,7 +7369,7 @@
 	(footprint "Compact:Probe_Pad_D2.5mm"
 		(layer "F.Cu")
 		(uuid "61ca583c-9bcb-445a-bc20-1cb249721048")
-		(at 162.775 156.9701)
+		(at 125 165.1)
 		(descr "SMD pad as test Point, diameter 2.5mm")
 		(tags "test point SMD pad")
 		(property "Reference" "TP16"
@@ -7899,7 +7899,7 @@
 	(footprint "Compact:Probe_Pad_D2.5mm"
 		(layer "F.Cu")
 		(uuid "6766fd46-95b9-425b-b6ad-f3b1e54d60e5")
-		(at 166.415 156.9701)
+		(at 127 160.3)
 		(descr "SMD pad as test Point, diameter 2.5mm")
 		(tags "test point SMD pad")
 		(property "Reference" "TP9"
@@ -9399,7 +9399,7 @@
 	(footprint "Compact:Probe_Pad_D2.5mm"
 		(layer "F.Cu")
 		(uuid "787230c8-1b96-46eb-a9a0-d786e2d1d9aa")
-		(at 162.775 165.1)
+		(at 122.65 160.3)
 		(descr "SMD pad as test Point, diameter 2.5mm")
 		(tags "test point SMD pad")
 		(property "Reference" "TP8"
@@ -14424,7 +14424,7 @@
 	(footprint "Compact:Amphenol_D15P33E4GV00LF"
 		(layer "F.Cu")
 		(uuid "c7d7d510-444f-44a3-982c-3b80b69b9850")
-		(at 131.21 157.58)
+		(at 140.16 157.58)
 		(descr "Amphenol C01-8646-0825 rev D, DA-15 male 4-40 screwlocks. 8.08 mm front row to flange, 2.84 mm row spacing. Finished holes: contacts 0.90 mm minimum, locks 3.10 +/-0.10 mm.")
 		(property "Reference" "J1"
 			(at 0 -4 0)
@@ -18293,7 +18293,7 @@
 		)
 	)
 	(gr_text "16"
-		(at 162.775 159.2101 0)
+		(at 125 167.34 0)
 		(layer "F.SilkS")
 		(uuid "6560a3a9-51e3-4e51-8ce7-7a610bf1c68c")
 		(effects
@@ -18304,7 +18304,7 @@
 		)
 	)
 	(gr_text "8"
-		(at 162.775 167.34 0)
+		(at 122.65 162.54 0)
 		(layer "F.SilkS")
 		(uuid "c3d80fcc-e5d0-4860-b53a-90c481f0ec03")
 		(effects
@@ -18315,7 +18315,7 @@
 		)
 	)
 	(gr_text "9"
-		(at 166.415 159.2101 0)
+		(at 127 162.54 0)
 		(layer "F.SilkS")
 		(uuid "7817ca60-9f2e-43d4-b07a-580f3c7e90c0")
 		(effects

@@ -40,9 +40,9 @@ The [supplier circuit requirements and schematic comparison](requirements.md#pcb
 
 | Dimension | 48.00 × 46.50 mm baseline with DA-15 on the old axis | 64.50 × 46.50 mm candidate |
 | --- | --- | --- |
-| DA-15 centre X / XT30 centre X | 136.70 / 112.90 mm | 140.80 / 112.90 mm |
-| Connector body / mated cable envelope | 2.42 / 1.05 mm overlap | 1.68 / 3.05 mm clear |
-| Right DA-15 lock land | Extends 2.485 mm past PCB edge | Inside outline |
+| DA-15 centre X / XT30 centre X | 136.70 / 112.90 mm | 149.75 / 112.90 mm |
+| Connector body / mated cable envelope | 2.42 / 1.05 mm overlap | 10.63 / 12.00 mm clear |
+| Right DA-15 lock land | Extends 2.485 mm past PCB edge | 0.965 mm copper-to-edge |
 | Front and housing | DE-9 screw pitch 24.99 mm | DA-15 pitch 33.32 mm. Proposed right inner wall X170.50, 12.50 mm beyond the reference wall |
 | Service with lid off | Fixed H1 and H2 | Ø7 mm driver; 14 × 9 mm USB plug allowance; 13.81 mm antenna tip to rear wall; LEDs face right |
 
@@ -110,7 +110,7 @@ The DA-15 return widths and calculated drops are in the [fabrication settings](#
 | Vertical clearance and retention | The reference pins project 8.54 mm above the PCB and 1.40 mm below a 1.60 mm board. Check the selected socket, extraction space, wire bend, independent restraint and enclosure against the [first-article checks](../project/open-items.md#pcb-study). |
 | 3.3 V budget | U4 is rated at 1 A. Reserving 500 mA for the ESP32 supply leaves 500 mA before the transceivers, other loads and thermal margin. Use **50 mA total at the port as a proposed first-article test load** (0.165 W at 3.3 V). Publish usable current only after measuring peak rail sag, startup/inrush and closed-box temperature at 7–20 V with three active streams and the peripheral fitted. |
 
-**Production probe map.** TP1–TP6 form a 2 × 3 fixture on 4.0 mm centers. TP2 senses the board voltage. All 17 probe lands have 2.5 mm exposed diameter. See the [DA-15 top view](../images/integrated-da15-top.svg) for pad locations.
+**Production probe map.** TP1–TP6 form a 2 × 3 fixture on 4.0 mm centers. TP2 senses the board voltage. TP1–TP17 each provide a Ø2.50 mm top-side SMD solder land with an open mask and no stencil aperture. Hand-solder a fine insulated wire to the required net and strain-relieve it at the housing. Keep fixture pads accessible if the pogo adapter is needed. Use J3 for plug-in I²C expansion. [Front-panel pad locations](../images/integrated-front-top.pdf)
 
 | Row from antenna toward J1 | Left pad | Right pad |
 | --- | --- | --- |
