@@ -31,7 +31,7 @@ Related: ❓ [Open items](open-items.md) · 🎯 [Requirements](../design/requir
 | WP8 Aircraft integration | ⬜ Later | Needs verified hardware and separate approval | Installation, protection and approval requirements met |
 | WP9 Device profiles | 🟡 [Profiles](#device-profiles) and optional [navigation detection](#navigation-detection) in firmware 0.5.7 (S115, S154) | Replace the candidate preset values once the [installed settings](open-items.md#installed-equipment) are known; check them on the wired bridge | Presets and manual settings work on compatible ports, survive restart and OTA, and preserve existing configurations |
 
-**Ten-board integrated PCB.** The [front-panel placement](../design/integrated-pcb.md#placement-comparison) is approved. Power, the three fault returns, both USB-C orientations, both Becker pairs and the U2 charge pump are routed (S232, S234–S236). Next, route the four Zander and FLARM RS-232 lines between J1 and U2. The logic-side signals follow. Use the [priced BOM](../design/integrated-pcb.md#cost) for the ten-board quote and the [first-article checks](open-items.md#pcb-study) for fit and electrical acceptance.
+**Ten-board integrated PCB.** The [front-panel placement](../design/integrated-pcb.md#placement-comparison) is approved. Power, the three fault returns, both USB-C orientations, both Becker pairs, the U2 charge pump and all four navigation RS-232 lines between J1 and U2 are routed (S232, S234–S237). Next, route the four logic-side UART signals between U2 and the ESP32, including the R24/R25 transmit pull-ups. Use the [priced BOM](../design/integrated-pcb.md#cost) for the ten-board quote and the [first-article checks](open-items.md#pcb-study) for fit and electrical acceptance.
 
 ### 1.1 Work loop
 

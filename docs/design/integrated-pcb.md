@@ -7,7 +7,7 @@
 Use this page for the front-panel board layout, connector pinouts, programming instructions and priced BOM.
 
 > [!NOTE]
-> **Status:** The 58.50 × 46.50 mm front-panel placement is approved. Power, the three fault returns, USB data, both Becker pairs and the U2 charge pump are routed. KiCad reports 41 connections left. The ten-board quote and first-article checks are pending.
+> **Status:** The 58.50 × 46.50 mm front-panel placement is approved. Power, the three fault returns, USB data, both Becker pairs, the U2 charge pump and all four J1–U2 navigation lines are routed. KiCad reports 37 connections left. The ten-board quote and first-article checks are pending.
 
 📑 **On this page:** <kbd>[1 · 🔌 Circuits](#circuits)</kbd> <kbd>[2 · 📐 Compact placement](#layout)</kbd> <kbd>[3 · 🌡️ Heat and verification](#heat)</kbd> <kbd>[4 · 💶 Production cost](#cost)</kbd> <kbd>[5 · 📦 Production](#production)</kbd>
 
@@ -130,7 +130,8 @@ The production J1 is the Amphenol **D15P33E4GV00LF** male right-angle DA-15, wit
 
 | Production J1 | Assignment |
 | --- | --- |
-| 1, 2 | Zander and FLARM instrument TX into the bridge, respectively |
+| 1 | Zander instrument TX → U2.13 / R1IN |
+| 2 | FLARM instrument TX → U2.8 / R2IN |
 | 3, 6, 7 | Existing instrument returns, each retained on its original number |
 | 4, 5 | Radio TX → bridge RX. Pin 4 (+) to U3.12 (A), 11.87 mm. Pin 5 (−) to U3.11 (B), 10.25 mm. One via per conductor. |
 | 8, 9 | Bridge TX → radio RX. U3.9 (Y) to pin 8 (+), 27.06 mm. U3.10 (Z) to pin 9 (−), 25.98 mm. Both tracks stay on F.Cu. |
@@ -141,6 +142,8 @@ The production J1 is the Amphenol **D15P33E4GV00LF** male right-angle DA-15, wit
 The RX lengths include the estimated via traversal. In1.Cu ground serves the front tracks and B.Cu ground serves the RX tracks on In2.Cu. [Routed copper and polarity check, S235](../research/sources.md#source-register)
 
 U2 uses five 100 nF capacitors. C4 spans pins 1 and 3 through In2.Cu. C5 spans pins 4 and 5 on F.Cu. C6 and C8 connect the positive and negative pump rails to ground. C7 bypasses the supply with 2.02 mm of front copper to each of pins 16 and 15. [Charge-pump routing, S236](../research/sources.md#source-register)
+
+All four navigation RS-232 tracks between J1 and U2 are 0.30 mm wide. [Routed lengths and pin checks, S237](../research/sources.md#source-register)
 
 For the separate module-based bench bridge, use the [DE-9 harness](../hardware/wiring.md#de9-pinout). [DA-15 drawing and cable reference, S202](../research/sources.md#source-register)
 
