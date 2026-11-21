@@ -7,7 +7,7 @@
 Use this page for the front-panel board layout, connector pinouts, programming instructions and priced BOM.
 
 > [!NOTE]
-> **Status:** The 58.50 × 46.50 mm front-panel placement is approved. Power, the three fault returns and USB data are routed. KiCad reports 51 connections left, including the Becker pairs and RS-232 charge pump. The ten-board quote and first-article checks are pending.
+> **Status:** The 58.50 × 46.50 mm front-panel placement is approved. Power, the three fault returns, USB data and both Becker pairs are routed. KiCad reports 47 connections left. The ten-board quote and first-article checks are pending.
 
 📑 **On this page:** <kbd>[1 · 🔌 Circuits](#circuits)</kbd> <kbd>[2 · 📐 Compact placement](#layout)</kbd> <kbd>[3 · 🌡️ Heat and verification](#heat)</kbd> <kbd>[4 · 💶 Production cost](#cost)</kbd> <kbd>[5 · 📦 Production](#production)</kbd>
 
@@ -132,10 +132,13 @@ The production J1 is the Amphenol **D15P33E4GV00LF** male right-angle DA-15, wit
 | --- | --- |
 | 1, 2 | Zander and FLARM instrument TX into the bridge, respectively |
 | 3, 6, 7 | Existing instrument returns, each retained on its original number |
-| 4, 5 / 8, 9 | 4/5 carry Becker radio TX +/− to bridge U3.12 (A) and U3.11 (B). 8/9 carry bridge U3.9 (Y) and U3.10 (Z) to Becker radio RX +/−. |
+| 4, 5 | Radio TX → bridge RX. Pin 4 (+) to U3.12 (A), 11.87 mm. Pin 5 (−) to U3.11 (B), 10.25 mm. One via per conductor. |
+| 8, 9 | Bridge TX → radio RX. U3.9 (Y) to pin 8 (+), 27.06 mm. U3.10 (Z) to pin 9 (−), 25.98 mm. Both tracks stay on F.Cu. |
 | 10 | GPIO33 → U2.11 / T1IN → U2.14 / T1OUT → Zander instrument RX |
 | 11 | GPIO27 → U2.10 / T2IN → U2.7 / T2OUT → FLARM instrument RX |
 | 12–15 | Spare, no connection |
+
+The RX lengths include the estimated via traversal. In1.Cu ground serves the front tracks and B.Cu ground serves the RX tracks on In2.Cu. [Routed copper and polarity check, S235](../research/sources.md#source-register)
 
 For the separate module-based bench bridge, use the [DE-9 harness](../hardware/wiring.md#de9-pinout). [DA-15 drawing and cable reference, S202](../research/sources.md#source-register)
 
