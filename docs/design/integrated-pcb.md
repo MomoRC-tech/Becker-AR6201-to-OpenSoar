@@ -22,7 +22,7 @@ The [supplier circuit requirements and schematic comparison](requirements.md#pcb
 | Function | Captured circuit | Verification before release |
 | --- | --- | --- |
 | Controller | ESP32-WROOM-32E-H4 with antenna and shield, no PSRAM. Local decoupling and six top-side 3.3 V logic programming pads. Fixture senses 3.3 V, board powers itself. | Check boot and OTA recovery, unpowered UART injection and instrument-port startup bytes. H4 stock and assembly profile per S170/S175. |
-| Navigation | TRS3232EIPWR connects two independent RS-232 ports. Zander uses GPIO32 RX and GPIO33 TX. FLARM uses GPIO26 RX and GPIO27 TX. | Exercise both ports simultaneously at J1. Check polarity, loading and powered-off behaviour in both directions. |
+| Navigation | TRS3232EIPWR connects two independent RS-232 ports. Zander uses GPIO32 RX and GPIO33 TX. FLARM uses GPIO26 RX and GPIO27 TX. R24 and R25 pull U2 pins 11 and 10 up to 3.3 V through 10 kΩ each, holding both transmit lines at UART idle during reset. | Exercise both ports simultaneously at J1. Check polarity, loading and powered-off behaviour in both directions. |
 | Becker | SIT3491EESD full duplex at 3.3 V. Populate R4 to enable TX; R3 biases DI high, R5 defines DE if link removed. Receiver enabled, no receive termination fitted. | Verify separate pairs and idle levels through reset and brownout. Compare loaded cable waveforms and bytes in both directions. |
 | Supply | External F1, DMP6023LE reverse-polarity MOSFET, 100 kΩ gate network, 12 V gate clamp, provisional SMBJ20A, LMR33610ADDAR synchronous 400 kHz buck to 3.3 V. Draft power stage uses 6.8 µH, two 10 µF/100 V inputs, four 22 µF/25 V outputs. | Scope actual hot clamp and ringing against every input limit. Verify inrush, MOSFET gate, minimum effective capacitance after DC bias and thermal limits. See S172. |
 | Battery measurement | R8/R9 divider from protected input to ground, C18 on the divider. While U5 is powered and enabled, PG low selects ground for GPIO34 and PG high selects the divider. At zero supply U5 isolates the signal paths and R12 pulls GPIO34 down. Output bleed preserves nominal ×11 scaling. | Calibrate against XT30 at 7–20 V. Scope GPIO34 and measure injection into unpowered 3.3 V at hot/cold start, hard collapse, reverse input and maximum clamped input. |
@@ -34,7 +34,7 @@ The [supplier circuit requirements and schematic comparison](requirements.md#pcb
 
 <a id="placement-comparison"></a>
 
-**Front-panel proposal for review.** Both connectors face forward. All 87 electrical footprints and the two original mounting holes are on the candidate drawing. Both MX5050s, the input protection, buck components, USB support, J3 and the 17 probes are placed.
+**Front-panel proposal for review.** Both connectors face forward. All 89 electrical footprints and the two original mounting holes are on the candidate drawing. Both MX5050s, the input protection, buck components, USB support, J3 and the 17 probes are placed.
 
 ![Original connector axes and proposed front-panel placement at equal scale](../images/integrated-front-fit.png)
 
@@ -209,7 +209,7 @@ The module-based bridge uses its existing [DE-9 harness](../hardware/wiring.md#d
 
 ## 4. 💶 Ten-board cost comparison
 
-**Front-panel prototype · 21 November 2026.** The [native KiCad schematic](../../electronics/integrated/front-panel/compact-bridge.kicad_sch) has 33 fitted lines, 68 placements per board and 680 for ten. Leave J3 and R16 unpopulated. TP1–TP17 are solder lands. Eleven SKUs from S214–S218 cover 41 placements per board, including a 4.7 µF and 100 nF pair at each of the three CH9102F supply pins.
+**Front-panel prototype · 21 November 2026.** The [native KiCad schematic](../../electronics/integrated/front-panel/compact-bridge.kicad_sch) has 33 fitted lines, 70 placements per board and 700 for ten. Leave J3 and R16 unpopulated. TP1–TP17 are solder lands. Eleven SKUs from S214–S218 cover 43 placements per board, including a 4.7 µF and 100 nF pair at each of the three CH9102F supply pins.
 
 Use Standard PCBA for U1. Stock is JLCPCB catalogue inventory. USD/pc uses the price break for the fitted ten-board quantity, before attrition, purchasing minimums, assembly, freight and tax. ICs and the radio module appear first. Each group is sorted by unit price. S219–S221.
 
@@ -245,11 +245,11 @@ Use Standard PCBA for U1. Stock is JLCPCB catalogue inventory. USD/pc uses the p
 | R3 | 0603WAF4701T5E | [C23162](https://jlcpcb.com/partdetail/C23162) | SMT | Basic | 1 | 10 | 19,435,798 | 0.0028 |
 | R4 | 0603WAF0000T5E | [C21189](https://jlcpcb.com/partdetail/C21189) | SMT | Basic | 1 | 10 | 15,723,607 | 0.0021 |
 | R7 | 0603WAF4322T5E | [C23053](https://jlcpcb.com/partdetail/C23053) | SMT | Extended | 1 | 10 | 31,242 | 0.0018 |
-| R1–R2, R5, R11, R19–R20 | 0603WAF1002T5E | [C25804](https://jlcpcb.com/partdetail/C25804) | SMT | Basic | 6 | 60 | 43,043,861 | 0.0017 |
+| R1–R2, R5, R11, R19–R20, R24–R25 | 0603WAF1002T5E | [C25804](https://jlcpcb.com/partdetail/C25804) | SMT | Basic | 8 | 80 | 43,043,861 | 0.0017 |
 | R15, R17–R18, R21–R23 | 0603WAF1001T5E | [C21190](https://jlcpcb.com/partdetail/C21190) | SMT | Basic | 6 | 60 | 40,924,288 | 0.0016 |
 | R13–R14 | 0603WAF5101T5E | [C23186](https://jlcpcb.com/partdetail/C23186) | SMT | Basic | 2 | 20 | 18,466,248 | 0.0015 |
 
-**Fitted parts** total **$162.96 for ten** ($16.30 per board). Nine Basic SKUs account for 360 placements and 24 Extended SKUs for 320. The 31 distinct SMT feeders add $47.43 at S213’s Standard rate. J1 and J2 use wave soldering. Quote their fitting charge separately.
+**Fitted parts** total **$162.99 for ten** ($16.30 per board). Nine Basic SKUs account for 380 placements and 24 Extended SKUs for 320. The 31 distinct SMT feeders add $47.43 at S213’s Standard rate. J1 and J2 use wave soldering. Quote their fitting charge separately.
 
 - **C14–C17.** The selected Taiyo Yuden costs $5.58 more for 40 than CCTC TCC1210X7R226K250MT, C49118556 (60,010 stock at $0.1728). Both are 1210, 22 µF, 25 V, ±10% X7R alternatives. Taiyo’s bias curve gives about 84.1 µF for four at 3.3 V. CCTC’s exact-part bias is unknown. Body heights are 2.70 and 2.80 mm maximum respectively. The original TDK C2175584 lists zero stock. TI’s 400 kHz application circuit uses the same 6.8 µH and four 22 µF parts. The bias curve supports this prototype selection. See [S220](../research/sources.md#source-register) for temperature and stability limits.
 - **R7.** Fit 43.2 kΩ ±1% with R6 at 100 kΩ for 3.3148 V nominal (+5.35 mV relative to 43.3 kΩ). R9 is 11.1 kΩ ±0.1%.
