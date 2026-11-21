@@ -205,54 +205,54 @@ The module-based bridge uses its existing [DE-9 harness](../hardware/wiring.md#d
 
 **Front-panel prototype · 21 November 2026.** The [native KiCad schematic](../../electronics/integrated/front-panel/compact-bridge.kicad_sch) has 30 fitted lines, 57 placements per board and 570 for ten. Leave J3 and R16 unpopulated. TP1–TP17 are solder lands.
 
-Use Standard PCBA for U1. Stock is JLCPCB catalogue inventory. USD/pc uses the price break for the fitted ten-board quantity, before attrition, purchasing minimums, assembly, freight and tax. ICs and the radio module appear first. Each group is sorted by unit price. S219–S221, S224–S225.
+Use Standard PCBA for U1. Stock is JLCPCB catalogue inventory. USD/pc uses the price break for the fitted ten-board quantity, before attrition, purchasing minimums, assembly, freight and tax. Rows are sorted by fitted cost per board, highest first. [Download the review BOM (CSV)](../../electronics/integrated/front-panel/fitted-bom.csv). S227.
 
-| Fitted references | Orderable MPN | JLCPCB SKU | Process | JLC tier | Per board | For ten | Stock, 21 Nov | USD/pc |
-| --- | --- | --- | --- | --- | ---: | ---: | ---: | ---: |
-| U1 | ESP32-WROOM-32E-H4 | [C3013935](https://jlcpcb.com/partdetail/C3013935) | SMT | Extended | 1 | 10 | 2,953 | 3.9086 |
-| U4 | LMR33610ADDAR | [C1852147](https://jlcpcb.com/partdetail/C1852147) | SMT | Extended | 1 | 10 | 90 | 1.5821 |
-| U8 | CH9102F | [C2858418](https://jlcpcb.com/partdetail/C2858418) | SMT | Extended | 1 | 10 | 13,582 | 1.0259 |
-| U2 | TRS3232EIPWR | [C2652868](https://jlcpcb.com/partdetail/C2652868) | SMT | Extended | 1 | 10 | 11,304 | 0.6283 |
-| U3 | SIT3491EESD | [C496617](https://jlcpcb.com/partdetail/C496617) | SMT | Extended | 1 | 10 | 3,462 | 0.4303 |
-| U6–U7 | MX5050S6030A1 | [C54800033](https://jlcpcb.com/partdetail/C54800033) | SMT | Extended | 2 | 20 | 2,774 | 0.4042 |
-| J1 | D15P33E4GV00LF | [C3139986](https://jlcpcb.com/partdetail/C3139986) | Wave | Extended | 1 | 10 | 562 | 1.8275 |
-| J4 | USB4145-03-0230-C | [C5291559](https://jlcpcb.com/partdetail/C5291559) | SMT | Extended | 1 | 10 | 422 | 1.1338 |
-| Q1 | DMP6023LE-13 | [C154901](https://jlcpcb.com/partdetail/C154901) | SMT | Extended | 1 | 10 | 2,703 | 0.7854 |
-| C12, C19 | C3225X7R2A106KT000E | [C49296968](https://jlcpcb.com/partdetail/C49296968) | SMT | Extended | 2 | 20 | 7,463 | 0.4663 |
-| J2 | XT30PW-M30.G.Y | [C431092](https://jlcpcb.com/partdetail/C431092) | Wave | Extended | 1 | 10 | 94,803 | 0.3354 |
-| C14–C15 | MCAST32MSB7226KPNA01 | [C5372271](https://jlcpcb.com/partdetail/C5372271) | SMT | Extended | 2 | 20 | 2,951 | 0.3132 |
-| D2 | SMBJ20A | [C151257](https://jlcpcb.com/partdetail/C151257) | SMT | Extended | 1 | 10 | 5,659 | 0.1853 |
-| D3 | USBLC6-2SC6 | [C7519](https://jlcpcb.com/partdetail/C7519) | SMT | Extended | 1 | 10 | 43,744 | 0.1561 |
-| L1 | MWSA0603S-100MT | [C132141](https://jlcpcb.com/partdetail/C132141) | SMT | Extended | 1 | 10 | 16,233 | 0.0807 |
-| Q2 | UMH3N | [C62892](https://jlcpcb.com/partdetail/C62892) | SMT | Extended | 1 | 10 | 42,528 | 0.0498 |
-| C13 | C1608X7R1H224KT000N | [C445721](https://jlcpcb.com/partdetail/C445721) | SMT | Extended | 1 | 10 | 7,891 | 0.0459 |
-| D5 | LTST-S270KRKT | [C125114](https://jlcpcb.com/partdetail/C125114) | SMT | Extended | 1 | 10 | 34,050 | 0.0320 |
-| C2 | CL21A106KAYNNNE | [C15850](https://jlcpcb.com/partdetail/C15850) | SMT | Basic | 1 | 10 | 8,832,862 | 0.0311 |
-| D4 | LTST-S270KGKT | [C125113](https://jlcpcb.com/partdetail/C125113) | SMT | Extended | 1 | 10 | 2,005 | 0.0288 |
-| C1, C11, C26 | CC0603KRX7R8BB105 | [C106858](https://jlcpcb.com/partdetail/C106858) | SMT | Extended | 3 | 30 | 243,775 | 0.0180 |
-| D1 | BZT52C12 | [C19077410](https://jlcpcb.com/partdetail/C19077410) | SMT | Extended | 1 | 10 | 314,310 | 0.0169 |
-| C3–C10, C18 | CC0603KRX7R9BB104 | [C14663](https://jlcpcb.com/partdetail/C14663) | SMT | Basic | 9 | 90 | 53,262,014 | 0.0056 |
-| R6, R8, R10 | 0603WAF1003T5E | [C25803](https://jlcpcb.com/partdetail/C25803) | SMT | Basic | 3 | 30 | 13,080,768 | 0.0029 |
-| R3 | 0603WAF4701T5E | [C23162](https://jlcpcb.com/partdetail/C23162) | SMT | Basic | 1 | 10 | 19,341,828 | 0.0028 |
-| R4 | 0603WAF0000T5E | [C21189](https://jlcpcb.com/partdetail/C21189) | SMT | Basic | 1 | 10 | 15,621,525 | 0.0021 |
-| R7 | 0603WAF4322T5E | [C23053](https://jlcpcb.com/partdetail/C23053) | SMT | Extended | 1 | 10 | 31,262 | 0.0018 |
-| R1–R2, R5, R9, R11, R24–R25 | 0603WAF1002T5E | [C25804](https://jlcpcb.com/partdetail/C25804) | SMT | Basic | 7 | 70 | 42,729,480 | 0.0017 |
-| R15, R17–R18, R21–R23 | 0603WAF1001T5E | [C21190](https://jlcpcb.com/partdetail/C21190) | SMT | Basic | 6 | 60 | 40,641,417 | 0.0016 |
-| R13–R14 | 0603WAF5101T5E | [C23186](https://jlcpcb.com/partdetail/C23186) | SMT | Basic | 2 | 20 | 18,411,004 | 0.0015 |
+| Fitted references | Orderable MPN | JLCPCB SKU | Process | JLC tier | Per board | For ten | Stock, 21 Nov | USD/pc | USD/board |
+| --- | --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
+| U1 | ESP32-WROOM-32E-H4 | [C3013935](https://jlcpcb.com/partdetail/C3013935) | SMT | Extended | 1 | 10 | 2,953 | 3.9086 | 3.9086 |
+| J1 | D15P33E4GV00LF | [C3139986](https://jlcpcb.com/partdetail/C3139986) | Wave | Extended | 1 | 10 | 572 | 1.8275 | 1.8275 |
+| U4 | LMR33610ADDAR | [C1852147](https://jlcpcb.com/partdetail/C1852147) | SMT | Extended | 1 | 10 | 90 | 1.5821 | 1.5821 |
+| J4 | USB4145-03-0230-C | [C5291559](https://jlcpcb.com/partdetail/C5291559) | SMT | Extended | 1 | 10 | 422 | 1.1338 | 1.1338 |
+| U8 | CH9102F | [C2858418](https://jlcpcb.com/partdetail/C2858418) | SMT | Extended | 1 | 10 | 13,582 | 1.0259 | 1.0259 |
+| C12, C19 | C3225X7R2A106KT000E | [C49296968](https://jlcpcb.com/partdetail/C49296968) | SMT | Extended | 2 | 20 | 7,443 | 0.4663 | 0.9326 |
+| U6–U7 | MX5050S6030A1 | [C54800033](https://jlcpcb.com/partdetail/C54800033) | SMT | Extended | 2 | 20 | 2,774 | 0.4042 | 0.8084 |
+| Q1 | DMP6023LE-13 | [C154901](https://jlcpcb.com/partdetail/C154901) | SMT | Extended | 1 | 10 | 2,703 | 0.7854 | 0.7854 |
+| U2 | TRS3232EIPWR | [C2652868](https://jlcpcb.com/partdetail/C2652868) | SMT | Extended | 1 | 10 | 11,304 | 0.6283 | 0.6283 |
+| U3 | SIT3491EESD | [C496617](https://jlcpcb.com/partdetail/C496617) | SMT | Extended | 1 | 10 | 3,462 | 0.4303 | 0.4303 |
+| J2 | XT30PW-M30.G.Y | [C431092](https://jlcpcb.com/partdetail/C431092) | Wave | Extended | 1 | 10 | 94,803 | 0.3354 | 0.3354 |
+| C14–C15 | CL31A226KAHNNNE | [C12891](https://jlcpcb.com/partdetail/C12891) | SMT | Basic | 2 | 20 | 2,575,380 | 0.1028 | 0.2056 |
+| D2 | SMBJ20A | [C151257](https://jlcpcb.com/partdetail/C151257) | SMT | Extended | 1 | 10 | 5,659 | 0.1853 | 0.1853 |
+| D3 | USBLC6-2SC6 | [C7519](https://jlcpcb.com/partdetail/C7519) | SMT | Extended | 1 | 10 | 43,635 | 0.1561 | 0.1561 |
+| L1 | MWSA0603S-100MT | [C132141](https://jlcpcb.com/partdetail/C132141) | SMT | Extended | 1 | 10 | 15,968 | 0.0807 | 0.0807 |
+| C1, C11, C26 | CC0603KRX7R8BB105 | [C106858](https://jlcpcb.com/partdetail/C106858) | SMT | Extended | 3 | 30 | 243,689 | 0.0180 | 0.0540 |
+| C3–C10, C18 | CC0603KRX7R9BB104 | [C14663](https://jlcpcb.com/partdetail/C14663) | SMT | Basic | 9 | 90 | 53,205,505 | 0.0056 | 0.0504 |
+| Q2 | UMH3N | [C62892](https://jlcpcb.com/partdetail/C62892) | SMT | Extended | 1 | 10 | 42,528 | 0.0498 | 0.0498 |
+| C13 | C1608X7R1H224KT000N | [C445721](https://jlcpcb.com/partdetail/C445721) | SMT | Extended | 1 | 10 | 7,891 | 0.0459 | 0.0459 |
+| D5 | LTST-S270KRKT | [C125114](https://jlcpcb.com/partdetail/C125114) | SMT | Extended | 1 | 10 | 34,050 | 0.0320 | 0.0320 |
+| C2 | CL21A106KAYNNNE | [C15850](https://jlcpcb.com/partdetail/C15850) | SMT | Basic | 1 | 10 | 8,814,739 | 0.0311 | 0.0311 |
+| D4 | LTST-S270KGKT | [C125113](https://jlcpcb.com/partdetail/C125113) | SMT | Extended | 1 | 10 | 2,005 | 0.0288 | 0.0288 |
+| D1 | BZT52C12 | [C19077410](https://jlcpcb.com/partdetail/C19077410) | SMT | Extended | 1 | 10 | 313,858 | 0.0169 | 0.0169 |
+| R1–R2, R5, R9, R11, R24–R25 | 0603WAF1002T5E | [C25804](https://jlcpcb.com/partdetail/C25804) | SMT | Basic | 7 | 70 | 42,672,234 | 0.0017 | 0.0119 |
+| R15, R17–R18, R21–R23 | 0603WAF1001T5E | [C21190](https://jlcpcb.com/partdetail/C21190) | SMT | Basic | 6 | 60 | 40,629,586 | 0.0016 | 0.0096 |
+| R6, R8, R10 | 0603WAF1003T5E | [C25803](https://jlcpcb.com/partdetail/C25803) | SMT | Basic | 3 | 30 | 13,060,376 | 0.0029 | 0.0087 |
+| R13–R14 | 0603WAF5101T5E | [C23186](https://jlcpcb.com/partdetail/C23186) | SMT | Basic | 2 | 20 | 18,400,347 | 0.0015 | 0.0030 |
+| R3 | 0603WAF4701T5E | [C23162](https://jlcpcb.com/partdetail/C23162) | SMT | Basic | 1 | 10 | 19,317,065 | 0.0028 | 0.0028 |
+| R4 | 0603WAF0000T5E | [C21189](https://jlcpcb.com/partdetail/C21189) | SMT | Basic | 1 | 10 | 15,627,426 | 0.0021 | 0.0021 |
+| R7 | 0603WAF4322T5E | [C23053](https://jlcpcb.com/partdetail/C23053) | SMT | Extended | 1 | 10 | 31,262 | 0.0018 | 0.0018 |
 
-**Fitted parts** total **$147.96 for ten** ($14.80 per board). Eight Basic SKUs account for 300 placements and 22 Extended SKUs for 270. The 28 distinct SMT feeders add $42.84 at S213’s Standard rate. J1 and J2 use wave soldering. Quote their fitting charge separately.
+**Fitted parts** total **$143.75 for ten** ($14.37 per board). Nine Basic SKUs account for 320 placements and 21 Extended SKUs for 250. The 28 distinct SMT feeders add $42.84 at S213’s Standard rate. J1 and J2 use wave soldering. Quote their fitting charge separately.
 
-**Converter comparison · USD per board at ten-board quantities.** The stage includes input and output capacitors, power-good pull-up and the regulator’s other local parts. The green rail/heartbeat indicator (D4, R21 and R22) adds $0.0320 and three placements to every option. Input selection and reverse protection are common. Prices, capacitance assumptions and distributor checks are in [S225–S226](../research/sources.md#source-register).
+**Converter comparison · USD per board at ten-board quantities.** The stage includes input and output capacitors, power-good pull-up and the regulator’s other local parts. The green rail/heartbeat indicator (D4, R21 and R22) adds $0.0320 and three placements to every option. Input selection and reverse protection are common. Prices, capacitance assumptions and distributor checks are in [S225–S227](../research/sources.md#source-register).
 
 | JLCPCB Extended converter | IC / module | Stage cost | Placements | JLC stock | Stage configuration |
 | --- | ---: | ---: | ---: | ---: | --- |
-| LMR33610ADDAR · fitted | $1.5821 | $3.30 | 12 | 90 | 400 kHz, external 10 µH and two 22 µF outputs. The previous 6.8 µH / four-capacitor stage costs $3.95 at the same prices. |
+| LMR33610ADDAR · fitted | $1.5821 | $2.88 | 12 | 90 | 400 kHz, external 10 µH and two Samsung 22 µF / 25 V X5R outputs in 1206. |
 | [Mornsun K7803MT-1000R4](https://jlcpcb.com/partdetail/C2692188) | $1.8864 | ≈ $4.53 | 11 | 601 | Fixed 3.3 V, 1 A, external window monitor at TP9. The module has no native PG. Mornsun excludes hot swap. |
 | [TLVM23615RDNR](https://jlcpcb.com/partdetail/C19274388) | $3.2313 | ≈ $5.15 | 13 | 289 | Integrated inductor, three 22 µF outputs for TI’s 40 µF effective minimum at 800 kHz, external feedback and frequency setting. |
-| [MPS MPM3510AGQV-Z](https://jlcpcb.com/partdetail/C6992851) | $3.8510 | $5.23 | 9 | 1,133 | Integrated inductor, native PG, 47 µF output and fixed switching frequency. Saves three placements for $1.93 per board. |
+| [MPS MPM3510AGQV-Z](https://jlcpcb.com/partdetail/C6992851) | $3.8510 | $5.23 | 9 | 1,133 | Integrated inductor, native PG, 47 µF output and fixed switching frequency. Saves three placements for $2.35 per board. |
 | [LMZM23601V3SILR](https://jlcpcb.com/partdetail/C2864948) | $64.6887 | $66.25 | 6 | 392 | Fixed 3.3 V, two input and two output capacitors plus the PG pull-up. JLC’s other reel code C2876786 costs $49.2867 each at ten and has zero stock. |
 
-- **C14 and C15.** TI Table 9-2 specifies 10 µH and two rated 22 µF capacitors for 3.3 V at 400 kHz. Taiyo’s typical DC-bias curve gives about 42.1 µF combined at 3.3 V. Check load-step response during first-article Wi-Fi traffic. S220, S225.
+- **C14 and C15.** TI Table 9-2 specifies 10 µH and two rated 22 µF capacitors for 3.3 V at 400 kHz. Samsung CL31A226KAHNNNE (1206 X5R, ±10%, −55 to +85 °C) gives about 35.0 µF combined at 3.3 V on the manufacturer’s typical 25 °C curve. See the [power-stage checks](../project/open-items.md#pcb-study). S225, S227.
 - **R7.** Fit 43.2 kΩ ±1% with R6 at 100 kΩ for 3.3148 V nominal (+5.35 mV relative to 43.3 kΩ).
 - **J1.** The exact Amphenol part is listed for wave soldering. For external fitting, use DigiKey 609-1492-ND (€25.66 for ten in the EU catalogue snapshot) and omit J1 from the assembler’s BOM and placement list. After reflow, seat the board locks, align the mating face to the panel and hand-solder the through-hole contacts and solderable mounting features per the drawing. Inspect solder fill and check continuity before installing the harness. S219.
 - A 3PEAK TPT3232E-TS3R at $0.4636 changes receiver limits and charge-pump sizing. A $0.8520 LMR51420YDDCR needs a new regulator layout and a replacement for the power-good indication at TP9.
