@@ -199,6 +199,17 @@ The module-based bridge uses its existing [DE-9 harness](../hardware/wiring.md#d
 
 ## 4. 💶 Ten-board cost comparison
 
+**Selected for the front-panel BOM.** The native schematic and PCB specify these 11 catalogue SKUs for 37 placements per board. The 34 Basic placements use nine SKUs. Three placements use two Extended SKUs. See S214–S217 for the component checks.
+
+| Positions | Selection | Tier |
+| --- | --- | --- |
+| Nineteen resistors | UNI-ROYAL 0603, 0 Ω link and 1 kΩ, 4.7 kΩ, 5.1 kΩ, 10 kΩ and 100 kΩ resistors | Basic |
+| C3–C10, C18, C20, C22, C23 | Yageo C14663, 100 nF / 50 V X7R, 0603 | Basic |
+| C2 | Samsung C15850, 10 µF / 25 V X5R, 0805 | Basic |
+| Q2, Q3 | JSCJ C20526, MMBT3904, SOT-23 | Basic |
+| C1, C11 | Yageo C106858, 1 µF / 25 V X7R, 0603 | Extended |
+| C21 | Samsung C69335, 4.7 µF / 25 V X5R, 0603 | Extended |
+
 For the DA-15 prototype use the [ten-board stock, unit prices and proposed alternatives](../research/reviews/2026-11-21-integrated-ten-board-sourcing.md) (S213). The [original BOM audit](../research/reviews/2026-11-20-integrated-jlcpcb-bom.md) records the native selections. The six-line DE-9 comparison below uses USD per part on 20 November 2026, before passives, protection, ADC switch, fabrication, assembly, test, freight and tax. S175 covers the five unchanged lines. S196 gives a distributor reference for J1 pending the assembler quote.
 
 | Part | One | Ten, each | Ten, line total |
