@@ -7,7 +7,7 @@
 Use this page for the front-panel board layout, connector pinouts, programming instructions and priced BOM.
 
 > [!NOTE]
-> **Status:** The 58.50 × 46.50 mm front-panel board is fully routed. KiCad reports zero open connections, design-rule violations and schematic mismatches. Fabrication review, the ten-board quote and first-article checks are pending.
+> **Status:** The 58.50 × 46.50 mm front-panel board is fully routed. KiCad reports zero open connections, design-rule violations and schematic mismatches. The fabrication files and both assembly CSVs passed local review. JLCPCB’s placement preview, the ten-board quote and first-article checks are pending.
 
 📑 **On this page:** <kbd>[1 · 🔌 Circuits](#circuits)</kbd> <kbd>[2 · 📐 Compact placement](#layout)</kbd> <kbd>[3 · 🌡️ Heat and verification](#heat)</kbd> <kbd>[4 · 💶 Production cost](#cost)</kbd> <kbd>[5 · 📦 Production](#production)</kbd>
 
@@ -35,6 +35,8 @@ The [supplier circuit requirements and schematic comparison](requirements.md#pcb
 <a id="placement-comparison"></a>
 
 [View the routed copper on all four layers](../images/integrated-front-routing.png) · [Connectivity and ground checks, S241](../research/sources.md#source-register).
+
+The [placement trial](../images/integrated-front-feedback-trial.png) puts R6 and R7 beside U4, shortening feedback copper by 75% and removing two vias. Review H1 screw and washer clearance before adopting it. R14 can also move closer to J4, with only 0.335 mm to the nominal plug envelope. Both are proposals for a later revision. [Trial dimensions and checks, S243](../research/sources.md#source-register)
 
 Both the DA-15 and XT30 face forward. The board occupies 2,720.25 mm² and carries 54 fitted parts, three unpopulated footprints (J3, J5 and R16) and two mounting holes.
 
@@ -243,6 +245,15 @@ For the ten-board quote, submit U1 mask, paste and drill plots together for the 
 <a id="order"></a>
 
 ### 5.2 From design to JLCPCB order
+
+**Ten-board quote files** · Routed board `7afd6e5` · [Gerbers and drills](../../electronics/integrated/front-panel/quote-7afd6e5/gerbers-drills-7afd6e5.zip) · [JLC BOM](../../electronics/integrated/front-panel/quote-7afd6e5/jlc-bom.csv) · [JLC placement file](../../electronics/integrated/front-panel/quote-7afd6e5/jlc-cpl.csv) · [CAM preview](../images/integrated-front-cam-review.png)
+
+| Quote entry | Setting or check |
+| --- | --- |
+| Fabrication | 10 boards, 58.50 × 46.50 mm finished outline. Use the four-layer stackup, finish and mask specified above. Quote panel rails and fiducials for Standard PCBA. |
+| Assembly | One top-side BOM and CPL per board. Fit 52 SMT parts and wave-solder J1 and J2. Ten boards require 540 fitted placements before attrition. |
+| Stencil | Use the supplied top paste file. It omits both R16 apertures. A default KiCad export includes them. J3, J5 and R16 stay empty. |
+| Placement preview | Coordinates are in mm on the Gerber axes, with positive Y upwards. J1 and J2 use their physical envelope centres. Other fitted parts use their KiCad placement anchors. Verify J1 and J2 mating faces, J4 orientation, U1 antenna overhang, IC pin 1, diode cathodes and both LED emission directions in the supplier preview. |
 
 | Gate | Work product | Ready to proceed when |
 | --- | --- | --- |

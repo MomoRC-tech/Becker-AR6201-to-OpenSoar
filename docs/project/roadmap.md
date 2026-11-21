@@ -31,7 +31,7 @@ Related: ❓ [Open items](open-items.md) · 🎯 [Requirements](../design/requir
 | WP8 Aircraft integration | ⬜ Later | Needs verified hardware and separate approval | Installation, protection and approval requirements met |
 | WP9 Device profiles | 🟡 [Profiles](#device-profiles) and optional [navigation detection](#navigation-detection) in firmware 0.5.7 (S115, S154) | Replace the candidate preset values once the [installed settings](open-items.md#installed-equipment) are known; check them on the wired bridge | Presets and manual settings work on compatible ports, survive restart and OTA, and preserve existing configurations |
 
-**Ten-board integrated PCB.** The [front-panel board](../design/integrated-pcb.md#layout) is fully routed. All 50 multi-pin nets match the schematic. ERC and DRC pass (S241). Next, export and independently review the fabrication plots and drills, then reconcile the fitted BOM and placement file for the [ten-board quote](../design/integrated-pcb.md#order). [First-article fit and electrical checks](open-items.md#pcb-study) follow fabrication.
+**Ten-board integrated PCB.** The [routed board](../design/integrated-pcb.md#layout) and its [fabrication ZIP, BOM and CPL](../design/integrated-pcb.md#order) passed local review (S241–S242). Next, check component alignment and rotation in the JLCPCB preview and obtain the ten-board Standard PCBA quote, including J1/J2 wave soldering. [First-article checks](open-items.md#pcb-study) follow fabrication.
 
 ### 1.1 Work loop
 
