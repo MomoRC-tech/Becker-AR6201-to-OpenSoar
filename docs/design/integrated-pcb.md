@@ -34,7 +34,7 @@ The [supplier circuit requirements and schematic comparison](requirements.md#pcb
 
 <a id="placement-comparison"></a>
 
-**Front-panel proposal for review.** Both connectors face forward. All 75 electrical footprints and the two original mounting holes are on the candidate drawing. Both MX5050s, the input protection, buck components, USB support, J3 and the 17 probes are placed.
+**Front-panel proposal for review.** Both connectors face forward. All 74 electrical footprints and the two original mounting holes are on the candidate drawing. Both MX5050s, the input protection, buck components, USB support, J3 and the 17 probes are placed.
 
 ![Original connector axes and proposed front-panel placement at equal scale](../images/integrated-front-fit.png)
 
@@ -143,6 +143,22 @@ U8 pins 5 (VIO), 6 (V3) and 7 (VDD5) share 3.3 V. Fit one 1 µF capacitor, C26, 
 
 On the DE-9 baseline, J2 supplies power and TP1–TP6 serve a 3.3 V USB-to-UART pogo fixture. For production, program the WROOM through an upright USB-C port with the lid removed. [PCB12](requirements.md#production-pcb) defines the three supply modes and bench checks.
 
+<a id="manual-flash"></a>
+
+**First flash or USB recovery**
+
+1. Build the [normal bridge firmware](../../firmware/bridge/README.md#build) with the project’s OTA partition layout. Connect a USB data cable to J4 and select the CH9102F serial port. The example uses COM3.
+2. Hold **TP4 (BOOT/GPIO0)** to **TP1 (GND)**. Momentarily connect **TP3 (EN)** to TP1, then release EN while BOOT stays grounded. The ESP32 samples GPIO0 when EN rises.
+3. From the repository root, run the command below. Release TP4 once esptool identifies the ESP32. The merged image contains the bootloader, partition table and bridge application.
+
+   ```text
+   esptool --chip esp32 --port COM3 --before no-reset --after no-reset write-flash 0x0 build/bridge/bridge.ino.merged.bin
+   ```
+
+4. After esptool verifies the write, leave TP4 released and pulse TP3 to TP1 again to start the firmware.
+
+**Later updates** use the [password-protected Wi-Fi upload](../../firmware/bridge/README.md#upload-over-wi-fi) with the application image `build/bridge/bridge.ino.bin`. USB is normally needed once per blank board. Use the manual procedure for recovery if the firmware cannot boot or accept OTA, or to install a new partition layout. S106, S229.
+
 ![Top-entry USB-C placement study beside H2 showing the existing board and right housing wall](../images/integrated-usb-fit.png)
 
 | Study item | Result |
@@ -150,7 +166,7 @@ On the DE-9 baseline, J2 supplies power and TP1–TP6 serve a 3.3 V USB-to-UART 
 | Selected socket | GCT USB4145-03-0230-C, vertical USB 2.0 data receptacle. Its body stands 7.46 mm high. The four 2.30 mm shell stakes extend a nominal 0.70 mm below the 1.60 mm PCB. Allow support near the socket for the 5–20 N insertion load. |
 | Existing outline | The 10.6 × 6.0 mm study envelope found no free position on a 0.25 mm grid at 0° or 90°. Repeating the check with TP1–TP6 removed also found no clear position. A same-outline design needs component rearrangement. |
 | Wider layout | A 7 mm extension beside H2 provides the socket envelope and a 6 × 15 mm trial area for electronics. The 55 mm board would cross the drawn right inner wall by 2.0 mm at the present mounting position. Shifting the assembly 2.5 mm left would leave only 0.5 mm per side and move both front cutouts and mounts. |
-| Programming circuit | Use the CH9102F QFN24 (4 × 4 mm) between USB-C D+/D− and ESP32 UART0. Q2 (UMH3N) contains both NPN transistors and their 4.7 kΩ base resistors. DTR and RTS can pull EN or GPIO0 low independently for automatic programming. Equal DTR/RTS levels release both outputs. R15 (1 kΩ) connects USB VBUS to pin 8. Leave R16 unpopulated and use the internal pull-down. D3 protects the data lines. Set the host UART to no hardware flow control so RTS and DTR remain available for ESP32 reset and boot. Keep TP1–TP6 for production and recovery. |
+| Programming circuit | CH9102F connects USB-C to ESP32 UART0. R18 (1 kΩ) feeds ESP32 RX. DTR (U8.23) and RTS (U8.19) are open. R15 (1 kΩ) feeds VBUS sense at U8.8. Leave R16 unpopulated. D3 protects D+/D−. |
 | Production power path | Use one Wuxi Maxinmicro MX5050S6030A1 (ESOP-8L, C54800033) on each input to U4. Feed one from protected XT30 and one from USB VBUS. XT30 takes priority at 7–16 V. Tap the battery divider before the XT30 device. Fit a separate 5.1 kΩ pull-down on each CC pin. Each VS pin connects to its own input. Below 5 V at the USB receptacle, active operation and USB-only startup fall outside the specified range. The owner accepts this cable-drop risk. See [S208](../research/sources.md#source-register), [PCB12](requirements.md#production-pcb) and the [USB bias and bench checks](../project/open-items.md#pcb-study). |
 
 Use the 55 mm extension as a comparison when placing the complete circuit for the [new layout](../project/roadmap.md#work-packages). Check the plug overmold, cable withdrawal, H2 tool access and enclosure support on each candidate. [Open interface choices](../project/open-items.md#pcb-study) · [S201](../research/sources.md#source-register)
@@ -203,9 +219,9 @@ The module-based bridge uses its existing [DE-9 harness](../hardware/wiring.md#d
 
 ## 4. 💶 Ten-board cost comparison
 
-**Front-panel prototype · 21 November 2026.** The [native KiCad schematic](../../electronics/integrated/front-panel/compact-bridge.kicad_sch) has 30 fitted lines, 56 placements per board and 560 for ten. Leave J3 and R16 unpopulated. TP1–TP17 are solder lands.
+**Front-panel prototype · 21 November 2026.** The [native KiCad schematic](../../electronics/integrated/front-panel/compact-bridge.kicad_sch) has 29 fitted lines, 55 placements per board and 550 for ten. Leave J3 and R16 unpopulated. TP1–TP17 are solder lands.
 
-Use Standard PCBA for U1. Stock is JLCPCB catalogue inventory. USD/pc uses the price break for the fitted ten-board quantity, before attrition, purchasing minimums, assembly, freight and tax. Rows are sorted by fitted cost per board, highest first. [Download the review BOM (CSV)](../../electronics/integrated/front-panel/fitted-bom.csv). S227–S228.
+Use Standard PCBA for U1. Stock is JLCPCB catalogue inventory. USD/pc uses the price break for the fitted ten-board quantity, before attrition, purchasing minimums, assembly, freight and tax. Rows are sorted by fitted cost per board, highest first. [Download the review BOM (CSV)](../../electronics/integrated/front-panel/fitted-bom.csv). S227–S229.
 
 | Fitted references | Orderable MPN | JLCPCB SKU | Process | JLC tier | Per board | For ten | Stock, 21 Nov | USD/pc | USD/board |
 | --- | --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
@@ -225,7 +241,6 @@ Use Standard PCBA for U1. Stock is JLCPCB catalogue inventory. USD/pc uses the p
 | D2 | SMBJ16A | [C151254](https://jlcpcb.com/partdetail/C151254) | SMT | Extended | 1 | 10 | 2,227 | 0.1347 | 0.1347 |
 | L1 | MWSA0603S-4R7MT | [C408447](https://jlcpcb.com/partdetail/C408447) | SMT | Extended | 1 | 10 | 17,381 | 0.1098 | 0.1098 |
 | C3–C10, C13, C18 | CC0603KRX7R9BB104 | [C14663](https://jlcpcb.com/partdetail/C14663) | SMT | Basic | 10 | 100 | 53,209,794 | 0.0056 | 0.0560 |
-| Q2 | UMH3N | [C62892](https://jlcpcb.com/partdetail/C62892) | SMT | Extended | 1 | 10 | 42,528 | 0.0498 | 0.0498 |
 | C1, C26 | CC0603KRX7R8BB105 | [C106858](https://jlcpcb.com/partdetail/C106858) | SMT | Extended | 2 | 20 | 243,689 | 0.0180 | 0.0360 |
 | D5 | LTST-S270KRKT | [C125114](https://jlcpcb.com/partdetail/C125114) | SMT | Extended | 1 | 10 | 34,050 | 0.0320 | 0.0320 |
 | C2 | CL21A106KAYNNNE | [C15850](https://jlcpcb.com/partdetail/C15850) | SMT | Basic | 1 | 10 | 8,814,739 | 0.0311 | 0.0311 |
@@ -240,7 +255,7 @@ Use Standard PCBA for U1. Stock is JLCPCB catalogue inventory. USD/pc uses the p
 | R6 | 0603WAF7502T5E | [C23242](https://jlcpcb.com/partdetail/C23242) | SMT | Basic | 1 | 10 | 628,658 | 0.0021 | 0.0021 |
 | R7 | 0603WAF2402T5E | [C23352](https://jlcpcb.com/partdetail/C23352) | SMT | Basic | 1 | 10 | 662,702 | 0.0019 | 0.0019 |
 
-**Fitted parts** total **$133.88 for ten** ($13.39 per board). Eleven Basic SKUs account for 340 placements and 19 Extended SKUs for 220. The 28 distinct SMT feeders add $42.84 at S213’s Standard rate. J1 and J2 use wave soldering. Quote their fitting charge separately.
+**Fitted parts** total **$133.38 for ten** ($13.34 per board). Eleven Basic SKUs account for 340 placements and 18 Extended SKUs for 210. The 27 distinct SMT feeders add $41.31 at S213’s Standard rate. J1 and J2 use wave soldering. Quote their fitting charge separately.
 
 **Converter comparison · USD per board at ten-board quantities.** The stage includes input and output capacitors, power-good pull-up and the regulator’s other local parts. The green rail/heartbeat indicator (D4, R21 and R22) adds $0.0320 and three placements to every option. Input selection and reverse protection are common. Prices, capacitance assumptions and distributor checks are in [S225–S228](../research/sources.md#source-register).
 
