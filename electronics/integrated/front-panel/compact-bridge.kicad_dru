@@ -14,3 +14,6 @@
 (rule "Becker differential copper"
   (condition "A.NetName == 'BKR_RX_P' || A.NetName == 'BKR_RX_N' || A.NetName == 'BKR_TX_P' || A.NetName == 'BKR_TX_N'")
   (constraint track_width (min 0.30mm) (opt 0.30mm) (max 0.30mm)))
+(rule "TPS62933P SOT-583 adjacent lands at 0.50 mm pitch"
+  (condition "A.Type == 'Pad' && B.Type == 'Pad' && A.Reference == 'U4' && B.Reference == 'U4'")
+  (constraint clearance (min 0.20mm)))
