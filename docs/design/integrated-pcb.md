@@ -209,29 +209,54 @@ The module-based bridge uses its existing [DE-9 harness](../hardware/wiring.md#d
 
 ## 4. 💶 Ten-board cost comparison
 
-**Selected for the front-panel BOM.** The native schematic and PCB specify these 11 catalogue SKUs for 40 placements per board. The 35 Basic placements use nine SKUs. Five placements use two Extended SKUs. See S214–S218 for the component checks.
+**Front-panel prototype · 21 November 2026.** The [native KiCad schematic](../../electronics/integrated/front-panel/compact-bridge.kicad_sch) has 35 fitted lines, 69 placements per board and 690 for ten. J3 is normally unpopulated. TP1–TP17 are solder lands. Eleven SKUs from S214–S218 cover 40 placements, including a 4.7 µF and 100 nF pair at each of the three CP2102N supply pins.
 
-| Positions | Selection | Tier |
-| --- | --- | --- |
-| Nineteen resistors | UNI-ROYAL 0603, 0 Ω link and 1 kΩ, 4.7 kΩ, 5.1 kΩ, 10 kΩ and 100 kΩ resistors | Basic |
-| C3–C10, C18, C20, C22, C23, C26 | Yageo C14663, 100 nF / 50 V X7R, 0603 | Basic |
-| C2 | Samsung C15850, 10 µF / 25 V X5R, 0805 | Basic |
-| Q2, Q3 | JSCJ C20526, MMBT3904, SOT-23 | Basic |
-| C1, C11 | Yageo C106858, 1 µF / 25 V X7R, 0603 | Extended |
-| C21, C24, C25 | Samsung C69335, 4.7 µF / 25 V X5R, 0603 | Extended |
+Use Standard PCBA for U1. Stock is JLCPCB catalogue inventory. USD/pc uses the price break for the fitted ten-board quantity, before attrition, purchasing minimums, assembly, freight and tax. All 35 rows match the exported MPN and code. S219–S220.
 
-For the DA-15 prototype use the [ten-board stock, unit prices and proposed alternatives](../research/reviews/2026-11-21-integrated-ten-board-sourcing.md) (S213). The [original BOM audit](../research/reviews/2026-11-20-integrated-jlcpcb-bom.md) records the native selections. The six-line DE-9 comparison below uses USD per part on 20 November 2026, before passives, protection, ADC switch, fabrication, assembly, test, freight and tax. S175 covers the five unchanged lines. S196 gives a distributor reference for J1 pending the assembler quote.
+| Fitted references | Orderable MPN | JLCPCB SKU | Process | Tier | Qty for ten | Stock | USD/pc |
+| --- | --- | --- | --- | --- | ---: | ---: | ---: |
+| C1, C11 | CC0603KRX7R8BB105 | [C106858](https://jlcpcb.com/partdetail/C106858) | SMT | Extended | 20 | 244,550 | 0.0180 |
+| C2 | CL21A106KAYNNNE | [C15850](https://jlcpcb.com/partdetail/C15850) | SMT | Basic | 10 | 8,929,894 | 0.0311 |
+| C3–C10, C18, C20, C22–C23, C26 | CC0603KRX7R9BB104 | [C14663](https://jlcpcb.com/partdetail/C14663) | SMT | Basic | 130 | 53,673,750 | 0.0056 |
+| C12, C19 | C3225X7R2A106KT000E | [C49296968](https://jlcpcb.com/partdetail/C49296968) | SMT | Extended | 20 | 7,843 | 0.4652 |
+| C13 | C1608X7R1H224KT000N | [C445721](https://jlcpcb.com/partdetail/C445721) | SMT | Extended | 10 | 7,891 | 0.0458 |
+| C14–C17 | MCAST32MSB7226KPNA01 | [C5372271](https://jlcpcb.com/partdetail/C5372271) | SMT | Extended | 40 | 2,951 | 0.3124 |
+| C21, C24–C25 | CL10A475KA8NQNC | [C69335](https://jlcpcb.com/partdetail/C69335) | SMT | Extended | 30 | 605,290 | 0.0426 |
+| D1 | BZT52C12 | [C19077410](https://jlcpcb.com/partdetail/C19077410) | SMT | Extended | 10 | 314,584 | 0.0169 |
+| D2 | SMBJ20A | [C151257](https://jlcpcb.com/partdetail/C151257) | SMT | Extended | 10 | 5,659 | 0.1848 |
+| D3 | USBLC6-2SC6 | [C7519](https://jlcpcb.com/partdetail/C7519) | SMT | Extended | 10 | 44,183 | 0.1558 |
+| D4 | LTST-S270KGKT | [C125113](https://jlcpcb.com/partdetail/C125113) | SMT | Extended | 10 | 2,185 | 0.0288 |
+| D5 | LTST-S270KRKT | [C125114](https://jlcpcb.com/partdetail/C125114) | SMT | Extended | 10 | 34,090 | 0.0319 |
+| J1 | D15P33E4GV00LF | [C3139986](https://jlcpcb.com/partdetail/C3139986) | Wave | Extended | 10 | 572 | 1.8232 |
+| J2 | XT30PW-M30.G.Y | [C431092](https://jlcpcb.com/partdetail/C431092) | Wave | Extended | 10 | 95,217 | 0.3346 |
+| J4 | USB4145-03-0230-C | [C5291559](https://jlcpcb.com/partdetail/C5291559) | SMT | Extended | 10 | 422 | 1.1311 |
+| L1 | XGL6030-682MEC | [C3911557](https://jlcpcb.com/partdetail/C3911557) | SMT | Extended | 10 | 67 | 5.1397 |
+| Q1 | DMP6023LE-13 | [C154901](https://jlcpcb.com/partdetail/C154901) | SMT | Extended | 10 | 2,715 | 0.7835 |
+| Q2–Q3 | MMBT3904(RANGE:100-300) | [C20526](https://jlcpcb.com/partdetail/C20526) | SMT | Basic | 20 | 4,182,048 | 0.0103 |
+| R1–R2, R5, R11, R19–R20 | 0603WAF1002T5E | [C25804](https://jlcpcb.com/partdetail/C25804) | SMT | Basic | 60 | 43,043,861 | 0.0017 |
+| R3 | 0603WAF4701T5E | [C23162](https://jlcpcb.com/partdetail/C23162) | SMT | Basic | 10 | 19,435,798 | 0.0028 |
+| R4 | 0603WAF0000T5E | [C21189](https://jlcpcb.com/partdetail/C21189) | SMT | Basic | 10 | 15,723,607 | 0.0021 |
+| R6, R8, R10, R12 | 0603WAF1003T5E | [C25803](https://jlcpcb.com/partdetail/C25803) | SMT | Basic | 40 | 13,128,981 | 0.0029 |
+| R7 | 0603WAF4322T5E | [C23053](https://jlcpcb.com/partdetail/C23053) | SMT | Extended | 10 | 31,242 | 0.0018 |
+| R9 | TNPW060311K1BEEA | [C1854558](https://jlcpcb.com/partdetail/C1854558) | SMT | Extended | 10 | 6,439 | 0.0763 |
+| R13–R14 | 0603WAF5101T5E | [C23186](https://jlcpcb.com/partdetail/C23186) | SMT | Basic | 20 | 18,466,248 | 0.0015 |
+| R15 | 0603WAF2212T5E | [C25961](https://jlcpcb.com/partdetail/C25961) | SMT | Extended | 10 | 183,236 | 0.0019 |
+| R16 | 0603WAF4752T5E | [C23061](https://jlcpcb.com/partdetail/C23061) | SMT | Extended | 10 | 91,566 | 0.0019 |
+| R17–R18, R21–R23 | 0603WAF1001T5E | [C21190](https://jlcpcb.com/partdetail/C21190) | SMT | Basic | 50 | 40,924,288 | 0.0016 |
+| U1 | ESP32-WROOM-32E-H4 | [C3013935](https://jlcpcb.com/partdetail/C3013935) | SMT | Extended | 10 | 2,963 | 3.8993 |
+| U2 | TRS3232EIPWR | [C2652868](https://jlcpcb.com/partdetail/C2652868) | SMT | Extended | 10 | 11,304 | 0.6268 |
+| U3 | SN65HVD1470DR | [C2865785](https://jlcpcb.com/partdetail/C2865785) | SMT | Extended | 10 | 12 | 1.5016 |
+| U4 | LMR33610ADDAR | [C1852147](https://jlcpcb.com/partdetail/C1852147) | SMT | Extended | 10 | 90 | 1.5783 |
+| U5 | TMUX1574PWR | [C2673443](https://jlcpcb.com/partdetail/C2673443) | SMT | Extended | 10 | 18,730 | 0.7068 |
+| U6–U7 | MX5050S6030A1 | [C54800033](https://jlcpcb.com/partdetail/C54800033) | SMT | Extended | 20 | 2,774 | 0.4032 |
+| U8 | CP2102N-A02-GQFN24R | [C969151](https://jlcpcb.com/partdetail/C969151) | SMT | Extended | 10 | 21,065 | 1.7187 |
 
-| Part | One | Ten, each | Ten, line total |
-| --- | ---: | ---: | ---: |
-| ESP32-WROOM-32E-H4 | 4.3546 | 3.8993 | 38.99 |
-| LMR33610ADDAR | 1.7660 | 1.5783 | 15.78 |
-| SN65HVD1470DR | 1.5408 | 1.5016 | 15.02 |
-| Amphenol D09P33E4GV00LF (DigiKey) | 3.2300 | 2.7430 | 27.43 |
-| TRS3232EIPWR | 0.7770 | 0.6268 | 6.27 |
-| AMASS XT30 | 0.3836 | 0.3346 | 3.35 |
-| **Subtotal, calculated before rounding** | **12.0520** | **10.6836** | **106.84** |
+**Fitted parts** total **$231.02 for ten** ($23.10 per board). The 33 distinct SMT feeders add $50.49 at S213’s Standard rate. J1 and J2 use wave soldering. Quote their fitting charge separately.
 
+- **C14–C17.** The selected Taiyo Yuden costs $5.58 more for 40 than CCTC TCC1210X7R226K250MT, C49118556 (60,010 stock at $0.1728). Both are 1210, 22 µF, 25 V, ±10% X7R alternatives. Taiyo’s bias curve gives about 84.1 µF for four at 3.3 V. CCTC’s exact-part bias is unknown. Body heights are 2.70 and 2.80 mm maximum respectively. The original TDK C2175584 lists zero stock. TI’s 400 kHz application circuit uses the same 6.8 µH and four 22 µF parts. The bias curve supports this prototype selection. See [S220](../research/sources.md#source-register) for temperature and stability limits.
+- **R7.** Fit 43.2 kΩ ±1% with R6 at 100 kΩ for 3.3148 V nominal (+5.35 mV relative to 43.3 kΩ). R9 is 11.1 kΩ ±0.1%. R15 and R16 are 22.1 kΩ and 47.5 kΩ, both ±1%.
+- **J1.** The exact Amphenol part is listed for wave soldering. For external fitting, use DigiKey 609-1492-ND (€25.66 for ten in the EU catalogue snapshot) and omit J1 from the assembler’s BOM and placement list. After reflow, seat the board locks, align the mating face to the panel and hand-solder the through-hole contacts and solderable mounting features per the drawing. Inspect solder fill and check continuity before installing the harness. S219.
+- **U3.** Twelve listed leaves two spare. A planning allowance of one extra uses 11, leaving one. If the confirmed requirement exceeds 12, source the full quantity of the same TI MPN through JLC Global Sourcing or consign it as one lot. S219.
 - The approved HVD1470 saves $3.0424 per board versus the HVD35 at $4.5440. A SIT3491EESD at $0.4293 needs a separate edge-rate and ESD qualification. A 3PEAK TPT3232E-TS3R at $0.4636 changes receiver limits and charge-pump sizing. A $0.8520 LMR51420YDDCR needs a new regulator layout and voltage-valid circuit for the ADC switch.
 - Reverse protection costs about $0.78 more per board using the MOSFET network than a series Schottky. At 0.10 A input over 10 h, a 0.4 V diode costs 0.40 Wh versus 0.0035 Wh in a 35 mΩ MOSFET channel, plus gate bias. Verify actual flight draw.
 - Quote ten on Standard PCBA with one SMT side, panel rails/fiducials, connector soldering and attrition. The published one-side setup and stencil example totals $33.77 per order. Compare charges for ENIG, optional coating, connector hand fitting, shipping and tax separately. Report cost per accepted unit. S168–S169.
