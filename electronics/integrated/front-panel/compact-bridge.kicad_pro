@@ -307,6 +307,19 @@
         "tuning_profile": "",
         "via_diameter": 0.7,
         "via_drill": 0.3
+      },
+      {
+        "clearance": 0.25,
+        "diff_pair_gap": 0.25,
+        "diff_pair_width": 0.315,
+        "name": "USB_FS",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 0,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.315,
+        "tuning_profile": "",
+        "via_diameter": 0.7,
+        "via_drill": 0.3
       }
     ],
     "meta": {
@@ -314,7 +327,16 @@
     },
     "net_colors": {},
     "netclass_assignments": {},
-    "netclass_patterns": []
+    "netclass_patterns": [
+      {
+        "netclass": "USB_FS",
+        "pattern": "USB_D+"
+      },
+      {
+        "netclass": "USB_FS",
+        "pattern": "USB_D-"
+      }
+    ]
   },
   "pcbnew": {
     "last_paths": {

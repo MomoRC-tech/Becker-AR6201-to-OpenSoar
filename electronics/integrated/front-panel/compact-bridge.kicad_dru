@@ -10,10 +10,14 @@
   (constraint clearance (min 0.225mm)))
 (rule "USB Full Speed data traces"
   (condition "A.NetName == 'USB_D+' || A.NetName == 'USB_D-'")
-  (constraint track_width (min 0.25mm) (opt 0.30mm) (max 0.36mm)))
+  (constraint track_width (min 0.25mm) (opt 0.315mm) (max 0.36mm)))
 (rule "Becker differential copper"
   (condition "A.NetName == 'BKR_RX_P' || A.NetName == 'BKR_RX_N' || A.NetName == 'BKR_TX_P' || A.NetName == 'BKR_TX_N'")
   (constraint track_width (min 0.30mm) (opt 0.30mm) (max 0.30mm)))
 (rule "TPS62933P SOT-583 adjacent lands at 0.50 mm pitch"
   (condition "A.Type == 'Pad' && B.Type == 'Pad' && A.Reference == 'U4' && B.Reference == 'U4'")
   (constraint clearance (min 0.20mm)))
+
+(rule "U4 SOT-583 pin exits at 0.50 mm pitch"
+  (condition "A.Type == 'Pad' && A.Reference == 'U4' && B.Type == 'Track' && B.Layer == 'F.Cu' && B.Width == 0.25mm")
+  (constraint clearance (min 0.225mm)))

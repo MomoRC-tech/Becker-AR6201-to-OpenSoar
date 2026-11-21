@@ -31,7 +31,7 @@ Related: ❓ [Open items](open-items.md) · 🎯 [Requirements](../design/requir
 | WP8 Aircraft integration | ⬜ Later | Needs verified hardware and separate approval | Installation, protection and approval requirements met |
 | WP9 Device profiles | 🟡 [Profiles](#device-profiles) and optional [navigation detection](#navigation-detection) in firmware 0.5.7 (S115, S154) | Replace the candidate preset values once the [installed settings](open-items.md#installed-equipment) are known; check them on the wired bridge | Presets and manual settings work on compatible ports, survive restart and OTA, and preserve existing configurations |
 
-**Ten-board integrated PCB.** The [front-panel placement](../design/integrated-pcb.md#placement-comparison) is approved. Next, route the board in small increments. Check both USB orientations, both Becker pairs, XT30 isolation and all three 3.2 A fault returns. Use the [priced BOM](../design/integrated-pcb.md#cost) for the ten-board quote and the [first-article checks](open-items.md#pcb-study) for fit and electrical acceptance.
+**Ten-board integrated PCB.** The [front-panel placement](../design/integrated-pcb.md#placement-comparison) is approved. Power and the three 3.2 A fault returns are routed (S232). Next, route both USB-C orientations through D3 to U8 and check the reference plane at the crossover. The Becker pairs, RS-232 charge pump and remaining signals follow. Use the [priced BOM](../design/integrated-pcb.md#cost) for the ten-board quote and the [first-article checks](open-items.md#pcb-study) for fit and electrical acceptance.
 
 ### 1.1 Work loop
 

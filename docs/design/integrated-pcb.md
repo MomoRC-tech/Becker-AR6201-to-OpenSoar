@@ -7,7 +7,7 @@
 Use this page for the front-panel board layout, connector pinouts, programming instructions and priced BOM.
 
 > [!NOTE]
-> **Status:** The 58.50 × 46.50 mm front-panel placement is approved. The board has 164 unrouted connections. The ten-board quote and first-article checks are pending.
+> **Status:** The 58.50 × 46.50 mm front-panel placement is approved. Power and the three fault returns are routed. KiCad reports 59 connections left, including the RS-232 charge pump and signal wiring. The ten-board quote and first-article checks are pending.
 
 📑 **On this page:** <kbd>[1 · 🔌 Circuits](#circuits)</kbd> <kbd>[2 · 📐 Compact placement](#layout)</kbd> <kbd>[3 · 🌡️ Heat and verification](#heat)</kbd> <kbd>[4 · 💶 Production cost](#cost)</kbd> <kbd>[5 · 📦 Production](#production)</kbd>
 
@@ -48,11 +48,11 @@ Both the DA-15 and XT30 face forward. The board occupies 2,720.25 mm² and carri
 
 The [eight-pin J5 service header](#expansion) sits behind the front connectors. Its courtyard is 11.25 × 6.18 mm. C14 and C15 sit on the output side of L1, 4.19 and 2.51 mm from pad 2 to their positive lands. U4 SW to L1 pad 1 spans 3.84 mm.
 
-[USB bypass placement detail](../images/integrated-front-usb-bypass.pdf) · [Vector fit drawing](../images/integrated-front-fit.pdf) · [Cropped vector board view](../images/integrated-front-top.pdf) · [Complete schematic · single-sheet vector PDF](../images/integrated-front-schematic.pdf) · [Front-panel KiCad project](../../electronics/integrated/front-panel/compact-bridge.kicad_pro). See [S231](../research/sources.md#source-register) for placement checks and the [open items](../project/open-items.md#pcb-study) before routing.
+[USB bypass placement detail](../images/integrated-front-usb-bypass.pdf) · [Vector fit drawing](../images/integrated-front-fit.pdf) · [Cropped vector board view](../images/integrated-front-top.pdf) · [Complete schematic · single-sheet vector PDF](../images/integrated-front-schematic.pdf) · [Front-panel KiCad project](../../electronics/integrated/front-panel/compact-bridge.kicad_pro). See [S231](../research/sources.md#source-register) for placement checks and the [open items](../project/open-items.md#pcb-study) for first-article tests.
 
 - Keep the ESP32 antenna past the PCB edge, with all-layer clearance to the host board, nearby metal and the mounted harness. Test Wi-Fi and Bluetooth inside the closed housing.
 - Place the C13 VIN/GND bypass and the C10 BST/SW bootstrap loop beside U4. Their respective VIN and BST land centres are each 1.60 mm from the corresponding IC pad. Fit the stripe on L1 over SW pad 1. Take feedback from the output capacitor bank away from SW when routing.
-- Route the three J1 instrument returns (pins 3, 6 and 7) to XT30 minus for the 3.2 A fault case. The bridge fuse cannot interrupt this return. [Fault paths](../hardware/power.md#wire-breaks)
+- The three J1 instrument returns (pins 3, 6 and 7) have continuous 2.10 mm bottom-layer tracks to XT30 minus (J2 pin 1) for the 3.2 A fault case. The bridge fuse cannot interrupt this return. [Fault paths](../hardware/power.md#wire-breaks)
 - Transfer connector mating loads to the housing. Allow room for the DA-15 jackscrews and cable withdrawal.
 - U1 has nine paste windows and twelve open Ø0.20 mm holes. U4 has eight SOT-583 lands at 0.50 mm pitch.
 
@@ -126,7 +126,7 @@ The production J1 is the Amphenol **D15P33E4GV00LF** male right-angle DA-15, wit
 | 11 | GPIO27 → U2.10 / T2IN → U2.7 / T2OUT → FLARM instrument RX |
 | 12–15 | Spare, no connection |
 
-Route both USB-C orientations through D3 to U8 over a continuous ground reference. Target 90 Ω differential impedance on the quoted stackup. Check the lengths, via transitions and return paths of each USB and Becker pair on the routed board. [First-article checks](../project/open-items.md#pcb-study)
+Route both USB-C orientations through D3 to U8 over a continuous ground reference. Use the USB_FS net class for the coupled runs on F.Cu over In1.Cu ground. The 0.315 mm width and 0.25 mm edge gap model at 90 Ω (S233). Keep the pair over ground through the D3 fanout, clear of the 3.3 V via antipad. Check the lengths, via transitions and return paths of each USB and Becker pair on the routed board. [First-article checks](../project/open-items.md#pcb-study)
 
 For the separate module-based bench bridge, use the [DE-9 harness](../hardware/wiring.md#de9-pinout). [DA-15 drawing and cable reference, S202](../research/sources.md#source-register)
 
@@ -204,11 +204,11 @@ Open the project in KiCad, then open **PCB Editor → Board Setup** to inspect t
 | Setting | Value used for the ten-board design | Saved in |
 | --- | --- | --- |
 | Stackup and finish | JLC04161H-7628, four-layer FR-4, nominal 1.6 mm. Outer copper 35 µm, inner copper 15.2 µm. Green solder mask, white silkscreen, lead-free HASL quote baseline. | [KiCad board](../../electronics/integrated/front-panel/compact-bridge.kicad_pcb) |
-| Tracks and copper | Default track 0.30 mm, minimum width and spacing 0.25 mm, routed-edge clearance 0.50 mm. The custom rules allow 0.25–0.36 mm USB tracks and specify 0.30 mm for the Becker pairs. J4 contact lands have 0.20 mm gaps and permit 0.225 mm pad-to-track clearance. U8 permits 0.225 mm between its own lands. The front-panel U4 has a 0.20 mm clearance rule between its own lands. See the [front-panel rules](../../electronics/integrated/front-panel/compact-bridge.kicad_dru). Select wider power and return paths for their electrical load. | [KiCad project](../../electronics/integrated/front-panel/compact-bridge.kicad_pro) |
+| Tracks and copper | Default track 0.30 mm, minimum width and spacing 0.25 mm, routed-edge clearance 0.50 mm. The custom rules allow 0.25–0.36 mm USB tracks and specify 0.30 mm for the Becker pairs. J4 contact lands have 0.20 mm gaps and permit 0.225 mm pad-to-track clearance. U8 permits 0.225 mm between its own lands. U4 permits 0.20 mm between its own lands and 0.225 mm to a 0.25 mm front-layer pin exit. See the [front-panel rules](../../electronics/integrated/front-panel/compact-bridge.kicad_dru). Select wider power and return paths for their electrical load. | [KiCad project](../../electronics/integrated/front-panel/compact-bridge.kicad_pro) |
 | Vias and drilling | Default via Ø0.70/0.30 mm land/drill. Minimum via land Ø0.65 mm, annular ring 0.175 mm, hole-to-hole 0.50 mm and hole-to-other-net copper 0.35 mm. Ø0.30 mm is the ordinary drill. U1 uses its exposed-pad pattern. The front-panel U4 has no exposed pad. | KiCad project and board |
 | Mask and legend | Mask opening to other copper 0.12 mm, silk clearance 0.20 mm. New text 1.20 mm high with 0.20 mm strokes. Green mask with 1:1 openings and ordinary vias tented both sides. Aim for ≥0.15 mm drawn webs on new lands where possible. KiCad merges openings below 0.10 mm. | [KiCad board](../../electronics/integrated/front-panel/compact-bridge.kicad_pcb) and project |
 
-Size each DA-15 return for the 3.2 A ground-fault case. Record the routed lengths and calculate voltage drop at the minimum copper thickness and maximum design temperature. Measure the complete mated return under load.
+At 3.2 A, estimated track drops from J1 pins 3, 6 and 7 to J2 pin 1 are 53.6, 66.5 and 70.8 mV respectively with 105 °C copper and the reduced cross-section in S232. Measure each complete mated return under load, including contacts, barrels, solder and harness.
 
 For the ten-board quote, submit U1 mask, paste and drill plots together for the exposed-pad via and stencil decision. Review U4’s SOT-583 fine-pitch stencil on the front-panel layout. [JLCPCB stackups](https://jlcpcb.com/impedance) · [Fabrication capabilities](https://jlcpcb.com/capabilities/pcb-capabilities) · [Quote items](../project/open-items.md#pcb-study)
 
