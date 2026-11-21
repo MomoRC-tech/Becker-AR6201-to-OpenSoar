@@ -46,6 +46,8 @@ The [supplier circuit requirements and schematic comparison](requirements.md#pcb
 | Front and housing | DE-9 screw pitch 24.99 mm | DA-15 pitch 33.32 mm. Proposed right inner wall X170.50, 12.50 mm beyond the reference wall |
 | Service with lid off | Fixed H1 and H2 | Ø7 mm driver; 14 × 9 mm USB plug allowance; 13.81 mm antenna tip to rear wall; LEDs face right |
 
+Ten diagnostic solder lands occupy two columns between the front connectors on 4 mm centres (6.50 × 18.50 mm across the lands). TP9 sits alongside TP8. TP1–TP6 retain the programming fixture pattern. The four 22 µF output capacitors now sit in one row on the output side of L1. The longest straight-line span from L1 pad 2 to a bank positive pad is 10.77 mm, down from 40.79 mm. The nearest approach of a centred Ø2 mm probe shaft to another courtyard is 0.799 mm at TP11 beside U5.
+
 [Vector overlay](../images/integrated-front-fit.pdf) · [Cropped vector board view](../images/integrated-front-top.pdf) · [Searchable schematic](../images/integrated-front-schematic.pdf) · [Candidate KiCad project](../../electronics/integrated/front-panel/compact-bridge.kicad_pro). See [S212](../research/sources.md#source-register) for placement checks and the [open items](../project/open-items.md#pcb-study) before routing.
 
 **Archived side-entry study**
