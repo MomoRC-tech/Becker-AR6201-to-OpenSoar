@@ -7,7 +7,7 @@
 Use this page for the front-panel board layout, connector pinouts, programming instructions and priced BOM.
 
 > [!NOTE]
-> **Status:** The 58.50 × 46.50 mm front-panel placement is approved. Power, the three fault returns, USB data, both CC pull-downs and VBUS sense are routed. The Becker, Zander and FLARM interfaces are routed through to the ESP32. KiCad reports 22 connections left. The ten-board quote and first-article checks are pending.
+> **Status:** The 58.50 × 46.50 mm front-panel board is fully routed. KiCad reports zero open connections, design-rule violations and schematic mismatches. Fabrication review, the ten-board quote and first-article checks are pending.
 
 📑 **On this page:** <kbd>[1 · 🔌 Circuits](#circuits)</kbd> <kbd>[2 · 📐 Compact placement](#layout)</kbd> <kbd>[3 · 🌡️ Heat and verification](#heat)</kbd> <kbd>[4 · 💶 Production cost](#cost)</kbd> <kbd>[5 · 📦 Production](#production)</kbd>
 
@@ -34,7 +34,7 @@ The [supplier circuit requirements and schematic comparison](requirements.md#pcb
 
 <a id="placement-comparison"></a>
 
-[View the routed copper on all four layers](../images/integrated-front-routing.png).
+[View the routed copper on all four layers](../images/integrated-front-routing.png) · [Connectivity and ground checks, S241](../research/sources.md#source-register).
 
 Both the DA-15 and XT30 face forward. The board occupies 2,720.25 mm² and carries 54 fitted parts, three unpopulated footprints (J3, J5 and R16) and two mounting holes.
 
@@ -85,7 +85,7 @@ Pins 7 and 8 carry the XT30 supply voltage. Use pins 1 and 2 for the BOOT jumper
 
 ### 2.2 Upright USB-C programming
 
-U8 pins 5 (VIO), 6 (V3) and 7 (VDD5) share 3.3 V. Fit one 1 µF capacitor, C26, 1.93 mm between the VDD5 and capacitor pad centres. Give C26 a short ground return. WCH §7.1 permits this connection in the all-3.3 V configuration. [USB schematic · vector PDF](../images/integrated-front-usb-schematic.pdf) · [Bypass placement · vector PDF](../images/integrated-front-usb-bypass.pdf)
+U8 pins 5 (VIO), 6 (V3) and 7 (VDD5) share 3.3 V. Fit one 1 µF capacitor, C26, 2.09 mm between the VDD5 and capacitor pad centres. The ground pad connects to the adjacent via. WCH §7.1 permits this connection in the all-3.3 V configuration. [USB schematic · vector PDF](../images/integrated-front-usb-schematic.pdf) · [Bypass placement · vector PDF](../images/integrated-front-usb-bypass.pdf)
 
 ![Component-side detail of U8 and C26](../images/integrated-front-usb-bypass.svg)
 
