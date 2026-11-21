@@ -34,7 +34,7 @@ The [supplier circuit requirements and schematic comparison](requirements.md#pcb
 
 <a id="placement-comparison"></a>
 
-**Front-panel proposal for review.** Both connectors face forward. All 74 electrical footprints and the two original mounting holes are on the candidate drawing. Both MX5050s, the input protection, buck components, USB support, J3 and the 17 probes are placed.
+**Front-panel proposal for review.** Both connectors face forward. All 73 electrical footprints and the two original mounting holes are on the candidate drawing. Both MX5050s, the input protection, buck components, USB support, J3 and the 17 probes are placed.
 
 ![Original connector axes and proposed front-panel placement at equal scale](../images/integrated-front-fit.png)
 
