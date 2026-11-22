@@ -186,6 +186,23 @@ The ESP32 reads its own internal temperature sensor ([plan](../../docs/project/r
 | No shutdown | The bridge keeps forwarding at any temperature. Losing FLARM and radio data in flight is worse than running warm |
 | Warning level | 100 °C, set by the owner to cover the sensor's offset: the assembled bridge read 72–80 °C open on a desk at 23 °C room temperature while the ESP32 stayed barely warm to the touch at 0.8 W input (S142) |
 
+<a id="thermal-bench"></a>
+
+### Two-hour FLARM load and cold-start reference
+
+| Bench observation | Result on this ESP32 |
+| --- | --- |
+| Two-hour load, 21 Nov 2026 | Firmware 0.5.8, FLARM input on DE-9 pin 2 at 19,200 baud, 8N1. The PC sent 1,536 bytes/s (80% line rate) and read the stream over Wi-Fi. |
+| Chip sensor | **81.2 °C** at the start, **93.8 °C** peak, **90.7 °C** at two hours. Median over the last 30 minutes was **89.9 °C**. |
+| Supply and forwarding | 12.03–12.08 V, zero restarts, UART errors or TCP disconnects. The first frame arrived two bytes short. All subsequent bytes matched. |
+| Cold start, 22 Nov 2026 | After an unpowered soak in a room at about **24 °C**, the first status reading was **59.4 °C at 2 s** of reported uptime. First readings at 10, 30 and 60 s were 60.3, 62.3 and 64.7 °C. |
+
+![ESP32 sensor readings at ten-second intervals and five-minute rolling median during the two-hour FLARM load](../../docs/images/flarm-two-hour-chip-temperature.png)
+
+**Rough estimate of peak chip temperature: about 58 °C.** The sensor peak was 34.4 °C above the next morning’s first reading (93.8 − 59.4). Adding that difference to the reported room temperature gives 58.4 °C. This assumes a constant sensor offset and a chip still at room temperature at the first reading. Any earlier self-heating would raise the estimate by the same amount under that assumption. The available records and published data do not quantify it.
+
+The chart shows the sensor readings. Enclosure, regulator and clamp temperatures require the separate [housing heat check](../../docs/project/open-items.md#housing). [Bench evidence and thermal references](../../docs/research/sources.md#thermal-bench-evidence)
+
 <a id="lifetime-record"></a>
 
 ## Lifetime record
