@@ -102,60 +102,73 @@ def main():
     code, _ = request(host, "/api/settings", {"b2": "19200"}, auth="wrong-password")
     check("wrong password saves nothing", code == 401 and settings(host) == before, f"HTTP {code}")
 
-    code, body = request(host, "/api/settings", {"b2": "1234", "f1": "9X1", "t1": "10110", "nj": "500", "ha": "300.1.1.1"}, auth=pw)
-    errs = json.loads(body).get("errors", {}) if code == 400 else {}
-    check("invalid values refused per field", code == 400 and {"b2", "f1", "t1", "nj", "ha"} <= set(errs), f"HTTP {code}, fields {sorted(errs)}")
-    check("refused save changed nothing", settings(host)["items"] == before["items"])
+    # From here on the bridge settings change: always end with a reset, also when a
+    # check stops the script, so later tests find the default ports.
+    reset_done = False
+    try:
+        code, body = request(host, "/api/settings", {"b2": "1234", "f1": "9X1", "t1": "10110", "nj": "500", "ha": "300.1.1.1"}, auth=pw)
+        errs = json.loads(body).get("errors", {}) if code == 400 else {}
+        check("invalid values refused per field", code == 400 and {"b2", "f1", "t1", "nj", "ha"} <= set(errs), f"HTTP {code}, fields {sorted(errs)}")
+        check("refused save changed nothing", settings(host)["items"] == before["items"])
 
-    code, body = request(host, "/api/settings", {"b2": "19200"}, auth=pw)
-    check("serial change saved without trial", code == 200 and json.loads(body) == {"ok": True, "trial": False}, body.decode())
-    s = wait_back(host)
-    b2 = item(s, "b2")
-    check("radio baud 19200 after restart, marked changed", b2["value"] == "19200" and b2["origin"] == "changed", str(b2))
-    st = json.loads(request(host, "/api/status")[1])
-    check("UART2 runs at 19200", st["ports"][2]["baud"] == 19200)
-
-    code, _ = request(host, "/api/settings", {"b2": b2["default"]}, auth=pw)
-    s = wait_back(host)
-    check("back to default shows as default", item(s, "b2")["origin"] == "default" and code == 200)
-
-    s = settings(host)
-    offered = {p["name"]: p["profiles"] for p in s.get("ports", [])}
-    check("presets offered by wiring", offered == {"Zander": ["zs1", "flarm"], "FLARM": ["zs1", "flarm"], "Becker": ["ar6201"]}, str(offered))
-    code, body = request(host, "/api/settings", {"p2": "zs1", "p0": "ar6201", "p1": "nonsense"}, auth=pw)
-    errs = json.loads(body).get("errors", {}) if code == 400 else {}
-    check("unfitting or unknown presets refused", code == 400 and {"p0", "p1", "p2"} <= set(errs), f"HTTP {code}, fields {sorted(errs)}")
-
-    code, body = request(host, "/api/settings", {"p0": "flarm", "b0": "19200", "f0": "8N1", "p1": "flarm", "b1": "9600", "f1": "8N1"}, auth=pw)
-    check("preset change saved without trial", code == 200 and json.loads(body) == {"ok": True, "trial": False}, body.decode())
-    s = wait_back(host)
-    p0, b0, p1, b1 = (item(s, k) for k in ("p0", "b0", "p1", "b1"))
-    check("Zander port keeps the FLARM preset after restart", p0["value"] == "flarm" and p0["origin"] == "changed" and b0["origin"] == "default", f"{p0}, {b0}")
-    check("edited preset saved as Custom", p1["value"] == "custom" and b1["value"] == "9600", f"{p1}, {b1}")
-    code, _ = request(host, "/api/settings", {"p0": "zs1", "b0": "19200", "f0": "8N1", "p1": "flarm", "b1": "19200", "f1": "8N1"}, auth=pw)
-    s = wait_back(host)
-    check("default presets show as default", code == 200 and all(item(s, k)["origin"] == "default" for k in ("p0", "b0", "f0", "p1", "b1", "f1")))
-
-    code, body = request(host, "/api/settings", {"t0": "10111"}, auth=pw)
-    check("port change starts a trial", code == 200 and json.loads(body).get("trial") is True, body.decode())
-    s = wait_back(host)
-    check("trial active after restart", s["trial"]["active"] and s["trial"]["seconds_left"] > 500, str(s["trial"]))
-    check("Zander listens on 10111, not 10110", listens(host, 10111) and not listens(host, 10110))
-    code, _ = request(host, "/api/keep", {}, auth=pw)
-    check("Keep ends the trial", code == 200 and not settings(host)["trial"]["active"])
-
-    if a.revert:
-        code, _ = request(host, "/api/settings", {"t0": "10112"}, auth=pw)
+        code, body = request(host, "/api/settings", {"b2": "19200"}, auth=pw)
+        check("serial change saved without trial", code == 200 and json.loads(body) == {"ok": True, "trial": False}, body.decode())
         s = wait_back(host)
-        check("second trial active", s["trial"]["active"])
-        print("waiting about 10 minutes for the automatic revert ...")
-        time.sleep(s["trial"]["seconds_left"] + 5)
-        s = wait_back(host, timeout=120)
-        check("unkept change reverted to the kept value", item(s, "t0")["value"] == "10111" and not s["trial"]["active"], str(item(s, "t0")))
+        b2 = item(s, "b2")
+        check("radio baud 19200 after restart, marked changed", b2["value"] == "19200" and b2["origin"] == "changed", str(b2))
+        st = json.loads(request(host, "/api/status")[1])
+        check("UART2 runs at 19200", st["ports"][2]["baud"] == 19200)
 
-    code, _ = request(host, "/api/reset", {}, auth=pw)
-    s = wait_back(host)
-    check("reset brings back all defaults", code == 200 and all(i["origin"] == "default" for i in s["items"]) and listens(host, 10110))
+        code, _ = request(host, "/api/settings", {"b2": b2["default"]}, auth=pw)
+        s = wait_back(host)
+        check("back to default shows as default", item(s, "b2")["origin"] == "default" and code == 200)
+
+        s = settings(host)
+        offered = {p["name"]: p["profiles"] for p in s.get("ports", [])}
+        check("presets offered by wiring", offered == {"Zander": ["zs1", "flarm"], "FLARM": ["zs1", "flarm"], "Becker": ["ar6201"]}, str(offered))
+        code, body = request(host, "/api/settings", {"p2": "zs1", "p0": "ar6201", "p1": "nonsense"}, auth=pw)
+        errs = json.loads(body).get("errors", {}) if code == 400 else {}
+        check("unfitting or unknown presets refused", code == 400 and {"p0", "p1", "p2"} <= set(errs), f"HTTP {code}, fields {sorted(errs)}")
+
+        code, body = request(host, "/api/settings", {"p0": "flarm", "b0": "19200", "f0": "8N1", "p1": "flarm", "b1": "9600", "f1": "8N1"}, auth=pw)
+        check("preset change saved without trial", code == 200 and json.loads(body) == {"ok": True, "trial": False}, body.decode())
+        s = wait_back(host)
+        p0, b0, p1, b1 = (item(s, k) for k in ("p0", "b0", "p1", "b1"))
+        check("Zander port keeps the FLARM preset after restart", p0["value"] == "flarm" and p0["origin"] == "changed" and b0["origin"] == "default", f"{p0}, {b0}")
+        check("edited preset saved as Custom", p1["value"] == "custom" and b1["value"] == "9600", f"{p1}, {b1}")
+        code, _ = request(host, "/api/settings", {"p0": "zs1", "b0": "19200", "f0": "8N1", "p1": "flarm", "b1": "19200", "f1": "8N1"}, auth=pw)
+        s = wait_back(host)
+        check("default presets show as default", code == 200 and all(item(s, k)["origin"] == "default" for k in ("p0", "b0", "f0", "p1", "b1", "f1")))
+
+        code, body = request(host, "/api/settings", {"t0": "10111"}, auth=pw)
+        check("port change starts a trial", code == 200 and json.loads(body).get("trial") is True, body.decode())
+        s = wait_back(host)
+        check("trial active after restart", s["trial"]["active"] and s["trial"]["seconds_left"] > 500, str(s["trial"]))
+        check("Zander listens on 10111, not 10110", listens(host, 10111) and not listens(host, 10110))
+        code, _ = request(host, "/api/keep", {}, auth=pw)
+        check("Keep ends the trial", code == 200 and not settings(host)["trial"]["active"])
+
+        if a.revert:
+            code, _ = request(host, "/api/settings", {"t0": "10112"}, auth=pw)
+            s = wait_back(host)
+            check("second trial active", s["trial"]["active"])
+            print("waiting about 10 minutes for the automatic revert ...")
+            time.sleep(s["trial"]["seconds_left"] + 5)
+            s = wait_back(host, timeout=120)
+            check("unkept change reverted to the kept value", item(s, "t0")["value"] == "10111" and not s["trial"]["active"], str(item(s, "t0")))
+
+        code, _ = request(host, "/api/reset", {}, auth=pw)
+        reset_done = True
+        s = wait_back(host)
+        check("reset brings back all defaults", code == 200 and all(i["origin"] == "default" for i in s["items"]) and listens(host, 10110))
+    finally:
+        if not reset_done:
+            print("stopped early: resetting the bridge to its defaults")
+            try:
+                request(host, "/api/reset", {}, auth=pw)
+                wait_back(host)
+            except (OSError, SystemExit) as error:
+                print(f"reset failed ({error}); reset the bridge on its settings page")
 
     print(f"{sum(results)}/{len(results)} checks passed")
     sys.exit(0 if all(results) else 1)

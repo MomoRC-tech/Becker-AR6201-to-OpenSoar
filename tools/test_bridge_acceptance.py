@@ -22,15 +22,18 @@ class RadioVerdictTest(unittest.TestCase):
                 stack.enter_context(sock)
 
             def echo():
-                with peer.makefile("rb") as stream:
-                    count = 0
-                    while frame := stream.read(4):
+                # The pinger sends one burst and waits for its echo, so each recv is one burst.
+                count = 0
+                try:
+                    while burst := peer.recv(4096):
                         count += 1
                         if drop_second_echo and count == 2:
-                            peer.sendall(frame[:2])
+                            peer.sendall(burst[: len(burst) // 2])
                             peer.shutdown(socket.SHUT_WR)
                             return
-                        peer.sendall(frame)
+                        peer.sendall(burst)
+                except OSError:
+                    return
 
             responder = threading.Thread(target=echo, daemon=True)
             responder.start()
@@ -240,6 +243,58 @@ class WiredAcceptanceTest(unittest.TestCase):
         self.assertFalse(result, output)
         self.assertEqual(opened, [("COM4", 9600)])
         self.assertIn("simulated adapter open failure", output)
+
+
+class SlowAppVerdictTest(unittest.TestCase):
+    def verdict(self, age, closed, skipped, restarted=False):
+        with redirect_stdout(io.StringIO()):
+            return acceptance.bare_slow_app_result(age, age, closed, 0, {"short_writes": 10},
+                                                   {"short_writes": 10 + skipped}, restarted)
+
+    def test_short_run_needs_skipping_and_open(self):
+        self.assertTrue(self.verdict(30, closed=False, skipped=5))
+        self.assertFalse(self.verdict(30, closed=False, skipped=0))
+        self.assertFalse(self.verdict(30, closed=True, skipped=5))
+
+    def test_long_run_needs_stall_close_without_restart(self):
+        self.assertTrue(self.verdict(70, closed=True, skipped=5))
+        self.assertFalse(self.verdict(70, closed=False, skipped=5))
+        self.assertFalse(self.verdict(70, closed=True, skipped=5, restarted=True))
+
+
+class RadioBurstTest(unittest.TestCase):
+    def test_bursts_cover_all_byte_values(self):
+        pinger = acceptance.RadioPinger(None)
+        seen, sizes = set(), set()
+        for _ in range(400):
+            burst = pinger.burst()
+            seen.update(burst)
+            sizes.add(len(burst))
+        self.assertEqual(seen, set(range(256)))
+        self.assertTrue(min(sizes) >= 1 and max(sizes) <= acceptance.BURST_MAX)
+
+    def test_trailing_byte_after_final_echo_fails(self):
+        mine, peer = socket.socketpair()
+        with mine, peer:
+            pinger = acceptance.RadioPinger(mine)
+            peer.sendall(b"\x00")
+            pinger.check_trailing()
+            self.assertFalse(pinger.completed)
+            self.assertIn("unexpected bytes", pinger.error)
+            pinger.error = ""
+            pinger.check_trailing()
+            self.assertTrue(pinger.completed)
+
+
+class SupplySentenceTest(unittest.TestCase):
+    def test_checksum(self):
+        body = b"POV,V,12.62"
+        check = 0
+        for c in body:
+            check ^= c
+        self.assertTrue(acceptance.SupplyReader.valid_sentence(b"$" + body + b"*%02X\r" % check))
+        self.assertFalse(acceptance.SupplyReader.valid_sentence(b"$" + body + b"*%02X" % (check ^ 1)))
+        self.assertFalse(acceptance.SupplyReader.valid_sentence(b"$POV,V,*00"))
 
 
 if __name__ == "__main__":

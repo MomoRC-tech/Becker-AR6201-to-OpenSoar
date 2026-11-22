@@ -36,28 +36,38 @@ to observe sustained backpressure: the firmware log must confirm closure
 after 60 s without progress. A connected slow app in a sustained test
 leaves the closure check inconclusive.
 
-With --radio-loop, the test also checks a short frame every half second
-and confirms a final echo. All round trips must stay within --max-delay.
+With --radio-loop, the test also sends a burst of 1-64 random bytes (every
+byte value) every half second and checks that each comes back unchanged,
+that a final echo is confirmed and that nothing follows it. All round trips
+must stay within --max-delay.
+
+In wired mode the test also reads the bridge log every minute: the bridge
+must not restart, and the lowest free memory it reports is printed. With
+--supply it reads the supply-voltage port and expects about one valid
+$POV sentence per second.
 
 Prints the bridge's short-write and UART error counters before and after.
 """
 
 import argparse
-from contextlib import ExitStack
+from contextlib import ExitStack, closing
 import json
 import math
 from queue import Empty, Full, Queue
 import random
+import re
 import socket
 import sys
 import threading
 import time
 import urllib.request
 
-ZANDER_TCP, FLARM_TCP, RADIO_TCP = 10110, 2000, 4352
+ZANDER_TCP, FLARM_TCP, RADIO_TCP, SUPPLY_TCP = 10110, 2000, 4352, 4353
 BAUD = 19200
 CHUNK = 64  # bytes per write into the Zander port
 STALL_CLOSE_S = 60  # firmware APP_STALL_CLOSE_MS: an app that takes no data for this long is closed
+BURST_MAX = 64  # largest radio probe burst in bytes
+HEAP_LINE = re.compile(r"Memory free (\d+) kB, lowest (\d+) kB")
 
 
 def tcp(host: str, port: int, rcvbuf: int = 0) -> socket.socket:
@@ -144,24 +154,33 @@ class Reader(threading.Thread):
 
 
 class RadioPinger(threading.Thread):
-    """Sends a short frame through the radio loop every half second and records the round trip."""
+    """Sends a random burst through the radio loop every half second and records the round trip.
 
-    def __init__(self, sock: socket.socket):
+    Bursts are 1-BURST_MAX bytes and cover every byte value, including 0x00 and 0xA5.
+    After the final echo, any further byte is an error (duplicated or late data)."""
+
+    def __init__(self, sock: socket.socket, seed: int = 7):
         super().__init__(daemon=True)
         self.sock, self.round_trips, self.lost, self.stop = sock, [], 0, False
         self.completed = False
         self.error = ""
+        self.sent = 0
+        self.rng = random.Random(seed)
+
+    def burst(self) -> bytes:
+        size = self.rng.randint(1, BURST_MAX)
+        return bytes(self.rng.randrange(256) for _ in range(size))
 
     def run(self) -> None:
-        n = 0
         while True:
             last_probe = self.stop
-            frame = bytes([0xA5, 0x00, n & 0xFF, 0x5A])
+            frame = self.burst()
             start = time.monotonic()
             got = bytearray()
             try:
                 self.sock.settimeout(10)
                 self.sock.sendall(frame)
+                self.sent += len(frame)
                 while len(got) < len(frame):
                     remaining = 10 - (time.monotonic() - start)
                     if remaining <= 0:
@@ -183,29 +202,110 @@ class RadioPinger(threading.Thread):
             else:
                 self.round_trips.append(time.monotonic() - start)
             if last_probe:
-                self.completed = True
+                self.check_trailing()
                 return
-            n += 1
             time.sleep(max(0.0, 0.5 - (time.monotonic() - start)))
+
+    def check_trailing(self) -> None:
+        """After the final echo, nothing more may arrive."""
+        self.sock.settimeout(0.5)
+        try:
+            extra = self.sock.recv(4096)
+        except socket.timeout:
+            extra = None
+        except OSError as error:
+            self.error = f"radio connection failed after the final echo: {error}"
+            return
+        if extra:
+            self.lost += 1
+            self.error = f"{len(extra)} unexpected bytes after the final echo"
+            return
+        self.completed = True
+
+
+class SupplyReader(threading.Thread):
+    """Reads the supply-voltage port and counts valid $POV,V sentences."""
+
+    def __init__(self, sock: socket.socket):
+        super().__init__(daemon=True)
+        self.sock, self.valid, self.invalid, self.stop, self.error = sock, 0, 0, False, ""
+
+    @staticmethod
+    def valid_sentence(line: bytes) -> bool:
+        match = re.fullmatch(rb"\$(POV,V,[0-9.]+)\*([0-9A-F]{2})", line.strip())
+        if not match:
+            return False
+        check = 0
+        for c in match.group(1):
+            check ^= c
+        return check == int(match.group(2), 16)
+
+    def run(self) -> None:
+        self.sock.settimeout(0.5)
+        pending = b""
+        while not self.stop:
+            try:
+                chunk = self.sock.recv(1024)
+            except socket.timeout:
+                continue
+            except OSError as error:
+                self.error = str(error)
+                return
+            if not chunk:
+                self.error = "supply port closed"
+                return
+            pending += chunk
+            *lines, pending = pending.split(b"\n")
+            for line in lines:
+                if self.valid_sentence(line):
+                    self.valid += 1
+                else:
+                    self.invalid += 1
+
+
+def bare_slow_app_result(seconds, slow_age, closed, received, before, after, restarted):
+    """Verdict for the bare-board slow app: open and skipping before the stall limit,
+    closed by the stall rule (not by a restart) after it."""
+    skipped = after["short_writes"] - before["short_writes"]
+    expect_open = slow_age < STALL_CLOSE_S - 5
+    if restarted:
+        ok, detail = False, "the bridge restarted"
+    elif skipped <= 0:
+        ok, detail = False, "the slow app never fell behind (no short writes)"
+    elif expect_open:
+        ok, detail = not closed, "open while skipping data" if not closed else "closed too early"
+    else:
+        ok, detail = closed, "closed after the stall limit" if closed else "still open after the stall limit"
+    print(f"{'PASS' if ok else 'FAIL'} slow app after {seconds:.0f} s without reading: {detail}, "
+          f"{skipped} short writes, {received} bytes waiting")
+    return ok
 
 
 def run(args: argparse.Namespace) -> bool:
+    with ExitStack() as resources:
+        return run_bare(args, resources)
+
+
+def run_bare(args: argparse.Namespace, resources: ExitStack) -> bool:
     print(f"before: {counters(args.host)}")
-    source = tcp(args.host, ZANDER_TCP)
-    reader_sock = tcp(args.host, FLARM_TCP)
+    source = resources.enter_context(closing(tcp(args.host, ZANDER_TCP)))
+    reader_sock = resources.enter_context(closing(tcp(args.host, FLARM_TCP)))
     for sock in (source, reader_sock):
         drain(sock)
 
-    slow = None
+    slow = slow_before = None
     if not args.baseline:
-        slow = tcp(args.host, FLARM_TCP, rcvbuf=1024)  # never read from here on
+        slow_before = status(args.host)["FLARM"]
+        boot_before = get_json(args.host, "/api/log")["boot"]
+        slow = resources.enter_context(closing(tcp(args.host, FLARM_TCP, rcvbuf=1024)))  # never read from here on
+        slow_start = time.monotonic()
         print("slow app connected to the FLARM port; it never reads")
 
     reader = Reader(reader_sock)
     reader.start()
     pinger = None
     if args.radio_loop:
-        radio = tcp(args.host, RADIO_TCP)
+        radio = resources.enter_context(closing(tcp(args.host, RADIO_TCP)))
         drain(radio)
         pinger = RadioPinger(radio)
         pinger.start()
@@ -275,8 +375,11 @@ def run(args: argparse.Namespace) -> bool:
 
     if slow is not None:
         # The slow app's connection must stay open while it skips data, and close only
-        # after it took no data for STALL_CLOSE_S (firmware APP_STALL_CLOSE_MS).
-        expect_open = args.seconds < STALL_CLOSE_S - 5
+        # after it took no data for STALL_CLOSE_S (firmware APP_STALL_CLOSE_MS). Reading
+        # counts as progress, so for the close check wait well past the limit first.
+        if args.seconds >= STALL_CLOSE_S - 5:
+            time.sleep(max(0.0, slow_start + STALL_CLOSE_S + 10 - time.monotonic()))
+        slow_age = time.monotonic() - slow_start
         slow.settimeout(2)
         received, closed = 0, False
         try:
@@ -290,18 +393,11 @@ def run(args: argparse.Namespace) -> bool:
             pass
         except OSError:
             closed = True
-        ok = closed != expect_open
-        state = "closed by the bridge" if closed else "open"
-        print(f"{'PASS' if ok else 'FAIL'} slow app after {args.seconds:.0f} s without reading: {state}, "
-              f"{received} bytes waiting (expected {'open' if expect_open else 'closed'})")
-        results.append(ok)
+        restarted = get_json(args.host, "/api/log")["boot"] != boot_before
+        results.append(bare_slow_app_result(args.seconds, slow_age, closed, received, slow_before,
+                                            status(args.host)["FLARM"], restarted))
 
     print(f"after:  {counters(args.host)}")
-    for sock in (source, reader_sock, slow):
-        if sock:
-            sock.close()
-    if pinger:
-        pinger.sock.close()
     print(f"{sum(results)}/{len(results)} checks passed")
     return all(results)
 
@@ -408,6 +504,7 @@ def run_wired(args, feeds):
     slow_name = None if args.baseline else next(iter(feeds))
     finish, halt = threading.Event(), threading.Event()
     closes, log_ok = [], True
+    heap_lowest = []  # lowest free memory in kB, from the bridge's minute Debug lines
     with ExitStack() as resources:
         inputs = {}
         for name in ("Zander", "FLARM"):
@@ -425,9 +522,9 @@ def run_wired(args, feeds):
             inputs[name] = WiredInput(name, sock, source, port, frame, args, halt)
             if source is not None and int(inputs[name].rate * args.seconds) < CHUNK:
                 raise ValueError(f"{name}: increase --seconds to send a complete {CHUNK}-byte test chunk")
+        log = get_json(args.host, "/api/log")
+        boot, seq, bridge_start = log["boot"], log["seq"], log["now"]
         if slow_name:
-            log = get_json(args.host, "/api/log")
-            boot, seq, bridge_start = log["boot"], log["seq"], log["now"]
             slow_start = time.monotonic()
             resources.enter_context(tcp(args.host, before[slow_name]["tcp_port"], rcvbuf=1024))
             print(f"slow app connected to {slow_name}; it never reads")
@@ -442,6 +539,10 @@ def run_wired(args, feeds):
             print(f"Becker: DE-9 loop, {radio_port['baud']} {radio_frame}, TCP {radio_port['tcp_port']}")
             pinger = RadioPinger(radio)
 
+        supply = None
+        if args.supply:
+            supply = SupplyReader(resources.enter_context(closing(tcp(args.host, SUPPLY_TCP))))
+
         start = time.monotonic()
         readers, writers = {}, []
         for stream in inputs.values():
@@ -454,6 +555,8 @@ def run_wired(args, feeds):
             writers.append(writer)
         if pinger:
             pinger.start()
+        if supply:
+            supply.start()
 
         def update_log():
             nonlocal log_ok, seq
@@ -461,6 +564,9 @@ def run_wired(args, feeds):
             log = get_json(args.host, f"/api/log?since={seq}")
             log_ok = log_ok and log["boot"] == boot and not log["lost"] and log["seq"] >= seq
             seq = log["seq"]
+            for line in log["lines"]:
+                if seq_before < line["q"] <= log["seq"] and (match := HEAP_LINE.search(line["m"])):
+                    heap_lowest.append(int(match.group(2)))
             closes.extend(
                 (line["t"] - bridge_start) / 1000 for line in log["lines"]
                 if seq_before < line["q"] <= log["seq"] and line["m"].startswith(f"{slow_name}: app ")
@@ -469,9 +575,11 @@ def run_wired(args, feeds):
 
         try:
             deadline = start + args.seconds
+            log_due = start + 60
             while not halt.wait(max(0, min(2, deadline - time.monotonic()))):
-                if slow_name:
+                if slow_name or time.monotonic() >= log_due:
                     update_log()
+                    log_due = time.monotonic() + 60
                 if time.monotonic() >= deadline:
                     break
                 if pinger and (not pinger.is_alive() or pinger.lost
@@ -492,9 +600,11 @@ def run_wired(args, feeds):
             for name, reader in readers.items():
                 if not reader.is_alive() and not halt.is_set():
                     inputs[name].fail("TCP reader stopped early")
-            if slow_name:
-                update_log()
+            update_log()
         finally:
+            if supply:
+                supply.stop = True
+                supply.join(timeout=2)
             if pinger and not pinger.stop:
                 pinger.stop = True
                 pinger.join(timeout=22)
@@ -504,6 +614,15 @@ def run_wired(args, feeds):
                 thread.join(timeout=1)
 
         results = []
+        print(f"{'PASS' if log_ok else 'FAIL'} bridge log: {'no restart, no lost lines' if log_ok else 'restart or lost log lines'}"
+              f"{f', lowest free memory {min(heap_lowest)} kB' if heap_lowest else ''}")
+        results.append(log_ok)
+        if supply:
+            ran = time.monotonic() - start
+            ok = not supply.error and supply.invalid == 0 and supply.valid >= 0.9 * ran - 2
+            print(f"{'PASS' if ok else 'FAIL'} supply port: {supply.valid} valid, {supply.invalid} invalid sentences "
+                  f"in {ran:.0f} s{', ' + supply.error if supply.error else ''}")
+            results.append(ok)
         for name, stream in inputs.items():
             expected = int(stream.rate * stream.seconds) if name in feeds else 0
             errors = after[name]["uart_errors"] - before[name]["uart_errors"]
@@ -519,7 +638,7 @@ def run_wired(args, feeds):
             worst = max(pinger.round_trips, default=float("inf"))
             ok = pinger.completed and not pinger.is_alive() and not pinger.lost and worst <= args.max_delay
             ok = ok and before["Becker"]["uart_errors"] == after["Becker"]["uart_errors"]
-            print(f"{'PASS' if ok else 'FAIL'} Becker radio loop: {len(pinger.round_trips)} frames, "
+            print(f"{'PASS' if ok else 'FAIL'} Becker radio loop: {len(pinger.round_trips)} bursts, {pinger.sent} bytes, "
                   f"{pinger.lost} lost, worst round trip {worst:.3f} s, "
                   f"{'final echo confirmed' if pinger.completed and not pinger.error else pinger.error or 'final echo missing'}")
             results.append(ok)
@@ -537,6 +656,7 @@ def main(argv=None) -> int:
     parser.add_argument("--zander-feed", help="PC serial port for the Zander input of the assembled bridge")
     parser.add_argument("--flarm-feed", help="PC serial port for the FLARM input of the assembled bridge")
     parser.add_argument("--seconds", type=float, help="test length (wired default 30, bare-board default 60)")
+    parser.add_argument("--supply", action="store_true", help="wired mode: also read the supply-voltage port 4353")
     parser.add_argument("--max-delay", type=float, default=2.0, help="largest allowed delay in seconds (default 2)")
     args = parser.parse_args(argv)
     if args.seconds is None:
