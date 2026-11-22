@@ -159,12 +159,19 @@ static void savedLogBegin() {
     savedStarted = true;
 }
 
-// Called from the status task loop every few milliseconds.
-static void savedLogTick() {
+// 0.5.10: every append goes through here, so flash writes (which stall the UART receive
+// interrupt, S133) stay at most one per SAVED_EVERY_MS, whatever a client requests.
+static void savedFlushIfDue() {
     static uint32_t at = 0;
-    if (!savedReady || millis() - at < SAVED_EVERY_MS) return;
+    if (millis() - at < SAVED_EVERY_MS) return;
     at = millis();
     savedFlush(false);
+}
+
+// Called from the status task loop every few milliseconds.
+static void savedLogTick() {
+    if (!savedReady) return;
+    savedFlushIfDue();
 }
 
 static void savedClear() {
@@ -192,7 +199,7 @@ static void savedSend() {
         statusServer.send(503, "text/plain", "# not available\n");
         return;
     }
-    savedFlush(false);  // include what arrived since the last write
+    savedFlushIfDue();  // lines from the last few seconds may follow on the next request
     static char buf[1024];
     statusServer.setContentLength(CONTENT_LENGTH_UNKNOWN);
     statusServer.send(200, "text/plain; charset=utf-8", "");

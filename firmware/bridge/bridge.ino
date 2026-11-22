@@ -118,8 +118,10 @@ static void radioStationDisconnected(WiFiEvent_t, WiFiEventInfo_t info) {
 // small queue for data its socket cannot take yet (send buffer or segment queue full while
 // the phone's acknowledgements are on their way); the loop sends it on the next passes.
 #define APP_QUEUE 2048  // bytes per app, about 1 s at 19200 baud
+#define NAV_RESYNC_MAX 512  // skip at most this many bytes looking for a line end (NMEA sentences are up to 82)
 struct AppQueue {
     uint16_t len;
+    uint16_t skipped;     // Zander and FLARM: bytes dropped since data stopped fitting; 0 = in step
     uint32_t progressAt;  // last time the app took data, or its queue was empty
     uint8_t data[APP_QUEUE];
 };
@@ -135,6 +137,7 @@ static const char* const appPortName[NUM_COM] = PORT_NAMES;
 
 static void resetAppQueue(int num, int cln) {
     queueOf(num, cln).len = 0;
+    queueOf(num, cln).skipped = 0;
     queueOf(num, cln).progressAt = millis();
 }
 
@@ -147,6 +150,43 @@ static size_t queueForApp(int num, int cln, const uint8_t* data, size_t size) {
     memcpy(q.data + q.len, data, n);
     q.len += n;
     return size - n;
+}
+
+static const uint8_t* lastLineEnd(const uint8_t* data, size_t size) {
+    for (size_t i = size; i > 0; i--)
+        if (data[i - 1] == '\n') return data + i;
+    return nullptr;
+}
+
+// Zander and FLARM (0.5.10): like queueForApp, but an app that falls behind skips whole
+// lines, so it never gets the start of one sentence joined to the end of another. When
+// data stops fitting, the queue is cut back to its last line end and incoming data is
+// dropped up to the next line end. Data without line ends (no NMEA) is cut as before.
+// Returns the number of bytes dropped.
+static size_t queueNavForApp(int num, int cln, const uint8_t* data, size_t size) {
+    AppQueue& q = queueOf(num, cln);
+    size_t dropped = 0;
+    if (q.skipped > 0) {
+        const uint8_t* end = static_cast<const uint8_t*>(memchr(data, '\n', size));
+        if (!end && q.skipped + size < NAV_RESYNC_MAX) {
+            q.skipped += size;
+            return size;
+        }
+        const size_t skip = end ? (size_t)(end + 1 - data) : 0;  // no line end in sight: give up waiting
+        q.skipped = 0;
+        data += skip;
+        size -= skip;
+        dropped = skip;
+    }
+    if (size == 0) return dropped;
+    const size_t rest = queueForApp(num, cln, data, size);
+    if (rest == 0) return dropped;
+    const uint8_t* keep = lastLineEnd(q.data, q.len);
+    if (!keep) return dropped + rest;  // no line structure: plain cut
+    const size_t cut = q.len - (size_t)(keep - q.data);
+    q.len -= cut;
+    q.skipped = 1;
+    return dropped + rest + cut;
 }
 
 // Sends as much of the queue as the app's socket takes now. False when the connection
@@ -240,6 +280,19 @@ static const char* radioOwnerGone(WiFiClient& owner) {
 static void serviceRadioPort() {
     WiFiClient& owner = TCPClient[RADIO_COM][0];
     HardwareSerial& radio = *COM[RADIO_COM];
+#ifdef STATUS_PAGE
+    // 0.5.10: a receive error on the radio line (buffer full, FIFO overflow, framing) means
+    // bytes from the radio were lost or damaged; close the session rather than pass a gap on.
+    static uint32_t radioErrorsSeen = 0;
+    const uint32_t radioErrors = portStats[RADIO_COM].uartErrors.load(std::memory_order_relaxed);
+    if (radioErrors != radioErrorsSeen) {
+        radioErrorsSeen = radioErrors;
+        if (owner.fd() >= 0) {
+            LOGW(LOG_RADIO, "Radio receive error, session closed so no damaged reply reaches the app");
+            closeRadioOwner(owner);
+        }
+    }
+#endif
     if (owner.fd() >= 0) {
         if (const char* why = radioOwnerGone(owner)) {
             LOGI(LOG_RADIO, "App released the radio port: %s", why);
@@ -629,7 +682,7 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
                     for (byte cln = 0; cln < MAX_NMEA_CLIENTS; cln++) {
                         if (TCPClient[num][cln])
 #ifdef ESP32
-                            if (queueForApp(num, cln, buf2[num], readCount) > 0) STAT(num, shortWrites, 1);  // Project (step 5): skipped
+                            if (queueNavForApp(num, cln, buf2[num], readCount) > 0) STAT(num, shortWrites, 1);  // Project (step 5): skipped
 #else
                             if (TCPClient[num][cln].write(buf2[num], readCount) != (size_t)readCount)
                                 STAT(num, shortWrites, 1);  // Project: count short writes

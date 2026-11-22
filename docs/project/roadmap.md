@@ -7,7 +7,7 @@
 The single work queue: which work package comes next and what finishes it.
 
 > [!NOTE]
-> **Status:** WP3 is complete: the bench bridge passed all bench checks, steps 1 and 13 closed by the owner (S175). **Current focus:** WP6 step 5 bench acceptance — the one-hour three-port run and the OpenSoar phone checks. The wired bridge runs 0.5.9 (S170). WP1 and the WP9 presets wait for the installed-equipment facts from Tom. Radio integration uses the [stock OpenSoar driver](../research/becker-driver.md#consequences).
+> **Status:** WP3 is complete: the bench bridge passed all bench checks, steps 1 and 13 closed by the owner (S175). **Current focus:** WP6 step 5 bench acceptance — the one-hour three-port run and the OpenSoar phone checks. The wired bridge runs 0.5.10 with the [code review](../research/reviews/2026-11-23-code-review.md) fixes (S176, S177). WP1 and the WP9 presets wait for the installed-equipment facts from Tom. Radio integration uses the [stock OpenSoar driver](../research/becker-driver.md#consequences).
 
 📑 **On this page:** <kbd>[1 · 📦 Work packages](#work-packages)</kbd> <kbd>[2 · 💻 Bridge firmware plan](#firmware-plan)</kbd> <kbd>[3 · 🏁 Milestones](#milestones)</kbd> <kbd>[4 · ✅ Test coverage for the software phase](#test-coverage)</kbd>
 
@@ -21,7 +21,7 @@ Related: ❓ [Open items](open-items.md) · 🎯 [Requirements](../design/requir
 
 | Package | Status | Next step | Done when |
 | --- | --- | --- | --- |
-| **WP6 Bridge firmware** | 🟡 **Current focus** — settings persistence updated in 0.5.8 (S162). Step 4 passed (S150, S153). Step 5: the wired FLARM feed and Becker loop passed (S159) | Run one hour with both navigation sources and the radio loop, then complete the [OpenSoar phone checks](../../firmware/bridge/README.md#slow-app-check) | Radio path byte-exact, single owner, navigation unaffected; phone signal readable on the status page in hotspot mode ([R10](../design/requirements.md#requirements)) |
+| **WP6 Bridge firmware** | 🟡 **Current focus** — settings persistence updated in 0.5.8 (S162). Step 4 passed (S150, S153). Step 5: the wired FLARM feed and Becker loop passed (S159) | Run one hour with both navigation sources, the radio loop and `--supply`, then complete the [OpenSoar phone checks](../../firmware/bridge/README.md#slow-app-check) | Radio path byte-exact, single owner, navigation unaffected; phone signal readable on the status page in hotspot mode ([R10](../design/requirements.md#requirements)) |
 | WP1 Installed equipment | 🟡 Photos and equipment report reviewed ([review](../research/reviews/2026-11-09-installation-claims.md)) | Get the [installed-equipment facts](open-items.md#installed-equipment) from Tom | Inventory, connector map and navigation baseline complete |
 | WP0 Documentation | ✅ Done | — | — |
 | WP3 Hardware | ✅ Done — [housing](../hardware/housing.md) accepted for the bench prototype (S93, S156); bench bridge built and all [bench checks](../hardware/wiring.md#bring-up) 1–13 passed or closed by the owner (S141–S161, S175) | — | Wiring design complete, bench bridge built and all bench checks passed |

@@ -20,7 +20,18 @@
 
 static bool settingsAuth() {
     if (statusServer.authenticate(SETTINGS_USER, OTA_PASSWORD)) return true;
-    if (statusServer.hasHeader("Authorization")) LOGW(LOG_SETTINGS, "Wrong settings password");  // the first request has none
+    if (statusServer.hasHeader("Authorization")) {  // the first request has none
+        // 0.5.10: one warning per 30 s at most, so failed logins cannot flood the log and flash.
+        static bool reported = false;
+        static uint32_t reportedAt = 0, since = 0;
+        since++;
+        if (!reported || millis() - reportedAt >= 30000UL) {
+            LOGW(LOG_SETTINGS, "Wrong settings password (%lu attempts)", (unsigned long)since);
+            reported = true;
+            reportedAt = millis();
+            since = 0;
+        }
+    }
     statusServer.requestAuthentication(BASIC_AUTH, "WIFI Bridge settings");
     return false;
 }
