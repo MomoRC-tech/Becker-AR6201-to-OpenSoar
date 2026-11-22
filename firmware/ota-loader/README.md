@@ -9,6 +9,8 @@ Bench loader for the Wi-Fi bridge ESP32: flash it once over USB, then upload all
 | OTA | ArduinoOTA, password-protected, hostname `wifi-bridgetom`; available in both modes until the next restart |
 | Pins | No GPIO or instrument UART configured; boot log on UART0 TX (GPIO1) only |
 
+<a id="variants"></a>
+
 ## Variants
 
 | Variant | Define in `ota_variant.h` | Wi-Fi | Passwords | Where |
@@ -22,6 +24,8 @@ Bench loader for the Wi-Fi bridge ESP32: flash it once over USB, then upload all
 
 The fallback test build boots the previously installed image after 5 minutes without an OTA upload, so it never stays installed by accident.
 
+<a id="build"></a>
+
 ## Build
 
 Arduino-ESP32 board package 3.3.4 or later 3.x, board **ESP32 Dev Module**, Partition Scheme **Minimal SPIFFS (1.9MB APP with OTA/190KB SPIFFS)**. For the private and test builds, copy `credentials.example.h` to `credentials.h` and fill in your network and two passwords of at least 8 characters each. `credentials.h` is ignored by Git; never commit it.
@@ -32,6 +36,8 @@ python tools/build_ota_loader.py fallback-test    # one variant
 ```
 
 The script builds one variant at a time and prints its duration. It selects the variant by writing `ota_variant.h` (ignored by Git, removed after the build) and builds in `build/ota-loader/<variant>/` at the repository root. Do not pass the variant as a compiler flag and do not build inside the sketch folder: both make arduino-cli recompile the whole core. The first build in a new folder takes about 4 minutes; a repeat build after a sketch change takes under a minute. It copies the public images and a [`manifest.json`](bin/manifest.json) with board package version and SHA-256 to `bin/`; commit the three files together.
+
+<a id="flash-usb"></a>
 
 ## Flash over USB (once)
 

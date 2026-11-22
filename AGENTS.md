@@ -4,7 +4,9 @@
 
 This project is preparing a bench prototype. Read README.md, the current package in docs/project/roadmap.md, and only the source/documents needed for that package. Check repository status and preserve unrelated edits.
 
-**Current focus: WP3 wiring and bench validation.** Use the accepted housing design linked from the roadmap. Reopen mechanical design only if a physical check calls for a change. In parallel, the bridge firmware follows the approved plan in the roadmap, one step at a time: steps 1–3b done, step 4 done on the wired bench bridge, step 5 pending. Ask the owner before removing any upstream feature from it. The software part of the device profiles (WP9) is brought forward by owner decision; its presets wait for the installed settings. No other software or driver work until WP3 is complete. Ask the owner for each hardware decision (part choice, circuit option, wiring choice) separately; present the options with a recommendation, then record the answer.
+The roadmap status box names the current focus. Do not restate project status, step progress or versions in agent instruction files (this file, CLAUDE.md, docs/agents); link to the roadmap instead.
+
+Standing rules: use the accepted housing design linked from the roadmap and reopen mechanical design only if a physical check calls for a change. The bridge firmware follows the approved plan in the roadmap, one step at a time; ask the owner before removing any upstream feature from it. Ask the owner for each hardware decision (part choice, circuit option, wiring choice) separately; present the options with a recommendation, then record the answer.
 
 The roadmap is the single work queue. A listed package, proposed ADR or recommendation is not implementation approval. For a broad request to continue, use the next package and its stated boundaries.
 

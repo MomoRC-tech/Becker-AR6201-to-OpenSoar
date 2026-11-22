@@ -49,23 +49,20 @@ More: [status page](firmware/bridge/README.md#status-page), [settings page](firm
 ## 2. 🚦 Project status
 
 > [!NOTE]
-> **Status:** the assembled 12 V bench bridge passed the Becker loopback and separate Zander and FLARM input tests. [Remaining bench checks](docs/hardware/wiring.md#bring-up) cover the boards, supply and voltage accuracy.
-> **Current focus:** 🔧 WP3 wiring and bench validation, with the 💻 [bridge firmware](docs/project/roadmap.md#firmware-plan) in parallel.
+> **Status:** the assembled 12 V bench bridge passed all bench checks (WP3 done). Current focus and next steps: [roadmap](docs/project/roadmap.md#work-packages).
 
 | Stage | Status |
 | --- | --- |
 | 🔬 Research and documentation | ✅ Done |
-| 📦 Mechanical design | ✅ Accepted — [housing v16](docs/hardware/housing.md); bench fit passed, vibration and heat checks open |
-| 🔧 Wiring and bench validation | 🟡 **Current focus** |
+| 📦 Mechanical design | ✅ Accepted — [housing](docs/hardware/housing.md); bench fit passed, vibration and heat checks open |
+| 🔧 Wiring and bench validation | ✅ Done |
 | 🛩️ Existing installation details | 🟡 Waiting for equipment information |
 | 📶 Bench OTA loader | ✅ Flashed and updatable over Wi-Fi ([M3](docs/project/roadmap.md#milestones)); [ready-made hotspot-only image](firmware/ota-loader/bin/README.md) for the first USB flash |
-| 💻 Bridge firmware | 🟡 Step 4 [radio port](docs/project/roadmap.md#firmware-plan) done on the wired bench bridge. Step 5 passed the FLARM and radio slow-client checks. The full three-port run and OpenSoar phone checks remain |
+| 💻 Bridge firmware | 🟡 Bench acceptance ([step 5](docs/project/roadmap.md#firmware-plan)): one-hour three-port run and OpenSoar phone checks remain |
 | 📻 OpenSoar radio connection | 🟡 Stock driver selected. Phone and radio checks remain |
 | ✈️ Aircraft integration | ⬜ Later |
 
 <img src="docs/images/becker-bridge-exploded.gif" width="600" alt="Exploded-view loop of the bridge housing: the hood screws and hood lift off and fly out of view, then the RS-232 boards, ESP32, UBEC converter and MAX490 board each rise out of the base tray and settle back">
-
-**Next step:** run the [bench checks](docs/hardware/wiring.md#bring-up) on the built bridge. See [WP3 Hardware](docs/project/roadmap.md#work-packages) for the full work package.
 
 ---
 

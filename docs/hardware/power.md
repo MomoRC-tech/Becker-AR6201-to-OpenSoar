@@ -7,7 +7,7 @@
 How the bridge is supplied and grounded, where ground loops close, which currents each wire carries, and what a broken wire does.
 
 > [!NOTE]
-> **Status:** bench design. Separate central 5 V/GND distribution, the ESP32-fed RS-232 supply chain and the supply-voltage divider are selected; the bench bridge is built and its input current at 12 V is read from the supply (S141, S147); all other currents are datasheet values or estimates. Open checks: [bench hardware](../project/open-items.md#bench-hardware).
+> **Status:** bench design. Separate central 5 V/GND distribution, the ESP32-fed RS-232 supply chain and the supply-voltage divider are selected; the bench bridge is built and its input current at 12 V is read from the supply (S141, S147); all other currents are datasheet values or estimates. Open items: [wiring and parts](../project/open-items.md#bench-hardware).
 
 📑 **On this page:** <kbd>[1 · 🔋 Supply path](#supply)</kbd> <kbd>[2 · ⏚ Grounding and loops](#ground)</kbd> <kbd>[3 · 📊 Current assumptions](#currents)</kbd> <kbd>[4 · ✂️ Wire-break cases](#wire-breaks)</kbd> <kbd>[5 · 🛡️ Protection](#protection)</kbd> <kbd>[6 · 🔎 Supply voltage sense](#voltage-sense)</kbd>
 
@@ -75,7 +75,7 @@ The Becker cable shield is connected at the radio end only (J1-11) and the phone
 
 ## 3. 📊 Current assumptions
 
-Datasheet values carry their source ID; everything else is an estimate until the bench measurements in [open items](../project/open-items.md#bench-hardware) replace it.
+Datasheet and measured values carry their source ID; values without one are estimates.
 
 | Branch | Wire | Normal | Peak | Worst single break | Basis |
 | --- | --- | --- | --- | --- | --- |

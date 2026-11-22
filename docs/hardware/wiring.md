@@ -7,7 +7,7 @@
 Use the existing instrument leads to build the glider-side plug for the bridge, then check the harness on the bench.
 
 > [!NOTE]
-> **Status:** wiring design in progress. See [open items](../project/open-items.md) for the remaining wiring decisions and [bench checks](../project/open-items.md#bench-hardware).
+> **Status:** bench bring-up complete (steps 1–13). Steps 14–16 follow at installation; remaining wiring decisions are in [open items](../project/open-items.md#bench-hardware).
 
 📑 **On this page:** <kbd>[1 · 🧭 Connect the bridge to your glider](#overview)</kbd> <kbd>[2 · 📈 Zander ZS1](#zander)</kbd> <kbd>[3 · 📡 FLARM](#flarm)</kbd> <kbd>[4 · 📻 Becker radio](#becker)</kbd> <kbd>[5 · 🧪 Bench bring-up](#bring-up)</kbd>
 
@@ -181,7 +181,7 @@ Socket numbering follows the [Winford BRKDD25F-R-FT mating-face drawing](https:/
 
 Keep all instruments disconnected during bench bring-up. Start with the supply and the loose boards, before soldering the harness.
 
-- [ ] **1.** With power off, check XT30 input polarity and continuity between the UBEC's input and output ground. Set the [UBEC jumper](modules.md#ubec) to 5 V and measure the output with no load before connecting a board.
+- [x] **1.** With power off, check XT30 input polarity and continuity between the UBEC's input and output ground. Set the [UBEC jumper](modules.md#ubec) to 5 V and measure the output with no load before connecting a board. Closed for the bench bridge without the no-load reading: it runs from the UBEC at 5.1 V under load (S161, S175).
 - [x] **2.** Match the ESP32 board's headers and module marking to the [pinout](modules.md#esp32-pinout). Switch off the bench supply before connecting the verified ESP32, then measure the UBEC output under load. Keep USB disconnected while the UBEC powers the ESP32 ([power rules](power.md#supply)). The assembled board matched the reference and the UBEC measured 5.1 V under load (S161).
 - [x] **3.** Flash the [OTA loader](../design/architecture.md#adr-05) over USB with its board setting, the UBEC and all instruments unplugged. First run `esptool flash-id` and expect 4 MB flash. Then power the ESP32 from the UBEC with USB unplugged: check that it joins the bench network and accepts one OTA upload; switch the network off (or upload the [fallback test build](../../firmware/ota-loader/README.md#variants)), restart, and check that its hotspot appears and accepts a client and one OTA upload. For M3 the owner accepted a phone join in place of the hotspot upload, which the bench PC cannot reach ([milestones](../project/roadmap.md#milestones)).
 - [x] **4.** Both RS-232 inputs passed the [DE-9 feed tests](#bus-test), accepted for the assembled bridge (S153). For replacement boards, use the following loose-board checks. With the RS-232 boards unpowered, check continuity from L2 to R3 and from L1 to R4 on each board. Verify the rest of the [pad map](modules.md#rs232-module) before soldering the harness. Then feed each board 3.3 V on R3 and GND on R4: with L3 open, R1 reads about 3.3 V; bridging L3 to L2 pulls R1 to about 0 V, while R2 does not follow. Do not touch L4, it drives about ±5.5 V.
@@ -239,7 +239,7 @@ python tools/bridge_loop_test.py <bridge address> --feed <COM port> --input zand
 
 With firmware step 3d ([supply voltage](../project/roadmap.md#supply-voltage)) and the [divider](power.md#voltage-sense) fitted:
 
-- [ ] **13.** Compare the calibrated status reading with a multimeter at the XT30 at 7, 12, 14.6 and 20 V. Record the error at each point against the target of about ±0.1 V. The bench bridge was calibrated at 12 V against a meter (S142). Against the supply display, errors at 7, 12, 14.6 and 18 V were +0.21, +0.02, −0.08 and −0.18 V respectively (S148). The full meter comparison through 20 V is pending.
+- [x] **13.** Compare the calibrated status reading with a multimeter at the XT30 at 7, 12, 14.6 and 20 V. Record the error at each point against the target of about ±0.1 V. Accepted by the owner without further measurements (S175): calibrated at 12 V against a meter (S142); against the supply display, errors at 7, 12, 14.6 and 18 V were +0.21, +0.02, −0.08 and −0.18 V (S148).
 
 ### 5.3 Aircraft integration
 

@@ -276,6 +276,8 @@ python espota.py -i <bridge address> -a "<OTA password>" -f build/bridge/bridge.
 
 There is no serial log; see the [web log](#web-log). Find the address through mDNS (`wifi-bridgetom.local`) or the router; in hotspot mode it is 10.10.10.10.
 
+<a id="loop-check"></a>
+
 ## Loop check (step 2)
 
 Fit jumper wires on the bare board (positions in [modules](../../docs/hardware/modules.md#esp32-pinout)): J2-8 IO33 → J2-10 IO26, J2-11 IO27 → J2-7 IO32, J3-11 IO17 → J3-12 IO16. Then, from a PC on the same network:

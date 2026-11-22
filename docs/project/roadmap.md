@@ -7,7 +7,7 @@
 The single work queue: which work package comes next and what finishes it.
 
 > [!NOTE]
-> **Status:** WP3 wiring and bench validation continues. The wired bridge runs 0.5.9 with startup temperature sampling (S170), [settings rollback](#settings-page) (S162) and [navigation detection](#navigation-detection) (S154). WP6 step 4 and the wired FLARM and radio slow-client checks passed (S150, S153, S159). Step 5 still needs the three-port endurance run and OpenSoar phone checks. WP9 presets await the installed settings. Radio integration uses the [stock OpenSoar driver](../research/becker-driver.md#consequences).
+> **Status:** WP3 is complete: the bench bridge passed all bench checks, steps 1 and 13 closed by the owner (S175). **Current focus:** WP6 step 5 bench acceptance — the one-hour three-port run and the OpenSoar phone checks. The wired bridge runs 0.5.9 (S170). WP1 and the WP9 presets wait for the installed-equipment facts from Tom. Radio integration uses the [stock OpenSoar driver](../research/becker-driver.md#consequences).
 
 📑 **On this page:** <kbd>[1 · 📦 Work packages](#work-packages)</kbd> <kbd>[2 · 💻 Bridge firmware plan](#firmware-plan)</kbd> <kbd>[3 · 🏁 Milestones](#milestones)</kbd> <kbd>[4 · ✅ Test coverage for the software phase](#test-coverage)</kbd>
 
@@ -21,14 +21,14 @@ Related: ❓ [Open items](open-items.md) · 🎯 [Requirements](../design/requir
 
 | Package | Status | Next step | Done when |
 | --- | --- | --- | --- |
-| **WP3 Hardware** | 🟡 **Current focus** — [housing v16](../hardware/housing.md) accepted for the bench prototype (S93). Bench bridge built and powered up at 12 V; it joins the network and serves all three ports (S141). Steps 5 and 6 and the radio loop passed after the TX line was corrected; no DI pull-up or A–B termination needed (S145, S146). Running current 60–90 mA at 12 V (S147). The ESP32 inspection and loaded UBEC check passed (S161). Supply readings at 12 and 14.6 V agreed with the supply display within ±0.1 V (S148). Step 4 is accepted for the assembled bridge from the Zander and FLARM RS-232 feed tests (S153). Housing fit and assembly passed (S156). The bridge DE-9 short and ground continuity check passed (S157). | Review the remaining [bench checklist](../hardware/wiring.md#bring-up) entries for the UBEC (step 1) and voltage accuracy against a meter (step 13). The instruments and their harness stay off the bench; the harness check is step 16 at installation. Keep the [schematic](../hardware/schematic.md) in step with the pin tables ([ADR-06](../design/architecture.md#adr-06)). | Wiring design complete, bench bridge built and all bench checks passed |
+| **WP6 Bridge firmware** | 🟡 **Current focus** — settings persistence updated in 0.5.8 (S162). Step 4 passed (S150, S153). Step 5: the wired FLARM feed and Becker loop passed (S159) | Run one hour with both navigation sources and the radio loop, then complete the [OpenSoar phone checks](../../firmware/bridge/README.md#slow-app-check) | Radio path byte-exact, single owner, navigation unaffected; phone signal readable on the status page in hotspot mode ([R10](../design/requirements.md#requirements)) |
 | WP1 Installed equipment | 🟡 Photos and equipment report reviewed ([review](../research/reviews/2026-11-09-installation-claims.md)) | Get the [installed-equipment facts](open-items.md#installed-equipment) from Tom | Inventory, connector map and navigation baseline complete |
 | WP0 Documentation | ✅ Done | — | — |
+| WP3 Hardware | ✅ Done — [housing](../hardware/housing.md) accepted for the bench prototype (S93, S156); bench bridge built and all [bench checks](../hardware/wiring.md#bring-up) 1–13 passed or closed by the owner (S141–S161, S175) | — | Wiring design complete, bench bridge built and all bench checks passed |
 | WP2 Interfaces and protocol | ⏸️ Tandem operation documented (S163). [Standby tuning](../design/requirements.md#requirements) deferred pending protocol evidence | See [protocol evidence](open-items.md#software-and-acceptance) | Matching settings, framing and reply rules confirmed |
 | WP4 OpenSoar integration | 🟡 [Built-in Becker AR62xx driver](../research/becker-driver.md#consequences) selected | Check the stock Android app over TCP with navigation connected | Radio behaviour checked on the Becker front panel, local controls and navigation work |
 | WP5 Host tests | Stock driver send behaviour characterised with synthetic frames (S12) | Compare against captures from the installed app during WP4 | Frame length and bytes checked against independent protocol evidence |
-| WP6 Bridge firmware | 🟡 Settings persistence updated in 0.5.8 (S162). Step 4 passed (S150, S153). Step 5 passed with the wired FLARM feed and Becker loop (S159) | Run one hour with both navigation sources and the radio loop, then complete the [OpenSoar phone checks](../../firmware/bridge/README.md#slow-app-check) | Radio path byte-exact, single owner, navigation unaffected; phone signal readable on the status page in hotspot mode ([R10](../design/requirements.md#requirements)) |
-| WP8 Aircraft integration | ⬜ Later | Needs verified hardware and separate approval | Installation, protection and approval requirements met |
+| WP8 Aircraft integration | ⬜ Later | Needs separate approval and the [installation items](open-items.md#bench-hardware) | Installation, protection and approval requirements met |
 | WP9 Device profiles | 🟡 [Profiles](#device-profiles) and optional [navigation detection](#navigation-detection) in firmware 0.5.7 (S115, S154) | Replace the candidate preset values once the [installed settings](open-items.md#installed-equipment) are known; check them on the wired bridge | Presets and manual settings work on compatible ports, survive restart and OTA, and preserve existing configurations |
 
 ### 1.1 Work loop
@@ -72,7 +72,7 @@ Firmware 0.5.7 adds **Detect** to the two RS-232 inputs on the [settings page](.
 ## 2. 💻 Bridge firmware plan
 
 > [!TIP]
-> **Selected:** build the bridge firmware (WP6) from Yuri's ESP-Serial-Bridge 130f731 ([ADR-02](../design/architecture.md#adr-02), [review](../research/reviews/2026-11-16-yuri-adoption.md)), in small steps. Check step 4 TCP ownership on the standalone ESP32 before the wired checks.
+> **Selected:** build the bridge firmware (WP6) from Yuri's ESP-Serial-Bridge 130f731 ([ADR-02](../design/architecture.md#adr-02), [review](../research/reviews/2026-11-16-yuri-adoption.md)), in small steps.
 
 ### 2.1 Target
 
@@ -131,7 +131,7 @@ Each step: build, upload over Wi-Fi, check, update the owning pages, commit.
 | 3a | ✅ **Settings page.** Password-protected [settings and automatic rollback](#settings-page) | Bench ESP32, phone | Settings survive restart and OTA, temporary port changes revert, and reset restores defaults (S109–S111, S162). Firmware 0.5.8 stores the active and rollback settings together and reports failed writes. See [power-loss check](open-items.md#software-and-acceptance) |
 | 3b | ✅ **Data monitor.** Live view of the bytes from and to each device on its own page `/monitor`, [design](#data-monitor) | Bench ESP32, phone, PC | Looped test data appears on the monitor in the right port and direction, NMEA as readable lines and radio bytes as hex; Pause and Download work; the loop test passes with the monitor open; nothing is collected while no one watches. Done (S112): byte-exact with the monitor open. Pause and Download still to try on a phone |
 | 3c | ✅ **Web log.** Event log page `/log` with level and source filters, Copy and Save, kept across a restart, [design](#web-log) | Bench ESP32, phone, PC | Start-up, Wi-Fi, app, radio and settings events appear with the right level and source; the filters, Copy and Save work on the phone; lines from before a restart stay readable with the reset reason; the loop test passes with the log open; nothing reaches a UART. Done (S116–S118); Copy and Save still to try on a phone |
-| 3d | **Supply voltage.** Measure the 12 V input and send it to OpenSoar on its own port, with a chart, [design](#supply-voltage). Wired bridge: XCSoar display, chart retention, sensor switch and screenshots checked (S158). Calibration survived OTA (S142). The XT30 meter check covers 12 V (S142). Bench step 13 used the supply display up to 18 V (S148). A voltage client stayed connected during the wired FLARM feed and radio loop (S159) | Standalone ESP32 with the divider on a breadboard, bench supply, multimeter, phone with XCSoar or OpenSoar (same OpenVario voltage parsing, S155) | Readings match the meter at 7, 12, 14.6 and 20 V within about ±0.1 V after calibration (error table recorded); the OpenVario device on port 4353 shows the voltage in XCSoar or OpenSoar; the chart shows the minutes since start and survives a restart; with the sensor switched off nothing is sent; calibration survives a restart and an OTA update; the loop test passes with the voltage port connected; new page screenshots |
+| 3d | ✅ **Supply voltage.** Measure the 12 V input and send it to OpenSoar on its own port, with a chart, [design](#supply-voltage). Wired bridge: XCSoar display, chart retention, sensor switch and screenshots checked (S158). Calibration survived OTA (S142). The XT30 meter check covers 12 V (S142). Bench step 13 used the supply display up to 18 V (S148) and was accepted by the owner without the meter comparison (S175). A voltage client stayed connected during the wired FLARM feed and radio loop (S159) | Standalone ESP32 with the divider on a breadboard, bench supply, multimeter, phone with XCSoar or OpenSoar (same OpenVario voltage parsing, S155) | Readings match the meter at 7, 12, 14.6 and 20 V within about ±0.1 V after calibration (error table recorded); the OpenVario device on port 4353 shows the voltage in XCSoar or OpenSoar; the chart shows the minutes since start and survives a restart; with the sensor switched off nothing is sent; calibration survives a restart and an OTA update; the loop test passes with the voltage port connected; new page screenshots |
 | 3e | **Chip temperature.** Show the ESP32's own temperature on the status page and in the web log; no shutdown, [firmware](../../firmware/bridge/README.md#chip-temperature). Standalone reading, log and loop checked (S132). The wired bridge completed a [two-hour FLARM load and cold-start reference](../../firmware/bridge/README.md#thermal-bench) (S167–S169). Pre-Wi-Fi reading and startup series verified on 0.5.9 (S170). [Per-board calibration proposal](#temperature-calibration) | Standalone ESP32, phone; wired bridge for the heat check | The page and `/api/status` show a value or *no reading*; the log has the first reading; the loop test passes; new page screenshots. In the [heat check](open-items.md#housing) the chip reading is logged next to the measured temperatures. Warning level 100 °C by owner decision, firmware 0.5.6 (S142) |
 | 3f | **Lifetime record.** Operating time, starts, highest chip temperature and lowest supply voltage kept in NVS through power cuts; shown on the status page, reset on the settings page, [firmware](../../firmware/bridge/README.md#lifetime-record). Firmware 0.5.3: records test, restart and write load checked (S134) | Standalone ESP32, phone | `tools/records_test.py` passes: password, reset, kept through a restart with one more start; values kept after pulling the USB cable; the acceptance test passes while the record is written every 2 s; new page screenshots |
 | 3g | **Saved log.** Errors, warnings and each start kept in LittleFS through power cuts, page `/saved`, cleared on the settings page, [firmware](../../firmware/bridge/README.md#saved-log). Firmware 0.5.4: records test, restart and write load checked (S135) | Standalone ESP32, phone | `tools/records_test.py` passes: start line and a warning saved, kept through a restart, clearing needs the password; lines kept after pulling the USB cable; the acceptance test passes while warnings are saved; new page screenshots |
@@ -238,7 +238,7 @@ Later, each needing its own approval: firmware upload from the browser, contribu
 
 **In OpenSoar:** add a device "OpenVario", TCP client `10.10.10.10:4353`. The value shows in the System status page as "Supply voltage" and in the vario display's battery line. On Android, the "Battery" InfoBox shows it only while the phone is charging; otherwise it shows the phone's battery (S122).
 
-**Hardware tasks (WP3):** R-V1 and R-V2 are fitted in the bench bridge; C-V is not ([supply voltage sense](../hardware/power.md#voltage-sense), S141). Check the wired bridge in [bring-up step 13](../hardware/wiring.md#bring-up).
+**Hardware tasks (WP3):** R-V1 and R-V2 are fitted in the bench bridge; C-V is not ([supply voltage sense](../hardware/power.md#voltage-sense), S141). [Bring-up step 13](../hardware/wiring.md#bring-up) accepted (S175).
 
 ---
 
@@ -265,9 +265,9 @@ Planning only. No additional hardware cost to use the existing sensor.
 | Milestone | Reached when | Status |
 | --- | --- | --- |
 | M1 | Installed equipment and interfaces are understood | ⬜ Open |
-| M2 | Hardware design and driver plan are selected | 🟡 Mechanical design accepted; WP3 wiring and bench validation in progress |
+| M2 | Hardware design and driver plan are selected | 🟡 Housing and wiring validated on the bench (WP3). Fuse, F1 holder and DE-9 mating parts are [open](open-items.md#bench-hardware) |
 | M3 | Bench ESP32 updatable over Wi-Fi: OTA loader flashed over USB, joins the configured network or opens its hotspot, and accepts an OTA upload in both modes ([ADR-05](../design/architecture.md#adr-05), [bring-up](../hardware/wiring.md#bring-up) step 3) | ✅ Done (S97–S99); hotspot OTA accepted on the fallback test and a phone join, without an upload over the hotspot |
-| M4 | Software verified | ⬜ Open. Acceptance of the three-port Wi-Fi bridge in WP6 step 5 triggers the [Bluetooth decision](#bluetooth-decision) once WP3 is complete. |
+| M4 | Software verified | ⬜ Open. Acceptance of the three-port Wi-Fi bridge in WP6 step 5 triggers the [Bluetooth decision](#bluetooth-decision). |
 
 <a id="bluetooth-decision"></a>
 
@@ -275,7 +275,7 @@ Planning only. No additional hardware cost to use the existing sensor.
 
 **Goal:** reduce energy use at the bridge’s 12 V input. Use BLE for normal operation and start Wi-Fi on demand for settings and firmware updates.
 
-**Decision gate:** after WP3 and WP6 step 5 pass (including the one-hour three-port run and stock OpenSoar phone reconnect checks), the owner decides whether to start a prototype. M4 can close with Wi-Fi only.
+**Decision gate:** after WP6 step 5 passes (including the one-hour three-port run and stock OpenSoar phone reconnect checks), the owner decides whether to start a prototype. M4 can close with Wi-Fi only.
 
 If the owner approves the prototype:
 

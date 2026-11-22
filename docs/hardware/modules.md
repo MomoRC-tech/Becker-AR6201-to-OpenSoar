@@ -7,7 +7,7 @@
 The modules the bridge is built from, how to orient them, and the shopping list for one bridge.
 
 > [!NOTE]
-> **Status:** all modules selected. Electrical specs come from seller listings or datasheets; physical sizes are recorded in [housing](housing.md#contents). Open checks: [bench hardware](../project/open-items.md#bench-hardware).
+> **Status:** all modules selected. Electrical specs come from seller listings or datasheets; physical sizes are recorded in [housing](housing.md#contents). Open items: [wiring and parts](../project/open-items.md#bench-hardware).
 
 📑 **On this page:** <kbd>[1 · 📋 Module overview](#module-overview)</kbd> <kbd>[2 · 🧠 ESP32 board](#esp32-pinout)</kbd> <kbd>[3 · 🔁 RS-232 modules (Zander, FLARM)](#rs232-module)</kbd> <kbd>[4 · 📻 RS-422 board (Becker)](#rs422-board)</kbd> <kbd>[5 · 🔋 Power module (UBEC)](#ubec)</kbd> <kbd>[6 · 🛒 Parts list](#parts-list)</kbd>
 

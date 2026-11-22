@@ -7,9 +7,9 @@
 The one list of everything still missing: what is needed, who provides it, and what it unblocks. Other pages link here instead of repeating open questions.
 
 > [!NOTE]
-> **Status:** all listed items are open. Current focus: bench hardware. Housing checks carry forward to prototype assembly and installation.
+> **Status:** all listed items are open. Bench validation is complete; the items concern installation, installed equipment and software acceptance.
 
-📑 **On this page:** <kbd>[1 · 🔧 Bench hardware — current focus](#bench-hardware)</kbd> <kbd>[2 · 📦 Housing fit and installation](#housing)</kbd> <kbd>[3 · 🛩️ Installed equipment](#installed-equipment)</kbd> <kbd>[4 · 💻 Software and acceptance — later](#software-and-acceptance)</kbd>
+📑 **On this page:** <kbd>[1 · 🔧 Wiring and parts for installation](#bench-hardware)</kbd> <kbd>[2 · 📦 Housing fit and installation](#housing)</kbd> <kbd>[3 · 🛩️ Installed equipment](#installed-equipment)</kbd> <kbd>[4 · 💻 Software and acceptance — later](#software-and-acceptance)</kbd>
 
 Related: 🗺️ [Roadmap](roadmap.md) · 🤔 [Assumptions](../design/requirements.md#assumptions) · 🛩️ [Existing installation](existing-installation.md)
 
@@ -17,24 +17,20 @@ Related: 🗺️ [Roadmap](roadmap.md) · 🤔 [Assumptions](../design/requireme
 
 <a id="bench-hardware"></a>
 
-## 1. 🔧 Bench hardware — current focus
+## 1. 🔧 Wiring and parts for installation
 
-Start with the delivered boards and power supply, with all instruments disconnected. See [bench bring-up](../hardware/wiring.md#bring-up) for the order; installation checks are identified separately there.
+Bench bring-up is complete. These items remain before the bridge is connected in the aircraft; the [installation checks](../hardware/wiring.md#bring-up) are steps 14–16 there.
 
 | # | Item | What is needed | How it is closed |
 | :-: | --- | --- | --- |
-| 1 | MAX490 board | Current draw | Bench check on the delivered board |
-| 3 | RS-232 replacement modules | IC marking, continuity against the [pad map](../hardware/modules.md#rs232-module) and R1 as the TTL output | [Loose-board check](../hardware/wiring.md#bring-up) before fitting a replacement |
-| 5 | UBEC | 5 V output without load; match the physical input/output polarity and XT30 cups to the labelled routing endpoints; fit in the enclosure | Bench measurement |
-| 6 | Fuse | Select fuse rating and speed from the running current (60–90 mA at 12 V, S147) and the wire protection requirements; switch-on inrush is not measured | Owner selection |
-| 8 | Device connectors | Photos of the installed connectors (from Tom); device models are [installed-equipment items 1–3](#installed-equipment) | Confirms the pin views in the wiring tables |
-| 9 | Becker J1 | Installed J1 revision, moulded pin numbers and which pins are already used | Confirms the J1 pins and the J1-21 ground |
-| 10 | Radio noise | No audible noise or squelch opening caused by the bridge | Check in the aircraft |
-| 11 | Power connector fit and retention | Adhesive compatibility with the XT30 body and PETG, wire support and insulated terminations ([selected arrangement](../hardware/housing.md#connectors)) | Connector-panel print and assembly check |
-| 12 | Supply-cable protection | Owner confirmation of cable length, routing and wire specification; where F1 sits at the supply end ([protection](../hardware/power.md#protection)) | Owner supplies harness details; agree cable protection before aircraft connection |
-| 13 | F1 holder | Inline holder in the 12 V harness at its supply end is selected; holder part and fuse format ([protection](../hardware/power.md#protection)) | Owner selection with item 6 |
-| 14 | Combined DE-9 instrument connection | Exact mating parts, wire-gauge compatibility, screw threads, backshell, strain relief and housing mounting. Identify the loose conductors and verify shield termination against the [selected pinout](../hardware/wiring.md#de9-pinout) and [Becker wiring](../hardware/wiring.md#becker). | Owner selects parts and mounting details. Check fit and continuity before connection. |
-| 15 | Supply voltage accuracy | Compare the calibrated reading with a multimeter through 20 V as specified in [bench step 13](../hardware/wiring.md#bring-up) | Bench builder records the error at each voltage |
+| 1 | Fuse | Select fuse rating and speed from the running current (60–90 mA at 12 V, S147) and the wire protection requirements; switch-on inrush is not measured | Owner selection |
+| 2 | F1 holder | Inline holder in the 12 V harness at its supply end is selected; holder part and fuse format ([protection](../hardware/power.md#protection)) | Owner selection with item 1 |
+| 3 | Supply-cable protection | Owner confirmation of cable length, routing and wire specification; where F1 sits at the supply end ([protection](../hardware/power.md#protection)) | Owner supplies harness details; agree cable protection before aircraft connection |
+| 4 | Power connector fit and retention | Adhesive compatibility with the XT30 body and PETG, wire support and insulated terminations ([selected arrangement](../hardware/housing.md#connectors)) | Connector-panel print and assembly check |
+| 5 | Combined DE-9 instrument connection | Exact mating parts, wire-gauge compatibility, screw threads, backshell, strain relief and housing mounting. Identify the loose conductors and verify shield termination against the [selected pinout](../hardware/wiring.md#de9-pinout) and [Becker wiring](../hardware/wiring.md#becker). | Owner selects parts and mounting details. Check fit and continuity before connection. |
+| 6 | Device connectors | Photos of the installed connectors (from Tom); device models are [installed-equipment items 1–3](#installed-equipment) | Confirms the pin views in the wiring tables |
+| 7 | Becker J1 | Installed J1 revision, moulded pin numbers and which pins are already used | Confirms the J1 pins and the J1-21 ground |
+| 8 | Radio noise | No audible noise or squelch opening caused by the bridge | Check in the aircraft |
 
 ---
 
@@ -42,19 +38,19 @@ Start with the delivered boards and power supply, with all instruments disconnec
 
 ## 2. 📦 Housing fit and installation
 
-Checks on the [housing v16 bench prototype](../hardware/housing.md) as built, and on its eventual placement in the aircraft.
+Checks on the [housing](../hardware/housing.md) bench prototype as built, and on its eventual placement in the aircraft.
 
 ### 2.1 Installation and environment
 
 | # | Item | What is needed | How it is closed |
 | :-: | --- | --- | --- |
-| 3 | Location in the aircraft | Which shaded spot the bridge sits in, maximum envelope (L × W × H) at that spot, orientation, and which structure the cable ties through the four base tie loops go around | Owner / Tom; photo and measurement of the spot |
-| 7 | Cable exits | Direction from which the 12 V harness and the instrument cables arrive at the connector side; free space in front of it for the mating plugs, DE-9 backshell and cable bend radius | Owner, from item 3 |
-| 8 | [Winter moisture and summer heat](../hardware/housing.md#climate) | Coldest intended start, wetting after covered storage, hottest parked mounting spot and powered temperature rise | Owner / bench builder. Use the checks below before deciding on a different hood. |
-| 9 | Distance to compass and radio antenna | Minimum distance from the magnetic compass (UBEC coil, ferrite ring, steel screws and inserts) and from the VHF antenna cable | Owner / Tom; compass check in the aircraft |
-| 6 | Wi-Fi path | Antenna position relative to the phone and surrounding structure | Owner selection; check in the aircraft |
+| 1 | Location in the aircraft | Which shaded spot the bridge sits in, maximum envelope (L × W × H) at that spot, orientation, and which structure the cable ties through the four base tie loops go around | Owner / Tom; photo and measurement of the spot |
+| 2 | Cable exits | Direction from which the 12 V harness and the instrument cables arrive at the connector side; free space in front of it for the mating plugs, DE-9 backshell and cable bend radius | Owner, from item 1 |
+| 3 | [Winter moisture and summer heat](../hardware/housing.md#climate) | Coldest intended start, wetting after covered storage, hottest parked mounting spot and powered temperature rise | Owner / bench builder. Use the checks below before deciding on a different hood. |
+| 4 | Distance to compass and radio antenna | Minimum distance from the magnetic compass (UBEC coil, ferrite ring, steel screws and inserts) and from the VHF antenna cable | Owner / Tom; compass check in the aircraft |
+| 5 | Wi-Fi path | Antenna position relative to the phone and surrounding structure | Owner selection; check in the aircraft |
 
-**Item 8 — proposed climate checks**
+**Item 3 — proposed climate checks**
 
 - [ ] At the proposed spot, log air temperature and relative humidity through damp nights, thaw and a sunny closed-canopy stop. Record cover and canopy position. With the bridge unpowered, compare a board or connector surface temperature with the local dew point. Look for droplets, tide marks and corrosion inside the hood and at both plugs. A dry afternoon inspection can miss overnight dew.
 - [ ] Read both RS-232 chip markings and the MAX490 suffix. Check operating and storage limits for the delivered boards, UBEC and actual filament. Record any missing limit and the margin available at the coldest intended start and hottest operating condition.
@@ -67,8 +63,8 @@ Fit and assembly of the bench build passed (S156).
 
 | # | Item | What is needed | How it is closed |
 | :-: | --- | --- | --- |
-| 20 | Internal harness retention | Check the [floor retainers](../hardware/housing.md#floor-guide), the [ferrite cradle](../hardware/housing.md#ferrite-cradle) and support at the DE-9 breakout, signal runs and board branches against [R11](../design/requirements.md#requirements): movement, chafing and continuity after representative vibration, and cradle retention at the expected loaded temperature | Physical vibration and heat checks |
-| 17 | Ground path rating | Rate the full ground path through the [GND-J splice](../hardware/housing.md#internal-routing) for the documented fault currents | Owner check against the [power page](../hardware/power.md) |
+| 1 | Internal harness retention | Check the [floor retainers](../hardware/housing.md#floor-guide), the [ferrite cradle](../hardware/housing.md#ferrite-cradle) and support at the DE-9 breakout, signal runs and board branches against [R11](../design/requirements.md#requirements): movement, chafing and continuity after representative vibration, and cradle retention at the expected loaded temperature | Physical vibration and heat checks |
+| 2 | Ground path rating | Rate the full ground path through the [GND-J splice](../hardware/housing.md#internal-routing) for the documented fault currents | Owner check against the [power page](../hardware/power.md) |
 
 ---
 
@@ -80,7 +76,7 @@ Facts about the equipment already in the aircraft, mostly from Tom. What is know
 
 | # | Item | What is needed | From | Unblocks |
 | :-: | --- | --- | --- | --- |
-| 1 | Radio | Type plate, article number, hardware/software versions of the reported AR6201-(022); J1 occupancy is [bench item 9](#bench-hardware) | Tom | Matching manual and interface |
+| 1 | Radio | Type plate, article number, hardware/software versions of the reported AR6201-(022); J1 occupancy is [wiring item 7](#bench-hardware) | Tom | Matching manual and interface |
 | 2 | Zander ZS1 | Program version, baud and output settings, cable | Tom | Serial settings |
 | 3 | FLARM | Model and firmware (reported Classic, IGC series 6), socket used, baud and output settings | Tom | Serial settings |
 | 4 | Existing wiring | How each device signal reaches the existing ESP32, including any converters | Tom | Backup record |
@@ -104,12 +100,13 @@ See the [bridge firmware plan](roadmap.md#firmware-plan) and the [stock OpenSoar
 | 1 | Protocol | Authoritative framing, ACK/NAK, CRC rules, status requests, channel vectors ([details](../research/becker-driver.md#protocol-details)) | Standby tuning |
 | 2 | Radio configuration | Matching manual; serial settings (the bridge uses 9600 8N1 until confirmed, [check](../research/reviews/2026-11-17-bridge-projects-check.md#other-projects)); remote control and Tandem mode enabled, as LXNAV and SD-Link require; this changes how the radio behaves, so the owner or installer decides before it is switched on | Port configuration |
 | 3 | Application integration | Record the installed OpenSoar version and check its built-in AR62xx driver over TCP alongside navigation | Application acceptance |
-| 5 | Network settings | Network to join in the aircraft and the passwords of the new bridge; hotspot name ([ADR-05](../design/architecture.md#adr-05)), address and ports ([firmware plan](roadmap.md#firmware-plan)) are selected | App and bridge configuration |
-| 7 | Bridge reliability | Byte-exact tests both ways, bursts, slow clients, partial writes, reconnects, navigation in parallel | Software verification (M4) |
-| 8 | Physical acceptance | Check local controls and navigation on the matching bench setup. For standby tuning, verify the requested standby and unchanged active frequency on the radio | Radio acceptance |
-| 9 | Firmware review checks | Cross-port delay during bulk writes at low baud and remaining connection capacity. Repeated clean closes on quiet Zander and the ordinary two-app connection load passed (S160). [Firmware review](../research/reviews/2026-11-19-firmware-0.5.4-review.md#missing-checks) | Severity of findings 1 and 4 |
-| 10 | mDNS memory error | One `mdns_networking: Cannot allocate memory` error while the radio port refused repeated clients (S150): cause, and whether it repeats or affects the ports | Bridge reliability |
-| 11 | Settings under power loss | Interrupt a save and an automatic rollback on a spare ESP32, then check that the stored configuration is complete (S162) | Physical settings persistence |
+| 4 | Network settings | Network to join in the aircraft and the passwords of the new bridge; hotspot name ([ADR-05](../design/architecture.md#adr-05)), address and ports ([firmware plan](roadmap.md#firmware-plan)) are selected | App and bridge configuration |
+| 5 | Bridge reliability | Byte-exact tests both ways, bursts, slow clients, partial writes, reconnects, navigation in parallel | Software verification (M4) |
+| 6 | Physical acceptance | Check local controls and navigation on the matching bench setup. For standby tuning, verify the requested standby and unchanged active frequency on the radio | Radio acceptance |
+| 7 | Firmware review checks | Cross-port delay during bulk writes at low baud and remaining connection capacity. Repeated clean closes on quiet Zander and the ordinary two-app connection load passed (S160). [Firmware review](../research/reviews/2026-11-19-firmware-0.5.4-review.md#missing-checks) | Severity of findings 1 and 4 |
+| 8 | mDNS memory error | One `mdns_networking: Cannot allocate memory` error while the radio port refused repeated clients (S150): cause, and whether it repeats or affects the ports | Bridge reliability |
+| 9 | Settings under power loss | Interrupt a save and an automatic rollback on a spare ESP32, then check that the stored configuration is complete (S162) | Physical settings persistence |
+
 ---
 
 <kbd>[⬆️ Back to top](#top)</kbd> <kbd>[🏠 Overview](../../README.md)</kbd>

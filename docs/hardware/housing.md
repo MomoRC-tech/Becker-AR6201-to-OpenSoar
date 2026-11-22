@@ -7,7 +7,7 @@
 Mechanical design of the bridge: what goes inside, part sizes, connectors on the housing, internal layout.
 
 > [!NOTE]
-> **Status:** the bench prototype uses the housing v16 baseline (S93) with the shield-supported RS-232 clamp and revised base (S102). The bench build fits as designed (S156). The current [CAD and print files](../../cad/housing/housing-body-v1/README.md) include the v18 front-panel markings (S173). Retention under vibration and heat is an [open item](../project/open-items.md#housing).
+> **Status:** the bench prototype uses the housing v16 baseline (S93) with the shield-supported RS-232 clamp and revised base (S102). The bench build fits as designed (S156). The current [CAD and print files](../../cad/housing/housing-body-v1/README.md) are v18, which changes only the front-panel markings (S172, S173). Retention under vibration and heat is an [open item](../project/open-items.md#housing).
 
 📑 **On this page:** <kbd>[1 · 🎯 Requirements](#requirements)</kbd> <kbd>[2 · 📐 Design rules](#rules)</kbd> <kbd>[3 · 📏 Contents and sizes](#contents)</kbd> <kbd>[4 · 🔌 Connectors on the housing](#connectors)</kbd> <kbd>[5 · 🧩 Internal layout](#layout)</kbd>
 
