@@ -1,6 +1,6 @@
 # Housing body v1 (prototype)
 
-The enclosure fit revision uses [layout v4](../layout-v4/README.md) with a restored floor datum, revised connector wall, rounded corners around the front insert seats, an integral ESP32 antenna holder and the hood. Open `Housing body - Wire Generator harness` in Fusion or use the [standalone archive](housing-enclosure-fit.f3d) for the current bench design (S136). See the [design rules](../../../docs/hardware/housing.md#rules) and [physical fit checks](../../../docs/project/open-items.md#housing).
+The enclosure fit revision uses [layout v4](../layout-v4/README.md) with a restored floor datum, revised connector wall, rounded corners around the front insert seats, an integral ESP32 antenna holder and the hood. Open `Housing body - Wire Generator harness` in Fusion or use the [standalone archive](housing-enclosure-fit.f3d) for the current bench design. [Housing v17](https://github.com/MomoRC-tech/Becker-AR6201-to-OpenSoar/releases/tag/housing-v17) repairs the `INSTR` engraving and adds DE-9 pin numbers (S172). See the [design rules](../../../docs/hardware/housing.md#rules) and [physical fit checks](../../../docs/project/open-items.md#housing).
 
 ![Earlier prototype showing the hood, connector wall and external tie loops](preview-closed.png)
 
