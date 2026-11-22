@@ -2,10 +2,10 @@
 
 Reads both pages, the image and the settings JSON from a running bridge,
 masks private details, and renders them at phone width (390 px, 2x) in the
-light theme: docs/images/status-page.png ("Lifetime record" and "All settings" open),
+light theme: docs/images/status-page.png (startup temperatures, lifetime record and settings expanded),
 docs/images/settings-page.png, docs/images/monitor-page.png,
 docs/images/log-page.png and docs/images/saved-page.png. The settings page login uses the OTA password from
-firmware/bridge/credentials.h. The monitor, the log, the supply voltage
+firmware/bridge/credentials.h. The monitor, the log, startup and live chip temperatures, the supply voltage
 (value and chart), the lifetime record and the saved log show fixed demo data, never real data: real NMEA contains
 positions, the real log network names and addresses, and a bench board
 without the divider has no meaningful voltage.
@@ -170,7 +170,7 @@ def browser() -> str:
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("host", help="bridge address")
-    ap.add_argument("--height", type=int, default=1700, help="page height in CSS pixels")
+    ap.add_argument("--height", type=int, default=2650, help="status page height in CSS pixels")
     args = ap.parse_args()
 
     page = get(args.host, "/").decode("utf-8")
@@ -187,6 +187,13 @@ def main() -> None:
     status["wifi"] = {"mode": "hotspot", "ip": hotspot, "stations": [-52]}
     status["supply"], history = demo_supply()
     status["uptime_s"] = 5 * 3600 + 25  # matches the five-hour demo chart
+    if "boot_samples" in status.get("chip_temp", {}):
+        # Synthetic uncorrected readings for the startup table in public screenshots.
+        status["chip_temp"]["boot_samples"] = [
+            {"ms": i * 10000 if i else 98, "celsius": round((raw - 32) / 1.8, 1)}
+            for i, raw in enumerate((110, 113, 115, 116, 119, 121, 123, 124, 125, 126, 127, 129, 130))
+        ]
+        status["chip_temp"]["celsius"] = 56.2
     if "lifetime" in status:  # demo record, consistent with the demo chart
         now = int(time.time())
         status["lifetime"] = {"storage": True, "starts": 57, "up_s": 123 * 3600 + 25 * 60, "since_unix": now - 40 * 86400,
@@ -199,6 +206,7 @@ def main() -> None:
     page = page.replace("/device.webp", "device.webp").replace("<main>", mock + "<main>", 1)
     page = page.replace('<section class="set"><details>', '<section class="set"><details open>', 1)
     page = page.replace('id="lt" hidden><details>', 'id="lt" hidden><details open>', 1)
+    page = page.replace('id="bootTemps" hidden><details>', 'id="bootTemps" hidden><details open>', 1)
 
     shoot(page, image, IMAGES / "status-page.png", args.height)
 

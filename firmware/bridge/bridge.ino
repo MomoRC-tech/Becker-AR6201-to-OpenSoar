@@ -339,7 +339,13 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
 #endif
 
     void setup() {
+#ifdef CHIP_TEMP
+        chipTempCaptureBoot();
+#endif
         logStart();  // Project: web log (step 3c), before anything logs
+#ifdef CHIP_TEMP
+        chipTempStartBootSeries();
+#endif
         delay(500);
 
 #if defined(ESP32) && defined(PROTOCOL_TCP)

@@ -93,6 +93,8 @@ a{color:inherit}
 <div class="trial" id="trial" hidden><span id="tt"></span> <a href="/settings">Keep or change</a></div>
 <div class="down" id="down" hidden>The bridge is not answering. Check that this phone is on the bridge's Wi-Fi.</div>
 <div id="ports"></div>
+<section class="set" id="bootTemps" hidden><details><summary>Chip temperature during startup</summary><table>
+<thead><tr><th>Time after boot</th><th>ESP32 reading</th></tr></thead><tbody id="bootRows"></tbody></table></details></section>
 <section id="sup" hidden><div class="row"><span class="dot"></span><h2>Supply voltage</h2><span class="st" id="sv"></span></div><div class="brief" id="sb"></div><svg id="sc" viewBox="0 0 600 270" role="img" aria-label="Supply voltage since the bridge was switched on"></svg><p class="key" id="sk" hidden>Each minute since the bridge was switched on, up to 12 hours: line = mean, band = lowest to highest, dashed = <span id="sl"></span> V warning level.</p></section>
 <section class="set" id="lt" hidden><details><summary>Lifetime record</summary><div class="grp" id="lr"></div><p class="key">Kept through power cuts; operating time is saved every 10 minutes. Reset on the <a href="/settings">settings page</a> (password).</p></details></section>
 <section class="set"><details><summary>All settings</summary><div id="set">Loading</div><p class="key"><a href="/settings">Change settings</a> (password)</p></details></section>
@@ -109,7 +111,12 @@ function f(){fetch('/api/status',{cache:'no-store'}).then(r=>r.json()).then(d=>{
 $('down').hidden=true;const w=d.wifi;
 const link=w.mode==='hotspot'?'<div>Hotspot <b>'+w.ip+'</b></div><div>'+(w.stations.length?w.stations.length+(w.stations.length>1?' phones, ':' phone, ')+'signal <b>'+w.stations.map(x=>x+' dBm').join(', ')+'</b>':'No phone connected')+'</div>':'<div>Network <b>'+w.ip+'</b></div><div>Signal <b>'+w.rssi_dbm+' dBm</b></div>';
 const ct=d.chip_temp,chip=ct?'<div>Chip temperature <b'+(ct.celsius!==null&&ct.celsius>=ct.warn_c?' class="bad"':'')+'>'+(ct.celsius===null?'no reading':Math.round(ct.celsius)+' °C')+'</b></div>':'';
-$('meta').innerHTML='<div>Firmware <b>'+esc(d.firmware.replace('Wi-Fi bridge ',''))+'</b></div><div>Up <b>'+dur(d.uptime_s)+'</b></div>'+chip+link;
+const samples=ct?.boot_samples,first=samples?.[0];
+const degrees=c=>Number.isFinite(c)?c.toFixed(1)+' °C':'no reading';
+const boot=first?'<div>Chip before Wi-Fi <b>'+degrees(first.celsius)+'</b> · '+first.ms+' ms after boot</div>':'';
+$('bootTemps').hidden=!first;
+if(first)$('bootRows').innerHTML=samples.map(s=>'<tr><td>'+(s.ms/1000).toFixed(3)+' s</td><td>'+degrees(s.celsius)+'</td></tr>').join('');
+$('meta').innerHTML='<div>Firmware <b>'+esc(d.firmware.replace('Wi-Fi bridge ',''))+'</b></div><div>Up <b>'+dur(d.uptime_s)+'</b></div>'+chip+boot+link;
 if(!built)build(d.ports);
 d.ports.forEach((p,n)=>{const on=p.last_data_ms_ago!==null&&p.last_data_ms_ago<5000,moved=last[n]!==undefined&&last[n]!==p.bytes_from_device;last[n]=p.bytes_from_device;
 $('d'+n).className=(on?'on':'')+(moved?' pulse':'');$('s'+n).textContent=ago(p.last_data_ms_ago);

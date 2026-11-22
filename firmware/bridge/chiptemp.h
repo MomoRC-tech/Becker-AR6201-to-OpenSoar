@@ -10,7 +10,8 @@
 // value is a trend, not an air temperature. A chip whose sensor does not work
 // returns 128 (degrees Fahrenheit) at every read; that shows as "no reading".
 //
-// Runs in the status task (core 0, low priority), like the supply voltage.
+// Save single readings at setup entry and at 10 s intervals through 120 s.
+// The status task separately maintains the live average.
 // Included by status_page.h after supply.h.
 
 #pragma once
@@ -18,6 +19,8 @@
 #ifdef CHIP_TEMP
 
 #include <cmath>
+#include <atomic>
+#include <mutex>
 
 extern "C" uint8_t temprature_sens_read();  // Arduino core (esp32-hal-misc.c): raw degrees Fahrenheit
 
@@ -29,7 +32,47 @@ extern "C" uint8_t temprature_sens_read();  // Arduino core (esp32-hal-misc.c): 
 #define CHIP_TEMP_RECORD_AFTER_MS 120000UL  // and only from 2 min after the start, when start-up readings run high
 
 static float chipTempC = NAN;       // mean of the last readings in degrees Celsius; NAN = no reading
-static bool chipTempWorks = false;  // a value other than CHIP_TEMP_STUCK seen since start
+struct ChipTempSample {
+    uint32_t ms;
+    uint8_t raw;  // zero means no usable reading
+};
+
+static ChipTempSample chipTempRead() {
+    static std::mutex sensor;
+    static bool working = false;
+    const std::lock_guard<std::mutex> lock(sensor);
+    const uint32_t ms = millis();
+    const uint8_t raw = temprature_sens_read();
+    if (raw == 0 || raw == 255) return {ms, 0};
+    if (raw != CHIP_TEMP_STUCK) working = true;
+    return {ms, static_cast<uint8_t>(working ? raw : 0)};
+}
+
+static constexpr unsigned CHIP_BOOT_COUNT = 13;
+static constexpr uint32_t CHIP_BOOT_INTERVAL_MS = 10000;
+static ChipTempSample chipBootSamples[CHIP_BOOT_COUNT];
+static std::atomic<unsigned> chipBootCount{0};  // slots are immutable once published
+
+static void chipTempBootTask(void*) {
+    for (unsigned slot = 1; slot < CHIP_BOOT_COUNT; ++slot) {
+        const uint32_t due = slot * CHIP_BOOT_INTERVAL_MS;
+        const uint32_t now = millis();
+        if (due > now) vTaskDelay(pdMS_TO_TICKS(due - now));
+        chipBootSamples[slot] = chipTempRead();
+        chipBootCount.store(slot + 1, std::memory_order_release);
+    }
+    vTaskDelete(nullptr);
+}
+
+static void chipTempCaptureBoot() {
+    chipBootSamples[0] = chipTempRead();
+    chipBootCount.store(1, std::memory_order_release);
+}
+
+static void chipTempStartBootSeries() {
+    if (xTaskCreate(chipTempBootTask, "boot-temp", 3072, nullptr, 1, nullptr) != pdPASS)
+        LOGW(LOG_SYSTEM, "Cannot start boot temperature sampling");
+}
 
 // Called from the status task loop every few milliseconds.
 static void chipTempTick() {
@@ -42,12 +85,10 @@ static void chipTempTick() {
     if (now - at < CHIP_TEMP_EVERY_MS) return;
     at = now;
 
-    const uint8_t raw = temprature_sens_read();
-    const bool edge = raw == 0 || raw == 255;  // out of the sensor's range
-    if (!edge && raw != CHIP_TEMP_STUCK) chipTempWorks = true;
-    if (!chipTempWorks || edge) {
-        if (!chipTempWorks && !noneLogged && now >= CHIP_TEMP_NO_READING_MS) {
-            LOGI(LOG_SYSTEM, "Chip temperature: this ESP32's sensor gives no reading (raw %u)", raw);
+    const uint8_t raw = chipTempRead().raw;
+    if (!raw) {
+        if (!count && !noneLogged && now >= CHIP_TEMP_NO_READING_MS) {
+            LOGI(LOG_SYSTEM, "Chip temperature: this ESP32's sensor gives no reading");
             noneLogged = true;
         }
         return;
@@ -89,10 +130,22 @@ static void chipTempTick() {
 
 // Part of /api/status.
 static void chipTempJson(String& out) {
-    char b[64];
-    if (std::isnan(chipTempC)) snprintf(b, sizeof(b), ",\"chip_temp\":{\"celsius\":null,\"warn_c\":%d}", CHIP_TEMP_WARN_C);
-    else snprintf(b, sizeof(b), ",\"chip_temp\":{\"celsius\":%.1f,\"warn_c\":%d}", chipTempC, CHIP_TEMP_WARN_C);
-    out += b;
+    out += F(",\"chip_temp\":{\"celsius\":");
+    out += std::isnan(chipTempC) ? String("null") : String(chipTempC, 1);
+    out += F(",\"warn_c\":");
+    out += CHIP_TEMP_WARN_C;
+    out += F(",\"boot_samples\":[");
+    const unsigned count = chipBootCount.load(std::memory_order_acquire);
+    for (unsigned i = 0; i < count; ++i) {
+        const ChipTempSample& sample = chipBootSamples[i];
+        if (i) out += ',';
+        out += F("{\"ms\":");
+        out += sample.ms;
+        out += F(",\"celsius\":");
+        out += sample.raw ? String((sample.raw - 32.0f) / 1.8f, 1) : String("null");
+        out += '}';
+    }
+    out += F("]}");
 }
 
 // For the Debug line every 60 s: "; chip 47 °C", or empty without a reading.
