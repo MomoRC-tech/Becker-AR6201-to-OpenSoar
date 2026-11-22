@@ -63,7 +63,7 @@ More: [status page](firmware/bridge/README.md#status-page), [settings page](firm
 | 📻 OpenSoar radio connection | 🟡 Stock driver selected. Phone and radio checks remain |
 | ✈️ Aircraft integration | ⬜ Later |
 
-<img src="docs/images/becker-bridge-exploded.gif" width="640" alt="Exploded-view loop of the bridge housing: the hood screws and hood lift off, then the RS-232 boards, ESP32 and MAX490 with UBEC rise out of the base tray and settle back">
+<img src="docs/images/becker-bridge-exploded.gif" width="600" alt="Exploded-view loop of the bridge housing: the hood screws and hood lift off and fly out of view, then the RS-232 boards, ESP32 and MAX490 with UBEC rise out of the base tray and settle back">
 
 **Next step:** run the [bench checks](docs/hardware/wiring.md#bring-up) on the built bridge. See [WP3 Hardware](docs/project/roadmap.md#work-packages) for the full work package.
 
