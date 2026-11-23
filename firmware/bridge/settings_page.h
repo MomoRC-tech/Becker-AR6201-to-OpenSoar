@@ -1,15 +1,15 @@
 // Project: settings page (firmware plan step 3a, R15). ESP32 only.
 //
-// GET  /settings          the page (password)
-// POST /api/settings      check and save, then restart (password)
-// POST /api/keep          keep settings that are on trial (password)
-// POST /api/reset         forget all stored settings, then restart (password)
-// POST /api/restart       restart with the stored settings (password)
-// POST /api/chip-temp/calibrate set the chip temperature offset, then restart (password)
-// POST /api/lifetime/reset start a new lifetime record (password; lifetime.h)
-// POST /api/saved/clear   delete the saved log (password; savedlog.h)
+// GET  /settings          the page
+// POST /api/settings      check and save, then restart
+// POST /api/keep          keep settings that are on trial
+// POST /api/reset         forget all stored settings, then restart
+// POST /api/restart       restart with the stored settings
+// POST /api/chip-temp/calibrate set the chip temperature offset, then restart
+// POST /api/lifetime/reset start a new lifetime record (lifetime.h)
+// POST /api/saved/clear   delete the saved log (savedlog.h)
 //
-// Password: HTTP basic authentication, user "bridge", the OTA password. The
+// No login (owner decision, 0.5.17). The
 // active values come from the public /api/settings, which never sends passwords.
 //
 // Included by status_page.h inside its ESP32 and STATUS_PAGE block.
@@ -18,28 +18,9 @@
 
 #ifdef STORED_SETTINGS
 
-#define SETTINGS_USER "bridge"
-
-static bool settingsAuth() {
-#ifdef BENCH_OPEN
-    return true;  // bench build: no settings login (bench.h)
-#endif
-    if (statusServer.authenticate(SETTINGS_USER, OTA_PASSWORD)) return true;
-    if (statusServer.hasHeader("Authorization")) {  // the first request has none
-        // 0.5.10: one warning per 30 s at most, so failed logins cannot flood the log and flash.
-        static bool reported = false;
-        static uint32_t reportedAt = 0, since = 0;
-        since++;
-        if (!reported || millis() - reportedAt >= 30000UL) {
-            LOGW(LOG_SETTINGS, "Wrong settings password (%lu attempts)", (unsigned long)since);
-            reported = true;
-            reportedAt = millis();
-            since = 0;
-        }
-    }
-    statusServer.requestAuthentication(BASIC_AUTH, "WIFI Bridge settings");
-    return false;
-}
+// Owner decision (0.5.17): no settings login on any build; anyone on the bridge's Wi-Fi
+// can change settings. Firmware uploads (OTA) keep their password.
+static bool settingsAuth() { return true; }
 
 static void restartSoon() {
     delay(800);  // let the answer reach the phone

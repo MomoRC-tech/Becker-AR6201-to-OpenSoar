@@ -97,12 +97,7 @@ def main():
     host, pw = a.host, password()
 
     code, _ = request(host, "/settings")
-    check("settings page needs the password", code == 401, f"HTTP {code}")
-    code, _ = request(host, "/settings", auth=pw)
-    check("settings page opens with the password", code == 200, f"HTTP {code}")
-    before = settings(host)
-    code, _ = request(host, "/api/settings", {"b2": "19200"}, auth="wrong-password")
-    check("wrong password saves nothing", code == 401 and settings(host) == before, f"HTTP {code}")
+    check("settings page opens without a login", code == 200, f"HTTP {code}")
 
     # From here on the bridge settings change: always end with a reset, also when a
     # check stops the script, so later tests find the default ports.

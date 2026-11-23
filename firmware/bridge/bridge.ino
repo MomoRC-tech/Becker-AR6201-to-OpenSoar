@@ -40,7 +40,7 @@
 #include <esp_ota_ops.h>
 static bool otaStarted = false;
 #endif
-#include "bench.h"  // Project: bench build without settings login (BENCH_OPEN only)
+#include "bench.h"  // Project: bench build without OTA password (BENCH_OPEN only)
 
 #ifdef OTA_HANDLER
 #include <ArduinoOTA.h>
@@ -98,6 +98,18 @@ uint16_t iBT = 0;
 #define NAV_DETECTION
 #include "nav_scan.h"
 #endif
+#ifdef ESP32
+// Every app connection: TCP keepalive after 5 s idle, three probes 3 s apart, so the
+// connection of a phone that left (Wi-Fi off, out of range) is closed after about 14 s
+// even on a quiet port. The core turns keepalive on at accept, with lwIP's 2 h default.
+static bool appKeepalive(WiFiClient& c) {
+    const int idle = 5, interval = 3, probes = 3;
+    return c.setSocketOption(IPPROTO_TCP, TCP_KEEPIDLE, &idle, sizeof(idle)) == 0 &&
+           c.setSocketOption(IPPROTO_TCP, TCP_KEEPINTVL, &interval, sizeof(interval)) == 0 &&
+           c.setSocketOption(IPPROTO_TCP, TCP_KEEPCNT, &probes, sizeof(probes)) == 0;
+}
+#endif
+
 #include "status_page.h"  // Project: status page and counters (step 3)
 
 #if defined(ESP32) && defined(PROTOCOL_TCP)
@@ -333,12 +345,7 @@ static void serviceRadioPort() {
 
     if (server[RADIO_COM]->hasClient()) {
         WiFiClient candidate = server[RADIO_COM]->accept();
-        // About 14 seconds (5 s idle + three 3 s probe intervals).
-        const int idle = 5, interval = 3, probes = 3;
-        if (candidate.fd() >= 0 && owner.fd() < 0 &&
-            candidate.setSocketOption(IPPROTO_TCP, TCP_KEEPIDLE, &idle, sizeof(idle)) == 0 &&
-            candidate.setSocketOption(IPPROTO_TCP, TCP_KEEPINTVL, &interval, sizeof(interval)) == 0 &&
-            candidate.setSocketOption(IPPROTO_TCP, TCP_KEEPCNT, &probes, sizeof(probes)) == 0) {
+        if (candidate.fd() >= 0 && owner.fd() < 0 && appKeepalive(candidate)) {
             // Do not pass previously buffered UART bytes to the new owner.
             uart_flush_input(UART_NUM_2);
             closeRadioOwner(owner);  // Clear tracking if the core closed the previous socket itself.
@@ -662,6 +669,7 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
                         if (TCPClient[num][i]) TCPClient[num][i].stop();
                         TCPClient[num][i] = server[num]->available();
 #ifdef ESP32
+                        if (TCPClient[num][i]) appKeepalive(TCPClient[num][i]);  // 0.5.17: dead apps closed on quiet ports too
                         if (TCPClient[num][i] && !openAppQueue(num, i)) {  // Project (step 5): a new app starts with an empty queue
                             LOGW(LOG_PORTS, "%s: app refused, no memory for its queue", appPortName[num]);
                             TCPClient[num][i].stop();

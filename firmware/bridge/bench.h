@@ -1,4 +1,4 @@
-// Project: bench build without settings login (BENCH_OPEN), for unattended bench tests.
+// Project: bench build without OTA password (BENCH_OPEN), for unattended bench tests.
 // Built by `python tools/build_bridge.py bench-open`; never for the aircraft.
 //
 // The settings page and its API accept every request without a password, and the

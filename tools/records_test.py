@@ -10,15 +10,14 @@ Resets the lifetime record and clears the saved log of the board it runs against
 
 Checks:
 - /api/status has the lifetime block with storage available;
-- a reset with a wrong password changes nothing;
 - a reset with the password starts a new record (1 start, little operating time);
 - after a restart by the firmware the record is kept, with one more start and
   the operating time carried over;
-- saved log: this start's line is saved; a warning (a wrong password) is saved
-  within 10 s; both are still there after a restart, with the next start's
-  line; clearing needs the password and empties it.
+- saved log: this start's line is saved; a warning (a refused settings save with
+  an invalid baud rate, nothing changes) is saved within 10 s; both are still
+  there after a restart, with the next start's line; clearing empties it.
 
---write-load SECONDS: every 2 s resets the record and sends a wrong password,
+--write-load SECONDS: every 2 s resets the record and sends a refused settings save,
 so the record and the saved log are written far more often than in use, while
 tools/bridge_acceptance_test.py --radio-loop --baseline streams data through
 the step 2 jumper loops. Passes when that test passes and no UART receive
@@ -35,6 +34,7 @@ import sys
 import threading
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 from pathlib import Path
 
@@ -93,10 +93,6 @@ def record_checks(host, pw):
     if life is None:
         return
 
-    code, _ = request(host, "/api/lifetime/reset", post=True, auth="wrong-password")
-    after = status(host)["lifetime"]
-    check("wrong password refused, record unchanged", code == 401 and after["starts"] == life["starts"],
-          f"HTTP {code}, starts {life['starts']} -> {after['starts']}")
 
     code, _ = request(host, "/api/lifetime/reset", post=True, auth=pw)
     fresh = status(host)["lifetime"]
@@ -123,6 +119,16 @@ def saved_lines(host):
     return [r for r in rows if len(r) >= 6]
 
 
+def refuse_save(host):
+    """An invalid baud rate: the bridge refuses the save, changes nothing and logs a warning."""
+    req = urllib.request.Request(f"http://{host}/api/settings", data=urllib.parse.urlencode({"b0": "123"}).encode())
+    try:
+        with urllib.request.urlopen(req, timeout=10) as r:
+            return False  # accepted: should not happen
+    except urllib.error.HTTPError as e:
+        return e.code == 400
+
+
 def saved_checks(host, pw):
     s = status(host)
     if not s.get("saved_log"):
@@ -133,21 +139,20 @@ def saved_checks(host, pw):
     lines = saved_lines(host) or []
     check("this start's line saved", any(r[0] == str(start) and r[5].startswith("Start, firmware") for r in lines),
           f"start {start}, {len(lines)} lines")
-    code, _ = request(host, "/api/saved/clear", post=True, auth="wrong-password")
-    check("clear with a wrong password refused", code == 401, f"HTTP {code}")
+    refuse_save(host)  # a warning for the saved log
     time.sleep(12)  # the status task saves at most every 10 s
     lines = saved_lines(host) or []
-    warned = [r for r in lines if r[0] == str(start) and r[3] == "W" and "Wrong settings password" in r[5]]
+    warned = [r for r in lines if r[0] == str(start) and r[3] == "W" and "Save refused" in r[5]]
     check("warning saved", len(warned) >= 1, f"{len(warned)} lines")
     request(host, "/api/settings", post=True, auth=pw)  # restart
     wait_back(host)
     time.sleep(2)
     lines = saved_lines(host) or []
-    check("kept through a restart", any(r[0] == str(start) and "Wrong settings password" in r[5] for r in lines))
+    check("kept through a restart", any(r[0] == str(start) and "Save refused" in r[5] for r in lines))
     check("next start's line saved", any(r[0] == str(start + 1) and r[5].startswith("Start, firmware") for r in lines))
     code, _ = request(host, "/api/saved/clear", post=True, auth=pw)
     lines = saved_lines(host)
-    check("clear with the password empties it", code == 200 and lines == [], f"HTTP {code}, {lines and len(lines)} lines")
+    check("clear empties it", code == 200 and lines == [], f"HTTP {code}, {lines and len(lines)} lines")
 
 
 def write_load(host, pw, seconds):
@@ -159,7 +164,7 @@ def write_load(host, pw, seconds):
         while not stop.is_set():
             code, _ = request(host, "/api/lifetime/reset", post=True, auth=pw)
             writes[0 if code == 200 else 1] += 1
-            request(host, "/api/lifetime/reset", post=True, auth="wrong-password")  # a warning for the saved log
+            refuse_save(host)  # a warning for the saved log
             stop.wait(2)
 
     t = threading.Thread(target=hammer, daemon=True)

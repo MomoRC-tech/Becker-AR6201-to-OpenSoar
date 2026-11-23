@@ -2,7 +2,7 @@
 
 🏠 [Overview](../../README.md) › 📚 [Documentation](../../docs/README.md) › 💾 Firmware › **Bridge firmware**
 
-Wi-Fi bridge firmware for Zander, FLARM and Becker, based on ESP-Serial-Bridge ([ADR-02](../../docs/design/architecture.md#adr-02)). The standalone ESP32 runs step 4 firmware with single-client radio ownership (S114) and the [web log](#web-log) (S116). Firmware 0.5.1 adds the [supply voltage](#supply-voltage) (step 3d), 0.5.2 the [chip temperature](#chip-temperature) (step 3e), 0.5.3 the [lifetime record](#lifetime-record) (step 3f), 0.5.4 the [saved log](#saved-log) (step 3g). 0.5.5 starts the low-voltage and chip-temperature warning timers correctly ([review](../../docs/research/reviews/2026-11-19-firmware-0.5.4-review.md), S138); 0.5.6 raises the chip-temperature warning to 100 °C. The assembled bench bridge runs 0.5.9 with a pre-Wi-Fi chip reading and two minutes of startup temperatures (S170). See the [firmware plan](../../docs/project/roadmap.md#firmware-plan) for the remaining wired checks. Firmware 0.5.10 applies the fixes from the [code review](../../docs/research/reviews/2026-11-23-code-review.md) (S176, S177): flash writes from the saved log at most every 10 s, a radio receive error closes the radio session, and a lagging Zander or FLARM app skips whole lines. 0.5.14 fixes the task-watchdog reset under load and opens the hotspot on channel 11 (S181); 0.5.15 fixes heap exhaustion under load (S186), runs the CPU at 80 MHz and adds the chip-temperature calibration (S187); it passed the one-hour three-port run (S188). 0.5.16 corrects the stored highest chip temperature when the offset changes (S189).
+Wi-Fi bridge firmware for Zander, FLARM and Becker, based on ESP-Serial-Bridge ([ADR-02](../../docs/design/architecture.md#adr-02)). The standalone ESP32 runs step 4 firmware with single-client radio ownership (S114) and the [web log](#web-log) (S116). Firmware 0.5.1 adds the [supply voltage](#supply-voltage) (step 3d), 0.5.2 the [chip temperature](#chip-temperature) (step 3e), 0.5.3 the [lifetime record](#lifetime-record) (step 3f), 0.5.4 the [saved log](#saved-log) (step 3g). 0.5.5 starts the low-voltage and chip-temperature warning timers correctly ([review](../../docs/research/reviews/2026-11-19-firmware-0.5.4-review.md), S138); 0.5.6 raises the chip-temperature warning to 100 °C. The assembled bench bridge runs 0.5.9 with a pre-Wi-Fi chip reading and two minutes of startup temperatures (S170). See the [firmware plan](../../docs/project/roadmap.md#firmware-plan) for the remaining wired checks. Firmware 0.5.10 applies the fixes from the [code review](../../docs/research/reviews/2026-11-23-code-review.md) (S176, S177): flash writes from the saved log at most every 10 s, a radio receive error closes the radio session, and a lagging Zander or FLARM app skips whole lines. 0.5.14 fixes the task-watchdog reset under load and opens the hotspot on channel 11 (S181); 0.5.15 fixes heap exhaustion under load (S186), runs the CPU at 80 MHz and adds the chip-temperature calibration (S187); it passed the one-hour three-port run (S188). 0.5.16 corrects the stored highest chip temperature when the offset changes (S189); 0.5.17 drops the settings login and closes abandoned app connections on every port within about 15 s (S191).
 
 ## Origin and license
 
@@ -81,7 +81,7 @@ After any change to the status, settings, monitor or log page, take new screensh
 
 ## Settings page
 
-Open *Change settings* under *All settings*, or `http://<bridge address>/settings`. The browser asks for a login: user `bridge`, password = the OTA password ([default logins](../../docs/manual/user-manual.md#logins)). [`settings_page.h`](settings_page.h) holds the page and its handlers; [`settings.h`](settings.h) checks and stores the values.
+Open *Change settings* under *All settings*, or `http://<bridge address>/settings`. No login (owner decision, 0.5.17): whoever is on the bridge's Wi-Fi can change settings; the hotspot password protects it ([logins](../../docs/manual/user-manual.md#logins)). [`settings_page.h`](settings_page.h) holds the page and its handlers; [`settings.h`](settings.h) checks and stores the values.
 
 ![Settings page on a phone](../../docs/images/settings-page.png)
 
@@ -100,15 +100,15 @@ Open *Change settings* under *All settings*, or `http://<bridge address>/setting
 
 | Address | Content |
 | --- | --- |
-| `GET /settings` | The page (password) |
-| `POST /api/nav-scan`, `GET /api/nav-scan` | Start with form field `port=0` or `port=1`, cancel with `cancel=<scan id>`, or read progress with GET (password). Baud and frame describe the setting used to decode the stream. |
-| `POST /api/settings` | Check and save form fields named by their keys (`p0`, `b0`, `f0`, `t0` ... `ns`, `np`, `nj`, `hs`, `hp`, `ha`, `vs`, `vc`, `vt`, `ct`), then restart (password) |
-| `POST /api/chip-temp/calibrate` | Form fields `room` (°C) and `cold=on`; stores the [chip temperature offset](#chip-temperature), answers `{"ok":true,"offset":…}`, then restarts (password). Refused with a `message` when the checks fail |
-| `POST /api/keep` | Keep settings on trial (password) |
-| `POST /api/reset` | Forget all stored values, then restart (password) |
-| `POST /api/restart` | Answer `{"ok":true}`, then restart with the stored settings (password). For scripts: `curl -u bridge:<OTA password> -X POST http://<bridge address>/api/restart` |
-| `POST /api/lifetime/reset` | Start a new [lifetime record](#lifetime-record) (password) |
-| `POST /api/saved/clear` | Delete the [saved log](#saved-log) (password) |
+| `GET /settings` | The page |
+| `POST /api/nav-scan`, `GET /api/nav-scan` | Start with form field `port=0` or `port=1`, cancel with `cancel=<scan id>`, or read progress with GET. Baud and frame describe the setting used to decode the stream. |
+| `POST /api/settings` | Check and save form fields named by their keys (`p0`, `b0`, `f0`, `t0` ... `ns`, `np`, `nj`, `hs`, `hp`, `ha`, `vs`, `vc`, `vt`, `ct`), then restart |
+| `POST /api/chip-temp/calibrate` | Form fields `room` (°C) and `cold=on`; stores the [chip temperature offset](#chip-temperature), answers `{"ok":true,"offset":…}`, then restarts. Refused with a `message` when the checks fail |
+| `POST /api/keep` | Keep settings on trial |
+| `POST /api/reset` | Forget all stored values, then restart |
+| `POST /api/restart` | Answer `{"ok":true}`, then restart with the stored settings. For scripts: `curl -X POST http://<bridge address>/api/restart` |
+| `POST /api/lifetime/reset` | Start a new [lifetime record](#lifetime-record) |
+| `POST /api/saved/clear` | Delete the [saved log](#saved-log) |
 
 Use `python tools/settings_test.py <bridge address> [--revert]` on a spare bridge in network mode. The script ends with a factory reset. For a configured bench bridge, compare its settings and origins before and after OTA, then let a temporary change on an unused TCP port revert and verify that the original settings and listener return.
 
@@ -231,13 +231,13 @@ A few values kept through power cuts ([plan](../../docs/project/roadmap.md#firmw
 | Storage | One NVS blob, namespace `lifetime`, in the partition the settings use. *Reset to defaults* on the settings page does not touch it; a full flash erase over USB clears it |
 | Flash writes | At every start; then every 10 min; at most once a minute while a new extreme is being set; before a restart by the firmware. A power cut loses at most the last 10 min of operating time |
 | Status page | *Lifetime record*, collapsed, above *All settings* |
-| Reset | Settings page, *Records*, *Reset lifetime record* (password). Starts a new record with this start as the first |
+| Reset | Settings page, *Records*, *Reset lifetime record*. Starts a new record with this start as the first |
 | Web log | Info at each start with the start number and operating time; a warning if the storage cannot be opened or a save fails |
 
 > [!IMPORTANT]
 > While the flash is written, the ESP32 pauses code from flash on both cores, and the UART receive interrupt of this core build does not run (S133). Keep flash writes rare and out of the forwarding loop. `python tools/records_test.py <bridge address> --write-load 120` runs the step 5 acceptance test while the record is written every 2 s.
 
-Bench check: `python tools/records_test.py <bridge address>` checks the status block, the password, the reset, and that the record survives a restart with one more start. It resets the record of that board. Survival of a power cut needs the USB cable pulled by hand.
+Bench check: `python tools/records_test.py <bridge address>` checks the status block, the reset, and that the record survives a restart with one more start. It resets the record of that board. Survival of a power cut needs the USB cable pulled by hand.
 
 <a id="saved-log"></a>
 
@@ -252,14 +252,14 @@ Errors, warnings and one line per start, kept through power cuts ([plan](../../d
 | What is kept | Error and Warning lines of the [web log](#web-log), and one line per start with the firmware and the reset reason. Info and Debug stay in RAM only |
 | Start numbers | From the [lifetime record](#lifetime-record), so they keep counting through power cuts; *Reset lifetime record* starts them again at 1 |
 | Times | The clock time if the bridge knew it when the line was saved, otherwise seconds after that start (`+95.1s`) |
-| Flash writes | The status task appends new lines at most every 10 s, in one write; opening the page does not add a write, so the last few seconds may follow on the next reload. A wrong settings password is logged at most once per 30 s. Lines written just before a crash or restart are still in RAM at the next start and are saved then. If more lines arrive than the RAM log holds before they are saved, a warning line says so |
+| Flash writes | The status task appends new lines at most every 10 s, in one write; opening the page does not add a write, so the last few seconds may follow on the next reload. Lines written just before a crash or restart are still in RAM at the next start and are saved then. If more lines arrive than the RAM log holds before they are saved, a warning line says so |
 | Storage | LittleFS on the 128 kB `spiffs` partition, formatted on first use. File `/saved.log`; above 32 kB it becomes `/saved.old` and the older one is deleted, so both stay below about 64 kB. Survives OTA updates; a full flash erase over USB clears it |
 | Page | Lines grouped by start, errors red, warnings amber; *Reload*, *Save* as a text file. Read-only, no password |
-| Clear | Settings page, *Records*, *Clear saved log* (password) |
+| Clear | Settings page, *Records*, *Clear saved log* |
 
 `GET /api/saved` returns `# used <bytes> of <bytes>`, then one line each, oldest first, tab-separated: start number, clock time in Unix ms (0 = not known), ms since that start, level, source, message.
 
-Bench check: `python tools/records_test.py <bridge address>` also checks the saved log: this start's line, a warning saved within 10 s, both kept through a restart, the password for clearing. `--write-load 120` adds a warning every 2 s during the acceptance test.
+Bench check: `python tools/records_test.py <bridge address>` also checks the saved log: this start's line, a warning saved within 10 s, both kept through a restart, and clearing. `--write-load 120` adds a warning every 2 s during the acceptance test.
 
 <a id="build"></a>
 
@@ -281,7 +281,6 @@ For unattended bench tests, build `python tools/build_bridge.py bench-open` (in 
 
 | Part | Bench build |
 | --- | --- |
-| Settings | Page and password-protected API calls work without a login, so test scripts can change settings, keep trials and restart |
 | Marking | Version ends in `-BENCH`; every start logs a warning with the minutes left |
 | Revert | After 8 hours of operating time, counted in NVS across restarts and power cuts, it boots the image that ran before the upload. An OTA upload stops the countdown |
 | Revert after a bench build | A bench build installed over another bench build never reverts (the other slot would be a bench build too): upload a normal build. Normal builds clear the countdown record |
@@ -300,6 +299,8 @@ The board must run an image with an OTA receiver (OTA loader or this firmware). 
 ```bash
 python espota.py -i <bridge address> -a "<OTA password>" -f build/bridge/bridge.ino.bin
 ```
+
+Shortcut: `python tools/ota_upload.py build/bridge/bridge.ino.bin [bridge address]` (default 10.10.10.10) keeps the OTA password in the Windows Credential Manager (`--store` to enter or replace it, `--forget` to delete it). Assistants prepare the image and the command; the owner starts the upload.
 
 There is no serial log; see the [web log](#web-log). Find the address through mDNS (`wifi-bridgetom.local`) or the router; in hotspot mode it is 10.10.10.10.
 

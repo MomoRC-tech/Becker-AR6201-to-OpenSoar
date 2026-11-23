@@ -17,7 +17,7 @@
 //
 //   GET  /saved              the page
 //   GET  /api/saved          both files as text, oldest line first
-//   POST /api/saved/clear    delete both (password; settings_page.h)
+//   POST /api/saved/clear    delete both (settings_page.h)
 //
 // Included by status_page.h after lifetime.h, before settings_page.h.
 
@@ -238,7 +238,7 @@ button:focus-visible{outline:2px solid var(--green);outline-offset:1px}
 <div class="bar"><button onclick="load()">Reload</button><button onclick="save()">Save</button></div>
 <p id="st">Loading the saved log</p>
 <pre id="log" aria-live="off"></pre>
-<p class="key">Errors, warnings and each start, kept through power cuts. Start numbers count from the last reset of the lifetime record. <b>+95.1s</b> means seconds after a start whose time was not known when the line was saved. New lines are saved within 10 seconds. Clear it on the <a href="/settings">settings page</a> (password).</p>
+<p class="key">Errors, warnings and each start, kept through power cuts. Start numbers count from the last reset of the lifetime record. <b>+95.1s</b> means seconds after a start whose time was not known when the line was saved. New lines are saved within 10 seconds. Clear it on the <a href="/settings">settings page</a>.</p>
 </main>
 <script>
 const $=i=>document.getElementById(i),SRC={wifi:'Wi-Fi',ports:'Ports',radio:'Radio',settings:'Settings',system:'System'},LV={E:'Error',W:'Warning',I:'Info'};

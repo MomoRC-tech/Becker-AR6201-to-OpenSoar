@@ -117,6 +117,7 @@ static void supplyServeApps() {
         for (SupplyApp& a : supplyApps)
             if (a.client.fd() < 0) { slot = &a; break; }
         if (slot && c.fd() >= 0) {
+            appKeepalive(c);  // 0.5.17: a vanished app is closed after about 14 s
             slot->client = c;
             slot->client.setNoDelay(true);
             slot->progressAt = millis();

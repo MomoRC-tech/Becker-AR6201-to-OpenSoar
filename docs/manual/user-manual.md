@@ -7,7 +7,7 @@
 How to connect the bridge to OpenSoar, how it behaves and what to do when something looks wrong.
 
 > [!NOTE]
-> **Status:** describes bridge firmware 0.5.16 on the bench bridge. The OpenSoar phone checks are still open ([roadmap](../project/roadmap.md#work-packages)).
+> **Status:** describes bridge firmware 0.5.17 on the bench bridge. The phone checks with a second phone and with OpenSoar are still open ([roadmap](../project/roadmap.md#work-packages)).
 
 <a href="#quick-start"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-manual-user-manual-1-dark.svg"><img src="../images/nav/menu-manual-user-manual-1.svg" alt="1 · Quick start" height="30"></picture></a> <a href="#behaviour"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-manual-user-manual-2-dark.svg"><img src="../images/nav/menu-manual-user-manual-2.svg" alt="2 · How it behaves" height="30"></picture></a> <a href="#web-pages"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-manual-user-manual-3-dark.svg"><img src="../images/nav/menu-manual-user-manual-3.svg" alt="3 · Web pages" height="30"></picture></a> <a href="#troubleshooting"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-manual-user-manual-4-dark.svg"><img src="../images/nav/menu-manual-user-manual-4.svg" alt="4 · Troubleshooting" height="30"></picture></a> <!-- page-menu -->
 
@@ -44,12 +44,12 @@ On Android, answer the prompt to stay connected without internet with **yes**.
 | Login | Where | User | Default password | Change it |
 | --- | --- | --- | --- | --- |
 | Hotspot | Wi-Fi `WiFi-BridgeTom` | — | `BridgeTom-setup` | [Settings page](#settings), hotspot fields |
-| Settings | `/settings` and the password-protected [API calls](../../firmware/bridge/README.md#settings-page) | `bridge` | `BridgeTom-ota` | Only in a build with your own `OTA_PASSWORD` ([build](../../firmware/bridge/README.md#build)) |
-| Firmware upload (OTA) | `wifi-bridgetom`, port 3232 | — | `BridgeTom-ota`, same as Settings | As Settings |
+| Settings | `/settings` and its [API calls](../../firmware/bridge/README.md#settings-page) | — | None: anyone on the bridge's Wi-Fi can change settings | — |
+| Firmware upload (OTA) | `wifi-bridgetom`, port 3232 | — | `BridgeTom-ota` | Only in a build with your own `OTA_PASSWORD` ([build](../../firmware/bridge/README.md#build)) |
 | Network to join | Your own network | — | None built in; until one is set, the hotspot opens at once | [Settings page](#settings), network fields |
 
 > [!IMPORTANT]
-> Before the bridge goes into the aircraft, change the hotspot password and build with your own OTA password. With the defaults, anyone near the glider can change settings or upload firmware.
+> Before the bridge goes into the aircraft, change the hotspot password and build with your own OTA password. The settings page has no login: whoever can join the bridge's Wi-Fi can change its settings, and with the defaults anyone near the glider can also upload firmware.
 
 <a id="open-status"></a>
 
@@ -117,6 +117,7 @@ Baud rate and serial frame changes apply at once, without a trial.
 | Several apps on Zander or FLARM | Up to 4 apps at once. An app that falls behind skips data and catches up; one that takes no data for 60 s is closed |
 | Becker port | One app at a time owns the radio. A second one is refused until the first closes |
 | Phone leaves the hotspot | Its connections close at once, so OpenSoar can reconnect when the phone is back |
+| Phone gone on the network, or out of range | Its connections are closed after about 15 s, also on a quiet port, so app slots do not fill up |
 | Supply below 11.5 V for 10 s | Warning in the web log; forwarding continues |
 | Chip sensor at 100 °C for 1 min (before the [offset](#chip-calibration)) | Warning in the web log; forwarding continues. The chip runs hotter than the air in the housing |
 
@@ -131,10 +132,10 @@ Open them in the phone's browser at `http://10.10.10.10/` (hotspot) or `http://w
 | Page | Address | What it shows | Password |
 | --- | --- | --- | --- |
 | Status | `/` | Firmware, uptime, Wi-Fi signal; one row per device with a green dot while data arrives, baud rate, port, connected apps, errors; *All settings* | — |
-| <a id="settings"></a>Settings | `/settings` | Device profile, baud, frame and port per device; network, join time and hotspot; supply voltage; chip temperature offset ([calibration](#chip-calibration)). **Detect** finds the baud rate on the Zander and FLARM inputs. **Save and restart**, **Keep**, **Restart bridge**, **Reset to defaults** | User `bridge` and the OTA password ([logins](#logins)) |
+| <a id="settings"></a>Settings | `/settings` | Device profile, baud, frame and port per device; network, join time and hotspot; supply voltage; chip temperature offset ([calibration](#chip-calibration)). **Detect** finds the baud rate on the Zander and FLARM inputs. **Save and restart**, **Keep**, **Restart bridge**, **Reset to defaults** | — |
 | Data monitor | `/monitor` | The data passing each device, as text or hex; pause and download | — |
 | Web log | `/log` | What the bridge did since the last power cut | — |
-| Saved log | `/saved` | Errors and warnings kept through power cuts | Clearing it |
+| Saved log | `/saved` | Errors and warnings kept through power cuts | — |
 
 Passwords are never shown. Leave a password field empty to keep the current one.
 
@@ -166,10 +167,12 @@ The bridge subtracts the room temperature from its earliest reading of this star
 | Hotspot `WiFi-BridgeTom` not visible | The bridge found its stored network, or is still joining | Wait for the join time. On the bench, open `http://wifi-bridgetom.local/` instead |
 | Need the hotspot on the bench | The stored network is in range | Switch the network off, or change the network name on the settings page; the change runs on [trial](#trial) and comes back by itself |
 | Phone on the hotspot, page does not open | Android sends the request over mobile data | Answer *stay connected* with yes and type `http://10.10.10.10/`. If it still fails, switch mobile data off |
+| Apps stay on *connecting* after the phone rejoined the hotspot | Mobile data is on: Android sends app traffic over mobile data, often without asking | Switch mobile data off; the apps reconnect within seconds. In flight, keep mobile data off |
+| Phone joins the home Wi-Fi instead of the hotspot | Android prefers a known network with internet | Turn off *auto-connect* for that network on the bench |
+| Network mode: apps show *no data* after the bridge restarted | The phone stayed on the network and keeps its old connections | Press *Reconnect* on each device in the app |
 | Settings changed back by themselves | *Keep* was not pressed in time | Save again, reconnect and press *Keep* |
 | OpenSoar cannot connect to the radio | Another device already owns the Becker port | Close OpenSoar on the other device |
 | No green dot for Zander or FLARM | Wrong baud rate, or the instrument is off | Press **Detect** on the settings page; check the [wiring](../hardware/wiring.md#overview) |
-| Settings page asks for a password | Changing settings needs it | User `bridge`, password: the OTA password, `BridgeTom-ota` by default ([logins](#logins)) |
 
 ---
 

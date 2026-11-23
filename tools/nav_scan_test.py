@@ -53,8 +53,6 @@ def main():
 
     before = {i["key"]: i["value"] for i in settings(host)["items"]}
     active_rate = int(before[f"b{port}"])
-    assert request(host, url, {"port": port})[0] == 401
-    assert request(host, url)[0] == 401
     api({"port": 2}, 400)
     current = api({"port": port})
     api({"port": 1 - port}, 409)
