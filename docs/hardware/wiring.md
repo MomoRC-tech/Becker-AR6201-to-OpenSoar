@@ -197,7 +197,7 @@ Keep all instruments disconnected during bench bring-up. Start with the supply a
 Test the finished bridge from the DE-9 inward, with the instruments still disconnected. Once the modules are soldered, the jumper loop on the ESP32 is no longer allowed ([warning](../project/roadmap.md#firmware-plan)).
 
 > [!TIP]
-> **Selected:** a DE-9 female screw-terminal breakout as the test plug. Source for the Zander and FLARM inputs: an Arduino Uno with its main chip held in reset, so its USB-serial chip serves as the PC's serial port, driving a spare [Hailege MAX3232 board](modules.md#rs232-module) at 5 V (S153).
+> **Selected:** a DE-9 female screw-terminal breakout as the test plug. Source for the Zander and FLARM inputs: an Arduino Uno running an empty sketch, so its main chip leaves RX and TX free and its USB-serial chip serves as the PC's serial port, driving a spare [Hailege MAX3232 board](modules.md#rs232-module) at 5 V (S153).
 
 | Breakout terminal | Radio loop | RS-232 feed |
 | ---: | --- | --- |
@@ -217,10 +217,10 @@ RS-232 source wiring. Pads by their board marks; the Uno pads are in the 4×3 bl
 
 | Uno | MAX3232 board | Test plug |
 | --- | --- | --- |
-| RESET ↔ GND jumper on the power header | — | — |
+| Main chip: an empty sketch (`void setup() {}` and `void loop() {}`), uploaded once over USB | — | — |
 | 5V | TTL side **+** | — |
 | GND | TTL side **−** | — |
-| RX (D0): carries the PC's data while the main chip is in reset | TTL side, arrow into the board | — |
+| RX (D0): carries the PC's data | TTL side, arrow into the board | — |
 | — | RS-232 side, arrow off the board | Terminal 1 or 2 |
 | — | RS-232 side **−** | Terminal 6 |
 

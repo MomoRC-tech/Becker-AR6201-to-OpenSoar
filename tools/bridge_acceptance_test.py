@@ -503,7 +503,7 @@ def run_wired(args, feeds):
         raise ValueError("disconnect other test clients before starting")
     slow_name = None if args.baseline else next(iter(feeds))
     finish, halt = threading.Event(), threading.Event()
-    closes, log_ok = [], True
+    closes, log_ok, log_failures = [], True, []
     heap_lowest = []  # lowest free memory in kB, from the bridge's minute Debug lines
     with ExitStack() as resources:
         inputs = {}
@@ -558,10 +558,18 @@ def run_wired(args, feeds):
         if supply:
             supply.start()
 
-        def update_log():
+        def update_log(final=False):
             nonlocal log_ok, seq
             seq_before = seq
-            log = get_json(args.host, f"/api/log?since={seq}")
+            try:
+                log = get_json(args.host, f"/api/log?since={seq}")
+            except (OSError, ValueError):
+                # A lost web request is not a forwarding failure; the next poll reads the
+                # same lines again, and a restart still shows in the boot number.
+                log_failures.append(time.monotonic() - start)
+                if final:
+                    raise
+                return
             log_ok = log_ok and log["boot"] == boot and not log["lost"] and log["seq"] >= seq
             seq = log["seq"]
             for line in log["lines"]:
@@ -600,7 +608,7 @@ def run_wired(args, feeds):
             for name, reader in readers.items():
                 if not reader.is_alive() and not halt.is_set():
                     inputs[name].fail("TCP reader stopped early")
-            update_log()
+            update_log(final=True)
         finally:
             if supply:
                 supply.stop = True
@@ -615,7 +623,8 @@ def run_wired(args, feeds):
 
         results = []
         print(f"{'PASS' if log_ok else 'FAIL'} bridge log: {'no restart, no lost lines' if log_ok else 'restart or lost log lines'}"
-              f"{f', lowest free memory {min(heap_lowest)} kB' if heap_lowest else ''}")
+              f"{f', lowest free memory {min(heap_lowest)} kB' if heap_lowest else ''}"
+              f"{f', {len(log_failures)} log requests failed and were retried' if log_failures else ''}")
         results.append(log_ok)
         if supply:
             ran = time.monotonic() - start

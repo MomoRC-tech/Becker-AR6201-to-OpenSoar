@@ -32,7 +32,7 @@ Set in `config.h`; everything else is upstream.
 
 | Setting | Value |
 | --- | --- |
-| Wi-Fi start-up | `MODE_STA_AP`, no network built in (set it on the settings page; without one the hotspot opens at once), 15 s join time; behaviour: [user manual](../../docs/manual/user-manual.md#wifi-startup). The join can miss 15 s, at about −90 dBm (S142) and once at −45 dBm (S149); the bench bridge uses 30 s, set on the settings page. The upstream modes `MODE_STA` and `MODE_AP` stay selectable |
+| Wi-Fi start-up | `MODE_STA_AP`, no network built in (set it on the settings page; without one the hotspot opens at once), 15 s join time, hotspot on 2.4 GHz channel 11 (`HOTSPOT_CHANNEL`); behaviour: [user manual](../../docs/manual/user-manual.md#wifi-startup). The join can miss 15 s, at about −90 dBm (S142) and once at −45 dBm (S149); the bench bridge uses 30 s, set on the settings page. The upstream modes `MODE_STA` and `MODE_AP` stay selectable |
 | Hostname | `wifi-bridgetom`, for mDNS and OTA, as the OTA loader |
 | OTA | ArduinoOTA with the OTA password ([default logins](../../docs/manual/user-manual.md#logins)), in both Wi-Fi modes |
 | Log output | `DEBUG` off: UART0 serves the Zander, so nothing is printed there. `WEB_LOG` shows the log lines and the ESP32 system messages on the [web log](#web-log); the build stops if both are on |
@@ -51,7 +51,7 @@ Set in `config.h`; everything else is upstream.
 
 ## Status page
 
-Open `http://<bridge address>/` (10.10.10.10 in hotspot mode) in a browser. Android hotspot tips (S152): [user manual](../../docs/manual/user-manual.md#troubleshooting). TCP apps reach the bridge either way (S151). [`status_page.h`](status_page.h) holds the page; the forwarding loop only adds to counters, and a low-priority task on the other CPU core serves it. The page refreshes its values every 2 s in place, so opened sections stay open. Light or dark follows the phone.
+Open `http://<bridge address>/` (10.10.10.10 in hotspot mode) in a browser. Android hotspot tips (S152): [user manual](../../docs/manual/user-manual.md#troubleshooting). TCP apps reach the bridge either way (S151). [`status_page.h`](status_page.h) holds the page; the forwarding loop only adds to counters, and a task at idle priority on the other CPU core serves it, so a slow request cannot starve the idle task and trip the task watchdog (S181). The page refreshes its values every 2 s in place, so opened sections stay open. Light or dark follows the phone.
 
 ![Status page on a phone, all settings open](../../docs/images/status-page.png)
 
@@ -280,7 +280,7 @@ For unattended bench tests, build `python tools/build_bridge.py bench-open` (in 
 | Marking | Version ends in `-BENCH`; every start logs a warning with the minutes left |
 | Revert | After 8 hours of operating time, counted in NVS across restarts and power cuts, it boots the image that ran before the upload. An OTA upload stops the countdown |
 | Revert after a bench build | A bench build installed over another bench build never reverts (the other slot would be a bench build too): upload a normal build. Normal builds clear the countdown record |
-| Core dump | `GET /api/coredump` returns the dump a panic or watchdog reset left in the coredump partition (404 if none). Decode with `esp-coredump info_corefile -c dump.elf build/bridge-bench-open/bridge.ino.elf`; keep the ELF of the running build |
+| Core dump | `GET /api/coredump` returns the dump a panic or watchdog reset left in the coredump partition (404 if none). Decode with `esp-coredump info_corefile -t raw -c dump.bin build/bridge-bench-open/bridge.ino.elf` (needs `xtensa-esp32-elf-gdb` from the esp32 board package on the path); keep the ELF of the running build |
 | OTA | Uploads without password, so a test script can install builds |
 
 > [!WARNING]

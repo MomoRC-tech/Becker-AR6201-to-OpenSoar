@@ -366,7 +366,10 @@ static void statusAttachUart(int num) {
 
 // At the end of setup(), once Wi-Fi is up.
 static void statusBegin() {
-    xTaskCreatePinnedToCore(statusTask, "status", 6144, nullptr, 1, nullptr, 0);
+    // Idle priority: the WebServer header reader spins with yield() while a
+    // request trickles in (up to 10 s); at priority 1 that starved IDLE0 and
+    // the task watchdog reset the bridge (two core dumps, 2026-11-23).
+    xTaskCreatePinnedToCore(statusTask, "status", 6144, nullptr, tskIDLE_PRIORITY, nullptr, 0);
     MDNS.addService("http", "tcp", 80);
 }
 

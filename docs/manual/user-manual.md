@@ -88,7 +88,7 @@ These are the same entries as on the bridge already in the glider ([existing ins
 | --- | --- | --- |
 | Joining network | Tries the stored network for the join time (default 15 s, changeable on the settings page) | Wait |
 | On the network | Reachable at `http://wifi-bridgetom.local/` or the address from the router. Rejoins by itself after a drop | Use this on the bench |
-| Hotspot | Opens `WiFi-BridgeTom` at `10.10.10.10` and **stays in hotspot mode until the next restart**; it does not look for the network again | Connect the phone to the hotspot. To get back to the network, [restart](#restart) the bridge |
+| Hotspot | Opens `WiFi-BridgeTom` at `10.10.10.10` on 2.4 GHz channel 11 and **stays in hotspot mode until the next restart**; it does not look for the network again | Connect the phone to the hotspot. To get back to the network, [restart](#restart) the bridge |
 
 <a id="trial"></a>
 

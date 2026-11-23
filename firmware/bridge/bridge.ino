@@ -479,7 +479,7 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
             else LOGI(LOG_WIFI, "No network set, opening the hotspot");
             WiFi.disconnect(true);
             WiFi.mode(WIFI_AP);
-            if (!WiFi.softAP(settings.hotspotSsid, settings.hotspotPass)) {
+            if (!WiFi.softAP(settings.hotspotSsid, settings.hotspotPass, HOTSPOT_CHANNEL)) {
                 LOGE(LOG_WIFI, "Hotspot failed, restarting in 5 s");
                 delay(5000);
                 ESP.restart();
