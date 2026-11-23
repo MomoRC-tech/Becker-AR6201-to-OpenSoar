@@ -32,10 +32,24 @@ Switch on the avionics supply. The bridge first looks for its stored network (se
 | | |
 | --- | --- |
 | Network | `WiFi-BridgeTom` |
-| Password | The hotspot password set when the firmware was built; changeable on the [settings page](#settings) |
+| Password | `BridgeTom-setup` by default ([logins](#logins)) |
 | Bridge address | `10.10.10.10` |
 
 On Android, answer the prompt to stay connected without internet with **yes**.
+
+<a id="logins"></a>
+
+**Default logins.** A bridge built with the public defaults from [`credentials.example.h`](../../firmware/bridge/credentials.example.h) has these logins. Anyone with this repository knows them.
+
+| Login | Where | User | Default password | Change it |
+| --- | --- | --- | --- | --- |
+| Hotspot | Wi-Fi `WiFi-BridgeTom` | — | `BridgeTom-setup` | [Settings page](#settings), hotspot fields |
+| Settings | `/settings` and the password-protected [API calls](../../firmware/bridge/README.md#settings-page) | `bridge` | `BridgeTom-ota` | Only by building with your own `credentials.h` ([build](../../firmware/bridge/README.md#build)) |
+| Firmware upload (OTA) | `wifi-bridgetom`, port 3232 | — | `BridgeTom-ota`, same as Settings | As Settings |
+| Network to join | Your own network | — | None: set when building or on the settings page | [Settings page](#settings), network fields |
+
+> [!IMPORTANT]
+> Before the bridge goes into the aircraft, change the hotspot password and build with your own OTA password. With the defaults, anyone near the glider can change settings or upload firmware.
 
 <a id="open-status"></a>
 
@@ -117,7 +131,7 @@ Open them in the phone's browser at `http://10.10.10.10/` (hotspot) or `http://w
 | Page | Address | What it shows | Password |
 | --- | --- | --- | --- |
 | Status | `/` | Firmware, uptime, Wi-Fi signal; one row per device with a green dot while data arrives, baud rate, port, connected apps, errors; *All settings* | — |
-| <a id="settings"></a>Settings | `/settings` | Device profile, baud, frame and port per device; network, join time and hotspot; supply voltage. **Detect** finds the baud rate on the Zander and FLARM inputs. **Save and restart**, **Keep**, **Restart bridge**, **Reset to defaults** | User `bridge` and the OTA password |
+| <a id="settings"></a>Settings | `/settings` | Device profile, baud, frame and port per device; network, join time and hotspot; supply voltage. **Detect** finds the baud rate on the Zander and FLARM inputs. **Save and restart**, **Keep**, **Restart bridge**, **Reset to defaults** | User `bridge` and the OTA password ([logins](#logins)) |
 | Data monitor | `/monitor` | The data passing each device, as text or hex; pause and download | — |
 | Web log | `/log` | What the bridge did since the last power cut | — |
 | Saved log | `/saved` | Errors and warnings kept through power cuts | Clearing it |
@@ -142,7 +156,7 @@ Details for each page: [firmware reference](../../firmware/bridge/README.md#stat
 | Settings changed back by themselves | *Keep* was not pressed in time | Save again, reconnect and press *Keep* |
 | OpenSoar cannot connect to the radio | Another device already owns the Becker port | Close OpenSoar on the other device |
 | No green dot for Zander or FLARM | Wrong baud rate, or the instrument is off | Press **Detect** on the settings page; check the [wiring](../hardware/wiring.md#overview) |
-| Settings page asks for a password | Changing settings needs it | User `bridge`, password: the OTA password set when the firmware was built |
+| Settings page asks for a password | Changing settings needs it | User `bridge`, password: the OTA password, `BridgeTom-ota` by default ([logins](#logins)) |
 
 ---
 

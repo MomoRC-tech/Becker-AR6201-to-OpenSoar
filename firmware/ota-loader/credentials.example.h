@@ -6,6 +6,8 @@
 #define WIFI_SSID "your-network"
 #define WIFI_PASSWORD "your-network-password"
 
-// At least 8 characters each.
-#define HOTSPOT_PASSWORD "change-me-hotspot"
-#define OTA_PASSWORD "change-me-ota"
+// Public defaults, the same as the OTA loader's public build and listed in
+// docs/manual/user-manual.md#logins. Anyone with the repository knows them:
+// replace both before the bridge goes into the aircraft. At least 8 characters each.
+#define HOTSPOT_PASSWORD "BridgeTom-setup"
+#define OTA_PASSWORD "BridgeTom-ota"

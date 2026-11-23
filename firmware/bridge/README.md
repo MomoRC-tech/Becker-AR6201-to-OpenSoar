@@ -256,11 +256,13 @@ Errors, warnings and one line per start, kept through power cuts ([plan](../../d
 
 Bench check: `python tools/records_test.py <bridge address>` also checks the saved log: this start's line, a warning saved within 10 s, both kept through a restart, the password for clearing. `--write-load 120` adds a warning every 2 s during the acceptance test.
 
+<a id="build"></a>
+
 ## Build
 
 Same toolchain and partition scheme as the [OTA loader](../ota-loader/README.md#build): Arduino-ESP32 3.3.x, board **ESP32 Dev Module**, Partition Scheme **Minimal SPIFFS (1.9MB APP with OTA/190KB SPIFFS)**.
 
-Copy [`credentials.example.h`](credentials.example.h) to `credentials.h` and fill in the network and two passwords of at least 8 characters each; the OTA loader's `credentials.h` has the same format. `credentials.h` is ignored by Git; never commit it. The built image contains the passwords and stays in `build/bridge/`.
+Copy [`credentials.example.h`](credentials.example.h) to `credentials.h` and fill in your network. It holds the public default passwords listed in the [user manual](../../docs/manual/user-manual.md#logins); replace them with your own (at least 8 characters each) before the bridge goes into the aircraft; the OTA loader's `credentials.h` has the same format. `credentials.h` is ignored by Git; never commit it. The built image contains the passwords and stays in `build/bridge/`.
 
 ```bash
 python tools/build_bridge.py
