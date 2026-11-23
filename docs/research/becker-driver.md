@@ -9,7 +9,7 @@ What the OpenSoar AR62xx radio driver does today, how other implementations solv
 > [!NOTE]
 > **Status:** the project uses the built-in Becker AR62xx driver. The findings below apply to stock OpenSoar 7.46.26. See the [remaining checks](../project/open-items.md#software-and-acceptance).
 
-📑 **On this page:** <kbd>[1 · 🔍 OpenSoar driver findings](#opensoar-driver)</kbd> <kbd>[2 · 📚 Other implementations](#other-implementations)</kbd> <kbd>[3 · 📱 OpenSoar setup](#consequences)</kbd> <kbd>[4 · 📖 Manuals and commercial adapters](#manuals)</kbd>
+<a href="#opensoar-driver"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-research-becker-driver-1-dark.svg"><img src="../images/nav/menu-research-becker-driver-1.svg" alt="1 · OpenSoar driver findings" height="30"></picture></a> <a href="#other-implementations"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-research-becker-driver-2-dark.svg"><img src="../images/nav/menu-research-becker-driver-2.svg" alt="2 · Other implementations" height="30"></picture></a> <a href="#consequences"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-research-becker-driver-3-dark.svg"><img src="../images/nav/menu-research-becker-driver-3.svg" alt="3 · OpenSoar setup" height="30"></picture></a> <a href="#manuals"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-research-becker-driver-4-dark.svg"><img src="../images/nav/menu-research-becker-driver-4.svg" alt="4 · Manuals and commercial adapters" height="30"></picture></a> <!-- page-menu -->
 
 Related: 📶 [Bridge firmware](bridge-firmware.md) · 📚 [Sources](sources.md) · ❓ [Open items](../project/open-items.md#software-and-acceptance)
 

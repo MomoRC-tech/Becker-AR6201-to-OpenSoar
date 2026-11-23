@@ -9,7 +9,7 @@ What is already in the glider (a DG200): Zander and FLARM → an ESP32 Wi-Fi bri
 > [!NOTE]
 > **Status:** based on Tom's report (S21), four photos (S13) and the owner's harness clarification (S36); nothing measured. Missing facts: [installed equipment](open-items.md#installed-equipment). Full assessment: [2026-11-09 review](../research/reviews/2026-11-09-installation-claims.md).
 
-📑 **On this page:** <kbd>[1 · 🧰 Equipment](#equipment)</kbd> <kbd>[2 · 🌐 OpenSoar configuration](#configuration)</kbd> <kbd>[3 · 📷 Photos](#photos)</kbd>
+<a href="#equipment"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-project-existing-installation-1-dark.svg"><img src="../images/nav/menu-project-existing-installation-1.svg" alt="1 · Equipment" height="30"></picture></a> <a href="#configuration"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-project-existing-installation-2-dark.svg"><img src="../images/nav/menu-project-existing-installation-2.svg" alt="2 · OpenSoar configuration" height="30"></picture></a> <a href="#photos"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-project-existing-installation-3-dark.svg"><img src="../images/nav/menu-project-existing-installation-3.svg" alt="3 · Photos" height="30"></picture></a> <!-- page-menu -->
 
 > [!WARNING]
 > Keep logs, device identifiers, credentials and configuration backups out of this public repository.

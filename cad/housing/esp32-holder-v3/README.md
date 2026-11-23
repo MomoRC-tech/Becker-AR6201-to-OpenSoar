@@ -1,5 +1,7 @@
 # ESP32 holder v3 (RS-232 clamp)
 
+🏠 [Overview](../../../README.md) › 📚 [Documentation](../../../docs/README.md) › 📐 CAD › **ESP32 holder v3 (RS-232 clamp)**
+
 ESP32 holder variant for [layout v4](../layout-v4/README.md): the tested USB block, the antenna cap without foot ears, and a USB clamp that also carries both RS-232 boards above the ESP32. One M2.5 screw removes the clamp with both boards. Rules: [housing § 5](../../../docs/hardware/housing.md#layout). Built in Autodesk Fusion through MCP, 2026-11-12, from [esp32-holder](../esp32-holder/README.md) and [rs232-holder](../rs232-holder/README.md); first print fit-tested and fits (2026-11-13).
 
 | File | Use |
@@ -17,3 +19,7 @@ ESP32 holder variant for [layout v4](../layout-v4/README.md): the tested USB blo
 
 - Units: millimetres. The 3MF has every piece in print orientation; the clamp is flipped there to print top up (slots and arm up). The Fusion archive and STEP keep the clamp in the U cap's orientation (top face down), because layout v4 places the pieces from it. Check bridging over the USB cavity and the slot height (now set by layers) in a fit test. Support only under two flat faces: the slot plate (3.6 mm above the bed) and the arm (5.6 mm above the bed, 27 × 6 mm). The antenna cap needs no support.
 - Slide the pre-soldered RS-232 boards into the clamp before screwing it on; the ESP32 header pins block them afterwards.
+
+---
+
+<kbd>[🏠 Overview](../../../README.md)</kbd> <kbd>[📚 Documentation](../../../docs/README.md)</kbd>

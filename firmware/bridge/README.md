@@ -1,5 +1,7 @@
 # Bridge firmware
 
+🏠 [Overview](../../README.md) › 📚 [Documentation](../../docs/README.md) › 💾 Firmware › **Bridge firmware**
+
 Wi-Fi bridge firmware for Zander, FLARM and Becker, based on ESP-Serial-Bridge ([ADR-02](../../docs/design/architecture.md#adr-02)). The standalone ESP32 runs step 4 firmware with single-client radio ownership (S114) and the [web log](#web-log) (S116). Firmware 0.5.1 adds the [supply voltage](#supply-voltage) (step 3d), 0.5.2 the [chip temperature](#chip-temperature) (step 3e), 0.5.3 the [lifetime record](#lifetime-record) (step 3f), 0.5.4 the [saved log](#saved-log) (step 3g). 0.5.5 starts the low-voltage and chip-temperature warning timers correctly ([review](../../docs/research/reviews/2026-11-19-firmware-0.5.4-review.md), S138); 0.5.6 raises the chip-temperature warning to 100 °C. The assembled bench bridge runs 0.5.9 with a pre-Wi-Fi chip reading and two minutes of startup temperatures (S170). See the [firmware plan](../../docs/project/roadmap.md#firmware-plan) for the remaining wired checks. Firmware 0.5.10 applies the fixes from the [code review](../../docs/research/reviews/2026-11-23-code-review.md) (S176, S177): flash writes from the saved log at most every 10 s, a radio receive error closes the radio session, and a lagging Zander or FLARM app skips whole lines.
 
 ## Origin and license
@@ -30,7 +32,7 @@ Set in `config.h`; everything else is upstream.
 
 | Setting | Value |
 | --- | --- |
-| Wi-Fi start-up | `MODE_STA_AP`: join the network in `credentials.h` for 15 s, otherwise open hotspot `WiFi-BridgeTom` at 10.10.10.10 and stay there until the next restart. The join can miss 15 s, at about −90 dBm (S142) and once at −45 dBm (S149); the bench bridge uses 30 s, set on the settings page. The upstream modes `MODE_STA` and `MODE_AP` stay selectable |
+| Wi-Fi start-up | `MODE_STA_AP`, the network from `credentials.h`, 15 s join time; behaviour: [user manual](../../docs/manual/user-manual.md#wifi-startup). The join can miss 15 s, at about −90 dBm (S142) and once at −45 dBm (S149); the bench bridge uses 30 s, set on the settings page. The upstream modes `MODE_STA` and `MODE_AP` stay selectable |
 | Hostname | `wifi-bridgetom`, for mDNS and OTA, as the OTA loader |
 | OTA | ArduinoOTA with the password from `credentials.h`, in both Wi-Fi modes |
 | Log output | `DEBUG` off: UART0 serves the Zander, so nothing is printed there. `WEB_LOG` shows the log lines and the ESP32 system messages on the [web log](#web-log); the build stops if both are on |
@@ -49,7 +51,7 @@ Set in `config.h`; everything else is upstream.
 
 ## Status page
 
-Open `http://<bridge address>/` (10.10.10.10 in hotspot mode) in a browser. In hotspot mode, answer Android's prompt to stay connected without internet with yes, then type `http://10.10.10.10/`; mobile data can stay on (S152). If the page still does not open, switch mobile data off. TCP apps reach the bridge either way (S151). [`status_page.h`](status_page.h) holds the page; the forwarding loop only adds to counters, and a low-priority task on the other CPU core serves it. The page refreshes its values every 2 s in place, so opened sections stay open. Light or dark follows the phone.
+Open `http://<bridge address>/` (10.10.10.10 in hotspot mode) in a browser. Android hotspot tips (S152): [user manual](../../docs/manual/user-manual.md#troubleshooting). TCP apps reach the bridge either way (S151). [`status_page.h`](status_page.h) holds the page; the forwarding loop only adds to counters, and a low-priority task on the other CPU core serves it. The page refreshes its values every 2 s in place, so opened sections stay open. Light or dark follows the phone.
 
 ![Status page on a phone, all settings open](../../docs/images/status-page.png)
 
@@ -91,9 +93,9 @@ Open *Change settings* under *All settings*, or `http://<bridge address>/setting
 | Checks | Every field is checked on the bridge; a refused save names each wrong field and changes nothing. TCP ports, including the supply voltage port, may not repeat and may not be 80 |
 | Passwords | Never shown. Leave the field empty to keep the current one |
 | Save and restart | Values equal to the default show as default. The bridge restarts after a successful save. A flash write failure shows an error and skips the restart |
-| Trial | A change to Wi-Fi, hotspot or ports runs on trial. Reconnect, open the settings page and press *Keep* within 10 minutes. Otherwise the bridge restores the values from before and restarts; after the 3rd start without *Keep* it restores them at once. Serial-only changes apply directly |
+| Trial | Wi-Fi, hotspot and port changes run on trial (`SETTINGS_TRIAL_MS`, `SETTINGS_TRIAL_BOOTS`); behaviour: [user manual](../../docs/manual/user-manual.md#trial). Serial-only changes apply directly |
 | Reset to defaults | Forgets all stored values, including a trial, and restarts with the firmware defaults |
-| Restart bridge | Restarts with the stored settings and writes nothing. During a trial it counts as one of the 3 starts without *Keep* and the 10 minutes start again; the confirm dialog says how many restarts are left. The status page links to it under *All settings* |
+| Restart bridge | Restarts with the stored settings and writes nothing; during a trial it counts as a start ([user manual](../../docs/manual/user-manual.md#trial)). The confirm dialog says how many restarts are left. The status page links to it under *All settings* |
 | Storage | One NVS record in `bridge-state` holds the overrides, rollback values and trial state. Firmware 0.5.8 reads legacy `bridge` / `bridge-prev` settings and writes the new record on the first change or during trial recovery. The legacy keys stay until a reset, so firmware downgraded to 0.5.7 reads the old configuration. Settings survive restarts and OTA updates. A full USB flash erase clears them |
 
 | Address | Content |
@@ -268,6 +270,8 @@ The script builds in `build/bridge/` at the repository root, outside the sketch,
 
 To test the hotspot fallback without switching off the network, build `python tools/build_bridge.py fallback-test` (in `build/bridge-fallback-test/`) and upload it. It joins a network that does not exist, so the hotspot opens after 15 s. Without an OTA upload it boots the previous image after 10 minutes, so it never stays installed by accident. The variant is selected by a generated `bridge_variant.h`, ignored by Git and removed after the build.
 
+Without a rebuild: save a network name that does not exist on the settings page. The change runs on [trial](../../docs/manual/user-manual.md#trial), so the old name comes back by itself, or set it back over the hotspot and press *Keep*. A second USB Wi-Fi adapter on the PC can join the hotspot while the first keeps the internet connection; give the second adapter a higher interface metric (for example 100), so Windows keeps internet traffic on the first.
+
 ## Upload over Wi-Fi
 
 The board must run an image with an OTA receiver (OTA loader or this firmware). Arduino IDE: network port `wifi-bridgetom`. Command line, with `espota.py` from the esp32 board package:
@@ -320,3 +324,7 @@ python tools/radio_robustness_test.py <bridge address>
 **Phone checks.** Disconnect the PC test clients so OpenSoar can own the radio port. Feed recognizable Zander and FLARM sentences for the phone checks. Verify all three device connections and that fresh navigation data appears in OpenSoar. The Becker loop checks the transport only. Power-cycle the bridge in network mode and hotspot mode, then drop and restore phone Wi-Fi. Record which ports resume automatically, how long they take, and whether the phone needed a manual reconnect. Repeat with mobile data enabled. With a second phone, put its navigation client in the background or turn its screen off and check the first phone keeps receiving current data. Record the app version and Wi-Fi mode with each result. For the setup guide, capture the three stock OpenSoar device entries and a recognizable sentence from each navigation feed in the app monitor. Use synthetic bench data and crop private network details. [Step 5 acceptance criteria](../../docs/project/roadmap.md#firmware-plan)
 
 **Bare ESP32 only.** The original `--radio-loop --baseline` and `--radio-loop` commands without serial-feed options use the step 2 GPIO jumpers (S120). Never fit GPIO jumpers once the converters are soldered.
+
+---
+
+<kbd>[🏠 Overview](../../README.md)</kbd> <kbd>[📚 Documentation](../../docs/README.md)</kbd>

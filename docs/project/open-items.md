@@ -9,7 +9,7 @@ The one list of everything still missing: what is needed, who provides it, and w
 > [!NOTE]
 > **Status:** all listed items are open. Bench validation is complete; the items concern installation, installed equipment and software acceptance.
 
-📑 **On this page:** <kbd>[1 · 🔧 Wiring and parts for installation](#bench-hardware)</kbd> <kbd>[2 · 📦 Housing fit and installation](#housing)</kbd> <kbd>[3 · 🛩️ Installed equipment](#installed-equipment)</kbd> <kbd>[4 · 💻 Software and acceptance — later](#software-and-acceptance)</kbd>
+<a href="#bench-hardware"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-project-open-items-1-dark.svg"><img src="../images/nav/menu-project-open-items-1.svg" alt="1 · Wiring and parts for installation" height="30"></picture></a> <a href="#housing"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-project-open-items-2-dark.svg"><img src="../images/nav/menu-project-open-items-2.svg" alt="2 · Housing fit and installation" height="30"></picture></a> <a href="#installed-equipment"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-project-open-items-3-dark.svg"><img src="../images/nav/menu-project-open-items-3.svg" alt="3 · Installed equipment" height="30"></picture></a> <a href="#software-and-acceptance"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-project-open-items-4-dark.svg"><img src="../images/nav/menu-project-open-items-4.svg" alt="4 · Software and acceptance — later" height="30"></picture></a> <!-- page-menu -->
 
 Related: 🗺️ [Roadmap](roadmap.md) · 🤔 [Assumptions](../design/requirements.md#assumptions) · 🛩️ [Existing installation](existing-installation.md)
 

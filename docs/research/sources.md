@@ -9,7 +9,7 @@ Every source the project relies on: what it is, what was checked in it, and its 
 > [!NOTE]
 > **Status:** the register includes source reviews, owner reports, host tests and bench results. See [open items](../project/open-items.md) for the remaining checks and [reviews](reviews) for dated records.
 
-📑 **On this page:** <kbd>[1 · 🏷️ Evidence labels](#evidence-labels)</kbd> <kbd>[2 · 📋 Source register](#source-register)</kbd> <kbd>[3 · 🔍 Driver findings](#findings)</kbd>
+<a href="#evidence-labels"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-research-sources-1-dark.svg"><img src="../images/nav/menu-research-sources-1.svg" alt="1 · Evidence labels" height="30"></picture></a> <a href="#source-register"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-research-sources-2-dark.svg"><img src="../images/nav/menu-research-sources-2.svg" alt="2 · Source register" height="30"></picture></a> <a href="#findings"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-research-sources-3-dark.svg"><img src="../images/nav/menu-research-sources-3.svg" alt="3 · Driver findings" height="30"></picture></a> <!-- page-menu -->
 
 ---
 

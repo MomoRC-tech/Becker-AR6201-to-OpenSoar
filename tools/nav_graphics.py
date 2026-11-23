@@ -1,9 +1,11 @@
 """Generate the documentation's navigation graphics: menu cards, pills and state strips.
 
-Usage (from the repository root):  python tools/nav_graphics.py [--preview out.html]
+Usage (from the repository root):  python tools/nav_graphics.py [--preview out.html] [--snippets]
 Writes light and dark SVGs into docs/images/nav. Pages show them with <picture>, so
-GitHub picks the variant that matches its theme. Edit the lists at the bottom, run
-the script, check the preview in a browser, commit script and SVGs together.
+GitHub picks the variant that matches its theme. Section menus are rebuilt from each
+docs page's numbered H2 sections and written into the page; run the script after
+adding or renaming a section. Step strips and state strips are edited below. Check the
+preview in a browser, commit script, SVGs and pages together.
 """
 import os
 import sys
@@ -200,17 +202,55 @@ def preview(path, items):
 
 
 # ------------------------------------------------------------------- contents
-# Section menus: page key -> (tone, [(label, anchor), ...]); one pill per H2 section.
-MENUS = {
-    "manual": ("use", [("Quick start", "quick-start"), ("How it behaves", "behaviour"),
-                       ("Web pages", "web-pages"), ("Troubleshooting", "troubleshooting")]),
-}
+# Section menus are read from the pages: every docs page with three or more numbered H2
+# sections gets one pill per section, on the line that ends with MENU_MARK.
+MENU_MARK = "<!-- page-menu -->"
+OLD_MENU = "📑 **On this page:**"
+CATEGORY_TONE = {"📖 Manual": "use", "🔧 Hardware": "build"}
+
+
+def page_menus():
+    """Yield (path, tone, [(label, anchor)]) for docs pages that need a section menu."""
+    import glob
+    import re
+    for path in sorted(glob.glob(os.path.join(ROOT, "docs", "**", "*.md"), recursive=True)):
+        rel = os.path.relpath(path, ROOT).replace("\\", "/")
+        if rel.startswith(("docs/research/reviews/", "docs/agents/")):
+            continue
+        text = open(path, encoding="utf-8").read()
+        items = [(re.sub(r"^[^\w(]+", "", title).strip(), anchor)
+                 for anchor, title in re.findall(r'<a id="([^"]+)"></a>\s*\n## \d+\. (.+)$', text, re.M)]
+        if len(items) < 3:
+            continue
+        tone = next((t for k, t in CATEGORY_TONE.items() if f"› {k} ›" in text), "ref")
+        yield path, tone, items
+
+
+def sync_menus():
+    """Generate the pills and rewrite each page's menu line."""
+    for path, tone, items in page_menus():
+        key = os.path.splitext(os.path.relpath(path, os.path.join(ROOT, "docs")))[0].replace("\\", "-").replace("/", "-")
+        key = "index" if key == "README" else key
+        for i, (label, _) in enumerate(items, 1):
+            pill(f"menu-{key}-{i}", i, label, tone)
+        rel = os.path.relpath(OUT, os.path.dirname(path)).replace("\\", "/")
+        line = links(f"menu-{key}", items, rel) + " " + MENU_MARK
+        lines = open(path, encoding="utf-8").read().split("\n")
+        idx = [n for n, l in enumerate(lines) if l.endswith(MENU_MARK) or l.startswith(OLD_MENU)
+               or (l.startswith('<a href="#') and "/menu-" in l)]
+        if not idx:
+            print(f"no menu line: {os.path.relpath(path, ROOT)}")
+            continue
+        lines[idx[0]] = line
+        with open(path, "w", encoding="utf-8", newline="\n") as f:
+            f.write("\n".join(lines))
+        print(f"menu {key}: {len(items)} sections")
 # Step strips: strip key -> (tone, [(label, anchor), ...]); pills joined by chevrons.
 STEPS = {
     "use": ("use", [("Power on", "power-on"), ("Join the Wi-Fi", "join-wifi"),
                     ("Open the status page", "open-status"), ("Connect OpenSoar", "connect-opensoar")]),
-    "build": ("build", [("Parts", "parts"), ("Housing", "housing"), ("Wiring", "wiring"),
-                        ("Power", "power"), ("Flash", "flash"), ("Bench check", "bench-check")]),
+    "build": ("build", [("Parts", "parts"), ("Housing", "housing"), ("Instrument plug", "plug"),
+                        ("Harness", "harness"), ("Firmware", "firmware"), ("Bench check", "bench-check")]),
 }
 
 
@@ -231,18 +271,18 @@ if __name__ == "__main__":
     cards = [card("card-use", "book", "use", "Use the bridge", "Connect, pages, behaviour"),
              card("card-build", "chip", "build", "Build one", "Parts to bench check"),
              card("card-reference", "list", "ref", "Reference", "Design, project, research")]
-    menus = {k: [pill(f"menu-{k}-{i}", i, l, tone) for i, (l, _) in enumerate(items, 1)]
-             for k, (tone, items) in MENUS.items()}
+    for old in os.listdir(OUT):  # menus are regenerated from the pages; drop stale pills
+        if old.startswith("menu-"):
+            os.remove(os.path.join(OUT, old))
+    sync_menus()
     strips = {k: [pill(f"step-{k}-{i}", i, l, tone, chevron=(i < len(items))) for i, (l, _) in enumerate(items, 1)]
               for k, (tone, items) in STEPS.items()}
     states = [wifi_startup(), settings_trial()]
     if "--preview" in sys.argv:
         preview(sys.argv[sys.argv.index("--preview") + 1],
-                [("cards", cards)] + [(k, v) for k, v in menus.items()] + [(k, v) for k, v in strips.items()]
+                [("cards", cards)] + [(k, v) for k, v in strips.items()]
                 + [("wifi", states[:1]), ("trial", states[1:])])
-    if "--snippets" in sys.argv:  # markup to paste, for pages in docs/<folder>/
+    if "--snippets" in sys.argv:  # step strip markup to paste, for pages in docs/<folder>/
         rel = "../images/nav"
-        for k, (_, items) in MENUS.items():
-            print(f"menu {k}:\n🧭 {links(f'menu-{k}', items, rel)}\n")
         for k, (_, items) in STEPS.items():
             print(f"steps {k}:\n{links(f'step-{k}', items, rel)}\n")

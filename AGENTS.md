@@ -66,7 +66,7 @@ Pages must be easy to scan for a human reader. Every page in docs/ (except the f
 | Breadcrumb | `🏠 [Overview](…) › <category icon> Category › **Page**` |
 | Purpose | One sentence on what the page is for |
 | Status | One `> [!NOTE]` box with **Status:** — the only status statement on the page |
-| Contents | One line of key-style buttons for the H2 sections when a page has three or more: `📑 **On this page:** <kbd>[1 · <icon> Title](#slug)</kbd> …` |
+| Contents | Section menu: one line of generated pills for the H2 sections when a page has three or more. `python tools/nav_graphics.py` builds it from the numbered H2 sections and their ids and rewrites the line ending in `<!-- page-menu -->`; run it after adding or renaming a section |
 | H2 sections | `## 1. <icon> Title`, each preceded by a stable `<a id="short-slug"></a>`; link to that id, never to the generated heading anchor |
 | H3 sections | `### 1.1 Title`, no icon |
 | Separators | `---` between H2 sections |

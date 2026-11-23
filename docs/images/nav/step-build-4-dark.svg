@@ -1,10 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="110" height="30" viewBox="0 0 110 30" role="img" aria-label="4 · Power">
-<title>4 · Power</title>
+<svg xmlns="http://www.w3.org/2000/svg" width="121" height="30" viewBox="0 0 121 30" role="img" aria-label="4 · Harness">
+<title>4 · Harness</title>
 <g font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif">
-<rect x="0.75" y="0.75" width="85.0802" height="28.5" rx="14.25" fill="#151b23" stroke="#3d444d" stroke-width="1.5"/>
+<rect x="0.75" y="0.75" width="96.51760000000002" height="28.5" rx="14.25" fill="#151b23" stroke="#3d444d" stroke-width="1.5"/>
 <circle cx="15" cy="15.0" r="10" fill="#e8710a"/>
 <text x="15" y="19.3" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="600">4</text>
-<text x="30" y="19.6" font-size="13" fill="#f0f6fc" text-anchor="start" font-weight="600">Power</text>
-<path d="M94.5802 10.0 L99.5802 15.0 L94.5802 20.0" fill="none" stroke="#656c76" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="30" y="19.6" font-size="13" fill="#f0f6fc" text-anchor="start" font-weight="600">Harness</text>
+<path d="M106.01760000000002 10.0 L111.01760000000002 15.0 L106.01760000000002 20.0" fill="none" stroke="#656c76" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </g>
 </svg>

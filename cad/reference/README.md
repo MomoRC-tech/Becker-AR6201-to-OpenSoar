@@ -1,5 +1,7 @@
 # CAD downloads and credits
 
+🏠 [Overview](../../README.md) › 📚 [Documentation](../../docs/README.md) › 📐 CAD › **CAD downloads and credits**
+
 Download the component models and check their original sources and reuse terms before sharing them.
 
 | Model | Creator or supplier and original source | Reuse |
@@ -14,3 +16,7 @@ Download the component models and check their original sources and reuse terms b
 | [MAX490 RS-422 module](rs422-to-ttl-max490/README.md) | Project model based on reference photos | See the model notes for its intended use |
 
 For non-commercial public sharing, GrabCAD asks you to credit the creator and link to the original model. Commercial use requires the creator’s explicit permission. [GrabCAD sharing guidance](https://help.grabcad.com/article/246-how-can-models-be-used-and-shared)
+
+---
+
+<kbd>[🏠 Overview](../../README.md)</kbd> <kbd>[📚 Documentation](../../docs/README.md)</kbd>

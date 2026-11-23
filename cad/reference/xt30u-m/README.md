@@ -1,5 +1,7 @@
 # AMASS XT30U-M (male, solder cups)
 
+🏠 [Overview](../../../README.md) › 📚 [Documentation](../../../docs/README.md) › 📐 CAD › **AMASS XT30U-M (male, solder cups)**
+
 Unmodified third-party STEP model of the AMASS XT30U-M male connector with solder cups, from the KiCad library of **MuratovAS** (`MAS_3DModel/xt30u-m.step`). Created in FreeCAD, export 2024-04-09.
 
 - Open [`xt30u-m.step`](xt30u-m.step) in CAD software.
@@ -11,3 +13,7 @@ Unmodified third-party STEP model of the AMASS XT30U-M male connector with solde
 ## Attribution and reuse
 
 Third-party content, not an original project design. The source repository is licensed under the Apache License 2.0; a copy is in [`LICENSE`](LICENSE). The file is unchanged. No other license is asserted here.
+
+---
+
+<kbd>[🏠 Overview](../../../README.md)</kbd> <kbd>[📚 Documentation](../../../docs/README.md)</kbd>

@@ -1,5 +1,7 @@
 # Connector wall print test
 
+🏠 [Overview](../../../README.md) › 📚 [Documentation](../../../docs/README.md) › 📐 CAD › **Connector wall print test**
+
 Two short slices of the [housing body v1](../housing-body-v1/README.md) base, cut unchanged from the current `housing-base.step`: the connector wall with its floor strip, collar, nut pockets, engraved labels and the corner posts, 11.5 mm deep from the outer face, tie loops cut off. They check the XT30 and DE-9 openings as the base prints them — standing, with the 10.55 and 19.9 mm bridges — before printing the whole base. Rules: [housing § 2](../../../docs/hardware/housing.md#rules).
 
 | File | Slice (layout Z, mm) | Checks |
@@ -17,3 +19,7 @@ Checklist after printing:
 - [ ] DE-9 flange sits flush in the recess, rear body passes the D-cutout without forcing, the 19.9 mm bridge clean.
 - [ ] Jackposts through the holes, nuts drop into the pockets, mated cable plug locks.
 - [ ] Engraved labels readable.
+
+---
+
+<kbd>[🏠 Overview](../../../README.md)</kbd> <kbd>[📚 Documentation](../../../docs/README.md)</kbd>

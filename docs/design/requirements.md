@@ -9,7 +9,7 @@ What the bridge must do, what the plan assumes, and what could go wrong.
 > [!NOTE]
 > **Status:** requirements agreed; none is verified on hardware yet. P0 = must have, P1 = should have.
 
-📑 **On this page:** <kbd>[1 · ✅ Requirements](#requirements)</kbd> <kbd>[2 · 🤔 Assumptions](#assumptions)</kbd> <kbd>[3 · ⚠️ Risks](#risks)</kbd>
+<a href="#requirements"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-design-requirements-1-dark.svg"><img src="../images/nav/menu-design-requirements-1.svg" alt="1 · Requirements" height="30"></picture></a> <a href="#assumptions"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-design-requirements-2-dark.svg"><img src="../images/nav/menu-design-requirements-2.svg" alt="2 · Assumptions" height="30"></picture></a> <a href="#risks"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-design-requirements-3-dark.svg"><img src="../images/nav/menu-design-requirements-3.svg" alt="3 · Risks" height="30"></picture></a> <!-- page-menu -->
 
 Related: 🏗️ [Architecture](architecture.md) · ❓ [Open items](../project/open-items.md) · 🗺️ [Roadmap](../project/roadmap.md)
 

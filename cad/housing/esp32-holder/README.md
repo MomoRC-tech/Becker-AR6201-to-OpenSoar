@@ -1,5 +1,7 @@
 # ESP32 holder
 
+🏠 [Overview](../../../README.md) › 📚 [Documentation](../../../docs/README.md) › 📐 CAD › **ESP32 holder**
+
 Holds the ESP32 at its short ends: two end blocks glued onto the housing floor, a USB cap with one screw, and a gluing jig. Rules: [housing § 2](../../../docs/hardware/housing.md#rules); checks: [§ 2.3](../../../docs/hardware/housing.md#fit-test). Built in Autodesk Fusion through MCP, 2026-11-12, and tested as a standalone holder. The [current housing base](../housing-body-v1/README.md) integrates both ESP32 end supports.
 
 | File | Use |
@@ -19,3 +21,7 @@ Holds the ESP32 at its short ends: two end blocks glued onto the housing floor, 
 | J gluing jig | 49 × 28.5 dummy board with a dummy USB socket | Holds A and B at the board's exact spacing while their feet are glued: fit it into A like the board, set B under its USB end, screw U on. Remove after the glue has cured |
 
 Values from the CAD model: shield top 3.2 mm and USB socket top 3.74 mm above the PCB, shield starting at the antenna-end PCB edge.
+
+---
+
+<kbd>[🏠 Overview](../../../README.md)</kbd> <kbd>[📚 Documentation](../../../docs/README.md)</kbd>

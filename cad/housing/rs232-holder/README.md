@@ -1,5 +1,7 @@
 # RS-232 holder
 
+🏠 [Overview](../../../README.md) › 📚 [Documentation](../../../docs/README.md) › 📐 CAD › **RS-232 holder**
+
 Holds one RS-232 module: the board slides in flat between two grooved rails and is held by friction, only on its long edges beside the chip feet. Rules: [housing § 2](../../../docs/hardware/housing.md#rules); fit result: [§ 2.3](../../../docs/hardware/housing.md#fit-test). Built in Autodesk Fusion through MCP, 2026-11-12; tested and selected.
 
 | File | Use |
@@ -22,3 +24,7 @@ Board 9.2 × 15.6 measured, PCB 1.15 (S38):
 | PCB underside above the floor | 2.5 | Underside parts 0.45 + 2 mm rule |
 | Lip above the PCB | 1.0 | |
 | Lead-in | 0.4 × 45° at both groove ends | Board can go in from either end |
+
+---
+
+<kbd>[🏠 Overview](../../../README.md)</kbd> <kbd>[📚 Documentation](../../../docs/README.md)</kbd>

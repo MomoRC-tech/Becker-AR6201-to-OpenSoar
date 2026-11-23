@@ -9,7 +9,7 @@ How the bridge is split up, which hardware is selected, and the decisions behind
 > [!NOTE]
 > **Status:** hardware design (ADR-04), update path (ADR-05) and schematic role (ADR-06) selected; radio path (ADR-01), bridge firmware baseline (ADR-02) and supply-voltage report (ADR-07) selected. Building and testing are tracked in the [roadmap](../project/roadmap.md).
 
-📑 **On this page:** <kbd>[1 · 🧩 Who does what](#responsibilities)</kbd> <kbd>[2 · 🔧 Hardware](#hardware)</kbd> <kbd>[3 · 📝 Decisions](#decisions)</kbd>
+<a href="#responsibilities"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-design-architecture-1-dark.svg"><img src="../images/nav/menu-design-architecture-1.svg" alt="1 · Who does what" height="30"></picture></a> <a href="#hardware"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-design-architecture-2-dark.svg"><img src="../images/nav/menu-design-architecture-2.svg" alt="2 · Hardware — one ESP32" height="30"></picture></a> <a href="#decisions"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-design-architecture-3-dark.svg"><img src="../images/nav/menu-design-architecture-3.svg" alt="3 · Decisions" height="30"></picture></a> <!-- page-menu -->
 
 Related: 🔌 [Signal wiring](../hardware/wiring.md) · ⚡ [Power and grounding](../hardware/power.md) · 🧱 [Modules and parts](../hardware/modules.md) · 🎯 [Requirements](requirements.md)
 

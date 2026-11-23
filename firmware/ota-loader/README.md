@@ -1,5 +1,7 @@
 # OTA loader
 
+🏠 [Overview](../../README.md) › 📚 [Documentation](../../docs/README.md) › 💾 Firmware › **OTA loader**
+
 Bench loader for the Wi-Fi bridge ESP32: flash it once over USB, then upload all later firmware over Wi-Fi. Design and rules: [ADR-05](../../docs/design/architecture.md#adr-05). Bench test: [bring-up step 3](../../docs/hardware/wiring.md#bring-up).
 
 | Behaviour | Value |
@@ -75,3 +77,7 @@ python espota.py -i 192.168.4.1 -a "<OTA password>" -f firmware.bin
 ```
 
 `espota.py` ships with the esp32 board package in its `tools` folder. If authentication succeeds but the upload ends with `No response from device`, Windows Firewall blocks the data transfer: the bridge connects back to the PC. Allow the program that runs `espota` (Python, or `espota.exe`; its path changes with each board package update). Every new image must be built with the same partition scheme and must contain an OTA receiver, otherwise the next update needs USB again.
+
+---
+
+<kbd>[🏠 Overview](../../README.md)</kbd> <kbd>[📚 Documentation](../../docs/README.md)</kbd>
