@@ -19,7 +19,7 @@
 #define SETTINGS_FORMAT 1  // legacy format stored under "v"
 
 enum SettingOrigin : uint8_t { ORIGIN_DEFAULT, ORIGIN_STORED, ORIGIN_INVALID };
-enum SettingType : uint8_t { T_PROFILE, T_BAUD, T_FRAME, T_TCP, T_SSID, T_NETPASS, T_APPASS, T_SECONDS, T_IP, T_FLAG, T_CAL, T_NETSSID };  // T_NETSSID: may be empty (no network)
+enum SettingType : uint8_t { T_PROFILE, T_BAUD, T_FRAME, T_TCP, T_SSID, T_NETPASS, T_APPASS, T_SECONDS, T_IP, T_FLAG, T_CAL, T_NETSSID, T_OFFSET };  // T_NETSSID: may be empty (no network); T_OFFSET: tenths of a degree
 
 // ---- device profiles (WP9) ------------------------------------------------------
 // A profile fills in the baud rate and frame of one instrument. It is offered only on
@@ -77,6 +77,7 @@ struct BridgeSettings {
     uint8_t supplySensor;  // Project (step 3d): 1 = voltage divider fitted on SUPPLY_PIN
     uint16_t supplyCal;    // calibration factor in thousandths, 1000 = 1.000
     uint16_t supplyTcp;    // TCP port of the OpenVario voltage sentences
+    int16_t chipTempOffset;  // Project (step 3e): chip sensor reads this much too high, tenths of a degree C; former padding
 };
 
 static BridgeSettings settings;  // active values, fixed after settingsLoad()
@@ -120,6 +121,9 @@ static SettingItem kSettings[] = {
     {"vs", T_FLAG, &settings.supplySensor, ORIGIN_DEFAULT},  // supply voltage (step 3d)
     {"vc", T_CAL, &settings.supplyCal, ORIGIN_DEFAULT},
     {"vt", T_TCP, &settings.supplyTcp, ORIGIN_DEFAULT},
+#endif
+#ifdef CHIP_TEMP
+    {"ct", T_OFFSET, &settings.chipTempOffset, ORIGIN_DEFAULT},  // chip temperature offset (step 3e); keep last
 #endif
 };
 static constexpr size_t kSettingCount = sizeof(kSettings) / sizeof(kSettings[0]);
@@ -210,12 +214,17 @@ static bool validAt(SettingType type, const void* v, int portNum) {
             const uint16_t c = *(const uint16_t*)v;
             return c >= 900 && c <= 1100;
         }
+        case T_OFFSET: {
+            const int16_t o = *(const int16_t*)v;
+            return o >= 0 && o <= 600;  // 0 to 60 degrees C
+        }
     }
     return false;
 }
 
-// The group a value belongs to when it belongs to no port: "Wi-Fi" or "Supply voltage".
+// The group a value belongs to when it belongs to no port: "Wi-Fi", "Supply voltage" or "Chip temperature".
 static bool supplyKey(const SettingItem& s) { return s.key[0] == 'v'; }
+static bool chipKey(const SettingItem& s) { return s.key[0] == 'c'; }
 
 static bool validValue(const SettingItem& s, int portNum) { return validAt(s.type, s.value, portNum); }
 
@@ -261,6 +270,7 @@ static const char* settingName(const SettingItem& s) {
         case T_IP: return "hotspot address";
         case T_FLAG: return "sensor fitted";
         case T_CAL: return "calibration factor";
+        case T_OFFSET: return "offset, \xC2\xB0" "C";
     }
     return "";
 }
@@ -278,6 +288,7 @@ static void settingValueText(const SettingItem& s, char* out, size_t n) {
         case T_IP: snprintf(out, n, "%s", IPAddress(*(uint32_t*)s.value).toString().c_str()); break;
         case T_FLAG: snprintf(out, n, "%s", *(uint8_t*)s.value ? "on" : "off"); break;
         case T_CAL: snprintf(out, n, "%u.%03u", (unsigned)(*(uint16_t*)s.value / 1000), (unsigned)(*(uint16_t*)s.value % 1000)); break;
+        case T_OFFSET: snprintf(out, n, "%.1f", *(int16_t*)s.value / 10.0); break;
         case T_NETPASS:
         case T_APPASS: snprintf(out, n, "%s", ""); break;
         default: snprintf(out, n, "%s", (const char*)s.value); break;
@@ -322,7 +333,8 @@ static size_t valueSize(SettingType t) {
         case T_IP: return 4;
         case T_TCP:
         case T_SECONDS:
-        case T_CAL: return 2;
+        case T_CAL:
+        case T_OFFSET: return 2;
         case T_FLAG: return 1;
         case T_FRAME: return 4;
         case T_PROFILE: return 8;
@@ -351,6 +363,10 @@ static bool readStored(Preferences& p, SettingItem& s) {
         case T_CAL:
             if (p.getType(s.key) != PT_U16) return false;
             *(uint16_t*)s.value = p.getUShort(s.key);
+            return true;
+        case T_OFFSET:
+            if (p.getType(s.key) != PT_I16) return false;
+            *(int16_t*)s.value = p.getShort(s.key);
             return true;
         case T_FLAG:
             if (p.getType(s.key) != PT_U8) return false;
@@ -730,7 +746,7 @@ static void settingsLoad() {
         if (s.origin != ORIGIN_INVALID) continue;
         invalid++;
         const int n = portOf(s);
-        const char* group = n >= 0 ? portNames[n] : supplyKey(s) ? "supply voltage" : "";
+        const char* group = n >= 0 ? portNames[n] : supplyKey(s) ? "supply voltage" : chipKey(s) ? "chip temperature" : "";
         LOGW(LOG_SETTINGS, "Stored %s%s%s is invalid; default in use", group, *group ? " " : "", settingName(s));
     }
     LOGI(LOG_SETTINGS, "Settings loaded: %d changed, %d invalid", changed, invalid);

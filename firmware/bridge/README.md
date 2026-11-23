@@ -88,7 +88,7 @@ Open *Change settings* under *All settings*, or `http://<bridge address>/setting
 | What | How it works |
 | --- | --- |
 | Detect | On either navigation input, press **Detect** for a one-time receive-only scan. Only that input pauses. The bridge tries its current settings, measures the incoming bit rate, then tries supported rates with 8N1. Three matching sentences identify Zander or FLARM. The result can also report both streams, generic NMEA, undecodable activity or silence. The bridge restores forwarding before showing the result, even if the browser leaves. **Use these settings** fills the form. **Save and restart** applies it. The Becker port stays manual. |
-| Values | Per device: device profile, baud, frame, TCP port. Wi-Fi: network name and password, join time, hotspot name, password and address. Supply voltage: sensor fitted, calibration factor, TCP port. Pins, radio port rules, hostname and OTA password stay fixed in the firmware |
+| Values | Per device: device profile, baud, frame, TCP port. Wi-Fi: network name and password, join time, hotspot name, password and address. Supply voltage: sensor fitted, calibration factor, TCP port. Chip temperature: [offset](#chip-temperature). Pins, radio port rules, hostname and OTA password stay fixed in the firmware |
 | Device profiles | Choose the instrument on a port: Zander ZS1, Classic FLARM, Becker AR6201 or Custom. A preset fills in baud and frame; changing either by hand selects Custom. Only presets that fit the port's wiring are offered and accepted: Zander and FLARM ports (RS-232, bridge receives only) take ZS1 or Classic FLARM, the Becker port (RS-422, both ways) takes AR6201. The page shows the port's wiring under the choice. Preset values are the candidates in `config.h`. Settings saved before profiles existed keep working: a preset that no longer matches its baud and frame shows as Custom. The TCP port stays separate
 | Checks | Every field is checked on the bridge; a refused save names each wrong field and changes nothing. TCP ports, including the supply voltage port, may not repeat and may not be 80 |
 | Passwords | Never shown. Leave the field empty to keep the current one |
@@ -102,7 +102,8 @@ Open *Change settings* under *All settings*, or `http://<bridge address>/setting
 | --- | --- |
 | `GET /settings` | The page (password) |
 | `POST /api/nav-scan`, `GET /api/nav-scan` | Start with form field `port=0` or `port=1`, cancel with `cancel=<scan id>`, or read progress with GET (password). Baud and frame describe the setting used to decode the stream. |
-| `POST /api/settings` | Check and save form fields named by their keys (`p0`, `b0`, `f0`, `t0` ... `ns`, `np`, `nj`, `hs`, `hp`, `ha`, `vs`, `vc`, `vt`), then restart (password) |
+| `POST /api/settings` | Check and save form fields named by their keys (`p0`, `b0`, `f0`, `t0` ... `ns`, `np`, `nj`, `hs`, `hp`, `ha`, `vs`, `vc`, `vt`, `ct`), then restart (password) |
+| `POST /api/chip-temp/calibrate` | Form fields `room` (°C) and `cold=on`; stores the [chip temperature offset](#chip-temperature), answers `{"ok":true,"offset":…}`, then restarts (password). Refused with a `message` when the checks fail |
 | `POST /api/keep` | Keep settings on trial (password) |
 | `POST /api/reset` | Forget all stored values, then restart (password) |
 | `POST /api/restart` | Answer `{"ok":true}`, then restart with the stored settings (password). For scripts: `curl -u bridge:<OTA password> -X POST http://<bridge address>/api/restart` |
@@ -184,12 +185,15 @@ The ESP32 reads its own internal temperature sensor ([plan](../../docs/project/r
 | --- | --- |
 | What it measures | The ESP32 chip, not the air in the housing. On the classic ESP32 the sensor is undocumented, with no specified accuracy (S131); offsets are reported to differ from chip to chip. Read it as a trend |
 | Reading | Once per second, shown as the mean of the last 10 s |
-| Status page | Header line *Chip temperature*, red at or above the warning level; *no reading* when the chip's sensor does not work (it then returns 128 °F at every read) |
+| Offset | Setting `ct` (*Chip temperature* › *Offset, °C*, 0.0 to 60.0, default 0 = none), subtracted from every shown, logged and recorded chip temperature. Stored like the other settings, no trial |
+| Calibration | **Calibrate chip temperature** on the settings page, only after a power-on start (`esp_reset_reason()` = `ESP_RST_POWERON`) with a working first reading. Shows that reading and its time; the user confirms at least 30 min off in the same place and enters the room temperature (0 to 45 °C). Offset = first reading − room temperature, accepted from 0 to 60 °C, about ±5 °C. About +38 °C on the bench bridge (S187). Steps for users: [user manual](../../docs/manual/user-manual.md#chip-calibration) |
+| Uncorrected | While the offset is 0, the status page marks each chip temperature *uncorrected* (link to the settings page), web-log lines add *(uncorrected)*, the Debug memory line *raw* |
+| Status page | Header line *Chip temperature*, red when the raw reading is at or above the warning level; *no reading* when the chip's sensor does not work (it then returns 128 °F at every read) |
 | Startup temperature | At entry to `setup()`, before Wi-Fi or the startup delay, take one sample. Then take one at each 10 s mark through 120 s, including while Wi-Fi connects. **Chip before Wi-Fi** shows the first reading and its time. Expand **Chip temperature during startup** for the full series. |
-| `/api/status` | `chip_temp.celsius` is the live mean and `warn_c` the warning level. `chip_temp.boot_samples` grows to 13 entries, each with `ms` (actual milliseconds since firmware boot) and `celsius` (single reading, or `null` if unavailable). Entries stay in RAM until restart. |
-| Web log | Source System: the first reading after start; a warning after 60 s at or above 100 °C; Info when it is back below 95 °C. The Debug memory line every 60 s ends with the chip temperature. Without a working sensor, one Info line 30 s after start |
+| `/api/status` | `chip_temp.celsius` is the live mean with the offset applied, `offset` the offset, `corrected` false while it is 0, `power_on` true after a power-on start, `warn_c` the warning level (raw). `chip_temp.boot_samples` grows to 13 entries, each with `ms` (actual milliseconds since firmware boot) and `celsius` (single reading with the offset applied, or `null` if unavailable). Entries stay in RAM until restart. |
+| Web log | Source System, values with the offset applied: the first reading after start; a warning after 60 s with the raw reading at or above 100 °C; Info when it is back below 95 °C raw. Calibration: one Settings Info line. The Debug memory line every 60 s ends with the chip temperature. Without a working sensor, one Info line 30 s after start |
 | No shutdown | The bridge keeps forwarding at any temperature. Losing FLARM and radio data in flight is worse than running warm |
-| Warning level | 100 °C, set by the owner to cover the sensor's offset: the assembled bridge read 72–80 °C open on a desk at 23 °C room temperature while the ESP32 stayed barely warm to the touch at 0.8 W input (S142) |
+| Warning level | 100 °C on the raw reading, before the offset, set by the owner to cover the sensor's offset: the assembled bridge read 72–80 °C open on a desk at 23 °C room temperature while the ESP32 stayed barely warm to the touch at 0.8 W input (S142) |
 
 <a id="thermal-bench"></a>
 
@@ -201,10 +205,11 @@ The ESP32 reads its own internal temperature sensor ([plan](../../docs/project/r
 | Chip sensor | **81.2 °C** at the start, **93.8 °C** peak, **90.7 °C** at two hours. Median over the last 30 minutes was **89.9 °C**. |
 | Supply and forwarding | 12.03–12.08 V, zero restarts, UART errors or TCP disconnects. The first frame arrived two bytes short. All subsequent bytes matched. |
 | Cold start, 22 Nov 2026 | After an unpowered soak in a room at about **24 °C**, the first status reading was **59.4 °C at 2 s** of reported uptime. First readings at 10, 30 and 60 s were 60.3, 62.3 and 64.7 °C. |
+| Cold start and 30 min load at 80 MHz, 23 Nov 2026 | Firmware 0.5.15, room about **25 °C**: first reading **62.8 °C at 0.12 s**, 72.8 °C after 2 min idle. Zander input at 80% line rate, radio loop and supply port: **84.8 °C** mean over the last 15 minutes (83.2–87.0 °C); at 240 MHz the same load read 88–95 °C (S187). |
 
 ![ESP32 sensor readings at ten-second intervals and five-minute rolling median during the two-hour FLARM load](../../docs/images/flarm-two-hour-chip-temperature.png)
 
-**Rough estimate of peak chip temperature: about 58 °C.** The sensor peak was 34.4 °C above the next morning’s first reading (93.8 − 59.4). Adding that difference to the reported room temperature gives 58.4 °C. This assumes a constant sensor offset and a chip still at room temperature at the first reading. Any earlier self-heating would raise the estimate by the same amount under that assumption. The available records and published data do not quantify it.
+**Rough estimate of peak chip temperature: about 58 °C.** The sensor peak was 34.4 °C above the next morning’s first reading (93.8 − 59.4). Adding that difference to the reported room temperature gives 58.4 °C. This assumes a constant sensor offset and a chip still at room temperature at the first reading. The 0.12 s reading of 23 Nov puts the offset at about **+38 °C**: about 47 °C real under load at 80 MHz, and the 100 °C warning near 62 °C real (S187). Any earlier self-heating would raise the estimate by the same amount under that assumption. The available records and published data do not quantify it.
 
 The chart shows the sensor readings. Enclosure, regulator and clamp temperatures require the separate [housing heat check](../../docs/project/open-items.md#housing). [Bench evidence and thermal references](../../docs/research/sources.md#thermal-bench-evidence)
 
@@ -218,7 +223,7 @@ A few values kept through power cuts ([plan](../../docs/project/roadmap.md#firmw
 | --- | --- |
 | Operating time | Seconds since the record was started, counted from each ESP32 start |
 | Starts | Every start, also restarts by the firmware |
-| Highest chip temperature | Highest 1 min mean of the [chip temperature](#chip-temperature), from 2 min after each start, with the operating time and, if the bridge knows the clock, the date. Single readings scatter by several degrees and run high just after a start (S134) |
+| Highest chip temperature | Highest 1 min mean of the [chip temperature](#chip-temperature) with the offset applied when it is recorded (reset the record after calibrating), from 2 min after each start, with the operating time and, if the bridge knows the clock, the date. Single readings scatter by several degrees and run high just after a start (S134) |
 | Lowest supply voltage | Lowest [supply voltage](#supply-voltage) held for 10 s, so a short dip or the decay at switch-off does not count; with operating time and date. Only with the sensor switched on |
 
 | Part | How it works |
@@ -260,7 +265,7 @@ Bench check: `python tools/records_test.py <bridge address>` also checks the sav
 
 ## Build
 
-Same toolchain and partition scheme as the [OTA loader](../ota-loader/README.md#build): Arduino-ESP32 3.3.x, board **ESP32 Dev Module**, Partition Scheme **Minimal SPIFFS (1.9MB APP with OTA/190KB SPIFFS)**.
+Same toolchain and partition scheme as the [OTA loader](../ota-loader/README.md#build): Arduino-ESP32 3.3.x, board **ESP32 Dev Module**, Partition Scheme **Minimal SPIFFS (1.9MB APP with OTA/190KB SPIFFS)**, CPU Frequency **80MHz (WiFi/BT)** (cooler chip, S187).
 
 No credentials file is needed: every build carries the public [default logins](../../docs/manual/user-manual.md#logins) from [`config.h`](config.h) and no network. Set the network on the settings page after the first upload. For a bridge with its own OTA password, change `OTA_PASSWORD` in `config.h` locally before building and do not commit it.
 

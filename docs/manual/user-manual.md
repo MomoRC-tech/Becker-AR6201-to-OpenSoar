@@ -118,7 +118,7 @@ Baud rate and serial frame changes apply at once, without a trial.
 | Becker port | One app at a time owns the radio. A second one is refused until the first closes |
 | Phone leaves the hotspot | Its connections close at once, so OpenSoar can reconnect when the phone is back |
 | Supply below 11.5 V for 10 s | Warning in the web log; forwarding continues |
-| Chip at 100 °C for 1 min | Warning in the web log; forwarding continues. The chip runs hotter than the air in the housing |
+| Chip sensor at 100 °C for 1 min (before the [offset](#chip-calibration)) | Warning in the web log; forwarding continues. The chip runs hotter than the air in the housing |
 
 ---
 
@@ -131,7 +131,7 @@ Open them in the phone's browser at `http://10.10.10.10/` (hotspot) or `http://w
 | Page | Address | What it shows | Password |
 | --- | --- | --- | --- |
 | Status | `/` | Firmware, uptime, Wi-Fi signal; one row per device with a green dot while data arrives, baud rate, port, connected apps, errors; *All settings* | — |
-| <a id="settings"></a>Settings | `/settings` | Device profile, baud, frame and port per device; network, join time and hotspot; supply voltage. **Detect** finds the baud rate on the Zander and FLARM inputs. **Save and restart**, **Keep**, **Restart bridge**, **Reset to defaults** | User `bridge` and the OTA password ([logins](#logins)) |
+| <a id="settings"></a>Settings | `/settings` | Device profile, baud, frame and port per device; network, join time and hotspot; supply voltage; chip temperature offset ([calibration](#chip-calibration)). **Detect** finds the baud rate on the Zander and FLARM inputs. **Save and restart**, **Keep**, **Restart bridge**, **Reset to defaults** | User `bridge` and the OTA password ([logins](#logins)) |
 | Data monitor | `/monitor` | The data passing each device, as text or hex; pause and download | — |
 | Web log | `/log` | What the bridge did since the last power cut | — |
 | Saved log | `/saved` | Errors and warnings kept through power cuts | Clearing it |
@@ -141,6 +141,19 @@ Passwords are never shown. Leave a password field empty to keep the current one.
 <img src="../images/status-page.png" width="240" alt="Status page on a phone: Zander, FLARM and Becker rows, all settings open"> <img src="../images/settings-page.png" width="240" alt="Settings page on a phone: fields per device and for Wi-Fi, with defaults"> <img src="../images/monitor-page.png" width="240" alt="Data monitor on a phone with demo NMEA lines from and to the Zander">
 
 Details for each page: [firmware reference](../../firmware/bridge/README.md#status-page).
+
+<a id="chip-calibration"></a>
+
+### 3.1 Calibrating the chip temperature
+
+The ESP32's sensor reads far too high, by a different amount on each chip (about +38 °C on the bench bridge, S187). Until an offset is stored, every chip temperature shows as *uncorrected*.
+
+- [ ] Switch the bridge off for at least 30 minutes, in the place where it stays.
+- [ ] Switch it on and open **Settings** › *Chip temperature* › **Calibrate chip temperature**.
+- [ ] Tick *The bridge was off for at least 30 minutes, in the same place as now.*
+- [ ] Enter the room temperature in °C (0 to 45) and press **Calibrate and restart**.
+
+The bridge subtracts the room temperature from its earliest reading of this start and stores the difference (0 to 60 °C) as the offset; the result is accurate to about ±5 °C. Calibration is offered only after a start from power off. The offset stays through restarts and updates; set it by hand in the same field, or 0 to remove it. After calibrating, reset the lifetime record so its highest chip temperature is corrected too.
 
 ---
 

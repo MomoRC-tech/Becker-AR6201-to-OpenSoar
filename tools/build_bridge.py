@@ -40,7 +40,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 SKETCH = ROOT / "firmware" / "bridge"
 VARIANT_HEADER = SKETCH / "bridge_variant.h"
-FQBN = "esp32:esp32:esp32:PartitionScheme=min_spiffs"
+FQBN = "esp32:esp32:esp32:PartitionScheme=min_spiffs,CPUFreq=80"  # 80 MHz: less heat; UART and Wi-Fi unaffected
 SKETCH_FILES = tuple(f.name for f in SKETCH.iterdir() if f.suffix in (".ino", ".h"))  # warnings from these are shown
 VARIANTS = {
     "normal": (ROOT / "build" / "bridge", None),

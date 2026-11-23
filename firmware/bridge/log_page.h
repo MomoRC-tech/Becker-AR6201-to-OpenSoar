@@ -71,14 +71,20 @@ static void logTick() {
         }
     }
 
+    // "Memory" counts all internal RAM, including IRAM that malloc() cannot use; "heap" is the
+    // byte-addressable heap that lwIP, Wi-Fi, LittleFS and the web server allocate from:
+    // "heap free/lowest/largest block kB".
+#define HEAP8(fn) ((unsigned long)fn(MALLOC_CAP_8BIT) / 1024)
     if (now - lastMemory >= LOG_MEMORY_MS) {
         lastMemory = now;
         if (WiFi.getMode() & WIFI_MODE_AP)
-            LOGD(LOG_SYSTEM, "Memory free %lu kB, lowest %lu kB; hotspot, %u phone(s)%s", (unsigned long)ESP.getFreeHeap() / 1024,
-                 (unsigned long)ESP.getMinFreeHeap() / 1024, WiFi.softAPgetStationNum(), chipTempText());
+            LOGD(LOG_SYSTEM, "Memory free %lu kB, lowest %lu kB; heap %lu/%lu/%lu kB; hotspot, %u phone(s)%s",
+                 (unsigned long)ESP.getFreeHeap() / 1024, (unsigned long)ESP.getMinFreeHeap() / 1024, HEAP8(heap_caps_get_free_size),
+                 HEAP8(heap_caps_get_minimum_free_size), HEAP8(heap_caps_get_largest_free_block), WiFi.softAPgetStationNum(), chipTempText());
         else
-            LOGD(LOG_SYSTEM, "Memory free %lu kB, lowest %lu kB; Wi-Fi signal %d dBm%s", (unsigned long)ESP.getFreeHeap() / 1024,
-                 (unsigned long)ESP.getMinFreeHeap() / 1024, (int)WiFi.RSSI(), chipTempText());
+            LOGD(LOG_SYSTEM, "Memory free %lu kB, lowest %lu kB; heap %lu/%lu/%lu kB; Wi-Fi %d dBm%s",
+                 (unsigned long)ESP.getFreeHeap() / 1024, (unsigned long)ESP.getMinFreeHeap() / 1024, HEAP8(heap_caps_get_free_size),
+                 HEAP8(heap_caps_get_minimum_free_size), HEAP8(heap_caps_get_largest_free_block), (int)WiFi.RSSI(), chipTempText());
     }
 }
 

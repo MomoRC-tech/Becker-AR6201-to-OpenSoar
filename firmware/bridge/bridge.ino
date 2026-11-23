@@ -126,24 +126,37 @@ struct AppQueue {
     uint32_t progressAt;  // last time the app took data, or its queue was empty
     uint8_t data[APP_QUEUE];
 };
-// About 24 kB, taken from the heap at first use: static RAM has no room left for it.
-// Returns void*, since the sketch's generated prototypes come before the struct.
-static void* appQueueMemory() {
-    static void* const all = calloc(NUM_COM * MAX_NMEA_CLIENTS, sizeof(AppQueue));
-    configASSERT(all != nullptr);
-    return all;
-}
-#define queueOf(num, cln) (static_cast<AppQueue*>(appQueueMemory())[(num) * MAX_NMEA_CLIENTS + (cln)])
+// 0.5.15: a queue is taken from the heap only while its app is connected (a phone uses
+// four, about 8 kB), not for all twelve slots (24 kB). The heap ran out under load (S186).
+// void*, since the sketch's generated prototypes come before the struct.
+static void* appQueues[NUM_COM][MAX_NMEA_CLIENTS];
+#define queueOf(num, cln) (*static_cast<AppQueue*>(appQueues[num][cln]))
 static const char* const appPortName[NUM_COM] = PORT_NAMES;
 
-static void resetAppQueue(int num, int cln) {
+// Gives a newly accepted app an empty queue. False when the heap has no room for one.
+static bool openAppQueue(int num, int cln) {
+    if (!appQueues[num][cln]) appQueues[num][cln] = malloc(sizeof(AppQueue));
+    if (!appQueues[num][cln]) return false;
     queueOf(num, cln).len = 0;
     queueOf(num, cln).skipped = 0;
     queueOf(num, cln).progressAt = millis();
+    return true;
 }
+
+static void freeAppQueue(int num, int cln) {
+    free(appQueues[num][cln]);
+    appQueues[num][cln] = nullptr;
+}
+
+// Below this much free heap, apps that took no data for APP_GUARD_IDLE_MS get nothing
+// more sent until it recovers: their data waits in (and is skipped from) the fixed queue
+// instead of filling network buffers that Wi-Fi joins, the web pages and the saved log need.
+#define APP_MEMORY_GUARD (16 * 1024)
+#define APP_GUARD_IDLE_MS 1000
 
 // Adds data to the app's queue. Returns the number of bytes that did not fit.
 static size_t queueForApp(int num, int cln, const uint8_t* data, size_t size) {
+    if (!appQueues[num][cln]) return size;
     AppQueue& q = queueOf(num, cln);
     if (q.len == 0) q.progressAt = millis();
     const size_t room = APP_QUEUE - q.len;
@@ -165,6 +178,7 @@ static const uint8_t* lastLineEnd(const uint8_t* data, size_t size) {
 // dropped up to the next line end. Data without line ends (no NMEA) is cut as before.
 // Returns the number of bytes dropped.
 static size_t queueNavForApp(int num, int cln, const uint8_t* data, size_t size) {
+    if (!appQueues[num][cln]) return size;
     AppQueue& q = queueOf(num, cln);
     size_t dropped = 0;
     if (q.skipped > 0) {
@@ -192,9 +206,11 @@ static size_t queueNavForApp(int num, int cln, const uint8_t* data, size_t size)
 
 // Sends as much of the queue as the app's socket takes now. False when the connection
 // is lost; errorOut then holds the reason.
-static bool flushAppQueue(WiFiClient& client, int num, int cln, int& errorOut) {
+static bool flushAppQueue(WiFiClient& client, int num, int cln, int& errorOut, bool memoryLow = false) {
+    if (!appQueues[num][cln]) return true;
     AppQueue& q = queueOf(num, cln);
     if (q.len == 0) return true;
+    if (memoryLow && millis() - q.progressAt >= APP_GUARD_IDLE_MS) return true;  // lagging app: wait for memory
     const int fd = client.fd();
     if (fd < 0) {
         errorOut = 0;
@@ -215,20 +231,34 @@ static bool flushAppQueue(WiFiClient& client, int num, int cln, int& errorOut) {
 // so the other apps and ports keep their data and its connection stays open. It is
 // closed only after it took no data at all for APP_STALL_CLOSE_MS, as a dead connection.
 static void serviceNavApps(int num) {
+    const size_t heapFree = heap_caps_get_free_size(MALLOC_CAP_8BIT);
+    const bool memoryLow = heapFree < APP_MEMORY_GUARD;
+    if (memoryLow) {  // one line per minute at most
+        static uint32_t lowAt = 0;
+        if (lowAt == 0 || millis() - lowAt >= 60000) {
+            LOGW(LOG_SYSTEM, "Memory low (%u kB free): apps that are behind get no new data until it recovers",
+                 (unsigned)(heapFree / 1024));
+            lowAt = millis() | 1u;
+        }
+    }
     for (int cln = 0; cln < MAX_NMEA_CLIENTS; cln++) {
         WiFiClient& client = TCPClient[num][cln];
-        if (!client) continue;
+        if (!client) {
+            if (appQueues[num][cln]) freeAppQueue(num, cln);  // the core closed it: give the memory back
+            continue;
+        }
+        if (!appQueues[num][cln]) continue;
         int error = 0;
-        if (!flushAppQueue(client, num, cln, error)) {
+        if (!flushAppQueue(client, num, cln, error, memoryLow)) {
             LOGI(LOG_PORTS, "%s: app %s connection lost (error %d), closed", appPortName[num],
                  client.remoteIP().toString().c_str(), error);
             client.stop();
-            resetAppQueue(num, cln);
+            freeAppQueue(num, cln);
         } else if (queueOf(num, cln).len > 0 && millis() - queueOf(num, cln).progressAt >= APP_STALL_CLOSE_MS) {
             LOGW(LOG_PORTS, "%s: app %s took no data for %lu s, closed", appPortName[num],
                  client.remoteIP().toString().c_str(), (unsigned long)(APP_STALL_CLOSE_MS / 1000));
             client.stop();
-            resetAppQueue(num, cln);
+            freeAppQueue(num, cln);
         }
     }
 }
@@ -254,7 +284,7 @@ static void trackRadioStation(const WiFiClient& owner) {
 
 static void closeRadioOwner(WiFiClient& owner) {
     owner.stop();
-    resetAppQueue(RADIO_COM, 0);
+    freeAppQueue(RADIO_COM, 0);
     portENTER_CRITICAL(&radioStationLock);
     radioStationTracked = false;
     radioStationLeft = false;
@@ -312,9 +342,14 @@ static void serviceRadioPort() {
             // Do not pass previously buffered UART bytes to the new owner.
             uart_flush_input(UART_NUM_2);
             closeRadioOwner(owner);  // Clear tracking if the core closed the previous socket itself.
-            owner = candidate;
-            trackRadioStation(owner);
-            LOGI(LOG_RADIO, "App %s took the radio port", owner.remoteIP().toString().c_str());
+            if (!openAppQueue(RADIO_COM, 0)) {
+                LOGW(LOG_RADIO, "App %s refused: no memory for its queue", candidate.remoteIP().toString().c_str());
+                candidate.stop();
+            } else {
+                owner = candidate;
+                trackRadioStation(owner);
+                LOGI(LOG_RADIO, "App %s took the radio port", owner.remoteIP().toString().c_str());
+            }
         } else {
             // One line per 30 s at most: an app may retry every second.
             static uint32_t refusedAt = 0, refusedMore = 0;
@@ -627,7 +662,10 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
                         if (TCPClient[num][i]) TCPClient[num][i].stop();
                         TCPClient[num][i] = server[num]->available();
 #ifdef ESP32
-                        resetAppQueue(num, i);  // Project (step 5): a new app starts with an empty queue
+                        if (TCPClient[num][i] && !openAppQueue(num, i)) {  // Project (step 5): a new app starts with an empty queue
+                            LOGW(LOG_PORTS, "%s: app refused, no memory for its queue", appPortName[num]);
+                            TCPClient[num][i].stop();
+                        }
 #endif
                         debug.print("New client for COM");
                         debug.print(num);

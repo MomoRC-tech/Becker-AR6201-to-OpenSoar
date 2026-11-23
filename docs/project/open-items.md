@@ -110,8 +110,6 @@ See the [bridge firmware plan](roadmap.md#firmware-plan) and the [stock OpenSoar
 | 10 | Settings page protection | [Code review](../research/reviews/2026-11-23-code-review.md) findings 4 and 5: a page from another origin can submit settings with the browser's cached login; the settings login is the OTA password over plain HTTP. Owner decides on a required request header and a separate settings password | Settings security |
 | 11 | Radio owner change | Bytes the previous owner sent can still be on the UART when the next owner is accepted, so their echo or the radio's reply may reach the next owner. Measured with `tools/radio_robustness_test.py`: 113 and 119 bytes reached the next owner (S177). Owner decides how to handle it | Radio ownership |
 | 12 | Remaining review checks | Code review findings 6–9: UART FIFO margin during flash writes, ROM output on the Zander transmit pin, apps held during a navigation scan, low items | Bridge reliability |
-| 13 | One-hour run | The byte-exact hour run stops after 6–13 min on the bench PC's hotspot link (stalls of 1–4 s, S183). Needs a steadier link: network mode through the router, another PC adapter, or a phone | Step 5 hour run |
-| 14 | Flash file handles | Two `esp_littlefs: Unable to allocate FD` lines under load on 0.5.13 (S183): which file stays open, and whether log saving is affected | Bridge reliability |
 
 ---
 

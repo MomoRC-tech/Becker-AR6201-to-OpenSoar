@@ -5,6 +5,7 @@
 // POST /api/keep          keep settings that are on trial (password)
 // POST /api/reset         forget all stored settings, then restart (password)
 // POST /api/restart       restart with the stored settings (password)
+// POST /api/chip-temp/calibrate set the chip temperature offset, then restart (password)
 // POST /api/lifetime/reset start a new lifetime record (password; lifetime.h)
 // POST /api/saved/clear   delete the saved log (password; savedlog.h)
 //
@@ -93,6 +94,7 @@ static const char* settingHint(SettingType type, int portNum) {
         case T_IP: return "For example 10.10.10.10";
         case T_FLAG: return "On or off";
         case T_CAL: return "0.900 to 1.100";
+        case T_OFFSET: return "0.0 to 60.0; 0 = no correction";
     }
     return "";
 }
@@ -129,6 +131,14 @@ static bool parseInto(const SettingItem& s, const String& raw, void* v) {
             const double f = strtod(a.c_str(), &end);
             if (a.length() == 0 || a.length() > 8 || *end || !(f > 0 && f < 10)) return false;
             *(uint16_t*)v = (uint16_t)lround(f * 1000);
+            return true;
+        }
+        case T_OFFSET: {  // "37.8" -> 378, range in validAt()
+            a.replace(',', '.');
+            char* end = nullptr;
+            const double f = strtod(a.c_str(), &end);
+            if (a.length() == 0 || a.length() > 8 || *end || !(f > -1000 && f < 1000)) return false;
+            *(int16_t*)v = (int16_t)lround(f * 10);
             return true;
         }
         default: {
@@ -189,6 +199,56 @@ static void handleSettingsSave() {
     statusServer.send(200, "application/json", trial ? "{\"ok\":true,\"trial\":true}" : "{\"ok\":true,\"trial\":false}");
     restartSoon();
 }
+
+#ifdef CHIP_TEMP
+// Chip temperature calibration: after at least 30 min off in the same place the chip is
+// at room temperature, so the earliest reading of a power-on start minus the room
+// temperature is the sensor offset (about +38 degrees C on the bench bridge, S187).
+// Form: room (degrees C), cold=on (the user confirms the 30 min off). Saves "ct", restarts.
+static void calibrateRefuse(const char* text) {
+    String body = "{\"ok\":false,\"message\":";
+    jsonString(body, text);
+    body += "}";
+    statusServer.send(400, "application/json", body);
+}
+
+static void handleChipCalibrate() {
+    if (!settingsAuth()) return;
+    if (esp_reset_reason() != ESP_RST_POWERON)
+        return calibrateRefuse("This start was not from power on. Switch the bridge off for at least 30 minutes, "
+                               "switch it on, then calibrate.");
+    const ChipTempSample first = chipBootSamples[0];
+    if (chipBootCount.load(std::memory_order_acquire) == 0 || !first.raw)
+        return calibrateRefuse("The sensor gave no reading at this start; calibration is not possible.");
+    if (statusServer.arg("cold") != "on")
+        return calibrateRefuse("Confirm that the bridge was off for at least 30 minutes, in the same place as now.");
+    String a = statusServer.arg("room");
+    a.trim();
+    a.replace(',', '.');
+    char* end = nullptr;
+    const double room = strtod(a.c_str(), &end);
+    if (a.length() == 0 || a.length() > 8 || *end || !(room >= 0 && room <= 45))
+        return calibrateRefuse("Enter the room temperature, 0 to 45 \xC2\xB0" "C.");
+    const float firstC = (first.raw - 32.0f) / 1.8f;
+    BridgeSettings cand = settings;
+    cand.chipTempOffset = (int16_t)lroundf((firstC - (float)room) * 10);
+    if (!validAt(T_OFFSET, &cand.chipTempOffset, -1))
+        return calibrateRefuse("The result is outside 0 to 60 \xC2\xB0" "C. Check the room temperature and that the "
+                               "bridge was really off for 30 minutes.");
+    LOGI(LOG_SETTINGS, "Chip calibrated: first %.1f, room %.1f, offset %.1f \xC2\xB0" "C", firstC, room,
+         cand.chipTempOffset / 10.0);
+    bool trial = false;
+    if (!settingsSave(cand, trial)) {
+        settingsStorageError();
+        return;
+    }
+    char body[64];
+    snprintf(body, sizeof(body), "{\"ok\":true,\"offset\":%.1f,\"trial\":%s}", cand.chipTempOffset / 10.0,
+             trial ? "true" : "false");
+    statusServer.send(200, "application/json", body);
+    restartSoon();
+}
+#endif
 
 static void handleSettingsKeep() {
     if (!settingsAuth()) return;
@@ -287,8 +347,9 @@ if(dev){const P=PORTS[+n];c='<select id="'+id+'" name="'+i.key+'" onchange="pres
 else if(i.port&&(i.key[0]==='b'||i.key[0]==='f')){const o=i.key[0]==='b'?BAUD:[...new Set([...FRAME,i.value])];c='<select id="'+id+'" name="'+i.key+'" onchange="manual('+n+')">'+o.map(x=>'<option'+(String(x)===i.value?' selected':'')+'>'+esc(x)+'</option>').join('')+'</select>'}
 else if(i.secret)c='<input id="'+id+'" name="'+i.key+'" type="password" autocomplete="new-password" placeholder="Unchanged">';
 else if(i.key==='vs')c='<select id="'+id+'" name="vs">'+['on','off'].map(x=>'<option'+(x===i.value?' selected':'')+'>'+x+'</option>').join('')+'</select>';
-else{const num=i.key[0]==='t'||i.key==='nj'||i.key==='vt',dec=i.key==='vc';c='<input id="'+id+'" name="'+i.key+'" value="'+esc(i.value)+'"'+(num?' inputmode="numeric"':dec?' inputmode="decimal"':'')+'>';
-if(dec)w='<label for="mv">Calibrate: multimeter reading at the XT30, V</label><input id="mv" inputmode="decimal"><button class="quiet" type="button" onclick="cal()">Set factor</button><span class="def" id="cm"></span>'}
+else{const num=i.key[0]==='t'||i.key==='nj'||i.key==='vt',dec=i.key==='vc'||i.key==='ct';c='<input id="'+id+'" name="'+i.key+'" value="'+esc(i.value)+'"'+(num?' inputmode="numeric"':dec?' inputmode="decimal"':'')+'>';
+if(i.key==='vc')w='<label for="mv">Calibrate: multimeter reading at the XT30, V</label><input id="mv" inputmode="decimal"><button class="quiet" type="button" onclick="cal()">Set factor</button><span class="def" id="cm"></span>';
+if(i.key==='ct')w='<span class="def">The ESP32 sensor reads too high; this is subtracted from every chip temperature. 0 = uncorrected.</span><br><button class="quiet" type="button" onclick="ctc()">Calibrate chip temperature</button><div id="ctc" hidden></div>'}
 const dv=dev?NAME[i.default]||i.default:i.default;
 if(dev && +n<2)w+='<p class="def">Detection briefly pauses forwarding on this input.</p><div class="btns"><button class="quiet detect" type="button" onclick="startScan('+n+')">Detect</button><button class="quiet" id="cancel'+n+'" hidden type="button" onclick="cancelScan()">Cancel scan</button><button class="quiet" id="use'+n+'" hidden type="button" onclick="useScan('+n+')">Use these settings</button></div><span class="def" role="status" id="scan'+n+'"></span>';
 const d=i.secret?'':'<span class="def'+(i.origin==='changed'?' chg':'')+'">'+(i.origin==='changed'?'Changed, default ':'Default ')+esc(dv)+'</span>';
@@ -298,6 +359,18 @@ if(!s||!s.sensor||s.raw_volts===null||!(m>0)){$('cm').textContent=' Needs the se
 const f=m/s.raw_volts;$('cm').textContent=' The bridge reads '+s.raw_volts.toFixed(2)+' V uncalibrated.';
 if(f<0.9||f>1.1){$('cm').textContent+=' Factor '+f.toFixed(3)+' is outside 0.900 to 1.100: check the divider and the meter.';return}
 $('k_vc').value=f.toFixed(3);$('cm').textContent+=' Factor set; save to apply.'})}
+function ctc(){const b=$('ctc');b.hidden=false;b.textContent='Loading';fetch('/api/status',{cache:'no-store'}).then(r=>r.json()).then(d=>{const ct=d.chip_temp,f=ct&&ct.boot_samples&&ct.boot_samples[0];
+if(!ct||!ct.power_on){b.innerHTML='<p class="def">Needs a start from power off. Switch the bridge off for at least 30 minutes, switch it on, then calibrate.</p>';return}
+if(!f||f.celsius===null){b.innerHTML='<p class="def">The sensor gave no reading at this start: calibration is not possible.</p>';return}
+b.innerHTML='<p class="def">Earliest reading of this start: <b>'+(f.celsius+ct.offset).toFixed(1)+' °C</b> uncorrected, '+(f.ms/1000).toFixed(2)+' s after power-on.</p>'+
+'<label><input type="checkbox" id="cold" style="display:inline;width:auto"> The bridge was off for at least 30 minutes, in the same place as now.</label>'+
+'<label for="room">Room temperature now, °C</label><input id="room" inputmode="decimal">'+
+'<p class="def">Offset = earliest reading − room temperature, accurate to about ±5 °C. Calibrating restarts the bridge.</p>'+
+'<button class="main" type="button" onclick="ctgo()">Calibrate and restart</button><div class="err" id="cte"></div>'}).catch(()=>{b.textContent='The bridge did not answer. Try again.'})}
+function ctgo(){const b=new URLSearchParams();b.append('room',$('room').value);if($('cold').checked)b.append('cold','on');$('cte').textContent='';
+post('/api/chip-temp/calibrate',b).then(async r=>{if(r.status===401)throw Error('Settings password required. Reopen this page and sign in.');const d=await r.json().catch(()=>({}));if(!d.ok)throw Error(d.message||'The bridge could not calibrate.');return d})
+.then(d=>{$('fm').hidden=true;$('msg').textContent='Offset '+d.offset.toFixed(1)+' °C saved. '+(d.trial?'The bridge restarts now. Reconnect, open this page again and press Keep within 10 minutes.':'The bridge restarts now; the status page opens in 20 seconds.');if(!d.trial)setTimeout(()=>location.href='/',20000)})
+.catch(e=>{$('cte').textContent=e instanceof TypeError?'The bridge did not answer. Check the Wi-Fi connection and try again.':e.message})}
 function preset(n){const p=PROF[$('k_p'+n).value];if(p){$('k_b'+n).value=p.baud;$('k_f'+n).value=p.frame}}
 function manual(n){const s=$('k_p'+n),p=s&&PROF[s.value];if(p&&($('k_b'+n).value!==p.baud||$('k_f'+n).value!==p.frame))s.value='custom'}
 function load(){fetch('/api/settings',{cache:'no-store'}).then(r=>r.json()).then(d=>{items=d.items;PORTS=d.ports||[];for(const p of d.profiles||[]){PROF[p.id]=p;NAME[p.id]=p.name}const g={},o=[];
@@ -392,6 +465,9 @@ static void settingsRoutes() {
     statusServer.on("/api/keep", HTTP_POST, handleSettingsKeep);
     statusServer.on("/api/reset", HTTP_POST, handleSettingsReset);
     statusServer.on("/api/restart", HTTP_POST, handleRestart);
+#ifdef CHIP_TEMP
+    statusServer.on("/api/chip-temp/calibrate", HTTP_POST, handleChipCalibrate);
+#endif
 #ifdef LIFETIME_RECORD
     statusServer.on("/api/lifetime/reset", HTTP_POST, []() {
         if (!settingsAuth()) return;

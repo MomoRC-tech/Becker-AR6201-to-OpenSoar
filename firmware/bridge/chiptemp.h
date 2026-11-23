@@ -10,6 +10,10 @@
 // value is a trend, not an air temperature. A chip whose sensor does not work
 // returns 128 (degrees Fahrenheit) at every read; that shows as "no reading".
 //
+// The stored offset (setting "ct", calibrated on the settings page) is subtracted from
+// every shown, logged and recorded value; without one, each value is marked uncorrected.
+// The high-temperature warning stays on the raw reading (CHIP_TEMP_WARN_C).
+//
 // Save single readings at setup entry and at 10 s intervals through 120 s.
 // The status task separately maintains the live average.
 // Included by status_page.h after supply.h.
@@ -31,7 +35,11 @@ extern "C" uint8_t temprature_sens_read();  // Arduino core (esp32-hal-misc.c): 
 #define CHIP_TEMP_RECORD_N 60             // lifetime record: 1 min means (single readings scatter by several degrees)
 #define CHIP_TEMP_RECORD_AFTER_MS 120000UL  // and only from 2 min after the start, when start-up readings run high
 
-static float chipTempC = NAN;       // mean of the last readings in degrees Celsius; NAN = no reading
+static float chipTempC = NAN;       // mean of the last readings in degrees Celsius, offset applied; NAN = no reading
+
+static float chipTempOffsetC() { return settings.chipTempOffset / 10.0f; }
+static bool chipTempCorrected() { return settings.chipTempOffset != 0; }
+static const char* chipTempMark() { return chipTempCorrected() ? "" : " (uncorrected)"; }
 struct ChipTempSample {
     uint32_t ms;
     uint8_t raw;  // zero means no usable reading
@@ -99,30 +107,33 @@ static void chipTempTick() {
     if (count < CHIP_TEMP_MEAN) count++;
     uint16_t sum = 0;
     for (uint8_t i = 0; i < count; i++) sum += ring[i];
-    const float c = (sum / (float)count - 32.0f) / 1.8f;
-    chipTempC = c;
+    const float c = (sum / (float)count - 32.0f) / 1.8f;  // raw, for the warning
+    const float shown = c - chipTempOffsetC();
+    chipTempC = shown;
     minuteSum += raw;  // Project: lifetime record (step 3f)
     if (++minuteCount == CHIP_TEMP_RECORD_N) {
-        if (now >= CHIP_TEMP_RECORD_AFTER_MS) lifetimeChip((minuteSum / (float)CHIP_TEMP_RECORD_N - 32.0f) / 1.8f);
+        if (now >= CHIP_TEMP_RECORD_AFTER_MS)
+            lifetimeChip((minuteSum / (float)CHIP_TEMP_RECORD_N - 32.0f) / 1.8f - chipTempOffsetC());
         minuteSum = 0;
         minuteCount = 0;
     }
 
     if (first && count == CHIP_TEMP_MEAN) {
-        LOGI(LOG_SYSTEM, "Chip temperature %.0f \xC2\xB0" "C (ESP32 chip, approximate)", c);
+        LOGI(LOG_SYSTEM, "Chip temperature %.0f \xC2\xB0" "C (ESP32 chip, approximate%s)", shown,
+             chipTempCorrected() ? "" : ", uncorrected");
         first = false;
     }
     if (c >= CHIP_TEMP_WARN_C) {
         if (highSince == 0) highSince = now | 1u;  // can be now + 1: compare from the next reading on
         else if (!highLogged && now - highSince >= CHIP_TEMP_WARN_MS) {
-            LOGW(LOG_SYSTEM, "Chip temperature high: %.0f \xC2\xB0" "C for %lu s; the bridge keeps running", c,
-                 CHIP_TEMP_WARN_MS / 1000);
+            LOGW(LOG_SYSTEM, "Chip temperature high: %.0f \xC2\xB0" "C%s for %lu s; the bridge keeps running", shown,
+                 chipTempMark(), CHIP_TEMP_WARN_MS / 1000);
             highLogged = true;
         }
     } else {
         highSince = 0;
         if (highLogged && c < CHIP_TEMP_OK_C) {
-            LOGI(LOG_SYSTEM, "Chip temperature back to %.0f \xC2\xB0" "C", c);
+            LOGI(LOG_SYSTEM, "Chip temperature back to %.0f \xC2\xB0" "C%s", shown, chipTempMark());
             highLogged = false;
         }
     }
@@ -132,7 +143,13 @@ static void chipTempTick() {
 static void chipTempJson(String& out) {
     out += F(",\"chip_temp\":{\"celsius\":");
     out += std::isnan(chipTempC) ? String("null") : String(chipTempC, 1);
-    out += F(",\"warn_c\":");
+    out += F(",\"offset\":");
+    out += String(chipTempOffsetC(), 1);
+    out += F(",\"corrected\":");
+    out += chipTempCorrected() ? "true" : "false";
+    out += F(",\"power_on\":");  // this start came from power on: calibration possible
+    out += esp_reset_reason() == ESP_RST_POWERON ? "true" : "false";
+    out += F(",\"warn_c\":");  // raw reading, before the offset
     out += CHIP_TEMP_WARN_C;
     out += F(",\"boot_samples\":[");
     const unsigned count = chipBootCount.load(std::memory_order_acquire);
@@ -142,17 +159,18 @@ static void chipTempJson(String& out) {
         out += F("{\"ms\":");
         out += sample.ms;
         out += F(",\"celsius\":");
-        out += sample.raw ? String((sample.raw - 32.0f) / 1.8f, 1) : String("null");
+        out += sample.raw ? String((sample.raw - 32.0f) / 1.8f - chipTempOffsetC(), 1) : String("null");
         out += '}';
     }
     out += F("]}");
 }
 
-// For the Debug line every 60 s: "; chip 47 °C", or empty without a reading.
+// For the Debug line every 60 s: "; chip 47 °C", "; chip 85 °C raw" without an offset
+// (short: the line is near LOG_TEXT already), or empty without a reading.
 static const char* chipTempText() {
     static char b[24];
     if (std::isnan(chipTempC)) b[0] = 0;
-    else snprintf(b, sizeof(b), "; chip %.0f \xC2\xB0" "C", chipTempC);
+    else snprintf(b, sizeof(b), "; chip %.0f \xC2\xB0" "C%s", chipTempC, chipTempCorrected() ? "" : " raw");
     return b;
 }
 

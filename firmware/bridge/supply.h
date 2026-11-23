@@ -213,12 +213,16 @@ static void supplySecond(float volts, float raw, bool ok) {
 static void supplyTick() {
     if (!settings.supplySensor) return;
     supplyServeApps();
-    static uint32_t blockAt = 0;
+    static uint32_t blockAt = 0, secondAt = 0;
     static uint8_t blocks = 0, good = 0;
     static float secSum = 0, secRaw = 0;
     const uint32_t now = millis();
     if (now - blockAt < SUPPLY_BLOCK_MS) return;
-    blockAt = now;
+    // 0.5.15: blocks on a fixed grid, so a late pass does not stretch the second. With
+    // blockAt = now the lateness added up and only about 82 % of the seconds produced a
+    // sentence once the status task ran at idle priority (S186).
+    blockAt += SUPPLY_BLOCK_MS;
+    if (now - blockAt >= SUPPLY_BLOCK_MS) blockAt = now;  // held up for longer: start afresh
 
     uint32_t mv = 0;
     for (int i = 0; i < SUPPLY_SAMPLES; i++) mv += analogReadMilliVolts(SUPPLY_PIN);
@@ -234,7 +238,13 @@ static void supplyTick() {
         supplyMinCount++;
     }
     secRaw += raw;
-    if (++blocks >= 1000 / SUPPLY_BLOCK_MS) {
+    // The second follows the clock, not the number of blocks: under heavy network load the
+    // status task (idle priority) can miss blocks, and the sentence must still come each second.
+    ++blocks;
+    if (secondAt == 0) secondAt = now;
+    if (now - secondAt >= 1000) {
+        secondAt += 1000;
+        if (now - secondAt >= 1000) secondAt = now;  // held up for more than a second: start afresh
         supplySecond(good ? secSum / good : NAN, secRaw / blocks, good == blocks);
         blocks = good = 0;
         secSum = secRaw = 0;
