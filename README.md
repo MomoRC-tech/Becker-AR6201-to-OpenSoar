@@ -26,9 +26,11 @@ A small ESP32 box in the glider collects data from the cockpit instruments and s
 | 📡 Collision warning: Classic FLARM | Traffic and position |
 | 📻 Radio: Becker AR6201 | The built-in OpenSoar Becker driver reaches the radio over its own port; standby tuning follows once the protocol is confirmed |
 
-Check and set it up from the phone's browser: live status per device, settings, a data monitor and a log.
+<a href="docs/manual/user-manual.md#web-pages"><img src="docs/images/status-start.png" width="220" align="right" alt="Status page on a phone: Zander, FLARM and Becker receiving, one app connected to each"></a>
 
-<a href="docs/manual/user-manual.md#web-pages"><img src="docs/images/status-page.png" width="200" alt="Status page on a phone: Zander, FLARM and Becker rows"></a> <a href="docs/manual/user-manual.md#web-pages"><img src="docs/images/settings-page.png" width="200" alt="Settings page on a phone"></a> <a href="docs/manual/user-manual.md#web-pages"><img src="docs/images/monitor-page.png" width="200" alt="Data monitor on a phone"></a>
+Check and set it up from the phone's browser: live status per device, settings, a data monitor and a log ([web pages](docs/manual/user-manual.md#web-pages)).
+
+<br clear="right">
 
 ---
 

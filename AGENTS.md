@@ -38,7 +38,7 @@ Finish every task with a push to `main` (see Preservation and delivery), so the 
 
 One question or behavior change per increment. Before changing logic, identify the affected requirement, expected outcome and suitable regression check. For broad later packages, choose a bounded subtask rather than implementing the whole plan.
 
-Bridge web pages: after any change to the status, settings or monitor page, run `python tools/status_screenshot.py <bridge address>` against the bridge running that firmware and commit the new `docs/images/status-page.png`, `settings-page.png` and `monitor-page.png` with the change.
+Bridge web pages: after any change to the status, settings or monitor page, run `python tools/status_screenshot.py <bridge address>` against the bridge running that firmware and commit the new `docs/images/status-start.png`, `status-page.png`, `settings-page.png` and `monitor-page.png` with the change.
 
 For documentation-only work, check consistency, relative links/anchors, source support and whitespace; do not build applications or run device tests. State what was not tested. Simulation and static analysis are not physical acceptance.
 

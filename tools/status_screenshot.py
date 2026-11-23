@@ -2,11 +2,12 @@
 
 Reads both pages, the image and the settings JSON from a running bridge,
 masks private details, and renders them at phone width (390 px, 2x) in the
-light theme: docs/images/status-page.png (startup temperatures, lifetime record and settings expanded),
+light theme: docs/images/status-start.png (the status page as it opens, for the README),
+docs/images/status-page.png (startup temperatures, lifetime record and settings expanded),
 docs/images/settings-page.png, docs/images/monitor-page.png,
 docs/images/log-page.png and docs/images/saved-page.png. The settings page login uses the OTA password from
 firmware/bridge/credentials.h. The monitor, the log, startup and live chip temperatures, the supply voltage
-(value and chart), the lifetime record and the saved log show fixed demo data, never real data: real NMEA contains
+(value and chart), the device traffic, the lifetime record and the saved log show fixed demo data, never real data: real NMEA contains
 positions, the real log network names and addresses, and a bench board
 without the divider has no meaningful voltage.
 
@@ -187,6 +188,10 @@ def main() -> None:
     status["wifi"] = {"mode": "hotspot", "ip": hotspot, "stations": [-52]}
     status["supply"], history = demo_supply()
     status["uptime_s"] = 5 * 3600 + 25  # matches the five-hour demo chart
+    for port, (rx, tx, ago) in zip(status.get("ports", []), ((1843200, 0, 180), (2211840, 0, 240), (5120, 5120, 900))):
+        # Demo traffic, as in flight: every device sends and OpenSoar is connected; bench values vary from run to run.
+        port.update(bytes_from_device=rx, bytes_to_device=tx, last_data_ms_ago=ago, tcp_clients=1,
+                    uart_errors=0, short_writes=0)
     if "boot_samples" in status.get("chip_temp", {}):
         # Synthetic uncorrected readings for the startup table in public screenshots.
         status["chip_temp"]["boot_samples"] = [
@@ -204,6 +209,7 @@ def main() -> None:
             ";window.fetch=u=>Promise.resolve({json:()=>Promise.resolve(u.includes('settings')?_se:"
             "u.includes('supply')?_su:_st)});</script>")
     page = page.replace("/device.webp", "device.webp").replace("<main>", mock + "<main>", 1)
+    shoot(page, image, IMAGES / "status-start.png", 575)  # as it opens: header and device rows (README)
     page = page.replace('<section class="set"><details>', '<section class="set"><details open>', 1)
     page = page.replace('id="lt" hidden><details>', 'id="lt" hidden><details open>', 1)
     page = page.replace('id="bootTemps" hidden><details>', 'id="bootTemps" hidden><details open>', 1)
