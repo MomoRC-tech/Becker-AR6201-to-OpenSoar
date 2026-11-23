@@ -97,7 +97,7 @@ a{color:inherit}
 <thead><tr><th>Time after boot</th><th>ESP32 reading</th></tr></thead><tbody id="bootRows"></tbody></table></details></section>
 <section id="sup" hidden><div class="row"><span class="dot"></span><h2>Supply voltage</h2><span class="st" id="sv"></span></div><div class="brief" id="sb"></div><svg id="sc" viewBox="0 0 600 270" role="img" aria-label="Supply voltage since the bridge was switched on"></svg><p class="key" id="sk" hidden>Each minute since the bridge was switched on, up to 12 hours: line = mean, band = lowest to highest, dashed = <span id="sl"></span> V warning level.</p></section>
 <section class="set" id="lt" hidden><details><summary>Lifetime record</summary><div class="grp" id="lr"></div><p class="key">Kept through power cuts; operating time is saved every 10 minutes. Reset on the <a href="/settings">settings page</a> (password).</p></details></section>
-<section class="set"><details><summary>All settings</summary><div id="set">Loading</div><p class="key"><a href="/settings">Change settings</a> (password)</p></details></section>
+<section class="set"><details><summary>All settings</summary><div id="set">Loading</div><p class="key"><a href="/settings">Change settings or restart the bridge</a> (password)</p></details></section>
 <footer><a href="/monitor">Data monitor</a>: see what passes the bridge. <a href="/log">Log</a>: what the bridge did; <a href="/saved">saved log</a>: errors and warnings kept through power cuts. Read-only. Refreshes every 2 seconds; settings apply when the bridge starts. Data: <a href="/api/status">status</a>, <a href="/api/settings">settings</a>, <a href="/api/supply">voltage</a>.</footer>
 </main>
 <script>
@@ -259,7 +259,11 @@ static String settingsJson() {
     out += "],";
     if (settingsTrial) {
         const uint32_t left = millis() < SETTINGS_TRIAL_MS ? (SETTINGS_TRIAL_MS - millis()) / 1000 : 0;
-        out += "\"trial\":{\"active\":true,\"seconds_left\":" + String(left) + "},\"items\":[";
+        out += "\"trial\":{\"active\":true,\"seconds_left\":" + String(left);
+#ifdef STORED_SETTINGS
+        out += ",\"starts_left\":" + String(settingsTrialStartsLeft());
+#endif
+        out += "},\"items\":[";
     } else {
         out += "\"trial\":{\"active\":false},\"items\":[";
     }

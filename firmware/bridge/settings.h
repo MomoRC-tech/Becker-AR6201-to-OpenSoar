@@ -577,6 +577,12 @@ static void selectTrialAtBoot(const BridgeSettings& defaults) {
     }
 }
 
+// Further starts that keep a trial running: each start without Keep, also one from
+// the Restart button, counts towards SETTINGS_TRIAL_BOOTS.
+static unsigned settingsTrialStartsLeft() {
+    return settingsState.boots < SETTINGS_TRIAL_BOOTS ? SETTINGS_TRIAL_BOOTS - settingsState.boots : 0;
+}
+
 static bool settingsKeep() {
     if (!settingsStorageReady) return false;
     if (!settingsTrial) return !settingsWriteUncertain || writeSettingsState(settingsState);

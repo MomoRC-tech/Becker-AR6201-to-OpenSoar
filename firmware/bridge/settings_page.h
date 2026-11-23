@@ -4,6 +4,7 @@
 // POST /api/settings      check and save, then restart (password)
 // POST /api/keep          keep settings that are on trial (password)
 // POST /api/reset         forget all stored settings, then restart (password)
+// POST /api/restart       restart with the stored settings (password)
 // POST /api/lifetime/reset start a new lifetime record (password; lifetime.h)
 // POST /api/saved/clear   delete the saved log (password; savedlog.h)
 //
@@ -194,6 +195,15 @@ static void handleSettingsKeep() {
     statusServer.send(200, "application/json", "{\"ok\":true}");
 }
 
+// Restart only: nothing is written. During a trial the next start counts as one
+// of the SETTINGS_TRIAL_BOOTS starts and the 10-minute window begins again.
+static void handleRestart() {
+    if (!settingsAuth()) return;
+    LOGI(LOG_SETTINGS, "Restart requested on the settings page");
+    statusServer.send(200, "application/json", "{\"ok\":true}");
+    restartSoon();
+}
+
 static void handleSettingsReset() {
     if (!settingsAuth()) return;
     if (!settingsReset()) {
@@ -260,6 +270,7 @@ button{font:inherit;font-weight:600;border-radius:10px;padding:10px 18px;cursor:
 <p class="note">Saving restarts the bridge. A change to Wi-Fi, hotspot or ports (also the supply voltage port) runs on trial: reconnect and press Keep within 10 minutes, otherwise the previous settings come back. Leave a password empty to keep it.</p>
 <div class="btns"><button class="main" type="submit">Save and restart</button><button class="quiet" type="button" onclick="reset()">Reset to defaults</button></div></form>
 <fieldset id="rec" hidden><legend>Records</legend><p class="note">Kept through power cuts: the lifetime record (operating time, starts, highest chip temperature, lowest supply voltage) and the saved log (errors and warnings). Clearing them leaves the settings as they are.</p><div class="btns"><button class="quiet" type="button" onclick="lreset()">Reset lifetime record</button><button class="quiet" type="button" id="sclr" hidden onclick="sclear()">Clear saved log</button></div></fieldset>
+<fieldset id="rs"><legend>Restart</legend><p class="note">Restarts the bridge with the saved settings. Apps reconnect on their own.</p><div class="btns"><button class="quiet" type="button" onclick="restart()">Restart bridge</button></div></fieldset>
 <div id="msg" role="status"></div>
 </main>
 <script>
@@ -288,7 +299,7 @@ function manual(n){const s=$('k_p'+n),p=s&&PROF[s.value];if(p&&($('k_b'+n).value
 function load(){fetch('/api/settings',{cache:'no-store'}).then(r=>r.json()).then(d=>{items=d.items;PORTS=d.ports||[];for(const p of d.profiles||[]){PROF[p.id]=p;NAME[p.id]=p.name}const g={},o=[];
 for(const i of d.items){const k=i.group||i.port||'Wi-Fi';if(!g[k]){g[k]=[];o.push(k)}g[k].push(i)}
 $('fs').innerHTML=o.map(k=>'<fieldset><legend>'+esc(k)+'</legend><div class="f'+(k==='Wi-Fi'?' w':'')+'">'+g[k].map(field).join('')+'</div></fieldset>').join('');
-if(d.trial&&d.trial.active){$('trial').hidden=false;$('tt').textContent='These Wi-Fi or port settings are on trial. Keep them within '+Math.ceil(d.trial.seconds_left/60)+' min, otherwise the previous settings come back.'}})}
+if(d.trial&&d.trial.active){tr=d.trial;$('trial').hidden=false;$('tt').textContent='These Wi-Fi or port settings are on trial. Keep them within '+Math.ceil(d.trial.seconds_left/60)+' min, otherwise the previous settings come back.'}})}
 function post(u,body){return fetch(u,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body||''})}
 const scanUrl='/api/nav-scan', suggestions=[];
 let scanId=0;
@@ -354,6 +365,9 @@ if(!d.trial)setTimeout(()=>location.href='/',20000)}).catch(settingsError);retur
 function keep(){post('/api/keep').then(settingsReply).then(()=>{$('trial').hidden=true;$('msg').textContent='Kept. These settings stay.'}).catch(settingsError)}
 function reset(){if(!confirm('Forget all saved settings and restart with the firmware defaults?'))return;
 post('/api/reset').then(settingsReply).then(()=>{$('fm').hidden=true;$('msg').textContent='Reset. The bridge restarts with the firmware defaults; the status page opens in 20 seconds.';setTimeout(()=>location.href='/',20000)}).catch(settingsError)}
+let tr=null;
+function restart(){if(!confirm(tr?(tr.starts_left>0?'Restart the bridge? The settings stay on trial and the 10 minutes start again. Restarts left before the previous settings come back: '+(tr.starts_left-1)+'.':'Restart the bridge? The settings on trial are not kept: the previous settings come back.'):'Restart the bridge now? Apps reconnect on their own.'))return;
+post('/api/restart').then(settingsReply).then(()=>{$('fm').hidden=true;$('rs').hidden=true;$('msg').textContent='The bridge restarts now; the status page opens in 20 seconds.';setTimeout(()=>location.href='/',20000)}).catch(settingsError)}
 function lreset(){if(!confirm('Start a new lifetime record? Operating time, starts and the extremes start again from zero.'))return;
 post('/api/lifetime/reset').then(r=>r.json()).then(()=>{$('msg').textContent='Lifetime record reset.'}).catch(()=>{$('msg').textContent='The bridge did not answer. Try again.'})}
 function sclear(){if(!confirm('Delete all saved errors and warnings?'))return;
@@ -373,6 +387,7 @@ static void settingsRoutes() {
     statusServer.on("/api/settings", HTTP_POST, handleSettingsSave);
     statusServer.on("/api/keep", HTTP_POST, handleSettingsKeep);
     statusServer.on("/api/reset", HTTP_POST, handleSettingsReset);
+    statusServer.on("/api/restart", HTTP_POST, handleRestart);
 #ifdef LIFETIME_RECORD
     statusServer.on("/api/lifetime/reset", HTTP_POST, []() {
         if (!settingsAuth()) return;

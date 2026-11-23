@@ -93,6 +93,7 @@ Open *Change settings* under *All settings*, or `http://<bridge address>/setting
 | Save and restart | Values equal to the default show as default. The bridge restarts after a successful save. A flash write failure shows an error and skips the restart |
 | Trial | A change to Wi-Fi, hotspot or ports runs on trial. Reconnect, open the settings page and press *Keep* within 10 minutes. Otherwise the bridge restores the values from before and restarts; after the 3rd start without *Keep* it restores them at once. Serial-only changes apply directly |
 | Reset to defaults | Forgets all stored values, including a trial, and restarts with the firmware defaults |
+| Restart bridge | Restarts with the stored settings and writes nothing. During a trial it counts as one of the 3 starts without *Keep* and the 10 minutes start again; the confirm dialog says how many restarts are left. The status page links to it under *All settings* |
 | Storage | One NVS record in `bridge-state` holds the overrides, rollback values and trial state. Firmware 0.5.8 reads legacy `bridge` / `bridge-prev` settings and writes the new record on the first change or during trial recovery. The legacy keys stay until a reset, so firmware downgraded to 0.5.7 reads the old configuration. Settings survive restarts and OTA updates. A full USB flash erase clears them |
 
 | Address | Content |
@@ -102,6 +103,7 @@ Open *Change settings* under *All settings*, or `http://<bridge address>/setting
 | `POST /api/settings` | Check and save form fields named by their keys (`p0`, `b0`, `f0`, `t0` ... `ns`, `np`, `nj`, `hs`, `hp`, `ha`, `vs`, `vc`, `vt`), then restart (password) |
 | `POST /api/keep` | Keep settings on trial (password) |
 | `POST /api/reset` | Forget all stored values, then restart (password) |
+| `POST /api/restart` | Answer `{"ok":true}`, then restart with the stored settings (password). For scripts: `curl -u bridge:<OTA password> -X POST http://<bridge address>/api/restart` |
 | `POST /api/lifetime/reset` | Start a new [lifetime record](#lifetime-record) (password) |
 | `POST /api/saved/clear` | Delete the [saved log](#saved-log) (password) |
 
