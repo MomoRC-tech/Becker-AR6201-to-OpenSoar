@@ -329,6 +329,9 @@ static void statusTask(void*) {
     monitorRoutes();
     logRoutes();
     supplyRoutes();
+#ifdef BENCH_OPEN
+    benchRoutes(statusServer);  // bench.h: core dump download
+#endif
     savedRoutes();
     lifetimeBegin();
     savedLogBegin();

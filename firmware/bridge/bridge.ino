@@ -569,6 +569,8 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
         statusBegin();  // Project: status page task (step 3)
 #ifdef BENCH_OPEN
         benchBegin();
+#else
+        benchForget();  // Project: a later bench build may revert to this image
 #endif
     }
 

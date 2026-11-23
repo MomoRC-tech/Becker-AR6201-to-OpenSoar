@@ -279,6 +279,8 @@ For unattended bench tests, build `python tools/build_bridge.py bench-open` (in 
 | Settings | Page and password-protected API calls work without a login, so test scripts can change settings, keep trials and restart |
 | Marking | Version ends in `-BENCH`; every start logs a warning with the minutes left |
 | Revert | After 8 hours of operating time, counted in NVS across restarts and power cuts, it boots the image that ran before the upload. An OTA upload stops the countdown |
+| Revert after a bench build | A bench build installed over another bench build never reverts (the other slot would be a bench build too): upload a normal build. Normal builds clear the countdown record |
+| Core dump | `GET /api/coredump` returns the dump a panic or watchdog reset left in the coredump partition (404 if none). Decode with `esp-coredump info_corefile -c dump.elf build/bridge-bench-open/bridge.ino.elf`; keep the ELF of the running build |
 | OTA | Uploads without password, so a test script can install builds |
 
 > [!WARNING]
