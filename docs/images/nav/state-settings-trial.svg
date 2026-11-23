@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="140" viewBox="0 0 720 140" role="img" aria-label="Settings trial: press Keep within 10 minutes, otherwise the previous settings come back">
+<title>Settings trial: press Keep within 10 minutes, otherwise the previous settings come back</title>
+<g font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif">
+<path d="M154 85 L204 85" fill="none" stroke="#818b98" stroke-width="1.6" stroke-linejoin="round"/>
+<path d="M198 81 L204 85 L198 89" fill="none" stroke="#818b98" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M366 77 L406 77 L406 51 L460 51" fill="none" stroke="#818b98" stroke-width="1.6" stroke-linejoin="round"/>
+<path d="M454 47 L460 51 L454 55" fill="none" stroke="#818b98" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="433" y="44" font-size="11.5" fill="#59636e" text-anchor="middle">Keep</text>
+<path d="M366 93 L406 93 L406 109 L460 109" fill="none" stroke="#818b98" stroke-width="1.6" stroke-linejoin="round"/>
+<path d="M454 105 L460 109 L454 113" fill="none" stroke="#818b98" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="400" y="124" font-size="11.5" fill="#59636e" text-anchor="end">10 min or 3rd start</text>
+<path d="M250 62 L250 30 L322 30 L322 60" fill="none" stroke="#818b98" stroke-width="1.6" stroke-linejoin="round"/>
+<path d="M318 54 L322 60 L326 54" fill="none" stroke="#818b98" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="286" y="22" font-size="11.5" fill="#59636e" text-anchor="middle">restart: 10 min again</text>
+<rect x="4" y="62" width="150" height="46" rx="23.0" fill="#f6f8fa" stroke="#6e7781" stroke-width="1.4"/>
+<text x="79.0" y="81" font-size="13.5" fill="#1f2328" text-anchor="middle" font-weight="600">Saved</text>
+<text x="79.0" y="97" font-size="11.5" fill="#59636e" text-anchor="middle">Wi-Fi, hotspot or port</text>
+<rect x="206" y="62" width="160" height="46" rx="9" fill="#ddf4ff" stroke="#1f6feb" stroke-width="1.4"/>
+<text x="286.0" y="81" font-size="13.5" fill="#1f2328" text-anchor="middle" font-weight="600">On trial</text>
+<text x="286.0" y="97" font-size="11.5" fill="#59636e" text-anchor="middle">Keep within 10 min</text>
+<rect x="462" y="28" width="254" height="46" rx="9" fill="#dafbe1" stroke="#1a7f37" stroke-width="1.4"/>
+<text x="589.0" y="47" font-size="13.5" fill="#1f2328" text-anchor="middle" font-weight="600">Kept</text>
+<text x="589.0" y="63" font-size="11.5" fill="#59636e" text-anchor="middle">new settings stay</text>
+<rect x="462" y="86" width="254" height="46" rx="9" fill="#fff1e5" stroke="#bc4c00" stroke-width="1.4"/>
+<text x="589.0" y="105" font-size="13.5" fill="#1f2328" text-anchor="middle" font-weight="600">Previous settings back</text>
+<text x="589.0" y="121" font-size="11.5" fill="#59636e" text-anchor="middle">bridge restarts with them</text>
+</g>
+</svg>

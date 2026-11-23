@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="110" height="30" viewBox="0 0 110 30" role="img" aria-label="3 · Wiring">
+<title>3 · Wiring</title>
+<g font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif">
+<rect x="0.75" y="0.75" width="85.63140000000001" height="28.5" rx="14.25" fill="#f6f8fa" stroke="#d1d9e0" stroke-width="1.5"/>
+<circle cx="15" cy="15.0" r="10" fill="#e8710a"/>
+<text x="15" y="19.3" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="600">3</text>
+<text x="30" y="19.6" font-size="13" fill="#1f2328" text-anchor="start" font-weight="600">Wiring</text>
+<path d="M95.13140000000001 10.0 L100.13140000000001 15.0 L95.13140000000001 20.0" fill="none" stroke="#818b98" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</svg>
