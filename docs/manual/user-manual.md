@@ -7,7 +7,7 @@
 How to connect the bridge to OpenSoar, how it behaves and what to do when something looks wrong.
 
 > [!NOTE]
-> **Status:** describes bridge firmware 0.5.15 on the bench bridge. The OpenSoar phone checks are still open ([roadmap](../project/roadmap.md#work-packages)).
+> **Status:** describes bridge firmware 0.5.16 on the bench bridge. The OpenSoar phone checks are still open ([roadmap](../project/roadmap.md#work-packages)).
 
 <a href="#quick-start"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-manual-user-manual-1-dark.svg"><img src="../images/nav/menu-manual-user-manual-1.svg" alt="1 · Quick start" height="30"></picture></a> <a href="#behaviour"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-manual-user-manual-2-dark.svg"><img src="../images/nav/menu-manual-user-manual-2.svg" alt="2 · How it behaves" height="30"></picture></a> <a href="#web-pages"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-manual-user-manual-3-dark.svg"><img src="../images/nav/menu-manual-user-manual-3.svg" alt="3 · Web pages" height="30"></picture></a> <a href="#troubleshooting"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-manual-user-manual-4-dark.svg"><img src="../images/nav/menu-manual-user-manual-4.svg" alt="4 · Troubleshooting" height="30"></picture></a> <!-- page-menu -->
 
@@ -153,7 +153,7 @@ The ESP32's sensor reads far too high, by a different amount on each chip (about
 - [ ] Tick *The bridge was off for at least 30 minutes, in the same place as now.*
 - [ ] Enter the room temperature in °C (0 to 45) and press **Calibrate and restart**.
 
-The bridge subtracts the room temperature from its earliest reading of this start and stores the difference (0 to 60 °C) as the offset; the result is accurate to about ±5 °C. Calibration is offered only after a start from power off. The offset stays through restarts and updates; set it by hand in the same field, or 0 to remove it. After calibrating, reset the lifetime record so its highest chip temperature is corrected too.
+The bridge subtracts the room temperature from its earliest reading of this start and stores the difference (0 to 60 °C) as the offset; the result is accurate to about ±5 °C. Calibration is offered only after a start from power off. The offset stays through restarts and updates; set it by hand in the same field, or 0 to remove it. A new offset also corrects the highest chip temperature already in the lifetime record.
 
 ---
 

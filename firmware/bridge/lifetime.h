@@ -22,6 +22,7 @@
 
 #define LIFE_NS "lifetime"
 #define LIFE_KEY "rec"
+#define LIFE_OFFSET_KEY "chipoff"  // chip temperature offset the highest value was recorded with, tenths of a degree
 #define LIFE_VERSION 1
 #define LIFE_SAVE_MS 600000UL      // operating time saved every 10 min
 #define LIFE_EXTREME_MS 60000UL    // a new extreme saved at most once a minute
@@ -83,6 +84,35 @@ static void lifeSave() {
     }
 }
 
+// Stores the offset now in effect as the one the highest chip value was recorded with.
+static void lifeStoreChipOffset() {
+    Preferences p;
+    if (lifeStorage && p.begin(LIFE_NS, false)) {
+        p.putShort(LIFE_OFFSET_KEY, settings.chipTempOffset);
+        p.end();
+    }
+}
+
+// Owner decision (0.5.15): a new chip temperature offset, from calibration or set by hand,
+// also corrects the highest chip temperature already recorded. Both restart the bridge,
+// so this runs once per change. Records from before the offset existed count as offset 0.
+static void lifeCorrectChip() {
+    Preferences p;
+    int16_t recorded = 0;
+    if (lifeStorage && p.begin(LIFE_NS, true)) {
+        recorded = p.getShort(LIFE_OFFSET_KEY, 0);
+        p.end();
+    }
+    const int16_t now = settings.chipTempOffset;
+    if (recorded == now) return;
+    if (life.maxChipDeci != LIFE_NONE_T) {
+        life.maxChipDeci = (int16_t)(life.maxChipDeci + recorded - now);
+        LOGI(LOG_SYSTEM, "Lifetime record: highest chip temperature corrected to %.1f °C for the new offset",
+             life.maxChipDeci / 10.0f);
+    }
+    lifeStoreChipOffset();
+}
+
 // Once, at the start of the status task. Operating time counts from the ESP32 start.
 static void lifetimeBegin() {
     lifeClear(life);
@@ -98,6 +128,7 @@ static void lifetimeBegin() {
         LOGW(LOG_SYSTEM, "Lifetime record: storage not available, values kept until power off only");
     }
     life.starts++;
+    lifeCorrectChip();
     lifeSave();
     LOGI(LOG_SYSTEM, "Lifetime record: start %lu, operating time %lu h %02lu min", (unsigned long)life.starts,
          (unsigned long)(life.upS / 3600), (unsigned long)(life.upS / 60 % 60));
@@ -164,6 +195,7 @@ static void lifetimeReset() {
     lifeUpAt = millis();
     lifeExtremePending = false;
     lifeSave();
+    lifeStoreChipOffset();
     LOGI(LOG_SETTINGS, "Lifetime record reset");
 }
 
