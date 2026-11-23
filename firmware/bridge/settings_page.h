@@ -20,6 +20,9 @@
 #define SETTINGS_USER "bridge"
 
 static bool settingsAuth() {
+#ifdef BENCH_OPEN
+    return true;  // bench build: no settings login (bench.h)
+#endif
     if (statusServer.authenticate(SETTINGS_USER, OTA_PASSWORD)) return true;
     if (statusServer.hasHeader("Authorization")) {  // the first request has none
         // 0.5.10: one warning per 30 s at most, so failed logins cannot flood the log and flash.
@@ -83,6 +86,7 @@ static const char* settingHint(SettingType type, int portNum) {
         case T_FRAME: return "Data bits 5 to 8, parity N, E or O, stop bits 1 or 2, for example 8N1";
         case T_TCP: return "1 to 65535, not 80, not used by another device";
         case T_SSID: return "1 to 32 characters";
+        case T_NETSSID: return "Empty for no network, or up to 32 characters";
         case T_NETPASS: return "8 to 63 characters";
         case T_APPASS: return "8 to 63 characters";
         case T_SECONDS: return "5 to 120 seconds";

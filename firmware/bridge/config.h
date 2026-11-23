@@ -1,8 +1,8 @@
 /*********************************************************************************
  * config.h: build-time settings of the Wi-Fi bridge firmware
  *
- * Pins, baud rates, ports, Wi-Fi mode and features. Passwords are in
- * credentials.h. Lines marked "Project:" are this project's settings.
+ * Pins, baud rates, ports, Wi-Fi mode, features and the public default
+ * logins. Lines marked "Project:" are this project's settings.
  * Project: with STORED_SETTINGS, baud rates, frames, ports, the network and
  * the hotspot set here are defaults; valid values stored on the ESP32
  * override them (settings.h, MODE_STA_AP only).
@@ -21,13 +21,13 @@
 
 #define OTA_HANDLER          // uncomment to enable OTA programming
 
-// Project: Wi-Fi and OTA passwords live in credentials.h, ignored by Git.
-// It has the same format as the OTA loader's; copy credentials.example.h.
-#if __has_include("credentials.h")
-#include "credentials.h"
-#else
-#error "Copy credentials.example.h to credentials.h and fill in your values."
-#endif
+// Project: public default logins, the same in every build and listed in
+// docs/manual/user-manual.md#logins. No network is built in: set it on the
+// settings page (stored on the ESP32); until then the hotspot opens at once.
+#define WIFI_SSID ""
+#define WIFI_PASSWORD ""
+#define HOTSPOT_PASSWORD "BridgeTom-setup"  // at least 8 characters (WPA2); changeable on the settings page
+#define OTA_PASSWORD "BridgeTom-ota"        // OTA upload and settings login (user "bridge")
 
 // Project: tools/build_bridge.py fallback-test writes bridge_variant.h (ignored by Git).
 // FALLBACK_TEST joins a network that does not exist, so the hotspot opens; without an
@@ -39,6 +39,14 @@
 #undef WIFI_SSID
 #define WIFI_SSID "bridgetom-no-such-network"
 #define FALLBACK_REVERT_MS (10UL * 60UL * 1000UL)
+#endif
+// BENCH_OPEN (bench.h): settings without password; boots the previous image after
+// BENCH_REVERT_MIN operating minutes, counted across restarts. Bench only.
+#ifdef BENCH_OPEN
+#define BENCH_REVERT_MIN (8UL * 60UL)
+#define BENCH_SUFFIX "-BENCH"
+#else
+#define BENCH_SUFFIX ""
 #endif
 
 #define SSID     WIFI_SSID      // SSID to join (or broadcast)
@@ -53,7 +61,7 @@
                              // incoming bytes while the loop waits on a UART write
 
 #ifdef ESP32
-#define VERSION "0.5.11-ESP32"    // Project: own version, 0.<plan step> until bench acceptance; 0.4.1 = device profiles (WP9), .2 = web log (step 3c), .3/.4 = log clock time; 0.5 = apps never hold up the bridge; 0.5.1 = supply voltage (step 3d); 0.5.2 = chip temperature (step 3e); 0.5.3 = lifetime record (step 3f); 0.5.4 = saved log (step 3g); 0.5.5 = warning timers fixed; 0.5.6 = chip warning at 100 degC; 0.5.7 = navigation detection; 0.5.8 = atomic settings saves and rollback; 0.5.9 = pre-Wi-Fi temperature; 0.5.10 = review fixes: flash-write limit, radio receive errors close the session, apps skip whole lines; 0.5.11 = restart button
+#define VERSION "0.5.12-ESP32" BENCH_SUFFIX  // Project: own version, 0.<plan step> until bench acceptance; 0.4.1 = device profiles (WP9), .2 = web log (step 3c), .3/.4 = log clock time; 0.5 = apps never hold up the bridge; 0.5.1 = supply voltage (step 3d); 0.5.2 = chip temperature (step 3e); 0.5.3 = lifetime record (step 3f); 0.5.4 = saved log (step 3g); 0.5.5 = warning timers fixed; 0.5.6 = chip warning at 100 degC; 0.5.7 = navigation detection; 0.5.8 = atomic settings saves and rollback; 0.5.9 = pre-Wi-Fi temperature; 0.5.10 = review fixes: flash-write limit, radio receive errors close the session, apps skip whole lines; 0.5.11 = restart button; 0.5.12 = public default logins, no built-in network, bench-open build, data age never wraps, current housing image
 #elif defined(ESP8266)
 #define VERSION "0.3b.1-ESP8266"
 #endif

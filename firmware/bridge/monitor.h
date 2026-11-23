@@ -28,7 +28,7 @@ static portMUX_TYPE monLock = portMUX_INITIALIZER_UNLOCKED;
 
 static inline bool monWatching() {
     const uint32_t last = monLastPoll;
-    return last != 0 && millis() - last < MON_IDLE_MS;
+    return last != 0 && (int32_t)(millis() - last) < (int32_t)MON_IDLE_MS;  // signed: `last` may be 1 ms ahead (| 1u)
 }
 
 static void monAdd(int num, uint8_t dir, const uint8_t* data, size_t len) {

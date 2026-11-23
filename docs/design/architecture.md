@@ -122,7 +122,7 @@ Parts: [parts list](../hardware/modules.md#parts-list).
 | Bridge firmware | Same start-up and hotspot name; hotspot address 10.10.10.10, as on today's bridge ([configuration](../project/existing-installation.md#configuration)) |
 | Availability | Hotspot and OTA stay available as long as the bridge is powered |
 | Board setting | ESP32 Dev Module, partition scheme as above; PlatformIO: `board_build.partitions = min_spiffs.csv` |
-| Credentials | Private builds: Wi-Fi and OTA passwords stay in an untracked local file, never in the repository. The committed [hotspot-only build](../../firmware/ota-loader/README.md#variants) uses public default passwords and is for the bench only |
+| Credentials | Bridge firmware: one set of public default logins in `config.h`, the same in every build ([default logins](../manual/user-manual.md#logins)); no network built in, it is set on the settings page and stored on the ESP32. The hotspot password is changeable there; a different OTA password needs a local build. The OTA loader's [hotspot-only build](../../firmware/ota-loader/README.md#variants) uses the same defaults. The bench-only build `bench-open` drops the settings and OTA passwords ([firmware](../../firmware/bridge/README.md#build)) |
 | Recovery | An image without OTA, or one that fails at boot, needs USB: hood and USB cap off ([power rules](../hardware/power.md#supply)) |
 
 Bench step: [bring-up](../hardware/wiring.md#bring-up) step 3.

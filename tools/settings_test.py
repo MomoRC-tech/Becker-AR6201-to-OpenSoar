@@ -2,7 +2,8 @@
 
     python tools/settings_test.py <bridge address> [--revert]
 
-Uses the OTA password from firmware/bridge/credentials.h (user "bridge").
+Settings login (user "bridge") from the BRIDGE_PASSWORD environment variable;
+none needed with the bench build.
 The bridge must be in network mode, so it keeps its address across restarts.
 Ends with a reset, so the bridge is back on the firmware defaults.
 
@@ -21,6 +22,7 @@ Checks:
 import argparse
 import base64
 import json
+import os
 import re
 import socket
 import sys
@@ -41,8 +43,8 @@ def check(name, ok, detail=""):
 
 
 def password() -> str:
-    text = (ROOT / "firmware" / "bridge" / "credentials.h").read_text()
-    return re.search(r'#define\s+OTA_PASSWORD\s+"([^"]*)"', text).group(1)
+    """Settings login from the BRIDGE_PASSWORD environment variable; empty sends no login (bench build)."""
+    return os.environ.get("BRIDGE_PASSWORD", "")
 
 
 def request(host, path, data=None, auth=None):

@@ -32,9 +32,9 @@ Set in `config.h`; everything else is upstream.
 
 | Setting | Value |
 | --- | --- |
-| Wi-Fi start-up | `MODE_STA_AP`, the network from `credentials.h`, 15 s join time; behaviour: [user manual](../../docs/manual/user-manual.md#wifi-startup). The join can miss 15 s, at about −90 dBm (S142) and once at −45 dBm (S149); the bench bridge uses 30 s, set on the settings page. The upstream modes `MODE_STA` and `MODE_AP` stay selectable |
+| Wi-Fi start-up | `MODE_STA_AP`, no network built in (set it on the settings page; without one the hotspot opens at once), 15 s join time; behaviour: [user manual](../../docs/manual/user-manual.md#wifi-startup). The join can miss 15 s, at about −90 dBm (S142) and once at −45 dBm (S149); the bench bridge uses 30 s, set on the settings page. The upstream modes `MODE_STA` and `MODE_AP` stay selectable |
 | Hostname | `wifi-bridgetom`, for mDNS and OTA, as the OTA loader |
-| OTA | ArduinoOTA with the password from `credentials.h`, in both Wi-Fi modes |
+| OTA | ArduinoOTA with the OTA password ([default logins](../../docs/manual/user-manual.md#logins)), in both Wi-Fi modes |
 | Log output | `DEBUG` off: UART0 serves the Zander, so nothing is printed there. `WEB_LOG` shows the log lines and the ESP32 system messages on the [web log](#web-log); the build stops if both are on |
 | UART receive buffer | 4096 bytes per UART, so bytes are kept while the loop waits on a UART write |
 | Build-time checks | The build stops if UDP is switched on, if Bluetooth is pointed at the radio port, or if not exactly one Wi-Fi mode is selected |
@@ -81,7 +81,7 @@ After any change to the status, settings, monitor or log page, take new screensh
 
 ## Settings page
 
-Open *Change settings* under *All settings*, or `http://<bridge address>/settings`. The browser asks for a login: user `bridge`, password = the OTA password from `credentials.h`. [`settings_page.h`](settings_page.h) holds the page and its handlers; [`settings.h`](settings.h) checks and stores the values.
+Open *Change settings* under *All settings*, or `http://<bridge address>/settings`. The browser asks for a login: user `bridge`, password = the OTA password ([default logins](../../docs/manual/user-manual.md#logins)). [`settings_page.h`](settings_page.h) holds the page and its handlers; [`settings.h`](settings.h) checks and stores the values.
 
 ![Settings page on a phone](../../docs/images/settings-page.png)
 
@@ -262,7 +262,7 @@ Bench check: `python tools/records_test.py <bridge address>` also checks the sav
 
 Same toolchain and partition scheme as the [OTA loader](../ota-loader/README.md#build): Arduino-ESP32 3.3.x, board **ESP32 Dev Module**, Partition Scheme **Minimal SPIFFS (1.9MB APP with OTA/190KB SPIFFS)**.
 
-Copy [`credentials.example.h`](credentials.example.h) to `credentials.h` and fill in your network. It holds the public default passwords listed in the [user manual](../../docs/manual/user-manual.md#logins); replace them with your own (at least 8 characters each) before the bridge goes into the aircraft; the OTA loader's `credentials.h` has the same format. `credentials.h` is ignored by Git; never commit it. The built image contains the passwords and stays in `build/bridge/`.
+No credentials file is needed: every build carries the public [default logins](../../docs/manual/user-manual.md#logins) from [`config.h`](config.h) and no network. Set the network on the settings page after the first upload. For a bridge with its own OTA password, change `OTA_PASSWORD` in `config.h` locally before building and do not commit it.
 
 ```bash
 python tools/build_bridge.py
@@ -271,6 +271,18 @@ python tools/build_bridge.py
 The script builds in `build/bridge/` at the repository root, outside the sketch, and prints toolchain, duration, image size and any sketch warnings. A build takes between 1 and 5 minutes (S104, S105).
 
 To test the hotspot fallback without switching off the network, build `python tools/build_bridge.py fallback-test` (in `build/bridge-fallback-test/`) and upload it. It joins a network that does not exist, so the hotspot opens after 15 s. Without an OTA upload it boots the previous image after 10 minutes, so it never stays installed by accident. The variant is selected by a generated `bridge_variant.h`, ignored by Git and removed after the build.
+
+For unattended bench tests, build `python tools/build_bridge.py bench-open` (in `build/bridge-bench-open/`) and upload it once. [`bench.h`](bench.h) holds the variant.
+
+| Part | Bench build |
+| --- | --- |
+| Settings | Page and password-protected API calls work without a login, so test scripts can change settings, keep trials and restart |
+| Marking | Version ends in `-BENCH`; every start logs a warning with the minutes left |
+| Revert | After 8 hours of operating time, counted in NVS across restarts and power cuts, it boots the image that ran before the upload. An OTA upload stops the countdown |
+| OTA | Uploads without password, so a test script can install builds |
+
+> [!WARNING]
+> Anyone on the bridge's Wi-Fi can change its settings or upload firmware while the bench build runs. Bench only; check that the version no longer ends in `-BENCH` before the bridge goes near the aircraft.
 
 Without a rebuild: save a network name that does not exist on the settings page. The change runs on [trial](../../docs/manual/user-manual.md#trial), so the old name comes back by itself, or set it back over the hotspot and press *Keep*. A second USB Wi-Fi adapter on the PC can join the hotspot while the first keeps the internet connection; give the second adapter a higher interface metric (for example 100), so Windows keeps internet traffic on the first.
 

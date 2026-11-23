@@ -89,7 +89,7 @@ footer{color:var(--mute);font-size:13px;border-top:1px solid var(--rule);padding
 a{color:inherit}
 </style>
 <main>
-<header><img src="/device.webp" width="240" height="317" alt="WIFI Bridge housing with the MomoRC logo"><div><h1>WIFI Bridge</h1><div class="meta" id="meta">Connecting to the bridge</div></div></header>
+<header><img src="/device.webp" width="240" height="316" alt="WIFI Bridge housing with the MomoRC logo"><div><h1>WIFI Bridge</h1><div class="meta" id="meta">Connecting to the bridge</div></div></header>
 <div class="trial" id="trial" hidden><span id="tt"></span> <a href="/settings">Keep or change</a></div>
 <div class="down" id="down" hidden>The bridge is not answering. Check that this phone is on the bridge's Wi-Fi.</div>
 <div id="ports"></div>
@@ -169,7 +169,7 @@ g();f();hg();setInterval(f,2000);setInterval(hg,30000);
 static String statusJson() {
     char part[384];  // one port line with all counters at their maximum is about 260 bytes
     String out;
-    out.reserve(1024);
+    out.reserve(2048);  // Project 0.5.12: the full answer is about 1.5 kB; no regrowth while it is built
     snprintf(part, sizeof(part), "{\"firmware\":\"Wi-Fi bridge %s\",\"uptime_s\":%llu,", VERSION,
              (unsigned long long)(esp_timer_get_time() / 1000000));
     out += part;
@@ -196,7 +196,10 @@ static String statusJson() {
         PortStats& p = portStats[num];
         const uint32_t last = p.lastRxMs.load(std::memory_order_relaxed);
         char age[16];
-        if (last) snprintf(age, sizeof(age), "%lu", (unsigned long)(now - last));
+        // Project 0.5.12: the other core can store a time up to 1 ms after `now` (millis() | 1, or a byte arriving
+        // while this loop runs); a signed age clamped at 0 avoids the wrap to 4294967295 ms ("Quiet for 1193 h").
+        const int32_t ageMs = (int32_t)(now - last);
+        if (last) snprintf(age, sizeof(age), "%lu", (unsigned long)(ageMs < 0 ? 0 : ageMs));
         else snprintf(age, sizeof(age), "null");
         snprintf(part, sizeof(part),
                  "%s{\"name\":\"%s\",\"uart\":%d,\"baud\":%lu,\"tcp_port\":%u,"

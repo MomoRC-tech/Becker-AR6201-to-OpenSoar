@@ -151,6 +151,10 @@ def main(argv=None):
                 closed = True
                 break
             time.sleep(512 / (baud / 10))  # about the radio line rate
+        # The echo still arrives for a few seconds after the last send; reading now would
+        # empty the socket and rescue the owner before the bridge's queue overflows.
+        if not closed:
+            time.sleep(10)
         closed = closed or closed_by_bridge(stalled, 15)
         check("owner that never reads is closed by the bridge", closed, f"{sent} bytes sent")
     nxt = owner(host, port)

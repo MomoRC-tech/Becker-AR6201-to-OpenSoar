@@ -5,8 +5,8 @@ masks private details, and renders them at phone width (390 px, 2x) in the
 light theme: docs/images/status-start.png (the status page as it opens, for the README),
 docs/images/status-page.png (startup temperatures, lifetime record and settings expanded),
 docs/images/settings-page.png, docs/images/monitor-page.png,
-docs/images/log-page.png and docs/images/saved-page.png. The settings page login uses the OTA password from
-firmware/bridge/credentials.h. The monitor, the log, startup and live chip temperatures, the supply voltage
+docs/images/log-page.png and docs/images/saved-page.png. The settings page login comes from the
+BRIDGE_PASSWORD environment variable (none needed with the bench build). The monitor, the log, startup and live chip temperatures, the supply voltage
 (value and chart), the device traffic, the lifetime record and the saved log show fixed demo data, never real data: real NMEA contains
 positions, the real log network names and addresses, and a bench board
 without the divider has no meaningful voltage.
@@ -14,7 +14,8 @@ without the divider has no meaningful voltage.
     python tools/status_screenshot.py <bridge address>
 
 Masked before rendering (the repository is public):
-- network name and its default -> "your-network", as in credentials.example.h
+- a stored network name -> "your-network"
+- the bench build's "-BENCH" version suffix -> removed (the pages are the same)
 - Wi-Fi line -> hotspot mode at the configured hotspot address with one phone
 
 Needs Google Chrome or Microsoft Edge. Rerun after every change to the
@@ -26,6 +27,7 @@ import base64
 import datetime
 import json
 import math
+import os
 import random
 import re
 import shutil
@@ -54,8 +56,8 @@ def get(host: str, path: str, auth: str = "") -> bytes:
 
 
 def ota_password() -> str:
-    text = (ROOT / "firmware" / "bridge" / "credentials.h").read_text()
-    return re.search(r'#define\s+OTA_PASSWORD\s+"([^"]*)"', text).group(1)
+    """Settings login from the BRIDGE_PASSWORD environment variable; empty sends no login (bench build)."""
+    return os.environ.get("BRIDGE_PASSWORD", "")
 
 
 DEMO_LINES = [  # made-up NMEA, round fake position
@@ -181,11 +183,12 @@ def main() -> None:
 
     hotspot = "10.10.10.10"
     for item in settings["items"]:
-        if item["key"] == "ns":
-            item["value"] = item["default"] = "your-network"
+        if item["key"] == "ns" and item["value"]:
+            item["value"] = "your-network"
         if item["key"] == "ha":
             hotspot = item["value"]
     status["wifi"] = {"mode": "hotspot", "ip": hotspot, "stations": [-52]}
+    status["firmware"] = status["firmware"].replace("-BENCH", "")  # bench build: pages as in the normal build
     status["supply"], history = demo_supply()
     status["uptime_s"] = 5 * 3600 + 25  # matches the five-hour demo chart
     for port, (rx, tx, ago) in zip(status.get("ports", []), ((1843200, 0, 180), (2211840, 0, 240), (5120, 5120, 900))):

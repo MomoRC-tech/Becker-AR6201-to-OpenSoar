@@ -4,7 +4,7 @@
  *
  * Forwards three UARTs to TCP over Wi-Fi (no UDP): Zander on UART0, FLARM on
  * UART1, the Becker radio (RS-422 through a MAX490) on UART2. Settings are in
- * config.h, Wi-Fi and OTA passwords in credentials.h, the status page in
+ * config.h (with the public default logins), the status page in
  * status_page.h.
  *
  * Based on ESP-Serial-Bridge by yuri-rage, itself forked from AlphaLima's
@@ -36,10 +36,11 @@
 #include "config.h"
 #include "weblog.h"  // Project: web log (step 3c); before every module that logs
 
-#ifdef FALLBACK_TEST  // Project: temporary hotspot fallback test build
+#if defined(FALLBACK_TEST) || defined(BENCH_OPEN)  // Project: temporary test builds
 #include <esp_ota_ops.h>
 static bool otaStarted = false;
 #endif
+#include "bench.h"  // Project: bench build without settings login (BENCH_OPEN only)
 
 #ifdef OTA_HANDLER
 #include <ArduinoOTA.h>
@@ -465,16 +466,17 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
         WiFi.persistent(false);  // Project: the core keeps no second copy of the network password (step 3a)
         WiFi.setHostname(HOSTNAME);
         WiFi.mode(WIFI_STA);
-        WiFi.begin(settings.netSsid, settings.netPass);  // Project: stored settings (step 3a)
-        LOGI(LOG_WIFI, "Joining network %s for up to %u s", settings.netSsid, settings.joinSeconds);
-        {
+        if (settings.netSsid[0]) {  // Project: no network set (the default): hotspot at once
+            WiFi.begin(settings.netSsid, settings.netPass);  // Project: stored settings (step 3a)
+            LOGI(LOG_WIFI, "Joining network %s for up to %u s", settings.netSsid, settings.joinSeconds);
             const unsigned long start = millis();
             while (WiFi.status() != WL_CONNECTED && millis() - start < settings.joinSeconds * 1000UL) {
                 delay(250);
             }
         }
         if (WiFi.status() != WL_CONNECTED) {  // connected: logWifiEvent logs the address; reconnects on its own after a drop
-            LOGW(LOG_WIFI, "Network %s not reached, opening the hotspot", settings.netSsid);
+            if (settings.netSsid[0]) LOGW(LOG_WIFI, "Network %s not reached, opening the hotspot", settings.netSsid);
+            else LOGI(LOG_WIFI, "No network set, opening the hotspot");
             WiFi.disconnect(true);
             WiFi.mode(WIFI_AP);
             if (!WiFi.softAP(settings.hotspotSsid, settings.hotspotPass)) {
@@ -497,9 +499,11 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
 #ifdef OTA_HANDLER
         // Project: password and hostname (R13); messages go to the web log (step 3c)
         ArduinoOTA.setHostname(HOSTNAME);
+#ifndef BENCH_OPEN  // bench build: OTA without password (bench.h)
         ArduinoOTA.setPassword(OTA_PASSWORD);
+#endif
         ArduinoOTA.onStart([]() {
-#ifdef FALLBACK_TEST
+#if defined(FALLBACK_TEST) || defined(BENCH_OPEN)
             otaStarted = true;
 #endif
             String type;
@@ -563,6 +567,9 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
 #endif
 #endif
         statusBegin();  // Project: status page task (step 3)
+#ifdef BENCH_OPEN
+        benchBegin();
+#endif
     }
 
 #ifdef FALLBACK_TEST
@@ -580,6 +587,9 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
     void loop() {
 #ifdef FALLBACK_TEST
         revertIfIdle();
+#endif
+#ifdef BENCH_OPEN
+        benchLoop(otaStarted);
 #endif
 #ifdef OTA_HANDLER
         ArduinoOTA.handle();

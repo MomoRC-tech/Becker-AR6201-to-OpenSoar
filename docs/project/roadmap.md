@@ -7,7 +7,7 @@
 The single work queue: which work package comes next and what finishes it.
 
 > [!NOTE]
-> **Status:** WP3 is complete: the bench bridge passed all bench checks, steps 1 and 13 closed by the owner (S175). **Current focus:** WP6 step 5 bench acceptance — the one-hour three-port run and the OpenSoar phone checks. The wired bridge runs 0.5.11: the [code review](../research/reviews/2026-11-23-code-review.md) fixes (S176, S177) and a restart button (S178). WP1 and the WP9 presets wait for the installed-equipment facts from Tom. Radio integration uses the [stock OpenSoar driver](../research/becker-driver.md#consequences).
+> **Status:** WP3 is complete: the bench bridge passed all bench checks, steps 1 and 13 closed by the owner (S175). **Current focus:** WP6 step 5 bench acceptance — the one-hour three-port run and the OpenSoar phone checks. The wired bridge runs the 0.5.12 bench build (S180): public default logins, no built-in network, and a `bench-open` variant without passwords for unattended tests; before it, the [code review](../research/reviews/2026-11-23-code-review.md) fixes (S176, S177), a restart button (S178) and the first OpenSoar emulator check (S179). WP1 and the WP9 presets wait for the installed-equipment facts from Tom. Radio integration uses the [stock OpenSoar driver](../research/becker-driver.md#consequences).
 
 <a href="#work-packages"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-project-roadmap-1-dark.svg"><img src="../images/nav/menu-project-roadmap-1.svg" alt="1 · Work packages" height="30"></picture></a> <a href="#firmware-plan"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-project-roadmap-2-dark.svg"><img src="../images/nav/menu-project-roadmap-2.svg" alt="2 · Bridge firmware plan" height="30"></picture></a> <a href="#milestones"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-project-roadmap-3-dark.svg"><img src="../images/nav/menu-project-roadmap-3.svg" alt="3 · Milestones" height="30"></picture></a> <a href="#test-coverage"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-project-roadmap-4-dark.svg"><img src="../images/nav/menu-project-roadmap-4.svg" alt="4 · Test coverage for the software phase" height="30"></picture></a> <!-- page-menu -->
 
@@ -76,7 +76,7 @@ Firmware 0.5.7 adds **Detect** to the two RS-232 inputs on the [settings page](.
 
 ### 2.1 Target
 
-One Arduino sketch in `firmware/bridge/`, built like the [OTA loader](../../firmware/ota-loader/README.md): same toolchain, partition scheme, credentials file and OTA upload.
+One Arduino sketch in `firmware/bridge/`, built like the [OTA loader](../../firmware/ota-loader/README.md): same toolchain, partition scheme and OTA upload; public default logins in `config.h`.
 
 ```mermaid
 flowchart LR
@@ -155,7 +155,7 @@ Later, each needing its own approval: firmware upload from the browser, contribu
 | --- | --- |
 | Editable | Per port: baud rate, data bits, parity, stop bits, TCP port. Network to join (name, password) and join time. Hotspot name, password and address |
 | Fixed at build time | Pins; radio port rules (one owner, no Bluetooth); features; hostname; OTA password |
-| Defaults | `config.h` and `credentials.h`. The ESP32 stores only changed values, so an empty or erased store behaves like a fresh build |
+| Defaults | `config.h`, with no network built in. The ESP32 stores only changed values, so an empty or erased store behaves like a fresh build |
 | Storage | One [NVS settings record](../../firmware/bridge/README.md#settings-page) holds both snapshots and the trial state. Survives restarts and OTA updates |
 | Loading | Once at start-up. Every value is checked (allowed baud rates, port range, text length); an invalid value falls back to its default and is flagged on the page |
 | Protection | HTTP basic authentication with the OTA password for the settings page and every save. The status page stays open and read-only |

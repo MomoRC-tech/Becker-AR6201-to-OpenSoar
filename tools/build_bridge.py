@@ -2,6 +2,7 @@
 
     python tools/build_bridge.py                  # normal build
     python tools/build_bridge.py fallback-test    # temporary hotspot fallback test build
+    python tools/build_bridge.py bench-open       # temporary bench build without settings login
 
 Builds firmware/bridge/ for the ESP32 Dev Module with the same toolchain and
 partition scheme as the OTA loader, so the image can be uploaded over Wi-Fi.
@@ -11,6 +12,10 @@ Variants:
     fallback-test  build/bridge-fallback-test/. Joins a network that does not
                    exist, so the hotspot opens; without an OTA upload it boots
                    the previous image after 10 minutes. Never leave it installed.
+    bench-open     build/bridge-bench-open/. Settings page and API without
+                   password, version ends in -BENCH; boots the previous image
+                   after 8 hours of operating time, counted across restarts.
+                   Bench only, for unattended tests.
 
 The variant is selected by a generated header, firmware/bridge/bridge_variant.h
 (ignored by Git, removed after the build), not by a compiler flag: compiler
@@ -19,8 +24,8 @@ folders live outside the sketch; a build folder inside the sketch is picked up
 as sketch source. A build takes between 1 and 5 minutes (S104, S105 in
 docs/research/sources.md).
 
-Needs firmware/bridge/credentials.h (ignored by Git; same format as the OTA
-loader's). The images contain its passwords, so they stay in build/.
+The firmware carries the public default logins from config.h
+(docs/manual/user-manual.md#logins); no credentials file is needed.
 
 Prints the toolchain, the duration, the image size and any warning or error
 from the sketch files. Nothing is uploaded.
@@ -40,6 +45,7 @@ SKETCH_FILES = tuple(f.name for f in SKETCH.iterdir() if f.suffix in (".ino", ".
 VARIANTS = {
     "normal": (ROOT / "build" / "bridge", None),
     "fallback-test": (ROOT / "build" / "bridge-fallback-test", "FALLBACK_TEST"),
+    "bench-open": (ROOT / "build" / "bridge-bench-open", "BENCH_OPEN"),
 }
 
 
@@ -91,9 +97,6 @@ def main(argv: list[str]) -> int:
     name = argv[0] if argv else "normal"
     if name not in VARIANTS or len(argv) > 1:
         print(f"Usage: python tools/build_bridge.py [{' | '.join(VARIANTS)}]")
-        return 2
-    if not (SKETCH / "credentials.h").exists():
-        print("firmware/bridge/credentials.h is missing: copy credentials.example.h (or the OTA loader's credentials.h).")
         return 2
     try:
         return build(name)

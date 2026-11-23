@@ -7,7 +7,7 @@
 How to connect the bridge to OpenSoar, how it behaves and what to do when something looks wrong.
 
 > [!NOTE]
-> **Status:** describes bridge firmware 0.5.11 on the bench bridge. The OpenSoar phone checks are still open ([roadmap](../project/roadmap.md#work-packages)).
+> **Status:** describes bridge firmware 0.5.12 on the bench bridge. The OpenSoar phone checks are still open ([roadmap](../project/roadmap.md#work-packages)).
 
 <a href="#quick-start"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-manual-user-manual-1-dark.svg"><img src="../images/nav/menu-manual-user-manual-1.svg" alt="1 · Quick start" height="30"></picture></a> <a href="#behaviour"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-manual-user-manual-2-dark.svg"><img src="../images/nav/menu-manual-user-manual-2.svg" alt="2 · How it behaves" height="30"></picture></a> <a href="#web-pages"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-manual-user-manual-3-dark.svg"><img src="../images/nav/menu-manual-user-manual-3.svg" alt="3 · Web pages" height="30"></picture></a> <a href="#troubleshooting"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-manual-user-manual-4-dark.svg"><img src="../images/nav/menu-manual-user-manual-4.svg" alt="4 · Troubleshooting" height="30"></picture></a> <!-- page-menu -->
 
@@ -23,7 +23,7 @@ How to connect the bridge to OpenSoar, how it behaves and what to do when someth
 
 ### 1.1 Power on
 
-Switch on the avionics supply. The bridge first looks for its stored network (see [Wi-Fi start-up](#wifi-startup)). In the glider there is none, so after the join time it opens its own hotspot.
+Switch on the avionics supply. The bridge first looks for its stored network (see [Wi-Fi start-up](#wifi-startup)). In the glider there is none, so after the join time it opens its own hotspot. Without a stored network it opens the hotspot at once.
 
 <a id="join-wifi"></a>
 
@@ -39,14 +39,14 @@ On Android, answer the prompt to stay connected without internet with **yes**.
 
 <a id="logins"></a>
 
-**Default logins.** A bridge built with the public defaults from [`credentials.example.h`](../../firmware/bridge/credentials.example.h) has these logins. Anyone with this repository knows them.
+**Default logins.** Every firmware build has these logins ([`config.h`](../../firmware/bridge/config.h)). Anyone with this repository knows them.
 
 | Login | Where | User | Default password | Change it |
 | --- | --- | --- | --- | --- |
 | Hotspot | Wi-Fi `WiFi-BridgeTom` | — | `BridgeTom-setup` | [Settings page](#settings), hotspot fields |
-| Settings | `/settings` and the password-protected [API calls](../../firmware/bridge/README.md#settings-page) | `bridge` | `BridgeTom-ota` | Only by building with your own `credentials.h` ([build](../../firmware/bridge/README.md#build)) |
+| Settings | `/settings` and the password-protected [API calls](../../firmware/bridge/README.md#settings-page) | `bridge` | `BridgeTom-ota` | Only in a build with your own `OTA_PASSWORD` ([build](../../firmware/bridge/README.md#build)) |
 | Firmware upload (OTA) | `wifi-bridgetom`, port 3232 | — | `BridgeTom-ota`, same as Settings | As Settings |
-| Network to join | Your own network | — | None: set when building or on the settings page | [Settings page](#settings), network fields |
+| Network to join | Your own network | — | None built in; until one is set, the hotspot opens at once | [Settings page](#settings), network fields |
 
 > [!IMPORTANT]
 > Before the bridge goes into the aircraft, change the hotspot password and build with your own OTA password. With the defaults, anyone near the glider can change settings or upload firmware.

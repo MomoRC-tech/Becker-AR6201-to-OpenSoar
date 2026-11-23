@@ -1,6 +1,6 @@
 // Project: settings stored on the ESP32 (firmware plan step 3a, R15). ESP32 only.
 //
-// The values in config.h and credentials.h are the defaults. The NVS
+// The values in config.h are the defaults. The NVS
 // namespace "bridge-state" holds settings changed on the settings page. At
 // start-up every stored value is checked; an invalid one falls back to its
 // default and is marked, so a bad entry can never stop the bridge.
@@ -19,7 +19,7 @@
 #define SETTINGS_FORMAT 1  // legacy format stored under "v"
 
 enum SettingOrigin : uint8_t { ORIGIN_DEFAULT, ORIGIN_STORED, ORIGIN_INVALID };
-enum SettingType : uint8_t { T_PROFILE, T_BAUD, T_FRAME, T_TCP, T_SSID, T_NETPASS, T_APPASS, T_SECONDS, T_IP, T_FLAG, T_CAL };
+enum SettingType : uint8_t { T_PROFILE, T_BAUD, T_FRAME, T_TCP, T_SSID, T_NETPASS, T_APPASS, T_SECONDS, T_IP, T_FLAG, T_CAL, T_NETSSID };  // T_NETSSID: may be empty (no network)
 
 // ---- device profiles (WP9) ------------------------------------------------------
 // A profile fills in the baud rate and frame of one instrument. It is offered only on
@@ -110,7 +110,7 @@ static SettingItem kSettings[] = {
     {"b2", T_BAUD, &settings.port[2].baud, ORIGIN_DEFAULT},
     {"f2", T_FRAME, settings.port[2].frame, ORIGIN_DEFAULT},
     {"t2", T_TCP, &settings.port[2].tcpPort, ORIGIN_DEFAULT},
-    {"ns", T_SSID, settings.netSsid, ORIGIN_DEFAULT},
+    {"ns", T_NETSSID, settings.netSsid, ORIGIN_DEFAULT},
     {"np", T_NETPASS, settings.netPass, ORIGIN_DEFAULT},
     {"nj", T_SECONDS, &settings.joinSeconds, ORIGIN_DEFAULT},
     {"hs", T_SSID, settings.hotspotSsid, ORIGIN_DEFAULT},
@@ -194,6 +194,7 @@ static bool validAt(SettingType type, const void* v, int portNum) {
             return p != 0 && p != 80;  // 80 is the status page
         }
         case T_SSID: return validText((const char*)v, 1, 32);
+        case T_NETSSID: return validText((const char*)v, 0, 32);  // empty: no network, hotspot at once
         case T_NETPASS: {
             const size_t n = strlen((const char*)v);
             return n == 0 || validText((const char*)v, 8, 63);
@@ -242,7 +243,7 @@ static int profilesMatchValues(BridgeSettings& b) {
 static bool settingSecret(const SettingItem& s) { return s.type == T_NETPASS || s.type == T_APPASS; }
 
 static bool settingText(const SettingItem& s) {
-    return s.type == T_PROFILE || s.type == T_FRAME || s.type == T_SSID || settingSecret(s);
+    return s.type == T_PROFILE || s.type == T_FRAME || s.type == T_SSID || s.type == T_NETSSID || settingSecret(s);
 }
 
 // Short name of the value, without the port: "baud", "TCP port", "network" ...
@@ -252,7 +253,8 @@ static const char* settingName(const SettingItem& s) {
         case T_BAUD: return "baud";
         case T_FRAME: return "frame";
         case T_TCP: return "TCP port";
-        case T_SSID: return s.value == settings.netSsid ? "network" : "hotspot name";
+        case T_SSID: return "hotspot name";
+        case T_NETSSID: return "network";
         case T_NETPASS: return "network password";
         case T_APPASS: return "hotspot password";
         case T_SECONDS: return "network join time, s";
@@ -324,7 +326,8 @@ static size_t valueSize(SettingType t) {
         case T_FLAG: return 1;
         case T_FRAME: return 4;
         case T_PROFILE: return 8;
-        case T_SSID: return 33;
+        case T_SSID:
+        case T_NETSSID: return 33;
         default: return 64;  // passwords
     }
 }
@@ -395,7 +398,7 @@ static void settingsCrossCheck(const BridgeSettings& defaults) {
 // ---- storing (settings page) --------------------------------------------------------
 
 static bool trialKey(const SettingItem& s) {  // changes that can cut the phone off
-    return s.type == T_TCP || s.type == T_SSID || s.type == T_NETPASS ||
+    return s.type == T_TCP || s.type == T_SSID || s.type == T_NETSSID || s.type == T_NETPASS ||
            s.type == T_APPASS || s.type == T_SECONDS || s.type == T_IP;
 }
 

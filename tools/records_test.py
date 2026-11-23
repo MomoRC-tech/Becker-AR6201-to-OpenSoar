@@ -4,7 +4,8 @@
     python tools/records_test.py <bridge address> --write-load 120
 
 Needs the bridge firmware in network mode, so the address stays the same
-across the restart. Uses the password from firmware/bridge/credentials.h.
+across the restart. Settings login from the BRIDGE_PASSWORD environment variable
+(none needed with the bench build).
 Resets the lifetime record and clears the saved log of the board it runs against.
 
 Checks:
@@ -27,6 +28,7 @@ errors were counted, so flash writes do not lose serial data.
 import argparse
 import base64
 import json
+import os
 import re
 import subprocess
 import sys
@@ -47,8 +49,8 @@ def check(name, ok, detail=""):
 
 
 def password() -> str:
-    text = (ROOT / "firmware" / "bridge" / "credentials.h").read_text()
-    return re.search(r'#define\s+OTA_PASSWORD\s+"([^"]*)"', text).group(1)
+    """Settings login from the BRIDGE_PASSWORD environment variable; empty sends no login (bench build)."""
+    return os.environ.get("BRIDGE_PASSWORD", "")
 
 
 def request(host, path, post=False, auth=None):
