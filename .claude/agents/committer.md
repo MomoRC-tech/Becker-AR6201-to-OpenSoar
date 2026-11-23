@@ -16,5 +16,5 @@ Read the section "Preservation and delivery" in `AGENTS.md` at the repository ro
 In addition:
 - Never edit, reformat or "fix" files, even small things. If something is wrong, stop and report it.
 - Do not resolve rebase conflicts or hook failures yourself; report them with the command output.
-- Write the commit message with a heredoc (`git commit -F - <<'EOF'`) and end it with the co-author attribution line your environment gives you.
+- Write the commit message with a heredoc (`git commit -F - <<'EOF'`) and end it with the co-author line the caller gives you, copied exactly. The work was done by the calling session, so never use your own model name or the attribution your environment suggests. If the caller gives no co-author line, stop before committing and ask for it in your report.
 - Keep the final report to a few lines.

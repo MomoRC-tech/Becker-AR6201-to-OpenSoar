@@ -9,9 +9,9 @@ The order in which to build one bridge, from parts to a passed bench check; each
 > [!NOTE]
 > **Status:** the bench bridge was built along these steps and passed all bench checks ([roadmap](../project/roadmap.md#work-packages)). Aircraft installation comes later.
 
-<p align="center"><img src="../images/becker-bridge-exploded.gif" width="480" alt="Exploded-view loop of the bridge housing: the hood lifts off, then the RS-232 boards, ESP32, UBEC converter and MAX490 board rise out of the base tray and settle back"></p>
-
 <a href="#parts"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/step-build-1-dark.svg"><img src="../images/nav/step-build-1.svg" alt="1 · Parts" height="30"></picture></a> <a href="#housing"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/step-build-2-dark.svg"><img src="../images/nav/step-build-2.svg" alt="2 · Housing" height="30"></picture></a> <a href="#plug"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/step-build-3-dark.svg"><img src="../images/nav/step-build-3.svg" alt="3 · Instrument plug" height="30"></picture></a> <a href="#harness"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/step-build-4-dark.svg"><img src="../images/nav/step-build-4.svg" alt="4 · Harness" height="30"></picture></a> <a href="#firmware"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/step-build-5-dark.svg"><img src="../images/nav/step-build-5.svg" alt="5 · Firmware" height="30"></picture></a> <a href="#bench-check"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/step-build-6-dark.svg"><img src="../images/nav/step-build-6.svg" alt="6 · Bench check" height="30"></picture></a>
+
+<p align="center"><img src="../images/becker-bridge-exploded.gif" width="360" alt="Exploded-view loop of the bridge housing: the hood lifts off, then the RS-232 boards, ESP32, UBEC converter and MAX490 board rise out of the base tray and settle back"></p>
 
 ---
 
