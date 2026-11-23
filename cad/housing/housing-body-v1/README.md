@@ -2,7 +2,11 @@
 
 🏠 [Overview](../../../README.md) › 📚 [Documentation](../../../docs/README.md) › 📐 CAD › **Housing body v1 (prototype)**
 
-The enclosure fit revision uses [layout v4](../layout-v4/README.md) with a restored floor datum, revised connector wall, rounded corners around the front insert seats, an integral ESP32 antenna holder and the hood. Open `Housing body - Wire Generator harness` in Fusion or use the [standalone archive](housing-enclosure-fit.f3d) for the current bench design. [Housing v18](https://github.com/MomoRC-tech/Becker-AR6201-to-OpenSoar/releases/tag/housing-v18) has corrected male DE-9 pin markings and a male front-view reference (S173). See the [design rules](../../../docs/hardware/housing.md#rules) and [physical fit checks](../../../docs/project/open-items.md#housing).
+The enclosure fit revision uses [layout v4](../layout-v4/README.md) with a restored floor datum, revised connector wall, rounded corners around the front insert seats, an integral ESP32 antenna holder and the hood. Open `Housing body - Wire Generator harness` in Fusion or use the [standalone archive](housing-enclosure-fit.f3d) for the current bench design. Fusion v15 adds the roof-grille hood to the existing base (S184). [Housing v18](https://github.com/MomoRC-tech/Becker-AR6201-to-OpenSoar/releases/tag/housing-v18) has corrected male DE-9 pin markings and a male front-view reference (S173). See the [design rules](../../../docs/hardware/housing.md#rules) and [physical fit checks](../../../docs/project/open-items.md#housing).
+
+[Roof-down P1S PETG slice — grille webs, side bridges and two-colour alignment](hood-grille-toolpaths.png) (S184).
+
+Earlier v18 hood, before the roof grilles:
 
 <img src="preview-top-v18.png" width="420" alt="Housing v18 from above: dark hood with the green MomoRC logo, WIFI Bridge and 7-20V inserts and four hood screws; source of the status page image (tools/device_image.py)">
 
@@ -41,16 +45,16 @@ The enclosure fit revision uses [layout v4](../layout-v4/README.md) with a resto
 | Part | Main dimensions (mm) |
 | --- | --- |
 | Base tray | Outside 92 × 70 (78 wide over the tie loops), floor 2.5, side walls to Y 10 plus a 1.75 mm seam lip (inner 0.9). Connector wall 3.0 thick to Y 20. The hood seats on the post tops, the wall shoulder and the connector-wall and corner tops |
-| Hood | Outside 92 × 70, top at Y 22.5, top 2.5 thick with four 4.6 mm thick spots over the posts. Top edges R3, vertical corners R6 (inner corners R4), skirt 0.9 over the lip with 0.2 gap |
+| Hood | Outside 92 × 70, top at Y 22.9, ceiling at Y 20.0, top 2.9 thick with four 5.0 mm thick spots over the posts. Top edges R3, vertical corners R6 (inner corners R4), skirt 0.9 over the lip with 0.2 gap |
 | Corner posts | 8 × 8, tops at Y 17.9, inserts Ø4.0 × 6.7 deep with 0.2 entry chamfers. Insert centres (X, Z) are (7, −23.5), (7, 34.5), (85.8, −23.3) and (85.8, 34.3). Free faces end at Y 8 with a 45° underside and R2 free vertical edges. The inside front corners above and below the post seats are R4, with R3.8 mating relief on the hood |
-| Cover screws | Four DIN 912 M3 × 6 screws. Counterbores Ø6.0 × 3.1, heads flush, 1.5 under each head, Ø3.4 clearance. Each screw reaches 4.5 into its insert |
+| Cover screws | Four DIN 912 M3 × 6 screws. Counterbores Ø6.0 × 3.1, heads recessed 0.2, 1.9 under each head, Ø3.4 clearance. Nominal engagement 4.1 in each insert |
 | Connector wall | XT30 pocket 10.55 × 5.25, centre (Y, Z) = (6.5, −12.3), through the 3 mm wall and 5 mm-deep collar. DE-9 centre (Y, Z) = (10, 11.5). Flange recess 31.6 × 13.2 × 1.0, D-shaped cutout 19.9 × 11.5 narrowing to 16.7 at the bottom, two Ø3.4 holes at 25.0 spacing. See the [provisional nut stops](../../../docs/hardware/housing.md#connectors) |
 | Labels | See the [housing marking dimensions](../../../docs/hardware/housing.md#rules). The hood inserts are readable from the connector end |
-| Logo | MomoRC logo Ø56, a 0.6 mm insert flush with the hood top (two-colour print, the hood has the matching 0.6 mm recess), upright seen from the connector end; traced from the owner's bitmap with white lines widened and black slivers removed so every feature is at least 0.8 wide |
-| Vents | 2 rows × 5 slots per long side, 10 × 1.5 with R0.5 corners (Fusion feature "Vent slot corners R0.5"), 2 mm ribs, at Y 12.5 and 16.5 |
+| Logo | Green emblem 35.7 × 35.4 on the solid central roof strip. Emblem and lettering sit flush in matching 0.6-deep recesses, readable from the connector end |
+| Vents | Side intakes at Y 12.5–15.5. Both roof banks have 8.8 pitch and a 4.93 minimum side margin (1.93 on the flat roof face). See [slot dimensions and open areas](../../../docs/hardware/housing.md#rules) |
 | Tie loops | 4 × rounded pads on the long side walls, centres X 14 and 78: 12 long × 4 out, floor underside to Y 8.5 (half-round top R6), outer edges R1.5, wall blend R1.5; vertical tunnel 5.4 × 1.9 against the wall face, open top and bottom, corners R0.5, entries rounded R0.6 (top) and R0.5 (bed side), for 4.8 mm ties |
 
-- Colours in the Fusion assembly (S171): deep blue hood (`#162E59`) with logo and text in the base's dark green (`#1E5F34`). Standalone part files and preview images show the earlier palette.
+- Colours in the Fusion assembly (S171): deep blue hood (`#162E59`) with logo and text in the base's dark green (`#1E5F34`). The hood and logo part archives use the same colours. Preview images show earlier revisions.
 - The visible DE-9 model shows the male mating face. The hidden female clearance reference preserves the rear envelope used for the harness (S43, S173).
 - Dimensions are in millimetres. X starts at the outside of the connector wall, Y rises from the floor top (Y 0), and Z runs across. The floor underside is at Y −2.5.
 - The antenna-end holder is part of `Base tray`. Expand `Base tray` in Fusion and toggle `ESP32 holder - breakaway support platform` to show or hide the print-only component. The v16 release opens with the platform visible (S93). To edit the removable USB clamp, activate its component under `ESP32 holder with RS-232 clamp`. To edit the carrier, activate `UBEC carrier` under `MAX490 and UBEC stack`.
