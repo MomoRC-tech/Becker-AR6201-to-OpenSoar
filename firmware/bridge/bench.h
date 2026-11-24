@@ -34,7 +34,9 @@ static void benchSave() {
 // Once at start-up, after the web log is ready. Normal builds erase the "bench"
 // namespace (benchForget), so a stored id from another build means the image in
 // the other slot is a bench build too: reverting to it would never end.
+static void heapDiagBegin();
 static void benchBegin() {
+    heapDiagBegin();
     Preferences p;
     if (p.begin(BENCH_NS, true)) {
         const String id = p.getString("id", "");
@@ -78,8 +80,42 @@ static void benchLoop(bool otaStarted) {
 #include <esp_core_dump.h>
 #include <esp_partition.h>
 
+// Heap diagnostic (bench only): lowest free byte heap in each second of the last
+// HEAP_DIAG_S seconds, sampled every millisecond by a low-priority task.
+#define HEAP_DIAG_S 300
+static uint32_t heapDiagMin[HEAP_DIAG_S];
+static volatile uint32_t heapDiagNow = 0;  // the second being sampled
+static void heapDiagTask(void*) {
+    uint32_t sec = millis() / 1000, low = UINT32_MAX;
+    for (;;) {
+        const uint32_t s = millis() / 1000, f = heap_caps_get_free_size(MALLOC_CAP_8BIT);
+        if (s != sec) {
+            heapDiagMin[sec % HEAP_DIAG_S] = low;
+            sec = s;
+            heapDiagNow = s;
+            low = UINT32_MAX;
+        }
+        if (f < low) low = f;
+        vTaskDelay(1);
+    }
+}
+static void heapDiagBegin() { xTaskCreate(heapDiagTask, "heapdiag", 2048, nullptr, 1, nullptr); }
+
 template <typename Server>
 static void benchRoutes(Server& srv) {
+    // GET /api/heapdiag: {"now":s,"min":[[s,bytes],...]} oldest first
+    srv.on("/api/heapdiag", HTTP_GET, [&srv]() {
+        const uint32_t now = heapDiagNow;
+        String out = "{\"now\":" + String(now) + ",\"min\":[";
+        bool first = true;
+        for (uint32_t s = now > HEAP_DIAG_S ? now - HEAP_DIAG_S : 0; s < now; s++) {
+            if (!first) out += ',';
+            first = false;
+            out += "[" + String(s) + "," + String(heapDiagMin[s % HEAP_DIAG_S]) + "]";
+        }
+        out += "]}";
+        srv.send(200, "application/json", out);
+    });
     srv.on("/api/coredump", HTTP_GET, [&srv]() {
         size_t addr = 0, size = 0;
         const esp_partition_t* part =

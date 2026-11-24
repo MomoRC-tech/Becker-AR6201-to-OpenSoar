@@ -558,7 +558,12 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
             // SPIFFS using SPIFFS.end()
             LOGI(LOG_SYSTEM, "Firmware update started (%s)", type.c_str());
         });
-        ArduinoOTA.onEnd([]() { LOGI(LOG_SYSTEM, "Firmware update received, restarting"); });
+        ArduinoOTA.onEnd([]() {
+            LOGI(LOG_SYSTEM, "Firmware update received, restarting");
+#ifdef STORED_SETTINGS
+            closeAppsBeforeRestart();  // apps reconnect to the new firmware by themselves
+#endif
+        });
         ArduinoOTA.onProgress([](unsigned int progress, unsigned int total) {
             static unsigned int reported = 0;  // quarters reported
             const unsigned int quarter = total ? (unsigned int)(4ULL * progress / total) : 0;

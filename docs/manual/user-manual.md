@@ -111,7 +111,7 @@ Baud rate and serial frame changes apply at once, without a trial.
 
 | Situation | Bridge |
 | --- | --- |
-| **Restart bridge** (settings page or status page) | Restarts with the stored settings; nothing is written |
+| **Restart bridge** (settings page or status page) | Restarts with the stored settings; nothing is written. It closes the app connections first, so the apps reconnect by themselves, as after a settings change or firmware update (S198) |
 | **Reset to defaults** | Forgets all saved settings and restarts with the firmware defaults |
 | Power cut | Keeps the settings, the [lifetime record](../../firmware/bridge/README.md#lifetime-record) and the saved log. The web log and the supply voltage chart start empty |
 | Several apps on Zander or FLARM | Up to 4 apps at once. An app that falls behind skips data and catches up; one that takes no data for 60 s is closed |
@@ -168,7 +168,7 @@ The bridge subtracts the room temperature from its earliest reading of this star
 | Need the hotspot on the bench | The stored network is in range | Switch the network off, or change the network name on the settings page; the change runs on [trial](#trial) and comes back by itself |
 | Phone rejoins the hotspot but the status page or app stays disconnected | Android can use mobile data for app traffic even while Wi-Fi is associated (S190, S192) | If prompted, choose **Stay connected**. If the page still fails or the prompt never appears, switch **Mobile data** off, leave Wi-Fi on and retry `http://10.10.10.10/`. Keep mobile data off while using the hotspot on an affected phone |
 | Phone joins another Wi-Fi network after a bridge restart in hotspot mode | Android auto-joined a saved network | Turn off *auto-connect* for the competing network during the bench check |
-| Network mode: status page opens after power returns, but devices that were receiving now show *No data* | The app still holds old TCP connections (S190, S193–S195, S197) | Switch the phone's Wi-Fi off and on once; the apps reopen all ports within about 30 s. Or in the app, go to **Menu → Config → Devices**, select each affected bridge device and press **Reconnect**. Check that fresh data returns on the active feeds |
+| Network mode: after a power cut, devices that were receiving show *No data* | The app still holds old TCP connections (S190, S193–S195, S197; planned restarts close them, S198) | Switch the phone's Wi-Fi off and on once; the apps reopen all ports within about 30 s. Or in the app, go to **Menu → Config → Devices**, select each affected bridge device and press **Reconnect**. Check that fresh data returns on the active feeds |
 | Settings changed back by themselves | *Keep* was not pressed in time | Save again, reconnect and press *Keep* |
 | OpenSoar cannot connect to the radio | Another device already owns the Becker port | Close OpenSoar on the other device |
 | No green dot for Zander or FLARM | Wrong baud rate, or the instrument is off | Press **Detect** on the settings page; check the [wiring](../hardware/wiring.md#overview) |
