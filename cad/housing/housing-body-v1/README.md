@@ -2,9 +2,9 @@
 
 🏠 [Overview](../../../README.md) › 📚 [Documentation](../../../docs/README.md) › 📐 CAD › **Housing body v1 (prototype)**
 
-The enclosure fit revision uses [layout v4](../layout-v4/README.md) with a restored floor datum, revised connector wall, rounded corners around the front insert seats, an integral ESP32 antenna holder and the hood. Open `Housing body - Wire Generator harness` in Fusion or use the [standalone archive](housing-enclosure-fit.f3d) for the current bench design. Fusion v18 uses the existing base interface and adds four low vents in the rear wall by the Wi-Fi antenna (S203). [Housing v18](https://github.com/MomoRC-tech/Becker-AR6201-to-OpenSoar/releases/tag/housing-v18) has corrected male DE-9 pin markings and a male front-view reference (S173). See the [design rules](../../../docs/hardware/housing.md#rules) and [physical fit checks](../../../docs/project/open-items.md#housing).
+The enclosure fit revision uses [layout v4](../layout-v4/README.md) with a restored floor datum, revised connector wall, rounded corners around the front insert seats, an integral ESP32 antenna holder and the hood. Open `Housing body - Wire Generator harness` in Fusion or use the [standalone archive](housing-enclosure-fit.f3d) for the current bench design. Fusion v20 uses the existing base interface, with four rear vents and more material around the ESP32-side rear screw (S203, S205). [Housing v18](https://github.com/MomoRC-tech/Becker-AR6201-to-OpenSoar/releases/tag/housing-v18) has corrected male DE-9 pin markings and a male front-view reference (S173). See the [design rules](../../../docs/hardware/housing.md#rules) and [physical fit checks](../../../docs/project/open-items.md#housing).
 
-[Roof-down P1S PETG slice — grille webs, side and rear bridges and two-colour alignment](hood-grille-toolpaths.png) (S203).
+[Roof-down P1S PETG slice — grille webs, side and rear bridges and two-colour alignment](hood-grille-toolpaths.png) (S205).
 
 <img src="hood-grille-assembled.png" width="560" alt="Deep-blue hood on the green base, with eight pairs of variable-length roof slots and the WIFI Bridge title below the emblem">
 
