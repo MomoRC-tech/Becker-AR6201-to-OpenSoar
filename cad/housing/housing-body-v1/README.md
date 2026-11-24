@@ -2,11 +2,13 @@
 
 🏠 [Overview](../../../README.md) › 📚 [Documentation](../../../docs/README.md) › 📐 CAD › **Housing body v1 (prototype)**
 
-The enclosure fit revision uses [layout v4](../layout-v4/README.md) with a restored floor datum, revised connector wall, rounded corners around the front insert seats, an integral ESP32 antenna holder and the hood. Open `Housing body - Wire Generator harness` in Fusion or use the [standalone archive](housing-enclosure-fit.f3d) for the current bench design. Fusion v17 uses the existing base interface and has eight pairs of roof slots that follow the owner’s markup (S202). [Housing v18](https://github.com/MomoRC-tech/Becker-AR6201-to-OpenSoar/releases/tag/housing-v18) has corrected male DE-9 pin markings and a male front-view reference (S173). See the [design rules](../../../docs/hardware/housing.md#rules) and [physical fit checks](../../../docs/project/open-items.md#housing).
+The enclosure fit revision uses [layout v4](../layout-v4/README.md) with a restored floor datum, revised connector wall, rounded corners around the front insert seats, an integral ESP32 antenna holder and the hood. Open `Housing body - Wire Generator harness` in Fusion or use the [standalone archive](housing-enclosure-fit.f3d) for the current bench design. Fusion v18 uses the existing base interface and adds four low vents in the rear wall by the Wi-Fi antenna (S203). [Housing v18](https://github.com/MomoRC-tech/Becker-AR6201-to-OpenSoar/releases/tag/housing-v18) has corrected male DE-9 pin markings and a male front-view reference (S173). See the [design rules](../../../docs/hardware/housing.md#rules) and [physical fit checks](../../../docs/project/open-items.md#housing).
 
-[Roof-down P1S PETG slice — grille webs, side bridges and two-colour alignment](hood-grille-toolpaths.png) (S202).
+[Roof-down P1S PETG slice — grille webs, side and rear bridges and two-colour alignment](hood-grille-toolpaths.png) (S203).
 
 <img src="hood-grille-assembled.png" width="560" alt="Deep-blue hood on the green base, with eight pairs of variable-length roof slots and the WIFI Bridge title below the emblem">
+
+<img src="hood-antenna-rear.png" width="560" alt="Rear view of the assembled hood showing the four vents beside the Wi-Fi antenna">
 
 ![Earlier prototype showing the hood, connector wall and external tie loops](preview-closed.png)
 
@@ -49,7 +51,7 @@ The enclosure fit revision uses [layout v4](../layout-v4/README.md) with a resto
 | Connector wall | XT30 pocket 10.55 × 5.25, centre (Y, Z) = (6.5, −12.3), through the 3 mm wall and 5 mm-deep collar. DE-9 centre (Y, Z) = (10, 11.5). Flange recess 31.6 × 13.2 × 1.0, D-shaped cutout 19.9 × 11.5 narrowing to 16.7 at the bottom, two Ø3.4 holes at 25.0 spacing. See the [provisional nut stops](../../../docs/hardware/housing.md#connectors) |
 | Labels | See the [housing marking dimensions](../../../docs/hardware/housing.md#rules). The hood inserts are readable from the connector end |
 | Logo | Green emblem 35.7 × 35.4 on the solid central roof strip, with WIFI Bridge below it. Emblem and lettering sit flush in matching 0.6-deep recesses, readable from the connector end |
-| Vents | Side intakes at Y 12.5–15.5. The first seven roof slot pairs have 8.8 mm pitch and the last pair sits 6.8 mm farther back. Slot lengths follow the space around the green emblem. See [slot dimensions and open areas](../../../docs/hardware/housing.md#rules) |
+| Vents | Side and rear intakes at Y 12.5–15.5. Rear slot centres Z −16, −7.5, 1.0 and 9.5. The first seven roof slot pairs have 8.8 mm pitch and the last pair sits 6.8 mm farther back. Slot lengths follow the space around the green emblem. See [slot dimensions and open areas](../../../docs/hardware/housing.md#rules) |
 | Tie loops | 4 × rounded pads on the long side walls, centres X 14 and 78: 12 long × 4 out, floor underside to Y 8.5 (half-round top R6), outer edges R1.5, wall blend R1.5; vertical tunnel 5.4 × 1.9 against the wall face, open top and bottom, corners R0.5, entries rounded R0.6 (top) and R0.5 (bed side), for 4.8 mm ties |
 
 - Colours in the Fusion assembly (S171): deep blue hood (`#162E59`) with logo and text in the base's dark green (`#1E5F34`). The hood and logo part archives use the same colours. The open-base and early prototype views show previous revisions.
