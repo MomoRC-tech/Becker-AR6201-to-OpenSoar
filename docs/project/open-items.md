@@ -109,7 +109,18 @@ See the [bridge firmware plan](roadmap.md#firmware-plan) and the [stock OpenSoar
 | 9 | Settings under power loss | Interrupt a save and an automatic rollback on a spare ESP32, then check that the stored configuration is complete (S162) | Physical settings persistence |
 | 11 | Radio owner change | Bytes the previous owner sent can still be on the UART when the next owner is accepted, so their echo or the radio's reply may reach the next owner. Measured with `tools/radio_robustness_test.py`: 113 and 119 bytes reached the next owner (S177). Owner decides how to handle it | Radio ownership |
 | 12 | Remaining review checks | Code review findings 6–9: UART FIFO margin during flash writes, ROM output on the Zander transmit pin, apps held during a navigation scan, low items | Bridge reliability |
-| 13 | Remaining phone checks | A second phone with its navigation app in the background or its screen off while the first keeps receiving (S190); OpenSoar with its AR62xx driver on the radio port (item 3) | Step 5 acceptance |
+| 13 | Phone reconnect and two-phone checks | Stock OpenSoar on a real Android phone: hotspot Wi-Fi loss and bridge power cycle with mobile data on, network-mode power cycle with phone Wi-Fi left on, and its AR62xx driver on the radio port (item 3). With a second phone, check that the first keeps receiving while the second app is in the background or its screen is off (S190) | Step 5 acceptance |
+
+### 4.1 Phone reconnect options (item 13)
+
+| Case | Recommended change | Other options |
+| --- | --- | --- |
+| Hotspot with mobile data on | Propose an upstream Android option to bind local TCP device sockets to the selected Wi-Fi. Reopen them when Android reports the Wi-Fi network has returned. See S192, S193 and S196 | [Phone workaround](../manual/user-manual.md#troubleshooting). A shared Wi-Fi network with real internet access can avoid the default-network problem, with a router and uplink if they are unavailable. The bridge's standalone hotspot has no internet uplink |
+| Power cut in network mode | Propose upstream TCP client keepalive and use the existing retry path. As a starting point on Android, try 5 s idle and three probes 3 s apart (about 14 s to detect an idle connection whose probes all go unanswered, plus retry time). See S193–S195 | Closing sockets before a planned web restart could help that restart. A silence timeout can work for a feed with a known cadence. Quiet FLARM and Becker ports need transport-level detection. See [manual recovery](../manual/user-manual.md#troubleshooting) |
+
+Prefer upstream issues and shared TCP transport changes for both apps. Get owner approval before posting. The app changes require development and phone test time, with no additional hardware or paid service required. The phone workarounds require no purchase. The power-cut fix uses TCP probes and adds no bytes to the instruments' serial streams.
+
+For the owner-run check, start with live synthetic navigation data, a configured quiet port and the stock OpenSoar Becker entry. For each interruption, sample `/api/status` `tcp_clients` every 2 s and use `/api/log` to time the bridge's return and new connections. Check that each device reconnects without app input and that fresh data returns on fed ports. For an app change, also verify that a quiet healthy port stays connected and that other app traffic still has internet access with mobile data on. S179 and S182 cover the emulator's NAT and PC link behavior. Use a real phone for this acceptance check.
 
 ---
 

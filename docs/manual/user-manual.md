@@ -35,7 +35,7 @@ Switch on the avionics supply. The bridge first looks for its stored network (se
 | Password | `BridgeTom-setup` by default ([logins](#logins)) |
 | Bridge address | `10.10.10.10` |
 
-On Android, answer the prompt to stay connected without internet with **yes**.
+On Android, if asked, choose **Stay connected**. If the phone joins the hotspot but cannot open the bridge page, switch **Mobile data** off and leave Wi-Fi on. See [troubleshooting](#troubleshooting).
 
 <a id="logins"></a>
 
@@ -116,8 +116,8 @@ Baud rate and serial frame changes apply at once, without a trial.
 | Power cut | Keeps the settings, the [lifetime record](../../firmware/bridge/README.md#lifetime-record) and the saved log. The web log and the supply voltage chart start empty |
 | Several apps on Zander or FLARM | Up to 4 apps at once. An app that falls behind skips data and catches up; one that takes no data for 60 s is closed |
 | Becker port | One app at a time owns the radio. A second one is refused until the first closes |
-| Phone leaves the hotspot | Its connections close at once, so OpenSoar can reconnect when the phone is back |
-| Phone gone on the network, or out of range | Its connections are closed after about 15 s, also on a quiet port, so app slots do not fill up |
+| Phone leaves the hotspot | The Becker port releases that phone's connection as soon as the bridge sees it leave |
+| Phone vanishes while the bridge keeps running | The bridge closes unresponsive connections after about 15 s, including on quiet ports |
 | Supply below 11.5 V for 10 s | Warning in the web log; forwarding continues |
 | Chip sensor at 100 °C for 1 min (before the [offset](#chip-calibration)) | Warning in the web log; forwarding continues. The chip runs hotter than the air in the housing |
 
@@ -166,10 +166,9 @@ The bridge subtracts the room temperature from its earliest reading of this star
 | --- | --- | --- |
 | Hotspot `WiFi-BridgeTom` not visible | The bridge found its stored network, or is still joining | Wait for the join time. On the bench, open `http://wifi-bridgetom.local/` instead |
 | Need the hotspot on the bench | The stored network is in range | Switch the network off, or change the network name on the settings page; the change runs on [trial](#trial) and comes back by itself |
-| Phone on the hotspot, page does not open | Android sends the request over mobile data | Answer *stay connected* with yes and type `http://10.10.10.10/`. If it still fails, switch mobile data off |
-| Apps stay on *connecting* after the phone rejoined the hotspot | Mobile data is on: Android sends app traffic over mobile data, often without asking | Switch mobile data off; the apps reconnect within seconds. In flight, keep mobile data off |
-| Phone joins the home Wi-Fi instead of the hotspot | Android prefers a known network with internet | Turn off *auto-connect* for that network on the bench |
-| Network mode: apps show *no data* after the bridge restarted | The phone stayed on the network and keeps its old connections | Press *Reconnect* on each device in the app |
+| Phone rejoins the hotspot but the status page or app stays disconnected | Android can use mobile data for app traffic even while Wi-Fi is associated (S190, S192) | If prompted, choose **Stay connected**. If the page still fails or the prompt never appears, switch **Mobile data** off, leave Wi-Fi on and retry `http://10.10.10.10/`. Keep mobile data off while using the hotspot on an affected phone |
+| Phone joins another Wi-Fi network after a bridge restart in hotspot mode | Android auto-joined a saved network | Turn off *auto-connect* for the competing network during the bench check |
+| Network mode: status page opens after power returns, but devices that were receiving now show *No data* | The app may still hold old TCP connections (S190, S193–S195) | In the app, go to **Menu → Config → Devices**, select each affected bridge device and press **Reconnect**. Check that fresh data returns on the active feeds |
 | Settings changed back by themselves | *Keep* was not pressed in time | Save again, reconnect and press *Keep* |
 | OpenSoar cannot connect to the radio | Another device already owns the Becker port | Close OpenSoar on the other device |
 | No green dot for Zander or FLARM | Wrong baud rate, or the instrument is off | Press **Detect** on the settings page; check the [wiring](../hardware/wiring.md#overview) |
