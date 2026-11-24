@@ -81,6 +81,42 @@ WiFiServer* server[NUM_COM] = {&server_0, &server_1};
 WiFiClient TCPClient[NUM_COM][MAX_NMEA_CLIENTS];
 #endif
 
+#ifdef ESP32
+// Planned restart (0.5.18): every task stops accepting and closes the app sockets it owns,
+// so the apps see the close and no connection accepted meanwhile survives into the reboot
+// (S198). The loop task owns Zander, FLARM and Becker, the status task the voltage port.
+static volatile bool appsClosing = false;       // a restart follows: stop accepting, close apps
+static volatile bool navAppsClosed = false;     // loop task done
+static volatile bool supplyAppsClosed = false;  // status task done
+static volatile int navAppsClosedN = 0, supplyAppsClosedN = 0;
+
+// Accept what is pending (hasClient() may hold an accepted socket that end() would leave
+// open), close it, stop listening, then send a FIN on every app socket of this server.
+static int closeServerApps(WiFiServer& srv, WiFiClient* clients, int count) {
+    int closed = 0;
+    for (int i = 0; i < 8 && srv.hasClient(); i++) {
+        WiFiClient c = srv.accept();
+        if (c.fd() >= 0 && shutdown(c.fd(), SHUT_RDWR) == 0) closed++;
+        c.stop();
+    }
+    srv.end();
+    for (int i = 0; i < count; i++) {
+        const int fd = clients[i].fd();
+        if (fd >= 0 && shutdown(fd, SHUT_RDWR) == 0) closed++;
+    }
+    return closed;
+}
+
+// Loop task only.
+static void closeNavApps() {
+    if (navAppsClosed) return;
+    int closed = 0;
+    for (int num = 0; num < NUM_COM; num++) closed += closeServerApps(*server[num], TCPClient[num], MAX_NMEA_CLIENTS);
+    navAppsClosedN = closed;
+    navAppsClosed = true;
+}
+#endif
+
 uint8_t buf1[NUM_COM][BUFFERSIZE];
 uint8_t buf2[NUM_COM][BUFFERSIZE];
 
@@ -561,7 +597,7 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
         ArduinoOTA.onEnd([]() {
             LOGI(LOG_SYSTEM, "Firmware update received, restarting");
 #ifdef STORED_SETTINGS
-            closeAppsBeforeRestart();  // apps reconnect to the new firmware by themselves
+            closeAppsBeforeRestart(true);  // loop task; apps reconnect to the new firmware by themselves
 #endif
         });
         ArduinoOTA.onProgress([](unsigned int progress, unsigned int total) {
@@ -634,6 +670,13 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
 #endif
 
     void loop() {
+#ifdef ESP32
+        if (appsClosing) {  // a planned restart from the status task: no more accepts or forwarding
+            closeNavApps();
+            delay(10);
+            return;
+        }
+#endif
 #ifdef FALLBACK_TEST
         revertIfIdle();
 #endif

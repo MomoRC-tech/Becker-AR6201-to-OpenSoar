@@ -28,30 +28,23 @@ static bool settingsAuth() { return true; }
 // The app ports stop listening first: an app reconnects within a fraction of a second
 // of the close, and that new connection would die unnoticed with the restart (S198);
 // refused, the app tries again after the restart.
-// Only shutdown() on the sockets, which lwIP allows from any task; the client objects
-// stay with the task that owns them, and the restart follows.
-static void closeAppsBeforeRestart() {
-    for (int num = 0; num < NUM_COM; num++) server[num]->end();
-    supplyServer.end();
-    int closed = 0;
-    for (int num = 0; num < NUM_COM; num++)
-        for (int cln = 0; cln < MAX_NMEA_CLIENTS; cln++) {
-            const int fd = TCPClient[num][cln].fd();
-            if (fd >= 0 && shutdown(fd, SHUT_RDWR) == 0) closed++;
-        }
-    for (int cln = 0; cln < MAX_NMEA_CLIENTS; cln++) {
-        const int fd = supplyApps[cln].client.fd();
-        if (fd >= 0 && shutdown(fd, SHUT_RDWR) == 0) closed++;
-    }
-    if (closed) {
-        LOGI(LOG_SYSTEM, "Restart: %d app connection(s) closed", closed);
-        delay(300);  // let the FINs go out
-    }
+// Each task closes what it owns (closeNavApps in the loop task, closeSupplyApps in the
+// status task), so no accept() runs on a closed listener and no pending connection is
+// missed; the calling task does its part and waits up to 1 s for the other.
+static void closeAppsBeforeRestart(bool inLoopTask) {
+    appsClosing = true;
+    if (inLoopTask) closeNavApps();
+    else closeSupplyApps();
+    const uint32_t start = millis();
+    while (!(navAppsClosed && supplyAppsClosed) && millis() - start < 1000) delay(5);
+    LOGI(LOG_SYSTEM, "Restart: %d app connection(s) closed%s", navAppsClosedN + supplyAppsClosedN,
+         navAppsClosed && supplyAppsClosed ? "" : " (one task did not answer in 1 s)");
+    delay(300);  // let the FINs go out
 }
 
-static void restartSoon() {
+static void restartSoon() {  // status task (web handlers)
     delay(800);  // let the answer reach the phone
-    closeAppsBeforeRestart();
+    closeAppsBeforeRestart(false);
     lifetimeSaveNow();
     ESP.restart();
 }
@@ -295,7 +288,7 @@ static void settingsTrialCheck() {
         (lastAttempt == 0 || now - lastAttempt >= 5000)) {
         lastAttempt = now;
         if (!settingsRevert()) return;
-        closeAppsBeforeRestart();
+        closeAppsBeforeRestart(false);  // status task
         lifetimeSaveNow();
         delay(200);
         ESP.restart();

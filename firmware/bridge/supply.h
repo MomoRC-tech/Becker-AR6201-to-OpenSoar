@@ -210,8 +210,30 @@ static void supplySecond(float volts, float raw, bool ok) {
     supplySendSentence(volts);
 }
 
+// Status task only: the voltage port's part of a planned restart (bridge.ino, closeNavApps).
+static void closeSupplyApps() {
+    if (supplyAppsClosed) return;
+    int closed = 0;
+    for (int i = 0; i < 8 && supplyServer.hasClient(); i++) {
+        WiFiClient c = supplyServer.accept();
+        if (c.fd() >= 0 && shutdown(c.fd(), SHUT_RDWR) == 0) closed++;
+        c.stop();
+    }
+    supplyServer.end();
+    for (SupplyApp& a : supplyApps) {
+        const int fd = a.client.fd();
+        if (fd >= 0 && shutdown(fd, SHUT_RDWR) == 0) closed++;
+    }
+    supplyAppsClosedN = closed;
+    supplyAppsClosed = true;
+}
+
 // Called from the status task loop every few milliseconds.
 static void supplyTick() {
+    if (appsClosing) {  // a planned restart from the loop task (firmware update)
+        closeSupplyApps();
+        return;
+    }
     if (!settings.supplySensor) return;
     supplyServeApps();
     static uint32_t blockAt = 0, secondAt = 0;
