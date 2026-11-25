@@ -117,7 +117,6 @@ struct DialTarget {
     uint32_t ip;          // phone address as in ip4_addr (network order); 0 = entry unused
     int fd;               // connect in progress, -1 = none
     int8_t slot;          // app slot of the dialed session, -1 = none
-    int sessionFd;        // socket of that session, to see whether the slot still holds it
     uint32_t attemptAt;   // start of the last attempt
     uint32_t failures;    // attempts without a session since the last one
     uint8_t silent;       // attempts in a row without any answer (no SYN-ACK, no reset)
@@ -125,6 +124,18 @@ struct DialTarget {
 #define DIAL_SUPPLY NUM_COM        // the voltage port, dialed from the status task
 #define DIAL_PORTS (NUM_COM + 1)
 static DialTarget dialTargets[DIAL_PORTS][DIAL_TARGETS];
+
+// The port's task owns both the socket slots and their dial targets. Detach the
+// old target before replacing a slot, even if the new socket has the same fd.
+static void assignAppSocket(int port, int slot, WiFiClient& client, const WiFiClient& next) {
+    for (DialTarget& target : dialTargets[port]) {
+        if (!target.ip || target.slot != slot) continue;
+        target.slot = -1;
+        target.attemptAt = millis();
+    }
+    client = next;
+}
+
 // 0.5.22: one connect in progress at a time across both tasks (the socket budget reserves one).
 static std::atomic<int> dialInProgress{0};
 static void dialDropPending(int p, int k) {  // indices: sketch prototypes come before the struct
@@ -435,9 +446,7 @@ static int dialSlotFd(int p, int slot) { return p == DIAL_SUPPLY ? supplySlotFd(
 
 static bool dialSessionAlive(int p, int k) {
     const DialTarget& t = dialTargets[p][k];
-    if (t.slot < 0) return false;
-    const int fd = dialSlotFd(p, t.slot);
-    return fd >= 0 && fd == t.sessionFd;  // an accept may have reused the slot
+    return t.slot >= 0 && dialSlotFd(p, t.slot) >= 0;
 }
 
 static void endDialSession(int p, int k, const char* why) {
@@ -456,7 +465,6 @@ static void endDialSession(int p, int k, const char* why) {
         }
     }
     t.slot = -1;
-    t.sessionFd = -1;
 }
 
 static void dialFailed(int p, int k, int error) {
@@ -524,7 +532,6 @@ static void dialCheck(int p, int k) {
     }
     fcntl(t.fd, F_SETFL, fcntl(t.fd, F_GETFL, 0) & ~O_NONBLOCK);  // as accepted sockets; sends use MSG_DONTWAIT
     WiFiClient session(t.fd);  // owns the socket from here
-    const int fd = t.fd;
     t.fd = -1;
     dialInProgress.store(0);
     session.setNoDelay(true);
@@ -537,13 +544,12 @@ static void dialCheck(int p, int k) {
         supplyAdopt(slot, session);
     } else if (p == RADIO_COM) {
         uart_flush_input(UART_NUM_2);  // no earlier radio bytes for the new owner
-        TCPClient[RADIO_COM][0] = session;
+        assignAppSocket(p, slot, TCPClient[p][slot], session);
         trackRadioStation(session);
     } else {
-        TCPClient[p][slot] = session;
+        assignAppSocket(p, slot, TCPClient[p][slot], session);
     }
     t.slot = slot;
-    t.sessionFd = fd;
     LOGI(LOG_PORTS, "%s: dialed app %s connected (attempt %lu)", dialPortName(p), IPAddress(t.ip).toString().c_str(),
          (unsigned long)t.failures + 1);
     t.failures = 0;
@@ -635,7 +641,7 @@ static void dialAppsTick(int first, int last) {
                 dialDropPending(p, 0);
                 endDialSession(p, 0, target ? "the phone address changed" : "the network connection was lost");
             }
-            t = {target, -1, -1, -1, millis() - DIAL_RETRY_MS, 0, 0};  // dial at once
+            t = {target, -1, -1, millis() - DIAL_RETRY_MS, 0, 0};  // dial at once
         }
     }
     static uint32_t listAt[DIAL_PORTS];
@@ -666,7 +672,7 @@ static void dialAppsTick(int first, int last) {
                     else if (!dialTargets[p][k].ip && freeK < 0) freeK = k;
                 }
                 if (known >= 0 || freeK < 0) continue;
-                dialTargets[p][freeK] = {ip, -1, -1, -1, millis() - DIAL_RETRY_MS, 0, 0};  // dial at once
+                dialTargets[p][freeK] = {ip, -1, -1, millis() - DIAL_RETRY_MS, 0, 0};  // dial at once
             }
         }
     }
@@ -681,7 +687,6 @@ static void dialAppsTick(int first, int last) {
             if (t.slot >= 0) {
                 if (!dialSessionAlive(p, k)) {  // closed elsewhere (send error, stall, keepalive, app left)
                     t.slot = -1;
-                    t.sessionFd = -1;
                     t.attemptAt = millis();  // next attempt in DIAL_RETRY_MS
                     continue;
                 }
@@ -781,7 +786,7 @@ static void serviceRadioPort() {
                 LOGW(LOG_RADIO, "App %s refused: no memory for its queue", candidate.remoteIP().toString().c_str());
                 candidate.stop();
             } else {
-                owner = candidate;
+                assignAppSocket(RADIO_COM, 0, owner, candidate);
                 trackRadioStation(owner);
                 rememberPhone(owner);
                 LOGI(LOG_RADIO, "App %s took the radio port", owner.remoteIP().toString().c_str());
@@ -1181,8 +1186,8 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
                     // find free/disconnected spot
                     if (!TCPClient[num][i] || !TCPClient[num][i].connected()) {
                         if (TCPClient[num][i]) TCPClient[num][i].stop();
-                        TCPClient[num][i] = server[num]->available();
 #ifdef ESP32
+                        assignAppSocket(num, i, TCPClient[num][i], server[num]->available());
                         if (TCPClient[num][i]) appKeepalive(TCPClient[num][i]);  // 0.5.17: dead apps closed on quiet ports too
                         if (TCPClient[num][i]) {
                             if (openAppQueue(num, i)) {
@@ -1192,6 +1197,8 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
                                 TCPClient[num][i].stop();
                             }
                         }
+#else
+                        TCPClient[num][i] = server[num]->available();
 #endif
                         debug.print("New client for COM");
                         debug.print(num);

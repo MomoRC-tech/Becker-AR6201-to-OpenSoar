@@ -118,7 +118,7 @@ static int supplyFreeSlot() {
 }
 static void supplyAdopt(int slot, WiFiClient& session) {
     SupplyApp& a = supplyApps[slot];
-    a.client = session;
+    assignAppSocket(DIAL_SUPPLY, slot, a.client, session);
     a.progressAt = millis();
     a.pendLen = 0;
 }
@@ -129,19 +129,13 @@ static void supplyServeApps() {
     supplyAppSockets.store(supplyAppCount());  // 0.5.21: socket budget (bridge.ino)
     if (supplyServer.hasClient()) {
         WiFiClient c = supplyServer.accept();
-        SupplyApp* slot = nullptr;
-        for (SupplyApp& a : supplyApps)
-            if (a.client.fd() < 0) { slot = &a; break; }
-        if (slot && c.fd() >= 0 && !appBudgetFree()) {
+        const int slot = supplyFreeSlot();
+        if (slot >= 0 && c.fd() >= 0 && !appBudgetFree()) {
             refuseOverBudget("Supply voltage", c);
-            slot = nullptr;
-        }
-        if (slot && c.fd() >= 0) {
+        } else if (slot >= 0 && c.fd() >= 0) {
             appKeepalive(c);  // 0.5.17: a vanished app is closed after about 14 s
-            slot->client = c;
-            slot->client.setNoDelay(true);
-            slot->progressAt = millis();
-            slot->pendLen = 0;
+            supplyAdopt(slot, c);
+            supplyApps[slot].client.setNoDelay(true);
             LOGI(LOG_PORTS, "Supply voltage: app %s connected, %lu connected", c.remoteIP().toString().c_str(),
                  (unsigned long)supplyAppCount());
         } else {
