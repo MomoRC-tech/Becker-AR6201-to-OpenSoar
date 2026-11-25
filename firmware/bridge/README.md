@@ -325,6 +325,8 @@ It sends every byte value and a pseudo-random block over TCP and checks that the
 
 Add `--radio-owner` for step 4. It checks that a second radio client is refused, navigation keeps flowing, and the radio port accepts the next client after a clean TCP close. The [wired checks](../../docs/project/roadmap.md#firmware-plan) cover the MAX490 path and recovery after Wi-Fi loss.
 
+Since 0.5.29, both incoming and dialed Becker sessions wait for any previous UART transmission to finish, allow one UART character time for the echo, then clear buffered receive data before assigning the next owner. The forwarding loop continues servicing the other ports during this wait. Delayed replies from a real radio have their own [acceptance check](../../docs/project/open-items.md#software-and-acceptance) (S227).
+
 <a id="slow-app-check"></a>
 
 ## Slow-app check (step 5)

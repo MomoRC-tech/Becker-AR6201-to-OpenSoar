@@ -483,7 +483,8 @@ static void serviceNavApps(int num) {
 #define DIAL_SILENT_RETRY_MS 30000
 
 static void closeRadioOwner(WiFiClient& owner);
-static void trackRadioStation(const WiFiClient& owner);
+static bool radioOwnerReady();
+static bool adoptRadioOwner(WiFiClient& candidate);
 static int supplyFreeSlot();  // supply.h, status task
 static void supplyAdopt(int slot, WiFiClient& session);
 static int supplySlotFd(int slot);
@@ -500,7 +501,7 @@ static uint16_t dialTcpPort(int p) { return p == DIAL_SUPPLY ? settings.supplyTc
 
 static int dialFreeSlot(int p) {
     if (p == DIAL_SUPPLY) return supplyFreeSlot();
-    if (p == RADIO_COM) return TCPClient[RADIO_COM][0].fd() < 0 ? 0 : -1;  // one owner
+    if (p == RADIO_COM) return radioOwnerReady() ? 0 : -1;
     return freeAppSlot(p);
 }
 
@@ -598,19 +599,21 @@ static void dialCheck(int p, int k) {
     t.fd = -1;
     dialInProgress.store(0);
     session.setNoDelay(true);
-    if (!appKeepalive(session) || (p != DIAL_SUPPLY && !openAppQueue(p, slot))) {
+    if (!appKeepalive(session)) {
         session.stop();
         dialFailed(p, k, ENOMEM);
         return;
     }
     if (p == DIAL_SUPPLY) {
         supplyAdopt(slot, session);
-    } else if (p == RADIO_COM) {
-        uart_flush_input(UART_NUM_2);  // no earlier radio bytes for the new owner
-        assignAppSocket(p, slot, TCPClient[p][slot], session);
-        trackRadioStation(session);
     } else {
-        assignAppSocket(p, slot, TCPClient[p][slot], session);
+        const bool adopted = p == RADIO_COM ? adoptRadioOwner(session) : openAppQueue(p, slot);
+        if (!adopted) {
+            session.stop();
+            dialFailed(p, k, ENOMEM);
+            return;
+        }
+        if (p != RADIO_COM) assignAppSocket(p, slot, TCPClient[p][slot], session);
     }
     t.slot = slot;
     LOGI(LOG_PORTS, "%s: dialed app %s connected (attempt %lu)", dialPortName(p), IPAddress(t.ip).toString().c_str(),
@@ -808,6 +811,41 @@ static void closeRadioOwner(WiFiClient& owner) {
     portEXIT_CRITICAL(&radioStationLock);
 }
 
+enum class RadioHandover { Ready, Draining, Settling };
+static RadioHandover radioHandover = RadioHandover::Ready;
+static uint32_t radioTxIdleAt = 0;
+
+static bool radioOwnerReady() {
+    return TCPClient[RADIO_COM][0].fd() < 0 && radioHandover == RadioHandover::Ready;
+}
+
+static void serviceRadioHandover() {
+    if (TCPClient[RADIO_COM][0].fd() >= 0 || radioHandover == RadioHandover::Ready) return;
+    if (radioHandover == RadioHandover::Draining) {
+        if (uart_wait_tx_done(UART_NUM_2, 0) == ESP_OK) {
+            radioTxIdleAt = micros();
+            radioHandover = RadioHandover::Settling;
+        }
+        return;
+    }
+    // Allow one maximum UART character after TX idle for a trailing loop echo
+    // to finish on RX. Real radio reply timing is a separate acceptance check.
+    const uint32_t baud = settings.port[RADIO_COM].baud;
+    const uint32_t frameUs = (12000000u + baud - 1) / baud;  // start + 8 data + parity + 2 stop
+    if (micros() - radioTxIdleAt >= frameUs) radioHandover = RadioHandover::Ready;
+}
+
+static bool adoptRadioOwner(WiFiClient& candidate) {
+    if (!radioOwnerReady()) return false;
+    WiFiClient& owner = TCPClient[RADIO_COM][0];
+    closeRadioOwner(owner);  // Also clear tracking if the core closed the old socket.
+    if (!openAppQueue(RADIO_COM, 0)) return false;
+    uart_flush_input(UART_NUM_2);
+    assignAppSocket(RADIO_COM, 0, owner, candidate);
+    trackRadioStation(owner);
+    return true;
+}
+
 // Why the owner is gone (for the web log), or nullptr while it is still there.
 static const char* radioOwnerGone(WiFiClient& owner) {
     portENTER_CRITICAL(&radioStationLock);
@@ -847,22 +885,19 @@ static void serviceRadioPort() {
             closeRadioOwner(owner);
         }
     }
+    serviceRadioHandover();
 
     if (server[RADIO_COM]->hasClient()) {
         WiFiClient candidate = server[RADIO_COM]->accept();
         countNavAppSockets();
-        if (candidate.fd() >= 0 && owner.fd() < 0 && !appBudgetFree()) {
+        const bool ready = radioOwnerReady();
+        if (candidate.fd() >= 0 && ready && !appBudgetFree()) {
             refuseOverBudget(appPortName[RADIO_COM], candidate);
-        } else if (candidate.fd() >= 0 && owner.fd() < 0 && appKeepalive(candidate)) {
-            // Do not pass previously buffered UART bytes to the new owner.
-            uart_flush_input(UART_NUM_2);
-            closeRadioOwner(owner);  // Clear tracking if the core closed the previous socket itself.
-            if (!openAppQueue(RADIO_COM, 0)) {
+        } else if (candidate.fd() >= 0 && ready && appKeepalive(candidate)) {
+            if (!adoptRadioOwner(candidate)) {
                 LOGW(LOG_RADIO, "App %s refused: no memory for its queue", candidate.remoteIP().toString().c_str());
                 candidate.stop();
             } else {
-                assignAppSocket(RADIO_COM, 0, owner, candidate);
-                trackRadioStation(owner);
                 rememberPhone(owner);
                 LOGI(LOG_RADIO, "App %s took the radio port", owner.remoteIP().toString().c_str());
             }
@@ -871,7 +906,8 @@ static void serviceRadioPort() {
             static uint32_t refusedAt = 0, refusedMore = 0;
             if (refusedAt == 0 || (int32_t)(millis() - refusedAt) >= 30000) {  // signed, as above
                 LOGW(LOG_RADIO, "App %s refused: %s (%lu more since the last line)", candidate.remoteIP().toString().c_str(),
-                     candidate.fd() < 0 ? "connection failed" : owner.fd() >= 0 ? "another app owns the radio port" : "socket setup failed",
+                     candidate.fd() < 0 ? "connection failed" : owner.fd() >= 0 ? "another app owns the radio port"
+                                          : !ready ? "waiting for UART handover" : "socket setup failed",
                      (unsigned long)refusedMore);
                 refusedAt = millis() | 1u;
                 refusedMore = 0;
@@ -886,6 +922,7 @@ static void serviceRadioPort() {
         const int readCount = owner.read(ioBuf, BUFFERSIZE);
         if (readCount > 0) {
             const size_t sent = radio.write(ioBuf, readCount);
+            radioHandover = RadioHandover::Draining;
             STAT(RADIO_COM, toDevice, sent);
             MON(RADIO_COM, 1, ioBuf, sent);
             if (sent != (size_t)readCount) {

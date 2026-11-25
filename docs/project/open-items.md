@@ -103,14 +103,13 @@ See the [bridge firmware plan](roadmap.md#firmware-plan) and the [stock OpenSoar
 | 4 | Network settings | Network to join in the aircraft and the passwords of the new bridge; hotspot name ([ADR-05](../design/architecture.md#adr-05)), address and ports ([firmware plan](roadmap.md#firmware-plan)) are selected | App and bridge configuration |
 | 5 | Bridge reliability | Byte-exact tests both ways, bursts, slow clients, partial writes, reconnects, navigation in parallel | Software verification (M4) |
 | 6 | Physical acceptance | Check local controls and navigation on the matching bench setup. For standby tuning, verify the requested standby and unchanged active frequency on the radio | Radio acceptance |
-| 7 | Blocking UART writes | The forwarding loop waits for large TCP-to-UART writes. Measure cross-port delay at low baud, then limit TX work per pass if the delay exceeds the bench target. Check byte order and loss on the other ports. [Review](../research/reviews/2026-11-19-firmware-0.5.4-review.md#missing-checks) | Bridge reliability |
 | 8 | Sustained load and heap | Run an hour at 160 MHz with independent Zander and FLARM feeds, Becker loop and supply telemetry. Record lost bytes, worst delay, UART errors, restarts and lowest heap in hotspot and bench network mode. Earlier heap observations: S199, S211 and S220. S188 exercised Zander, Becker and voltage | Bridge reliability |
 | 9 | Settings under power loss | Interrupt a save and an automatic rollback on a spare ESP32, then check that the stored configuration is complete (S162) | Physical settings persistence |
-| 11 | Becker owner handover | The next owner received 113 and 119 bytes from the previous owner's traffic in the bench loop (S177). Repeat on the current build. Agree with the owner on a bounded handover policy, then verify that pending bytes from the old session cannot reach the next owner | Radio ownership |
+| 11 | Becker owner handover | Repeat the DE-9 loop on 0.5.29. The 0.5.27 baseline leaked 119 bytes after a mid-echo disconnect. The 0.5.29 UART drain and RX clearing passed host checks (S227). Check delayed replies separately with the matching radio | Radio ownership |
 | 12 | Remaining review checks | Code review findings 6–9: UART FIFO margin during flash writes, ROM output on the Zander transmit pin, apps held during a navigation scan, low items | Bridge reliability |
 | 13 | Phone reconnect | Normal build, one phone running stock OpenSoar with hotspot mobile data on. Network mode uses the bench PC. The second-phone background check is follow-up coverage | Step 5 acceptance |
 
-The six-connection limit is deferred for the one-phone workflow. Revisit it if normal reconnects lose data or two-phone operation becomes important.
+The six-connection limit is deferred for the one-phone workflow. Revisit it if normal reconnects lose data or two-phone operation becomes important. The general TCP-to-UART write refactor is deferred in [issue #3](https://github.com/MomoRC-tech/Becker-AR6201-to-OpenSoar/issues/3).
 
 ### 4.1 One-phone acceptance (item 13)
 
