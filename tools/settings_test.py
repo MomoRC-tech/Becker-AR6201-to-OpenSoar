@@ -103,6 +103,7 @@ def main():
     # check stops the script, so later tests find the default ports.
     reset_done = False
     try:
+        before = settings(host)  # lost with the login checks in 0.5.17
         code, body = request(host, "/api/settings", {"b2": "1234", "f1": "9X1", "t1": "10110", "nj": "500", "ha": "300.1.1.1"}, auth=pw)
         errs = json.loads(body).get("errors", {}) if code == 400 else {}
         check("invalid values refused per field", code == 400 and {"b2", "f1", "t1", "nj", "ha"} <= set(errs), f"HTTP {code}, fields {sorted(errs)}")
