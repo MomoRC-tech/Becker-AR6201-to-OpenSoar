@@ -67,7 +67,15 @@ SoftRF provides a reference for sending FLARM sentences to stock OpenSoar over B
 | Bounded transmit queue and paced notifications | Isolate the BLE reader from the Wi-Fi forwarding loop. Count overflow and size the send rate against sustained FLARM input. SoftRF’s pacing falls short of a continuous 19,200-baud 8N1 feed (S165). |
 | Phone setup illustrated in the navigation app | Capture the settings and incoming data during the existing [stock OpenSoar phone checks](../../firmware/bridge/README.md#slow-app-check). |
 
-The Classic Bluetooth build exceeded static RAM (S166). A BLE-only build needs its own measurements.
+### 4.1 XCVario and shared live data
+
+XCVario combines its own sensor sentences and FLARM GPS and traffic on one Bluetooth stream. XCSoar uses the XCVario driver for the sensor sentences and its common parser for FLARM. The manual uses a dedicated connection for radio control (S216).
+
+For the bridge, one **Zander / SDI** entry is a candidate for Zander and FLARM live data. The bridge could also send its voltage as an LK8EX1 sentence in that stream. Becker tuning needs a separate bidirectional connection to the stock AR62xx driver (S217).
+
+### 4.2 Wi-Fi or BLE at boot
+
+Starting one stack at a time avoids simultaneous runtime heap use. A single image with both modes still has to fit static RAM and the OTA slot. Check with NimBLE and the current bridge baseline (S166, S218).
 
 ---
 
