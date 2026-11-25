@@ -42,7 +42,7 @@ The hotspot has no internet. The phone keeps its mobile internet; the bridge rea
 - [ ] For mobile internet on the hotspot (R20): switch the phone's **Wi-Fi off and on once**. Until then the phone sends its internet traffic to the hotspot and has no internet; after the automatic rejoin it uses mobile data again. The instrument data does not depend on this step.
 
 > [!TIP]
-> After this setup, never tap `WiFi-BridgeTom` in the Wi-Fi list. A network picked by hand becomes the phone's main network for that connection, and mobile internet stops until the next automatic rejoin. If the phone is not on the hotspot, switch Wi-Fi off and on instead.
+> After this setup, never tap `WiFi-BridgeTom` in the Wi-Fi list. A network picked by hand becomes the phone's main network for that connection, and mobile internet stops until the next automatic rejoin. If the phone is not on the hotspot, switch Wi-Fi off and on instead. Keep OpenSoar on screen: with the screen locked, Android rejoins the hotspot only after unlocking (S215).
 
 <a id="logins"></a>
 
