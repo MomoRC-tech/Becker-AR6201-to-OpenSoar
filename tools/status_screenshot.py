@@ -173,7 +173,7 @@ def browser() -> str:
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("host", help="bridge address")
-    ap.add_argument("--height", type=int, default=2650, help="status page height in CSS pixels")
+    ap.add_argument("--height", type=int, default=2950, help="status page height in CSS pixels")
     args = ap.parse_args()
 
     page = get(args.host, "/").decode("utf-8")
@@ -194,7 +194,8 @@ def main() -> None:
     for port, (rx, tx, ago) in zip(status.get("ports", []), ((1843200, 0, 180), (2211840, 0, 240), (5120, 5120, 900))):
         # Demo traffic, as in flight: every device sends and OpenSoar is connected; bench values vary from run to run.
         port.update(bytes_from_device=rx, bytes_to_device=tx, last_data_ms_ago=ago, tcp_clients=1,
-                    uart_errors=0, short_writes=0)
+                    uart_errors=0, short_writes=0, dial=[{"ip": "10.10.10.2", "state": "connected", "attempts": 0}])
+    status["supply"]["dial"] = [{"ip": "10.10.10.2", "state": "connected", "attempts": 0}]
     if "boot_samples" in status.get("chip_temp", {}):
         # Synthetic uncorrected readings for the startup table in public screenshots.
         status["chip_temp"]["boot_samples"] = [
@@ -216,6 +217,7 @@ def main() -> None:
     page = page.replace('<section class="set"><details>', '<section class="set"><details open>', 1)
     page = page.replace('id="lt" hidden><details>', 'id="lt" hidden><details open>', 1)
     page = page.replace('id="bootTemps" hidden><details>', 'id="bootTemps" hidden><details open>', 1)
+    page = page.replace("<details><summary>Details</summary>", "<details'+(n?'':' open')+'><summary>Details</summary>", 1)  # Zander details
 
     shoot(page, image, IMAGES / "status-page.png", args.height)
 

@@ -7,7 +7,7 @@
 How to connect the bridge to OpenSoar, how it behaves and what to do when something looks wrong.
 
 > [!NOTE]
-> **Status:** describes bridge firmware 0.5.24 on the bench bridge (the bridge dials the app in hotspot and network mode, [step 4a](../project/roadmap.md#firmware-plan)). Hotspot mode passed on the owner's Pixel: Wi-Fi off/on, restart and hard power cuts (S215, S220). Network mode bench-tested with the PC as phone (S219). A phone in network mode and a second phone are still open ([roadmap](../project/roadmap.md#work-packages)).
+> **Status:** describes bridge firmware 0.5.26 on the bench bridge (the bridge dials the app in hotspot and network mode, [step 4a](../project/roadmap.md#firmware-plan)). Hotspot mode passed on the owner's Pixel: Wi-Fi off/on, restart and hard power cuts (S215, S220). Network mode is bench-tested with the PC as phone (S219). A second phone is still open ([roadmap](../project/roadmap.md#work-packages)).
 
 <a href="#quick-start"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-manual-user-manual-1-dark.svg"><img src="../images/nav/menu-manual-user-manual-1.svg" alt="1 · Quick start" height="30"></picture></a> <a href="#behaviour"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-manual-user-manual-2-dark.svg"><img src="../images/nav/menu-manual-user-manual-2.svg" alt="2 · How it behaves" height="30"></picture></a> <a href="#web-pages"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-manual-user-manual-3-dark.svg"><img src="../images/nav/menu-manual-user-manual-3.svg" alt="3 · Web pages" height="30"></picture></a> <a href="#troubleshooting"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-manual-user-manual-4-dark.svg"><img src="../images/nav/menu-manual-user-manual-4.svg" alt="4 · Troubleshooting" height="30"></picture></a> <!-- page-menu -->
 
@@ -143,7 +143,7 @@ Open them in the phone's browser at `http://10.10.10.10/` (hotspot, with mobile 
 
 | Page | Address | What it shows | Password |
 | --- | --- | --- | --- |
-| Status | `/` | Firmware, uptime, Wi-Fi signal; one row per device with a green dot while data arrives, baud rate, port, connected apps, errors; *All settings* | — |
+| Status | `/` | Firmware, uptime, Wi-Fi signal; one row per device with a green dot while data arrives, baud rate, port, connected apps, errors; with no app connected, whom the bridge dials and why it is not connected yet (*app not listening*: OpenSoar has no *TCP port* entry for this port or is closed); *All settings* | — |
 | <a id="settings"></a>Settings | `/settings` | One section per topic, opened from the menu at the top; *n changed* marks unsaved edits, *check* a refused field. Device profile, baud, frame and port per device, each port with the matching OpenSoar entry; network, join time and phone address; hotspot; supply voltage; chip temperature offset ([calibration](#chip-calibration)). **Detect** finds the baud rate on the Zander and FLARM inputs. **Save and restart**, **Keep**, **Restart bridge**, **Reset to defaults** | — |
 | Data monitor | `/monitor` | The data passing each device, as text or hex; pause and download | — |
 | Web log | `/log` | What the bridge did since the last power cut | — |
