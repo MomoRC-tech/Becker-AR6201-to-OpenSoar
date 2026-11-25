@@ -64,6 +64,7 @@ import threading
 import time
 import urllib.request
 
+from bridge_loop_test import drain
 from uno_bench import FEED_BAUD, FEED_FORMAT, UnoBench
 
 ZANDER_TCP, FLARM_TCP, RADIO_TCP = 10110, 2000, 4352
@@ -86,15 +87,6 @@ def tcp(host: str, port: int, rcvbuf: int = 0) -> socket.socket:
         sock.close()
         raise
     return sock
-
-
-def drain(sock: socket.socket) -> None:
-    sock.settimeout(0.3)
-    try:
-        while sock.recv(4096):
-            pass
-    except (socket.timeout, BlockingIOError):
-        pass
 
 
 def get_json(host: str, path: str) -> dict:
