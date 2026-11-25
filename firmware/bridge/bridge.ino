@@ -239,24 +239,55 @@ static void refuseOverBudget(const char* port, WiFiClient c) {
 static void lastPhonePersistTick();  // status task
 #endif
 
-#ifdef PROTOCOL_TCP
-// Step 4a increment 4: ,"dial":[{"ip":..,"state":..,"attempts":n},..] for one port (status task;
-// the loop task changes the entries meanwhile, so a line can mix two passes: display only).
+#if defined(ESP32) && defined(PROTOCOL_TCP)
+struct DialStatus {
+    uint32_t ip;
+    uint32_t attempts;
+    const char* state;
+};
+
+static DialStatus dialStatus[DIAL_PORTS][DIAL_TARGETS];
+static portMUX_TYPE dialStatusLock = portMUX_INITIALIZER_UNLOCKED;
+
+// Each task publishes only the ports it owns. The lock protects the copy and
+// is released before the status task formats JSON or writes to the network.
+static void publishDialStatus(int first, int last) {
+    static uint32_t publishedAt[DIAL_PORTS];
+    const uint32_t now = millis();
+    if (now - publishedAt[first] < 100) return;
+    publishedAt[first] = now;
+
+    for (int p = first; p <= last; ++p) {
+        DialStatus snapshot[DIAL_TARGETS];
+        for (int k = 0; k < DIAL_TARGETS; ++k) {
+            const DialTarget& t = dialTargets[p][k];
+            const char* state = t.slot >= 0                     ? "connected"
+                                : t.fd >= 0                     ? "connecting"
+                                : t.failures == 0               ? "waiting"
+                                : t.lastError == DIAL_ERR_REFUSED ? "refused"
+                                : t.lastError == DIAL_ERR_SILENT  ? "no answer"
+                                                                  : "error";
+            snapshot[k] = {t.ip, t.failures, state};
+        }
+        portENTER_CRITICAL(&dialStatusLock);
+        memcpy(dialStatus[p], snapshot, sizeof(snapshot));
+        portEXIT_CRITICAL(&dialStatusLock);
+    }
+}
+
 static void dialJson(String& out, int p) {
+    DialStatus snapshot[DIAL_TARGETS];
+    portENTER_CRITICAL(&dialStatusLock);
+    memcpy(snapshot, dialStatus[p], sizeof(snapshot));
+    portEXIT_CRITICAL(&dialStatusLock);
+
     out += ",\"dial\":[";
     bool first = true;
-    for (int k = 0; k < DIAL_TARGETS; k++) {
-        const DialTarget t = dialTargets[p][k];
+    for (const DialStatus& t : snapshot) {
         if (!t.ip) continue;
-        const char* state = t.slot >= 0                       ? "connected"
-                            : t.fd >= 0                       ? "connecting"
-                            : t.failures == 0                 ? "waiting"
-                            : t.lastError == DIAL_ERR_REFUSED ? "refused"
-                            : t.lastError == DIAL_ERR_SILENT  ? "no answer"
-                                                              : "error";
         char b[96];
         snprintf(b, sizeof(b), "%s{\"ip\":\"%s\",\"state\":\"%s\",\"attempts\":%lu}", first ? "" : ",",
-                 IPAddress(t.ip).toString().c_str(), state, (unsigned long)t.failures);
+                 IPAddress(t.ip).toString().c_str(), t.state, (unsigned long)t.attempts);
         out += b;
         first = false;
     }
@@ -746,6 +777,7 @@ static void dialAppsTick(int first, int last) {
             if (millis() - t.attemptAt >= (t.silent >= DIAL_SILENT_LIMIT ? DIAL_SILENT_RETRY_MS : DIAL_RETRY_MS)) dialStart(p, k);
         }
     }
+    publishDialStatus(first, last);
 }
 
 static void trackRadioStation(const WiFiClient& owner) {
