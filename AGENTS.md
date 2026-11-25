@@ -42,6 +42,8 @@ Bridge web pages: after any change to the status, settings or monitor page, run 
 
 For documentation-only work, check consistency, relative links/anchors, source support and whitespace; do not build applications or run device tests. State what was not tested. Simulation and static analysis are not physical acceptance.
 
+For bench serial work, check the [Uno fixture guide](firmware/uno_bench/README.md) for the available RS-232 sources, wiring and test commands.
+
 Update the document that owns the information: user manual for how the bridge behaves and how to use it; build guide for the build order; requirements for requirements/assumptions/risks; existing-installation for the installed inventory; open-items for missing evidence and owners; sources for evidence; architecture for decisions; wiring for signal pinning and bench bring-up; power for supply, grounding and current assumptions; modules for parts; housing for mechanical design, part sizes and connector mounting; roadmap for work status. Dated reviews in docs/research/reviews are frozen records. Keep documentation current. Remove superseded selections, guidance, references and assets once they no longer support the current project state. Use Git history for previous versions. Keep one concise verification summary per package, with detailed evidence only where useful.
 
 ## Writing style

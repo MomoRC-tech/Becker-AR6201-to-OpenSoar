@@ -2,6 +2,15 @@
 
 Bench fixture for [issue #2](https://github.com/MomoRC-tech/Becker-AR6201-to-OpenSoar/issues/2) and [WP6 phone acceptance](../../docs/project/roadmap.md#firmware-plan). The current setup forwards PC-selected bytes to one bridge RS-232 input at 19,200 baud, 8N1.
 
+## Bench equipment
+
+| Source | PC test option |
+| --- | --- |
+| USB–RS-232 adapter | Raw serial via `--feed` |
+| Arduino Uno and MAX3232 | Framed serial via `--uno-feed`. The verified D9 feed is wired to Zander on DE-9 pin 1 ([S214](../../docs/research/sources.md#source-register)) |
+
+The harness accepts two raw feeds or a single framed Uno feed. The relay is prepared for later use and remains uninstalled.
+
 ## Feed-only setup
 
 With the Uno unplugged, remove the RESET-to-GND jumper and move the MAX3232 **TTL input** lead from **D0 to D9**. Leave D8 and D7 open. Keep the existing [MAX3232 power and DE-9 connections](../../docs/hardware/wiring.md#bus-test).
@@ -12,10 +21,10 @@ Use the Uno target (`arduino:avr:uno`), AltSoftSerial 1.4, and Python with `pyse
 arduino-cli compile --upload --port COM4 --fqbn arduino:avr:uno firmware/uno_bench
 ```
 
-Only one program opens the Uno COM port. For a byte-exact wired check, select the corresponding DE-9 input. This example uses FLARM and the bridge’s hotspot address.
+Only one program opens the Uno COM port. For a byte-exact wired check, select the corresponding DE-9 input. This example uses the verified Zander connection and the bridge’s hotspot address.
 
 ```powershell
-python tools/bridge_acceptance_test.py 10.10.10.10 --uno-feed COM4 --input flarm --baseline
+python tools/bridge_acceptance_test.py 10.10.10.10 --uno-feed COM4 --input zander --baseline
 ```
 
 The replay command sends a synthetic NMEA clip once per second until Ctrl+C. Use a file of up to 1,536 bytes with valid checksums and CR/LF line endings.
