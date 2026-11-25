@@ -41,7 +41,7 @@ Related: 🔌 [Signal wiring](../hardware/wiring.md) · ⚡ [Power and grounding
 | Supply | 12 V battery → supply fuse → Hobbywing UBEC at 5 V → ESP32 and MAX490; ESP32 3.3 V → RS-232 modules |
 | Supply voltage sense | 100 kΩ / 10 kΩ divider from the 12 V input to GPIO34 (ADC1) ([circuit](../hardware/power.md#voltage-sense)) |
 | Firmware | Yuri ESP-Serial-Bridge 130f731 as baseline ([ADR-02](#adr-02)), built in the steps of the [firmware plan](../project/roadmap.md#firmware-plan) |
-| OpenSoar review baseline | 7.46.26, `b2e745cfddfe0150f6ed7db467ac18c321b38d01` (S09); the installed build is not known yet |
+| OpenSoar review baseline | 7.46.26, `b2e745cfddfe0150f6ed7db467ac18c321b38d01` (S09) |
 
 Pin-by-pin details: [signal wiring](../hardware/wiring.md) and [power and grounding](../hardware/power.md). Today's installation: [existing installation](../project/existing-installation.md).
 

@@ -38,7 +38,7 @@ What is already in the glider (a DG200): Zander and FLARM → an ESP32 Wi-Fi bri
 
 ## 2. 🌐 OpenSoar configuration
 
-As reported by Tom (S21):
+As reported by Tom (S21, S213):
 
 | Device | TCP endpoint | OpenSoar driver |
 | --- | --- | --- |
@@ -48,7 +48,7 @@ As reported by Tom (S21):
 
 All three are *TCP client* entries; the Becker entry is disabled. The phone has no internet while it is on the bridge's Wi-Fi (S213).
 
-The installed OpenSoar build and the role of the OpenVario are not known. The review baseline is OpenSoar 7.46.26 (S09); which Zander fields it uses is in S24.
+S24 lists the Zander fields used by the review baseline, OpenSoar 7.46.26 (S09).
 
 ---
 

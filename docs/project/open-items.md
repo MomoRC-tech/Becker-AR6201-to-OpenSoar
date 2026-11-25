@@ -85,7 +85,6 @@ Facts about the equipment already in the aircraft, mostly from Tom. What is know
 | 6 | Existing ESP32 | Board, firmware, configuration | Tom | Backup record |
 | 7 | Existing power | UBEC jumper/output, board input, grounding | Tom / owner | Backup record |
 | 8 | Navigation baseline | Data types, update gaps, reconnect behaviour of today's setup | Owner / Tom | Acceptance limits for the new bridge |
-| 9 | OpenSoar | Installed build, driver and endpoint settings, role of the OpenVario | Owner / Tom | App configuration |
 | 10 | Radio ground | Whether both P1 ground pins (13, 25) run to the battery minus, and whether the radio's grounding bolt is connected | Tom / owner | Confirms the radio cannot return its current through the bridge ([ground](../hardware/power.md#ground)) |
 
 ---
@@ -100,7 +99,7 @@ See the [bridge firmware plan](roadmap.md#firmware-plan) and the [stock OpenSoar
 | :-: | --- | --- | --- |
 | 1 | Protocol | Authoritative framing, ACK/NAK, CRC rules, status requests, channel vectors ([details](../research/becker-driver.md#protocol-details)) | Standby tuning |
 | 2 | Radio configuration | Matching manual; serial settings (the bridge uses 9600 8N1 until confirmed, [check](../research/reviews/2026-11-17-bridge-projects-check.md#other-projects)); remote control and Tandem mode enabled, as LXNAV and SD-Link require; this changes how the radio behaves, so the owner or installer decides before it is switched on | Port configuration |
-| 3 | Application integration | Record the installed OpenSoar version and check its built-in AR62xx driver over TCP alongside navigation | Application acceptance |
+| 3 | Application integration | Check the stock OpenSoar AR62xx driver over TCP alongside navigation | Application acceptance |
 | 4 | Network settings | Network to join in the aircraft and the passwords of the new bridge; hotspot name ([ADR-05](../design/architecture.md#adr-05)), address and ports ([firmware plan](roadmap.md#firmware-plan)) are selected | App and bridge configuration |
 | 5 | Bridge reliability | Byte-exact tests both ways, bursts, slow clients, partial writes, reconnects, navigation in parallel | Software verification (M4) |
 | 6 | Physical acceptance | Check local controls and navigation on the matching bench setup. For standby tuning, verify the requested standby and unchanged active frequency on the radio | Radio acceptance |
