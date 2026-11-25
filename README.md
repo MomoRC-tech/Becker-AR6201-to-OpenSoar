@@ -24,7 +24,7 @@ A small ESP32 box in the glider collects data from the cockpit instruments and s
 | --- | --- |
 | 📈 Glider computer: Zander ZS1 | Flight and navigation data |
 | 📡 Collision warning: Classic FLARM | Traffic and position |
-| 📻 Radio: Becker AR6201 | The built-in OpenSoar Becker driver reaches the radio over its own port; standby tuning follows once the protocol is confirmed |
+| 📻 Radio: Becker AR6201 | Dedicated TCP port, verified with a bench loop. The stock OpenSoar driver is selected for the [remaining radio checks](docs/project/open-items.md#software-and-acceptance) |
 
 <a href="docs/manual/user-manual.md#web-pages"><img src="docs/images/status-start.png" width="220" align="right" alt="Status page on a phone: Zander, FLARM and Becker receiving, one app connected to each"></a>
 
@@ -39,7 +39,7 @@ Check and set it up from the phone's browser: live status per device, settings, 
 ## 2. 🚦 Status
 
 > [!NOTE]
-> **Status:** the bench bridge is built and passed all bench checks; the firmware is in bench acceptance. Aircraft installation comes later. Details: [roadmap](docs/project/roadmap.md#work-packages).
+> **Status:** bench hardware bring-up is complete. The normal firmware build still needs one-phone and sustained wired acceptance. Aircraft installation comes later. [Roadmap](docs/project/roadmap.md#work-packages)
 
 ---
 

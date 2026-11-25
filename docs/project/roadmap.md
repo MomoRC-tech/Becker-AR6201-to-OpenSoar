@@ -7,7 +7,7 @@
 The single work queue: which work package comes next and what finishes it.
 
 > [!NOTE]
-> **Status:** WP3 is complete (S175). **Current focus:** WP6 step 5 phone acceptance. The one-hour three-port run passed (S188). The bench bridge runs 0.5.19: keepalive on every port (S191), app connections closed before planned restarts (S198, S201), CPU at 160 MHz against heap dips (S199); OpenSoar shows fresh data 6–9 s after every planned restart (S201); a clean one-hour run at 160 MHz and the power-cut case are open; for the power cut the owner selected the bridge-side fix (the bridge dials OpenSoar's *TCP port*, S200), which fits OpenSoar's code and documented use (S204); the owner phone check passed, also on the hotspot with mobile data on (S206). [Step 4a](#firmware-plan) increments 1 and 2 (the bridge dials all four ports, bench build 0.5.22) passed on the bench (S211, S212); on the owner's Pixel with all four ports the phone rejoined by itself after Wi-Fi off/on, a restart and three hard power cuts, every port connected ≤ 3.6 s after the join, internet kept; with the screen locked only at unlock (S209, S215). Increment 3 (bench builds 0.5.23 and 0.5.24): network mode dials the app, settings page with *Phone address* and one section per topic; bench-tested with the PC as phone (S219), hotspot mode unchanged on the Pixel (S220). Increment 4 (bench build 0.5.26): dial state per port on the status page and in `/api/status` (S223); next a normal build for the owner's upload ([open items](open-items.md#software-and-acceptance)). XCSoar recovered automatically in hotspot mode with mobile data off. Hotspot recovery with mobile data on and recovery after a power cut in network mode failed on the XCSoar phone (S190). See [open item 13](open-items.md#software-and-acceptance) for the OpenSoar checks and reconnect options. WP1 and the WP9 presets wait for the installed-equipment facts from Tom. Radio integration uses the [stock OpenSoar driver](../research/becker-driver.md#consequences).
+> **Status:** WP3 bench hardware is complete (S175). **Current focus:** WP6 one-phone acceptance on the normal build. The earlier one-hour run exercised Zander, a Becker DE-9 loop and supply voltage (S188). The sustained run with both navigation inputs and the current stock OpenSoar phone check are [open](open-items.md#software-and-acceptance). Dial status and reset recovery passed on the bench (S223). Network-mode acceptance uses the bench PC as the phone (S219).
 
 <a href="#work-packages"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-project-roadmap-1-dark.svg"><img src="../images/nav/menu-project-roadmap-1.svg" alt="1 · Work packages" height="30"></picture></a> <a href="#firmware-plan"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-project-roadmap-2-dark.svg"><img src="../images/nav/menu-project-roadmap-2.svg" alt="2 · Bridge firmware plan" height="30"></picture></a> <a href="#milestones"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-project-roadmap-3-dark.svg"><img src="../images/nav/menu-project-roadmap-3.svg" alt="3 · Milestones" height="30"></picture></a> <a href="#test-coverage"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-project-roadmap-4-dark.svg"><img src="../images/nav/menu-project-roadmap-4.svg" alt="4 · Test coverage for the software phase" height="30"></picture></a> <!-- page-menu -->
 
@@ -21,7 +21,7 @@ Related: ❓ [Open items](open-items.md) · 🎯 [Requirements](../design/requir
 
 | Package | Status | Next step | Done when |
 | --- | --- | --- | --- |
-| **WP6 Bridge firmware** | 🟡 **Current focus** — step 4 passed (S150, S153). Step 5: wired feed and Becker loop passed (S159); watchdog fix and recovery checks (S181, S182); heap fix (S186); one-hour run passed (S188); phone checks with XCSoar (S190, S191, S198); restart and heap checks (S197–S199) | OpenSoar phone reconnect, AR62xx and second-phone checks ([open item 13](open-items.md#software-and-acceptance)) | Radio path byte-exact, single owner, navigation unaffected; phone signal readable on the status page in hotspot mode ([R10](../design/requirements.md#requirements)) |
+| **WP6 Bridge firmware** | 🟡 **Current focus** | Run the [one-phone hotspot check](open-items.md#software-and-acceptance) and the sustained bench run with both navigation inputs | Fresh app data returns automatically and the wired paths pass together. See [step 5](#firmware-plan) |
 | WP1 Installed equipment | 🟡 Photos and equipment report reviewed ([review](../research/reviews/2026-11-09-installation-claims.md)) | Get the [installed-equipment facts](open-items.md#installed-equipment) from Tom | Inventory, connector map and navigation baseline complete |
 | WP0 Documentation | ✅ Done — [user manual](../manual/user-manual.md), [build guide](../hardware/build-guide.md) and [documentation index](../README.md) with generated navigation graphics (`tools/nav_graphics.py`) | Update the manual with the OpenSoar phone checks (WP6 step 5) | — |
 | WP3 Hardware | ✅ Done — replacement roof-grille hood CAD and slice checked (S205), [physical comparison pending](open-items.md#housing). Original [housing](../hardware/housing.md) accepted for the bench prototype (S93, S156); bench bridge built and all [bench checks](../hardware/wiring.md#bring-up) 1–13 passed or closed by the owner (S141–S161, S175) | — | Wiring design complete, bench bridge built and all bench checks passed |
@@ -97,13 +97,13 @@ flowchart LR
 | Hotspot address | 10.10.10.10, as on today's bridge, so the OpenSoar device entries fit both bridges ([ADR-05](../design/architecture.md#adr-05)) |
 | TCP ports | Today's ports, so the OpenSoar device entries stay the same: Zander 10110, FLARM 2000, Becker 4352 ([configuration](existing-installation.md#configuration)). Supply voltage 4353, new ([step 3d](#supply-voltage)) |
 | Becker (RS-422) | Both ways on UART2 ↔ its own TCP port ([ADR-01](../design/architecture.md#adr-01)). TCP only. One client owns the radio. The bridge closes the radio owner's socket when it sees that phone leave the hotspot. Short TCP keepalive applies to every app port (S191). On write overflow or a stall, the bridge closes the radio session to preserve frame integrity |
-| Bridge dials the app | Self-healing after a bridge power cut and after a hotspot rejoin with mobile data on: the bridge also dials the app's *TCP port* entries, which replace a stale session at once (S200, S204, S206). Same port numbers on the phone as on the bridge; today's server ports stay. One outgoing connection per port and phone, a new attempt every 3 s, never given up; keepalive as on the server ports. Phone address: in hotspot mode every phone on the hotspot, within the limit of 4 apps per port; in network mode the address set on the settings page, else the last phone address seen (saved on the ESP32), else the gateway (phone hotspot). A dialed session counts as one more client: the Becker owner rule stays first come. Settings page: optional phone address. Status page and `/api/status`: dial target and state per port. Manual: *TCP port* entries, *TCP client* entries as the alternative |
-| Slow apps | No app can hold up the bridge: writes to apps never wait (S119). A Zander or FLARM app that falls behind, such as a phone in a Wi-Fi gap or with OpenSoar in the background, skips the data it cannot take and keeps its connection, so OpenSoar gets current data again as soon as it reads. Only an app that takes no data at all for 60 s is closed, as a dead connection. Each app's 2 kB queue is reserved only while it is connected; below 16 kB free heap, apps that took no data for 1 s get nothing new until memory recovers (S186). The radio port closes its session instead of losing frame bytes |
+| Bridge dials the app | The bridge connects to OpenSoar's *TCP port* entries so the app can replace a stale session after a power cut or Wi-Fi gap (S200, S204). [Setup](../manual/user-manual.md#connect-opensoar) · [Dial targets and retries](../../firmware/bridge/README.md#project-settings) |
+| Slow apps | Navigation apps skip data under backpressure and disconnect after 60 s without progress. Becker closes the session on overflow to preserve frame integrity. [Forwarding behavior](../../firmware/bridge/README.md#project-settings) |
 | Status page | Read-only page on port 80 plus `/api/status` as JSON ([R14](../design/requirements.md#requirements)): firmware version, uptime, Wi-Fi mode and phone signal ([R10](../design/requirements.md#requirements)), and per device the baud rate, bytes, time since last data, clients and errors. Served from its own low-priority task, so it cannot hold up forwarding. Open to everyone on the bridge's Wi-Fi while it is read-only |
 | Wi-Fi and OTA | The loader's start-up (network, then hotspot) is added as a third Wi-Fi mode next to the two upstream modes and is the project setting; OTA gets its password ([ADR-05](../design/architecture.md#adr-05)) |
 | Log output | Upstream `DEBUG` switch off, because UART0 serves the Zander. Log lines and the ESP32 system messages go to the [web log](#web-log) instead, never to a UART |
 | Kept from upstream | Everything except UDP, which the owner removed. Every further removal needs the owner's answer first; [selections](#upstream-features) below |
-| Kept simple | Arduino-ESP32 core libraries only; no file system; defaults in one header at build time, changes from the [settings page](#settings-page) stored on the ESP32; no protocol handling for forwarded data; the bridge's own voltage reading goes out on its own port ([ADR-07](../design/architecture.md#adr-07)) |
+| Kept simple | Arduino-ESP32 core libraries only. Settings stored on the ESP32, saved warnings in LittleFS. Forwarded instrument data stays separate from the bridge voltage report ([ADR-07](../design/architecture.md#adr-07)) |
 
 <a id="upstream-features"></a>
 
@@ -134,120 +134,32 @@ Each step: build, upload over Wi-Fi, check, update the owning pages, commit.
 | 3c | ✅ **Web log.** Event log page `/log` with level and source filters, Copy and Save, kept across a restart, [design](#web-log) | Bench ESP32, phone, PC | Start-up, Wi-Fi, app, radio and settings events appear with the right level and source; the filters, Copy and Save work on the phone; lines from before a restart stay readable with the reset reason; the loop test passes with the log open; nothing reaches a UART. Done (S116–S118); Copy and Save still to try on a phone |
 | 3d | ✅ **Supply voltage.** Measure the 12 V input and send it to OpenSoar on its own port, with a chart, [design](#supply-voltage). Wired bridge: XCSoar display, chart retention, sensor switch and screenshots checked (S158). Calibration survived OTA (S142). The XT30 meter check covers 12 V (S142). Bench step 13 used the supply display up to 18 V (S148) and was accepted by the owner without the meter comparison (S175). A voltage client stayed connected during the wired FLARM feed and radio loop (S159) | Standalone ESP32 with the divider on a breadboard, bench supply, multimeter, phone with XCSoar or OpenSoar (same OpenVario voltage parsing, S155) | Readings match the meter at 7, 12, 14.6 and 20 V within about ±0.1 V after calibration (error table recorded); the OpenVario device on port 4353 shows the voltage in XCSoar or OpenSoar; the chart shows the minutes since start and survives a restart; with the sensor switched off nothing is sent; calibration survives a restart and an OTA update; the loop test passes with the voltage port connected; new page screenshots |
 | 3e | **Chip temperature.** Show the ESP32's own temperature on the status page and in the web log; no shutdown, [firmware](../../firmware/bridge/README.md#chip-temperature). Standalone reading, log and loop checked (S132). The wired bridge completed a [two-hour FLARM load and cold-start reference](../../firmware/bridge/README.md#thermal-bench) (S167–S169). Pre-Wi-Fi reading and startup series verified on 0.5.9 (S170). [Per-board calibration proposal](#temperature-calibration) | Standalone ESP32, phone; wired bridge for the heat check | The page and `/api/status` show a value or *no reading*; the log has the first reading; the loop test passes; new page screenshots. In the [heat check](open-items.md#housing) the chip reading is logged next to the measured temperatures. Warning level 100 °C by owner decision, firmware 0.5.6 (S142) |
-| 3f | **Lifetime record.** Operating time, starts, highest chip temperature and lowest supply voltage kept in NVS through power cuts; shown on the status page, reset on the settings page, [firmware](../../firmware/bridge/README.md#lifetime-record). Firmware 0.5.3: records test, restart and write load checked (S134) | Standalone ESP32, phone | `tools/records_test.py` passes: password, reset, kept through a restart with one more start; values kept after pulling the USB cable; the acceptance test passes while the record is written every 2 s; new page screenshots |
-| 3g | **Saved log.** Errors, warnings and each start kept in LittleFS through power cuts, page `/saved`, cleared on the settings page, [firmware](../../firmware/bridge/README.md#saved-log). Firmware 0.5.4: records test, restart and write load checked (S135) | Standalone ESP32, phone | `tools/records_test.py` passes: start line and a warning saved, kept through a restart, clearing needs the password; lines kept after pulling the USB cable; the acceptance test passes while warnings are saved; new page screenshots |
-| 3h | ✅ **Restart from the web.** *Restart bridge* on the settings page and `POST /api/restart` for scripted tests, [firmware](../../firmware/bridge/README.md#settings-page). Firmware 0.5.11. A restart during a trial counts as a start without *Keep* | Bench bridge, PC | Wrong or missing password refused; with the password the bridge answers, restarts and comes back with the same settings and one more start; new page screenshots. Done (S178) |
+| 3f | **Lifetime record** survives power cuts. [Firmware reference](../../firmware/bridge/README.md#lifetime-record) | Bench ESP32 | Start count and record persistence checked with the write load (S134) |
+| 3g | **Saved log** keeps warnings, errors and starts through power cuts. [Firmware reference](../../firmware/bridge/README.md#saved-log) | Bench ESP32 | Save, clear and persistence checked with the write load (S135) |
+| 3h | ✅ **Restart from the web.** The settings page restarts with stored settings. A restart during a trial counts as a start without *Keep*. | Bench ESP32, PC | Settings preserved and start count advanced (S178). The owner later removed the settings login (S191) |
 | 4 | ✅ **Radio port.** Single owner with dead-owner check, counted writes. Standalone TCP ownership, clean close and byte-exact loopback checked (S114) | Wired bench bridge; [bus-level test](../hardware/wiring.md#bus-test): DE-9 breakout with the radio loop, RS-232 source; serial-feed mode in the test script | Through the radio loop every byte value, bursts and split writes return unchanged; the Zander and FLARM inputs pass the RS-232 feed; nothing arrives after a restart; a second client is refused; after the owner's Wi-Fi is cut, a new client gets the radio port within 45 s; navigation data keeps flowing. Done: radio loop, ownership, restart and dead-owner takeover (S150); RS-232 feed on both inputs, also while an app holds the radio port (S153) |
-| 4a | **Bridge dials the app.** [Plan](#firmware-plan) row *Bridge dials the app*, in four increments: (1) hotspot mode, Zander port only; (2) all four ports, Becker owner rule; (3) network mode with the address chain and the settings field; (4) status page, `/api/status`, manual and page screenshots. **Progress:** (1) and (2) bench-tested (S207, S211) and passed on the owner's phone, including hard power cuts (S209, S215); (3) bench-tested with the PC as phone (S219), hotspot regression on the owner's phone passed (S220); (4) bench-tested (S223); added on the way: hotspot DHCP without gateway, no mDNS, at most 6 app connections in all, a station that never answers dialed every 30 s (owner decisions), Wi-Fi buffer cap, self-checks (S211). See the [Bluetooth decision](#bluetooth-decision) for the Wi-Fi-off option | Bench bridge, emulator, owner phone with OpenSoar (*TCP port* entries) | Per increment: the existing acceptance and settings tests still pass. Then, never pressing *Reconnect*: after a hard power cut in hotspot mode (mobile data on; network mode on the bench only) and after a hotspot rejoin, OpenSoar shows fresh data on every port by itself; time to the bridge socket and to the first fresh sentence recorded separately ([acceptance](open-items.md#software-and-acceptance)); the AR62xx driver on a *TCP port* entry tunes the radio loop; dialing a phone without listeners costs no data on the server ports |
-| 5 | **Bench acceptance.** The [wired test script and phone procedure](../../firmware/bridge/README.md#slow-app-check) cover the [bridge tests](#test-coverage). Test slow and vanishing clients, including a second phone that stays connected with its screen off or OpenSoar in the background; Wi-Fi loss and return; one-hour run on all three ports. With OpenSoar on the phone: bridge power cycle in network and hotspot mode, and a run with mobile data on | Finished bench bridge, phone with OpenSoar | No byte errors; a client that stops reading does not delay data on the other clients or ports, a lagging navigation app keeps its connection while it makes progress, and a stalled app is closed after 60 s without progress; after each power cycle OpenSoar gets data on all three ports again without a manual reconnect; with mobile data on, all three ports connect and stay connected; results recorded; bridge part of M4 |
+| 4a | ✅ **Bridge dials the app.** Hotspot and network dialing, per-port status, early-address filtering and reset recovery. Bench evidence S211, S219 and S223. Slot reuse passed the host check (S224). | Bench bridge, stock OpenSoar | The [step 5 checks](open-items.md#software-and-acceptance) confirm the normal build on the phone |
+| 5 | **Bench acceptance.** One phone with stock OpenSoar on the hotspot. Sustained wired run with Zander and FLARM feeds, Becker DE-9 loop and supply voltage at 160 MHz. Network mode uses the bench PC. | Finished bridge, phone, two serial sources | Fresh data returns after reconnect. Under sustained load the normal readers get all expected bytes and the bridge does not restart. Record coverage in the [acceptance checklist](open-items.md#software-and-acceptance) |
 
 > [!WARNING]
 > Use the jumper loop only while GPIO16, GPIO26 and GPIO32 are not yet soldered to the MAX490 or the RS-232 modules. Once they are, the module output and the jumper would drive the same pin against each other: use the [bus-level test](../hardware/wiring.md#bus-test) at the DE-9 instead.
 
 Later, each needing its own approval: firmware upload from the browser, contributing general fixes back to [Yuri's project](https://github.com/yuri-rage/ESP-Serial-Bridge) (for example `BATTERY_SAVER` and the Arduino-ESP32 3.x `accept()` rename). Keep each such fix in its own commit so it can be offered upstream.
 
-<a id="settings-page"></a>
+### 2.4 Firmware reference
 
-### 2.4 Settings page (step 3a)
-
-> [!TIP]
-> **Selected:** settings stored on the ESP32 and changed on a password-protected page, without rebuilding the firmware. A bad Wi-Fi, hotspot or port change reverts by itself ([R15](../design/requirements.md#requirements), [storage check](../research/reviews/2026-11-17-bridge-projects-check.md#pro)).
-
-| Part | Plan |
+| Feature | Reference |
 | --- | --- |
-| Editable | Per port: baud rate, data bits, parity, stop bits, TCP port. Network to join (name, password) and join time. Hotspot name, password and address |
-| Fixed at build time | Pins; radio port rules (one owner, no Bluetooth); features; hostname; OTA password |
-| Defaults | `config.h`, with no network built in. The ESP32 stores only changed values, so an empty or erased store behaves like a fresh build |
-| Storage | One [NVS settings record](../../firmware/bridge/README.md#settings-page) holds both snapshots and the trial state. Survives restarts and OTA updates |
-| Loading | Once at start-up. Every value is checked (allowed baud rates, port range, text length); an invalid value falls back to its default and is flagged on the page |
-| Protection | HTTP basic authentication with the OTA password for the settings page and every save. The status page stays open and read-only |
-| Applying | "Save and restart" applies the change after a successful flash write. Failed writes return HTTP 503 and skip the restart |
-| Confirm or revert | Changes to Wi-Fi, hotspot or ports apply as a trial after the restart; the previous values stay stored. Without "Keep" on the settings page within 10 min, the bridge restores them and restarts. Serial-only changes apply directly |
-| Reset | "Reset to defaults" on the page clears the stored values and restarts. Full erase over USB on the bench |
-| Page | Built into the firmware like the status page and served by the same low-priority task on port 80; no file system |
-| Display | The status page shows each active value as default or changed |
-| Wi-Fi library | `WiFi.persistent(false)`, so the core keeps no second copy of the network password |
-
-<a id="data-monitor"></a>
-
-### 2.5 Data monitor (step 3b)
-
-> [!TIP]
-> **Selected:** a read-only live view of the data passing the bridge, to check data inflow and to capture radio traffic ([R16](../design/requirements.md#requirements)).
-
-| Part | Plan |
-| --- | --- |
-| Page | `/monitor`, linked from the status page and from each device's details; no password, like the status page, since any client on the bridge Wi-Fi can already read the TCP ports |
-| View | Per device the latest bytes in both directions, each line marked from or to the device with its time. Text (NMEA lines) or hex (radio frames), switchable; Pause; Download of the shown data as a text file, also for [protocol captures](open-items.md#software-and-acceptance) |
-| Collection | One ring buffer per device and direction, about 2 KB each, filled by the forwarding loop only while the page is open; no blocking, nothing written to flash |
-| Documentation | Screenshot with demo data only, since real data contains positions |
-
-<a id="web-log"></a>
-
-### 2.6 Web log (step 3c)
-
-> [!TIP]
-> **Selected:** a read-only log page built into the firmware like the data monitor ([R17](../design/requirements.md#requirements)). Not the WebSerial library: it is AGPL-3.0, needs a second web server next to port 80, and drops every line sent while no page is open, which loses the start-up.
-
-| Part | Plan |
-| --- | --- |
-| Page | `/log`, linked from the status page; no password, like the status page |
-| Levels | Error, Warning, Info, Debug |
-| Sources | Wi-Fi, Ports, Radio, Settings, System |
-| Views | **Important**: errors and warnings. **Events** (default): adds Info, for functional work. **All**: adds Debug, for debugging. One toggle per source on top. The browser remembers the choice |
-| Export | **Copy** puts the shown lines on the clipboard; **Save** downloads them as a text file. One click each, with a header line: firmware, save time and view |
-| Timestamps | Every line has its date and time. The bridge has no clock: the log page sends the phone's time, which sets the ESP32 clock and dates the earlier lines of the same start. The order of the lines is the order the bridge wrote them, and the times follow it: a correction re-dates the whole start. The clock keeps running through a restart, not a power cut |
-| Collection | Always on, in RAM: the last 96 Error, Warning and Info lines and, separately, the last 48 Debug lines, so debug chatter cannot push out events. About 16 kB |
-| Restart | The lines survive a restart, crash or watchdog reset, but not a power cut. The page marks where the bridge restarted and why |
-| Forwarding loop | Logs only rare events (radio owner changes). Counters (receive errors, short writes, connected apps, data arriving) are compared once per second by the web task: a flood of receive errors makes one line per 5 s, not one per byte |
-| System messages | ESP32 system messages (ESP-IDF log, errors only in this core build) are redirected into the log, so none goes out of UART0 on the Zander transmit pin. Upstream debug prints go to Debug/System |
-| Not included | Commands typed into the page (as WebSerial's input line), text search. Each later only with its own approval |
-
-| Source | Level | Messages |
-| --- | --- | --- |
-| System | Info / Warning | Start with firmware version and reset reason; Warning after a crash, watchdog or brownout. Clock set or corrected from a phone |
-| System | Info / Error | Firmware update started, received; Error when it fails, with the reason. Progress in 25 % steps as Debug |
-| System | Error / Warning | ESP32 system messages |
-| System | Debug | Every 60 s: free memory and lowest (all internal RAM), usable heap, its lowest and largest block, Wi-Fi signal or phones, chip temperature. Upstream debug prints |
-| Wi-Fi | Info | Joining the network, connected with its address, hotspot open, a phone joined or left the hotspot |
-| Wi-Fi | Warning | Network not reached, hotspot instead; connection lost with the reason. Retries as Debug |
-| Ports | Info | App connected or disconnected per device, with the number of apps; data arriving, no data for 10 s |
-| Ports | Warning | Receive errors per 5 s with the kind (wrong baud or frame gives framing errors), short writes |
-| Radio | Info | App took the radio port, with its address; released (closed, phone left the hotspot, connection lost) |
-| Radio | Warning | Second app refused; session closed after a short write |
-| Settings | Info | Loaded with the number of changed values, saved, kept, reset |
-| Settings | Warning | Invalid stored value (default in use), settings from another firmware version, trial running or reverted, save refused, wrong password |
-
-<a id="supply-voltage"></a>
-
-### 2.7 Supply voltage (step 3d)
-
-> [!TIP]
-> **Selected:** the ESP32 measures its own 12 V input and sends it to OpenSoar as an OpenVario sentence on a fourth TCP port ([R18](../design/requirements.md#requirements), [ADR-07](../design/architecture.md#adr-07)). Circuit: [supply voltage sense](../hardware/power.md#voltage-sense).
-
-| Part | Plan |
-| --- | --- |
-| Reading | GPIO34 at 11 dB attenuation with the core's calibrated millivolt reading. Read in the low-priority web task, never in the forwarding loop: 16 samples every 100 ms, averaged over 1 s |
-| Value | Pin voltage × 11 × calibration factor |
-| Calibration | One factor, default 1.000. On the settings page, enter the multimeter reading at the XT30; the bridge stores the resulting factor. Accepted only between 0.90 and 1.10 |
-| Sensor switch | Setting "Voltage sensor fitted", default on in `config.h`. Off on a board without the divider, because the open pin reads noise |
-| Plausible range | 5–30 V. Outside it, or with the sensor off: no sentence, and the status page shows "no reading" |
-| OpenSoar output | `$POV,V,12.62*hh` once per second on port 4353, several clients, the same non-blocking writes as the other ports ([slow apps](#firmware-plan)). Data from OpenSoar on this port is read and discarded |
-| Status page and JSON | Voltage, calibration default or changed, sensor on or off, clients on port 4353 |
-| Chart | On the status page: one point per minute, mean as a line and lowest to highest as a band, over the whole time the bridge is on, up to 12 hours without scrolling; then the oldest minutes drop out. Kept through a restart like the web log, cleared at power on. Data on `/api/supply` |
-| Settings page | Sensor switch, calibration and port 4353 with the other port rules |
-| Web log | Source System. Info with the first reading after start. Warning when the voltage stays below 11.5 V for 10 s; Info when it is back above 12.0 V. Thresholds in `config.h` |
-| Scope | ESP32 build only, like the other project additions |
-
-**In OpenSoar:** add a device "OpenVario", TCP client `10.10.10.10:4353`. The value shows in the System status page as "Supply voltage" and in the vario display's battery line. On Android, the "Battery" InfoBox shows it only while the phone is charging; otherwise it shows the phone's battery (S122).
-
-**Hardware tasks (WP3):** R-V1 and R-V2 are fitted in the bench bridge; C-V is not ([supply voltage sense](../hardware/power.md#voltage-sense), S141). [Bring-up step 13](../hardware/wiring.md#bring-up) accepted (S175).
+| <a id="settings-page"></a> Settings and automatic rollback | [Settings](../../firmware/bridge/README.md#settings-page) |
+| <a id="data-monitor"></a> Data monitor | [Monitor](../../firmware/bridge/README.md#data-monitor) |
+| <a id="web-log"></a> Web log | [Logging and export](../../firmware/bridge/README.md#web-log) |
+| <a id="supply-voltage"></a> Supply voltage | [Voltage report](../../firmware/bridge/README.md#supply-voltage), [circuit](../hardware/power.md#voltage-sense), [bench step 13](../hardware/wiring.md#bring-up) |
 
 ---
 
 <a id="temperature-calibration"></a>
 
-### 2.8 Proposed chip temperature calibration
+### 2.5 Proposed chip temperature calibration
 
 | Step | Planned behaviour |
 | --- | --- |
@@ -278,7 +190,7 @@ Planning only. No additional hardware cost to use the existing sensor.
 
 **Goal:** reduce energy use at the bridge’s 12 V input. Use BLE for normal operation and start Wi-Fi on demand for settings and firmware updates.
 
-**Decision gate:** after WP6 step 5 passes (including the one-hour three-port run and stock OpenSoar phone reconnect checks), the owner decides whether to start a prototype. M4 can close with Wi-Fi only.
+**Decision gate:** after WP6 step 5 passes (including both navigation feeds, the Becker loop and stock OpenSoar phone reconnect checks), the owner decides whether to start a prototype. M4 can close with Wi-Fi only.
 
 If the owner approves the prototype:
 

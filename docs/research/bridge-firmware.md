@@ -4,10 +4,10 @@
 
 🏠 [Overview](../../README.md) › 🔬 Research › **Bridge firmware**
 
-Existing ESP32 serial-to-Wi-Fi firmware that could run on the bridge, and what each one would need.
+References for the selected ESP32 serial bridge and possible Bluetooth operation.
 
 > [!NOTE]
-> **Status:** firmware and Bluetooth source reviews through 2026-11-20. Candidate 1 is the selected baseline ([ADR-02](../design/architecture.md#adr-02)); the project's [bridge firmware](../../firmware/bridge/README.md) built from it runs on the bench ESP32 (S104–S107). Progress: [firmware plan](../project/roadmap.md#firmware-plan).
+> **Status:** Yuri's ESP-Serial-Bridge is the selected firmware baseline ([ADR-02](../design/architecture.md#adr-02)). The Bluetooth references support the [Wi-Fi-off decision](../project/roadmap.md#bluetooth-decision).
 
 <a href="#firmware-requirements"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-research-bridge-firmware-1-dark.svg"><img src="../images/nav/menu-research-bridge-firmware-1.svg" alt="1 · Requirements for any firmware" height="30"></picture></a> <a href="#candidates"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-research-bridge-firmware-2-dark.svg"><img src="../images/nav/menu-research-bridge-firmware-2.svg" alt="2 · Candidates" height="30"></picture></a> <a href="#alternatives"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-research-bridge-firmware-3-dark.svg"><img src="../images/nav/menu-research-bridge-firmware-3.svg" alt="3 · Alternatives" height="30"></picture></a> <a href="#softrf"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-research-bridge-firmware-4-dark.svg"><img src="../images/nav/menu-research-bridge-firmware-4.svg" alt="4 · SoftRF Bluetooth" height="30"></picture></a> <!-- page-menu -->
 
@@ -30,14 +30,7 @@ Related: 📻 [Becker driver](becker-driver.md) · 📚 [Sources](sources.md)
 
 ## 2. 🧪 Candidates
 
-In order of preference.
-
-| # | Candidate | Good | Needs work |
-| :-: | --- | --- | --- |
-| 1 | [Yuri ESP-Serial-Bridge 130f731](https://github.com/yuri-rage/ESP-Serial-Bridge/tree/130f731416d43c89bce5626ef989b3e65918c9ce) — MIT | Bounded reads, routing per port, three UARTs with one TCP port each | Done in the project firmware: hotspot fallback, OTA password, no log output on the device UARTs, larger receive buffers, status page. Still to do: single radio owner and counted writes (plan step 4). Reviews: [first](reviews/2026-11-08-yuri-bridge.md), [adoption](reviews/2026-11-16-yuri-adoption.md) |
-| 2 | [AlphaLima ESP32-Serial-Bridge](https://github.com/AlphaLima/ESP32-Serial-Bridge/blob/bb42dc3db926f9baf1f5faa76cc21bad1dd80cdf/ESP32-Serial-Bridge.ino) — [MIT](https://github.com/AlphaLima/ESP32-Serial-Bridge/blob/bb42dc3db926f9baf1f5faa76cc21bad1dd80cdf/LICENSE) | Separate TCP/UART paths, counted writes, no NMEA parsing; [config](https://github.com/AlphaLima/ESP32-Serial-Bridge/blob/bb42dc3db926f9baf1f5faa76cc21bad1dd80cdf/config.h) has 3 UARTs on TCP 8880–8882 | Prints banners on the UARTs, silently drops bytes beyond 1,023 per pass, unchecked writes, several writers, Bluetooth broadcast |
-| — | [AlphaLima Pro bf263c1](https://github.com/AlphaLima/ESP32-Serial-Bridge-Pro/blob/bf263c1880d7630cadef5264dac9aa9654e4096e/ESP32-Serial-Bridge-pro/ESP32_Serial_Bridge_pro.ino) | Web configuration, routes, filters | No license file; 127-byte buffers that overwrite the last byte on longer TCP bursts; NMEA filters restart on `$`, so binary data breaks; free heap printed and all TCP → device bytes echoed on UART0, a device port; settings page without login by default — not usable as is ([check](reviews/2026-11-17-bridge-projects-check.md#pro)) |
-| — | Firmware in today's bridge | Navigation works (reported) | Unknown source and settings; stays on the backup unit |
+The selected baseline is Yuri's ESP-Serial-Bridge at 130f731. The [adoption review](reviews/2026-11-16-yuri-adoption.md) records the build and retained features. The [comparison with AlphaLima](reviews/2026-11-17-bridge-projects-check.md) records the alternatives considered.
 
 ---
 

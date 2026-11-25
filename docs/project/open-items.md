@@ -7,7 +7,7 @@
 The one list of everything still missing: what is needed, who provides it, and what it unblocks. Other pages link here instead of repeating open questions.
 
 > [!NOTE]
-> **Status:** all listed items are open. Bench validation is complete; the items concern installation, installed equipment and software acceptance.
+> **Status:** WP3 bench bring-up is complete. The open items cover installation, equipment identification and software acceptance.
 
 <a href="#bench-hardware"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-project-open-items-1-dark.svg"><img src="../images/nav/menu-project-open-items-1.svg" alt="1 · Wiring and parts for installation" height="30"></picture></a> <a href="#housing"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-project-open-items-2-dark.svg"><img src="../images/nav/menu-project-open-items-2.svg" alt="2 · Housing fit and installation" height="30"></picture></a> <a href="#installed-equipment"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-project-open-items-3-dark.svg"><img src="../images/nav/menu-project-open-items-3.svg" alt="3 · Installed equipment" height="30"></picture></a> <a href="#software-and-acceptance"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-project-open-items-4-dark.svg"><img src="../images/nav/menu-project-open-items-4.svg" alt="4 · Software and acceptance — later" height="30"></picture></a> <!-- page-menu -->
 
@@ -103,40 +103,27 @@ See the [bridge firmware plan](roadmap.md#firmware-plan) and the [stock OpenSoar
 | 4 | Network settings | Network to join in the aircraft and the passwords of the new bridge; hotspot name ([ADR-05](../design/architecture.md#adr-05)), address and ports ([firmware plan](roadmap.md#firmware-plan)) are selected | App and bridge configuration |
 | 5 | Bridge reliability | Byte-exact tests both ways, bursts, slow clients, partial writes, reconnects, navigation in parallel | Software verification (M4) |
 | 6 | Physical acceptance | Check local controls and navigation on the matching bench setup. For standby tuning, verify the requested standby and unchanged active frequency on the radio | Radio acceptance |
-| 7 | Firmware review checks | Cross-port delay during bulk writes at low baud and remaining connection capacity. Repeated clean closes on quiet Zander and the ordinary two-app connection load passed (S160). [Firmware review](../research/reviews/2026-11-19-firmware-0.5.4-review.md#missing-checks) | Severity of findings 1 and 4 |
-| 8 | Heap dips | Wi-Fi packet buffers take the free heap to near 0 for seconds at a time, at 80 MHz in about half of the idle seconds on the home network; the `mdns_networking: Cannot allocate memory` errors (S150, S197) are the same dips. Much less often at 160 MHz, selected for 0.5.19 (S199); chip about 1 °C warmer under load (S201). Since 0.5.21: Wi-Fi buffers capped at 16, about 25 kB less static RAM, no mDNS; lowest 8-bit heap 59–66 kB in hotspot mode without load, 6 kB once with 13 connection attempts (S211). 0.5.23 with the phone on four dialed ports: 30–65 kB, swinging every second, single dips to 14 kB when a second station joined; with the PC in its place 57–65 kB (S220). Once after an upload the heap stayed near 50 kB until a web restart; not seen again (S220). A clean one-hour run at 160 MHz without other load on the bench PC, in hotspot and network mode | Bridge reliability |
+| 7 | UART forwarding delay | Measure cross-port delay during bulk writes at low baud. Revisit the six-connection limit if ordinary reconnects lose data or support for two phones becomes important. [Review](../research/reviews/2026-11-19-firmware-0.5.4-review.md#missing-checks) | Bridge reliability |
+| 8 | Sustained load and heap | Run an hour at 160 MHz with independent Zander and FLARM feeds, Becker loop and supply telemetry. Record lost bytes, worst delay, UART errors, restarts and lowest heap in hotspot and bench network mode. Earlier heap observations: S199, S211 and S220. S188 exercised Zander, Becker and voltage | Bridge reliability |
 | 9 | Settings under power loss | Interrupt a save and an automatic rollback on a spare ESP32, then check that the stored configuration is complete (S162) | Physical settings persistence |
 | 11 | Radio owner change | Bytes the previous owner sent can still be on the UART when the next owner is accepted, so their echo or the radio's reply may reach the next owner. Measured with `tools/radio_robustness_test.py`: 113 and 119 bytes reached the next owner (S177). Owner decides how to handle it | Radio ownership |
 | 12 | Remaining review checks | Code review findings 6–9: UART FIFO margin during flash writes, ROM output on the Zander transmit pin, apps held during a navigation scan, low items | Bridge reliability |
-| 13 | Phone reconnect and two-phone checks | Stock OpenSoar on a real Android phone: hotspot Wi-Fi loss and bridge power cycle with mobile data on (network mode: bench only, S219), and its AR62xx driver on the radio port (item 3). With a second phone, check that the first keeps receiving while the second app is in the background or its screen is off (S190) | Step 5 acceptance |
+| 13 | Phone reconnect | Normal build, one phone running stock OpenSoar with hotspot mobile data on. Network mode uses the bench PC. The second-phone background check is follow-up coverage | Step 5 acceptance |
 
-### 4.1 Phone reconnect options (item 13)
+### 4.1 One-phone acceptance (item 13)
 
-| Case | Recommended change | Other options |
-| --- | --- | --- |
-| Hotspot with mobile data on | Firmware 0.5.21+ (hotspot without gateway, the bridge dials the app): with *Stay connected* saved, the Pixel rejoined by itself after a bridge restart, kept 5G internet and got data through the dial (S209); without it, internet and data but no automatic rejoin (S207, S208). 0.5.22, all four ports: after Wi-Fi off/on, a web restart and three hard power cuts the phone rejoined by itself, every port connected ≤ 3.6 s after the join, internet kept (S215). With the screen locked the phone rejoined only at unlock (S215). 0.5.23: the same on Wi-Fi off/on, a web restart and a hard power cut, ports ≤ 3.3 s after the join (S220). The bridge page needs mobile data off (S209, S215). Comparable devices have no better solution (S210). Upstream alternative: an Android option in OpenSoar to bind its device sockets to the Wi-Fi network | [Phone setup](../manual/user-manual.md#join-wifi) |
-| Power cut in network mode | **Owner selection:** the bridge-side fix, the bridge dials OpenSoar's *TCP port* (S200). It fits OpenSoar's code and documented use (S204): replace on accept is implicit but stable since 2020; after a receive error OpenSoar rebuilds the listener within 30–60 s, so the bridge keeps retrying. Owner phone check passed on shared Wi-Fi and on the hotspot with mobile data on (S206). Firmware plan: [step 4a](roadmap.md#firmware-plan). Upstream alternative: TCP client keepalive and use the existing retry path. As a starting point on Android, try 5 s idle and three probes 3 s apart (about 14 s to detect an idle connection whose probes all go unanswered, plus retry time). See S193–S195 | Planned restarts are handled: the bridge closes all app connections first (0.5.18, S198); only power cuts remain. Phone: Wi-Fi off and on reopens all ports (S197, emulator). Bridge-side alternative with the stock app: the bridge dials OpenSoar's *TCP port* listener, which replaces a stale session at once (S200); needs the phone's address, an outgoing connection per port, one phone per port and the Becker owner rule, so a firmware mode of its own; might also help with mobile data on, since the phone answers incoming connections on Wi-Fi (untested). A silence timeout can work for a feed with a known cadence. Quiet FLARM and Becker ports need transport-level detection. See [manual recovery](../manual/user-manual.md#troubleshooting) |
+Use the [normal build](../../firmware/bridge/README.md#build), one [TCP port entry per device](../manual/user-manual.md#connect-opensoar), and a changing synthetic navigation sentence. Disconnect the PC's test clients and leave mobile data on. Never press *Reconnect* during a case.
 
-Prefer upstream issues and shared TCP transport changes for both apps. Get owner approval before posting. The app changes require development and phone test time, with no additional hardware or paid service required. The phone workarounds require no purchase. The power-cut fix uses TCP probes and adds no bytes to the instruments' serial streams.
-
-**Acceptance:** stock OpenSoar shows fresh data again by itself after a connection drop; a new socket on the bridge is only an intermediate result. Feed a changing synthetic Zander or FLARM sentence (for example GPRMC with the current time), keep a quiet port and the stock Becker entry configured, never press *Reconnect*. For each case record separately:
-
-| Measured | From |
+| Case | Evidence to record |
 | --- | --- |
-| Time to a new bridge socket per port | `/api/status` `tcp_clients` every 2 s, `/api/log` |
-| Time to the first fresh sentence in OpenSoar | Device list (*GPS fix* / *No data*) or the clock InfoBox, timed screenshots |
+| Restart OpenSoar, then switch phone Wi-Fi off and back on | Time to a new socket per port and to the first fresh sentence in OpenSoar |
+| Web restart, then hard power cut of the bench bridge | Start timing at restart or power restoration. Note whether mobile internet still works |
+| Locked phone during a restart or cut | Whether it rejoined and received data before unlock, and when data resumed after unlock |
+| Stock AR62xx entry | Verify the connection with the Becker loop. Gate actual tuning on item 1 and matching-radio checks in items 2 and 6 |
+| Bench PC in network mode | Verify automatic recovery and changing data with the PC as the app listener (S219) |
+| Second phone, follow-up | With the main phone already receiving, observe the first phone while the second app is backgrounded or its screen is locked |
 
-- [x] Emulator pre-check (bench PC, no owner): web restart, firmware update and settings rollback with 0.5.19+, network mode: fresh data 6–9 s after the restart (S201). S179 and S182 cover the emulator's NAT limits; a power cut cannot be simulated there
-- [x] Owner phone on the hotspot with mobile data on: Wi-Fi cut and bridge power cycle (S215)
-- [x] Owner phone, 0.5.21 bench build, hotspot without gateway, *Stay connected* saved: after a bridge restart the phone rejoined by itself, 5G internet, Zander data through the dial 1.2 s after the join (S209)
-- [x] Bench PC as phone, 0.5.22: all four ports dialed, Becker owner rule, planned restart (S211)
-- [x] Bench PC as phone, 0.5.23, network mode: gateway, last phone seen and settings-page address dialed in that order, saved phone dialed after a restart (S219)
-- [x] Owner phone, 0.5.23, hotspot: Wi-Fi off/on, web restart, 1 hard power cut; ports ≤ 3.3 s after the join (S220)
-- [x] Bench PC, 0.5.26: dial state per port in `/api/status` and on the status page; no dial to an early-join address; a reset session dialed again after 3.1 s (S223)
-- [x] Owner phone, 0.5.26 before the reset fix: Wi-Fi off/on, data back (S223)
-- [x] Owner phone, 0.5.22, all four *TCP port* entries: Wi-Fi off/on, web restart and 3 hard power cuts with the screen on; rejoin 16–18 s after power-on, ports ≤ 3.6 s later. Screen locked: rejoin only at unlock (S215)
-- [x] Owner phone, no firmware change (S206, XCSoar): the bench PC connects to OpenSoar's *TCP port* device on the phone twice (old connection silent, new one sending), on the shared Wi-Fi and on the hotspot with mobile data on (S200 on a real phone): fresh data ≤ 6 s after the new connection, also after an automatic hotspot rejoin with mobile data on
-- [ ] For an app change: a quiet healthy port stays connected, and other apps keep internet access with mobile data on
+Use [bridge status and log counters](../../firmware/bridge/README.md#status-page) for socket times. Use the app's device list or a changing clock display for fresh data. Record the app and firmware versions and which ports had a feed. Earlier Pixel tests showed hotspot recovery with synthetic Zander data and sometimes waited for unlock (S215, S220). Reset recovery was measured on the bench (S223). The subsequent slot-reuse fix was checked on the host (S224).
 
 ---
 

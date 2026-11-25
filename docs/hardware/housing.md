@@ -136,12 +136,12 @@ Current models in `cad/housing/` (files: [CAD rule](#rules)):
 | [ESP32 holder](../../cad/housing/esp32-holder/README.md): original antenna cap, USB block, USB cap, gluing jig | Tested reference for the integrated holder |
 | [RS-232 holder](../../cad/housing/rs232-holder/README.md): grooved two-rail slot holder, 1.25 mm slot | Tested, selected; two needed |
 | [Connector panel](../../cad/housing/connector-panel/README.md): DE-9 and XT30 | Updated to the measured values; prints flat, front face down. Its F1 space is unused: F1 sits in the harness |
-| [Connector wall print test](../../cad/housing/connector-print-test/README.md): XT30 and DE-9 slices of the housing body v1 base | Not printed; prints standing like the base |
+| [Connector wall print test](../../cad/housing/connector-print-test/README.md): XT30 and DE-9 slices of the housing body v1 base | Optional coupon for a changed connector wall |
 | [Housing body v1](../../cad/housing/housing-body-v1/README.md): base tray and hood on layout v4 | Bench base in use (S156). Roof-grille hood CAD and slice checked (S205) |
 | [UBEC carrier](../../cad/housing/ubec-carrier/README.md): shared four-screw mounting and two cable ties | Modelled, not printed; [dimensions and assembly](#ubec-carrier) |
 
 - [ ] **Connector panel:** XT30 front first from the back until the markings stop it, DE-9 from the front into the flush recess, nuts in the pockets; mate both plugs and check backshell and tool clearance.
-- [ ] **Connector wall print test:** print both slices and work through their [checklist](../../cad/housing/connector-print-test/README.md) before the full base.
+
 - [ ] **Housing body v1:** for a replacement hood, print the hood and insert and reuse the existing base. For a new build, also print the base. Check the hood over the seam lip (0.2 gap), the four inserts and the recessed DIN 912 screws in the reinforced hood seats, the DE-9 and XT30 openings printed standing (19.9 and 10.55 mm bridges), thread engagement and retention at the DE-9 nut stops, the engraved "7-20V" and "INSTR" labels, the hood "7-20V" and "WIFI Bridge" inserts, the two-colour logo on the bed face and the fit of the holders and boards. Check that the ESP32 rests flat on the integral USB ledge, both end stops locate the board and the M2.5 clamp screw holds in the printed pilot.
 
 <a id="ubec-carrier"></a>

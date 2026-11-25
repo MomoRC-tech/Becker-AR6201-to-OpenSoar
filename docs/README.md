@@ -66,7 +66,7 @@ Every page of the project, grouped by what you want to do.
 | [🛩️ Existing installation](project/existing-installation.md) | The bridge already in the aircraft |
 | [📚 Sources](research/sources.md) | Evidence |
 | [📻 Becker driver](research/becker-driver.md) | OpenSoar driver analysis |
-| [📶 Bridge firmware analysis](research/bridge-firmware.md) | Why this firmware base |
+| [📶 Bridge firmware research](research/bridge-firmware.md) | Selected baseline and Bluetooth references |
 | [🗂️ Reviews](research/reviews) | Dated review records |
 
 Working on the repository? Read the [work instructions](../AGENTS.md) first.
