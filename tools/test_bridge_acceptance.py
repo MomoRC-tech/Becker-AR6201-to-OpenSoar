@@ -57,7 +57,7 @@ class RadioVerdictTest(unittest.TestCase):
 
 
 class WiredAcceptanceTest(unittest.TestCase):
-    def run_wired(self, feeds, fault=None, radio=False, slow=False):
+    def run_wired(self, feeds, fault=None, radio=False, slow=False, uno=False):
         # Non-default TCP ports and different baud rates make it possible to
         # catch tests that use firmware defaults or the other input's settings.
         ports = {
@@ -70,7 +70,7 @@ class WiredAcceptanceTest(unittest.TestCase):
         argv = ["local", "--seconds", "0.25", "--max-delay", "0.25"]
         if len(feeds) == 1:
             name, device = next(iter(feeds.items()))
-            argv.extend(["--feed", device, "--input", name.lower()])
+            argv.extend(["--uno-feed" if uno else "--feed", device, "--input", name.lower()])
         else:
             argv.extend(["--zander-feed", feeds["Zander"], "--flarm-feed", feeds["FLARM"]])
         if not slow:
@@ -160,7 +160,15 @@ class WiredAcceptanceTest(unittest.TestCase):
             stack.enter_context(patch.object(acceptance, "tcp", side_effect=tcp))
             stack.enter_context(patch.object(acceptance, "status", side_effect=status))
             stack.enter_context(patch.object(acceptance, "get_json", side_effect=http_json))
-            stack.enter_context(patch.dict("sys.modules", {"serial": SimpleNamespace(Serial=Feed)}))
+            if uno:
+                def open_uno(device, timeout):
+                    self.assertEqual(timeout, 0.25)
+                    return Feed(device, 19200, bytesize=8, parity="N", stopbits=1)
+
+                stack.enter_context(patch.object(acceptance, "UnoBench", side_effect=open_uno))
+            stack.enter_context(patch.dict("sys.modules", {
+                "serial": SimpleNamespace(Serial=None if uno else Feed),
+            }))
             stack.enter_context(redirect_stdout(output))
             stack.enter_context(redirect_stderr(output))
             result = acceptance.main(argv) == 0
@@ -186,6 +194,18 @@ class WiredAcceptanceTest(unittest.TestCase):
                 self.assertEqual(opened, [(device, baud)])
                 self.assertTrue(written[device])
                 self.assertFalse(written[other_device])
+
+    def test_uno_feed_uses_the_selected_input(self):
+        result, output, _, opened, written = self.run_wired({"FLARM": "COM5"}, uno=True)
+        self.assertTrue(result, output)
+        self.assertEqual(opened, [("COM5", 19200)])
+        self.assertTrue(written["COM5"])
+
+    def test_uno_feed_rejects_incompatible_bridge_settings(self):
+        result, output, _, opened, _ = self.run_wired({"Zander": "COM4"}, uno=True)
+        self.assertFalse(result, output)
+        self.assertIn("Uno bench requires 19200 8N1", output)
+        self.assertEqual(opened, [])
 
     def test_single_feed_rejects_traffic_on_unfed_port(self):
         result, output, _, _, _ = self.run_wired({"Zander": "COM4"}, "cross")
