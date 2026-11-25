@@ -220,6 +220,8 @@ static void refuseOverBudget(const char* port, WiFiClient c) {
     }
     c.stop();
 }
+
+static void lastPhonePersistTick();  // status task
 #endif
 
 #include "status_page.h"  // Project: status page and counters (step 3)
@@ -548,24 +550,44 @@ static void dialCheck(int p, int k) {
     t.silent = 0;
 }
 
-// Increment 3 (0.5.23): network mode. One phone per port: the address on the settings page,
-// else the last phone seen (an app that connected to a bridge port; saved, so it is dialed
-// again after a power cut before the app connects), else the network's gateway (on a phone
-// hotspot that is the phone). The loop task picks the address once a second; both tasks dial it.
+// Network mode dials the configured address, the latest accepted instrument client,
+// or the gateway. The loop task learns the address and the status task saves it.
 #define DIAL_NVS "bridge-dial"
 #define DIAL_NVS_LAST "last"
+static constexpr uint32_t PHONE_SAVE_INTERVAL_MS = 5000;
 static std::atomic<uint32_t> dialNetTarget{0};  // as in ip4_addr; 0 = none (not on a network)
-static uint32_t lastPhoneIp = 0;                // loop task after setup
+static std::atomic<uint32_t> lastPhoneIp{0};    // loop task writes, status task reads
+static uint32_t savedPhoneIp = 0;              // status task after setup
 
 static void lastPhoneLoad() {
     nvs_handle_t nvs;
     if (nvs_open(DIAL_NVS, NVS_READONLY, &nvs) != ESP_OK) return;  // never saved yet
     uint32_t ip = 0;
-    if (nvs_get_u32(nvs, DIAL_NVS_LAST, &ip) == ESP_OK && validIp(ip)) lastPhoneIp = ip;
+    if (nvs_get_u32(nvs, DIAL_NVS_LAST, &ip) == ESP_OK && validIp(ip)) {
+        savedPhoneIp = ip;
+        lastPhoneIp.store(ip);
+    }
     nvs_close(nvs);
 }
 
-static void lastPhoneSave(uint32_t ip) {  // only when the phone changes
+// Called only when an inbound instrument connection takes a slot.
+static void rememberPhone(const WiFiClient& client) {
+    if (settings.phoneIp || (WiFi.getMode() & WIFI_AP) || WiFi.status() != WL_CONNECTED) return;
+    const uint32_t ip = (uint32_t)client.remoteIP();
+    if (ip == lastPhoneIp.load() || ip == (uint32_t)WiFi.localIP() || !validIp(ip)) return;
+    lastPhoneIp.store(ip);
+}
+
+static void lastPhonePersistTick() {
+    const uint32_t ip = lastPhoneIp.load();
+    if (!ip || ip == savedPhoneIp) return;
+
+    // Coalesce rapid changes and pace retries after a flash error.
+    static uint32_t attemptedAt = 0u - PHONE_SAVE_INTERVAL_MS;
+    const uint32_t now = millis();
+    if (now - attemptedAt < PHONE_SAVE_INTERVAL_MS) return;
+    attemptedAt = now;
+
     nvs_handle_t nvs;
     esp_err_t result = nvs_open(DIAL_NVS, NVS_READWRITE, &nvs);
     if (result == ESP_OK) {
@@ -573,36 +595,26 @@ static void lastPhoneSave(uint32_t ip) {  // only when the phone changes
         if (result == ESP_OK) result = nvs_commit(nvs);
         nvs_close(nvs);
     }
+    // A failed commit leaves the stored value uncertain until a write succeeds.
+    savedPhoneIp = result == ESP_OK ? ip : 0;
     if (result != ESP_OK) LOGW(LOG_PORTS, "Could not save the phone address (0x%x)", unsigned(result));
 }
 
 // Loop task, network mode only.
 static void dialNetTargetTick() {
     static uint32_t at = 0;
-    if ((WiFi.getMode() & WIFI_AP) || (at && millis() - at < DIAL_LIST_MS)) return;
-    at = millis() | 1u;
+    const uint32_t now = millis();
+    if ((WiFi.getMode() & WIFI_AP) || (at && now - at < DIAL_LIST_MS)) return;
+    at = now;
     if (WiFi.status() != WL_CONNECTED) {
         dialNetTarget.store(0);
         return;
     }
     const uint32_t own = (uint32_t)WiFi.localIP();
-    for (int num = 0; num < NUM_COM; num++) {  // a phone seen: an app that connected to the bridge
-        for (int i = 0; i < MAX_NMEA_CLIENTS; i++) {
-            WiFiClient& c = TCPClient[num][i];
-            if (c.fd() < 0) continue;
-            bool dialed = false;
-            for (int k = 0; k < DIAL_TARGETS; k++) dialed |= dialTargets[num][k].slot == i && dialSessionAlive(num, k);
-            const uint32_t ip = dialed ? 0 : (uint32_t)c.remoteIP();
-            if (!ip || ip == lastPhoneIp || ip == own || !validIp(ip)) continue;
-            lastPhoneIp = ip;
-            lastPhoneSave(ip);
-            LOGI(LOG_PORTS, "Phone %s connected to the %s port: saved as the phone to dial", IPAddress(ip).toString().c_str(),
-                 appPortName[num]);
-        }
-    }
+    const uint32_t learned = lastPhoneIp.load();
     const char* source = "the settings page";
     uint32_t target = settings.phoneIp;
-    if (!target && lastPhoneIp) target = lastPhoneIp, source = "the last phone seen";
+    if (!target && learned) target = learned, source = "the last phone seen";
     if (!target) target = (uint32_t)WiFi.gatewayIP(), source = "the gateway";
     if (target == own || !validIp(target)) target = 0;
     if (target == dialNetTarget.load()) return;
@@ -771,6 +783,7 @@ static void serviceRadioPort() {
             } else {
                 owner = candidate;
                 trackRadioStation(owner);
+                rememberPhone(owner);
                 LOGI(LOG_RADIO, "App %s took the radio port", owner.remoteIP().toString().c_str());
             }
         } else {
@@ -1171,9 +1184,13 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
                         TCPClient[num][i] = server[num]->available();
 #ifdef ESP32
                         if (TCPClient[num][i]) appKeepalive(TCPClient[num][i]);  // 0.5.17: dead apps closed on quiet ports too
-                        if (TCPClient[num][i] && !openAppQueue(num, i)) {  // Project (step 5): a new app starts with an empty queue
-                            LOGW(LOG_PORTS, "%s: app refused, no memory for its queue", appPortName[num]);
-                            TCPClient[num][i].stop();
+                        if (TCPClient[num][i]) {
+                            if (openAppQueue(num, i)) {
+                                rememberPhone(TCPClient[num][i]);
+                            } else {
+                                LOGW(LOG_PORTS, "%s: app refused, no memory for its queue", appPortName[num]);
+                                TCPClient[num][i].stop();
+                            }
                         }
 #endif
                         debug.print("New client for COM");

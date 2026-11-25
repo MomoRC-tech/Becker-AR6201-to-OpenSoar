@@ -467,6 +467,9 @@ static void statusTask(void*) {
         selfCheckTick();
         statusBeat.store(millis() | 1u, std::memory_order_relaxed);
         settingsTrialCheck();
+#ifdef PROTOCOL_TCP
+        lastPhonePersistTick();
+#endif
         logTick();
         supplyTick();
         chipTempTick();
