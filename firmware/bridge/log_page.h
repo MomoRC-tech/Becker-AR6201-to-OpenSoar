@@ -250,7 +250,7 @@ ui();poll();setInterval(poll,1000);
 )HTML";
 
 static void logRoutes() {
-    statusServer.on("/log", HTTP_GET, []() { statusServer.send(200, "text/html", kLogPage); });
+    statusServer.on("/log", HTTP_GET, []() { statusServer.send_P(200, "text/html", kLogPage); });
     statusServer.on("/api/log", HTTP_GET, []() {
         if (statusServer.hasArg("clock")) logSetClock(strtoull(statusServer.arg("clock").c_str(), nullptr, 10));
         logSend(statusServer.hasArg("since") ? strtoul(statusServer.arg("since").c_str(), nullptr, 10) : 0);

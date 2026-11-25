@@ -35,7 +35,59 @@ static PortStats portStats[NUM_COM];
 
 static const char* const kPortName[NUM_COM] = PORT_NAMES;
 
-static WebServer statusServer(80);
+// 0.5.21: the core serves one connection at a time and waits up to 5 s for a request on it.
+// Browsers open connections in advance (preconnect) and send nothing on them; an open bridge
+// page in a background tab kept the server busy until it no longer answered at all (S209).
+// A connection without a request after WEB_IDLE_DROP_MS is closed; the browser opens a new one.
+#define WEB_IDLE_DROP_MS 500
+#define WEB_STALL_MS 3000
+class BridgeWebServer : public WebServer {
+public:
+    using WebServer::WebServer;
+
+protected:
+    // 0.5.21: the core's write waits up to 10 s per piece for a client that left (phone off the
+    // hotspot) and the server sends the next piece anyway, so one reply blocked this task for
+    // minutes (core dump, S209 follow-up). Here a reply gives up after WEB_STALL_MS without
+    // progress and closes the connection; the remaining pieces return at once.
+    size_t _currentClientWrite(const char* b, size_t l) override { return writeOrDrop(b, l); }
+    size_t _currentClientWrite_P(PGM_P b, size_t l) override { return writeOrDrop(b, l); }  // flash is mapped on the ESP32
+
+private:
+    size_t writeOrDrop(const char* b, size_t l) {
+        const int fd = _currentClient.fd();
+        if (fd < 0) return 0;
+        size_t sent = 0;
+        uint32_t progressAt = millis();
+        while (sent < l) {
+            const int n = ::send(fd, b + sent, l - sent, MSG_DONTWAIT);
+            if (n > 0) {
+                sent += n;
+                progressAt = millis();
+                continue;
+            }
+            if (n < 0 && errno != EAGAIN && errno != EWOULDBLOCK && errno != EINTR) break;  // connection lost
+            if (millis() - progressAt >= WEB_STALL_MS) break;  // client gone or not reading
+            fd_set writable;
+            FD_ZERO(&writable);
+            FD_SET(fd, &writable);
+            timeval wait = {0, 100000};
+            select(fd + 1, nullptr, &writable, nullptr, &wait);
+        }
+        if (sent < l) _currentClient.stop();
+        return sent;
+    }
+
+public:
+    void dropIdleClient() {
+        if (_currentStatus == HC_WAIT_READ && millis() - _statusChange > WEB_IDLE_DROP_MS && _currentClient.available() == 0) {
+            _currentClient.stop();
+            _currentClient = NetworkClient();
+            _currentStatus = HC_NONE;
+        }
+    }
+};
+static BridgeWebServer statusServer(80);
 
 #include "lifetime.h"  // Project: lifetime record in NVS (step 3f)
 #include "supply.h"  // Project: supply voltage, OpenVario port and chart (step 3d)
@@ -313,8 +365,60 @@ static String settingsJson() {
 #include "monitor.h"        // Project: data monitor (step 3b)
 #include "log_page.h"       // Project: web log (step 3c)
 
+// 0.5.21: network self-check (self-healing rule). A phone flooding the bridge left it answering
+// ping but taking no TCP connection on any port, for good, until a power cut (S209 side
+// finding, captive-portal test). Every SELF_CHECK_MS the status task opens a connection to its
+// own web port over loopback; after SELF_CHECK_FAILS failures in a row it restarts as planned.
+#define SELF_CHECK_MS 30000
+#define SELF_CHECK_FAILS 3
+static bool tcpSelfCheck() {
+    const int fd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    if (fd < 0) return false;  // no socket left: counts as a failure
+    fcntl(fd, F_SETFL, fcntl(fd, F_GETFL, 0) | O_NONBLOCK);
+    sockaddr_in addr = {};
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(80);
+    addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
+    bool ok = connect(fd, reinterpret_cast<sockaddr*>(&addr), sizeof(addr)) == 0;
+    if (!ok && errno == EINPROGRESS) {
+        fd_set writable;
+        FD_ZERO(&writable);
+        FD_SET(fd, &writable);
+        timeval wait = {2, 0};
+        int error = 0;
+        socklen_t len = sizeof(error);
+        ok = select(fd + 1, nullptr, &writable, nullptr, &wait) > 0 &&
+             getsockopt(fd, SOL_SOCKET, SO_ERROR, &error, &len) == 0 && error == 0;
+    }
+    close(fd);
+    return ok;
+}
+
+static void selfCheckTick() {
+    static uint32_t checkedAt = 0;
+    static int failures = 0;
+    if (millis() - checkedAt < SELF_CHECK_MS) return;
+    checkedAt = millis();
+    if (tcpSelfCheck()) {
+        if (failures) LOGI(LOG_SYSTEM, "Network self-check passes again");
+        failures = 0;
+        return;
+    }
+    failures++;
+    LOGW(LOG_SYSTEM, "Network self-check failed (%d of %d): no new connection possible", failures, SELF_CHECK_FAILS);
+    if (failures >= SELF_CHECK_FAILS) {
+        LOGE(LOG_SYSTEM, "Network self-check: restarting the bridge");
+        restartSoon();
+    }
+}
+
+// 0.5.21: heartbeat of the status task (web pages, voltage port, self-check). It once stopped
+// for good after many idle web connections while the loop task kept forwarding (S209 follow-up);
+// the loop task watches this value (statusWatchTick in bridge.ino).
+static std::atomic<uint32_t> statusBeat{0};
+
 static void statusTask(void*) {
-    statusServer.on("/", HTTP_GET, []() { statusServer.send(200, "text/html", kStatusPage); });
+    statusServer.on("/", HTTP_GET, []() { statusServer.send_P(200, "text/html", kStatusPage); });
     statusServer.on("/device.webp", HTTP_GET, []() {
         statusServer.sendHeader("Cache-Control", "max-age=86400");
         statusServer.send_P(200, "image/webp", (const char*)kDeviceImage, sizeof(kDeviceImage));
@@ -342,12 +446,16 @@ static void statusTask(void*) {
     statusServer.begin();
     for (;;) {
         statusServer.handleClient();
+        statusServer.dropIdleClient();
+        selfCheckTick();
+        statusBeat.store(millis() | 1u, std::memory_order_relaxed);
         settingsTrialCheck();
         logTick();
         supplyTick();
         chipTempTick();
         lifetimeTick();
         savedLogTick();
+        monTick();  // 0.5.21: monitor slots back to the heap when nobody watches
         vTaskDelay(pdMS_TO_TICKS(5));
     }
 }
@@ -372,7 +480,6 @@ static void statusBegin() {
     // request trickles in (up to 10 s); at priority 1 that starved IDLE0 and
     // the task watchdog reset the bridge (two core dumps, 2026-11-23).
     xTaskCreatePinnedToCore(statusTask, "status", 6144, nullptr, tskIDLE_PRIORITY, nullptr, 0);
-    MDNS.addService("http", "tcp", 80);
 }
 
 #else

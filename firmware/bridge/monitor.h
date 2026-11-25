@@ -4,6 +4,8 @@
 // while someone watches /monitor. The forwarding loop only
 // copy bytes into a fixed slot under a short spinlock; the web task reads them.
 // Nothing is collected when no monitor page has asked for data for 10 s.
+// 0.5.21: the slots (14.6 kB) are taken from the heap on the first poll and given back
+// once nobody watches (monTick in the status task).
 //
 // Included by status_page.h inside its ESP32 and STATUS_PAGE block.
 
@@ -21,7 +23,8 @@ struct MonSlot {
     uint8_t data[MON_BYTES];
 };
 
-static MonSlot monSlots[NUM_COM][MON_SLOTS];
+typedef MonSlot MonPort[MON_SLOTS];
+static MonPort* monSlots = nullptr;  // [NUM_COM], only while watched; changed under monLock
 static uint32_t monSeq[NUM_COM];
 static volatile uint32_t monLastPoll = 0;  // millis() of the last /api/monitor request, 0 = never
 static portMUX_TYPE monLock = portMUX_INITIALIZER_UNLOCKED;
@@ -37,6 +40,10 @@ static void monAdd(int num, uint8_t dir, const uint8_t* data, size_t len) {
     while (len) {
         const uint8_t n = len > MON_BYTES ? MON_BYTES : (uint8_t)len;
         portENTER_CRITICAL(&monLock);
+        if (!monSlots) {
+            portEXIT_CRITICAL(&monLock);
+            return;
+        }
         const uint32_t seq = ++monSeq[num];
         MonSlot& s = monSlots[num][seq % MON_SLOTS];
         s.seq = seq;
@@ -55,11 +62,9 @@ static void monAdd(int num, uint8_t dir, const uint8_t* data, size_t len) {
 // Send the chunks after `since` as JSON, oldest first, streamed in pieces of
 // about 1 kB from a fixed buffer; "lost" when some were overwritten.
 static void monitorSend(int num, uint32_t since) {
-    static MonSlot copy[MON_SLOTS];  // only the web task uses this
     static char buf[1200];
     uint32_t last;
     portENTER_CRITICAL(&monLock);
-    memcpy(copy, monSlots[num], sizeof(copy));
     last = monSeq[num];
     portEXIT_CRITICAL(&monLock);
     monLastPoll = millis() | 1u;
@@ -78,8 +83,12 @@ static void monitorSend(int num, uint32_t since) {
     static const char hex[] = "0123456789abcdef";
     bool comma = false;
     for (uint32_t q = first; q <= last && last != 0; q++) {
-        const MonSlot& s = copy[q % MON_SLOTS];
-        if (s.seq != q) continue;
+        MonSlot s;  // copied one at a time: the loop task may overwrite the slot meanwhile
+        portENTER_CRITICAL(&monLock);
+        if (monSlots) s = monSlots[num][q % MON_SLOTS];
+        else s.seq = 0;
+        portEXIT_CRITICAL(&monLock);
+        if (s.seq != q) continue;  // overwritten by newer data: skipped
         if (n > sizeof(buf) - (2 * MON_BYTES + 48)) {  // room for one more chunk
             statusServer.sendContent(buf, n);
             n = 0;
@@ -161,15 +170,39 @@ ui();poll();setInterval(poll,1000);
 </script>
 )HTML";
 
+// Status task: slots for a new viewer, or back to the heap once nobody watches.
+static bool monSlotsReady() {
+    if (monSlots) return true;
+    MonPort* slots = static_cast<MonPort*>(calloc(NUM_COM, sizeof(MonPort)));
+    if (!slots) return false;
+    portENTER_CRITICAL(&monLock);
+    monSlots = slots;  // monSeq runs on: a page still polling with an old `since` keeps working
+    portEXIT_CRITICAL(&monLock);
+    return true;
+}
+
+static void monTick() {
+    if (!monSlots || monWatching()) return;
+    portENTER_CRITICAL(&monLock);
+    MonPort* slots = monSlots;
+    monSlots = nullptr;
+    portEXIT_CRITICAL(&monLock);
+    free(slots);
+}
+
 static void monitorRoutes() {
     statusServer.on("/monitor", HTTP_GET, []() {
         monLastPoll = millis() | 1u;  // start collecting before the first poll
-        statusServer.send(200, "text/html", kMonitorPage);
+        statusServer.send_P(200, "text/html", kMonitorPage);
     });
     statusServer.on("/api/monitor", HTTP_GET, []() {
         const int num = statusServer.hasArg("port") ? statusServer.arg("port").toInt() : 0;
         if (num < 0 || num >= NUM_COM) {
             statusServer.send(400, "application/json", "{\"error\":\"port 0 to 2\"}");
+            return;
+        }
+        if (!monSlotsReady()) {
+            statusServer.send(503, "application/json", "{\"error\":\"memory low, try again\"}");
             return;
         }
         const uint32_t since = statusServer.hasArg("since") ? strtoul(statusServer.arg("since").c_str(), nullptr, 10) : 0;

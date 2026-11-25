@@ -110,12 +110,32 @@ static uint32_t supplyAppCount() {
     return n;
 }
 
+// Step 4a (0.5.21): hooks for the dialer in bridge.ino; status task only.
+static int supplyFreeSlot() {
+    for (int i = 0; i < MAX_NMEA_CLIENTS; i++)
+        if (supplyApps[i].client.fd() < 0) return i;
+    return -1;
+}
+static void supplyAdopt(int slot, WiFiClient& session) {
+    SupplyApp& a = supplyApps[slot];
+    a.client = session;
+    a.progressAt = millis();
+    a.pendLen = 0;
+}
+static int supplySlotFd(int slot) { return supplyApps[slot].client.fd(); }
+static void supplyEndSlot(int slot, const char* why) { supplyAppClose(supplyApps[slot], why); }
+
 static void supplyServeApps() {
+    supplyAppSockets.store(supplyAppCount());  // 0.5.21: socket budget (bridge.ino)
     if (supplyServer.hasClient()) {
         WiFiClient c = supplyServer.accept();
         SupplyApp* slot = nullptr;
         for (SupplyApp& a : supplyApps)
             if (a.client.fd() < 0) { slot = &a; break; }
+        if (slot && c.fd() >= 0 && !appBudgetFree()) {
+            refuseOverBudget("Supply voltage", c);
+            slot = nullptr;
+        }
         if (slot && c.fd() >= 0) {
             appKeepalive(c);  // 0.5.17: a vanished app is closed after about 14 s
             slot->client = c;
@@ -220,6 +240,7 @@ static void closeSupplyApps() {
         c.stop();
     }
     supplyServer.end();
+    closeDialPending(DIAL_SUPPLY, DIAL_SUPPLY);  // step 4a
     for (SupplyApp& a : supplyApps) {
         const int fd = a.client.fd();
         if (fd >= 0 && shutdown(fd, SHUT_RDWR) == 0) closed++;
@@ -236,6 +257,7 @@ static void supplyTick() {
     }
     if (!settings.supplySensor) return;
     supplyServeApps();
+    dialAppsTick(DIAL_SUPPLY, DIAL_SUPPLY);  // step 4a: the bridge also dials the app
     static uint32_t blockAt = 0, secondAt = 0;
     static uint8_t blocks = 0, good = 0;
     static float secSum = 0, secRaw = 0;

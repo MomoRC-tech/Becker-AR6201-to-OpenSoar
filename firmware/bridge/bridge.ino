@@ -27,6 +27,7 @@
 #include <esp_wifi_ap_get_sta_list.h>
 #include <lwip/sockets.h>
 #include <cerrno>
+#include <atomic>
 #elif defined(ESP8266)
 #include <ESP8266WiFi.h>
 #include <ESP8266mDNS.h>
@@ -107,18 +108,58 @@ static int closeServerApps(WiFiServer& srv, WiFiClient* clients, int count) {
     return closed;
 }
 
+#ifdef PROTOCOL_TCP
+// Project (step 4a, 0.5.20): the bridge also dials the app's "TCP port" on each phone
+// (dialAppsTick below). One entry per phone and port; a connected session sits in an
+// ordinary app slot of TCPClient and is closed with the others before a restart.
+#define DIAL_TARGETS MAX_NMEA_CLIENTS  // phones per port, within the app limit
+struct DialTarget {
+    uint32_t ip;          // phone address as in ip4_addr (network order); 0 = entry unused
+    int fd;               // connect in progress, -1 = none
+    int8_t slot;          // app slot of the dialed session, -1 = none
+    int sessionFd;        // socket of that session, to see whether the slot still holds it
+    uint32_t attemptAt;   // start of the last attempt
+    uint32_t failures;    // attempts without a session since the last one
+    uint8_t silent;       // attempts in a row without any answer (no SYN-ACK, no reset)
+};
+#define DIAL_SUPPLY NUM_COM        // the voltage port, dialed from the status task
+#define DIAL_PORTS (NUM_COM + 1)
+static DialTarget dialTargets[DIAL_PORTS][DIAL_TARGETS];
+// 0.5.22: one connect in progress at a time across both tasks (the socket budget reserves one).
+static std::atomic<int> dialInProgress{0};
+static void dialDropPending(int p, int k) {  // indices: sketch prototypes come before the struct
+    DialTarget& t = dialTargets[p][k];
+    if (t.fd < 0) return;
+    close(t.fd);
+    t.fd = -1;
+    dialInProgress.store(0);
+}
+
+// Abandon connects in progress for ports first..last (no session exists for them yet).
+// Each task for its own ports.
+static void closeDialPending(int first, int last) {
+    for (int num = first; num <= last; num++)
+        for (int k = 0; k < DIAL_TARGETS; k++)
+            if (dialTargets[num][k].ip) dialDropPending(num, k);
+}
+#endif
+
 // Loop task only.
 static void closeNavApps() {
     if (navAppsClosed) return;
     int closed = 0;
+#ifdef PROTOCOL_TCP
+    closeDialPending(0, NUM_COM - 1);
+#endif
     for (int num = 0; num < NUM_COM; num++) closed += closeServerApps(*server[num], TCPClient[num], MAX_NMEA_CLIENTS);
     navAppsClosedN = closed;
     navAppsClosed = true;
 }
 #endif
 
-uint8_t buf1[NUM_COM][BUFFERSIZE];
-uint8_t buf2[NUM_COM][BUFFERSIZE];
+// Project (0.5.21): one transfer buffer instead of two per port (6 kB). Only the loop task
+// uses it, and each use ends (data written to the UART or queued for the apps) before the next.
+uint8_t ioBuf[BUFFERSIZE];
 
 #ifdef ESP32
 uint16_t i1[NUM_COM] = {0, 0, 0};
@@ -143,6 +184,41 @@ static bool appKeepalive(WiFiClient& c) {
     return c.setSocketOption(IPPROTO_TCP, TCP_KEEPIDLE, &idle, sizeof(idle)) == 0 &&
            c.setSocketOption(IPPROTO_TCP, TCP_KEEPINTVL, &interval, sizeof(interval)) == 0 &&
            c.setSocketOption(IPPROTO_TCP, TCP_KEEPCNT, &probes, sizeof(probes)) == 0;
+}
+#endif
+
+#if defined(ESP32) && defined(PROTOCOL_TCP)
+// 0.5.21: socket budget. lwIP has 16 sockets in all (fixed in the core libraries): 5 listening
+// ports, OTA, the web connection, the network self-check, one dial attempt and one socket to
+// refuse a surplus connection leave 6 for apps. With 13 app connections (the port limits) the
+// web server and the self-check found no socket and the self-check restarted the bridge.
+// Dialed sessions count; the one connect in progress has its own reserve. Owner decision (0.5.22).
+#define APP_SOCKET_BUDGET 6
+static std::atomic<int> navAppSockets{0};     // loop task: Zander, FLARM, Becker
+static std::atomic<int> supplyAppSockets{0};  // status task: voltage port
+static bool appBudgetFree() { return navAppSockets.load() + supplyAppSockets.load() < APP_SOCKET_BUDGET; }
+
+// Loop task only.
+static void countNavAppSockets() {
+    int n = 0;
+    for (int num = 0; num < NUM_COM; num++) {
+        for (int i = 0; i < MAX_NMEA_CLIENTS; i++) n += TCPClient[num][i].fd() >= 0;
+    }
+    navAppSockets.store(n);
+}
+
+// A surplus connection: accepted and closed at once, one log line per 30 s at most.
+static void refuseOverBudget(const char* port, WiFiClient c) {
+    static uint32_t loggedAt = 0, more = 0;
+    if (loggedAt == 0 || (int32_t)(millis() - loggedAt) >= 30000) {
+        LOGW(LOG_PORTS, "%s: app %s refused, %d app connections in use (limit; %lu more since the last line)", port,
+             c.remoteIP().toString().c_str(), APP_SOCKET_BUDGET, (unsigned long)more);
+        loggedAt = millis() | 1u;
+        more = 0;
+    } else {
+        more++;
+    }
+    c.stop();
 }
 #endif
 
@@ -283,7 +359,7 @@ static void serviceNavApps(int num) {
     const bool memoryLow = heapFree < APP_MEMORY_GUARD;
     if (memoryLow) {  // one line per minute at most
         static uint32_t lowAt = 0;
-        if (lowAt == 0 || millis() - lowAt >= 60000) {
+        if (lowAt == 0 || (int32_t)(millis() - lowAt) >= 60000) {  // signed: lowAt may be 1 ms ahead (| 1u)
             LOGW(LOG_SYSTEM, "Memory low (%u kB free): apps that are behind get no new data until it recovers",
                  (unsigned)(heapFree / 1024));
             lowAt = millis() | 1u;
@@ -307,6 +383,239 @@ static void serviceNavApps(int num) {
                  client.remoteIP().toString().c_str(), (unsigned long)(APP_STALL_CLOSE_MS / 1000));
             client.stop();
             freeAppQueue(num, cln);
+        }
+    }
+}
+
+// Project (step 4a, 0.5.20/0.5.21): the bridge also dials the app. OpenSoar's "TCP port"
+// entry listens on the phone and takes each new connection in place of the old one, so a
+// session left stale by a bridge power cut or a hotspot rejoin is replaced as soon as the
+// bridge dials again (S204, S206). With mobile data on, connections the phone opens go out
+// over mobile data; connections from the bridge reach it over Wi-Fi (S207, S209).
+// Hotspot mode: every phone on the hotspot, on all four ports (increment 2). Connects never
+// wait: a socket in progress is checked on each pass. A connected session takes a free app
+// slot of its port and from then on runs like an accepted app (queue, keepalive, closes).
+// Zander, FLARM and Becker are dialed from the loop task, the voltage port from the status
+// task (each task owns its sockets). Becker: dialed only while no app owns the radio.
+#define DIAL_RETRY_MS 3000    // one attempt per phone and port every 3 s, never given up
+#define DIAL_TIMEOUT_MS 1000  // a connect without an answer is dropped after this (a phone on the hotspot answers in ms)
+#define DIAL_LIST_MS 1000     // hotspot station list read once a second
+// A station that drops connection attempts without any answer (a laptop firewall; a phone
+// answers at once, with a connection or a reset) would hold the one connect in progress
+// most of the time and delay the dials to the phones: after DIAL_SILENT_LIMIT silent attempts
+// in a row it is tried every DIAL_SILENT_RETRY_MS only (S211 follow-up; owner decision).
+#define DIAL_SILENT_LIMIT 3
+#define DIAL_SILENT_RETRY_MS 30000
+
+static void closeRadioOwner(WiFiClient& owner);
+static void trackRadioStation(const WiFiClient& owner);
+static int supplyFreeSlot();  // supply.h, status task
+static void supplyAdopt(int slot, WiFiClient& session);
+static int supplySlotFd(int slot);
+static void supplyEndSlot(int slot, const char* why);
+
+static int freeAppSlot(int num) {
+    for (int i = 0; i < MAX_NMEA_CLIENTS; i++)
+        if (!TCPClient[num][i]) return i;  // connected() also drops a slot the core found closed
+    return -1;
+}
+
+static const char* dialPortName(int p) { return p == DIAL_SUPPLY ? "Supply voltage" : appPortName[p]; }
+static uint16_t dialTcpPort(int p) { return p == DIAL_SUPPLY ? settings.supplyTcp : settings.port[p].tcpPort; }
+
+static int dialFreeSlot(int p) {
+    if (p == DIAL_SUPPLY) return supplyFreeSlot();
+    if (p == RADIO_COM) return TCPClient[RADIO_COM][0].fd() < 0 ? 0 : -1;  // one owner
+    return freeAppSlot(p);
+}
+
+static int dialSlotFd(int p, int slot) { return p == DIAL_SUPPLY ? supplySlotFd(slot) : TCPClient[p][slot].fd(); }
+
+static bool dialSessionAlive(int p, int k) {
+    const DialTarget& t = dialTargets[p][k];
+    if (t.slot < 0) return false;
+    const int fd = dialSlotFd(p, t.slot);
+    return fd >= 0 && fd == t.sessionFd;  // an accept may have reused the slot
+}
+
+static void endDialSession(int p, int k, const char* why) {
+    DialTarget& t = dialTargets[p][k];
+    if (dialSessionAlive(p, k)) {
+        if (p == DIAL_SUPPLY) {
+            supplyEndSlot(t.slot, why);  // logs itself
+        } else {
+            LOGI(LOG_PORTS, "%s: dialed app %s closed: %s", dialPortName(p), IPAddress(t.ip).toString().c_str(), why);
+            if (p == RADIO_COM) {
+                closeRadioOwner(TCPClient[RADIO_COM][0]);
+            } else {
+                TCPClient[p][t.slot].stop();
+                freeAppQueue(p, t.slot);
+            }
+        }
+    }
+    t.slot = -1;
+    t.sessionFd = -1;
+}
+
+static void dialFailed(int p, int k, int error) {
+    DialTarget& t = dialTargets[p][k];
+    dialDropPending(p, k);
+    if (error != ETIMEDOUT) t.silent = 0;
+    else if (++t.silent == DIAL_SILENT_LIMIT)
+        LOGI(LOG_PORTS, "%s: %s does not answer at all, trying every %u s", dialPortName(p), IPAddress(t.ip).toString().c_str(),
+             (unsigned)(DIAL_SILENT_RETRY_MS / 1000));
+    if (t.failures++ == 0)  // first failure only; the next attempts are counted
+        LOGI(LOG_PORTS, "%s: no app answers at %s:%u (%s), trying every %u s", dialPortName(p),
+             IPAddress(t.ip).toString().c_str(), (unsigned)dialTcpPort(p),
+             error == ECONNREFUSED || error == ECONNRESET ? "refused" : error == ETIMEDOUT ? "no answer" : strerror(error),
+             (unsigned)(DIAL_RETRY_MS / 1000));
+}
+
+static void dialStart(int p, int k) {
+    DialTarget& t = dialTargets[p][k];
+    if (dialFreeSlot(p) < 0) return;  // port full (Becker: owned): checked again on the next pass
+    if (p != DIAL_SUPPLY) countNavAppSockets();
+    if (!appBudgetFree()) return;  // socket budget full: try again later
+    int idle = 0;
+    if (!dialInProgress.compare_exchange_strong(idle, 1)) return;  // another connect in progress: next pass
+    t.attemptAt = millis();  // only a real attempt starts the retry time
+    const int fd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    if (fd < 0) {
+        dialInProgress.store(0);
+        dialFailed(p, k, errno);  // no socket left
+        return;
+    }
+    fcntl(fd, F_SETFL, fcntl(fd, F_GETFL, 0) | O_NONBLOCK);
+    sockaddr_in addr = {};
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(dialTcpPort(p));
+    addr.sin_addr.s_addr = t.ip;
+    t.fd = fd;
+    if (connect(fd, reinterpret_cast<sockaddr*>(&addr), sizeof(addr)) != 0 && errno != EINPROGRESS)
+        dialFailed(p, k, errno);
+}
+
+// A connect in progress: done, failed or still waiting (never waits itself).
+static void dialCheck(int p, int k) {
+    DialTarget& t = dialTargets[p][k];
+    fd_set writable, failed;
+    FD_ZERO(&writable);
+    FD_ZERO(&failed);
+    FD_SET(t.fd, &writable);
+    FD_SET(t.fd, &failed);
+    timeval now = {0, 0};
+    const int ready = select(t.fd + 1, nullptr, &writable, &failed, &now);
+    if (ready == 0) {
+        if (millis() - t.attemptAt >= DIAL_TIMEOUT_MS) dialFailed(p, k, ETIMEDOUT);
+        return;
+    }
+    int error = 0;
+    socklen_t len = sizeof(error);
+    if (ready < 0 || getsockopt(t.fd, SOL_SOCKET, SO_ERROR, &error, &len) != 0 || error != 0) {
+        dialFailed(p, k, error ? error : errno);
+        return;
+    }
+    const int slot = dialFreeSlot(p);
+    if (slot < 0) {  // an accepted app took the last slot (Becker: the radio) meanwhile: no failure
+        dialDropPending(p, k);
+        return;
+    }
+    fcntl(t.fd, F_SETFL, fcntl(t.fd, F_GETFL, 0) & ~O_NONBLOCK);  // as accepted sockets; sends use MSG_DONTWAIT
+    WiFiClient session(t.fd);  // owns the socket from here
+    const int fd = t.fd;
+    t.fd = -1;
+    dialInProgress.store(0);
+    session.setNoDelay(true);
+    if (!appKeepalive(session) || (p != DIAL_SUPPLY && !openAppQueue(p, slot))) {
+        session.stop();
+        dialFailed(p, k, ENOMEM);
+        return;
+    }
+    if (p == DIAL_SUPPLY) {
+        supplyAdopt(slot, session);
+    } else if (p == RADIO_COM) {
+        uart_flush_input(UART_NUM_2);  // no earlier radio bytes for the new owner
+        TCPClient[RADIO_COM][0] = session;
+        trackRadioStation(session);
+    } else {
+        TCPClient[p][slot] = session;
+    }
+    t.slot = slot;
+    t.sessionFd = fd;
+    LOGI(LOG_PORTS, "%s: dialed app %s connected (attempt %lu)", dialPortName(p), IPAddress(t.ip).toString().c_str(),
+         (unsigned long)t.failures + 1);
+    t.failures = 0;
+    t.silent = 0;
+}
+
+// Keeps one dialed session per phone on the hotspot for ports first..last. Loop task:
+// Zander, FLARM, Becker; status task: DIAL_SUPPLY.
+static void dialAppsTick(int first, int last) {
+    const bool hotspot = WiFi.getMode() & WIFI_AP;
+    static uint32_t listAt[DIAL_PORTS];
+    if (hotspot && (listAt[first] == 0 || millis() - listAt[first] >= DIAL_LIST_MS)) {
+        listAt[first] = millis() | 1u;
+        wifi_sta_list_t stations;
+        wifi_sta_mac_ip_list_t addresses;
+        addresses.num = 0;
+        if (esp_wifi_ap_get_sta_list(&stations) == ESP_OK)
+            esp_wifi_ap_get_sta_list_with_ip(&stations, &addresses);
+        for (int p = first; p <= last; p++) {
+            for (int k = 0; k < DIAL_TARGETS; k++) {  // phones that left: end their session
+                DialTarget& t = dialTargets[p][k];
+                if (!t.ip) continue;
+                bool present = false;
+                for (int i = 0; i < addresses.num; i++) present |= addresses.sta[i].ip.addr == t.ip;
+                if (present) continue;
+                dialDropPending(p, k);
+                endDialSession(p, k, "the phone left the hotspot");
+                t.ip = 0;
+            }
+            for (int i = 0; i < addresses.num; i++) {  // new phones (no address yet: next time)
+                const uint32_t ip = addresses.sta[i].ip.addr;
+                if (!ip) continue;
+                int freeK = -1, known = -1;
+                for (int k = 0; k < DIAL_TARGETS; k++) {
+                    if (dialTargets[p][k].ip == ip) known = k;
+                    else if (!dialTargets[p][k].ip && freeK < 0) freeK = k;
+                }
+                if (known >= 0 || freeK < 0) continue;
+                dialTargets[p][freeK] = {ip, -1, -1, -1, millis() - DIAL_RETRY_MS, 0, 0};  // dial at once
+            }
+        }
+    }
+    for (int p = first; p <= last; p++) {
+        for (int k = 0; k < DIAL_TARGETS; k++) {
+            DialTarget& t = dialTargets[p][k];
+            if (!t.ip) continue;
+            if (!hotspot) {  // left hotspot mode (never at present: the mode is set at boot)
+                dialDropPending(p, k);
+                endDialSession(p, k, "the hotspot closed");
+                t.ip = 0;
+                continue;
+            }
+            if (t.fd >= 0) {
+                dialCheck(p, k);
+                continue;
+            }
+            if (t.slot >= 0) {
+                if (!dialSessionAlive(p, k)) {  // closed elsewhere (send error, stall, keepalive, app left)
+                    t.slot = -1;
+                    t.sessionFd = -1;
+                    t.attemptAt = millis();  // next attempt in DIAL_RETRY_MS
+                    continue;
+                }
+                if (p == RADIO_COM || p == DIAL_SUPPLY) continue;  // their own code sees a close by the app
+                // Core 3.3.12 connected() keeps a socket with a FIN; the app closed or replaced it.
+                uint8_t byte;
+                WiFiClient& c = TCPClient[p][t.slot];
+                if (c.available() == 0 && recv(c.fd(), &byte, 1, MSG_DONTWAIT | MSG_PEEK) == 0) {
+                    endDialSession(p, k, "the app closed it");
+                    t.attemptAt = millis();
+                }
+                continue;
+            }
+            if (millis() - t.attemptAt >= (t.silent >= DIAL_SILENT_LIMIT ? DIAL_SILENT_RETRY_MS : DIAL_RETRY_MS)) dialStart(p, k);
         }
     }
 }
@@ -381,7 +690,10 @@ static void serviceRadioPort() {
 
     if (server[RADIO_COM]->hasClient()) {
         WiFiClient candidate = server[RADIO_COM]->accept();
-        if (candidate.fd() >= 0 && owner.fd() < 0 && appKeepalive(candidate)) {
+        countNavAppSockets();
+        if (candidate.fd() >= 0 && owner.fd() < 0 && !appBudgetFree()) {
+            refuseOverBudget(appPortName[RADIO_COM], candidate);
+        } else if (candidate.fd() >= 0 && owner.fd() < 0 && appKeepalive(candidate)) {
             // Do not pass previously buffered UART bytes to the new owner.
             uart_flush_input(UART_NUM_2);
             closeRadioOwner(owner);  // Clear tracking if the core closed the previous socket itself.
@@ -396,7 +708,7 @@ static void serviceRadioPort() {
         } else {
             // One line per 30 s at most: an app may retry every second.
             static uint32_t refusedAt = 0, refusedMore = 0;
-            if (refusedAt == 0 || millis() - refusedAt >= 30000) {
+            if (refusedAt == 0 || (int32_t)(millis() - refusedAt) >= 30000) {  // signed, as above
                 LOGW(LOG_RADIO, "App %s refused: %s (%lu more since the last line)", candidate.remoteIP().toString().c_str(),
                      candidate.fd() < 0 ? "connection failed" : owner.fd() >= 0 ? "another app owns the radio port" : "socket setup failed",
                      (unsigned long)refusedMore);
@@ -410,11 +722,11 @@ static void serviceRadioPort() {
     }
 
     if (owner.available() > 0) {
-        const int readCount = owner.read(buf1[RADIO_COM], BUFFERSIZE);
+        const int readCount = owner.read(ioBuf, BUFFERSIZE);
         if (readCount > 0) {
-            const size_t sent = radio.write(buf1[RADIO_COM], readCount);
+            const size_t sent = radio.write(ioBuf, readCount);
             STAT(RADIO_COM, toDevice, sent);
-            MON(RADIO_COM, 1, buf1[RADIO_COM], sent);
+            MON(RADIO_COM, 1, ioBuf, sent);
             if (sent != (size_t)readCount) {
                 LOGW(LOG_RADIO, "Radio took %u of %d bytes, session closed", (unsigned)sent, readCount);
                 closeRadioOwner(owner);
@@ -423,13 +735,13 @@ static void serviceRadioPort() {
     }
 
     if (radio.available()) {
-        const size_t readCount = radio.read(buf2[RADIO_COM], BUFFERSIZE);
+        const size_t readCount = radio.read(ioBuf, BUFFERSIZE);
         if (readCount > 0) {
             STAT(RADIO_COM, fromDevice, readCount);
             STAT_RX(RADIO_COM);
-            MON(RADIO_COM, 0, buf2[RADIO_COM], readCount);
+            MON(RADIO_COM, 0, ioBuf, readCount);
             // Project (step 5): queued, never waited for; the session closes rather than lose bytes.
-            if (owner.fd() >= 0 && queueForApp(RADIO_COM, 0, buf2[RADIO_COM], readCount) > 0) {
+            if (owner.fd() >= 0 && queueForApp(RADIO_COM, 0, ioBuf, readCount) > 0) {
                 STAT(RADIO_COM, shortWrites, 1);
                 LOGW(LOG_RADIO, "App did not take %u radio bytes, session closed", (unsigned)readCount);
                 closeRadioOwner(owner);
@@ -442,6 +754,28 @@ static void serviceRadioPort() {
         closeRadioOwner(owner);
     }
     STAT_CLIENTS(RADIO_COM, owner.fd() >= 0 ? 1 : 0);
+}
+#endif
+
+#if defined(ESP32) && defined(MODE_STA_AP)
+// Project (0.5.21): at most 16 Wi-Fi receive and 16 transmit buffers instead of the core's
+// 32 each (about 1.6 kB per buffer). Bursts of network traffic took the free heap to 0
+// (S199); with the cap the radio drops packets instead, which TCP resends.
+// The core only sets its counts when it starts Wi-Fi, and esp_wifi_init() does nothing
+// when Wi-Fi is already initialized (ESP-IDF 5.5.5), so starting it here first wins.
+// Called once, before the first WiFi.mode(); the switch to the hotspot keeps Wi-Fi initialized.
+#define WIFI_BUFFERS 16
+static void wifiInitCapped() {
+    if (!Network.begin()) return;  // the core retries and logs
+    wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
+    cfg.static_tx_buf_num = 0;  // as the core: dynamic buffers only
+    cfg.dynamic_tx_buf_num = WIFI_BUFFERS;
+    cfg.tx_buf_type = 1;
+    cfg.cache_tx_buf_num = 4;
+    cfg.static_rx_buf_num = 4;
+    cfg.dynamic_rx_buf_num = WIFI_BUFFERS;
+    const esp_err_t err = esp_wifi_init(&cfg);
+    if (err != ESP_OK) LOGW(LOG_WIFI, "Wi-Fi buffer limit not set (%s); core defaults apply", esp_err_to_name(err));
 }
 #endif
 
@@ -543,6 +877,7 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
 #ifdef MODE_STA_AP  // Project: join the network for JOIN_TIMEOUT_MS, else open the hotspot (ADR-05, R12)
         WiFi.persistent(false);  // Project: the core keeps no second copy of the network password (step 3a)
         WiFi.setHostname(HOSTNAME);
+        wifiInitCapped();  // 0.5.21
         WiFi.mode(WIFI_STA);
         if (settings.netSsid[0]) {  // Project: no network set (the default): hotspot at once
             WiFi.begin(settings.netSsid, settings.netPass);  // Project: stored settings (step 3a)
@@ -555,7 +890,9 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
         if (WiFi.status() != WL_CONNECTED) {  // connected: logWifiEvent logs the address; reconnects on its own after a drop
             if (settings.netSsid[0]) LOGW(LOG_WIFI, "Network %s not reached, opening the hotspot", settings.netSsid);
             else LOGI(LOG_WIFI, "No network set, opening the hotspot");
-            WiFi.disconnect(true);
+            WiFi.disconnect();  // 0.5.21: Wi-Fi stays initialized, so the buffer limit of wifiInitCapped()
+                                // holds; disconnect(true) shut it down, and a second init failed
+                                // (wifi_init_default: netstack cb reg failed with 12308)
             WiFi.mode(WIFI_AP);
             if (!WiFi.softAP(settings.hotspotSsid, settings.hotspotPass, HOTSPOT_CHANNEL)) {
                 LOGE(LOG_WIFI, "Hotspot failed, restarting in 5 s");
@@ -565,18 +902,32 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
             delay(2000);  // as upstream MODE_AP before softAPConfig
             const IPAddress hotspotIp(settings.hotspotIp);
             WiFi.softAPConfig(hotspotIp, hotspotIp, NETMASK);
+            {  // 0.5.21: the DHCP answers carry no router (default gateway). The hotspot has no
+               // internet, so a phone must not send its internet traffic here, whatever its user
+               // answers to "no internet, stay connected?"; data reaches the app by the dial (S208).
+                esp_netif_t* ap = WiFi.AP.netif();
+                uint8_t offerRouter = 0;
+                const bool ok = ap && esp_netif_dhcps_stop(ap) != ESP_FAIL &&
+                                esp_netif_dhcps_option(ap, ESP_NETIF_OP_SET, ESP_NETIF_ROUTER_SOLICITATION_ADDRESS,
+                                                       &offerRouter, sizeof(offerRouter)) == ESP_OK &&
+                                esp_netif_dhcps_start(ap) == ESP_OK;
+                if (!ok) LOGW(LOG_WIFI, "Hotspot: could not turn off the gateway in DHCP answers");
+            }
+            // 0.5.21: a phone that joined before softAPConfig got an address from the core's default
+            // range (192.168.4.x) and cannot reach the bridge (S209); send it off once to rejoin.
+            if (const int early = WiFi.softAPgetStationNum()) {
+                esp_wifi_deauth_sta(0);
+                LOGI(LOG_WIFI, "Hotspot: %d early device(s) asked to rejoin for a 10.10.10.x address", early);
+            }
             LOGI(LOG_WIFI, "Hotspot %s open at %s", settings.hotspotSsid, WiFi.softAPIP().toString().c_str());
         }
-        if (MDNS.begin(HOSTNAME)) {
-            MDNS.addService("_telnet", "_tcp", settings.port[0].tcpPort);
-        } else {
-            LOGW(LOG_WIFI, "Name %s.local not available (mDNS)", HOSTNAME);
-        }
+        // 0.5.21: no mDNS (owner decision); the bridge is reached by its address
 #endif
 
 #ifdef OTA_HANDLER
         // Project: password and hostname (R13); messages go to the web log (step 3c)
         ArduinoOTA.setHostname(HOSTNAME);
+        ArduinoOTA.setMdnsEnabled(false);  // 0.5.21: no mDNS
 #ifndef BENCH_OPEN  // bench build: OTA without password (bench.h)
         ArduinoOTA.setPassword(OTA_PASSWORD);
 #endif
@@ -669,6 +1020,28 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
     }
 #endif
 
+#if defined(ESP32) && defined(STATUS_PAGE)
+    // 0.5.21: loop-task watch on the status task (self-healing rule). A stuck status task also
+    // stops the network self-check, so this check lives here. Normal build: planned restart.
+    // Bench build: deliberate abort, so /api/coredump shows where the status task hung.
+#define STATUS_STALL_MS 60000
+    static void statusWatchTick() {
+        static uint32_t checkedAt = 0;
+        if (millis() - checkedAt < 1000) return;
+        checkedAt = millis();
+        const uint32_t beat = statusBeat.load(std::memory_order_relaxed);
+        if (beat == 0 || (int32_t)(millis() - beat) < (int32_t)STATUS_STALL_MS) return;  // signed: beat may be 1 ms ahead
+        LOGE(LOG_SYSTEM, "Status task stuck for %lu s: restarting the bridge", (unsigned long)((millis() - beat) / 1000));
+#ifdef BENCH_OPEN
+        delay(200);
+        abort();  // core dump with every task's stack
+#else
+        closeAppsBeforeRestart(true);
+        ESP.restart();
+#endif
+    }
+#endif
+
     void loop() {
 #ifdef ESP32
         if (appsClosing) {  // a planned restart from the status task: no more accepts or forwarding
@@ -682,6 +1055,9 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
 #endif
 #ifdef BENCH_OPEN
         benchLoop(otaStarted);
+#endif
+#if defined(ESP32) && defined(STATUS_PAGE)
+        statusWatchTick();
 #endif
 #ifdef OTA_HANDLER
         ArduinoOTA.handle();
@@ -710,6 +1086,12 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
 #ifdef ESP32
             if (num == RADIO_COM) continue;
 #endif
+#ifdef ESP32
+            countNavAppSockets();
+            if (server[num]->hasClient() && !appBudgetFree()) {
+                refuseOverBudget(appPortName[num], server[num]->accept());
+            } else
+#endif
             if (server[num]->hasClient()) {
                 for (byte i = 0; i < MAX_NMEA_CLIENTS; i++) {
                     // find free/disconnected spot
@@ -735,6 +1117,9 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
                 TmpserverClient.stop();
             }
         }
+#ifdef ESP32
+        dialAppsTick(0, NUM_COM - 1);  // Project (step 4a): the bridge also dials the app
+#endif
 #endif
 
         for (int num = 0; num < NUM_COM; num++) {
@@ -757,17 +1142,17 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
                     if (TCPClient[num][cln]) {
                         clients++;  // Project
                         while (TCPClient[num][cln].available()) {
-                            buf1[num][i1[num]] =
+                            ioBuf[i1[num]] =
                                 TCPClient[num][cln]
                                     .read();  // read char from client
                             i1[num]++;
                             if (i1[num] == BUFFERSIZE - 1) break;
                         }
 
-                        COM[num]->write(buf1[num],
+                        COM[num]->write(ioBuf,
                                         i1[num]);  // now send to UART(num):
                         STAT(num, toDevice, i1[num]);  // Project: count
-                        MON(num, 1, buf1[num], i1[num]);  // Project: data monitor (step 3b)
+                        MON(num, 1, ioBuf, i1[num]);  // Project: data monitor (step 3b)
                         i1[num] = 0;
                     }
                 }
@@ -778,19 +1163,19 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
 #endif
 
                 if (COM[num]->available()) {
-                    int readCount = COM[num]->read(&buf2[num][0], BUFFERSIZE); // Read up to BUFFERSIZE bytes from the serial device.
+                    int readCount = COM[num]->read(ioBuf, BUFFERSIZE); // Read up to BUFFERSIZE bytes from the serial device.
                     if (readCount == 0)
                         continue;
                     STAT(num, fromDevice, readCount);  // Project: count
                     STAT_RX(num);
-                    MON(num, 0, buf2[num], readCount);  // Project: data monitor (step 3b)
+                    MON(num, 0, ioBuf, readCount);  // Project: data monitor (step 3b)
 #ifdef PROTOCOL_TCP
                     for (byte cln = 0; cln < MAX_NMEA_CLIENTS; cln++) {
                         if (TCPClient[num][cln])
 #ifdef ESP32
-                            if (queueNavForApp(num, cln, buf2[num], readCount) > 0) STAT(num, shortWrites, 1);  // Project (step 5): skipped
+                            if (queueNavForApp(num, cln, ioBuf, readCount) > 0) STAT(num, shortWrites, 1);  // Project (step 5): skipped
 #else
-                            if (TCPClient[num][cln].write(buf2[num], readCount) != (size_t)readCount)
+                            if (TCPClient[num][cln].write(ioBuf, readCount) != (size_t)readCount)
                                 STAT(num, shortWrites, 1);  // Project: count short writes
 #endif
                     }
@@ -800,7 +1185,7 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
 #ifdef BLUETOOTH
                     // now send to Bluetooth:
                     if (num == BLUETOOTH && SerialBT.hasClient())
-                        SerialBT.write(buf2[num], readCount);
+                        SerialBT.write(ioBuf, readCount);
 #endif
 #endif
                 }

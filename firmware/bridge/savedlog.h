@@ -265,7 +265,7 @@ load();
 )HTML";
 
 static void savedRoutes() {
-    statusServer.on("/saved", HTTP_GET, []() { statusServer.send(200, "text/html", kSavedPage); });
+    statusServer.on("/saved", HTTP_GET, []() { statusServer.send_P(200, "text/html", kSavedPage); });
     statusServer.on("/api/saved", HTTP_GET, savedSend);
 }
 

@@ -462,7 +462,7 @@ static void settingsRoutes() {
     statusServer.on("/api/nav-scan", HTTP_POST, handleNavScan);
     statusServer.on("/settings", HTTP_GET, []() {
         if (!settingsAuth()) return;
-        statusServer.send(200, "text/html", kSettingsPage);
+        statusServer.send_P(200, "text/html", kSettingsPage);
     });
     statusServer.on("/api/settings", HTTP_POST, handleSettingsSave);
     statusServer.on("/api/keep", HTTP_POST, handleSettingsKeep);

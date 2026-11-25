@@ -130,9 +130,9 @@ public:
             return;
         }
         // One bounded read per loop pass leaves the radio and the other input serviceable.
-        size_t n = COM[port]->read(buf2[port], BUFFERSIZE);
+        size_t n = COM[port]->read(ioBuf, BUFFERSIZE);
         sawBytes |= n != 0;
-        for (size_t i = 0; i < n; ++i) parser.feed(buf2[port][i]);
+        for (size_t i = 0; i < n; ++i) parser.feed(ioBuf[i]);
         result.counts = parser.counts;
         const bool evidence = result.counts.flarm || result.counts.zander || result.counts.generic;
         if (now - attempt < (evidence ? evidenceMs : probeMs) && now - started < limitMs) return;
