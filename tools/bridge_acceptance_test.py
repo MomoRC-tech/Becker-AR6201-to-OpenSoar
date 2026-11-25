@@ -66,7 +66,7 @@ import urllib.request
 
 from uno_bench import FEED_BAUD, FEED_FORMAT, UnoBench
 
-ZANDER_TCP, FLARM_TCP, RADIO_TCP, SUPPLY_TCP = 10110, 2000, 4352, 4353
+ZANDER_TCP, FLARM_TCP, RADIO_TCP = 10110, 2000, 4352
 BAUD = 19200
 CHUNK = 64  # bytes per write into the Zander port
 STALL_CLOSE_S = 60  # firmware APP_STALL_CLOSE_MS: an app that takes no data for this long is closed
@@ -505,6 +505,14 @@ def run_wired(args, feeds):
     names = ("Zander", "FLARM", "Becker") if args.radio_loop else ("Zander", "FLARM")
     if any(before[name]["tcp_clients"] for name in names):
         raise ValueError("disconnect other test clients before starting")
+    supply_port = None
+    if args.supply:
+        supply_status = get_json(args.host, "/api/status").get("supply", {})
+        if not supply_status.get("sensor"):
+            raise ValueError("enable the supply sensor before running --supply")
+        if supply_status["tcp_clients"]:
+            raise ValueError("disconnect other supply clients before starting")
+        supply_port = supply_status["tcp_port"]
     slow_name = None if args.baseline else next(iter(feeds))
     finish, halt = threading.Event(), threading.Event()
     closes, log_ok, log_failures = [], True, []
@@ -549,8 +557,8 @@ def run_wired(args, feeds):
             pinger = RadioPinger(radio)
 
         supply = None
-        if args.supply:
-            supply = SupplyReader(resources.enter_context(closing(tcp(args.host, SUPPLY_TCP))))
+        if supply_port is not None:
+            supply = SupplyReader(resources.enter_context(closing(tcp(args.host, supply_port))))
 
         start = time.monotonic()
         readers, writers = {}, []
@@ -676,7 +684,7 @@ def main(argv=None) -> int:
     parser.add_argument("--zander-feed", help="PC serial port for the Zander input of the assembled bridge")
     parser.add_argument("--flarm-feed", help="PC serial port for the FLARM input of the assembled bridge")
     parser.add_argument("--seconds", type=float, help="test length (wired default 30, bare-board default 60)")
-    parser.add_argument("--supply", action="store_true", help="wired mode: also read the supply-voltage port 4353")
+    parser.add_argument("--supply", action="store_true", help="wired mode: read the configured supply-voltage port")
     parser.add_argument("--max-delay", type=float, default=2.0, help="largest allowed delay in seconds (default 2)")
     args = parser.parse_args(argv)
     device = args.feed or args.uno_feed
@@ -693,6 +701,8 @@ def main(argv=None) -> int:
         feeds = {"Zander" if args.input == "zander" else "FLARM": device}
     if len({device.casefold() for device in feeds.values()}) != len(feeds):
         parser.error("each input requires an independent PC serial port")
+    if args.supply and not feeds:
+        parser.error("--supply requires a wired serial feed")
     if not feeds and int(BAUD / 10 * 0.8 * args.seconds) == 0:
         parser.error("--seconds must be long enough to send at least one byte")
     try:

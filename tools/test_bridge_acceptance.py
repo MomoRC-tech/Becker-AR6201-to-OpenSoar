@@ -57,7 +57,7 @@ class RadioVerdictTest(unittest.TestCase):
 
 
 class WiredAcceptanceTest(unittest.TestCase):
-    def run_wired(self, feeds, fault=None, radio=False, slow=False, uno=False):
+    def run_wired(self, feeds, fault=None, radio=False, slow=False, uno=False, supply=False):
         # Non-default TCP ports and different baud rates make it possible to
         # catch tests that use firmware defaults or the other input's settings.
         ports = {
@@ -77,6 +77,8 @@ class WiredAcceptanceTest(unittest.TestCase):
             argv.append("--baseline")
         if radio:
             argv.append("--radio-loop")
+        if supply:
+            argv.append("--supply")
         written = {"COM4": bytearray(), "COM5": bytearray()}
         sockets, connections, opened, closed, write_order = {}, [], [], [], []
         output = io.StringIO()
@@ -95,6 +97,8 @@ class WiredAcceptanceTest(unittest.TestCase):
             sockets[key] = (client, peer)
             if port == 24352 and fault == "radio-eof":
                 peer.shutdown(socket.SHUT_WR)
+            if port == 24353:
+                peer.sendall(b"$POV,V,12.34*35\r\n")
             return client
 
         class Feed:
@@ -137,6 +141,9 @@ class WiredAcceptanceTest(unittest.TestCase):
                 return size
 
         def http_json(host, path):
+            if path == "/api/status":
+                return {"supply": {"tcp_port": 24353, "sensor": fault != "supply-disabled",
+                                   "tcp_clients": int(fault == "supply-in-use")}}
             if path == "/api/settings":
                 return {"items": [{"key": f"f{uart}", "value": frame}
                                   for uart, frame in enumerate(("7E1", "8N1", "8N1"))]}
@@ -200,6 +207,25 @@ class WiredAcceptanceTest(unittest.TestCase):
         self.assertTrue(result, output)
         self.assertEqual(opened, [("COM5", 19200)])
         self.assertTrue(written["COM5"])
+
+    def test_supply_uses_the_active_port(self):
+        result, output, connections, _, _ = self.run_wired({"Zander": "COM4"}, supply=True)
+        self.assertTrue(result, output)
+        self.assertIn((24353, False), connections)
+        self.assertIn("supply port: 1 valid, 0 invalid", output)
+
+    def test_supply_preconditions_are_checked_before_connecting(self):
+        for fault, reason in (
+            ("supply-disabled", "enable the supply sensor"),
+            ("supply-in-use", "disconnect other supply clients"),
+        ):
+            with self.subTest(fault=fault):
+                result, output, connections, opened, _ = self.run_wired(
+                    {"Zander": "COM4"}, supply=True, fault=fault)
+                self.assertFalse(result, output)
+                self.assertIn(reason, output)
+                self.assertEqual(connections, [])
+                self.assertEqual(opened, [])
 
     def test_uno_feed_rejects_incompatible_bridge_settings(self):
         result, output, _, opened, _ = self.run_wired({"Zander": "COM4"}, uno=True)
