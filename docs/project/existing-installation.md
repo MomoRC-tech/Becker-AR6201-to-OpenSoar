@@ -46,6 +46,8 @@ As reported by Tom (S21):
 | 📡 FLARM | `10.10.10.10:2000` | `FLARM` |
 | 📻 Becker | `10.10.10.10:4352` | `AR62xx` — entry only, the radio is not connected |
 
+All three are *TCP client* entries; the Becker entry is disabled. The phone has no internet while it is on the bridge's Wi-Fi (S213).
+
 The installed OpenSoar build and the role of the OpenVario are not known. The review baseline is OpenSoar 7.46.26 (S09); which Zander fields it uses is in S24.
 
 ---
