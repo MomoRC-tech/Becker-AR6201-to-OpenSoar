@@ -5,12 +5,14 @@
     python tools/bridge_acceptance_test.py 192.168.1.50 --radio-loop --seconds 120
 
     python tools/bridge_acceptance_test.py 192.168.1.50 --feed COM4 --input flarm --seconds 30
+    python tools/bridge_acceptance_test.py 192.168.1.50 --uno-feed COM4 --input flarm --baseline
     python tools/bridge_acceptance_test.py 192.168.1.50 --zander-feed COM4 --flarm-feed COM5 --radio-loop --seconds 3600
 
 With serial feeds, use the assembled bridge at the DE-9 with instruments
 disconnected, RS-232-level sources and (with --radio-loop) links 4-8 and
 5-9. See docs/hardware/wiring.md#bus-test. Two feeds need independent PC
 serial adapters. Wired mode needs pyserial and uses the live settings.
+--uno-feed selects the framed Uno fixture (firmware/uno_bench/README.md).
 Run with the PC test clients alone. The slow client uses the first wired
 input (Zander when both are fed).
 
@@ -61,6 +63,8 @@ import sys
 import threading
 import time
 import urllib.request
+
+from uno_bench import FEED_BAUD, FEED_FORMAT, UnoBench
 
 ZANDER_TCP, FLARM_TCP, RADIO_TCP, SUPPLY_TCP = 10110, 2000, 4352, 4353
 BAUD = 19200
@@ -515,9 +519,14 @@ def run_wired(args, feeds):
             if name in feeds:
                 if int(frame[0]) < 7:
                     raise ValueError(f"{name}: synthetic NMEA requires at least 7 data bits")
-                source = resources.enter_context(serial.Serial(
-                    feeds[name], baudrate=port["baud"], bytesize=int(frame[0]),
-                    parity=frame[1], stopbits=int(frame[2]), write_timeout=args.max_delay))
+                if args.uno_feed:
+                    if (port["baud"], frame) != (FEED_BAUD, FEED_FORMAT):
+                        raise ValueError(f"{name}: Uno bench requires {FEED_BAUD} {FEED_FORMAT}")
+                    source = resources.enter_context(UnoBench(feeds[name], timeout=args.max_delay))
+                else:
+                    source = resources.enter_context(serial.Serial(
+                        feeds[name], baudrate=port["baud"], bytesize=int(frame[0]),
+                        parity=frame[1], stopbits=int(frame[2]), write_timeout=args.max_delay))
                 print(f"{name}: {feeds[name]}, {port['baud']} {frame}, TCP {port['tcp_port']}")
             inputs[name] = WiredInput(name, sock, source, port, frame, args, halt)
             if source is not None and int(inputs[name].rate * args.seconds) < CHUNK:
@@ -660,25 +669,28 @@ def main(argv=None) -> int:
     parser.add_argument("host", help="bridge address, 10.10.10.10 in hotspot mode")
     parser.add_argument("--baseline", action="store_true", help="leave out the slow app")
     parser.add_argument("--radio-loop", action="store_true", help="time the radio port with the appropriate physical loop fitted")
-    parser.add_argument("--feed", help="PC serial port for one assembled-bridge RS-232 input")
-    parser.add_argument("--input", choices=("zander", "flarm"), help="navigation input driven by --feed")
+    single_feed = parser.add_mutually_exclusive_group()
+    single_feed.add_argument("--feed", help="PC serial port for one assembled-bridge RS-232 input")
+    single_feed.add_argument("--uno-feed", help="USB port of the Uno bench fixture (19200 8N1 output)")
+    parser.add_argument("--input", choices=("zander", "flarm"), help="navigation input for a single feed")
     parser.add_argument("--zander-feed", help="PC serial port for the Zander input of the assembled bridge")
     parser.add_argument("--flarm-feed", help="PC serial port for the FLARM input of the assembled bridge")
     parser.add_argument("--seconds", type=float, help="test length (wired default 30, bare-board default 60)")
     parser.add_argument("--supply", action="store_true", help="wired mode: also read the supply-voltage port 4353")
     parser.add_argument("--max-delay", type=float, default=2.0, help="largest allowed delay in seconds (default 2)")
     args = parser.parse_args(argv)
+    device = args.feed or args.uno_feed
     if args.seconds is None:
-        args.seconds = 30 if args.feed or args.zander_feed or args.flarm_feed else 60
+        args.seconds = 30 if device or args.zander_feed or args.flarm_feed else 60
     if not all(math.isfinite(value) and value > 0 for value in (args.seconds, args.max_delay)):
         parser.error("--seconds and --max-delay must be positive and finite")
-    if bool(args.feed) != bool(args.input):
-        parser.error("--feed and --input must be supplied together")
-    feeds = {name: device for name, device in (("Zander", args.zander_feed), ("FLARM", args.flarm_feed)) if device}
-    if args.feed:
+    if bool(device) != bool(args.input):
+        parser.error("--feed or --uno-feed requires --input and vice versa")
+    feeds = {name: port for name, port in (("Zander", args.zander_feed), ("FLARM", args.flarm_feed)) if port}
+    if device:
         if feeds:
-            parser.error("--feed/--input cannot be combined with --zander-feed or --flarm-feed")
-        feeds = {"Zander" if args.input == "zander" else "FLARM": args.feed}
+            parser.error("a single feed cannot be combined with --zander-feed or --flarm-feed")
+        feeds = {"Zander" if args.input == "zander" else "FLARM": device}
     if len({device.casefold() for device in feeds.values()}) != len(feeds):
         parser.error("each input requires an independent PC serial port")
     if not feeds and int(BAUD / 10 * 0.8 * args.seconds) == 0:
