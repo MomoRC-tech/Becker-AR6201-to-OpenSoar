@@ -108,8 +108,7 @@ See the [bridge firmware plan](roadmap.md#firmware-plan) and the [stock OpenSoar
 | 9 | Settings under power loss | Interrupt a save and an automatic rollback on a spare ESP32, then check that the stored configuration is complete (S162) | Physical settings persistence |
 | 11 | Radio owner change | Bytes the previous owner sent can still be on the UART when the next owner is accepted, so their echo or the radio's reply may reach the next owner. Measured with `tools/radio_robustness_test.py`: 113 and 119 bytes reached the next owner (S177). Owner decides how to handle it | Radio ownership |
 | 12 | Remaining review checks | Code review findings 6–9: UART FIFO margin during flash writes, ROM output on the Zander transmit pin, apps held during a navigation scan, low items | Bridge reliability |
-| 13 | Phone reconnect and two-phone checks | Stock OpenSoar on a real Android phone: hotspot Wi-Fi loss and bridge power cycle with mobile data on, network-mode power cycle with phone Wi-Fi left on, and its AR62xx driver on the radio port (item 3). With a second phone, check that the first keeps receiving while the second app is in the background or its screen is off (S190) | Step 5 acceptance |
-| 14 | Early-join address | A station that joins before the hotspot address change is sent to rejoin, but its old 192.168.4.x address stays in the station list and is dialed once in vain (S220). Harmless; fix with increment 4 or leave | Bridge reliability |
+| 13 | Phone reconnect and two-phone checks | Stock OpenSoar on a real Android phone: hotspot Wi-Fi loss and bridge power cycle with mobile data on (network mode: bench only, S219), and its AR62xx driver on the radio port (item 3). With a second phone, check that the first keeps receiving while the second app is in the background or its screen is off (S190) | Step 5 acceptance |
 
 ### 4.1 Phone reconnect options (item 13)
 
@@ -128,12 +127,13 @@ Prefer upstream issues and shared TCP transport changes for both apps. Get owner
 | Time to the first fresh sentence in OpenSoar | Device list (*GPS fix* / *No data*) or the clock InfoBox, timed screenshots |
 
 - [x] Emulator pre-check (bench PC, no owner): web restart, firmware update and settings rollback with 0.5.19+, network mode: fresh data 6–9 s after the restart (S201). S179 and S182 cover the emulator's NAT limits; a power cut cannot be simulated there
-- [ ] Owner phone on the shared Wi-Fi (network mode): web restart, then a hard bridge power cut with the phone's Wi-Fi left on
 - [x] Owner phone on the hotspot with mobile data on: Wi-Fi cut and bridge power cycle (S215)
 - [x] Owner phone, 0.5.21 bench build, hotspot without gateway, *Stay connected* saved: after a bridge restart the phone rejoined by itself, 5G internet, Zander data through the dial 1.2 s after the join (S209)
 - [x] Bench PC as phone, 0.5.22: all four ports dialed, Becker owner rule, planned restart (S211)
 - [x] Bench PC as phone, 0.5.23, network mode: gateway, last phone seen and settings-page address dialed in that order, saved phone dialed after a restart (S219)
 - [x] Owner phone, 0.5.23, hotspot: Wi-Fi off/on, web restart, 1 hard power cut; ports ≤ 3.3 s after the join (S220)
+- [x] Bench PC, 0.5.26: dial state per port in `/api/status` and on the status page; no dial to an early-join address; a reset session dialed again after 3.1 s (S223)
+- [x] Owner phone, 0.5.26 before the reset fix: Wi-Fi off/on, data back (S223)
 - [x] Owner phone, 0.5.22, all four *TCP port* entries: Wi-Fi off/on, web restart and 3 hard power cuts with the screen on; rejoin 16–18 s after power-on, ports ≤ 3.6 s later. Screen locked: rejoin only at unlock (S215)
 - [x] Owner phone, no firmware change (S206, XCSoar): the bench PC connects to OpenSoar's *TCP port* device on the phone twice (old connection silent, new one sending), on the shared Wi-Fi and on the hotspot with mobile data on (S200 on a real phone): fresh data ≤ 6 s after the new connection, also after an automatic hotspot rejoin with mobile data on
 - [ ] For an app change: a quiet healthy port stays connected, and other apps keep internet access with mobile data on

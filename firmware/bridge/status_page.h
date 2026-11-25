@@ -173,11 +173,13 @@ const $=i=>document.getElementById(i),last={},frame={};let built=false,unc='';
 const esc=x=>String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
 function dur(s){const h=Math.floor(s/3600),m=Math.floor(s%3600/60);return h?h+' h '+m+' min':m?m+' min '+s%60+' s':s+' s'}
 function size(b){return b<1e4?b+' B':b<1e7?(b/1024).toFixed(1)+' kB':(b/1048576).toFixed(1)+' MB'}
+const DS={connected:'connected',connecting:'connecting',waiting:'waiting',refused:'app not listening','no answer':'no answer',error:'error'};
+function dl(a){return a.map(x=>esc(x.ip)+': '+(DS[x.state]||esc(x.state))+(x.state!=='connected'&&x.attempts?' ('+x.attempts+(x.attempts>1?' tries':' try')+')':'')).join(', ')}
 function ago(ms){return ms===null?'No data yet':ms<5000?'Receiving':'Quiet for '+dur(Math.round(ms/1000))}
 function build(ports){let h='';ports.forEach((p,n)=>{h+='<section id="d'+n+'"><div class="row"><span class="dot"></span><h2>'+esc(p.name)+'</h2><span class="st" id="s'+n+'"></span></div><div class="brief" id="b'+n+'"></div><details><summary>Details</summary><dl id="x'+n+'"></dl><p class="key"><a href="/monitor?port='+n+'">Show data</a></p></details></section>'});$('ports').innerHTML=h;built=true}
 function f(){fetch('/api/status',{cache:'no-store'}).then(r=>r.json()).then(d=>{
 $('down').hidden=true;const w=d.wifi;
-const link=w.mode==='hotspot'?'<div>Hotspot <b>'+w.ip+'</b></div><div>'+(w.stations.length?w.stations.length+(w.stations.length>1?' phones, ':' phone, ')+'signal <b>'+w.stations.map(x=>x+' dBm').join(', ')+'</b>':'No phone connected')+'</div>':'<div>Network <b>'+w.ip+'</b></div><div>Signal <b>'+w.rssi_dbm+' dBm</b></div>';
+const link=w.mode==='hotspot'?'<div>Hotspot <b>'+w.ip+'</b></div><div>'+(w.stations.length?w.stations.length+(w.stations.length>1?' phones, ':' phone, ')+'signal <b>'+w.stations.map(x=>x+' dBm').join(', ')+'</b>':'No phone connected')+'</div>':'<div>Network <b>'+w.ip+'</b></div><div>Signal <b>'+w.rssi_dbm+' dBm</b></div>'+(w.dial_to?'<div>Dials <b>'+esc(w.dial_to)+'</b> ('+esc(w.dial_source)+')</div>':'');
 const ct=d.chip_temp;unc=ct&&!ct.corrected?' <a class="chg" href="/settings">uncorrected</a>':'';
 const chip=ct?'<div>Chip temperature <b'+(ct.celsius!==null&&ct.celsius+ct.offset>=ct.warn_c?' class="bad"':'')+'>'+(ct.celsius===null?'no reading':Math.round(ct.celsius)+' °C')+'</b>'+unc+'</div>':'';
 const samples=ct?.boot_samples,first=samples?.[0];
@@ -193,12 +195,13 @@ $('d'+n).className=(on?'on':'')+(moved?' pulse':'');$('s'+n).textContent=ago(p.l
 let b=p.baud+' baud'+(frame[n]?' '+frame[n]:'')+', TCP '+p.tcp_port+', '+(p.tcp_clients?p.tcp_clients+(p.tcp_clients>1?' apps':' app')+' connected':'no app connected');
 if(p.uart_errors)b+=', <span class="bad">'+p.uart_errors+' receive error'+(p.uart_errors>1?'s':'')+'</span>';
 if(p.short_writes)b+=', <span class="bad">'+p.short_writes+' short write'+(p.short_writes>1?'s':'')+'</span>';
+if(!p.tcp_clients&&p.dial&&p.dial.length)b+=' · dialing '+dl(p.dial);
 $('b'+n).innerHTML=b;
-$('x'+n).innerHTML='<div><dt>From device</dt><dd>'+size(p.bytes_from_device)+'</dd></div><div><dt>To device</dt><dd>'+size(p.bytes_to_device)+'</dd></div><div><dt>Receive errors</dt><dd'+(p.uart_errors?' class="bad"':'')+'>'+p.uart_errors+'</dd></div><div><dt>Short writes</dt><dd'+(p.short_writes?' class="bad"':'')+'>'+p.short_writes+'</dd></div>'});
+$('x'+n).innerHTML='<div><dt>From device</dt><dd>'+size(p.bytes_from_device)+'</dd></div><div><dt>To device</dt><dd>'+size(p.bytes_to_device)+'</dd></div><div><dt>Receive errors</dt><dd'+(p.uart_errors?' class="bad"':'')+'>'+p.uart_errors+'</dd></div><div><dt>Short writes</dt><dd'+(p.short_writes?' class="bad"':'')+'>'+p.short_writes+'</dd></div><div><dt>Bridge dials</dt><dd>'+(p.dial&&p.dial.length?dl(p.dial):'No phone')+'</dd></div>'});
 sup(d.supply);life(d.lifetime)}).catch(()=>{$('down').hidden=false})}
 function sup(s){if(!s)return;$('sup').hidden=false;const on=s.sensor&&s.volts!==null;$('sup').className=on?'on':'';
 $('sv').innerHTML=!s.sensor?'Sensor off':s.volts===null?'<span class="bad">No reading</span>':'<b class="'+(s.volts<s.low_v?'bad':'')+'">'+s.volts.toFixed(2)+' V</b>';
-$('sb').innerHTML=s.sensor?'OpenVario, TCP '+s.tcp_port+', '+(s.tcp_clients?s.tcp_clients+(s.tcp_clients>1?' apps':' app')+' connected':'no app connected'):'Switch the sensor on in the settings once the divider is fitted.'}
+$('sb').innerHTML=s.sensor?'OpenVario, TCP '+s.tcp_port+', '+(s.tcp_clients?s.tcp_clients+(s.tcp_clients>1?' apps':' app')+' connected':'no app connected'+(s.dial&&s.dial.length?' · dialing '+dl(s.dial):'')):'Switch the sensor on in the settings once the divider is fitted.'}
 function when(e){return 'at '+dur(e.up_s)+' operating time'+(e.unix?', '+new Date(e.unix*1000).toLocaleDateString()+' '+hm(e.unix*1000):'')}
 function life(l){if(!l)return;$('lt').hidden=false;const c=l.max_chip,v=l.min_supply;
 $('lr').innerHTML='<span>Operating time</span><div>'+dur(l.up_s)+'</div><span>Starts</span><div>'+l.starts+'</div>'+(l.since_unix?'<span>Since</span><div>'+new Date(l.since_unix*1000).toLocaleDateString()+'</div>':'')+
@@ -239,7 +242,7 @@ g();f();hg();setInterval(f,2000);setInterval(hg,30000);
 static String statusJson() {
     char part[384];  // one port line with all counters at their maximum is about 260 bytes
     String out;
-    out.reserve(2048);  // Project 0.5.12: the full answer is about 1.5 kB; no regrowth while it is built
+    out.reserve(2560);  // 0.5.26: plus the dial entries. Project 0.5.12: the full answer is about 1.5 kB; no regrowth while it is built
     snprintf(part, sizeof(part), "{\"firmware\":\"Wi-Fi bridge %s\",\"uptime_s\":%llu,", VERSION,
              (unsigned long long)(esp_timer_get_time() / 1000000));
     out += part;
@@ -255,9 +258,18 @@ static String statusJson() {
         }
         out += "]},";
     } else {
-        snprintf(part, sizeof(part), "\"wifi\":{\"mode\":\"network\",\"ip\":\"%s\",\"rssi_dbm\":%d},",
+        snprintf(part, sizeof(part), "\"wifi\":{\"mode\":\"network\",\"ip\":\"%s\",\"rssi_dbm\":%d",
                  WiFi.localIP().toString().c_str(), (int)WiFi.RSSI());
         out += part;
+#ifdef PROTOCOL_TCP
+        if (const uint32_t to = dialNetTarget.load()) {  // step 4a increment 4: the phone the bridge dials
+            static const char* const kSource[] = {"settings page", "last phone seen", "gateway"};
+            snprintf(part, sizeof(part), ",\"dial_to\":\"%s\",\"dial_source\":\"%s\"", IPAddress(to).toString().c_str(),
+                     kSource[dialNetSource.load() % 3]);
+            out += part;
+        }
+#endif
+        out += "},";
     }
 
     out += "\"ports\":[";
@@ -274,12 +286,14 @@ static String statusJson() {
         snprintf(part, sizeof(part),
                  "%s{\"name\":\"%s\",\"uart\":%d,\"baud\":%lu,\"tcp_port\":%u,"
                  "\"bytes_from_device\":%lu,\"bytes_to_device\":%lu,\"last_data_ms_ago\":%s,"
-                 "\"tcp_clients\":%lu,\"uart_errors\":%lu,\"short_writes\":%lu}",
+                 "\"tcp_clients\":%lu,\"uart_errors\":%lu,\"short_writes\":%lu",
                  num ? "," : "", kPortName[num], num, (unsigned long)settings.port[num].baud, settings.port[num].tcpPort,
                  (unsigned long)p.fromDevice.load(), (unsigned long)p.toDevice.load(), age,
                  (unsigned long)p.tcpClients.load(), (unsigned long)p.uartErrors.load(),
                  (unsigned long)p.shortWrites.load());
         out += part;
+        dialJson(out, num);  // step 4a increment 4
+        out += "}";
     }
     out += "]";
     supplyStatusJson(out);  // Project: supply voltage (step 3d)

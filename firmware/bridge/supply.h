@@ -319,10 +319,12 @@ static void supplyStatusJson(String& out) {
     out += ",\"raw_volts\":";
     supplyNumber(out, settings.supplySensor ? supplyNow.rawVolts : NAN);
     char b[160];
-    snprintf(b, sizeof(b), ",\"calibration\":%u.%03u,\"tcp_port\":%u,\"tcp_clients\":%lu,\"sentences\":%lu,\"skipped\":%lu,\"low_v\":%.1f}",
+    snprintf(b, sizeof(b), ",\"calibration\":%u.%03u,\"tcp_port\":%u,\"tcp_clients\":%lu,\"sentences\":%lu,\"skipped\":%lu,\"low_v\":%.1f",
              settings.supplyCal / 1000, settings.supplyCal % 1000, settings.supplyTcp, (unsigned long)supplyAppCount(),
              (unsigned long)supplyNow.sentences, (unsigned long)supplyNow.skipped, SUPPLY_LOW_V);
     out += b;
+    dialJson(out, NUM_COM);  // the voltage port's dial entries (DIAL_SUPPLY)
+    out += "}";
 }
 
 static void supplyPointJson(String& out, const SupplyPoint& p) {

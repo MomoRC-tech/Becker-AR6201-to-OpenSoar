@@ -121,10 +121,14 @@ struct DialTarget {
     uint32_t attemptAt;   // start of the last attempt
     uint32_t failures;    // attempts without a session since the last one
     uint8_t silent;       // attempts in a row without any answer (no SYN-ACK, no reset)
+    uint8_t lastError;    // increment 4: why the last attempt failed (DIAL_ERR_*), for /api/status
 };
 #define DIAL_SUPPLY NUM_COM        // the voltage port, dialed from the status task
 #define DIAL_PORTS (NUM_COM + 1)
 static DialTarget dialTargets[DIAL_PORTS][DIAL_TARGETS];
+enum : uint8_t { DIAL_ERR_NONE, DIAL_ERR_REFUSED, DIAL_ERR_SILENT, DIAL_ERR_OTHER };
+static std::atomic<uint32_t> dialNetTarget{0};  // increment 3, network mode: as in ip4_addr; 0 = none
+static std::atomic<uint8_t> dialNetSource{0};   // increment 4: 0 settings page, 1 last phone seen, 2 gateway
 // 0.5.22: one connect in progress at a time across both tasks (the socket budget reserves one).
 static std::atomic<int> dialInProgress{0};
 static void dialDropPending(int p, int k) {  // indices: sketch prototypes come before the struct
@@ -222,6 +226,33 @@ static void refuseOverBudget(const char* port, WiFiClient c) {
 }
 
 static void lastPhonePersistTick();  // status task
+#endif
+
+#ifdef PROTOCOL_TCP
+// Step 4a increment 4: ,"dial":[{"ip":..,"state":..,"attempts":n},..] for one port (status task;
+// the loop task changes the entries meanwhile, so a line can mix two passes: display only).
+static void dialJson(String& out, int p) {
+    out += ",\"dial\":[";
+    bool first = true;
+    for (int k = 0; k < DIAL_TARGETS; k++) {
+        const DialTarget t = dialTargets[p][k];
+        if (!t.ip) continue;
+        const char* state = t.slot >= 0                       ? "connected"
+                            : t.fd >= 0                       ? "connecting"
+                            : t.failures == 0                 ? "waiting"
+                            : t.lastError == DIAL_ERR_REFUSED ? "refused"
+                            : t.lastError == DIAL_ERR_SILENT  ? "no answer"
+                                                              : "error";
+        char b[96];
+        snprintf(b, sizeof(b), "%s{\"ip\":\"%s\",\"state\":\"%s\",\"attempts\":%lu}", first ? "" : ",",
+                 IPAddress(t.ip).toString().c_str(), state, (unsigned long)t.failures);
+        out += b;
+        first = false;
+    }
+    out += "]";
+}
+#else
+static void dialJson(String& out, int) { out += ",\"dial\":[]"; }
 #endif
 
 #include "status_page.h"  // Project: status page and counters (step 3)
@@ -462,6 +493,7 @@ static void endDialSession(int p, int k, const char* why) {
 static void dialFailed(int p, int k, int error) {
     DialTarget& t = dialTargets[p][k];
     dialDropPending(p, k);
+    t.lastError = error == ECONNREFUSED || error == ECONNRESET ? DIAL_ERR_REFUSED : error == ETIMEDOUT ? DIAL_ERR_SILENT : DIAL_ERR_OTHER;
     if (error != ETIMEDOUT) t.silent = 0;
     else if (++t.silent == DIAL_SILENT_LIMIT)
         LOGI(LOG_PORTS, "%s: %s does not answer at all, trying every %u s", dialPortName(p), IPAddress(t.ip).toString().c_str(),
@@ -548,6 +580,7 @@ static void dialCheck(int p, int k) {
          (unsigned long)t.failures + 1);
     t.failures = 0;
     t.silent = 0;
+    t.lastError = DIAL_ERR_NONE;
 }
 
 // Network mode dials the configured address, the latest accepted instrument client,
@@ -555,7 +588,6 @@ static void dialCheck(int p, int k) {
 #define DIAL_NVS "bridge-dial"
 #define DIAL_NVS_LAST "last"
 static constexpr uint32_t PHONE_SAVE_INTERVAL_MS = 5000;
-static std::atomic<uint32_t> dialNetTarget{0};  // as in ip4_addr; 0 = none (not on a network)
 static std::atomic<uint32_t> lastPhoneIp{0};    // loop task writes, status task reads
 static uint32_t savedPhoneIp = 0;              // status task after setup
 
@@ -613,9 +645,11 @@ static void dialNetTargetTick() {
     const uint32_t own = (uint32_t)WiFi.localIP();
     const uint32_t learned = lastPhoneIp.load();
     const char* source = "the settings page";
+    uint8_t from = 0;
     uint32_t target = settings.phoneIp;
-    if (!target && learned) target = learned, source = "the last phone seen";
-    if (!target) target = (uint32_t)WiFi.gatewayIP(), source = "the gateway";
+    if (!target && learned) target = learned, source = "the last phone seen", from = 1;
+    if (!target) target = (uint32_t)WiFi.gatewayIP(), source = "the gateway", from = 2;
+    dialNetSource.store(from);
     if (target == own || !validIp(target)) target = 0;
     if (target == dialNetTarget.load()) return;
     if (target) LOGI(LOG_PORTS, "Network mode: dialing the app at %s (%s)", IPAddress(target).toString().c_str(), source);
@@ -659,7 +693,9 @@ static void dialAppsTick(int first, int last) {
             }
             for (int i = 0; i < addresses.num; i++) {  // new phones (no address yet: next time)
                 const uint32_t ip = addresses.sta[i].ip.addr;
-                if (!ip) continue;
+                // 0.5.26: a station that joined before the address change keeps its 192.168.4.x lease in
+                // this list for the boot; it rejoins with a hotspot address (S211, S220)
+                if (!ip || (ip & (uint32_t)NETMASK) != ((uint32_t)WiFi.softAPIP() & (uint32_t)NETMASK)) continue;
                 int freeK = -1, known = -1;
                 for (int k = 0; k < DIAL_TARGETS; k++) {
                     if (dialTargets[p][k].ip == ip) known = k;
@@ -689,6 +725,13 @@ static void dialAppsTick(int first, int last) {
                 // Core 3.3.12 connected() keeps a socket with a FIN; the app closed or replaced it.
                 uint8_t byte;
                 WiFiClient& c = TCPClient[p][t.slot];
+                // 0.5.26: after a reset by the app the core's connected() turns false but keeps the
+                // socket, so the loop skipped the client and this session was never redialed (S223).
+                if (!c.connected()) {
+                    endDialSession(p, k, "the app reset it");
+                    t.attemptAt = millis();
+                    continue;
+                }
                 if (c.available() == 0 && recv(c.fd(), &byte, 1, MSG_DONTWAIT | MSG_PEEK) == 0) {
                     endDialSession(p, k, "the app closed it");
                     t.attemptAt = millis();
