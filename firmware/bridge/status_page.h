@@ -79,6 +79,22 @@ private:
     }
 
 public:
+    // 0.5.24: the core's chunked sendContent writes each chunk's closing "\r\n" with the client's own
+    // write (up to 10 s per chunk for a client that left), so a log reply blocked this task past the
+    // 60 s watch (core dump, S220). Here size, data and closing all go through writeOrDrop.
+    void sendContent(const char* content, size_t length) {
+        if (_chunked) {
+            char head[12];
+            writeOrDrop(head, snprintf(head, sizeof(head), "%lx\r\n", (unsigned long)length));
+        }
+        writeOrDrop(content, length);
+        if (_chunked) {
+            writeOrDrop("\r\n", 2);
+            if (length == 0) _chunked = false;
+        }
+    }
+    void sendContent(const String& content) { sendContent(content.c_str(), content.length()); }
+
     void dropIdleClient() {
         if (_currentStatus == HC_WAIT_READ && millis() - _statusChange > WEB_IDLE_DROP_MS && _currentClient.available() == 0) {
             _currentClient.stop();
@@ -336,7 +352,8 @@ static String settingsJson() {
         out += "\",\"port\":";
         if (n >= 0) jsonString(out, kPortName[n]); else out += "null";
         out += ",\"group\":";
-        jsonString(out, n >= 0 ? kPortName[n] : supplyKey(s) ? "Supply voltage" : chipKey(s) ? "Chip temperature" : "Wi-Fi");
+        jsonString(out, n >= 0 ? kPortName[n] : supplyKey(s) ? "Supply voltage" : chipKey(s) ? "Chip temperature"
+                                              : s.key[0] == 'h' ? "Hotspot" : "Network");
         out += ",\"name\":";
         jsonString(out, settingName(s));
         out += ",\"secret\":";

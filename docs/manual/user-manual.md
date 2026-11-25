@@ -7,7 +7,7 @@
 How to connect the bridge to OpenSoar, how it behaves and what to do when something looks wrong.
 
 > [!NOTE]
-> **Status:** describes bridge firmware 0.5.22 on the bench bridge (hotspot mode; the bridge dials the app, [step 4a](../project/roadmap.md#firmware-plan)). Bench-tested with the PC as phone (S211); the automatic rejoin with mobile internet was seen once on the owner's Pixel (S209). Power-cut checks on the phone, network mode and a second phone are still open ([roadmap](../project/roadmap.md#work-packages)).
+> **Status:** describes bridge firmware 0.5.24 on the bench bridge (the bridge dials the app in hotspot and network mode, [step 4a](../project/roadmap.md#firmware-plan)). Hotspot mode passed on the owner's Pixel: Wi-Fi off/on, restart and hard power cuts (S215, S220). Network mode bench-tested with the PC as phone (S219). A phone in network mode and a second phone are still open ([roadmap](../project/roadmap.md#work-packages)).
 
 <a href="#quick-start"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-manual-user-manual-1-dark.svg"><img src="../images/nav/menu-manual-user-manual-1.svg" alt="1 · Quick start" height="30"></picture></a> <a href="#behaviour"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-manual-user-manual-2-dark.svg"><img src="../images/nav/menu-manual-user-manual-2.svg" alt="2 · How it behaves" height="30"></picture></a> <a href="#web-pages"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-manual-user-manual-3-dark.svg"><img src="../images/nav/menu-manual-user-manual-3.svg" alt="3 · Web pages" height="30"></picture></a> <a href="#troubleshooting"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-manual-user-manual-4-dark.svg"><img src="../images/nav/menu-manual-user-manual-4.svg" alt="4 · Troubleshooting" height="30"></picture></a> <!-- page-menu -->
 
@@ -79,6 +79,8 @@ Add one device per instrument in OpenSoar, each as a **TCP port** (OpenSoar list
 
 The bridge connects to every phone on its hotspot on these four ports, a new attempt every 3 s until OpenSoar answers. After a power cut, a restart or a Wi-Fi gap the connections come back by themselves; nothing to press in OpenSoar (S207, S211).
 
+On a network (bridge and phone on the same Wi-Fi) the bridge dials one phone: the **Phone address** from the [settings page](#settings), else the last phone that connected to a bridge port, else the network's gateway. With only *TCP port* entries the phone never connects to the bridge itself, so on a shared Wi-Fi enter the phone's address (S219).
+
 *TCP client* entries to `10.10.10.10` with the same ports still work, as on the bridge already in the glider ([existing installation](../project/existing-installation.md#configuration)), but only while mobile data is off. Use either kind per instrument, not both.
 
 ---
@@ -96,7 +98,7 @@ The bridge connects to every phone on its hotspot on these four ports, a new att
 | State | Bridge | You |
 | --- | --- | --- |
 | Joining network | Tries the stored network for the join time (default 15 s, changeable on the settings page) | Wait |
-| On the network | Reachable at the address the router gave it (listed there as `wifi-bridgetom`). Rejoins by itself after a drop. Does not dial the apps yet: use *TCP client* entries to that address | Use this on the bench |
+| On the network | Reachable at the address the router gave it (listed there as `wifi-bridgetom`). Rejoins by itself after a drop. Dials the phone's *TCP port* entries ([Connect OpenSoar](#connect-opensoar)) | Use this on the bench; set the phone address on the settings page |
 | Hotspot | Opens `WiFi-BridgeTom` at `10.10.10.10` on 2.4 GHz channel 11 and **stays in hotspot mode until the next restart**; it does not look for the network again | Connect the phone to the hotspot. To get back to the network, [restart](#restart) the bridge |
 
 <a id="trial"></a>
@@ -142,14 +144,14 @@ Open them in the phone's browser at `http://10.10.10.10/` (hotspot, with mobile 
 | Page | Address | What it shows | Password |
 | --- | --- | --- | --- |
 | Status | `/` | Firmware, uptime, Wi-Fi signal; one row per device with a green dot while data arrives, baud rate, port, connected apps, errors; *All settings* | — |
-| <a id="settings"></a>Settings | `/settings` | Device profile, baud, frame and port per device; network, join time and hotspot; supply voltage; chip temperature offset ([calibration](#chip-calibration)). **Detect** finds the baud rate on the Zander and FLARM inputs. **Save and restart**, **Keep**, **Restart bridge**, **Reset to defaults** | — |
+| <a id="settings"></a>Settings | `/settings` | One section per topic, opened from the menu at the top; *n changed* marks unsaved edits, *check* a refused field. Device profile, baud, frame and port per device, each port with the matching OpenSoar entry; network, join time and phone address; hotspot; supply voltage; chip temperature offset ([calibration](#chip-calibration)). **Detect** finds the baud rate on the Zander and FLARM inputs. **Save and restart**, **Keep**, **Restart bridge**, **Reset to defaults** | — |
 | Data monitor | `/monitor` | The data passing each device, as text or hex; pause and download | — |
 | Web log | `/log` | What the bridge did since the last power cut | — |
 | Saved log | `/saved` | Errors and warnings kept through power cuts | — |
 
 Passwords are never shown. Leave a password field empty to keep the current one.
 
-<img src="../images/status-page.png" width="240" alt="Status page on a phone: Zander, FLARM and Becker rows, all settings open"> <img src="../images/settings-page.png" width="240" alt="Settings page on a phone: fields per device and for Wi-Fi, with defaults"> <img src="../images/monitor-page.png" width="240" alt="Data monitor on a phone with demo NMEA lines from and to the Zander">
+<img src="../images/status-page.png" width="240" alt="Status page on a phone: Zander, FLARM and Becker rows, all settings open"> <img src="../images/settings-page.png" width="240" alt="Settings page on a phone: section menu, the Zander section open with the matching OpenSoar entry, other sections closed"> <img src="../images/monitor-page.png" width="240" alt="Data monitor on a phone with demo NMEA lines from and to the Zander">
 
 Details for each page: [firmware reference](../../firmware/bridge/README.md#status-page).
 

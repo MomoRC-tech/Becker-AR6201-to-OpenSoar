@@ -144,13 +144,13 @@ def demo_saved(firmware: str) -> str:
     return "# used 16384 of 131072 bytes\n" + "".join("\t".join(str(x) for x in r) + "\n" for r in rows)
 
 
-def shoot(page: str, image: bytes, target: Path, height: int) -> None:
+def shoot(page: str, image: bytes, target: Path, height: int, fragment: str = "") -> None:
     with tempfile.TemporaryDirectory() as tmp:
         tmp = Path(tmp)
         (tmp / "device.webp").write_bytes(image)
         (tmp / "page.html").write_text(page, encoding="utf-8")
         (tmp / "frame.html").write_text(
-            '<html><body style="margin:0"><iframe src="page.html" '
+            f'<html><body style="margin:0"><iframe src="page.html{fragment}" '
             f'style="width:390px;height:{height}px;border:0;display:block"></iframe></body></html>',
             encoding="utf-8")
         target.parent.mkdir(parents=True, exist_ok=True)
@@ -222,8 +222,9 @@ def main() -> None:
     form = get(args.host, "/settings", ota_password()).decode("utf-8")
     mock = ("<script>const _se=" + json.dumps(settings) + ",_st=" + json.dumps(status) +
             ";window.fetch=u=>Promise.resolve({json:()=>Promise.resolve(u.includes('status')?_st:_se)});</script>")
+    mock += "<script>addEventListener('load',()=>setTimeout(()=>scrollTo(0,0),50))</script>"  # the #section link scrolls
     form = form.replace("/device.webp", "device.webp").replace("<main>", mock + "<main>", 1)
-    shoot(form, image, IMAGES / "settings-page.png", 3130)
+    shoot(form, image, IMAGES / "settings-page.png", 1500, "#Zander")  # menu and one section, as the page opens from a link
 
     demo = demo_monitor()
     empty = {"seq": demo["seq"], "lost": False, "now": demo["now"], "chunks": []}

@@ -297,6 +297,44 @@ static void resetLegacySettings() {
     assert(legacy.empty());
 }
 
+// Format 2 (up to 0.5.22, no phone address) is read and carried over, also during a trial.
+static void formatTwoRecord() {
+    startTrial();  // active: host-trial/9600 on trial, previous: SSID/4800
+    SettingsState v3;
+    assert(flashState.size() == sizeof(v3));
+    memcpy(&v3, flashState.data(), sizeof(v3));
+    SettingsStateV2 v2 = {};
+    v2.version = 2;
+    v2.trial = v3.trial;
+    v2.boots = v3.boots;
+    v2.active.overrides = v3.active.overrides;
+    memcpy(v2.active.values, &v3.active.values, SETTINGS_V2_VALUES);
+    v2.previous.overrides = v3.previous.overrides;
+    memcpy(v2.previous.values, &v3.previous.values, SETTINGS_V2_VALUES);
+    const auto* bytes = reinterpret_cast<const uint8_t*>(&v2);
+    flashState.assign(bytes, bytes + sizeof(v2));
+    settingsLoad();
+    expect("host-trial", 9600, true);
+    assert(settings.phoneIp == 0);
+    assert(flashState.size() == sizeof(SettingsState));  // the trial start wrote format 3
+    assert(settingsKeep());
+    settingsLoad();
+    expect("host-trial", 9600, false);
+
+    // A phone address is stored, needs no trial and can be cleared again.
+    BridgeSettings next = settings;
+    next.phoneIp = (uint32_t)IPAddress(192, 168, 43, 1);
+    save(next, false);
+    settingsLoad();
+    assert(settings.phoneIp == (uint32_t)IPAddress(192, 168, 43, 1));
+    next = settings;
+    next.phoneIp = 0;
+    save(next, false);
+    settingsLoad();
+    assert(settings.phoneIp == 0);
+    expect("host-trial", 9600, false);
+}
+
 int main() {
     failedSaveAndRetry();
     recoverUncertainSave();
@@ -307,5 +345,6 @@ int main() {
     keepAndReset();
     legacySettingsAndTrial();
     resetLegacySettings();
-    puts("PASS settings persistence, rollback, restart and legacy data");
+    formatTwoRecord();
+    puts("PASS settings persistence, rollback, restart, legacy data and format 2");
 }

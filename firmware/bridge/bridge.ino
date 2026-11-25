@@ -548,10 +548,84 @@ static void dialCheck(int p, int k) {
     t.silent = 0;
 }
 
-// Keeps one dialed session per phone on the hotspot for ports first..last. Loop task:
-// Zander, FLARM, Becker; status task: DIAL_SUPPLY.
+// Increment 3 (0.5.23): network mode. One phone per port: the address on the settings page,
+// else the last phone seen (an app that connected to a bridge port; saved, so it is dialed
+// again after a power cut before the app connects), else the network's gateway (on a phone
+// hotspot that is the phone). The loop task picks the address once a second; both tasks dial it.
+#define DIAL_NVS "bridge-dial"
+#define DIAL_NVS_LAST "last"
+static std::atomic<uint32_t> dialNetTarget{0};  // as in ip4_addr; 0 = none (not on a network)
+static uint32_t lastPhoneIp = 0;                // loop task after setup
+
+static void lastPhoneLoad() {
+    nvs_handle_t nvs;
+    if (nvs_open(DIAL_NVS, NVS_READONLY, &nvs) != ESP_OK) return;  // never saved yet
+    uint32_t ip = 0;
+    if (nvs_get_u32(nvs, DIAL_NVS_LAST, &ip) == ESP_OK && validIp(ip)) lastPhoneIp = ip;
+    nvs_close(nvs);
+}
+
+static void lastPhoneSave(uint32_t ip) {  // only when the phone changes
+    nvs_handle_t nvs;
+    esp_err_t result = nvs_open(DIAL_NVS, NVS_READWRITE, &nvs);
+    if (result == ESP_OK) {
+        result = nvs_set_u32(nvs, DIAL_NVS_LAST, ip);
+        if (result == ESP_OK) result = nvs_commit(nvs);
+        nvs_close(nvs);
+    }
+    if (result != ESP_OK) LOGW(LOG_PORTS, "Could not save the phone address (0x%x)", unsigned(result));
+}
+
+// Loop task, network mode only.
+static void dialNetTargetTick() {
+    static uint32_t at = 0;
+    if ((WiFi.getMode() & WIFI_AP) || (at && millis() - at < DIAL_LIST_MS)) return;
+    at = millis() | 1u;
+    if (WiFi.status() != WL_CONNECTED) {
+        dialNetTarget.store(0);
+        return;
+    }
+    const uint32_t own = (uint32_t)WiFi.localIP();
+    for (int num = 0; num < NUM_COM; num++) {  // a phone seen: an app that connected to the bridge
+        for (int i = 0; i < MAX_NMEA_CLIENTS; i++) {
+            WiFiClient& c = TCPClient[num][i];
+            if (c.fd() < 0) continue;
+            bool dialed = false;
+            for (int k = 0; k < DIAL_TARGETS; k++) dialed |= dialTargets[num][k].slot == i && dialSessionAlive(num, k);
+            const uint32_t ip = dialed ? 0 : (uint32_t)c.remoteIP();
+            if (!ip || ip == lastPhoneIp || ip == own || !validIp(ip)) continue;
+            lastPhoneIp = ip;
+            lastPhoneSave(ip);
+            LOGI(LOG_PORTS, "Phone %s connected to the %s port: saved as the phone to dial", IPAddress(ip).toString().c_str(),
+                 appPortName[num]);
+        }
+    }
+    const char* source = "the settings page";
+    uint32_t target = settings.phoneIp;
+    if (!target && lastPhoneIp) target = lastPhoneIp, source = "the last phone seen";
+    if (!target) target = (uint32_t)WiFi.gatewayIP(), source = "the gateway";
+    if (target == own || !validIp(target)) target = 0;
+    if (target == dialNetTarget.load()) return;
+    if (target) LOGI(LOG_PORTS, "Network mode: dialing the app at %s (%s)", IPAddress(target).toString().c_str(), source);
+    dialNetTarget.store(target);
+}
+
+// Keeps one dialed session per phone on the hotspot (network mode: per target) for ports
+// first..last. Loop task: Zander, FLARM, Becker; status task: DIAL_SUPPLY.
 static void dialAppsTick(int first, int last) {
     const bool hotspot = WiFi.getMode() & WIFI_AP;
+    if (!hotspot) {  // network mode: entry 0 follows the target
+        const uint32_t target = dialNetTarget.load();
+        for (int p = first; p <= last; p++) {
+            DialTarget& t = dialTargets[p][0];
+            if (t.ip == target) continue;
+            if (t.ip) {
+                dialDropPending(p, 0);
+                endDialSession(p, 0, target ? "the phone address changed" : "the network connection was lost");
+            }
+            t = {target, -1, -1, -1, millis() - DIAL_RETRY_MS, 0, 0};  // dial at once
+        }
+    }
     static uint32_t listAt[DIAL_PORTS];
     if (hotspot && (listAt[first] == 0 || millis() - listAt[first] >= DIAL_LIST_MS)) {
         listAt[first] = millis() | 1u;
@@ -588,12 +662,6 @@ static void dialAppsTick(int first, int last) {
         for (int k = 0; k < DIAL_TARGETS; k++) {
             DialTarget& t = dialTargets[p][k];
             if (!t.ip) continue;
-            if (!hotspot) {  // left hotspot mode (never at present: the mode is set at boot)
-                dialDropPending(p, k);
-                endDialSession(p, k, "the hotspot closed");
-                t.ip = 0;
-                continue;
-            }
             if (t.fd >= 0) {
                 dialCheck(p, k);
                 continue;
@@ -820,6 +888,9 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
 
 #ifdef ESP32
         settingsLoad();  // Project: defaults from config.h, overridden by valid stored values (step 3a)
+#ifdef PROTOCOL_TCP
+        lastPhoneLoad();  // increment 3: the phone to dial in network mode
+#endif
         for (int num = 0; num < NUM_COM; num++)  // Project: before begin()
             COM[num]->setRxBufferSize(UART_RX_BUFFER), statusAttachUart(num);
         COM[0]->begin(settings.port[0].baud, settingsFrameCode(0), SERIAL0_RXPIN, SERIAL0_TXPIN);  // Project: stored settings
@@ -1118,6 +1189,7 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
             }
         }
 #ifdef ESP32
+        dialNetTargetTick();           // increment 3: the phone to dial in network mode
         dialAppsTick(0, NUM_COM - 1);  // Project (step 4a): the bridge also dials the app
 #endif
 #endif

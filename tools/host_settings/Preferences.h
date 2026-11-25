@@ -7,7 +7,7 @@
 #include <string>
 #include <variant>
 
-enum PreferenceType { PT_U8, PT_U16, PT_U32, PT_STR, PT_INVALID };
+enum PreferenceType { PT_U8, PT_U16, PT_U32, PT_STR, PT_INVALID, PT_I16 };  // PT_I16: never stored here
 using LegacyValue = std::variant<uint8_t, uint16_t, uint32_t, std::string>;
 using LegacyNamespace = std::map<std::string, LegacyValue>;
 inline std::map<std::string, LegacyNamespace> legacy;
@@ -32,6 +32,7 @@ public:
 
     uint32_t getUInt(const char* key, uint32_t fallback = 0) const { return get(key, fallback); }
     uint16_t getUShort(const char* key) const { return get<uint16_t>(key, 0); }
+    int16_t getShort(const char*) const { std::abort(); }  // chip temperature: not in the host build
     uint8_t getUChar(const char* key, uint8_t fallback = 0) const { return get(key, fallback); }
     bool getBool(const char* key, bool fallback = false) const { return get<uint8_t>(key, fallback) != 0; }
 

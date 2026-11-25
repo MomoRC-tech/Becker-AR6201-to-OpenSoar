@@ -94,6 +94,7 @@ static const char* settingHint(SettingType type, int portNum) {
         case T_APPASS: return "8 to 63 characters";
         case T_SECONDS: return "5 to 120 seconds";
         case T_IP: return "For example 10.10.10.10";
+        case T_PHONE: return "Empty for automatic, or an address such as 192.168.43.1";
         case T_FLAG: return "On or off";
         case T_CAL: return "0.900 to 1.100";
         case T_OFFSET: return "0.0 to 60.0; 0 = no correction";
@@ -118,7 +119,12 @@ static bool parseInto(const SettingItem& s, const String& raw, void* v) {
             else *(uint16_t*)v = (uint16_t)n;
             return true;
         }
-        case T_IP: {
+        case T_IP:
+        case T_PHONE: {
+            if (s.type == T_PHONE && a.length() == 0) {  // automatic
+                *(uint32_t*)v = 0;
+                return true;
+            }
             IPAddress ip;
             if (!ip.fromString(a)) return false;
             *(uint32_t*)v = (uint32_t)ip;
@@ -328,32 +334,61 @@ button{font:inherit;font-weight:600;border-radius:10px;padding:10px 18px;cursor:
 .main{background:var(--green);color:var(--paper)}
 .quiet{background:none;color:var(--ink);border-color:var(--rule)}
 #msg{margin-top:14px}
-#rec{margin-top:24px}
+.menu{position:sticky;top:0;z-index:2;background:var(--paper);display:flex;flex-wrap:wrap;gap:6px;padding:8px 0;border-bottom:1px solid var(--rule)}
+.menu button{padding:6px 12px;border-radius:999px;font-size:14px;background:none;color:var(--ink);border-color:var(--rule)}
+.menu button.on{background:var(--green);color:var(--paper);border-color:var(--green)}
+details.sec{border:1px solid var(--rule);border-radius:10px;margin:10px 0;scroll-margin-top:96px}
+details.sec>summary{display:flex;gap:8px;align-items:center;padding:12px 14px;font-size:18px;font-weight:700;cursor:pointer;list-style:none}
+details.sec>summary::-webkit-details-marker{display:none}
+details.sec>summary::after{content:'\25B8';margin-left:auto;color:var(--mute)}
+details.sec[open]>summary::after{content:'\25BE'}
+details.sec>.body{padding:0 14px 14px}
+.badge{font-size:12px;font-weight:600;color:var(--amber);border:1px solid var(--amber);border-radius:999px;padding:1px 8px}
+.badge.e{color:var(--red);border-color:var(--red)}
+.bar{position:sticky;bottom:0;z-index:2;background:var(--paper);border-top:1px solid var(--rule);padding:10px 0;margin-top:12px}
+.bar .note{margin:0 0 8px}
 </style>
 <main>
 <header><img src="/device.webp" width="240" height="317" alt=""><h1>Settings</h1><a href="/">Status page</a></header>
 <div class="trial" id="trial" hidden><p id="tt"></p><button class="main" type="button" onclick="keep()">Keep these settings</button></div>
+<nav class="menu" id="menu" aria-label="Sections"></nav>
 <form id="fm" onsubmit="return save(event)"><div id="fs">Loading</div>
-<p class="note">Saving restarts the bridge. A change to Wi-Fi, hotspot or ports (also the supply voltage port) runs on trial: reconnect and press Keep within 10 minutes, otherwise the previous settings come back. Leave a password empty to keep it.</p>
-<div class="btns"><button class="main" type="submit">Save and restart</button><button class="quiet" type="button" onclick="reset()">Reset to defaults</button></div></form>
-<fieldset id="rec" hidden><legend>Records</legend><p class="note">Kept through power cuts: the lifetime record (operating time, starts, highest chip temperature, lowest supply voltage) and the saved log (errors and warnings). Clearing them leaves the settings as they are.</p><div class="btns"><button class="quiet" type="button" onclick="lreset()">Reset lifetime record</button><button class="quiet" type="button" id="sclr" hidden onclick="sclear()">Clear saved log</button></div></fieldset>
-<fieldset id="rs"><legend>Restart</legend><p class="note">Restarts the bridge with the saved settings. Apps reconnect on their own.</p><div class="btns"><button class="quiet" type="button" onclick="restart()">Restart bridge</button></div></fieldset>
+<div class="bar"><p class="note">Saving restarts the bridge. A change to the network, hotspot or ports (also the supply voltage port) runs on trial: reconnect and press Keep within 10 minutes, otherwise the previous settings come back. Leave a password empty to keep it.</p>
+<div class="btns"><button class="main" type="submit">Save and restart</button><button class="quiet" type="button" onclick="reset()">Reset to defaults</button></div></div></form>
+<details class="sec" id="s_Records" hidden><summary>🗂️ Records</summary><div class="body"><p class="note">Kept through power cuts: the lifetime record (operating time, starts, highest chip temperature, lowest supply voltage) and the saved log (errors and warnings). Clearing them leaves the settings as they are.</p><div class="btns"><button class="quiet" type="button" onclick="lreset()">Reset lifetime record</button><button class="quiet" type="button" id="sclr" hidden onclick="sclear()">Clear saved log</button></div></div></details>
+<details class="sec" id="s_Restart"><summary>🔄 Restart</summary><div class="body"><p class="note">Restarts the bridge with the saved settings. Apps reconnect on their own.</p><div class="btns"><button class="quiet" type="button" onclick="restart()">Restart bridge</button></div></div></details>
 <div id="msg" role="status"></div>
 </main>
 <script>
 const $=i=>document.getElementById(i);
 const esc=x=>String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
 const BAUD=[1200,2400,4800,9600,19200,38400,57600,115200,230400],FRAME=['8N1','8E1','8O1','8N2','7E1','7O1','7N1'];
-let items=[],PROF={},PORTS=[],NAME={custom:'Custom'};
+let items=[],PROF={},PORTS=[],NAME={custom:'Custom'},groups=[];
+const ICON={'Network':'📶','Hotspot':'📡','Zander':'🧭','FLARM':'✈️','Becker':'📻','Supply voltage':'🔋','Chip temperature':'🌡️','Records':'🗂️','Restart':'🔄'};
+const sid=k=>'s_'+k.replace(/\W/g,'');
+// Sections start closed; the menu opens one and closes the others.
+function menu(){const ks=groups.concat($('s_Records').hidden?[]:['Records'],['Restart']);
+$('menu').innerHTML=ks.map(k=>'<button type="button" data-k="'+esc(k)+'">'+(ICON[k]||'')+' '+esc(k)+'</button>').join('');
+$('menu').querySelectorAll('button').forEach(b=>b.onclick=()=>show(b.dataset.k));
+document.querySelectorAll('details.sec').forEach(d=>d.ontoggle=mark);mark()}
+function show(k){const d=$(sid(k)),was=d&&d.open;document.querySelectorAll('details.sec').forEach(x=>x.open=false);if(d&&!was){d.open=true;d.scrollIntoView({block:'start'})}mark()}
+// OpenSoar/XCSoar device entry for a TCP port field; the driver follows the device chosen on that port.
+const DRV={zs1:'Zander / SDI',flarm:'FLARM',ar6201:'AR62xx',custom:'Generic'};
+function ohint(k){const h=$('oh_'+k),t=$('k_'+k);if(!h||!t)return;const p=k==='vt'?null:$('k_p'+k[1]),d=k==='vt'?'OpenVario':DRV[p?p.value:'custom']||'Generic';
+h.innerHTML='In OpenSoar: Device → Port <b>TCP port</b>, TCP port <b>'+esc(t.value)+'</b>, Driver <b>'+esc(d)+'</b>'}
+function ohints(){for(const k of ['t0','t1','t2','vt'])ohint(k)}
+function mark(){$('menu').querySelectorAll('button').forEach(b=>{const d=$(sid(b.dataset.k));b.classList.toggle('on',!!(d&&d.open))})}
 function field(i){const id='k_'+i.key,lab=esc(i.name.charAt(0).toUpperCase()+i.name.slice(1)),n=i.key[1],dev=i.port&&i.key[0]==='p';let c,w='';
 if(dev){const P=PORTS[+n];c='<select id="'+id+'" name="'+i.key+'" onchange="preset('+n+')">'+P.profiles.concat('custom').map(x=>'<option value="'+x+'"'+(x===i.value?' selected':'')+'>'+esc(NAME[x])+'</option>').join('')+'</select>';w='<span class="def">Wiring: '+esc(P.interface)+'. Presets fill in baud and frame.</span>'}
 else if(i.port&&(i.key[0]==='b'||i.key[0]==='f')){const o=i.key[0]==='b'?BAUD:[...new Set([...FRAME,i.value])];c='<select id="'+id+'" name="'+i.key+'" onchange="manual('+n+')">'+o.map(x=>'<option'+(String(x)===i.value?' selected':'')+'>'+esc(x)+'</option>').join('')+'</select>'}
 else if(i.secret)c='<input id="'+id+'" name="'+i.key+'" type="password" autocomplete="new-password" placeholder="Unchanged">';
 else if(i.key==='vs')c='<select id="'+id+'" name="vs">'+['on','off'].map(x=>'<option'+(x===i.value?' selected':'')+'>'+x+'</option>').join('')+'</select>';
-else{const num=i.key[0]==='t'||i.key==='nj'||i.key==='vt',dec=i.key==='vc'||i.key==='ct';c='<input id="'+id+'" name="'+i.key+'" value="'+esc(i.value)+'"'+(num?' inputmode="numeric"':dec?' inputmode="decimal"':'')+'>';
+else{const num=i.key[0]==='t'||i.key==='nj'||i.key==='vt',dec=i.key==='vc'||i.key==='ct'||i.key==='pa';c='<input id="'+id+'" name="'+i.key+'" value="'+esc(i.value)+'"'+(num?' inputmode="numeric"':dec?' inputmode="decimal"':'')+'>';
 if(i.key==='vc')w='<label for="mv">Calibrate: multimeter reading at the XT30, V</label><input id="mv" inputmode="decimal"><button class="quiet" type="button" onclick="cal()">Set factor</button><span class="def" id="cm"></span>';
+if(i.key[0]==='t'||i.key==='vt'){w='<span class="def" id="oh_'+i.key+'"></span>';c=c.replace('>',' oninput="ohint(\''+i.key+'\')">')}
+if(i.key==='pa')w='<span class="def">Where the bridge dials OpenSoar&#39;s TCP port entries when it is on a network. Empty: the phone that connected last, else the network&#39;s gateway (a phone hotspot).</span>';
 if(i.key==='ct')w='<span class="def">The ESP32 sensor reads too high; this is subtracted from every chip temperature. 0 = uncorrected.</span><br><button class="quiet" type="button" onclick="ctc()">Calibrate chip temperature</button><div id="ctc" hidden></div>'}
-const dv=dev?NAME[i.default]||i.default:i.default;
+const dv=dev?NAME[i.default]||i.default:i.default||(i.key==='pa'?'automatic':'');
 if(dev && +n<2)w+='<p class="def">Detection briefly pauses forwarding on this input.</p><div class="btns"><button class="quiet detect" type="button" onclick="startScan('+n+')">Detect</button><button class="quiet" id="cancel'+n+'" hidden type="button" onclick="cancelScan()">Cancel scan</button><button class="quiet" id="use'+n+'" hidden type="button" onclick="useScan('+n+')">Use these settings</button></div><span class="def" role="status" id="scan'+n+'"></span>';
 const d=i.secret?'':'<span class="def'+(i.origin==='changed'?' chg':'')+'">'+(i.origin==='changed'?'Changed, default ':'Default ')+esc(dv)+'</span>';
 return '<div'+(dev||w?' class="dev"':'')+'><label for="'+id+'">'+lab+'</label>'+c+d+(w?'<br>'+w:'')+'<div class="err" id="e_'+i.key+'"></div></div>'}
@@ -374,11 +409,12 @@ function ctgo(){const b=new URLSearchParams();b.append('room',$('room').value);i
 post('/api/chip-temp/calibrate',b).then(async r=>{if(r.status===401)throw Error('Settings password required. Reopen this page and sign in.');const d=await r.json().catch(()=>({}));if(!d.ok)throw Error(d.message||'The bridge could not calibrate.');return d})
 .then(d=>{$('fm').hidden=true;$('msg').textContent='Offset '+d.offset.toFixed(1)+' °C saved. '+(d.trial?'The bridge restarts now. Reconnect, open this page again and press Keep within 10 minutes.':'The bridge restarts now; the status page opens in 20 seconds.');if(!d.trial)setTimeout(()=>location.href='/',20000)})
 .catch(e=>{$('cte').textContent=e instanceof TypeError?'The bridge did not answer. Check the Wi-Fi connection and try again.':e.message})}
-function preset(n){const p=PROF[$('k_p'+n).value];if(p){$('k_b'+n).value=p.baud;$('k_f'+n).value=p.frame}}
-function manual(n){const s=$('k_p'+n),p=s&&PROF[s.value];if(p&&($('k_b'+n).value!==p.baud||$('k_f'+n).value!==p.frame))s.value='custom'}
+function preset(n){const p=PROF[$('k_p'+n).value];if(p){$('k_b'+n).value=p.baud;$('k_f'+n).value=p.frame}ohints()}
+function manual(n){const s=$('k_p'+n),p=s&&PROF[s.value];if(p&&($('k_b'+n).value!==p.baud||$('k_f'+n).value!==p.frame))s.value='custom';ohints()}
 function load(){fetch('/api/settings',{cache:'no-store'}).then(r=>r.json()).then(d=>{items=d.items;PORTS=d.ports||[];for(const p of d.profiles||[]){PROF[p.id]=p;NAME[p.id]=p.name}const g={},o=[];
-for(const i of d.items){const k=i.group||i.port||'Wi-Fi';if(!g[k]){g[k]=[];o.push(k)}g[k].push(i)}
-$('fs').innerHTML=o.map(k=>'<fieldset><legend>'+esc(k)+'</legend><div class="f'+(k==='Wi-Fi'?' w':'')+'">'+g[k].map(field).join('')+'</div></fieldset>').join('');
+for(const i of d.items){const k=i.group||i.port||'Network';if(!g[k]){g[k]=[];o.push(k)}g[k].push(i)}
+$('fs').innerHTML=o.map(k=>{const c=g[k].filter(i=>i.origin==='changed').length;return '<details class="sec" id="'+sid(k)+'"><summary>'+(ICON[k]||'')+' '+esc(k)+(c?'<span class="badge">'+c+' changed</span>':'')+'<span class="badge e" hidden>check</span></summary><div class="body"><div class="f'+(k==='Network'||k==='Hotspot'?' w':'')+'">'+g[k].map(field).join('')+'</div></div></details>'}).join('');
+groups=o;menu();ohints();if(location.hash)show(decodeURIComponent(location.hash.slice(1)));
 if(d.trial&&d.trial.active){tr=d.trial;$('trial').hidden=false;$('tt').textContent='These Wi-Fi or port settings are on trial. Keep them within '+Math.ceil(d.trial.seconds_left/60)+' min, otherwise the previous settings come back.'}})}
 function post(u,body){return fetch(u,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body||''})}
 const scanUrl='/api/nav-scan', suggestions=[];
@@ -437,9 +473,9 @@ async function settingsReply(r){
     throw Error(d.message||'The bridge could not update settings.');
 }
 function settingsError(e){$('msg').textContent=e instanceof TypeError?'The bridge did not answer. Check the Wi-Fi connection and try again.':e.message}
-function save(e){e.preventDefault();document.querySelectorAll('.err').forEach(x=>x.textContent='');
+function save(e){e.preventDefault();document.querySelectorAll('.err').forEach(x=>x.textContent='');document.querySelectorAll('.badge.e').forEach(x=>x.hidden=true);
 const b=new URLSearchParams();for(const i of items){const el=$('k_'+i.key);if(el&&!el.disabled)b.append(i.key,el.value)}
-post('/api/settings',b).then(settingsReply).then(d=>{if(!d.ok){for(const k in d.errors){const x=$('e_'+k);if(x)x.textContent=d.errors[k]}$('msg').textContent='Not saved. Correct the marked fields.';return}
+post('/api/settings',b).then(settingsReply).then(d=>{if(!d.ok){for(const k in d.errors){const x=$('e_'+k);if(!x)continue;x.textContent=d.errors[k];const s=x.closest('details');if(s){s.open=true;s.querySelector('.badge.e').hidden=false}}mark();$('msg').textContent='Not saved. Correct the fields in the sections marked check.';return}
 $('fm').hidden=true;$('msg').textContent=d.trial?'Saved. The bridge restarts now. Reconnect to its Wi-Fi, open this page again and press Keep within 10 minutes.':'Saved. The bridge restarts now; the status page opens in 20 seconds.';
 if(!d.trial)setTimeout(()=>location.href='/',20000)}).catch(settingsError);return false}
 function keep(){post('/api/keep').then(settingsReply).then(()=>{$('trial').hidden=true;$('msg').textContent='Kept. These settings stay.'}).catch(settingsError)}
@@ -447,12 +483,12 @@ function reset(){if(!confirm('Forget all saved settings and restart with the fir
 post('/api/reset').then(settingsReply).then(()=>{$('fm').hidden=true;$('msg').textContent='Reset. The bridge restarts with the firmware defaults; the status page opens in 20 seconds.';setTimeout(()=>location.href='/',20000)}).catch(settingsError)}
 let tr=null;
 function restart(){if(!confirm(tr?(tr.starts_left>0?'Restart the bridge? The settings stay on trial and the 10 minutes start again. Restarts left before the previous settings come back: '+(tr.starts_left-1)+'.':'Restart the bridge? The settings on trial are not kept: the previous settings come back.'):'Restart the bridge now? Apps reconnect on their own.'))return;
-post('/api/restart').then(settingsReply).then(()=>{$('fm').hidden=true;$('rs').hidden=true;$('msg').textContent='The bridge restarts now; the status page opens in 20 seconds.';setTimeout(()=>location.href='/',20000)}).catch(settingsError)}
+post('/api/restart').then(settingsReply).then(()=>{$('fm').hidden=true;$('s_Restart').hidden=true;$('msg').textContent='The bridge restarts now; the status page opens in 20 seconds.';setTimeout(()=>location.href='/',20000)}).catch(settingsError)}
 function lreset(){if(!confirm('Start a new lifetime record? Operating time, starts and the extremes start again from zero.'))return;
 post('/api/lifetime/reset').then(r=>r.json()).then(()=>{$('msg').textContent='Lifetime record reset.'}).catch(()=>{$('msg').textContent='The bridge did not answer. Try again.'})}
 function sclear(){if(!confirm('Delete all saved errors and warnings?'))return;
 post('/api/saved/clear').then(r=>r.json()).then(()=>{$('msg').textContent='Saved log cleared.'}).catch(()=>{$('msg').textContent='The bridge did not answer. Try again.'})}
-fetch('/api/status',{cache:'no-store'}).then(r=>r.json()).then(d=>{if(d.lifetime)$('rec').hidden=false;if(d.saved_log&&d.saved_log.ready)$('sclr').hidden=false}).catch(()=>{});
+fetch('/api/status',{cache:'no-store'}).then(r=>r.json()).then(d=>{if(d.lifetime){$('s_Records').hidden=false;if(groups.length)menu()}if(d.saved_log&&d.saved_log.ready)$('sclr').hidden=false}).catch(()=>{});
 load();
 </script>
 )HTML";

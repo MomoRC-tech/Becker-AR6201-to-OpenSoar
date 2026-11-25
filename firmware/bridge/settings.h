@@ -14,12 +14,13 @@
 
 #include <Preferences.h>
 #include <nvs.h>
+#include <cstddef>
 
 #define SETTINGS_NAMESPACE "bridge"
 #define SETTINGS_FORMAT 1  // legacy format stored under "v"
 
 enum SettingOrigin : uint8_t { ORIGIN_DEFAULT, ORIGIN_STORED, ORIGIN_INVALID };
-enum SettingType : uint8_t { T_PROFILE, T_BAUD, T_FRAME, T_TCP, T_SSID, T_NETPASS, T_APPASS, T_SECONDS, T_IP, T_FLAG, T_CAL, T_NETSSID, T_OFFSET };  // T_NETSSID: may be empty (no network); T_OFFSET: tenths of a degree
+enum SettingType : uint8_t { T_PROFILE, T_BAUD, T_FRAME, T_TCP, T_SSID, T_NETPASS, T_APPASS, T_SECONDS, T_IP, T_FLAG, T_CAL, T_NETSSID, T_OFFSET, T_PHONE };  // T_NETSSID: may be empty (no network); T_OFFSET: tenths of a degree; T_PHONE: address or 0 = automatic
 
 // ---- device profiles (WP9) ------------------------------------------------------
 // A profile fills in the baud rate and frame of one instrument. It is offered only on
@@ -78,6 +79,7 @@ struct BridgeSettings {
     uint16_t supplyCal;    // calibration factor in thousandths, 1000 = 1.000
     uint16_t supplyTcp;    // TCP port of the OpenVario voltage sentences
     int16_t chipTempOffset;  // Project (step 3e): chip sensor reads this much too high, tenths of a degree C; former padding
+    uint32_t phoneIp;        // Project (step 4a, 0.5.23): network mode, the phone the bridge dials; 0 = automatic (record format 3)
 };
 
 static BridgeSettings settings;  // active values, fixed after settingsLoad()
@@ -123,8 +125,9 @@ static SettingItem kSettings[] = {
     {"vt", T_TCP, &settings.supplyTcp, ORIGIN_DEFAULT},
 #endif
 #ifdef CHIP_TEMP
-    {"ct", T_OFFSET, &settings.chipTempOffset, ORIGIN_DEFAULT},  // chip temperature offset (step 3e); keep last
+    {"ct", T_OFFSET, &settings.chipTempOffset, ORIGIN_DEFAULT},  // chip temperature offset (step 3e)
 #endif
+    {"pa", T_PHONE, &settings.phoneIp, ORIGIN_DEFAULT},  // step 4a: phone address in network mode; new items go at the end
 };
 static constexpr size_t kSettingCount = sizeof(kSettings) / sizeof(kSettings[0]);
 
@@ -209,6 +212,7 @@ static bool validAt(SettingType type, const void* v, int portNum) {
             return t >= 5 && t <= 120;
         }
         case T_IP: return validIp(*(const uint32_t*)v);
+        case T_PHONE: return *(const uint32_t*)v == 0 || validIp(*(const uint32_t*)v);
         case T_FLAG: return *(const uint8_t*)v <= 1;
         case T_CAL: {
             const uint16_t c = *(const uint16_t*)v;
@@ -268,6 +272,7 @@ static const char* settingName(const SettingItem& s) {
         case T_APPASS: return "hotspot password";
         case T_SECONDS: return "network join time, s";
         case T_IP: return "hotspot address";
+        case T_PHONE: return "phone address (network mode)";
         case T_FLAG: return "sensor fitted";
         case T_CAL: return "calibration factor";
         case T_OFFSET: return "offset, \xC2\xB0" "C";
@@ -286,6 +291,9 @@ static void settingValueText(const SettingItem& s, char* out, size_t n) {
         case T_TCP:
         case T_SECONDS: snprintf(out, n, "%u", (unsigned)*(uint16_t*)s.value); break;
         case T_IP: snprintf(out, n, "%s", IPAddress(*(uint32_t*)s.value).toString().c_str()); break;
+        case T_PHONE:  // empty = automatic
+            snprintf(out, n, "%s", *(uint32_t*)s.value ? IPAddress(*(uint32_t*)s.value).toString().c_str() : "");
+            break;
         case T_FLAG: snprintf(out, n, "%s", *(uint8_t*)s.value ? "on" : "off"); break;
         case T_CAL: snprintf(out, n, "%u.%03u", (unsigned)(*(uint16_t*)s.value / 1000), (unsigned)(*(uint16_t*)s.value % 1000)); break;
         case T_OFFSET: snprintf(out, n, "%.1f", *(int16_t*)s.value / 10.0); break;
@@ -330,7 +338,8 @@ static void fillDefaults(BridgeSettings& out) {
 static size_t valueSize(SettingType t) {
     switch (t) {
         case T_BAUD:
-        case T_IP: return 4;
+        case T_IP:
+        case T_PHONE: return 4;
         case T_TCP:
         case T_SECONDS:
         case T_CAL:
@@ -355,6 +364,7 @@ static bool readStored(Preferences& p, SettingItem& s) {
     switch (s.type) {
         case T_BAUD:
         case T_IP:
+        case T_PHONE:
             if (p.getType(s.key) != PT_U32) return false;
             *(uint32_t*)s.value = p.getUInt(s.key);
             return true;
@@ -425,7 +435,7 @@ static bool trialKey(const SettingItem& s) {  // changes that can cut the phone 
 // Keep the field order, types and kSettings indices stable for this format.
 #define SETTINGS_STATE_NAMESPACE "bridge-state"
 #define SETTINGS_STATE_KEY "state"
-static constexpr uint32_t kSettingsStateVersion = 2;
+static constexpr uint32_t kSettingsStateVersion = 3;  // 3 (0.5.23): phoneIp appended to BridgeSettings
 
 struct SettingsSnapshot {
     uint32_t overrides;
@@ -441,8 +451,32 @@ struct SettingsState {
     SettingsSnapshot previous;
 };
 
-static_assert(sizeof(PortSettings) == 20 && sizeof(BridgeSettings) == 272 &&
-              sizeof(SettingsState) == 560 && kSettingCount <= 32, "settings record layout changed");
+static_assert(sizeof(PortSettings) == 20 && sizeof(BridgeSettings) == 276 &&
+              sizeof(SettingsState) == 568 && kSettingCount <= 32, "settings record layout changed");
+
+// Format 2 (up to 0.5.22): the same record without phoneIp. Read once and carried over;
+// the item indices (override bits) are unchanged, the new item comes last.
+#define SETTINGS_V2_VALUES 272
+struct SettingsSnapshotV2 {
+    uint32_t overrides;
+    uint8_t values[SETTINGS_V2_VALUES];
+};
+struct SettingsStateV2 {
+    uint32_t version;
+    uint8_t trial;
+    uint8_t boots;
+    uint16_t reserved;
+    SettingsSnapshotV2 active;
+    SettingsSnapshotV2 previous;
+};
+static_assert(sizeof(SettingsStateV2) == 560 && offsetof(BridgeSettings, phoneIp) == SETTINGS_V2_VALUES,
+              "format 2 layout");
+
+static void snapshotFromV2(const SettingsSnapshotV2& in, SettingsSnapshot& out) {
+    out = {};
+    out.overrides = in.overrides;
+    memcpy(&out.values, in.values, SETTINGS_V2_VALUES);  // phoneIp stays 0 (automatic)
+}
 
 static SettingsState settingsState;
 static bool settingsStorageReady = false;
@@ -541,6 +575,18 @@ static esp_err_t readSettingsState(SettingsState& state) {
     size_t size = sizeof(state);
     result = nvs_get_blob(nvs, SETTINGS_STATE_KEY, &state, &size);
     nvs_close(nvs);
+    if (result == ESP_OK && size == sizeof(SettingsStateV2) && state.version == 2) {
+        SettingsStateV2 old;
+        memcpy(&old, &state, sizeof(old));
+        state = {};
+        state.version = kSettingsStateVersion;  // written in the new format with the next change
+        state.trial = old.trial;
+        state.boots = old.boots;
+        state.reserved = old.reserved;
+        snapshotFromV2(old.active, state.active);
+        snapshotFromV2(old.previous, state.previous);
+        return ESP_OK;
+    }
     if (result == ESP_OK && size != sizeof(state)) return ESP_ERR_NVS_INVALID_LENGTH;
     return result;
 }
