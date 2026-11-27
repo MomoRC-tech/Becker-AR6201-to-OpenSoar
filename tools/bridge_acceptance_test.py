@@ -7,12 +7,14 @@
     python tools/bridge_acceptance_test.py 192.168.1.50 --feed COM4 --input flarm --seconds 30
     python tools/bridge_acceptance_test.py 192.168.1.50 --uno-feed COM4 --input flarm --baseline
     python tools/bridge_acceptance_test.py 192.168.1.50 --zander-feed COM4 --flarm-feed COM5 --radio-loop --seconds 3600
+    python tools/bridge_acceptance_test.py 192.168.1.50 --uno-feed COM5 --input zander --flarm-feed COM6 --radio-loop --supply --seconds 3600
 
 With serial feeds, use the assembled bridge at the DE-9 with instruments
 disconnected, RS-232-level sources and (with --radio-loop) links 4-8 and
 5-9. See docs/hardware/wiring.md#bus-test. Two feeds need independent PC
 serial adapters. Wired mode needs pyserial and uses the live settings.
 --uno-feed selects the framed Uno fixture (firmware/uno_bench/README.md).
+It can be paired with a raw feed on the other input.
 Run with the PC test clients alone. The slow client uses the first wired
 input (Zander when both are fed).
 
@@ -519,7 +521,7 @@ def run_wired(args, feeds):
             if name in feeds:
                 if int(frame[0]) < 7:
                     raise ValueError(f"{name}: synthetic NMEA requires at least 7 data bits")
-                if args.uno_feed:
+                if feeds[name] == args.uno_feed:
                     if (port["baud"], frame) != (FEED_BAUD, FEED_FORMAT):
                         raise ValueError(f"{name}: Uno bench requires {FEED_BAUD} {FEED_FORMAT}")
                     source = resources.enter_context(UnoBench(feeds[name], timeout=args.max_delay))
@@ -688,9 +690,11 @@ def main(argv=None) -> int:
         parser.error("--feed or --uno-feed requires --input and vice versa")
     feeds = {name: port for name, port in (("Zander", args.zander_feed), ("FLARM", args.flarm_feed)) if port}
     if device:
-        if feeds:
-            parser.error("a single feed cannot be combined with --zander-feed or --flarm-feed")
-        feeds = {"Zander" if args.input == "zander" else "FLARM": device}
+        name = "Zander" if args.input == "zander" else "FLARM"
+        if name in feeds or (args.feed and feeds):
+            parser.error("use only one source per input, or use the two named raw feed options")
+        feeds[name] = device
+        feeds = {name: feeds[name] for name in ("Zander", "FLARM") if name in feeds}
     if len({device.casefold() for device in feeds.values()}) != len(feeds):
         parser.error("each input requires an independent PC serial port")
     if args.supply and not feeds:

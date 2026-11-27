@@ -9,7 +9,7 @@ Bench fixture for [issue #2](https://github.com/MomoRC-tech/Becker-AR6201-to-Ope
 | USB–RS-232 adapter | Raw serial via `--feed` |
 | Arduino Uno and MAX3232 | Framed serial via `--uno-feed`. The verified D9 feed is wired to Zander on DE-9 pin 1 ([S214](../../docs/research/sources.md#source-register)) |
 
-The harness accepts two raw feeds or a single framed Uno feed. The relay is prepared for later use and remains uninstalled.
+The harness accepts two raw feeds or one framed Uno feed paired with a raw feed on the other input. The relay is prepared for later use and remains uninstalled.
 
 ## Feed-only setup
 
