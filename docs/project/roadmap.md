@@ -180,7 +180,7 @@ Planning only. No additional hardware cost to use the existing sensor.
 | Milestone | Reached when | Status |
 | --- | --- | --- |
 | M1 | Installed equipment and interfaces are understood | ⬜ Open |
-| M2 | Hardware design and driver plan are selected | 🟡 Housing and wiring validated on the bench (WP3). Fuse, F1 holder and DE-9 mating parts are [open](open-items.md#bench-hardware) |
+| M2 | Hardware design and driver plan are selected | 🟡 Housing and wiring validated on the bench (WP3). Fuse and F1 holder are [open](open-items.md#bench-hardware) |
 | M3 | Bench ESP32 updatable over Wi-Fi: OTA loader flashed over USB, joins the configured network or opens its hotspot, and accepts an OTA upload in both modes ([ADR-05](../design/architecture.md#adr-05), [bring-up](../hardware/wiring.md#bring-up) step 3) | ✅ Done (S97–S99); hotspot OTA accepted on the fallback test and a phone join, without an upload over the hotspot |
 | M4 | Software verified | ⬜ Open. Acceptance of the three-port Wi-Fi bridge in WP6 step 5 triggers the [Bluetooth decision](#bluetooth-decision). |
 

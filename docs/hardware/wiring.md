@@ -25,6 +25,8 @@ The box has two connections. Plug the instrument harness into the **male DE-9** 
 
 ### 1.1 Build the female instrument plug
 
+The instrument harness uses a **female DE-9 solder-cup plug** with a backshell and cable strain relief. Its UNC 4-40 locking screws mate with the [housing jackposts](housing.md#connectors).
+
 Hold the loose **female DE-9** with the **solder cups facing you** and the **five-cup row on top**. Cup **1** is at the upper left. Match the moulded numbers before soldering.
 
 ![Female DE-9 from the wire side. Upper row, left to right: 1 Zander TX, 2 FLARM TX, 3 Becker ground, 4 Becker TX2+, 5 Becker TX2−. Lower row: 6 Zander ground, 7 FLARM ground, 8 Becker RX2+, 9 Becker RX2−.](../images/de9-glider-harness.svg)
