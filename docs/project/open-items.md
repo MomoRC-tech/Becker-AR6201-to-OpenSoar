@@ -27,7 +27,7 @@ Bench bring-up is complete. These items remain before the bridge is connected in
 | 2 | F1 holder | Inline holder in the 12 V harness at its supply end is selected; holder part and fuse format ([protection](../hardware/power.md#protection)) | Owner selection with item 1 |
 | 3 | Supply-cable protection | Owner confirmation of cable length, routing and wire specification; where F1 sits at the supply end ([protection](../hardware/power.md#protection)) | Owner supplies harness details; agree cable protection before aircraft connection |
 | 4 | Power connector fit and retention | Adhesive compatibility with the XT30 body and PETG, wire support and insulated terminations ([selected arrangement](../hardware/housing.md#connectors)) | Connector-panel print and assembly check |
-| 5 | Combined DE-9 instrument connection | Exact mating parts, wire-gauge compatibility, screw threads, backshell, strain relief and housing mounting. Identify the loose conductors and verify shield termination against the [selected pinout](../hardware/wiring.md#de9-pinout) and [Becker wiring](../hardware/wiring.md#becker). | Owner selects parts and mounting details. Check fit and continuity before connection. |
+| 5 | Combined DE-9 instrument connection | Select the female solder-cup plug and backshell for the aircraft harness. Check that the locking screws fit the housing's UNC 4-40 jackposts, the cups take the conductor sizes and the strain relief grips the cable bundle. Identify the wires and verify shield termination against the [selected pinout](../hardware/wiring.md#de9-pinout) and [Becker wiring](../hardware/wiring.md#becker). | Owner confirms the mating parts. Check backshell clearance at the housing and continuity before connection. |
 | 6 | Device connectors | Photos of the installed connectors (from Tom); device models are [installed-equipment items 1–3](#installed-equipment) | Confirms the pin views in the wiring tables |
 | 7 | Becker J1 | Installed J1 revision, moulded pin numbers and which pins are already used | Confirms the J1 pins and the J1-21 ground |
 | 8 | Radio noise | No audible noise or squelch opening caused by the bridge | Check in the aircraft |
@@ -73,17 +73,13 @@ Fit and assembly of the bench build passed (S156).
 
 ## 3. 🛩️ Installed equipment
 
-Facts about the equipment already in the aircraft, mostly from Tom. What is known so far: [existing installation](existing-installation.md). Closing the interface items is milestone M1.
+M1 covers the installed instruments, their interfaces and the navigation baseline. See the [existing installation](existing-installation.md) for the information already available.
 
 | # | Item | What is needed | From | Unblocks |
 | :-: | --- | --- | --- | --- |
 | 1 | Radio | Type plate, article number, hardware/software versions of the reported AR6201-(022); J1 occupancy is [wiring item 7](#bench-hardware) | Tom | Matching manual and interface |
 | 2 | Zander ZS1 | Program version, baud and output settings, cable | Tom | Serial settings |
 | 3 | FLARM | Model and firmware (reported Classic, IGC series 6), socket used, baud and output settings | Tom | Serial settings |
-| 4 | Existing wiring | How each device signal reaches the existing ESP32, including any converters | Tom | Backup record |
-| 5 | Existing converter | Chip, supply and logic level of the RS422 TO TTL board | Tom | Backup record |
-| 6 | Existing ESP32 | Board, firmware, configuration | Tom | Backup record |
-| 7 | Existing power | UBEC jumper/output, board input, grounding | Tom / owner | Backup record |
 | 8 | Navigation baseline | Data types, update gaps, reconnect behaviour of today's setup | Owner / Tom | Acceptance limits for the new bridge |
 | 10 | Radio ground | Whether both P1 ground pins (13, 25) run to the battery minus, and whether the radio's grounding bolt is connected | Tom / owner | Confirms the radio cannot return its current through the bridge ([ground](../hardware/power.md#ground)) |
 
