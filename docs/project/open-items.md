@@ -124,7 +124,7 @@ Use the [normal build](../../firmware/bridge/README.md#build), one [TCP port ent
 | Bench PC in network mode | Verify automatic recovery and changing data with the PC as the app listener (S219) |
 | Second phone, follow-up | With the main phone already receiving, observe the first phone while the second app is backgrounded or its screen is locked |
 
-Use [bridge status and log counters](../../firmware/bridge/README.md#status-page) for socket times. Use the app's device list or a changing clock display for fresh data. Record the app and firmware versions and which ports had a feed. Earlier Pixel tests showed hotspot recovery with synthetic Zander data and sometimes waited for unlock (S215, S220). Reset recovery was measured on the bench (S223). The subsequent slot-reuse fix was checked on the host (S224).
+Use [bridge status and log counters](../../firmware/bridge/README.md#status-page) for socket times. Use the app's device list or a changing clock display for fresh data. Record the app and firmware versions and which ports had a feed. Earlier Pixel tests showed hotspot recovery with synthetic Zander data and sometimes waited for unlock (S215, S220). Reset recovery was measured on the bench (S223). The subsequent slot-reuse fix was checked on the host (S224). On normal 0.5.29, the owner confirmed fresh Zander GPS after a Wi-Fi toggle, app restart and hard power cut. The web restart recovered all three instrument sockets (S233).
 
 ---
 
