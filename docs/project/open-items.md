@@ -105,9 +105,9 @@ See the [bridge firmware plan](roadmap.md#firmware-plan) and the [stock OpenSoar
 | 6 | Physical acceptance | Check local controls and navigation on the matching bench setup. For standby tuning, compare app result, captured bytes and both front-panel channels at startup, after reconnect and around a local tune or swap. Verify the requested standby and preservation of the active channel set by the pilot. | Radio acceptance |
 | 8 | Sustained load and heap | Hotspot hour at 160 MHz passed for the normal Zander and FLARM readers, Becker loop and voltage. The stalled Windows client lost its Zander connection to a bridge TCP reset. Timing matched the lwIP keepalive timeout (S235-S236). The 60 s application queue timeout and bench network mode still need coverage. | Bridge reliability |
 | 9 | Settings under power loss | Interrupt a save and an automatic rollback on a spare ESP32, then check that the stored configuration is complete (S162) | Physical settings persistence |
-| 11 | Becker owner handover | The 0.5.29 DE-9 loop passed with zero stale bytes (S234). Check delayed replies with the matching radio | Radio ownership |
+| 11 | Becker owner handover | Check delayed replies with the matching radio. The 0.5.29 DE-9 handover passed (S234) | Radio ownership |
 | 12 | Remaining review checks | Code review findings 6–9: UART FIFO margin during flash writes, ROM output on the Zander transmit pin, apps held during a navigation scan, low items | Bridge reliability |
-| 13 | Phone reconnect | Normal build, one phone running stock OpenSoar with hotspot mobile data on. Network mode uses the bench PC. The second-phone background check is follow-up coverage | Step 5 acceptance |
+| 13 | Reconnect and mobile internet | Check recovery and fresh data on the bench PC in network mode, and [mobile internet](../design/requirements.md#requirements) during fresh GPS on the hotspot. One-phone hotspot reconnect passed (S233–S234). The second-phone background check is follow-up coverage | Step 5 acceptance |
 
 The six-connection limit is deferred for the one-phone workflow. Revisit it if normal reconnects lose data or two-phone operation becomes important. The general TCP-to-UART write refactor is deferred in [issue #3](https://github.com/MomoRC-tech/Becker-AR6201-to-OpenSoar/issues/3).
 
@@ -115,16 +115,17 @@ The six-connection limit is deferred for the one-phone workflow. Revisit it if n
 
 Use the [normal build](../../firmware/bridge/README.md#build), one [TCP port entry per device](../manual/user-manual.md#connect-opensoar), and a changing synthetic navigation sentence. Disconnect the PC's test clients and leave mobile data on. Never press *Reconnect* during a case.
 
-| Case | Evidence to record |
+| Case | Result or evidence to record |
 | --- | --- |
-| Restart OpenSoar, then switch phone Wi-Fi off and back on | Time to a new socket per port and to the first fresh sentence in OpenSoar |
-| Web restart, then hard power cut of the bench bridge | Start timing at restart or power restoration. Note whether mobile internet still works |
-| Locked phone during a restart or cut | Whether it rejoined and received data before unlock, and when data resumed after unlock |
-| Stock AR62xx entry | Verify the connection with the Becker loop. Gate actual tuning on item 1 and matching-radio checks in items 2 and 6 |
-| Bench PC in network mode | Verify automatic recovery and changing data with the PC as the app listener (S219) |
+| OpenSoar restart and phone Wi-Fi toggle | ✅ Fresh Zander GPS returned automatically (S233) |
+| Bridge restart and hard power cut | ✅ All three instrument sockets returned after the web restart. Fresh GPS returned after the cut (S233) |
+| Web restart while phone is locked | ✅ All three instrument sockets and GPS returned after unlock (S234) |
+| Stock AR62xx entry | ✅ Socket recovery and DE-9 loop handover checked on the bench (S233–S234). Actual tuning requires items 1, 2 and 6 |
+| Bench PC in network mode | Verify automatic recovery and changing data with the PC as the app listener. Earlier bench-build coverage is S219 |
+| Mobile internet over the hotspot | Load a public web page while fresh GPS is visible in OpenSoar (R20) |
 | Second phone, follow-up | With the main phone already receiving, observe the first phone while the second app is backgrounded or its screen is locked |
 
-Use [bridge status and log counters](../../firmware/bridge/README.md#status-page) for socket times. Use the app's device list or a changing clock display for fresh data. Record the app and firmware versions and which ports had a feed. Earlier Pixel tests showed hotspot recovery with synthetic Zander data and sometimes waited for unlock (S215, S220). Reset recovery was measured on the bench (S223). The subsequent slot-reuse fix was checked on the host (S224). On normal 0.5.29, the owner confirmed fresh Zander GPS after a Wi-Fi toggle, app restart and hard power cut. The web restart recovered all three instrument sockets (S233). During a web restart with the phone locked, all three sockets recovered after unlock, and the owner reported GPS recovery (S234).
+Use [bridge status and log counters](../../firmware/bridge/README.md#status-page) for socket times. In OpenSoar, use the device list or a changing clock for fresh data. Record which ports had a feed and the versions used.
 
 ---
 

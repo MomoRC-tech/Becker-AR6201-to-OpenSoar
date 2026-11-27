@@ -7,7 +7,7 @@
 How to connect the bridge to OpenSoar, how it behaves and what to do when something looks wrong.
 
 > [!NOTE]
-> **Status:** Hotspot reconnect was observed with synthetic Zander data on the owner's Pixel (S215, S220). Network mode is bench-tested with the PC as phone (S219). The [normal-build phone check](../project/open-items.md#software-and-acceptance) is open.
+> **Status:** Stock OpenSoar recovered synthetic Zander data on the hotspot with normal firmware 0.5.29 (S233–S234). See the [remaining bench checks](../project/open-items.md#software-and-acceptance).
 
 <a href="#quick-start"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-manual-user-manual-1-dark.svg"><img src="../images/nav/menu-manual-user-manual-1.svg" alt="1 · Quick start" height="30"></picture></a> <a href="#behaviour"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-manual-user-manual-2-dark.svg"><img src="../images/nav/menu-manual-user-manual-2.svg" alt="2 · How it behaves" height="30"></picture></a> <a href="#web-pages"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-manual-user-manual-3-dark.svg"><img src="../images/nav/menu-manual-user-manual-3.svg" alt="3 · Web pages" height="30"></picture></a> <a href="#troubleshooting"><picture><source media="(prefers-color-scheme: dark)" srcset="../images/nav/menu-manual-user-manual-4-dark.svg"><img src="../images/nav/menu-manual-user-manual-4.svg" alt="4 · Troubleshooting" height="30"></picture></a> <!-- page-menu -->
 
@@ -125,7 +125,7 @@ Baud rate and serial frame changes apply at once, without a trial.
 | **Restart bridge** (settings page or status page) | Restarts with the stored settings; nothing is written. It closes the app connections first, so the apps reconnect by themselves, as after a settings change or firmware update (S198) |
 | **Reset to defaults** | Forgets all saved settings and restarts with the firmware defaults |
 | Power cut | Keeps the settings, the [lifetime record](../../firmware/bridge/README.md#lifetime-record) and the saved log. The web log and the supply voltage chart start empty |
-| Several apps on Zander or FLARM | Up to 4 apps per port and **6 app connections in all** (one phone with four devices uses 4); a further one is refused. An app that falls behind skips data and catches up; one that takes no data for 60 s is closed |
+| Several apps on Zander or FLARM | Up to 4 apps per port and **6 app connections in all** (one phone with four devices uses 4). Further connections are refused. An app that falls behind skips data and catches up. If its send queue makes no progress for 60 s, the bridge closes the connection. TCP can end it sooner (S236). |
 | Becker port | One app at a time owns the radio, whether the bridge dialed it or the app connected. A second one is refused until the first closes; the bridge dials the next phone only then |
 | Phone leaves the hotspot | The bridge closes that phone's connections at once and dials it again when it is back |
 | Phone vanishes while the bridge keeps running | The bridge closes unresponsive connections after about 15 s, including on quiet ports |

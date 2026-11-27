@@ -39,7 +39,7 @@ Check and set it up from the phone's browser: live status per device, settings, 
 ## 2. 🚦 Status
 
 > [!NOTE]
-> **Status:** bench hardware bring-up is complete. The normal firmware build still needs one-phone and sustained wired acceptance. Aircraft installation comes later. [Roadmap](docs/project/roadmap.md#work-packages)
+> **Status:** bench hardware bring-up is complete. Firmware 0.5.29 passed the hotspot phone reconnect, Becker loop and one-hour forwarding checks. [Remaining bench checks](docs/project/roadmap.md#firmware-plan)
 
 ---
 
