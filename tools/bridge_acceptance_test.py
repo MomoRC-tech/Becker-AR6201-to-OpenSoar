@@ -526,9 +526,21 @@ def run_wired(args, feeds):
                         raise ValueError(f"{name}: Uno bench requires {FEED_BAUD} {FEED_FORMAT}")
                     source = resources.enter_context(UnoBench(feeds[name], timeout=args.max_delay))
                 else:
-                    source = resources.enter_context(serial.Serial(
-                        feeds[name], baudrate=port["baud"], bytesize=int(frame[0]),
-                        parity=frame[1], stopbits=int(frame[2]), write_timeout=args.max_delay))
+                    options = dict(bytesize=int(frame[0]), parity=frame[1],
+                                   stopbits=int(frame[2]), write_timeout=args.max_delay)
+                    try:
+                        source = resources.enter_context(serial.Serial(feeds[name], baudrate=port["baud"], **options))
+                    except OSError as error:
+                        if "Cannot configure port" not in str(error):
+                            raise
+                        # Some CH340 adapters only accept the target baud after opening at 9600.
+                        source = serial.Serial(baudrate=9600, **options)
+                        source.port = feeds[name]
+                        source.dtr = False
+                        source.rts = False
+                        source = resources.enter_context(source)
+                        source.baudrate = port["baud"]
+                        print(f"{name}: opened at 9600 with DTR and RTS inactive before setting the test baud")
                 print(f"{name}: {feeds[name]}, {port['baud']} {frame}, TCP {port['tcp_port']}")
             inputs[name] = WiredInput(name, sock, source, port, frame, args, halt)
             if source is not None and int(inputs[name].rate * args.seconds) < CHUNK:
