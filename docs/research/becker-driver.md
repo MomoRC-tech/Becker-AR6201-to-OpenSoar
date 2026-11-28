@@ -51,6 +51,8 @@ Werner86's public driver notes describe the `0x14` 62XX family data exchange pro
 
 The implementations calculate the CRC over bytes 0–7, including the header and length, with polynomial `0x8005`, initial value `0x0000`, most-significant bit first, and no final XOR or reflection. LK8000 places the general CRC at offsets `length + 3` and `length + 4`. The length and CRC together distinguish a candidate frame from a payload byte equal to `A5` (S228, S229).
 
+A public Becker manual for a different device documents the same CRC polynomial and includes the check value `A5 14 01 20` → `43 E3` (S245). Use it as an additional checksum regression vector. Its `0x1C` beacon-status protocol does not establish AR6201 commands, acknowledgments, limits or timing; see [documentation search](#public-documentation-search).
+
 ### 1.2 Channel IDs and synthetic examples
 
 Use the **displayed channel label** in integer kHz in the public mapping. Divide it by 100 using integer division, subtract 1180 and multiply by 16. Add the zero-based position of the last two digits in this list (S228, S229).
@@ -157,10 +159,25 @@ Use the public format for bench diagnosis. The [remaining protocol questions](..
 | First | Becker technical support via its service form | Revision-matched specification, supported standby operation, reply semantics, reference exchanges and permission to publish examples (S243) |
 | Next | Werner86 | Document revision and retained captures from the redesign based on Becker's documentation (S228) |
 | Next | Ulli Heynen / AlphaLima | Background and any retained recordings for the resend/receive-pause change (S239) |
+| Next | Michael Hoffmann / SD-Link | Retained documentation, captures and the reliability advice mentioned privately after an AR6201 success report (S246) |
 | Additional | eku60 / tb59427 | Exact test versions and any serial recordings from the reported radio tests (S228, S240) |
 | Additional | calif on volavoile.net | Availability and terms of the channel-memory tool; no public source or trace download was found in the thread (S242) |
 
-Ask for raw bytes in both labelled directions, timestamps, radio model and CM/CH software, interface/settings and the associated user actions. Keep full identifiers and original logs private under the repository rules. Retain public, sanitised evidence with its provenance and permission. See [open items](../project/open-items.md#software-and-acceptance) for the protocol questions. These are contact leads; no inquiry has been sent.
+Ask for raw bytes in both labelled directions, timestamps, radio model and CM/CH software, interface/settings and the associated user actions. Keep full identifiers and original logs private under the repository rules. Retain public, sanitised evidence with its provenance and permission. See [open items](../project/open-items.md#software-and-acceptance) for the protocol questions. The owner has sent the Becker documentation request; no reply or protocol PDF has been supplied to this project. The other contacts are leads only.
+
+<a id="public-documentation-search"></a>
+
+### 2.6 Public documentation search
+
+| Public material | Use for the PR |
+| --- | --- |
+| Werner86's documented driver | Frequency-control subset and the author's account of receiving Becker's document (S228) |
+| Becker BD406/PBD406 manual | Independent manufacturer checksum examples and a related packet envelope; a different device/protocol (S245) |
+| Becker's public manual index | Identifies installation and maintenance documents; no separate AR6201 protocol specification listed in the inspected entries (S244) |
+
+The follow-up search did not locate a downloadable complete AR6201 protocol specification (S247). The name “62XX Transceiver Family Data Exchange Protocol” is the public driver's description of protocol ID 0x14; the original PDF's actual title, revision and document number have not been checked. Werner86 reports Becker's historical reason for controlled distribution as knowing the users to notify of changes (S228). That is a 2020 account, not confirmation of current policy.
+
+The next evidence requests stay in [open items](../project/open-items.md#software-and-acceptance). No AR6201 ACK behavior or radio timing should be inferred from the beacon-decoder manual.
 
 ---
 
