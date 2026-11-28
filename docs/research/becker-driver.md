@@ -19,7 +19,7 @@ Related: 📶 [Bridge firmware](bridge-firmware.md) · 📚 [Sources](sources.md
 
 ## 1. 🔍 OpenSoar driver findings
 
-The findings were checked against OpenSoar 7.46.26.1 and test build 7.47.27.t09 (S01, S02, S228).
+The findings were checked against OpenSoar 7.46.26.1, test build 7.47.27.t09 and the default-branch source (S01, S02, S228, S237).
 
 | Area | Finding |
 | --- | --- |
@@ -85,6 +85,22 @@ The first 256 channel IDs (118.000–119.590, at the listed steps) contain a zer
 
 Source comparison and author reports are in S228. A paired write can carry a stale active value if the pilot changes it between the last status and the write. A fresh read reduces that interval. The radio determines the order in which the local and remote changes take effect. See [open items](../project/open-items.md#software-and-acceptance) for the evidence still needed on the matching unit.
 
+<a id="failure-history"></a>
+
+### 1.4 Failure history and capture search
+
+| Evidence | What it supports | Limit |
+| --- | --- | --- |
+| Counted write replaced by a text-pointer call | The write regression is visible in the OpenSoar diff; the byte-span TODO remains (S237) | Older successful radio tests used earlier implementations |
+| Original driver's local ACK | A workaround for the author's report that actions occurred without an acknowledgment (S238) | Does not define Becker's actual reply semantics |
+| LK8000 resend and receive pause | Two counted writes, 100 ms pauses and suppression of old buffered status were introduced against station overwrite (S239) | A driver workaround, not a specified Becker timing requirement |
+| LK8000 validity flags | Requested state is invalidated and becomes valid on received radio data (S239) | No request-specific reply correlation |
+| XCSoar-fork test with no radio action | The author reported Android-to-XCVario data; the reply identified Tandem configuration as a prerequisite (S240) | No raw capture or final radio acceptance result |
+
+The public search found no independent report explicitly diagnosing this exact null-byte truncation, and no usable timestamped two-direction Becker capture with a matching radio/software identity (S241). The same OpenSoar file in two forks is code reuse, not independent confirmation. The EasyVFR `118.815` / `118.810` report supplies a test pair, not a diagnosed instance of this bug (S232).
+
+For a first PR, keep the explicit-length correction and a driver-level recording-port regression separate from reply handling. Reproduce the failure before the correction, then check zero payload/CRC bytes, a nonzero control, partial writes and write failures. This host proof does not need the radio. Full state-confirmation and local-control acceptance stay with the [protocol and radio checks](../project/open-items.md#software-and-acceptance). [Issue #5](https://github.com/MomoRC-tech/Becker-AR6201-to-OpenSoar/issues/5) holds the contribution workflow.
+
 ---
 
 <a id="other-implementations"></a>
@@ -131,6 +147,20 @@ More: LK8000 [PR 941](https://github.com/LK8000/LK8000/pull/941), [PR 940](https
 Earlier discussions: [documentation](https://github.com/XCSoar/XCSoar/pull/449#issuecomment-667976007) · [redesign](https://github.com/XCSoar/XCSoar/pull/449#issuecomment-670971343) · [publication refused](https://github.com/XCSoar/XCSoar/pull/449#issuecomment-679080020). Contact: [Becker service request](https://becker-avionics.com/service-request/).
 
 Use the public format for bench diagnosis. The [remaining protocol questions](../project/open-items.md#software-and-acceptance) are specific to the installed radio and can be sent to Becker with its identity. [Issue #4](https://github.com/MomoRC-tech/Becker-AR6201-to-OpenSoar/issues/4) holds the research discussion.
+
+<a id="evidence-contacts"></a>
+
+### 2.5 Evidence contacts
+
+| Priority | Contact | Request |
+| --- | --- | --- |
+| First | Becker technical support via its service form | Revision-matched specification, supported standby operation, reply semantics, reference exchanges and permission to publish examples (S243) |
+| Next | Werner86 | Document revision and retained captures from the redesign based on Becker's documentation (S228) |
+| Next | Ulli Heynen / AlphaLima | Background and any retained recordings for the resend/receive-pause change (S239) |
+| Additional | eku60 / tb59427 | Exact test versions and any serial recordings from the reported radio tests (S228, S240) |
+| Additional | calif on volavoile.net | Availability and terms of the channel-memory tool; no public source or trace download was found in the thread (S242) |
+
+Ask for raw bytes in both labelled directions, timestamps, radio model and CM/CH software, interface/settings and the associated user actions. Keep full identifiers and original logs private under the repository rules. Retain public, sanitised evidence with its provenance and permission. See [open items](../project/open-items.md#software-and-acceptance) for the protocol questions. These are contact leads; no inquiry has been sent.
 
 ---
 
